@@ -1,6 +1,6 @@
 # envidat.ch
 
-> envidat with vuetify & webpack
+> envidat frontend with vuetify & webpack
 
 ## Build Setup
 
