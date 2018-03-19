@@ -44,6 +44,10 @@ module.exports = {
       optionalDependencies: ['test/unit/index.js']
     }],
     // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'linebreak-style' : 0
+    // enforce CLRF linebreaks = 'linebreak-style' : ["error", "unix"]
+    // windows linebreaks when not in production environment
+    //"linebreak-style": ["error", process.env.NODE_ENV === 'prod' ? "unix" : "windows"]    
   }
 }
