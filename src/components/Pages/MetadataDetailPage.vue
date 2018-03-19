@@ -1,36 +1,30 @@
 <template>
-  <v-layout column xs8 align-center>
+  <v-container fluid >
 
-    <v-flex xs8 fill-height>
+    <metadata-header> </metadata-header>
 
-      <v-card class="xs8">
-        <v-card-title>Metadata title</v-card-title>
-        <v-chip v-for="i in 5" :key="i">
-          dude {{ i }}
-        </v-chip>
-        
-      </v-card>
+    <metadata-body> </metadata-body>
 
-      <v-card class="xs8">
-        <v-card-title>Metadata Info</v-card-title>
-        <v-card-text>desc</v-card-text>
-      </v-card>
-
-    </v-flex>
-
-    <v-card class="my-3">
-      <p>Metadata Detail Page with id: {{ $route.params.id }}</p>
-    </v-card>
-
-
-
-  </v-layout>
+  </v-container>
 </template>
 
-<script>
-  
+<script>  
+  import MetadataHeader from "../Views/MetadataHeader.vue";
+  import MetadataBody from "../Views/MetadataBody.vue";
+
   export default {
+    data: () => ({
+      Header: {
+        title: "Awesome Metadata #1",
+        contactName: 'Dr. Muster Mann',
+        contactEmail: 'mustermann@wsl.ch',
+        doi: 'envidat.2192318293',
+        citation: 'somecitation',
+      }
+    }),
     components: {
+      MetadataHeader,
+      MetadataBody,
     }
   }
 </script>
