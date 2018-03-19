@@ -1,20 +1,21 @@
 <template>
-  <v-layout column align-center my-1>
+  <v-layout column my-2 mx-4>
 
-    <v-flex xs12 >
-      <v-card class="my-1">
-        <v-card-title>Metadata Info</v-card-title>
-        <v-card-text>desc</v-card-text>
+    <v-flex xs12 md8 offset-md2 elevation-1>
+      <v-card >
+        <v-card-title>
+          <h3>Metadata description</h3>
+        </v-card-title>
+        <v-card-text >{{ fullDescription }}</v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn icon @click.native="readMore()">
+            <v-icon color="amber" >{{ showFullDescription ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
+          </v-btn>        
+        </v-card-actions>
       </v-card>
     </v-flex>
-
-    <v-flex xs12 >
-      <v-card class="my-3">
-        <p>Metadata Detail Page with id: {{ $route.params.id }}</p>
-      </v-card>
-    </v-flex>
-
-
 
   </v-layout>
 </template>
@@ -23,16 +24,22 @@
 
   export default {
     props: [ 
-        "metadataTitle", "doi", "description"
+        "metadataTitle", "doi", "description", "shortDesciption"
     ],
-/*    
+    beforeUpdate: function () {
+      this.shortDesciption = this.description.substring(0, 1000) + "...";
+      // this.fullDescription = this.shortDesciption;
+    },    
     data: () => ({
-      contactName: 'Dr. Muster Mann',
-      contactEmail: 'mustermann@wsl.ch',
-      doi: 'envidat.2192318293',
-      citation: 'somecitation',
+      showFullDescription: false,
+      fullDescription: this.shortDesciption,
     }),
-*/
+    methods: {
+      readMore: function (){
+        this.showFullDescription = !this.showFullDescription;
+        this.fullDescription = this.showFullDescription ? this.description : this.shortDesciption;
+      },
+    },
     components: {
     },
   }

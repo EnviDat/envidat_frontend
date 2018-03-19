@@ -3,15 +3,18 @@
 
     <v-flex xs12 md8 offset-md2 elevation-5>
 
-      <v-card elevation-5 class="px-4 py-2" dark color="teal">
-        <v-card-title>{{ metadataTitle }}</v-card-title>
+      <v-card elevation-5 class="px-4" dark color="teal">
+
+        <h1 class="py-3" >{{ metadataTitle }} id: {{ $route.params.id }}</h1>
+        
         <v-card-media></v-card-media>
+
       </v-card>
     </v-flex>
 
     <v-flex xs12 md8 offset-md2 elevation-5>
 
-      <v-card class="px-3 py-2">
+      <v-card class="px-4 py-2">
 
         <v-layout row wrap>
           <v-flex xs6>
