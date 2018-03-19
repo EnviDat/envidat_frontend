@@ -26,9 +26,9 @@
     props: [ 
         "metadataTitle", "doi", "description", "shortDesciption"
     ],
-    beforeUpdate: function () {
+    mounted: function () {
       this.shortDesciption = this.description.substring(0, 1000) + "...";
-      // this.fullDescription = this.shortDesciption;
+      this.fullDescription = this.shortDesciption;
     },    
     data: () => ({
       showFullDescription: false,

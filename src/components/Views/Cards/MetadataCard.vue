@@ -1,9 +1,9 @@
 <template>
-    <!-- 
--->
 
-  <v-card tile
+  <v-card
+    tile
     ripple
+    hover
     v-on:click.native="clicked"
     >
 
