@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import LandingPage from '@/components/Pages/LandingPage';
 import BrowsePage from '@/components/Pages/BrowsePage';
 import MetadataDetailPage from '@/components/Pages/MetadataDetailPage';
+import ResourceDetailPage from '@/components/Pages/ResourceDetailPage';
 
 Vue.use(Router);
 
@@ -27,6 +28,11 @@ export default new Router({
       path: '/metadata/:id',
       name: 'MetadataDetailPage',
       component: MetadataDetailPage,
+    },
+    {
+      path: '/dataresource/:id',
+      name: 'ResourceDetailPage',
+      component: ResourceDetailPage,
     },
   ],
 });

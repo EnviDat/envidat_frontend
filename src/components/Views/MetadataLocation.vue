@@ -4,7 +4,7 @@
     <v-flex xs12 md8 offset-md2 elevation-1>
       <v-card >
         <v-card-title>
-          <h3>Metadata description</h3>
+          <h3>Metadata location</h3>
         </v-card-title>
         <v-card-text >{{ fullDescription }}</v-card-text>
 
@@ -27,17 +27,11 @@
         "metadataTitle", "doi", "description"
     ],
     mounted: function () {
-      this.shortDesciption = this.description.substring(0, 1000) + "...";
-      this.fullDescription = this.shortDesciption;
     },    
     data: () => ({
-      showFullDescription: false,
-      fullDescription: this.shortDesciption,
     }),
     methods: {
       readMore: function (){
-        this.showFullDescription = !this.showFullDescription;
-        this.fullDescription = this.showFullDescription ? this.description : this.shortDesciption;
       },
     },
     components: {

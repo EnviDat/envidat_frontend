@@ -11,9 +11,9 @@
         <v-container fluid grid-list-xs>
           <v-layout row wrap>
 
-            <v-flex xs6 px-2 py-2 v-for="res in resources" :key="res.title">
+            <v-flex xs6 px-2 py-2 v-for="res in resources" :key="res.id">
     
-              <metadata-resource-card v-bind="res" v-on:clicked="resClicked"></metadata-resource-card>
+              <metadata-resource-card v-bind="res" v-on:clicked="resClicked(res)"></metadata-resource-card>
     
             </v-flex>
 
@@ -21,12 +21,12 @@
         </v-container>
 
 
-        <v-card-actions>
+        <!--v-card-actions>
           <v-spacer></v-spacer>
           <v-btn icon @click.native="readMore()">
             <v-icon color="primary" >{{ showAllResources ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
           </v-btn>        
-        </v-card-actions>
+        </v-card-actions-->
       </v-card>
     </v-flex>
 
@@ -72,8 +72,14 @@
       readMore: function (){
         this.showAllResources = !this.showAllResources;
       },
-      resClicked: function (){
-        alert('clicked on a res');
+      resClicked: function (res){
+        this.$router.push({
+          name: 'ResourceDetailPage',
+          params: {
+            id: res.id,
+          }
+        });
+        
       },
     },
     components: {

@@ -7,6 +7,10 @@
 
     <metadata-resources v-bind="resources" ></metadata-resources>
 
+    <metadata-location v-bind="resources" ></metadata-location>
+
+    <metadata-details v-bind="resources" ></metadata-details>
+
   </v-container>
 </template>
 
@@ -14,6 +18,8 @@
   import MetadataHeader from "../Views/MetadataHeader.vue";
   import MetadataBody from "../Views/MetadataBody.vue";
   import MetadataResources from "../Views/MetadataResources.vue";
+  import MetadataLocation from "../Views/MetadataLocation.vue"; 
+  import MetadataDetails from "../Views/MetadataDetails.vue";
 
   export default {
     data: () => ({
@@ -39,6 +45,8 @@
       MetadataHeader,
       MetadataBody,
       MetadataResources,
+      MetadataLocation,
+      MetadataDetails,
     }
   }
 </script>

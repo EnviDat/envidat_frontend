@@ -4,9 +4,25 @@
     <v-flex xs12 md8 offset-md2 elevation-1>
       <v-card >
         <v-card-title>
-          <h3>Metadata description</h3>
+          <h3>Metadata details</h3>
         </v-card-title>
-        <v-card-text >{{ fullDescription }}</v-card-text>
+
+        <v-card-text >
+
+        <v-form>
+          <v-text-field
+            name="name"
+            label="label"
+            id="id"
+          ></v-text-field>
+          <v-text-field
+            name="name"
+            label="label"
+            id="id"
+          ></v-text-field>
+        </v-form>
+
+        </v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
