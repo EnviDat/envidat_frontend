@@ -6,14 +6,17 @@
         <v-card-title>
           <h3>Metadata location</h3>
         </v-card-title>
-        <v-card-text >{{ fullDescription }}</v-card-text>
 
-        <v-card-actions>
+        <v-card-text>
+          
+        </v-card-text>
+
+        <!--v-card-actions>
           <v-spacer></v-spacer>
           <v-btn icon @click.native="readMore()">
             <v-icon color="amber" >{{ showFullDescription ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
           </v-btn>        
-        </v-card-actions>
+        </v-card-actions-->
       </v-card>
     </v-flex>
 
@@ -24,7 +27,7 @@
 
   export default {
     props: [ 
-        "metadataTitle", "doi", "description"
+        "points", "isArea"
     ],
     mounted: function () {
     },    

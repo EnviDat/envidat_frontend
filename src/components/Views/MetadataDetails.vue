@@ -24,12 +24,12 @@
 
         </v-card-text>
 
-        <v-card-actions>
+        <!--v-card-actions>
           <v-spacer></v-spacer>
           <v-btn icon @click.native="readMore()">
             <v-icon color="amber" >{{ showFullDescription ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
           </v-btn>        
-        </v-card-actions>
+        </v-card-actions-->
       </v-card>
     </v-flex>
 
@@ -43,18 +43,10 @@
         "metadataTitle", "doi", "description"
     ],
     mounted: function () {
-      this.shortDesciption = this.description.substring(0, 1000) + "...";
-      this.fullDescription = this.shortDesciption;
     },    
     data: () => ({
-      showFullDescription: false,
-      fullDescription: this.shortDesciption,
     }),
     methods: {
-      readMore: function (){
-        this.showFullDescription = !this.showFullDescription;
-        this.fullDescription = this.showFullDescription ? this.description : this.shortDesciption;
-      },
     },
     components: {
     },
