@@ -5,11 +5,12 @@
       <v-card >
         <v-card-title class="title" >Citation</v-card-title>
 
-        <v-card-text ><quote>{{ citationText }}</quote></v-card-text>
+        <v-card-text >{{ citationText }}</v-card-text>
 
         <v-card-actions>
-          <v-btn color="primary" @click="downloadXML()" >Download Citation XML <v-icon right>assignment</v-icon></v-btn>
-          <v-btn color="primary" @click="downloadISOXML()" >Download Citation ISO XML <v-icon right>assignment</v-icon></v-btn>          
+          <v-spacer></v-spacer>          
+          <v-btn color="primary" v-bind:href="$props.citationXmlLink" >Get DataCite XML <v-icon right>assignment</v-icon></v-btn>
+          <v-btn color="primary" v-bind:href="$props.ciationIsoXmlLink" >Download ISO 19139 XML <v-icon right>assignment</v-icon></v-btn>          
         </v-card-actions>
       </v-card>
     </v-flex>
@@ -31,12 +32,6 @@
     data: () => ({
     }),
     methods: {
-      downloadXML: function (){
-        alert('XML download ' + citationXmlLink);
-      },
-      downloadISOXML: function (){
-        alert('ISO XML download ' + ciationIsoXmlLink);
-      },
     },
     components: {
     },
