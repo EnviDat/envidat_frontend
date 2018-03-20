@@ -3,9 +3,7 @@
 
     <v-flex xs12 md8 offset-md2 elevation-1>
       <v-card >
-        <v-card-title>
-          <h3>Metadata details</h3>
-        </v-card-title>
+        <v-card-title class="title" >Further Information</v-card-title>
 
         <v-card-text >
 

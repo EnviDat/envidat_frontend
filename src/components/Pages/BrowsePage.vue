@@ -2,11 +2,6 @@
   <v-container fluid>
 
     <v-layout column align-center>
-    
-      <v-card class="my-3">
-        <p>Browse Page {{ $route.params.category }}</p>
-        <p>Search query: {{ $route.query.search }} </p>
-      </v-card>
 
         <v-container fluid grid-list-xs>
           <v-layout row wrap>
@@ -20,6 +15,10 @@
           </v-layout>
         </v-container>
 
+      <v-card class="my-3">
+        <p>Browse Page {{ $route.params.category }}</p>
+        <p>Search query: {{ $route.query.search }} </p>
+      </v-card>
     
     </v-layout>
   </v-container>

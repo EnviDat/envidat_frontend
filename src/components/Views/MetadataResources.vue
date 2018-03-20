@@ -3,10 +3,8 @@
 
     <v-flex xs12 md8 offset-md2 elevation-1>
       <v-card >
-        <v-card-title>
-          <h3>Data and resources</h3>
-        </v-card-title>
-
+        
+        <v-card-title class="title" >Data and resources</v-card-title>
 
         <v-container fluid grid-list-xs>
           <v-layout row wrap>

@@ -3,9 +3,7 @@
 
     <v-flex xs12 md8 offset-md2 elevation-1>
       <v-card >
-        <v-card-title>
-          <h3>Metadata location</h3>
-        </v-card-title>
+        <v-card-title class="title" >Location</v-card-title>
 
         <v-card-text id="mapcontainer" ref="mapcontainer">
           <v-flex elevation-1>

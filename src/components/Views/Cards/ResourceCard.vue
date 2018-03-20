@@ -3,6 +3,7 @@
   hover
   ripple
   v-on:click.native="clicked"
+  v-bind:to="$props.resourceLink"
   color="primary"
   class="white--text">
     
@@ -12,7 +13,7 @@
         <v-flex xs8>
           <div>  
             <div class="headline">{{ resourceTitle }}</div>  
-            <div>version: {{ version }}</div>  
+            <div class="subheading">version: {{ version }}</div>  
           </div>
         </v-flex>
   
@@ -24,10 +25,10 @@
   
       </v-layout>  
     </v-container>
-  
-    <v-card-actions>
+
+    <v-card-actions >
       <v-spacer></v-spacer>
-      <v-btn icon color="accent" @click.stop="download()">
+      <v-btn icon color="accent" v-bind:href="$props.downloadLink">
         <v-icon>file_download</v-icon>
       </v-btn>
     </v-card-actions>
