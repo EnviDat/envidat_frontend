@@ -8,7 +8,9 @@
         </v-card-title>
 
         <v-card-text id="mapcontainer" ref="mapcontainer">
-          <div id="map" ref="map" style="height: 500px;"></div>
+          <v-flex elevation-1>
+            <div id="map" ref="map" style="height: 500px;"></div>
+          </v-flex>
         </v-card-text>
         
 
