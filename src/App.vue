@@ -1,7 +1,6 @@
 <template>
   <v-app id="inspire" >
 
-
     <v-content>
       <router-view/>
     </v-content>
@@ -213,10 +212,10 @@
 <script>
   export default {
     data: () => ({
+      /*
       dialog: false,
       drawer: null,
       items: [
-        /*
         { icon: 'contacts', text: 'Contacts' },
         { icon: 'history', text: 'Frequently contacted' },
         { icon: 'content_copy', text: 'Duplicates' },
@@ -247,11 +246,25 @@
         { icon: 'help', text: 'Help' },
         { icon: 'phonelink', text: 'App downloads' },
         { icon: 'keyboard', text: 'Go to the old version' }
-      */
       ]
+      */
     }),
     props: {
       source: String
-    }
+    }    
   }
 </script>
+
+<style scoped >
+  .application {
+    font-family: 'Raleway', sans-serif;
+  }
+
+/*
+  .application h1,
+  .application h2 {
+      font-family: 'Karma', serif;
+  }
+*/
+
+</style>
