@@ -44,9 +44,9 @@
       citation: {
         metaid: '1',
         citationText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean non nisl condimentum, consequat tellus quis, mollis ex. Nulla a lorem non sapien molestie efficitur. Nam auctor felis id fringilla faucibus. ',
-        citationXmlLink:'https://www.envidat.ch/dataset/number-of-natural-hazard-fatalities-per-year-in-switzerland-since-1946/export/datacite.xml',
+        citationXmlLink: 'https://www.envidat.ch/dataset/number-of-natural-hazard-fatalities-per-year-in-switzerland-since-1946/export/datacite.xml',
         ciationIsoXmlLink: 'https://www.envidat.ch/dataset/number-of-natural-hazard-fatalities-per-year-in-switzerland-since-1946/export/iso19139.xml',
-      },      
+      },
       resources: {
         metaid: '1',
         id: '68ae000b-1eff-4468-afe0-fa6b9addc8e1',
