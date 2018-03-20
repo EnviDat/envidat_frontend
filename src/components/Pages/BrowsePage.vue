@@ -27,7 +27,7 @@
 </template>
 
 <script>
-  import FilterView from '../Views/FilterView.vue';
+  // import FilterView from '../Views/FilterView.vue';
   import MetadataCard from '../Views/Cards/MetadataCard.vue';
   
   export default {
@@ -35,7 +35,8 @@
       MetadataCard,
     },
     methods: {
-      metaDataClicked: function metaDataClicked(cardTitle) {  
+      metaDataClicked: function metaDataClicked(cardTitle) {
+        alert(clicked + ' ' + cardTitle);
         /*
         this.$router.push({
           name: 'BrowsePage',
@@ -53,10 +54,10 @@
         { title: 'Schnee', type: 1, restricted: 'true', favourit: 'true', dataCount: 5, flex: 6 },
         { title: 'Landschaft', type: 2, restricted: 'true', favourit: 'true', dataCount: 5, flex: 6 },
         { title: 'Naturgefahren', type: 0, restricted: 'true', favourit: 'true', dataCount: 5, flex: 6 },
-        { title: 'Artenvielfalt', type: 2, restricted: 'true', favourit: 'true', dataCount: 5, flex: 6 }
-      ]
-    })
-  }
+        { title: 'Artenvielfalt', type: 2, restricted: 'true', favourit: 'true', dataCount: 5, flex: 6 },
+      ],
+    }),
+  };
 </script>
 
 

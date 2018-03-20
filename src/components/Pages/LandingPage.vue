@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container >
   
     <v-layout column>
   
@@ -52,7 +52,7 @@
           name: 'BrowsePage',
           params: {
             category: cardTitle,
-          }
+          },
         });
       },
       searchClicked: function searchClicked() {
@@ -61,7 +61,7 @@
           name: 'BrowsePage',
           query: {
             search: this.searchText,
-          }
+          },
         });
       },
     },
@@ -71,34 +71,45 @@
         title: 'Wald',
         src: 'http://cumbrianrun.co.uk/wp-content/uploads/2014/02/default-placeholder.png',
         flex: 6,
-        },
-        {
+      },
+      {
         title: 'Schnee',
         src: 'http://cumbrianrun.co.uk/wp-content/uploads/2014/02/default-placeholder.png',
         flex: 6,
-        },
-        {
+      },
+      {
         title: 'Landschaft',
         src: 'http://cumbrianrun.co.uk/wp-content/uploads/2014/02/default-placeholder.png',
         flex: 6,
-        },
-        {
+      },
+      {
         title: 'Naturgefahren',
         src: 'http://cumbrianrun.co.uk/wp-content/uploads/2014/02/default-placeholder.png',
         flex: 6,
-        },
-        {
+      },
+      {
         title: 'Artenvielfalt',
         src: 'http://cumbrianrun.co.uk/wp-content/uploads/2014/02/default-placeholder.png',
         flex: 6,
-        }
-      ]
-    })
-  }
+      },
+      ],
+    }),
+  };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
+
+body{
+  background-image: url('~/assets/snow_background.jpg');
+}
+/* overrite the applications background */
+  .application {
+    /* background-image: url('/staticstatic/landingpage/land_and_mountains.jpg') !important; */
+    /* background-image: url('./landingpage/land_and_mountains.jpg') !important; */ 
+    background-image: url('~/assets/landingpage/land_and_mountains.jpg') !important;
+    background-color: aqua !important;
+  }
   /*
         h1,
         h2 {
