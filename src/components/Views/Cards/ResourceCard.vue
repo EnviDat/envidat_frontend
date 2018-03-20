@@ -12,7 +12,7 @@
         <v-flex xs8>
           <div>  
             <div class="headline">{{ resourceTitle }}</div>  
-            <div>version: {{ version }}</div>  
+            <div class="subheading">version: {{ version }}</div>  
           </div>
         </v-flex>
   

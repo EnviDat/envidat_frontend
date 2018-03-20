@@ -5,8 +5,9 @@
 
       <v-card elevation-5 class="px-4" dark color="primary">
 
-        <h1 class="py-3" >{{ metadataTitle }} id: {{ $route.params.id }}</h1>
-        
+        <!--h1 class="py-3" >{{ metadataTitle }} id: {{ $route.params.id }}</h1-->
+        <div class="display-2 py-3">{{ metadataTitle }}</div>  
+
         <v-card-media></v-card-media>
 
       </v-card>
