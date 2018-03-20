@@ -211,6 +211,10 @@
 
 <script>
   export default {
+    updated: function (){
+      // alert('mounted from App.vue ' + this.$store.getters + ' ?' );
+      this.$store.commit('GET_ALL_METADATA');
+    },
     data: () => ({
       /*
       dialog: false,
