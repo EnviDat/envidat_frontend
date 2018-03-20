@@ -1,9 +1,9 @@
 <template>
-    <!-- 
--->
 
-  <v-card tile
+  <v-card
+    tile
     ripple
+    hover
     v-on:click.native="clicked"
     >
 
@@ -39,9 +39,14 @@
       <v-btn icon>
         <v-icon>bookmark</v-icon>
       </v-btn>
-      <v-btn icon>
+
+      <v-btn v-if="favourit" icon>
+        <v-icon color="accent">star</v-icon>
+      </v-btn>
+      <v-btn v-if="!favourit" icon>
         <v-icon>star</v-icon>
       </v-btn>
+
       <v-btn icon @click.native="show = !show">
         <v-icon>{{ show ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</v-icon>
       </v-btn>      
@@ -61,9 +66,12 @@
 <script>
 
   export default {
-    props: [ 
-        "title", "type", "restricted", "favourit", "dataCount"
-    ],
+    props: { 
+        title: String,
+        type: Number,
+        restricted: Boolean,
+        favourit: Boolean,
+    },
     methods: {
       clicked: function clicked (){
         this.$emit("clicked");

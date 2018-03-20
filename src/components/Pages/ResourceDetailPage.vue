@@ -1,25 +1,25 @@
 <template>
   <v-container fluid >
 
-    <metadata-header v-bind="header"> </metadata-header>
+
+    <v-card>
+      id: {{ $route.params.id }}
+    </v-card>
+
+    <!--metadata-header v-bind="header"> </metadata-header>
 
     <metadata-body v-bind="body"> </metadata-body>
 
-    <metadata-resources v-bind="resources" ></metadata-resources>
-
-    <metadata-location v-bind="resources" ></metadata-location>
-
-    <metadata-details v-bind="resources" ></metadata-details>
+    <metadata-resources v-bind="resources" ></metadata-resources-->
 
   </v-container>
 </template>
 
-<script>  
+<script>
+/*
   import MetadataHeader from "../Views/MetadataHeader.vue";
   import MetadataBody from "../Views/MetadataBody.vue";
   import MetadataResources from "../Views/MetadataResources.vue";
-  import MetadataLocation from "../Views/MetadataLocation.vue"; 
-  import MetadataDetails from "../Views/MetadataDetails.vue";
 
   export default {
     data: () => ({
@@ -29,7 +29,6 @@
         contactEmail: 'mustermann@wsl.ch',
         doi: 'envidat.2192318293',
         citation: 'somecitation',
-        tags: ['snow', 'ice', 'Avalanche']
       },
       body: {
         metadataTitle: "Awesome Metadata #1",
@@ -46,10 +45,9 @@
       MetadataHeader,
       MetadataBody,
       MetadataResources,
-      MetadataLocation,
-      MetadataDetails,
     }
   }
+  */
 </script>
 
 
