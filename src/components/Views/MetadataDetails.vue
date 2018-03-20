@@ -10,15 +10,15 @@
         <v-card-text >
 
         <v-form>
+
+
           <v-text-field
-            name="name"
-            label="label"
-            id="id"
-          ></v-text-field>
-          <v-text-field
-            name="name"
-            label="label"
-            id="id"
+            v-for="val in $props" :key="val"
+            v-bind:label="val"
+            v-bind:name="val"
+            value="somevalue"
+            id="1"
+            disabled
           ></v-text-field>
         </v-form>
 
@@ -27,7 +27,7 @@
         <!--v-card-actions>
           <v-spacer></v-spacer>
           <v-btn icon @click.native="readMore()">
-            <v-icon color="amber" >{{ showFullDescription ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
+            <v-icon color="accent" >{{ showFullDescription ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
           </v-btn>        
         </v-card-actions-->
       </v-card>
@@ -39,14 +39,22 @@
 <script>  
 
   export default {
-    props: [ 
-        "metadataTitle", "doi", "description"
-    ],
+    props: {
+        metadataTitle: String,
+        doi: String,
+        subTitle: String,
+    },
     mounted: function () {
+      console.log("props " + this.props);
+    },
+    beforeUpdate: function () {
     },    
     data: () => ({
     }),
     methods: {
+      clicking: function(){
+        alert(this.props);
+      },
     },
     components: {
     },

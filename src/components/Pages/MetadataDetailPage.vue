@@ -29,6 +29,7 @@
         contactEmail: 'mustermann@wsl.ch',
         doi: 'envidat.2192318293',
         citation: 'somecitation',
+        tags: ['snow', 'ice', 'Avalanche']
       },
       body: {
         metadataTitle: "Awesome Metadata #1",

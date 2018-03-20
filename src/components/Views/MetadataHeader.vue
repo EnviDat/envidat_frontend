@@ -3,7 +3,7 @@
 
     <v-flex xs12 md8 offset-md2 elevation-5>
 
-      <v-card elevation-5 class="px-4" dark color="teal">
+      <v-card elevation-5 class="px-4" dark color="primary">
 
         <h1 class="py-3" >{{ metadataTitle }} id: {{ $route.params.id }}</h1>
         
@@ -41,8 +41,10 @@
         <v-divider class="my-2" ></v-divider>
 
         <v-flex>
-          <v-chip v-for="i in 6" :key="i">
-            dude {{ i }}
+          <v-chip v-for="tag in tags" :key="tag"
+          color="primary" text-color="white"
+          class="envidat_chip" >
+            {{ tag.toLowerCase() }}
           </v-chip>
         </v-flex>
           
@@ -57,9 +59,14 @@
 <script>
   
   export default {
-    props: [ 
-        "metadataTitle", "contactName", "contactEmail", "doi", "citation", "tags"
-    ],
+    props: {
+        metadataTitle: String,
+        contactName: String,
+        contactEmail: String,
+        doi: String,
+        citation: String,
+        tags: Array,
+    },
 /*    
     data: () => ({
       contactName: 'Dr. Muster Mann',
@@ -72,5 +79,13 @@
     },
   }
 </script>
+
+<style scoped>
+  .envidat_chip{
+    height: 1.5rem;
+    font-size: 0.75rem;
+  }
+</style>
+
 
 

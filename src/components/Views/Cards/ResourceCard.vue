@@ -3,7 +3,7 @@
   hover
   ripple
   v-on:click.native="clicked"
-  color="teal"
+  color="primary"
   class="white--text">
     
     <v-container fluid grid-list-md>
@@ -27,7 +27,7 @@
   
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn icon color="amber" @click.stop="download()">
+      <v-btn icon color="accent" @click.stop="download()">
         <v-icon>file_download</v-icon>
       </v-btn>
     </v-card-actions>
@@ -39,9 +39,13 @@
 <script>  
 
   export default {
-    props: [ 
-        "id", "resourceTitle", "resourceLink", "downloadLink", "version"
-    ],
+    props: {
+        id: String,
+        resourceTitle: String,
+        resourceLink: String,
+        downloadLink: String,
+        version: String,
+    },        
     beforeUpdate: function () {
     },    
     data: () => ({

@@ -14,7 +14,7 @@
         <!--v-card-actions>
           <v-spacer></v-spacer>
           <v-btn icon @click.native="readMore()">
-            <v-icon color="amber" >{{ showFullDescription ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
+            <v-icon color="accent" >{{ showFullDescription ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
           </v-btn>        
         </v-card-actions-->
       </v-card>

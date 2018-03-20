@@ -13,7 +13,7 @@
 
             <v-flex xs6 px-2 py-2 v-for="res in resources" :key="res.id">
     
-              <metadata-resource-card v-bind="res" v-on:clicked="resClicked(res)"></metadata-resource-card>
+              <resource-card v-bind="res" v-on:clicked="resClicked(res)"></resource-card>
     
             </v-flex>
 
@@ -35,12 +35,9 @@
 
 <script>  
 
-  import MetadataResourceCard from "./Cards/MetadataResourceCard.vue";
+  import ResourceCard from "./Cards/ResourceCard.vue";
 
   export default {
-    props: [ 
-        "id", "resourceTitle", "resourceLink", "downloadLink"
-    ],
     data: () => ({
       showAllResources: false,
       resources: [
@@ -83,7 +80,7 @@
       },
     },
     components: {
-      MetadataResourceCard,
+      ResourceCard,
     },
   }
 </script>
