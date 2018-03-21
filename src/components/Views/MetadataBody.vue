@@ -26,8 +26,12 @@
         "metadataTitle", "doi", "description"
     ],
     mounted: function () {
-      this.shortDesciption = this.description.substring(0, 1000) + "...";
       this.fullDescription = this.shortDesciption;
+    },
+    computed: {
+      shortDesciption: function () {
+        return this.description.substring(0, 1000) + "...";
+      }
     },    
     data: () => ({
       showFullDescription: false,

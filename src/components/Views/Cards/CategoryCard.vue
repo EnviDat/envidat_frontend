@@ -36,7 +36,7 @@
         this.$emit("clicked", this.title);
       },
     },
-  }
+  };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

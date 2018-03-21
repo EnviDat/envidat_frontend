@@ -56,7 +56,8 @@
     },
     components: {
     },
-  }
+  };
+  
 </script>
 
 
