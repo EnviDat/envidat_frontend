@@ -1,6 +1,8 @@
 <template>
   <v-app id="inspire" >
 
+    <v-btn color="success" @click="testStore" >text</v-btn>
+
     <v-content>
       <router-view/>
     </v-content>
@@ -210,10 +212,28 @@
 </template>
 
 <script>
+  import {
+    GET_ALL_METADATA,
+    GET_ALL_METADATA_SUCCESS,
+    GET_ALL_METADATA_ERROR,
+    /* GET_METADATA_BY_ID,
+    GET_METADATA_BY_ID_SUCCESS,
+    GET_METADATA_BY_ID_ERROR,
+    ADD_METADATA,
+    */
+  } from './store/mutations';
+
   export default {
     updated: function (){
       // alert('mounted from App.vue ' + this.$store.getters + ' ?' );
-      this.$store.commit('GET_ALL_METADATA');
+      //this.$store.commit(GET_ALL_METADATA);
+    },
+    methods: {
+      testStore: function (){
+        //alert('testStore ' + GET_ALL_METADATA + ' ' + this.$store);
+        //this.$store.commit('metadata/randomMutation');
+        this.$store.dispatch('metadata/' + GET_ALL_METADATA);
+      },
     },
     data: () => ({
       /*
