@@ -6,9 +6,9 @@
         <v-container fluid grid-list-xs>
           <v-layout row wrap>
 
-            <v-flex px-2 py-2 v-bind="{ [`xs${metadata.flex}`]: true }" v-for="metadata in metadatas" :key="metadata.title">
+            <v-flex px-2 py-2 v-bind="{ [`xs${metadata.flex}`]: true }" v-for="metadata in metadataOverview" :key="metadata.title">
     
-              <metadata-card v-bind:title="metadata.title" v-bind:type="metadata.type" v-on:clicked="metaDataClicked"></metadata-card>
+              <metadata-card v-bind:title="metadata.title" v-bind:type="metadata.type" v-on:clickedEvent="metaDataClicked"></metadata-card>
     
             </v-flex>
 
@@ -27,15 +27,24 @@
 
 <script>
   // import FilterView from '../Views/FilterView.vue';
-  import MetadataCard from '../Views/Cards/MetadataCard.vue';
+  import MetadataCard from '../Views/Cards/MetadataCard';
+  import { mapGetters } from 'vuex';
   
   export default {
     components: {
       MetadataCard,
     },
-    methods: {
+    mounted: function () {
+      this.$nextTick(function () {
+        alert(this.metadataOverview);
+        // Code that will run only after the
+        // entire view has been rendered
+      })
+    },
+    methods: {    
       metaDataClicked: function metaDataClicked(cardTitle) {
-        alert(clicked + ' ' + cardTitle);
+        const testoutput = `Hello, ${cardTitle}`;
+        alert(testoutput);
         /*
         this.$router.push({
           name: 'BrowsePage',
@@ -46,16 +55,36 @@
         */
       },
     },
-    
+    computed: mapGetters({
+        'allOk' : 'metadata/allOk',
+        'metadataOverview': 'metadata/metadataOverview',
+      }),
+    /*
+    computed: {
+      metadatas() {
+        return this.$store.state.metadata.metadatas;
+      },
+    },
     data: () => ({
       metadatas: [
-        { title: 'Wald', type: 0, restricted: 'true', favourit: 'true', dataCount: 5, flex: 6 },
-        { title: 'Schnee', type: 1, restricted: 'true', favourit: 'true', dataCount: 5, flex: 6 },
-        { title: 'Landschaft', type: 2, restricted: 'true', favourit: 'true', dataCount: 5, flex: 6 },
-        { title: 'Naturgefahren', type: 0, restricted: 'true', favourit: 'true', dataCount: 5, flex: 6 },
-        { title: 'Artenvielfalt', type: 2, restricted: 'true', favourit: 'true', dataCount: 5, flex: 6 },
+        {
+          title: 'Wald', type: 0, restricted: 'true', favourit: 'true', dataCount: 5, flex: 6,
+        },
+        {
+          title: 'Schnee', type: 1, restricted: 'true', favourit: 'true', dataCount: 5, flex: 6,
+        },
+        {
+          title: 'Landschaft', type: 2, restricted: 'true', favourit: 'true', dataCount: 5, flex: 6,
+        },
+        {
+          title: 'Naturgefahren', type: 0, restricted: 'true', favourit: 'true', dataCount: 5, flex: 6,
+        },
+        {
+          title: 'Artenvielfalt', type: 2, restricted: 'true', favourit: 'true', dataCount: 5, flex: 6,
+        },
       ],
     }),
+    */
   };
 </script>
 
