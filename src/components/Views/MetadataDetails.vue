@@ -34,23 +34,22 @@
   </v-layout>
 </template>
 
-<script>  
-
+<script>
   export default {
     props: {
-        metadataTitle: String,
-        doi: String,
-        subTitle: String,
+      metadataTitle: String,
+      doi: String,
+      subTitle: String,
     },
-    mounted: function () {
-      console.log("props " + this.props);
+    mounted: function mounted() {
+      console.log(`props${this.props}`);
     },
-    beforeUpdate: function () {
-    },    
+    beforeUpdate: function beforeUpdate() {
+    },
     data: () => ({
     }),
     methods: {
-      clicking: function(){
+      clicking: function clicking() {
         alert(this.props);
       },
     },

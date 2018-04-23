@@ -25,40 +25,41 @@
   </v-layout>
 </template>
 
-<script>  
-
+<script>
   export default {
-    props: [ 
-        "points", "isArea"
+    props: [
+      'points',
+      'isArea',
     ],
-    mounted: function () {
+    mounted: function mounted() {
       this.map = L.map('map').setView([51.505, -0.09], 13);
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(this.map);
+      L.tileLayer(
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }
+      ).addTo(this.map);
 
       L.marker([51.5, -0.09]).addTo(this.map)
-          //.bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-          .openPopup();      
-    },    
+        // .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+        .openPopup();
+    },
     data: () => ({
       fullSize: false,
       map: Object,
     }),
     methods: {
-      resize: function (){
+      resize: function resize() {
+        let height = this.fullSize ? 500 : 300;
         this.fullSize = !this.fullSize;
-        var height = this.fullSize ? 500 : 300;
-        this.$refs.map.setAttribute('style', 'height: ' + height + 'px;');
+        this.$refs.map.setAttribute('style', `height: ${height}px;`);
         height += 32;
-        this.$refs.mapcontainer.setAttribute('style', 'height: ' + height + 'px;');
+        this.$refs.mapcontainer.setAttribute('style', `height: ${height}px;`);
         this.map.invalidateSize();
       },
     },
     components: {
     },
-  }
+  };
 </script>
 
 

@@ -27,13 +27,14 @@
 
 
 <script>
-  export default {  
-    props: [  
-      "title", "src"  
+  export default {
+    props: [
+      'title',
+      'src',
     ],
     methods: {
       clicked: function clicked() {
-        this.$emit("clicked", this.title);
+        this.$emit('clicked', this.title);
       },
     },
   };

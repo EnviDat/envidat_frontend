@@ -8,7 +8,7 @@ import dataActions from './actions';
 */
 
 /* eslint-disable no-unused-vars */
-import { metadata, dataGetters } from './modules/metadata';
+import { metadata } from './modules/metadata';
 
 Vue.use(Vuex);
 

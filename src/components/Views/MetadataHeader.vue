@@ -61,24 +61,24 @@
   
   export default {
     props: {
-        metadataTitle: String,
-        contactName: String,
-        contactEmail: String,
-        doi: String,
-        citation: String,
-        tags: Array,
+      metadataTitle: String,
+      contactName: String,
+      contactEmail: String,
+      doi: String,
+      citation: String,
+      tags: Array,
     },
-/*    
-    data: () => ({
-      contactName: 'Dr. Muster Mann',
-      contactEmail: 'mustermann@wsl.ch',
-      doi: 'envidat.2192318293',
-      citation: 'somecitation',
-    }),
-*/
+    /*
+      data: () => ({
+        contactName: 'Dr. Muster Mann',
+        contactEmail: 'mustermann@wsl.ch',
+        doi: 'envidat.2192318293',
+        citation: 'somecitation',
+      }),
+    */
     components: {
     },
-  }
+  };
 </script>
 
 <style scoped>

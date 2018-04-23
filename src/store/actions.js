@@ -10,13 +10,15 @@ import {
   */
 } from './mutations';
 
-const API_BASE = 'https://www.envidat.ch/api/3/';
+// const API_BASE = 'https://www.envidat.ch/api/3/';
 
 export const dataActions = {
   getAllMetadata({ commit }) {
     commit(GET_ALL_METADATA);
     // Fetch actual data from the API
-    axios.get(`${API_BASE}action/package_list`).then((response) => {
+
+    // axios.get(`${API_BASE}action/package_list`).then((response) => {
+    axios.get('https://www.reddit.com/dev/api/api/trending_subreddits').then((response) => {
       commit(GET_ALL_METADATA_SUCCESS, response.data);
     }).catch((reason) => {
       commit(GET_ALL_METADATA_ERROR, reason);

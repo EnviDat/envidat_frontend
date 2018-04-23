@@ -31,9 +31,8 @@
   </v-layout>
 </template>
 
-<script>  
-
-  import ResourceCard from "./Cards/ResourceCard.vue";
+<script>
+  import ResourceCard from './Cards/ResourceCard';
 
   export default {
     data: () => ({
@@ -60,27 +59,25 @@
           downloadLink: 'https://www.envidat.ch/dataset/17732065-e90f-452d-838d-ba70bfd01a5e/resource/68ae000b-1eff-4468-afe0-fa6b9addc8e1/download/nathaz_fat_wsl_1946-15.csv',
           version: '1',
         },
-        
       ],
     }),
     methods: {
-      readMore: function (){
+      readMore: function readMore() {
         this.showAllResources = !this.showAllResources;
       },
-      resClicked: function (res){
+      resClicked: function resClicked(res) {
         this.$router.push({
           name: 'ResourceDetailPage',
           params: {
             id: res.id,
-          }
+          },
         });
-        
       },
     },
     components: {
       ResourceCard,
     },
-  }
+  };
 </script>
 
 

@@ -17,12 +17,12 @@
 </template>
 
 <script>
-  import MetadataHeader from '../Views/MetadataHeader.vue';
-  import MetadataBody from '../Views/MetadataBody.vue';
-  import MetadataResources from '../Views/MetadataResources.vue';
-  import MetadataLocation from '../Views/MetadataLocation.vue'; 
-  import MetadataDetails from '../Views/MetadataDetails.vue';
-  import MetadataCitation from '../Views/MetadataCitation.vue';
+  import MetadataHeader from '../Views/MetadataHeader';
+  import MetadataBody from '../Views/MetadataBody';
+  import MetadataResources from '../Views/MetadataResources';
+  import MetadataLocation from '../Views/MetadataLocation';
+  import MetadataDetails from '../Views/MetadataDetails';
+  import MetadataCitation from '../Views/MetadataCitation';
 
   export default {
     data: () => ({

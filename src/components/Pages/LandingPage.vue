@@ -45,7 +45,7 @@
       CategoryCard,
     },
     methods: {
-      categoryClicked: function categoryClicked(cardTitle) {  
+      categoryClicked: function categoryClicked(cardTitle) {
         // sleep(500);
         // setTimeout(this.$router.push({ name: 'BrowsePage', params: { cardTitle }}), 1000);
         this.$router.push({
@@ -56,7 +56,6 @@
         });
       },
       searchClicked: function searchClicked() {
-
         this.$router.push({
           name: 'BrowsePage',
           query: {
@@ -66,30 +65,30 @@
       },
     },
     data: () => ({
-      searchText : '',
+      searchText: '',
       cards: [{
         title: 'Wald',
-        src: 'http://cumbrianrun.co.uk/wp-content/uploads/2014/02/default-placeholder.png',
+        src: 'https://i1.wp.com/www.phoenixfuels.ph/wp-content/uploads/2018/01/Placeholder.png?resize=300%2C300',
         flex: 6,
       },
       {
         title: 'Schnee',
-        src: 'http://cumbrianrun.co.uk/wp-content/uploads/2014/02/default-placeholder.png',
+        src: 'https://i1.wp.com/www.phoenixfuels.ph/wp-content/uploads/2018/01/Placeholder.png?resize=300%2C300',
         flex: 6,
       },
       {
         title: 'Landschaft',
-        src: 'http://cumbrianrun.co.uk/wp-content/uploads/2014/02/default-placeholder.png',
+        src: 'https://i1.wp.com/www.phoenixfuels.ph/wp-content/uploads/2018/01/Placeholder.png?resize=300%2C300',
         flex: 6,
       },
       {
         title: 'Naturgefahren',
-        src: 'http://cumbrianrun.co.uk/wp-content/uploads/2014/02/default-placeholder.png',
+        src: 'https://i1.wp.com/www.phoenixfuels.ph/wp-content/uploads/2018/01/Placeholder.png?resize=300%2C300',
         flex: 6,
       },
       {
         title: 'Artenvielfalt',
-        src: 'http://cumbrianrun.co.uk/wp-content/uploads/2014/02/default-placeholder.png',
+        src: 'https://i1.wp.com/www.phoenixfuels.ph/wp-content/uploads/2018/01/Placeholder.png?resize=300%2C300',
         flex: 6,
       },
       ],
@@ -108,7 +107,7 @@ body{
     /* background-image: url('/staticstatic/landingpage/land_and_mountains.jpg') !important; */
     /* background-image: url('./landingpage/land_and_mountains.jpg') !important; */ 
     background-image: url('~/assets/landingpage/land_and_mountains.jpg') !important;
-    background-color: aqua !important;
+    /* background-color: aqua !important; */
   }
   /*
         h1,

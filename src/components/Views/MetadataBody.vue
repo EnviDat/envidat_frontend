@@ -20,18 +20,19 @@
 </template>
 
 <script>
-
   export default {
     props: [
-        "metadataTitle", "doi", "description"
+      'metadataTitle',
+      'doi',
+      'description',
     ],
     mounted: function mounted() {
       this.fullDescription = this.shortDesciption;
     },
     computed: {
       shortDesciption: function shortDesciption() {
-        return this.description.substring(0, 1000) + "...";
-      }
+        return `${this.description.substring(0, 1000)}...`;
+      },
     },
     data: () => ({
       showFullDescription: false,
@@ -45,7 +46,7 @@
     },
     components: {
     },
-  }
+  };
 </script>
 
 
