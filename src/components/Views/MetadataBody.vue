@@ -19,29 +19,34 @@
   </v-layout>
 </template>
 
-<script>  
-
+<script>
   export default {
-    props: [ 
-        "metadataTitle", "doi", "description"
+    props: [
+      'metadataTitle',
+      'doi',
+      'description',
     ],
-    mounted: function () {
-      this.shortDesciption = this.description.substring(0, 1000) + "...";
+    mounted: function mounted() {
       this.fullDescription = this.shortDesciption;
-    },    
+    },
+    computed: {
+      shortDesciption: function shortDesciption() {
+        return `${this.description.substring(0, 1000)}...`;
+      },
+    },
     data: () => ({
       showFullDescription: false,
       fullDescription: this.shortDesciption,
     }),
     methods: {
-      readMore: function (){
+      readMore: function readMore() {
         this.showFullDescription = !this.showFullDescription;
         this.fullDescription = this.showFullDescription ? this.description : this.shortDesciption;
       },
     },
     components: {
     },
-  }
+  };
 </script>
 
 

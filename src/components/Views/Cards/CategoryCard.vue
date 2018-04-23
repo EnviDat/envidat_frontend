@@ -27,16 +27,17 @@
 
 
 <script>
-  export default {  
-    props: [  
-      "title", "src"  
+  export default {
+    props: [
+      'title',
+      'src',
     ],
     methods: {
       clicked: function clicked() {
-        this.$emit("clicked", this.title);
+        this.$emit('clicked', this.title);
       },
     },
-  }
+  };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

@@ -4,7 +4,7 @@
     tile
     ripple
     hover
-    v-on:click.native="clicked"
+    @click.native="cardClick"
     >
 
     <v-card-media
@@ -29,7 +29,7 @@
 
     <v-card-title primary-title>
       <div>
-        <h3 class="headline mb-0">{{ type }} Kangaroo Valley Safari</h3>
+        <h3 class="headline mb-0">{{ type }} {{ title }}</h3>
         <div>Located two hours south of Sydney in the <br>Southern Highlands of New South Wales, ...</div>
       </div>
     </v-card-title>
@@ -65,22 +65,22 @@
 
 <script>
 
-  export default {
-    props: { 
-        title: String,
-        type: Number,
-        restricted: Boolean,
-        favourit: Boolean,
+export default {
+  props: {
+    title: String,
+    type: Number,
+    restricted: Boolean,
+    favourit: Boolean,
+  },
+  methods: {
+    cardClick: function cardClick() {
+      this.$emit('clickedEvent', this.title);
     },
-    methods: {
-      clicked: function clicked (){
-        this.$emit("clicked");
-      }
-    },
-    data: () => ({
-      show: false,
-    })    
-  }
+  },
+  data: () => ({
+    show: false,
+  }),
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

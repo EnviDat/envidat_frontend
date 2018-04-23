@@ -37,31 +37,32 @@
 </template>
 
 
-<script>  
+<script>
+export default {
+  props: {
+    id: String,
+    resourceTitle: String,
+    resourceLink: String,
+    downloadLink: String,
+    version: String,
+  },
+  /*
+  beforeUpdate: function() {
 
-  export default {
-    props: {
-        id: String,
-        resourceTitle: String,
-        resourceLink: String,
-        downloadLink: String,
-        version: String,
-    },        
-    beforeUpdate: function () {
-    },    
-    data: () => ({
+  },
+  */
+  data: () => ({}),
+  methods: {
+    download: function download() {
+      alert('clicked on download');
+    },
+    clicked: function clicked() {
+      this.$emit('clicked');
+    },
+  },
+  components: {
 
-    }),
-    methods: {
-      download: function (){
-        alert('clicked on download');
-      },
-      clicked: function (){
-        this.$emit("clicked");
-      },        
-    },
-    components: {
-    },
-  }
+  },
+};
 </script>
 

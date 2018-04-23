@@ -18,24 +18,24 @@
   </v-layout>
 </template>
 
-<script>  
-
+<script>
   export default {
-    props: { 
-        metaid: String,
-        citationText: String,
-        citationXmlLink: String,
-        ciationIsoXmlLink: String,
+    props: {
+      metaid: String,
+      citationText: String,
+      citationXmlLink: String,
+      ciationIsoXmlLink: String,
     },
-    mounted: function () {
-    },    
+    mounted: function mounted() {
+    },
     data: () => ({
     }),
     methods: {
     },
     components: {
     },
-  }
+  };
+
 </script>
 
 
