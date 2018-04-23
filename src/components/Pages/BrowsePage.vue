@@ -66,13 +66,11 @@
       }
     },
     methods: {
-      metaDataClicked: function metaDataClicked(cardTitle) {
-        alert(`Hello, ${cardTitle}`);
-
+      metaDataClicked: function metaDataClicked(datasetname) {
         this.$router.push({
-          name: 'BrowsePage',
+          name: 'MetadataDetailPage',
           params: {
-            urlId: cardTitle,
+            urlId: datasetname,
           },
         });
       },
