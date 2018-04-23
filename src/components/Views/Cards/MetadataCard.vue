@@ -68,13 +68,14 @@
 export default {
   props: {
     title: String,
+    datasetname: String,
     type: Number,
     restricted: Boolean,
     favourit: Boolean,
   },
   methods: {
     cardClick: function cardClick() {
-      this.$emit('clickedEvent', this.title);
+      this.$emit('clickedEvent', this.datasetname);
     },
   },
   data: () => ({

@@ -25,7 +25,7 @@ export default new Router({
       component: BrowsePage,
     },
     {
-      path: '/metadata/:id',
+      path: '/metadata/:urlId',
       name: 'MetadataDetailPage',
       component: MetadataDetailPage,
     },

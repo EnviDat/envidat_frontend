@@ -17,7 +17,7 @@
 
             <v-flex v-if="metadatas" px-2 py-2 v-bind="{ [`xs3`]: true }" v-for="metadata in metadatas" :key="metadata.id">
     
-              <metadata-card v-bind:title="metadata.title" v-on:clickedEvent="metaDataClicked"></metadata-card>
+              <metadata-card v-bind:title="metadata.title" v-bind:datasetname="metadata.name" v-on:clickedEvent="metaDataClicked"></metadata-card>
     
             </v-flex>
 
@@ -44,7 +44,7 @@
   import { mapGetters } from 'vuex';
   // import FilterView from '../Views/FilterView.vue';
   import MetadataCard from '../Views/Cards/MetadataCard';
-  import { LOAD_METADATAS, GET_METADATA_BY_ID } from '../../store/mutations';
+  import { LOAD_METADATAS, GET_METADATA_BY_ID } from '../../store/mutation_consts';
   
   export default {
     components: {
@@ -68,14 +68,13 @@
     methods: {
       metaDataClicked: function metaDataClicked(cardTitle) {
         alert(`Hello, ${cardTitle}`);
-        /*
+
         this.$router.push({
           name: 'BrowsePage',
           params: {
-            category: cardTitle,
-          }
+            urlId: cardTitle,
+          },
         });
-        */
       },
     },
     computed: mapGetters({

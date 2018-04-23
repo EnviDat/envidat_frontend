@@ -27,7 +27,7 @@
     GET_METADATA_BY_ID_ERROR,
     ADD_METADATA,
     */
-  } from './store/mutations';
+  } from './store/mutation_consts';
 
   export default {
     mounted: function mounted() {

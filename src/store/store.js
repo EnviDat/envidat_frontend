@@ -19,7 +19,6 @@ export default new Vuex.Store({
     organizations: [],
     projects: [],
   },
-  // MODULES
   modules: {
     metadata,
   },
