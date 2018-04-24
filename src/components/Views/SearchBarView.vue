@@ -14,8 +14,9 @@
 
       <v-flex sm8 md8 xl9>
         <v-text-field
-          flat
           hide-details
+          full-width
+          single-line          
           prepend-icon="search"
           :prepend-icon-cb="clicked"
           v-model="searchText"
@@ -25,8 +26,7 @@
 
       <v-flex sm4 lg3 xl2>
         <v-btn color="primary"
-                v-bind="{ [`small`]: this.$vuetify.breakpoint.smAndDown,
-                          [`large`]: this.$vuetify.breakpoint.mdAndUp}"
+                v-bind="{ [`large`]: this.$vuetify.breakpoint.mdAndUp}"
                 @click.native="clicked"> {{ buttonText }}</v-btn>
       </v-flex>
 
@@ -39,8 +39,8 @@
 
       <v-flex xs12 mx-1>
         <v-text-field
-          flat
           hide-details
+          full-width  
           prepend-icon="search"
           :prepend-icon-cb="clicked"
           v-model="searchText"
@@ -48,7 +48,7 @@
         </v-text-field>
       </v-flex>
 
-    <v-card-actions class="mt-2">
+    <v-card-actions>
       <v-spacer></v-spacer>
 
         <v-btn color="primary"
