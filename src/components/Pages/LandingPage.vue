@@ -1,47 +1,50 @@
 <template>
-  <v-container >
+  <v-container >  
+    <v-layout column >
   
-    <v-layout column>
-  
-      <v-flex xs12 sm8 offset-sm2>
-        <h1>EnviDat</h1>
-        <h2>Envidat slogan / description </h2>
-      </v-flex>
-  
-      <v-flex xs12 sm8 offset-sm2>
-  
-        <v-card hover raised class="my-3 px-3">
-          <v-text-field v-model="searchText" clearable prepend-icon="search" :prepend-icon-cb="searchClicked" label="Type ex. 'Snow'"></v-text-field>
-  
-        </v-card>
-      </v-flex>
-  
-    </v-layout>
+      <title-view :title="envidatTitle" :slogan="envidatSlogan"></title-view>
 
-  
-    <v-flex style="margin-top: 50%" xs12 sm8 offset-sm2>
-  
-      <v-container fluid grid-list-xs>
-        <v-layout row wrap>
-  
-          <v-flex px-2 py-2 v-bind="{ [`xs${card.flex}`]: true }" v-for="card in cards" :key="card.title">
-  
-            <category-card v-bind:title="card.title" v-bind:src="card.src" v-on:clicked="categoryClicked"></category-card>
-  
-          </v-flex>
-        </v-layout>
-      </v-container>
-  
-    </v-flex>
-  
+      <v-flex mt-5 offset-sm6>
+        <search-view :searchText="searchText" :labelText="labelText" v-on:searchClicked="catchSearchClicked"></search-view>
+      </v-flex>
+
+      <v-flex mt-5 offset-sm6>
+    
+        <v-container fluid grid-list-xs>
+          <v-layout row wrap>
+    
+            <v-flex px-2 py-2 v-bind="{ [`xs${card.flex}`]: true }" v-for="card in cards" :key="card.title">
+    
+              <category-card v-bind:title="card.title" v-bind:src="card.src" v-on:clicked="categoryClicked"></category-card>
+    
+            </v-flex>
+          </v-layout>
+        </v-container>
+    
+      </v-flex>
+
+    </v-layout>  
   </v-container>
 </template>
 
 <script>
   import CategoryCard from '../Views/Cards/CategoryCard';
-  
+  import TitleView from '../Views/TitleView';
+  import SearchView from '../Views/SearchView';
+
+  // Login & Register form and animation
+  // https://codepen.io/yusufbkr/pen/RPBQqg
+
+  // This animation is a bit smoother
+  // https://codepen.io/andytran/pen/RPBdgM
+
+  // Here is one with a progress button/bar
+  // https://codepen.io/suez/pen/dPqxoM
+
   export default {
     components: {
+      TitleView,
+      SearchView,
       CategoryCard,
     },
     methods: {
@@ -55,7 +58,7 @@
           },
         });
       },
-      searchClicked: function searchClicked() {
+      catchSearchClicked: function catchSearchClicked() {
         this.$router.push({
           name: 'BrowsePage',
           query: {
@@ -66,6 +69,10 @@
     },
     data: () => ({
       searchText: '',
+      labelText: "Type ex. 'Snow'",
+      envidatTitle: 'EnviDat',
+      envidatSlogan: 'Browse the most comprehensive environmental data collection of Switzerland',
+      // envidatSlogan: 'Browse the most comprehensive</br>environmental data collection</br>of Switzerland',
       cards: [{
         title: 'Wald',
         src: 'https://i1.wp.com/www.phoenixfuels.ph/wp-content/uploads/2018/01/Placeholder.png?resize=300%2C300',
