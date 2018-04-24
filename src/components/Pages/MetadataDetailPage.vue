@@ -17,12 +17,15 @@
 </template>
 
 <script>
-  import MetadataHeader from '../Views/MetadataHeader';
-  import MetadataBody from '../Views/MetadataBody';
-  import MetadataResources from '../Views/MetadataResources';
-  import MetadataLocation from '../Views/MetadataLocation';
-  import MetadataDetails from '../Views/MetadataDetails';
-  import MetadataCitation from '../Views/MetadataCitation';
+  import MetadataHeader from '../Views/MetadataViews/MetadataHeader';
+  import MetadataBody from '../Views/MetadataViews/MetadataBody';
+  import MetadataResources from '../Views/MetadataViews/MetadataResources';
+  import MetadataLocation from '../Views/MetadataViews/MetadataLocation';
+  import MetadataDetails from '../Views/MetadataViews/MetadataDetails';
+  import MetadataCitation from '../Views/MetadataViews/MetadataCitation';
+
+  // Might want to check https://css-tricks.com/use-cases-fixed-backgrounds-css/
+  // for animations between the different parts of the Metadata
 
   export default {
     data: () => ({

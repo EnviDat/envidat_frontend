@@ -32,7 +32,7 @@
 </template>
 
 <script>
-  import ResourceCard from './Cards/ResourceCard';
+  import ResourceCard from '../Cards/ResourceCard';
 
   export default {
     data: () => ({
