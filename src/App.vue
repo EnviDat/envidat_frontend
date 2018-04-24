@@ -1,13 +1,13 @@
 <template>
   <v-app id="inspire" >
 
-    <v-btn fab top left color="success" @click="testStore" >Test</v-btn>
+    <!--v-btn fab top left color="success" @click="testStore" >Test</v-btn>
 
     <v-icon top left color="success" v-if="allOk" >check_circle</v-icon>
 
     <v-icon v-if="!allOk" color="error">close</v-icon>
 
-    <v-icon v-if="loading" color="warning">autorenew</v-icon>
+    <v-icon v-if="loading" color="warning">autorenew</v-icon-->
 
     <v-content>
       <router-view/>
