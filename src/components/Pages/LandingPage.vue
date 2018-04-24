@@ -4,11 +4,25 @@
   
       <title-view :title="envidatTitle" :slogan="envidatSlogan"></title-view>
 
-      <v-flex mt-5 offset-sm6>
-        <search-bar-view :labelText="labelText"
+      <v-flex mt-5 offset-sm6 offset-md6>
+        <search-bar-view
+                      :labelText="labelText"
                       :buttonText="buttonlText"
                       v-on:clicked="catchSearchClicked">
         </search-bar-view>
+      </v-flex>
+
+      <v-flex mt-5 offset-sm6>
+        <data-producer-card 
+                        :titleText="loginInfos.titleText"
+                        :loginText="loginInfos.loginText"
+                        :signupText="loginInfos.signupText"
+                        :loggedIn="loginInfos.loggedIn"
+                        :loggedinText="loginInfos.loggedinText"
+                        v-on:enterclick="catchEnterclick"
+                        v-on:singupclick="catchSingupclick"
+                        v-on:loginclick="catchLoginclick">
+        </data-producer-card>
       </v-flex>
 
       <v-flex mt-5 offset-sm6>
@@ -18,8 +32,9 @@
     
             <v-flex px-2 py-2 v-bind="{ [`xs${card.flex}`]: true }" v-for="card in cards" :key="card.title">
     
-              <category-card v-bind:title="card.title"
-                              v-bind:src="card.src"
+              <category-card :title="card.title"
+                              :type="card.type"
+                              :src="card.src"
                               v-on:clicked="catchCategoryClicked">
               </category-card>
     
@@ -35,6 +50,7 @@
 
 <script>
   import CategoryCard from '../Views/Cards/CategoryCard';
+  import DataProducerCard from '../Views/Cards/DataProducerCard';
   import TitleView from '../Views/TitleView';
   import SearchBarView from '../Views/SearchBarView';
 
@@ -52,6 +68,7 @@
       TitleView,
       SearchBarView,
       CategoryCard,
+      DataProducerCard,
     },
     methods: {
       catchCategoryClicked: function catchCategoryClicked(cardTitle) {
@@ -74,25 +91,43 @@
           },
         });
       },
+      catchEnterclick: function catchEnterclick(search) {
+        alert(`clicked ${search}`);
+      },
+      catchSingupclick: function catchSingupclick(search) {
+        alert(`clicked ${search}`);
+      },
+      catchLoginclick: function catchLoginclick(search) {
+        alert(`clicked ${search}`);
+      },
     },
     data: () => ({
       labelText: "Type ex. 'Avalanche'",
       buttonlText: 'SEARCH',
       envidatTitle: 'EnviDat',
       envidatSlogan: 'Browse the most comprehensive environmental data collection of Switzerland',
-      // envidatSlogan: 'Browse the most comprehensive</br>environmental data collection</br>of Switzerland',
+      loginInfos: {
+        titleText: 'Do you create data?',
+        loginText: 'LOGIN',
+        signupText: 'SIGN UP',
+        loggedIn: false,
+        loggedinText: 'ENTER DASHBOARD',
+      },
       cards: [{
         title: 'Wald',
+        type: 'wood',
         src: 'https://i1.wp.com/www.phoenixfuels.ph/wp-content/uploads/2018/01/Placeholder.png?resize=300%2C300',
         flex: 6,
       },
       {
         title: 'Schnee',
+        type: 'snow',
         src: 'https://i1.wp.com/www.phoenixfuels.ph/wp-content/uploads/2018/01/Placeholder.png?resize=300%2C300',
         flex: 6,
       },
       {
         title: 'Landschaft',
+        type: 'land',
         src: 'https://i1.wp.com/www.phoenixfuels.ph/wp-content/uploads/2018/01/Placeholder.png?resize=300%2C300',
         flex: 6,
       },

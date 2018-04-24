@@ -1,7 +1,6 @@
 <template>
 
   <v-card
-    tile
     ripple
     hover
     @click.native="cardClick"
@@ -76,8 +75,9 @@
 
 
 <script>
-// import snowImg from '../../../assets/snow_background.jpg';
-import snowImg from '@/assets/snow_background.jpg';
+import snowImg from '@/assets/cards/snow_background.jpg';
+// import woodImg from '@/assets/cards/wood_background.jpg';
+// import landImg from '@/assets/cards/landscape_background.jpg';
 
 // checkout possible transition animation
 // https://codepen.io/balapa/pen/embYYB
