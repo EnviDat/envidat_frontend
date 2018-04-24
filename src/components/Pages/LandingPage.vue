@@ -99,34 +99,13 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
 
-body{
-  background-image: url('~/assets/snow_background.jpg');
-}
-/* overrite the applications background */
+/* overrite the applications background https://css-tricks.com/use-cases-fixed-backgrounds-css/ */
   .application {
-    /* background-image: url('/staticstatic/landingpage/land_and_mountains.jpg') !important; */
-    /* background-image: url('./landingpage/land_and_mountains.jpg') !important; */ 
-    background-image: url('~/assets/landingpage/land_and_mountains.jpg') !important;
-    /* background-color: aqua !important; */
+    background-image: url('../../assets/landingpage/landing_lowres.jpg') !important;
+    background-position: center top !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
   }
-  /*
-        h1,
-        h2 {
-          font-weight: normal;
-        }
-        
-        ul {
-          list-style-type: none;
-          padding: 0;
-        }
-        
-        li {
-          display: inline-block;
-          margin: 0 10px;
-        }
-        
-        a {
-          color: #42b983;
-        }
-      */
+  
 </style>
