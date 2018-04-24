@@ -1,8 +1,5 @@
 <template>
-  <!-- 
-  
-  -->
-  
+
   <v-card tile ripple v-on:click.native="clicked">
   
     <v-card-media :src="src" height="200px">
@@ -19,19 +16,17 @@
         </v-layout>
       </v-container>
     </v-card-media>
-  
-  
-  
   </v-card>
+  
 </template>
 
 
 <script>
   export default {
-    props: [
-      'title',
-      'src',
-    ],
+    props: {
+      title: String,
+      src: String,
+    },
     methods: {
       clicked: function clicked() {
         this.$emit('clicked', this.title);

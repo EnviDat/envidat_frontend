@@ -5,7 +5,9 @@
       <title-view :title="envidatTitle" :slogan="envidatSlogan"></title-view>
 
       <v-flex mt-5 offset-sm6>
-        <search-view :searchText="searchText" :labelText="labelText" v-on:searchClicked="catchSearchClicked"></search-view>
+        <search-view :labelText="labelText"
+                      v-on:clicked="catchSearchClicked">
+        </search-view>
       </v-flex>
 
       <v-flex mt-5 offset-sm6>
@@ -15,7 +17,10 @@
     
             <v-flex px-2 py-2 v-bind="{ [`xs${card.flex}`]: true }" v-for="card in cards" :key="card.title">
     
-              <category-card v-bind:title="card.title" v-bind:src="card.src" v-on:clicked="categoryClicked"></category-card>
+              <category-card v-bind:title="card.title"
+                              v-bind:src="card.src"
+                              v-on:clicked="catchCategoryClicked">
+              </category-card>
     
             </v-flex>
           </v-layout>
@@ -48,7 +53,7 @@
       CategoryCard,
     },
     methods: {
-      categoryClicked: function categoryClicked(cardTitle) {
+      catchCategoryClicked: function catchCategoryClicked(cardTitle) {
         // sleep(500);
         // setTimeout(this.$router.push({ name: 'BrowsePage', params: { cardTitle }}), 1000);
         this.$router.push({
@@ -58,7 +63,7 @@
           },
         });
       },
-      catchSearchClicked: function catchSearchClicked() {
+      catchSearchClicked: function catchSearchClicked(search) {
         this.$router.push({
           name: 'BrowsePage',
           query: {
@@ -68,7 +73,6 @@
       },
     },
     data: () => ({
-      searchText: '',
       labelText: "Type ex. 'Snow'",
       envidatTitle: 'EnviDat',
       envidatSlogan: 'Browse the most comprehensive environmental data collection of Switzerland',

@@ -8,6 +8,18 @@
     >
 
     <v-card-media
+      class="imagezoom"
+      height="200px">
+      <img :src="snowImg" />
+    </v-card-media>
+
+    <!--v-card-media
+      class="imagezoom"
+      height="400px"
+      :src="snowImg" >
+    </v-card-media-->
+
+    <!--v-card-media
       height="200px"
       v-if="type == 0"
     >
@@ -25,7 +37,7 @@
       height="200px"
       v-if="type == 2"
     > <img src="@/assets/landscape_background.jpg" />
-    </v-card-media>
+    </v-card-media-->
 
     <v-card-title primary-title>
       <div>
@@ -64,6 +76,21 @@
 
 
 <script>
+// import snowImg from '../../../assets/snow_background.jpg';
+import snowImg from '@/assets/snow_background.jpg';
+
+// checkout possible transition animation
+// https://codepen.io/balapa/pen/embYYB
+// https://codepen.io/zavoloklom/pen/eNaEBM
+
+// this one maybe for the guided content scrolling
+// https://codepen.io/pgreg/pen/EDoFB
+
+// Card design #2 probably only the header would be doable?
+// https://codepen.io/marlenesco/pen/NqOozj
+
+// Card opening animation
+// https://codepen.io/luizotcarvalho/pen/yyQNRO
 
 export default {
   props: {
@@ -80,30 +107,21 @@ export default {
   },
   data: () => ({
     show: false,
+    snowImg, // require('../../../assets/snow_background.jpg'),
   }),
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-/*
-  h1,
-  h2 {
-    font-weight: normal;
+  .imagezoom,
+  .imagezoom img {
+    height: 200px;
+    transition: all .2s;
   }
-  
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  li {
-    display: inline-block;
-    margin: 0 10px;
-  }
-  
-  a {
-    color: #42b983;
-  }
-  */
+
+  .imagezoom img:hover,
+  .imagezoom img:focus {
+    transform: scale(1.2);
+  }  
 </style>
