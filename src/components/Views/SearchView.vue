@@ -1,11 +1,25 @@
 <template>
-  <v-card hover raised class="my-3 px-3">
-    <v-text-field v-model="searchText"
-    clearable
-    prepend-icon="search"
-    :prepend-icon-cb="clicked"
-    :label="labelText">
-    </v-text-field>
+  <v-card hover raised>
+    <v-layout row align-center>
+
+      <v-flex xs10 ml-3>
+        <v-text-field 
+          flat
+          prepend-icon="search"
+          :prepend-icon-cb="clicked"
+          v-model="searchText"
+          :label="labelText">
+        </v-text-field>
+      </v-flex>
+
+      <v-spacer></v-spacer>
+
+      <v-flex xs2 mr-3 >
+        <v-btn color="primary"
+                @click.native="clicked"> {{ buttonText }}</v-btn>
+      </v-flex>
+
+    </v-layout>
   </v-card>
 </template>
 
@@ -13,6 +27,7 @@
   export default {
     props: {
       labelText: String,
+      buttonText: String,
     },
     data: () => ({
       searchText: '',

@@ -6,6 +6,7 @@
 
       <v-flex mt-5 offset-sm6>
         <search-view :labelText="labelText"
+                      :buttonText="buttonlText"
                       v-on:clicked="catchSearchClicked">
         </search-view>
       </v-flex>
@@ -60,20 +61,23 @@
           name: 'BrowsePage',
           params: {
             category: cardTitle,
+            search: 'none',
           },
         });
       },
       catchSearchClicked: function catchSearchClicked(search) {
         this.$router.push({
           name: 'BrowsePage',
-          query: {
-            search: this.searchText,
+          params: {
+            category: 'none',
+            search,
           },
         });
       },
     },
     data: () => ({
       labelText: "Type ex. 'Snow'",
+      buttonlText: 'SEARCH',
       envidatTitle: 'EnviDat',
       envidatSlogan: 'Browse the most comprehensive environmental data collection of Switzerland',
       // envidatSlogan: 'Browse the most comprehensive</br>environmental data collection</br>of Switzerland',
