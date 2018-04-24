@@ -5,10 +5,10 @@
       <title-view :title="envidatTitle" :slogan="envidatSlogan"></title-view>
 
       <v-flex mt-5 offset-sm6>
-        <search-view :labelText="labelText"
+        <search-bar-view :labelText="labelText"
                       :buttonText="buttonlText"
                       v-on:clicked="catchSearchClicked">
-        </search-view>
+        </search-bar-view>
       </v-flex>
 
       <v-flex mt-5 offset-sm6>
@@ -36,7 +36,7 @@
 <script>
   import CategoryCard from '../Views/Cards/CategoryCard';
   import TitleView from '../Views/TitleView';
-  import SearchView from '../Views/SearchView';
+  import SearchBarView from '../Views/SearchBarView';
 
   // Login & Register form and animation
   // https://codepen.io/yusufbkr/pen/RPBQqg
@@ -50,7 +50,7 @@
   export default {
     components: {
       TitleView,
-      SearchView,
+      SearchBarView,
       CategoryCard,
     },
     methods: {
@@ -76,7 +76,7 @@
       },
     },
     data: () => ({
-      labelText: "Type ex. 'Snow'",
+      labelText: "Type ex. 'Avalanche'",
       buttonlText: 'SEARCH',
       envidatTitle: 'EnviDat',
       envidatSlogan: 'Browse the most comprehensive environmental data collection of Switzerland',
