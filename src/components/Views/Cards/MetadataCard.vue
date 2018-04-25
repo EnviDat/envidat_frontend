@@ -8,35 +8,25 @@
 
     <v-card-media
       class="imagezoom"
-      height="200px">
-      <img :src="snowImg" />
+      height="100px">
+      
+      <!-- img :src="snowImg" /-->
+
+      <v-container>
+        <v-layout row>
+          <v-flex v-for="tag in tags" :key="tag">
+            <tag-chip :tag="tag" />
+          </v-flex>
+
+          <v-flex v-if="maxTagsReached">
+            <tag-chip :tag="..." />
+          </v-flex>
+          
+        </v-layout>
+      </v-container>
+
+
     </v-card-media>
-
-    <!--v-card-media
-      class="imagezoom"
-      height="400px"
-      :src="snowImg" >
-    </v-card-media-->
-
-    <!--v-card-media
-      height="200px"
-      v-if="type == 0"
-    >
-      <img src="@/assets/wood_background.jpg" />
-    </v-card-media>
-
-    <v-card-media
-      height="200px"
-      v-if="type == 1"
-    > 
-      <img src="@/assets/snow_background.jpg" />
-    </v-card-media>
-
-    <v-card-media
-      height="200px"
-      v-if="type == 2"
-    > <img src="@/assets/landscape_background.jpg" />
-    </v-card-media-->
 
     <v-card-title primary-title>
       <div>
@@ -46,7 +36,14 @@
     </v-card-title>
 
     <v-card-actions>
+      <v-btn
+      large
+      color="primary">
+        {{ showDataText }}
+      </v-btn>
+
       <v-spacer></v-spacer>
+
       <v-btn icon>
         <v-icon>bookmark</v-icon>
       </v-btn>
@@ -78,6 +75,7 @@
 import snowImg from '@/assets/cards/snow_background.jpg';
 // import woodImg from '@/assets/cards/wood_background.jpg';
 // import landImg from '@/assets/cards/landscape_background.jpg';
+import TagChip from './TagChip';
 
 // checkout possible transition animation
 // https://codepen.io/balapa/pen/embYYB
@@ -99,15 +97,31 @@ export default {
     type: Number,
     restricted: Boolean,
     favourit: Boolean,
+    tags:{
+      id: String,
+      name: String,
+    },
+  },
+  components: {
+    TagChip,
   },
   methods: {
     cardClick: function cardClick() {
       this.$emit('clickedEvent', this.datasetname);
     },
   },
+  computed:{
+    maxTagsReached: function maxTagsReached() {
+      return tags.length > 3;
+    }
+  },
   data: () => ({
     show: false,
+    showDataText: 'SHOW DATA',
     snowImg, // require('../../../assets/snow_background.jpg'),
+    tags: [
+      'snow', 'avalanche', 'weather', 'mountains'
+    ],   
   }),
 };
 </script>
