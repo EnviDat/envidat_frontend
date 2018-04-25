@@ -36,7 +36,29 @@
         contactEmail: 'mustermann@wsl.ch',
         doi: 'envidat.2192318293',
         citation: 'somecitation',
-        tags: ['snow', 'ice', 'Avalanche'],
+        tags: [
+          {
+            vocabulary_id: null,
+            state: 'active',
+            display_name: 'AIR TEMPERATURE',
+            id: 'ba9c8c16-f908-4173-affa-f813f7f8cd13',
+            name: 'AIR TEMPERATURE',
+          },
+          {
+            vocabulary_id: null,
+            state: 'active',
+            display_name: 'HUMIDITY',
+            id: '5d5d3a6d-1047-4c33-bee7-d1bb119bbe32',
+            name: 'HUMIDITY',
+          },
+          {
+            vocabulary_id: null,
+            state: 'active',
+            display_name: 'LONGWAVE RADIATION',
+            id: '4a3b1721-1050-434e-8573-9c36284bb50c',
+            name: 'LONGWAVE RADIATION',
+          },
+        ],
       },
       body: {
         metaid: '1',

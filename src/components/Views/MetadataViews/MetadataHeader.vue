@@ -41,13 +41,19 @@
 
         <v-divider class="my-2" ></v-divider>
 
-        <v-flex>
-          <v-chip v-for="tag in tags" :key="tag"
-          color="primary" text-color="white"
-          class="envidat_chip" >
-            {{ tag.toLowerCase() }}
-          </v-chip>
-        </v-flex>
+        <v-layout row wrap>
+
+          <!-- TODO: dynamicaly change the width xs1 - 12 -->
+          <v-flex xs2 v-if="tags" v-for="tag in tags" :key="tag.id">
+            <tag-chip :id="tag.id"
+                      :name="tag.name"
+                      :closeable="tag.closeable" />
+          </v-flex>
+
+          <v-flex xs2 v-if="maxTagsReached">
+            <tag-chip :name="'...'" />
+          </v-flex>
+        </v-layout>
           
       </v-card>
 
@@ -58,6 +64,7 @@
 </template>
 
 <script>
+import TagChip from '../Cards/TagChip';
   
   export default {
     props: {
@@ -77,6 +84,7 @@
       }),
     */
     components: {
+      TagChip,
     },
   };
 </script>

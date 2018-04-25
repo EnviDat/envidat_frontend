@@ -14,12 +14,14 @@
 
       <v-container>
         <v-layout row>
-          <v-flex v-for="tag in tags" :key="tag">
-            <tag-chip :tag="tag" />
+          <v-flex v-if="tags" v-for="tag in tags" :key="tag.id">
+            <tag-chip :id="tag.id"
+                      :name="tag.name"
+                      :closeable="tag.closeable" />
           </v-flex>
 
           <v-flex v-if="maxTagsReached">
-            <tag-chip :tag="..." />
+            <tag-chip :name="'...'" />
           </v-flex>
           
         </v-layout>
@@ -30,7 +32,7 @@
 
     <v-card-title primary-title>
       <div>
-        <h3 class="headline mb-0">{{ type }} {{ title }}</h3>
+        <h3 class="headline mb-0">{{ title }}</h3>
         <div>Located two hours south of Sydney in the <br>Southern Highlands of New South Wales, ...</div>
       </div>
     </v-card-title>
@@ -97,10 +99,12 @@ export default {
     type: Number,
     restricted: Boolean,
     favourit: Boolean,
-    tags:{
+    /*
+    tags:[{
       id: String,
       name: String,
-    },
+    }],
+    */
   },
   components: {
     TagChip,
@@ -112,7 +116,7 @@ export default {
   },
   computed:{
     maxTagsReached: function maxTagsReached() {
-      return tags.length > 3;
+      return this.tags !== undefined && this.tags.length > 3;
     }
   },
   data: () => ({
@@ -120,8 +124,11 @@ export default {
     showDataText: 'SHOW DATA',
     snowImg, // require('../../../assets/snow_background.jpg'),
     tags: [
-      'snow', 'avalanche', 'weather', 'mountains'
-    ],   
+      { id: 'bla', name: 'snow', closeable: false},
+      { id: 'blaads', name: 'avalanche', closeable: true},
+      { id: 'bluu', name: 'weather', closeable: false},
+      { id: 'asdfasdf', name: 'aprettylongtagname', closeable: false},
+    ],
   }),
 };
 </script>
