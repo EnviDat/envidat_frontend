@@ -1,9 +1,9 @@
-// import axios from 'axios';
+import axios from 'axios';
 
 import {
   GET_METADATA_IDS,
   GET_METADATA_IDS_SUCCESS,
-  // GET_METADATA_IDS_ERROR,
+  GET_METADATA_IDS_ERROR,
   LOAD_METADATAS,
   LOAD_METADATAS_SUCCESS,
   // LOAD_METADATAS_ERROR,
@@ -13,35 +13,25 @@ import {
 } from '../mutation_consts';
 
 // const API_BASE = 'https://www.envidat.ch/api/3/';
+const API_BASE = '/api/3/';
+
 
 let dataset = '';
-let packageListJSON = '';
+// let packageListJSON = '';
 
 export default {
   [GET_METADATA_IDS]({ commit }) {
     commit(GET_METADATA_IDS);
-    // Fetch actual data from the API
 
-    /*
-      alert("packageListJSON.result "  + packageListJSON.result);
-      commit(GET_ALL_METADATA_SUCCESS, packageListJSON.result);
+    // commit(GET_METADATA_IDS_SUCCESS, packageListJSON.result);
 
-      // axios.get(`${API_BASE}action/package_list`).then((response) => {
-      axios.get('https://www.reddit.com/dev/api/api/trending_subreddits').then((response) => {
-        commit(GET_ALL_METADATA_SUCCESS, response.data);
-      }).catch((reason) => {
-        commit(GET_ALL_METADATA_ERROR, reason);
-      });
-      */
-
-    commit(GET_METADATA_IDS_SUCCESS, packageListJSON.result);
-    /*
-      axios.get(`${DEV_API_BASE}action/package_list`).then((response) => {
-        commit(GET_ALL_METADATA_SUCCESS, response.data);
-      }).catch((reason) => {
-        commit(GET_ALL_METADATA_ERROR, reason);
-      });
-    */
+    axios.get(`${API_BASE}action/package_list`).then((response) => {
+      commit(GET_METADATA_IDS_SUCCESS, response.data.result);
+      // alert(`success ${response.data}`);
+    }).catch((reason) => {
+      commit(GET_METADATA_IDS_ERROR, reason);
+      // alert(`error ${reason}`);
+    });
   },
   [LOAD_METADATAS]({ commit }, metadataIds) {
     commit(LOAD_METADATAS);
@@ -74,7 +64,7 @@ export default {
 /* ************* */
 /* Test Data     */
 /* ************* */
-
+/*
 packageListJSON = {
   help: 'https://www.envidat.ch/api/3/action/help_show?name=package_list',
   success: true,
@@ -136,7 +126,7 @@ packageListJSON = {
     'vegetation-height-model-nfi',
   ],
 };
-
+*/
 
 dataset = {
   help: 'https://www.envidat.ch/api/3/action/help_show?name=package_show',
