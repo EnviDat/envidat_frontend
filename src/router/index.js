@@ -15,7 +15,7 @@ export default new Router({
       component: LandingPage,
     },
     {
-      path: '/browse/:category',
+      path: '/browse/:search/category/:category',
       name: 'BrowsePage',
       component: BrowsePage,
     },
