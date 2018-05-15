@@ -1,0 +1,10 @@
+.imagezoom,
+.imagezoom img {
+  height: 200px;
+  transition: all .2s;
+}
+
+.imagezoom img:hover,
+.imagezoom img:focus {
+  transform: scale(1.2);
+}  

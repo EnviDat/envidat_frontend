@@ -114,14 +114,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .imagezoom,
-  .imagezoom img {
-    height: 200px;
-    transition: all .2s;
-  }
-
-  .imagezoom img:hover,
-  .imagezoom img:focus {
-    transform: scale(1.2);
-  }  
 </style>

@@ -16,7 +16,7 @@ module.exports = {
         /* target: 'http://www.envidat.ch', */
         changeOrigin: true,
         secure: false,
-        logLevel: 'debug',
+        // logLevel: 'debug',
         pathRewrite: function (path, req) {
           const from = path;
           // path = encodeURIComponent(path);
