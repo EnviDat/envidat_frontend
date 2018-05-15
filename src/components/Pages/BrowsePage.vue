@@ -3,11 +3,15 @@
 
     <v-layout column align-center>
 
-        <p v-if="metadataOverview" >metadataOverview length: {{ metadataOverview.length }}</p>
+        <div v-if="loadingMetadatasContent">
+          <img style="width: 200px;" src="@/assets/loadingspinner.gif" alt="Loading">
+        </div>
+        <div v-else>
+          <p v-if="metadataIds" >metadataIds length: {{ metadataIds.length }}</p>
 
-        <p v-if="metadatas" >metadatas length: {{ metadatas.length }}</p>
-
-        <metadata-card v-bind:title="currentMetadata.name" v-on:clickedEvent="metaDataClicked"></metadata-card>
+          <p v-if="metadatasContent" >metadatasContent length: {{ this.metadatasContentSize }}</p>
+        </div>
+        <!--metadata-card v-bind:title="currentMetadata.name" v-on:clickedEvent="metaDataClicked"></metadata-card-->
         
         <p v-if="currentMetadata" >currentMetadata name: {{ currentMetadata.name }}</p>
         <p v-else>currentMetadata length: 0</p>
@@ -15,9 +19,13 @@
         <v-container fluid grid-list-xs>
           <v-layout row wrap>
 
-            <v-flex v-if="metadatas" px-2 py-2 v-bind="{ [`xs3`]: true }" v-for="metadata in metadatas" :key="metadata.id">
+            <v-flex px-2 py-2 v-bind="{ [`xs6`]: true, [`md3`]: true }" v-for="metadata in metadatasContent" :key="metadata.id">
     
-              <metadata-card v-bind:title="metadata.title" v-bind:datasetname="metadata.name" v-on:clickedEvent="metaDataClicked"></metadata-card>
+              <metadata-card
+                            v-bind:title="metadata.title"
+                            v-bind:datasetname="metadata.name"
+                            v-on:clickedEvent="metaDataClicked">
+              </metadata-card>
     
             </v-flex>
 
@@ -44,29 +52,34 @@
   import { mapGetters } from 'vuex';
   // import FilterView from '../Views/FilterView.vue';
   import MetadataCard from '../Views/Cards/MetadataCard';
-  import { LOAD_METADATAS, GET_METADATA_BY_ID } from '../../store/mutation_consts';
+  import { GET_METADATAS_CONTENT, SET_CURRENT_METADATA } from '../../store/mutation_consts';
   
   export default {
     components: {
       MetadataCard,
     },
+    beforeMount: function beforeMount() {
+      // alert('beforeMount');
+    },
     mounted: function mounted() {
-      this.$store.dispatch(`metadata/${LOAD_METADATAS}`, this.metadataOverview);
+      // alert('mounted');
+      this.getMetadataContent();
     },
     beforeUpdate: function beforeUpdate() {
-      // alert('beforeUpdate');
-    },
-    updated: function updated() {
-      // alert(`updated currentMetadata ${this.currentMetadata}`);
-
-      if (this.metadataOverview && this.metadataOverview.length > 0) {
-        this.$store.dispatch(`metadata/${GET_METADATA_BY_ID}`, this.metadataOverview[0]);
+      // alert(`beforeUpdate metadataIds.length ${this.metadataIds.length}`);
+      /*
+      if (this.metadataIds && this.metadataIds.length > 0) {
+        this.$store.dispatch(`metadata/${SET_CURRENT_METADATA}`, this.metadataIds[0]);
       } else {
-        alert(`no metadata overview loaded ${this.metadataOverview}`);
+        // alert(`no metadata overview loaded ${this.metadataIds}`);
       }
+      */
+      this.getMetadataContent();
     },
     methods: {
       metaDataClicked: function metaDataClicked(datasetname) {
+        this.$store.dispatch(`metadata/${SET_CURRENT_METADATA}`, datasetname);
+
         this.$router.push({
           name: 'MetadataDetailPage',
           params: {
@@ -74,13 +87,26 @@
           },
         });
       },
+      getMetadataContent: function getMetadataContent() {
+        if (!this.loadingMetadatasContent && this.metadataIds.length > 0
+            && this.metadatasContentSize <= 0) {
+          // call the actions which makes to CKAN-API call
+          this.$store.dispatch(`metadata/${GET_METADATAS_CONTENT}`, this.metadataIds);
+        }
+      },
     },
-    computed: mapGetters({
-      allOk: 'metadata/allOk',
-      metadataOverview: 'metadata/metadataOverview',
-      metadatas: 'metadata/metadatas',
-      currentMetadata: 'metadata/currentMetadata',
-    }),
+    computed: {
+      ...mapGetters({
+        metadataIds: 'metadata/metadataIds',
+        metadatasContent: 'metadata/metadatasContent',
+        loadingMetadataIds: 'metadata/loadingMetadataIds',
+        loadingMetadatasContent: 'metadata/loadingMetadatasContent',
+        currentMetadata: 'metadata/currentMetadata',
+      }),
+      metadatasContentSize: function metadatasContentSize() {
+        return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
+      },
+    },
     /*
     computed: {
       metadatas() {
@@ -94,24 +120,11 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  /*
-      h1,
-      h2 {
-        font-weight: normal;
-      }
-      
-      ul {
-        list-style-type: none;
-        padding: 0;
-      }
-      
-      li {
-        display: inline-block;
-        margin: 0 10px;
-      }
-      
-      a {
-        color: #42b983;
-      }
-      */
+  .application {
+    background-image: url('../../assets/landingpage/noisy_pattern.png') !important;
+    background-position: center top !important;
+    /* background-size: cover !important; */
+    background-repeat: repeat !important;
+    /* background-attachment: fixed !important; */
+  }
 </style>
