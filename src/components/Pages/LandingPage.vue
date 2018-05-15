@@ -4,7 +4,7 @@
   
       <title-view :title="envidatTitle" :slogan="envidatSlogan"></title-view>
 
-      <v-flex mt-5 offset-sm6 offset-md6>
+      <v-flex mt-5 offset-sm6>
         <search-bar-view
                       :labelText="labelText"
                       :buttonText="buttonlText"
@@ -30,7 +30,7 @@
         <v-container fluid grid-list-xs>
           <v-layout row wrap>
     
-            <v-flex px-2 py-2 v-bind="{ [`xs${card.flex}`]: true }" v-for="card in cards" :key="card.title">
+            <v-flex pr-2 py-2 v-bind="{ [`xs${card.flex}`]: true }" v-for="card in cards" :key="card.title">
     
               <category-card :title="card.title"
                               :type="card.type"
@@ -63,6 +63,9 @@
   // Here is one with a progress button/bar
   // https://codepen.io/suez/pen/dPqxoM
 
+  /* eslint-disable no-alert */
+  /* eslint-disable no-console */
+
   export default {
     components: {
       TitleView,
@@ -93,12 +96,19 @@
       },
       catchEnterclick: function catchEnterclick(search) {
         alert(`clicked ${search}`);
+        this.redirectToDashboard();
       },
       catchSingupclick: function catchSingupclick(search) {
         alert(`clicked ${search}`);
+        this.redirectToDashboard();
       },
       catchLoginclick: function catchLoginclick(search) {
         alert(`clicked ${search}`);
+        this.redirectToDashboard();
+      },
+      redirectToDashboard: function redirectToDashboard() {
+        window.location.href = 'https://www.envidat.ch/user/reset';
+        // this.$router.push('https://www.envidat.ch/user/reset');
       },
     },
     data: () => ({

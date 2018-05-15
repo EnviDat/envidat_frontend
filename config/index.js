@@ -10,7 +10,28 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/api': {
+        target: 'http://localhost/ui/ServiceProxyServlet?server=0&serverpath=',
+        /* target: 'http://www.envidat.ch', */
+        changeOrigin: true,
+        secure: false,
+        logLevel: 'debug',
+        pathRewrite: function (path, req) {
+          const from = path;
+          // path = encodeURIComponent(path);
+          path = path.replace('?', '&amp;');
+          // console.log('replaced path from ' + from + ' to: ' + path);
+          return path;
+        }        
+        /*
+        pathRewrite: {
+          '^/api': '/api',
+          '\?': '&amp;',
+        },
+        */
+      },        
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST

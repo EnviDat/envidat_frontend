@@ -35,6 +35,8 @@
 </template>
 
 <script>
+  /* eslint-disable no-alert */
+  /* eslint-disable no-console */
   export default {
     props: {
       metadataTitle: String,

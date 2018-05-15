@@ -3,10 +3,6 @@
 
     <!--v-btn fab top left color="success" @click="testStore" >Test</v-btn>
 
-    <v-icon top left color="success" v-if="allOk" >check_circle</v-icon>
-
-    <v-icon v-if="!allOk" color="error">close</v-icon>
-
     <v-icon v-if="loading" color="warning">autorenew</v-icon-->
 
     <v-content>
@@ -22,15 +18,15 @@
     GET_METADATA_IDS,
     /* GET_ALL_METADATA_SUCCESS,
     GET_ALL_METADATA_ERROR,
-    GET_METADATA_BY_ID,
-    GET_METADATA_BY_ID_SUCCESS,
-    GET_METADATA_BY_ID_ERROR,
+    SET_CURRENT_METADATA,
+    SET_CURRENT_METADATA_SUCCESS,
+    SET_CURRENT_METADATA_ERROR,
     ADD_METADATA,
     */
   } from './store/mutation_consts';
 
   export default {
-    mounted: function mounted() {
+    beforeCreate: function beforeCreate() {
       // alert('mounted from App.vue ' + this.$store.getters + ' ?' );
       this.$store.dispatch(`metadata/${GET_METADATA_IDS}`);
     },
@@ -42,9 +38,9 @@
       },
     },
     computed: mapGetters({
-      allOk: 'metadata/allOk',
       loading: 'metadata/loading',
-      metadataOverview: 'metadata/metadataOverview',
+      metadataIds: 'metadata/metadataIds',
+      metadatasContent: 'metadata/metadatasContent',
       currentMetadata: 'metadata/currentMetadata',
     }),
     data: () => ({
