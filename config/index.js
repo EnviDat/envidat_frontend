@@ -16,7 +16,7 @@ module.exports = {
         /* target: 'http://www.envidat.ch', */
         changeOrigin: true,
         secure: false,
-        logLevel: 'debug',
+        // logLevel: 'debug',
         pathRewrite: function (path, req) {
           const from = path;
           // path = encodeURIComponent(path);
@@ -70,7 +70,7 @@ module.exports = {
 
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
-    assetsSubDirectory: 'static',
+    assetsSubDirectory: './static',
     assetsPublicPath: '',
 
     /**

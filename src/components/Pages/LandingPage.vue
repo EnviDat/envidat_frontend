@@ -159,13 +159,6 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
 
-/* overrite the applications background https://css-tricks.com/use-cases-fixed-backgrounds-css/ */
-  .application {
-    background-image: url('../../assets/landingpage/landing_lowres.jpg') !important;
-    background-position: center top !important;
-    background-size: cover !important;
-    background-repeat: no-repeat !important;
-    background-attachment: fixed !important;
-  }
+
   
 </style>
