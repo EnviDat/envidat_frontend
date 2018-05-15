@@ -37,8 +37,13 @@ const webpackConfig = merge(baseWebpackConfig, {
     new UglifyJsPlugin({
       uglifyOptions: {
         compress: {
-          warnings: false
-        }
+          warnings: false,
+          ecma: 6, // 6 or greater to enable transform ES5 code into smaller ES6+ equivalent forms.
+        },
+        mangle: {
+          toplevel: true, // to mangle names declared in the top level scope.
+          safari10: true, // to work around the Safari 10 loop iterator bug "Cannot declare a let variable twice". See also: the safari10 output option.        
+        },
       },
       sourceMap: config.build.productionSourceMap,
       parallel: true
