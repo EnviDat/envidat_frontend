@@ -9,7 +9,7 @@
     "start": "npm run dev",
     "test": "npm run unit",
     "lint": "eslint --ext .js,.vue src test/unit/specs",
-    "build": "node build/build.js",
+    "build": "node build/build.js && node build/imagemin.js",
     "imagemin": "node build/imagemin.js"
   },
   "dependencies": {
