@@ -12,7 +12,7 @@
       <v-container fill-height fluid>
         <v-layout fill-height>
           <v-flex xs12 >
-            <span class="display-2 white--text">{{ titleText }}</span>
+            <span class="display-2 dataproducer_title white--text">{{ titleText }}</span>
           </v-flex>
         </v-layout>
       </v-container>
@@ -82,4 +82,9 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+  .dataproducer_title {
+    font-family: 'Libre Baskerville', serif !important;
+  }
+
 </style>

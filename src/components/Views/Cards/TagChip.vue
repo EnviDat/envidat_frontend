@@ -28,10 +28,10 @@
         return {
           'white--text': this.higlighted,
           // fontSize: this.name.length > 10 ? '10pt' : 'inherit',
-        }
+        };
       },
     },
-    methods:{
+    methods: {
       clicked: function clicked() {
         this.$emit('clicked', this.id);
       },

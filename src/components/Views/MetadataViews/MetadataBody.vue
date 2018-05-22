@@ -3,7 +3,7 @@
 
     <v-flex xs12 md8 offset-md2 elevation-1>
       <v-card >
-        <v-card-title class="title" >Description</v-card-title>
+        <v-card-title class="metadata_title title" >Description</v-card-title>
 
         <v-card-text >{{ fullDescription }}</v-card-text>
 

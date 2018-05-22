@@ -48,11 +48,14 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
   .envidat_title {
-    font-family: 'Karma', serif;
+    /* font-family: 'Karma', serif;*/ 
+    font-family: 'Libre Baskerville', serif;
+    letter-spacing: 0em !important;
   }
 
   .envidat_slogan {
     font-family: 'Raleway', sans-serif;
+    /* font-family: 'Karma', serif;*/ 
   }
   
   .mt-md-pct{

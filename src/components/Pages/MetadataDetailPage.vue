@@ -90,4 +90,15 @@
   };
 </script>
 
+<style>
+
+  .metadata_title{
+    font-family: 'Karma', serif;
+    font-weight: 700 !important;
+  }
+
+</style>
+  
+
+
 

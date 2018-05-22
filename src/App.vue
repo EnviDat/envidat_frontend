@@ -57,7 +57,8 @@
 <style>
 /* overrite the applications background https://css-tricks.com/use-cases-fixed-backgrounds-css/ */
   .application {
-    font-family: 'Raleway', sans-serif;
+    /* font-family: 'Libre Baskerville', serif !important; */
+    font-family: 'Raleway', sans-serif !important;
     background-position: center top !important;
     background-size: cover !important;
     background-repeat: no-repeat !important;
@@ -65,6 +66,18 @@
   }  
 
   /*** General Card styles ***/
+
+  .card .headline{
+    font-family: 'Karma', serif;
+    /* font-weight: 700; */
+  }
+
+  .card .subheading{
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 400;
+    /* color: #555; */
+    opacity: 0.7;
+  }
 
   .imagezoom,
   .imagezoom img {

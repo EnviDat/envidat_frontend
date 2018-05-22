@@ -17,7 +17,8 @@
           <v-flex v-if="tags" v-for="tag in tags" :key="tag.id">
             <tag-chip :id="tag.id"
                       :name="tag.name"
-                      :closeable="tag.closeable" />
+                      :closeable="tag.closeable"
+                      class="card_tag" />
           </v-flex>
 
           <v-flex v-if="maxTagsReached">
@@ -135,4 +136,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+  .card_tag {
+    opacity: 0.7;
+  }
+
 </style>
