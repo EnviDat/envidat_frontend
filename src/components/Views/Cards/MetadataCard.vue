@@ -8,21 +8,26 @@
 
     <v-card-media
       class="imagezoom"
-      height="100px">
+      height="150px">
       
       <!-- img :src="snowImg" /-->
 
       <v-container>
-        <v-layout row>
-          <v-flex v-if="tags" v-for="tag in tags" :key="tag.id">
+        <v-layout row wrap>
+          <v-flex xs12 >
+            <h3 class="headline mb-0 white--text">{{ truncatedTitle }}</h3>
+          </v-flex>
+        </v-layout>
+
+        <v-layout row wrap justify-space-between>
+          <v-flex v-if="tags" v-for="tag in tags.slice(0, maxTags)" :key="tag.id">
             <tag-chip :id="tag.id"
                       :name="tag.name"
-                      :closeable="tag.closeable"
                       class="card_tag" />
           </v-flex>
 
           <v-flex v-if="maxTagsReached">
-            <tag-chip :name="'...'" />
+            <tag-chip class="card_tag" :name="'...'" />
           </v-flex>
           
         </v-layout>
@@ -32,9 +37,9 @@
     </v-card-media>
 
     <v-card-title primary-title>
+      <!--div>{{ title }}</div-->
       <div>
-        <h3 class="headline mb-0">{{ title }}</h3>
-        <div>Located two hours south of Sydney in the <br>Southern Highlands of New South Wales, ...</div>
+        <div class="subheading">{{ truncatedSubtitle }}</div>
       </div>
     </v-card-title>
 
@@ -96,10 +101,11 @@ import TagChip from './TagChip';
 export default {
   props: {
     title: String,
-    datasetname: String,
+    subtitle: String,
     type: Number,
     restricted: Boolean,
     favourit: Boolean,
+    tags: Array,
     /*
     tags:[{
       id: String,
@@ -112,24 +118,43 @@ export default {
   },
   methods: {
     cardClick: function cardClick() {
-      this.$emit('clickedEvent', this.datasetname);
+      this.$emit('clickedEvent', this.title);
     },
   },
-  computed:{
+  computed: {
     maxTagsReached: function maxTagsReached() {
-      return this.tags !== undefined && this.tags.length > 3;
-    }
+      return this.tags !== undefined && this.tags.length > this.maxTags;
+    },
+    truncatedSubtitle: function truncatedSubtitle() {
+      if (this.subtitle.length > this.maxSubtitleLength) {
+        return `${this.subtitle.substring(0, this.maxSubtitleLength)} ...`;
+      }
+
+      return this.subtitle;
+    },
+    truncatedTitle: function truncatedTitle() {
+      if (this.title.length > this.maxTitleLength) {
+        return `${this.title.substring(0, this.maxTitleLength)} ...`;
+      }
+
+      return this.title;
+    },
   },
   data: () => ({
     show: false,
     showDataText: 'SHOW DATA',
+    maxTitleLength: 65,
+    maxSubtitleLength: 125,
+    maxTags: 3,
     snowImg, // require('../../../assets/snow_background.jpg'),
+    /*
     tags: [
-      { id: 'bla', name: 'snow', closeable: false},
-      { id: 'blaads', name: 'avalanche', closeable: true},
-      { id: 'bluu', name: 'weather', closeable: false},
-      { id: 'asdfasdf', name: 'aprettylongtagname', closeable: false},
+      { id: 'bla', name: 'snow', closeable: false },
+      { id: 'blaads', name: 'avalanche', closeable: true },
+      { id: 'bluu', name: 'weather', closeable: false },
+      { id: 'asdfasdf', name: 'aprettylongtagname', closeable: false },
     ],
+    */
   }),
 };
 </script>

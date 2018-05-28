@@ -23,7 +23,8 @@
     
               <metadata-card
                             v-bind:title="metadata.title"
-                            v-bind:datasetname="metadata.name"
+                            v-bind:subtitle="metadata.notes"
+                            v-bind:tags="metadata.tags"
                             v-on:clickedEvent="metaDataClicked">
               </metadata-card>
     

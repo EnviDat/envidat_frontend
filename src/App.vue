@@ -67,9 +67,24 @@
 
   /*** General Card styles ***/
 
-  .card .headline{
+
+
+  .card .card__media {
+    background: #00695c; /* Old Browsers */
+    background: -webkit-linear-gradient(top,#00695c,#00897b); /*Safari 5.1-6*/
+    background: -o-linear-gradient(top,#00695c,#00897b); /*Opera 11.1-12*/
+    background: -moz-linear-gradient(top,#00695c,#00897b); /*Fx 3.6-15*/
+    background: linear-gradient(to bottom, #00695c, #00897b); /*Standard*/
+  }
+
+  .card .headline {
     font-family: 'Karma', serif;
     /* font-weight: 700; */
+
+    overflow: hidden;
+    text-overflow: ellipsis;    
+    max-height: 2em;
+    line-height: 1.1em !important;
   }
 
   .card .subheading{
