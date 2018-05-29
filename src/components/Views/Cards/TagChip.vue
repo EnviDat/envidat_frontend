@@ -3,6 +3,7 @@
     <v-chip
         small
         light
+        selected="false"
         class="envidat_chip"
         :class="highlightedClass"
         v-bind="{['close'] : closeable,
