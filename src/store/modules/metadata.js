@@ -8,7 +8,6 @@ export const metadata = {
     MetadataIdsOK: false,
     loadingMetadatasContent: false,
     MetadatasContentOK: false,
-    currentMetadata: {},
     metadatasContent: {},
     metadataIds: [],
     error: Object,

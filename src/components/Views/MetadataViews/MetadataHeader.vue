@@ -51,9 +51,9 @@
                       class="header_tag" />
           </v-flex>
 
-          <v-flex xs2 v-if="maxTagsReached">
-            <tag-chip :name="'...'" />
-          </v-flex>
+          <!--v-flex xs2 v-if="maxTagsReached">
+            <tag-chip class="card_tag" :name="'...'" />
+          </v-flex-->
         </v-layout>
           
       </v-card>

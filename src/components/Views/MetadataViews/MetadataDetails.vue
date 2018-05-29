@@ -44,7 +44,7 @@
       subTitle: String,
     },
     mounted: function mounted() {
-      console.log(`props${this.props}`);
+      console.log(`props of MetadataDetails.vue ${this.props}`);
     },
     beforeUpdate: function beforeUpdate() {
     },

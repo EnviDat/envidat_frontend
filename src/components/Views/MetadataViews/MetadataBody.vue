@@ -21,17 +21,18 @@
 
 <script>
   export default {
-    props: [
-      'metadataTitle',
-      'doi',
-      'description',
-    ],
+    props: {
+      id: String,
+      title: String,
+      doi: String,
+      description: String,
+    },
     mounted: function mounted() {
       this.fullDescription = this.shortDesciption;
     },
     computed: {
       shortDesciption: function shortDesciption() {
-        return `${this.description.substring(0, 1000)}...`;
+        return this.description !== undefined ? `${this.description.substring(0, 1000)}...` : '';
       },
     },
     data: () => ({

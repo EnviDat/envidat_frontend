@@ -16,35 +16,31 @@
 <script>
   import { mapGetters } from 'vuex';
   import backgroundImg from '@/assets/landingpage/landing_lowres.jpg';
-  import {
-    GET_METADATA_IDS,
-    /* GET_ALL_METADATA_SUCCESS,
-    GET_ALL_METADATA_ERROR,
-    SET_CURRENT_METADATA,
-    SET_CURRENT_METADATA_SUCCESS,
-    SET_CURRENT_METADATA_ERROR,
-    ADD_METADATA,
-    */
-  } from './store/mutation_consts';
+  import { LOAD_ALL_METADATA } from './store/mutation_consts';
 
   export default {
-    beforeCreate: function beforeCreate() {
-      // alert('mounted from App.vue ' + this.$store.getters + ' ?' );
-      this.$store.dispatch(`metadata/${GET_METADATA_IDS}`);
+    created: function created() {
+      this.loadAllMetadata();
     },
     methods: {
-      testStore: function testStore() {
-        // alert('testStore ' + GET_ALL_METADATA + ' ' + this.$store);
-        // this.$store.commit('metadata/randomMutation');
-        this.$store.dispatch(`metadata/${GET_METADATA_IDS}`);
+      loadAllMetadata: function loadAllMetadata() {
+        if (!this.loadingMetadatasContent && this.metadatasContentSize <= 0) {
+          this.$store.dispatch(`metadata/${LOAD_ALL_METADATA}`);
+        }
       },
     },
-    computed: mapGetters({
-      loading: 'metadata/loading',
-      metadataIds: 'metadata/metadataIds',
-      metadatasContent: 'metadata/metadatasContent',
-      currentMetadata: 'metadata/currentMetadata',
-    }),
+    computed: {
+      ...mapGetters({
+        metadataIds: 'metadata/metadataIds',
+        metadatasContent: 'metadata/metadatasContent',
+        loadingMetadataIds: 'metadata/loadingMetadataIds',
+        loadingMetadatasContent: 'metadata/loadingMetadatasContent',
+        currentMetadata: 'metadata/currentMetadata',
+      }),
+      metadatasContentSize: function metadatasContentSize() {
+        return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
+      },
+    },
     data: () => ({
       backgroundImg,
     }),
@@ -83,7 +79,7 @@
 
     overflow: hidden;
     text-overflow: ellipsis;    
-    max-height: 2em;
+    max-height: 2.15em;
     line-height: 1.1em !important;
   }
 
