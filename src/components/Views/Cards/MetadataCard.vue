@@ -18,9 +18,7 @@
             <h3 class="headline mb-0 white--text">{{ truncatedTitle }}</h3>
           </v-flex>
         </v-layout>
-      </v-container>
 
-      <v-container fluid>
         <v-layout row wrap justify-space-between>
           <v-flex v-if="tags" v-for="tag in tags.slice(0, maxTags)" :key="tag.id">
             <tag-chip :id="tag.id"
