@@ -25,12 +25,12 @@ export default new Router({
       component: BrowsePage,
     },
     {
-      path: '/metadata/:urlId',
+      path: '/metadata/:metadataid',
       name: 'MetadataDetailPage',
       component: MetadataDetailPage,
     },
     {
-      path: '/dataresource/:id',
+      path: '/metadata/:metadataid/resource/:resourceid',
       name: 'ResourceDetailPage',
       component: ResourceDetailPage,
     },

@@ -23,8 +23,10 @@
     
               <metadata-card
                             v-bind:title="metadata.title"
-                            v-bind:datasetname="metadata.name"
-                            v-on:clickedEvent="metaDataClicked">
+                            v-bind:id="metadata.id"
+                            v-bind:subtitle="metadata.notes"
+                            v-bind:tags="metadata.tags"
+                            v-on:clickedEvent="metaDataClicked($event, metadataid)">
               </metadata-card>
     
             </v-flex>
@@ -52,47 +54,22 @@
   import { mapGetters } from 'vuex';
   // import FilterView from '../Views/FilterView.vue';
   import MetadataCard from '../Views/Cards/MetadataCard';
-  import { GET_METADATAS_CONTENT, SET_CURRENT_METADATA } from '../../store/mutation_consts';
   
   export default {
     components: {
       MetadataCard,
     },
-    beforeMount: function beforeMount() {
-      // alert('beforeMount');
-    },
-    mounted: function mounted() {
-      // alert('mounted');
-      this.getMetadataContent();
-    },
-    beforeUpdate: function beforeUpdate() {
-      // alert(`beforeUpdate metadataIds.length ${this.metadataIds.length}`);
-      /*
-      if (this.metadataIds && this.metadataIds.length > 0) {
-        this.$store.dispatch(`metadata/${SET_CURRENT_METADATA}`, this.metadataIds[0]);
-      } else {
-        // alert(`no metadata overview loaded ${this.metadataIds}`);
-      }
-      */
-      this.getMetadataContent();
-    },
     methods: {
       metaDataClicked: function metaDataClicked(datasetname) {
-        this.$store.dispatch(`metadata/${SET_CURRENT_METADATA}`, datasetname);
+        alert('clicked ' + datasetname);
+        // this.$store.dispatch(`metadata/${SET_CURRENT_METADATA}`, datasetname);
 
         this.$router.push({
           name: 'MetadataDetailPage',
           params: {
-            urlId: datasetname,
+            metadataid: datasetname,
           },
         });
-      },
-      getMetadataContent: function getMetadataContent() {
-        if (!this.loadingMetadatasContent && this.metadataIds.length > 0
-            && this.metadatasContentSize <= 0) {
-          // call the actions which makes to CKAN-API call
-          this.$store.dispatch(`metadata/${GET_METADATAS_CONTENT}`, this.metadataIds);
-        }
       },
     },
     computed: {

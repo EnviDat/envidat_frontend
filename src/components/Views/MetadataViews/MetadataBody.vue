@@ -3,7 +3,7 @@
 
     <v-flex xs12 md8 offset-md2 elevation-1>
       <v-card >
-        <v-card-title class="title" >Description</v-card-title>
+        <v-card-title class="metadata_title title" >Description</v-card-title>
 
         <v-card-text >{{ fullDescription }}</v-card-text>
 
@@ -21,17 +21,18 @@
 
 <script>
   export default {
-    props: [
-      'metadataTitle',
-      'doi',
-      'description',
-    ],
+    props: {
+      id: String,
+      title: String,
+      doi: String,
+      description: String,
+    },
     mounted: function mounted() {
       this.fullDescription = this.shortDesciption;
     },
     computed: {
       shortDesciption: function shortDesciption() {
-        return `${this.description.substring(0, 1000)}...`;
+        return this.description !== undefined ? `${this.description.substring(0, 1000)}...` : '';
       },
     },
     data: () => ({

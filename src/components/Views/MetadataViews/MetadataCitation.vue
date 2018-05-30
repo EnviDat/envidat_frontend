@@ -3,7 +3,7 @@
 
     <v-flex xs12 md8 offset-md2 elevation-1>
       <v-card >
-        <v-card-title class="title" >Citation</v-card-title>
+        <v-card-title class="title metadata_title" >Citation</v-card-title>
 
         <v-card-text >{{ citationText }}</v-card-text>
 

@@ -3,7 +3,7 @@
 
     <v-flex xs12 md8 offset-md2 elevation-1>
       <v-card >
-        <v-card-title class="title" >Further Information</v-card-title>
+        <v-card-title class="title metadata_title" >Further Information</v-card-title>
 
         <v-card-text >
 
@@ -44,7 +44,7 @@
       subTitle: String,
     },
     mounted: function mounted() {
-      console.log(`props${this.props}`);
+      console.log(`props of MetadataDetails.vue ${this.props}`);
     },
     beforeUpdate: function beforeUpdate() {
     },
