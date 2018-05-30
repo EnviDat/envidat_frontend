@@ -8,45 +8,64 @@
 
     <v-card-media
       class="imagezoom"
-      height="200px">
-      <img :src="snowImg" />
+      height="150px">
+      
+      <!-- img :src="snowImg" /-->
+
+      <v-container fill-height grid-list-xs>
+        <v-layout column>
+          <v-flex xs12 px-3 pt-3>
+            <v-layout row  align-start>
+              <v-flex xs12 >
+                <h3 class="headline mb-0 white--text">{{ truncatedTitle }}</h3>
+              </v-flex>
+            </v-layout>
+          </v-flex>
+
+          <v-flex xs12 px-2>
+            <v-layout row  align-end >
+                <tag-chip v-if="tags" v-for="tag in tags.slice(0, maxTagNumber)" :key="tag.id"
+                          :id="tag.id"
+                          :name="tag.name"
+                          class="card_tag" />
+              
+              <v-flex v-if="maxTagsReached">
+                <tag-chip class="card_tag" :name="'...'" />
+              </v-flex>
+              
+            </v-layout>
+          </v-flex>
+        </v-layout>
+      </v-container>
+
+
     </v-card-media>
-
-    <!--v-card-media
-      class="imagezoom"
-      height="400px"
-      :src="snowImg" >
-    </v-card-media-->
-
-    <!--v-card-media
-      height="200px"
-      v-if="type == 0"
-    >
-      <img src="@/assets/wood_background.jpg" />
-    </v-card-media>
-
-    <v-card-media
-      height="200px"
-      v-if="type == 1"
-    > 
-      <img src="@/assets/snow_background.jpg" />
-    </v-card-media>
-
-    <v-card-media
-      height="200px"
-      v-if="type == 2"
-    > <img src="@/assets/landscape_background.jpg" />
-    </v-card-media-->
 
     <v-card-title primary-title>
+      <!--div>{{ title }}</div-->
       <div>
-        <h3 class="headline mb-0">{{ type }} {{ title }}</h3>
-        <div>Located two hours south of Sydney in the <br>Southern Highlands of New South Wales, ...</div>
+        <div class="subheading">{{ truncatedSubtitle }}</div>
       </div>
     </v-card-title>
 
     <v-card-actions>
+      
+      <v-btn icon slot="activator">
+        <v-icon color="primary">cloud_download</v-icon>
+      </v-btn>
+
+      <!-- 
+      <v-tooltip bottom>
+        <v-btn icon slot="activator">
+          <v-icon color="primary">cloud_download</v-icon>
+        </v-btn>
+        <span>download data</span>
+      </v-tooltip>
+      
+       {{ showDataText }}
+      -->
       <v-spacer></v-spacer>
+
       <v-btn icon>
         <v-icon>bookmark</v-icon>
       </v-btn>
@@ -78,6 +97,7 @@
 import snowImg from '@/assets/cards/snow_background.jpg';
 // import woodImg from '@/assets/cards/wood_background.jpg';
 // import landImg from '@/assets/cards/landscape_background.jpg';
+import TagChip from './TagChip';
 
 // checkout possible transition animation
 // https://codepen.io/balapa/pen/embYYB
@@ -94,24 +114,90 @@ import snowImg from '@/assets/cards/snow_background.jpg';
 
 export default {
   props: {
+    id: String,
     title: String,
-    datasetname: String,
+    subtitle: String,
     type: Number,
     restricted: Boolean,
     favourit: Boolean,
+    tags: Array,
+    /*
+    tags:[{
+      id: String,
+      name: String,
+    }],
+    */
+  },
+  components: {
+    TagChip,
   },
   methods: {
     cardClick: function cardClick() {
-      this.$emit('clickedEvent', this.datasetname);
+      this.$emit('clickedEvent', this.id);
+    },
+  },
+  computed: {
+    maxTagsReached: function maxTagsReached() {
+      return this.tags !== undefined && this.tags.length > this.maxTagNumber;
+    },
+    maxTagNumber: function maxTagNumber() {
+      let textLength = 0;
+      let numberOfTags = 0;
+
+      if (this.tags !== undefined) {
+        for (let i = 0; i < this.tags.length; i++) {
+          textLength += this.tags[i].name.length + 1;
+
+          if (textLength >= this.maxTagTextlength) {
+            break;
+          }
+
+          numberOfTags++;
+        }
+      }
+
+      return numberOfTags;
+    },
+    truncatedSubtitle: function truncatedSubtitle() {
+      if (this.subtitle.length > this.maxSubtitleLength) {
+        return `${this.subtitle.substring(0, this.maxSubtitleLength)} ...`;
+      }
+
+      return this.subtitle;
+    },
+    truncatedTitle: function truncatedTitle() {
+      if (this.title.length > this.maxTitleLength) {
+        return `${this.title.substring(0, this.maxTitleLength)} ...`;
+      }
+
+      return this.title;
     },
   },
   data: () => ({
     show: false,
+    showDataText: 'SHOW DATA',
+    maxTitleLength: 65,
+    maxSubtitleLength: 125,
+    // maxTags: 3,
+    maxTagTextlength: 45,
     snowImg, // require('../../../assets/snow_background.jpg'),
+    /*
+    tags: [
+      { id: 'bla', name: 'snow', closeable: false },
+      { id: 'blaads', name: 'avalanche', closeable: true },
+      { id: 'bluu', name: 'weather', closeable: false },
+      { id: 'asdfasdf', name: 'aprettylongtagname', closeable: false },
+    ],
+    */
   }),
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+  .card_tag {
+    opacity: 0.7;
+  }
+
 </style>
