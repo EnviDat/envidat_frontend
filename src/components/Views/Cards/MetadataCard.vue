@@ -49,12 +49,21 @@
     </v-card-title>
 
     <v-card-actions>
-      <v-btn
-      large
-      color="primary">
-        {{ showDataText }}
+      
+      <v-btn icon slot="activator">
+        <v-icon color="primary">cloud_download</v-icon>
       </v-btn>
 
+      <!-- 
+      <v-tooltip bottom>
+        <v-btn icon slot="activator">
+          <v-icon color="primary">cloud_download</v-icon>
+        </v-btn>
+        <span>download data</span>
+      </v-tooltip>
+      
+       {{ showDataText }}
+      -->
       <v-spacer></v-spacer>
 
       <v-btn icon>
