@@ -2,11 +2,13 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import Vuetify from 'vuetify';
+import Vue2Filters from 'vue2-filters';
 import 'vuetify/dist/vuetify.min.css';
 import App from './App';
 import router from './router';
 import store from './store/store';
 
+Vue.use(Vue2Filters);
 
 Vue.use(Vuetify, {
   theme: {

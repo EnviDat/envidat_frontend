@@ -3,9 +3,14 @@
 
     <v-layout column align-center>
 
+        <input v-model="searchTerm"/>
+        
+        <p >search: {{ searchTerm }}</p>
+
         <div v-if="loadingMetadatasContent">
           <img style="width: 200px;" src="@/assets/loadingspinner.gif" alt="Loading">
         </div>
+
         <div v-else>
           <p v-if="metadataIds" >metadataIds length: {{ metadataIds.length }}</p>
 
@@ -19,8 +24,20 @@
         <v-container fluid grid-list-xs>
           <v-layout row wrap>
 
-            <v-flex px-2 py-2 v-bind="{ [`xs6`]: true, [`md3`]: true }" v-for="metadata in metadatasContent" :key="metadata.id">
+            <!-- v-flex px-2 py-2 v-bind="{ [`xs6`]: true, [`md3`]: true }"
+                    v-for="metadata in filterBy(metadatasContent.slice(0,3), searchTerm, 'title')" :key="metadata.id">
+              <metadata-card
+                            v-bind:title="metadata.title"
+                            v-bind:id="metadata.id"
+                            v-bind:subtitle="metadata.notes"
+                            v-bind:tags="metadata.tags"
+                            v-on:clickedEvent="metaDataClicked($event, metadataid)">
+              </metadata-card>
     
+            </v-flex -->
+
+            <v-flex px-2 py-2 v-bind="{ [`xs6`]: true, [`md3`]: true }"
+                    v-for="metadata in metadatasContent" :key="metadata.id">
               <metadata-card
                             v-bind:title="metadata.title"
                             v-bind:id="metadata.id"
@@ -55,15 +72,22 @@
   // import FilterView from '../Views/FilterView.vue';
   import MetadataCard from '../Views/Cards/MetadataCard';
   
+
+  // check filtering in detail https://www.npmjs.com/package/vue2-filters
+
   export default {
     components: {
       MetadataCard,
     },
+    data: () => ({
+      searchTerm: '',
+    }),
+    mounted: function mounted() {
+      this.searchTerm = this.$route.query.search ? this.$route.query.search : '';
+      // console.log('this.$route.params ' + this.$route.params.length + ' query ' + this.$route.query.length);
+    },
     methods: {
       metaDataClicked: function metaDataClicked(datasetname) {
-        alert('clicked ' + datasetname);
-        // this.$store.dispatch(`metadata/${SET_CURRENT_METADATA}`, datasetname);
-
         this.$router.push({
           name: 'MetadataDetailPage',
           params: {

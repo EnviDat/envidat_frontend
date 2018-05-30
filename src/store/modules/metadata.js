@@ -10,6 +10,7 @@ export const metadata = {
     MetadatasContentOK: false,
     metadatasContent: {},
     metadataIds: [],
+    filteredMetadataIds: [],
     error: Object,
   },
   getters: {
