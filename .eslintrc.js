@@ -46,9 +46,11 @@ module.exports = {
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'import/prefer-default-export': 'off',
+    'no-plusplus': 'off',
+    'max-len': 'off',
     'linebreak-style' : 0
     // enforce CLRF linebreaks = 'linebreak-style' : ["error", "unix"]
     // windows linebreaks when not in production environment
-    //"linebreak-style": ["error", process.env.NODE_ENV === 'prod' ? "unix" : "windows"]    
+    //"linebreak-style": ["error", process.env.NODE_ENV === 'prod' ? "unix" : "windows"]        
   }
 }

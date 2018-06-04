@@ -87,7 +87,7 @@
     font-family: 'Libre Baskerville', serif;
     font-weight: 400;
     /* color: #555; */
-    opacity: 0.7;
+    opacity: 0.75;
   }
 
   .imagezoom,

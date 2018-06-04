@@ -2,16 +2,15 @@
 
     <v-chip
         small
-        light
         class="envidat_chip"
         :class="highlightedClass"
         v-bind="{['close'] : closeable,
-                 [`color`]: higlighted ? 'primary' : '',
+                 [`color`]: highlighted ? 'primary' : '',
                  }"
         @click.stop="clicked"
         @input.stop="clickedClose">
         {{ name }}
-    </v-chip>            
+    </v-chip>
 
 </template>
 
@@ -21,12 +20,12 @@
       id: String,
       name: String,
       closeable: Boolean,
-      higlighted: Boolean,
+      highlighted: Boolean,
     },
     computed: {
       highlightedClass: function highlightedClass() {
         return {
-          'white--text': this.higlighted,
+          'white--text': this.highlighted,
           // fontSize: this.name.length > 10 ? '10pt' : 'inherit',
         };
       },

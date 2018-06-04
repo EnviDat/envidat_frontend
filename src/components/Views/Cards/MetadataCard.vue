@@ -12,24 +12,29 @@
       
       <!-- img :src="snowImg" /-->
 
-      <v-container>
-        <v-layout row wrap>
-          <v-flex xs12 >
-            <h3 class="headline mb-0 white--text">{{ truncatedTitle }}</h3>
-          </v-flex>
-        </v-layout>
-
-        <v-layout row wrap justify-space-between>
-          <v-flex v-if="tags" v-for="tag in tags.slice(0, maxTags)" :key="tag.id">
-            <tag-chip :id="tag.id"
-                      :name="tag.name"
-                      class="card_tag" />
+      <v-container fill-height grid-list-xs>
+        <v-layout column>
+          <v-flex xs12 px-3 pt-3>
+            <v-layout row  align-start>
+              <v-flex xs12 >
+                <h3 class="headline mb-0 white--text">{{ truncatedTitle }}</h3>
+              </v-flex>
+            </v-layout>
           </v-flex>
 
-          <v-flex v-if="maxTagsReached">
-            <tag-chip class="card_tag" :name="'...'" />
+          <v-flex xs12 px-2>
+            <v-layout row  align-end >
+                <tag-chip v-if="tags" v-for="tag in tags.slice(0, maxTagNumber)" :key="tag.id"
+                          :id="tag.id"
+                          :name="tag.name"
+                          class="card_tag" />
+              
+              <v-flex v-if="maxTagsReached">
+                <tag-chip class="card_tag" :name="'...'" />
+              </v-flex>
+              
+            </v-layout>
           </v-flex>
-          
         </v-layout>
       </v-container>
 
@@ -44,12 +49,21 @@
     </v-card-title>
 
     <v-card-actions>
-      <v-btn
-      large
-      color="primary">
-        {{ showDataText }}
+      
+      <v-btn icon slot="activator">
+        <v-icon color="primary">cloud_download</v-icon>
       </v-btn>
 
+      <!-- 
+      <v-tooltip bottom>
+        <v-btn icon slot="activator">
+          <v-icon color="primary">cloud_download</v-icon>
+        </v-btn>
+        <span>download data</span>
+      </v-tooltip>
+      
+       {{ showDataText }}
+      -->
       <v-spacer></v-spacer>
 
       <v-btn icon>
@@ -97,6 +111,7 @@ import TagChip from './TagChip';
 
 export default {
   props: {
+    id: String,
     title: String,
     subtitle: String,
     type: Number,
@@ -115,12 +130,30 @@ export default {
   },
   methods: {
     cardClick: function cardClick() {
-      this.$emit('clickedEvent', this.title);
+      this.$emit('clickedEvent', this.id);
     },
   },
   computed: {
     maxTagsReached: function maxTagsReached() {
-      return this.tags !== undefined && this.tags.length > this.maxTags;
+      return this.tags !== undefined && this.tags.length > this.maxTagNumber;
+    },
+    maxTagNumber: function maxTagNumber() {
+      let textLength = 0;
+      let numberOfTags = 0;
+
+      if (this.tags !== undefined) {
+        for (let i = 0; i < this.tags.length; i++) {
+          textLength += this.tags[i].name.length + 1;
+
+          if (textLength >= this.maxTagTextlength) {
+            break;
+          }
+
+          numberOfTags++;
+        }
+      }
+
+      return numberOfTags;
     },
     truncatedSubtitle: function truncatedSubtitle() {
       if (this.subtitle.length > this.maxSubtitleLength) {
@@ -142,7 +175,8 @@ export default {
     showDataText: 'SHOW DATA',
     maxTitleLength: 65,
     maxSubtitleLength: 125,
-    maxTags: 3,
+    // maxTags: 3,
+    maxTagTextlength: 45,
     snowImg, // require('../../../assets/snow_background.jpg'),
     /*
     tags: [
