@@ -24,7 +24,7 @@
         </v-text-field>
       </v-flex>
 
-      <v-flex sm4 lg3 xl2>
+      <v-flex v-if="hasButton" sm4 lg3 xl2>
         <v-btn color="primary"
                 v-bind="{ [`large`]: this.$vuetify.breakpoint.mdAndUp}"
                 @click.native="clicked"> {{ buttonText }}</v-btn>
@@ -67,6 +67,7 @@
     props: {
       labelText: String,
       buttonText: String,
+      hasButton: Boolean,
     },
     data: () => ({
       searchText: '',

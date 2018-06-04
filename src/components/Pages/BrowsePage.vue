@@ -1,7 +1,17 @@
 <template>
-  <v-container fluid>
+  <v-container grid-list-xs>
 
-    <v-layout column align-center>
+    <v-layout>
+      <v-flex>
+        <filter-view :searchViewLabelText="'search'"
+                      :searchViewHasButton="false"
+                      :allTags="allTags" >
+        </filter-view>
+
+      </v-flex>
+    </v-layout>
+
+    <v-layout column>
 
         <div v-if="loadingMetadatasContent">
           <img style="width: 200px;" src="@/assets/loadingspinner.gif" alt="Loading">
@@ -19,7 +29,8 @@
         <v-container fluid grid-list-xs>
           <v-layout row wrap>
 
-            <v-flex px-2 py-2 v-bind="{ [`xs6`]: true, [`md3`]: true }" v-for="metadata in metadatasContent" :key="metadata.id">
+            <v-flex px-2 py-2 xs12 sm6 md3
+                    v-for="metadata in metadatasContent" :key="metadata.id">
     
               <metadata-card
                             v-bind:title="metadata.title"
@@ -52,11 +63,12 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  // import FilterView from '../Views/FilterView.vue';
+  import FilterView from '../Views/FilterView.vue';
   import MetadataCard from '../Views/Cards/MetadataCard';
   
   export default {
     components: {
+      FilterView,
       MetadataCard,
     },
     methods: {
@@ -83,15 +95,44 @@
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
       },
-    },
-    /*
-    computed: {
-      metadatas() {
-        return this.$store.state.metadata.metadatas;
+      /*
+      allTags: function allTags() {
+        const tags = [];
+        for (let i = 0; i < this.metadatasContent.length; i++) {
+          const element = array[i];
+          tags.push(element.tags);
+        }
+
+        return tags;
       },
+      */
     },
-    */
-  };
+  data: () => ({
+      allTags: [
+        {
+          vocabulary_id: null,
+          state: 'active',
+          display_name: 'AIR TEMPERATURE',
+          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd13',
+          name: 'AIR TEMPERATURE',
+        },
+        {
+          vocabulary_id: null,
+          state: 'active',
+          display_name: 'HUMIDITY',
+          id: '5d5d3a6d-1047-4c33-bee7-d1bb119bbe32',
+          name: 'HUMIDITY',
+        },
+        {
+          vocabulary_id: null,
+          state: 'active',
+          display_name: 'LONGWAVE RADIATION',
+          id: '4a3b1721-1050-434e-8573-9c36284bb50c',
+          name: 'LONGWAVE RADIATION',
+        },
+      ],
+  }),
+};
 </script>
 
 

@@ -63,9 +63,6 @@
         <v-icon>star</v-icon>
       </v-btn>
 
-      <v-btn icon @click.native="show = !show">
-        <v-icon>{{ show ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</v-icon>
-      </v-btn>      
     </v-card-actions>
     
     <v-slide-y-transition>
