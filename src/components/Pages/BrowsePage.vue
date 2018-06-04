@@ -80,10 +80,14 @@
       MetadataCard,
     },
     data: () => ({
-      searchTerm: '',
+      searchTerm: String,
+      searchTags: Array,
     }),
     mounted: function mounted() {
       this.searchTerm = this.$route.query.search ? this.$route.query.search : '';
+      const tagsEncoded = this.$route.query.tags ? this.$route.query.tags : '';
+
+      this.searchTags = this.decodeTagsFromUrl(tagsEncoded);
       // console.log('this.$route.params ' + this.$route.params.length + ' query ' + this.$route.query.length);
     },
     methods: {
@@ -94,6 +98,40 @@
             metadataid: datasetname,
           },
         });
+      },
+      filterViewTagClicked: function filterViewTagClicked(tag) {
+        this.searchTags.push(tag);
+
+        const tagsEncoded = this.encodeTagForUrl(this.searchTags);
+
+        this.$router.push({
+          name: 'BrowsePage',
+          params: {
+            query: tagsEncoded,
+          },
+        });
+      },
+      encodeTagForUrl: function encodeTagForUrl(jsonTags) {
+        const stringTags = JSON.parse(jsonTags);
+
+        let urlConformString = stringTags.replace('+', '.');
+        urlConformString = urlConformString.replace('/', '_');
+        urlConformString = urlConformString.replace('=', '-');
+
+        const urlquery = btoa(urlConformString);
+
+        return urlquery;
+      },
+      decodeTagsFromUrl: function decodeTagsFromUrl(urlquery) {
+        const urlQueryString = atob(urlquery);
+
+        let jsonConformString = urlQueryString.replace('.', '+');
+        jsonConformString = jsonConformString.replace('_', '/');
+        jsonConformString = jsonConformString.replace('-', '=');
+
+        const jsonTags = JSON.stringify(jsonConformString);
+
+        return jsonTags;
       },
     },
     computed: {
