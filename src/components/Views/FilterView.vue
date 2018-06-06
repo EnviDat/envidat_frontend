@@ -1,8 +1,15 @@
 <template>
 
-    <v-layout row >
+  <v-container grid-list-md>
 
-      <v-flex xs3 ml-2 mr-2>
+    <v-layout 
+      v-bind="{
+        ['row']: this.$vuetify.breakpoint.smAndUp,
+        ['column']: this.$vuetify.breakpoint.xsOnly,
+       }"
+    row>
+
+      <v-flex xs12 sm3>
           <small-search-bar-view
                           :labelText="searchViewLabelText"
                           :hasButton="searchViewHasButton"
@@ -11,11 +18,16 @@
           </small-search-bar-view>
       </v-flex>
 
-      <v-flex xs9 mr-2>
+      <v-flex xs12 sm9 
+        v-bind="{
+          ['py-2']: this.$vuetify.breakpoint.xsOnly,
+        }"
+      >
         
         <v-card v-if="expanded"
                 hover>
-          <v-layout column px-2 py-2>
+
+          <v-layout column px-2 pt-2>
 
             <v-flex xs12 >
 
@@ -63,12 +75,13 @@
 
         <v-card v-else
                 hover>
+
           <v-layout row>
 
-            <v-flex xs11 px-2 py-2 >
+            <v-flex xs12 px-2 py-2 >
 
               <tag-chip v-if="selectedTags"
-                        v-for="tag in selectedTags" :key="tag.id" 
+                        v-for="tag in selectedTags.slice (0, maxTagNumber)" :key="tag.id" 
                         :id="tag.id"
                         :name="tag.name"
                         :selectable="false"
@@ -104,6 +117,8 @@
       </v-flex>
 
     </v-layout>
+
+  </v-container>
 
 </template>
 
@@ -143,6 +158,25 @@ export default {
       });
 
       return unselecteds;
+    },
+    maxTagNumber: function maxTagNumber() {
+      let textLength = 0;
+      let numberOfTags = 0;
+
+      if (this.selectedTags !== undefined) {
+        for (let i = 0; i < this.selectedTags.length; i++) {
+          textLength += this.selectedTags[i].name.length + 1;
+
+          if (textLength >= this.maxProposedTagsTextLength) {
+            break;
+          }
+
+          numberOfTags++;
+        }
+      }
+
+      // console.log("numberOfTags " + numberOfTags + " " + textLength);
+      return numberOfTags;
     },
   },
   methods: {
@@ -192,6 +226,7 @@ export default {
     expanded: false,
     expandButtonText: 'Show all tags',
     expandedButtonText: 'Hide all tags',
+    maxProposedTagsTextLength: 50,
   }),
   components: {
     TagChip,

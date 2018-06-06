@@ -1,6 +1,7 @@
 <template>
 
-  <v-card
+  <v-card 
+    px-2 py-2
     ripple
     hover
     @click.native="cardClick"
