@@ -62,6 +62,9 @@ export default {
     /* eslint-disable no-underscore-dangle */
     // use $set to trigger the update cycle (https://vuejs.org/v2/guide/list.html#Caveats)
     this._vm.$set(state.metadatasContent, payload.id, payload);
+    // state.metadatasContent.set(payload.id, payload);
+    // const value = { key: payload.id, value: payload };
+    // state.metadatasContent.push(value);
   },
   [ADD_TEST_METADATA](state, payload) {
     this._vm.$set(state.metadatasContent, payload.id, payload);
