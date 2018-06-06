@@ -2,11 +2,11 @@
   <v-container grid-list-xs>
 
     <v-layout>
-      <v-flex>
+      <v-flex my-2>
         <filter-view :searchViewLabelText="'search'"
                       :searchViewHasButton="false"
                       :allTags="allTags" 
-                      :selectedTags="selectedTags">
+                      :selectedTagids="selectedTagids">
         </filter-view>
 
       </v-flex>
@@ -75,7 +75,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import FilterView from '../Views/FilterView.vue';
+  import FilterView from '../Views/FilterView';
   import MetadataCard from '../Views/Cards/MetadataCard';
   
 
@@ -89,6 +89,55 @@
     data: () => ({
       searchTerm: String,
       searchTags: Array,
+      allTags: [
+        {
+          vocabulary_id: null,
+          state: 'active',
+          display_name: 'AIR TEMPERATURE',
+          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd13',
+          name: 'AIR TEMPERATURE',
+        },
+        {
+          vocabulary_id: null,
+          state: 'active',
+          display_name: 'HUMIDITY',
+          id: '5d5d3a6d-1047-4c33-bee7-d1bb119bbe32',
+          name: 'HUMIDITY',
+        },
+        {
+          vocabulary_id: null,
+          state: 'active',
+          display_name: 'LONGWAVE RADIATION',
+          id: '4a3b1721-1050-434e-8573-9c36284bb50c',
+          name: 'LONGWAVE RADIATION',
+        },
+        {
+          vocabulary_id: null,
+          state: 'active',
+          display_name: 'LONGWAVE RADI',
+          id: '4a3b1721-1050-434e-8573-9c36284bb51c',
+          name: 'LONGWAVE RADI',
+        },
+        {
+          vocabulary_id: null,
+          state: 'active',
+          display_name: 'LONG RADIATION',
+          id: '4a3b1721-1050-434e-8573-9c36284bb52c',
+          name: 'LONG RADIATION',
+        },
+        {
+          vocabulary_id: null,
+          state: 'active',
+          display_name: 'RADIATION',
+          id: '4a3b1721-1050-434e-8573-9c36284bb53c',
+          name: 'RADIATION',
+        },
+      ],
+      selectedTagids: [
+        'ba9c8c16-f908-4173-affa-f813f7f8cd13',
+        '5d5d3a6d-1047-4c33-bee7-d1bb119bbe32',
+        '4a3b1721-1050-434e-8573-9c36284bb50c',
+      ],
     }),
     mounted: function mounted() {
       this.searchTerm = this.$route.query.search ? this.$route.query.search : '';
@@ -164,57 +213,6 @@
       },
       */
     },
-  data: () => ({
-      allTags: [
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'AIR TEMPERATURE',
-          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd13',
-          name: 'AIR TEMPERATURE',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'HUMIDITY',
-          id: '5d5d3a6d-1047-4c33-bee7-d1bb119bbe32',
-          name: 'HUMIDITY',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'LONGWAVE RADIATION',
-          id: '4a3b1721-1050-434e-8573-9c36284bb50c',
-          name: 'LONGWAVE RADIATION',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'LONGWAVE RADI',
-          id: '4a3b1721-1050-434e-8573-9c36284bb51c',
-          name: 'LONGWAVE RADI',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'LONG RADIATION',
-          id: '4a3b1721-1050-434e-8573-9c36284bb52c',
-          name: 'LONG RADIATION',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'RADIATION',
-          id: '4a3b1721-1050-434e-8573-9c36284bb53c',
-          name: 'RADIATION',
-        },
-      ],
-      selectedTags: [
-        'ba9c8c16-f908-4173-affa-f813f7f8cd13',
-        '5d5d3a6d-1047-4c33-bee7-d1bb119bbe32',
-        '4a3b1721-1050-434e-8573-9c36284bb50c',
-      ],
-  }),
 };
 </script>
 

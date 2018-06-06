@@ -2,42 +2,46 @@
 
     <v-layout row >
 
-      <v-flex xs3>
-          <search-bar-view
+      <v-flex xs3 ml-2 mr-2>
+          <small-search-bar-view
                           :labelText="searchViewLabelText"
-                          :hasButton="serachViewHasButton"
-                          v-on:clicked="catchSearchClicked">
-          </search-bar-view>
+                          :hasButton="searchViewHasButton"
+                          v-on:clicked="catchSearchClicked"
+                          v-on:searchEmpty="catchSearchEmpty">
+          </small-search-bar-view>
       </v-flex>
 
-      <v-flex xs9 px-3>
-
+      <v-flex xs9 mr-2>
+        
         <v-card hover>
-
           <v-layout row>
 
             <!-- TODO: dynamicaly change the width xs1 - 12 -->
-            
-            <tag-chip v-if="allTags" v-for="tag in allTags" :key="tag.id" 
-                      :id="tag.id"
-                      :name="tag.name"
-                      :highlighted="tag.closeable"
-                      :closeable="tag.closeable"
-                      v-on:clicked="catchTagClicked($event, tag)"
-                      v-on:closeClicked="catchTagCloseClicked($event, tag)"
-                      class="header_tag" />
+
+            <v-flex xs11 px-2 py-2>
+
+              <tag-chip v-if="allTags"
+                        v-for="tag in allTags" :key="tag.id" 
+                        :id="tag.id"
+                        :name="tag.name"
+                        :highlighted="isSelected(tag.id)"
+                        :closeable="isSelected(tag.id)"
+                        v-on:clicked="catchTagClicked($event, tag)"
+                        v-on:clickedClose="catchTagCloseClicked($event, tag)"
+                        class="header_tag" />
 
             <!--v-flex xs2 v-if="maxTagsReached">
               <tag-chip class="card_tag" :name="'...'" />
             </v-flex-->
+            </v-flex>
+            
+            <v-spacer></v-spacer>
+            
+            <v-btn icon>
+                <v-icon color="primary">expand_more</v-icon>
+            </v-btn>
+            
           </v-layout>
-            
-          <v-spacer></v-spacer>
-          
-          <v-btn icon>
-              <v-icon color="accent">key_down</v-icon>
-          </v-btn>
-            
         </v-card>
 
 
@@ -49,7 +53,7 @@
 
 <script>
 import TagChip from './Cards/TagChip';
-import SearchBarView from './SearchBarView';
+import SmallSearchBarView from './SmallSearchBarView';
 
 export default {
   props: {
@@ -58,44 +62,61 @@ export default {
     popularTags: Array,
     allTags: Array,
     searchViewLabelText: String,
-    serachViewHasButton: Boolean,
+    searchViewHasButton: Boolean,
   },
   updated: function updated() {
-      if (this.selectedTagids !== undefined){
-        this.selectedTagids.forEach(element => {
-          const index = this.allTags.index(element);
+    /*
+    if (this.selectedTagids !== undefined) {
+      this.selectedTagids.forEach(element => {
+        const index = this.allTags.index(element);
 
-          element.colseable = (element.id == this.allTags[index].id);
-          console.log("element " + element.name + " " + element.colseable);
-        });
-      }      
+        element.colseable = (element.id == this.allTags[index].id);
+        console.log("element " + element.name + " " + element.colseable);
+      });
+    }
+    */
   },
   methods: {
-    catchSearchClicked: function catchSearchClicked(search) {
+    catchSearchClicked: function catchSearchClicked() {
+    },
+    catchSearchEmpty: function catchSearchEmpty() {
+      console.log("Search is empty");
     },
     catchTagClicked: function catchTagClicked(tagId) {
-      console.log("clicked " + tagId);
-
-      const index = this.allTags.findIndex(obj => obj.id == tagId );      
+      const index = this.allTags.findIndex(obj => obj.id === tagId);
       const tag = this.allTags[index];
 
-      console.log("index " + index);
-      
-      if (tag == undefined || tag.colseable){
+      console.log("add tag " + tag);
+
+      if (tag === undefined || tag.colseable || this.selectedTagids === undefined) {
         return;
       }
 
-      tag.colseable = true;
+      // tag.colseable = true;
+      const exists = this.selectedTagids.indexOf(tagId) >= 0;
 
-      if (this.selectedTagids !== undefined){
+      console.log("exists " + exists);
+
+      if (!exists) {
         this.selectedTagids.push(tagId);
+        console.log("added " + tagId);
       }
     },
-    catchTagCloseClicked: function catchTagCloseClicked(tag) {
+    catchTagCloseClicked: function catchTagCloseClicked(tagId) {
+      if (this.selectedTagids === undefined) {
+        return;
+      }
+
+      const index = this.selectedTagids.indexOf(tagId);
+      console.log("remove index " + index);
+      if (index >= 0) {
+        const removedTagId = this.selectedTagids.splice(index, 1);
+        console.log("removed " + removedTagId);
+      }
     },
-    isSelected: function isSelected(tag){
-      
-    }
+    isSelected: function isSelected(tagId) {
+      return this.selectedTagids.indexOf(tagId) >= 0;
+    },
   },
   data: () => ({
     lableText: 'search',
@@ -105,7 +126,7 @@ export default {
   }),
   components: {
     TagChip,
-    SearchBarView,
+    SmallSearchBarView,
   },
 };
 </script>
