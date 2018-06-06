@@ -13,15 +13,73 @@
 
       <v-flex xs9 mr-2>
         
-        <v-card hover>
+        <v-card v-if="expanded"
+                hover>
+          <v-layout column px-2 py-2>
+
+            <v-flex xs12 >
+
+              <tag-chip v-if="selectedTags"
+                        v-for="tag in selectedTags" :key="tag.id" 
+                        :id="tag.id"
+                        :name="tag.name"
+                        :selectable="false"
+                        :highlighted="isSelected(tag.id)"
+                        :closeable="isSelected(tag.id)"
+                        v-on:clicked="catchTagClicked($event, tag)"
+                        v-on:clickedClose="catchTagCloseClicked($event, tag)"
+                        class="header_tag" />
+
+            </v-flex>
+
+            <v-flex xs12>
+
+              <tag-chip v-if="unselectedTags"
+                        v-for="tag in unselectedTags" :key="tag.id" 
+                        :id="tag.id"
+                        :name="tag.name"
+                        :selectable="false"
+                        :highlighted="isSelected(tag.id)"
+                        :closeable="isSelected(tag.id)"
+                        v-on:clicked="catchTagClicked($event, tag)"
+                        v-on:clickedClose="catchTagCloseClicked($event, tag)"
+                        class="header_tag" />
+
+            </v-flex>
+
+          </v-layout>
+            
+          <v-card-actions>
+                        
+            <filter-view-buttons :expanded.sync="expanded"
+                                  :expandButtonText="expandButtonText"
+                                  :expandedButtonText="expandedButtonText"
+                                  v-on:clickedExpand="expandClicked" >
+            </filter-view-buttons>
+            
+          </v-card-actions>
+            
+        </v-card>
+
+        <v-card v-else
+                hover>
           <v-layout row>
 
-            <!-- TODO: dynamicaly change the width xs1 - 12 -->
+            <v-flex xs11 px-2 py-2 >
 
-            <v-flex xs11 px-2 py-2>
+              <tag-chip v-if="selectedTags"
+                        v-for="tag in selectedTags" :key="tag.id" 
+                        :id="tag.id"
+                        :name="tag.name"
+                        :selectable="false"
+                        :highlighted="isSelected(tag.id)"
+                        :closeable="isSelected(tag.id)"
+                        v-on:clicked="catchTagClicked($event, tag)"
+                        v-on:clickedClose="catchTagCloseClicked($event, tag)"
+                        class="header_tag" />
 
-              <tag-chip v-if="allTags"
-                        v-for="tag in allTags" :key="tag.id" 
+              <tag-chip v-if="unselectedTags"
+                        v-for="tag in unselectedTags" :key="tag.id" 
                         :id="tag.id"
                         :name="tag.name"
                         :selectable="false"
@@ -33,11 +91,11 @@
 
             </v-flex>
             
-            <v-spacer></v-spacer>
-            
-            <v-btn icon>
-                <v-icon color="primary">expand_more</v-icon>
-            </v-btn>
+            <filter-view-buttons :expanded.sync="expanded"
+                                  :expandButtonText="expandButtonText"
+                                  :expandedButtonText="expandedButtonText"
+                                  v-on:clickedExpand="expandClicked" >
+            </filter-view-buttons>
             
           </v-layout>
         </v-card>
@@ -52,6 +110,7 @@
 <script>
 import TagChip from './Cards/TagChip';
 import SmallSearchBarView from './SmallSearchBarView';
+import FilterViewButtons from './FilterViewButtons';
 
 export default {
   props: {
@@ -62,35 +121,55 @@ export default {
     searchViewLabelText: String,
     searchViewHasButton: Boolean,
   },
-  updated: function updated() {
-    /*
-    if (this.selectedTagids !== undefined) {
-      this.selectedTagids.forEach(element => {
-        const index = this.allTags.index(element);
+  computed: {
+    selectedTags: function selectedTags() {
+      const selecteds = [];
 
-        element.colseable = (element.id == this.allTags[index].id);
-        console.log("element " + element.name + " " + element.colseable);
+      this.allTags.forEach((element) => {
+        if (this.tagIsSelected(element.id)) {
+          selecteds.push(element);
+        }
       });
-    }
-    */
+
+      return selecteds;
+    },
+    unselectedTags: function unselectedTags() {
+      const unselecteds = [];
+
+      this.allTags.forEach((element) => {
+        if (!this.tagIsSelected(element.id)) {
+          unselecteds.push(element);
+        }
+      });
+
+      return unselecteds;
+    },
   },
   methods: {
-    catchSearchClicked: function catchSearchClicked() {
+    expandClicked: function expandClicked(expand) {
+      this.expanded = expand;
     },
     catchSearchEmpty: function catchSearchEmpty() {
       console.log("Search is empty");
+    },
+    catchSearchClicked: function catchSearchClicked() {
+    },
+    tagIsSelected: function tagIsSelected(tagId) {
+      if (!tagId || this.selectedTagids === undefined) {
+        return false;
+      }
+
+      return this.selectedTagids.indexOf(tagId) >= 0;
     },
     catchTagClicked: function catchTagClicked(tagId) {
       const index = this.allTags.findIndex(obj => obj.id === tagId);
       const tag = this.allTags[index];
 
-      if (tag === undefined || tag.colseable || this.selectedTagids === undefined) {
+      if (!tag || tag.colseable) {
         return;
       }
 
-      const exists = this.selectedTagids.indexOf(tagId) >= 0;
-
-      if (!exists) {
+      if (!this.tagIsSelected(tagId)) {
         this.selectedTagids.push(tagId);
       }
     },
@@ -110,14 +189,14 @@ export default {
     },
   },
   data: () => ({
-    lableText: 'search',
-    contactEmail: 'mustermann@wsl.ch',
-    doi: 'envidat.2192318293',
-    citation: 'somecitation',
+    expanded: false,
+    expandButtonText: 'Show all tags',
+    expandedButtonText: 'Hide all tags',
   }),
   components: {
     TagChip,
     SmallSearchBarView,
+    FilterViewButtons,
   },
 };
 </script>
