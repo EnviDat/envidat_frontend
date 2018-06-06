@@ -10,6 +10,12 @@ import {
   LOAD_METADATAS_CONTENT_ERROR,
   ADD_METADATA,
   ADD_TEST_METADATA,
+  LOAD_ALL_TAGS,
+  LOAD_ALL_TAGS_SUCCESS,
+  LOAD_ALL_TAGS_ERROR,
+  LOAD_POPULAR_TAGS,
+  LOAD_POPULAR_TAGS_SUCCESS,
+  LOAD_POPULAR_TAGS_ERROR,
 } from '../mutation_consts';
 
 export default {
@@ -68,5 +74,30 @@ export default {
   },
   [ADD_TEST_METADATA](state, payload) {
     this._vm.$set(state.metadatasContent, payload.id, payload);
+  },
+
+  [LOAD_ALL_TAGS](state) {
+    state.loadingAllTags = true;
+    state.allTags = [];
+  },
+  [LOAD_ALL_TAGS_SUCCESS](state, payload) {
+    state.loadingAllTags = false;
+    state.allTags = payload.search_facets.tags.items;
+  },
+  [LOAD_ALL_TAGS_ERROR](state, reason) {
+    state.loadingAllTags = false;
+    state.error = reason;
+  },
+  [LOAD_POPULAR_TAGS](state) {
+    state.loadingPopularTags = true;
+    state.popularTags = [];
+  },
+  [LOAD_POPULAR_TAGS_SUCCESS](state, payload) {
+    state.loadingPopularTags = false;
+    state.popularTags = payload.search_facets.tags.items;
+  },
+  [LOAD_POPULAR_TAGS_ERROR](state, reason) {
+    state.loadingPopularTags = false;
+    state.error = reason;
   },
 };

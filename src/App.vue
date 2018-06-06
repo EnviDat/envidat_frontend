@@ -16,16 +16,32 @@
 <script>
   import { mapGetters } from 'vuex';
   import backgroundImg from '@/assets/landingpage/landing_lowres.jpg';
-  import { LOAD_ALL_METADATA } from './store/mutation_consts';
+  import {
+    LOAD_ALL_METADATA,
+    LOAD_ALL_TAGS,
+    LOAD_POPULAR_TAGS,
+  } from './store/mutation_consts';
 
   export default {
     created: function created() {
       this.loadAllMetadata();
+      this.loadAllTags();
+      this.loadPopularTags();
     },
     methods: {
       loadAllMetadata: function loadAllMetadata() {
         if (!this.loadingMetadatasContent && this.metadatasContentSize <= 0) {
           this.$store.dispatch(`metadata/${LOAD_ALL_METADATA}`);
+        }
+      },
+      loadAllTags: function loadAllTags() {
+        if (!this.loadingAllTags && this.allTags.length <= 0) {
+          this.$store.dispatch(`metadata/${LOAD_ALL_TAGS}`);
+        }
+      },
+      loadPopularTags: function loadPopularTags() {
+        if (!this.loadingPopularTags && this.popularTags.lengt <= 0) {
+          this.$store.dispatch(`metadata/${LOAD_POPULAR_TAGS}`);
         }
       },
     },
@@ -36,6 +52,10 @@
         loadingMetadataIds: 'metadata/loadingMetadataIds',
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
         currentMetadata: 'metadata/currentMetadata',
+        allTags: 'metadata/allTags',
+        loadingAllTags: 'metadata/loadingAllTags',
+        popularTags: 'metadata/popularTags',
+        loadingPopularTags: 'metadata/loadingPopularTags',
       }),
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;

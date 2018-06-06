@@ -11,6 +11,12 @@ import {
   LOAD_METADATAS_CONTENT_SUCCESS,
   LOAD_METADATAS_CONTENT_ERROR,
   ADD_METADATA,
+  LOAD_ALL_TAGS,
+  LOAD_ALL_TAGS_SUCCESS,
+  LOAD_ALL_TAGS_ERROR,
+  LOAD_POPULAR_TAGS,
+  LOAD_POPULAR_TAGS_SUCCESS,
+  LOAD_POPULAR_TAGS_ERROR,
 } from '../mutation_consts';
 
 const API_BASE = '/api/3/action/';
@@ -142,6 +148,40 @@ export default {
 
     commit(LOAD_METADATAS_CONTENT_SUCCESS);
     */
+  },
+  async [LOAD_ALL_TAGS]({ commit }) {
+    commit(LOAD_ALL_TAGS);
+
+    /*
+    commit(LOAD_METADATA_IDS_SUCCESS, packageListJSON.result);
+    return;
+    */
+    /* eslint-disable no-unreachable  */
+
+    axios.get(`${API_BASE}package_search?facet.field=[%22tags%22]&facet.limit=1000&rows=0`)
+      .then((response) => {
+        commit(LOAD_ALL_TAGS_SUCCESS, response.data.result);
+      })
+      .catch((reason) => {
+        commit(LOAD_ALL_TAGS_ERROR, reason);
+      });
+  },
+  async [LOAD_POPULAR_TAGS]({ commit }) {
+    commit(LOAD_POPULAR_TAGS);
+
+    /*
+    commit(LOAD_METADATA_IDS_SUCCESS, packageListJSON.result);
+    return;
+    */
+    /* eslint-disable no-unreachable  */
+
+    axios.get(`${API_BASE}package_search?facet.field=[%22tags%22]&facet.limit=25&rows=0`)
+      .then((response) => {
+        commit(LOAD_POPULAR_TAGS_SUCCESS, response.data.result);
+      })
+      .catch((reason) => {
+        commit(LOAD_POPULAR_TAGS_ERROR, reason);
+      });
   },
 };
 
