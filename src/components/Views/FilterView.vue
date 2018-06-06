@@ -24,15 +24,13 @@
                         v-for="tag in allTags" :key="tag.id" 
                         :id="tag.id"
                         :name="tag.name"
+                        :selectable="false"
                         :highlighted="isSelected(tag.id)"
                         :closeable="isSelected(tag.id)"
                         v-on:clicked="catchTagClicked($event, tag)"
                         v-on:clickedClose="catchTagCloseClicked($event, tag)"
                         class="header_tag" />
 
-            <!--v-flex xs2 v-if="maxTagsReached">
-              <tag-chip class="card_tag" :name="'...'" />
-            </v-flex-->
             </v-flex>
             
             <v-spacer></v-spacer>
@@ -86,20 +84,14 @@ export default {
       const index = this.allTags.findIndex(obj => obj.id === tagId);
       const tag = this.allTags[index];
 
-      console.log("add tag " + tag);
-
       if (tag === undefined || tag.colseable || this.selectedTagids === undefined) {
         return;
       }
 
-      // tag.colseable = true;
       const exists = this.selectedTagids.indexOf(tagId) >= 0;
-
-      console.log("exists " + exists);
 
       if (!exists) {
         this.selectedTagids.push(tagId);
-        console.log("added " + tagId);
       }
     },
     catchTagCloseClicked: function catchTagCloseClicked(tagId) {
@@ -108,10 +100,9 @@ export default {
       }
 
       const index = this.selectedTagids.indexOf(tagId);
-      console.log("remove index " + index);
+
       if (index >= 0) {
-        const removedTagId = this.selectedTagids.splice(index, 1);
-        console.log("removed " + removedTagId);
+        this.selectedTagids.splice(index, 1);
       }
     },
     isSelected: function isSelected(tagId) {
