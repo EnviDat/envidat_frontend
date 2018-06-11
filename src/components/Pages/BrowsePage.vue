@@ -7,7 +7,12 @@
         <filter-view :searchViewLabelText="'search'"
                       :searchViewHasButton="false"
                       :allTags="allTags" 
-                      :selectedTagids="selectedTagids">
+                      :selectedTagids.sync="selectedTagids"
+                      :popularTagids="popularTagids"
+                      v-on:clickedTag="catchTagClicked"
+                      v-on:clickedTagClose="catchTagCloseClicked"
+                      v-on:clickedClear="catchTagCleared"
+                      >
         </filter-view>
 
       </v-flex>
@@ -75,6 +80,7 @@
     data: () => ({
       searchTerm: String,
       searchTags: Array,
+      selectedTagids: [],
       allTags: [
         {
           vocabulary_id: null,
@@ -153,11 +159,29 @@
           id: 'ba9c8c16-f908-4173-affa-f813f7f8cd20',
           name: 'EARTH QUAKE',
         },
+        {
+          vocabulary_id: null,
+          state: 'active',
+          display_name: 'LANDSCAPE AND STUFF',
+          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd18',
+          name: 'LANDSCAPE AND STUFF',
+        },
+        {
+          vocabulary_id: null,
+          state: 'active',
+          display_name: 'SOIL',
+          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd21',
+          name: 'SOIL',
+        },
       ],
-      selectedTagids: [
+      popularTagids: [
         'ba9c8c16-f908-4173-affa-f813f7f8cd13',
         '5d5d3a6d-1047-4c33-bee7-d1bb119bbe32',
-        '4a3b1721-1050-434e-8573-9c36284bb50c',
+        'ba9c8c16-f908-4173-affa-f813f7f8cd20',
+        'ba9c8c16-f908-4173-affa-f813f7f8cd17',
+        'ba9c8c16-f908-4173-affa-f813f7f8cd16',
+        '4a3b1721-1050-434e-8573-9c36284bb53c',
+        '4a3b1721-1050-434e-8573-9c36284bb51c',
       ],
       scrollPosition: null,
     }),
@@ -219,6 +243,40 @@
 
         return jsonTags;
       },
+      catchTagClicked: function catchTagClicked(tagId) {
+
+        const index = this.allTags.findIndex(obj => obj.id === tagId);
+        const tag = this.allTags[index];
+
+        if (!tag || tag.colseable) {
+          return;
+        }
+
+        if (!this.isTagSelected(tagId)) {
+          this.selectedTagids.push(tagId);
+        }
+      },
+      catchTagCloseClicked: function catchTagCloseClicked(tagId) {
+        if (this.selectedTagids === undefined) {
+          return;
+        }
+
+        const index = this.selectedTagids.indexOf(tagId);
+
+        if (index >= 0) {
+          this.selectedTagids.splice(index, 1);
+        }
+      },
+      catchTagCleared: function catchTagCleared() {
+        this.selectedTagids = [];
+      },
+      isTagSelected: function isTagSelected(tagId) {
+        if (!tagId || this.selectedTagids === undefined) {
+          return false;
+        }
+
+        return this.selectedTagids.indexOf(tagId) >= 0;
+      },
     },
     computed: {
       ...mapGetters({
@@ -231,17 +289,6 @@
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
       },
-      /*
-      allTags: function allTags() {
-        const tags = [];
-        for (let i = 0; i < this.metadatasContent.length; i++) {
-          const element = array[i];
-          tags.push(element.tags);
-        }
-
-        return tags;
-      },
-      */
     },
 };
 </script>

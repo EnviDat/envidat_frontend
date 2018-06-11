@@ -30,9 +30,7 @@
                           :name="tag.name"
                           class="card_tag" />
               
-              <v-flex v-if="maxTagsReached">
-                <tag-chip class="card_tag" :name="'...'" />
-              </v-flex>
+                <tag-chip v-if="maxTagsReached" class="card_tag" :name="'...'" />
               
             </v-layout>
           </v-flex>
