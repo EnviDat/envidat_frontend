@@ -186,9 +186,10 @@ export default {
       this.expanded = expand;
     },
     catchSearchEmpty: function catchSearchEmpty() {
-      console.log("Search is empty");
+      this.$emit('clearedSearch');
     },
-    catchSearchClicked: function catchSearchClicked() {
+    catchSearchClicked: function catchSearchClicked(searchTerm) {
+      this.$emit('clickedSearch', searchTerm);
     },
     catchTagCleared: function catchTagCleared() {
       this.$emit('clickedClear');

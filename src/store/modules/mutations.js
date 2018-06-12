@@ -8,6 +8,9 @@ import {
   LOAD_METADATAS_CONTENT,
   LOAD_METADATAS_CONTENT_SUCCESS,
   LOAD_METADATAS_CONTENT_ERROR,
+  SEARCH_METADATA,
+  SEARCH_METADATA_SUCCESS,
+  SEARCH_METADATA_ERROR,
   ADD_METADATA,
   ADD_TEST_METADATA,
   LOAD_ALL_TAGS,
@@ -17,6 +20,7 @@ import {
   LOAD_POPULAR_TAGS_SUCCESS,
   LOAD_POPULAR_TAGS_ERROR,
 } from '../mutation_consts';
+import { stat } from 'fs';
 
 export default {
   [LOAD_ALL_METADATA](state) {
@@ -28,13 +32,13 @@ export default {
   [LOAD_ALL_METADATA_SUCCESS](state) {
     state.loadingMetadataIds = false;
     state.loadingMetadatasContent = false;
-    state.MetadataIdsOK = true;
-    state.MetadatasContentOK = true;
+    state.metadataIdsOK = true;
+    state.metadatasContentOK = true;
   },
   [LOAD_ALL_METADATA_ERROR](state, reason) {
     state.loadingMetadataIds = false;
     state.loadingMetadatasContent = false;
-    state.MetadataIdsOK = false;
+    state.metadataIdsOK = false;
     state.error = reason;
   },
   [LOAD_METADATA_IDS](state) {
@@ -43,12 +47,12 @@ export default {
   },
   [LOAD_METADATA_IDS_SUCCESS](state, payload) {
     state.loadingMetadataIds = false;
-    state.MetadataIdsOK = true;
+    state.metadataIdsOK = true;
     state.metadataIds = payload;
   },
   [LOAD_METADATA_IDS_ERROR](state, reason) {
     state.loadingMetadataIds = false;
-    state.MetadataIdsOK = false;
+    state.metadataIdsOK = false;
     state.error = reason;
   },
   [LOAD_METADATAS_CONTENT](state) {
@@ -57,11 +61,31 @@ export default {
   },
   [LOAD_METADATAS_CONTENT_SUCCESS](state) {
     state.loadingMetadatasContent = false;
-    state.MetadatasContentOK = true;
+    state.metadatasContentOK = true;
   },
   [LOAD_METADATAS_CONTENT_ERROR](state, reason) {
     state.loadingMetadatasContent = false;
-    state.MetadatasContentOK = false;
+    state.metadatasContentOK = false;
+    state.error = reason;
+  },
+  [SEARCH_METADATA](state) {
+    state.searchingMetadatasContent = true;
+    state.metadatasContent = {};
+  },
+  [SEARCH_METADATA_SUCCESS](state, payload) {
+    state.searchingMetadatasContentOK = true;
+
+    /* eslint-disable no-underscore-dangle */
+    for (let i = 0; i < payload.length; i++) {
+      const element = payload[i];
+      this._vm.$set(state.searchedMetadatasContent, element.id, element);
+    }
+
+    state.searchingMetadatasContent = false;
+  },
+  [SEARCH_METADATA_ERROR](state, reason) {
+    state.searchingMetadatasContent = false;
+    state.searchingMetadatasContentOK = false;
     state.error = reason;
   },
   [ADD_METADATA](state, payload) {

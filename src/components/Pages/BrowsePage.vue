@@ -9,13 +9,15 @@
                       :allTags="allTags" 
                       :selectedTagids.sync="selectedTagids"
                       :popularTagids="popularTagids"
+                      v-on:clickedSearch="catchSearchClicked"
+                      v-on:clearedSearch="catchSearchCleared"
                       v-on:clickedTag="catchTagClicked"
                       v-on:clickedTagClose="catchTagCloseClicked"
                       v-on:clickedClear="catchTagCleared"
                       >
         </filter-view>
 
-      <img v-if="loadingMetadatasContent" src="../../assets/loadingspinner.gif" alt="" height="50px;">
+      <img v-if="loadingMetadatasContent || searchingMetadatasContent" src="../../assets/loadingspinner.gif" alt="" height="50px;">
 
       </v-flex>
 
@@ -58,6 +60,11 @@
     
             </v-flex>
 
+            <v-flex xs12 v-if="!filteredMetadataContent">
+              <p>nothing found for {{ searchTerm }}</p>
+    
+            </v-flex>
+
           </v-layout>
         </v-container>
 
@@ -70,7 +77,7 @@
   import { mapGetters } from 'vuex';
   import FilterView from '../Views/FilterView';
   import MetadataCard from '../Views/Cards/MetadataCard';
-  
+  import { SEARCH_METADATA } from '../../store/mutation_consts';
 
   // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
@@ -80,7 +87,7 @@
       MetadataCard,
     },
     data: () => ({
-      searchTerm: String,
+      searchTerm: '',
       selectedTagids: [],
       allTags: [
         {
@@ -243,7 +250,8 @@
           return jsonTags;
         }
 
-        return '';
+        // return an empty array for the selectedTagIds
+        return [];
       },
       catchTagClicked: function catchTagClicked(tagId) {
         const index = this.allTags.findIndex(obj => obj.id === tagId);
@@ -275,6 +283,15 @@
       catchTagCleared: function catchTagCleared() {
         this.selectedTagids = [];
       },
+      catchSearchClicked: function catchSearchClicked(searchTerm) {
+        this.searchTerm = searchTerm;
+        this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm);
+      },
+      catchSearchCleared: function catchSearchCleared() {
+        this.searchTerm = '';
+
+        console.log("clear");
+      },
       isTagSelected: function isTagSelected(tagId) {
         if (!tagId || this.selectedTagids === undefined) {
           return false;
@@ -298,23 +315,7 @@
 
         return false;
       },
-    },
-    computed: {
-      ...mapGetters({
-        metadataIds: 'metadata/metadataIds',
-        metadatasContent: 'metadata/metadatasContent',
-        loadingMetadataIds: 'metadata/loadingMetadataIds',
-        loadingMetadatasContent: 'metadata/loadingMetadatasContent',
-        currentMetadata: 'metadata/currentMetadata',
-      }),
-      metadatasContentSize: function metadatasContentSize() {
-        return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
-      },
-      filteredMetadataContent: function filteredMetadataContent() {
-        if (this.selectedTagids === undefined || this.selectedTagids.length <= 0) {
-          return Object.values(this.metadatasContent);
-        }
-
+      contentFilteredByTags: function contentFilteredByTags() {
         const contentList = [];
 
         if (this.metadatasContentSize > 0) {
@@ -330,12 +331,68 @@
           }
         }
 
-        // filter out selectedTagsIds
-        // filter out searchTag?
+        return contentList;
+      },
+      enhanceSearchWithTags: function enhanceSearchWithTags(searchResult) {
+        if (searchResult === undefined && searchResult.length <= 0) {
+          return undefined;
+        }
+
+        for (let i = 0; i < searchResult.length; i++) {
+          const el = searchResult[i];
+
+          for (let j = 0; j < el.tags.length; j++) {
+            const element = el.tags[j];
+
+            const index = this.allTags.findIndex(obj => obj.name === element);
+            const tag = this.allTags[index];
+
+            if (tag) {
+              /* eslint-disable no-param-reassign */
+              el.tags[j] = tag;
+            }
+          }
+        }
+
+        return searchResult;
+      },
+    },
+    computed: {
+      ...mapGetters({
+        metadataIds: 'metadata/metadataIds',
+        metadatasContent: 'metadata/metadatasContent',
+        searchedMetadatasContent: 'metadata/searchedMetadatasContent',
+        searchingMetadatasContent: 'metadata/searchingMetadatasContent',
+        loadingMetadataIds: 'metadata/loadingMetadataIds',
+        loadingMetadatasContent: 'metadata/loadingMetadatasContent',
+        // allTags: 'metadata/allTags',
+        currentMetadata: 'metadata/currentMetadata',
+      }),
+      metadatasContentSize: function metadatasContentSize() {
+        return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
+      },
+      searchMetadatasContentSize: function searchMetadatasContentSize() {
+        return this.searchedMetadatasContent !== undefined ? Object.keys(this.searchedMetadatasContent).length : 0;
+      },
+      filteredMetadataContent: function filteredMetadataContent() {
+        let contentToFilter;
+
+        if (this.searchTerm && this.searchTerm.length > 0
+         && this.searchMetadatasContentSize > 0) {
+          contentToFilter = Object.values(this.searchedMetadatasContent);
+          contentToFilter = this.enhanceSearchWithTags(contentToFilter);
+        } else {
+          contentToFilter = Object.values(this.metadatasContent);
+        }
+
+        if (this.selectedTagids === undefined
+         || this.selectedTagids.length <= 0) {
+          return contentToFilter;
+        }
 
         // filter search via backend because of fulltext search via solr
 
-        return contentList;
+        return this.contentFilteredByTags(contentToFilter);
       },
     },
 };

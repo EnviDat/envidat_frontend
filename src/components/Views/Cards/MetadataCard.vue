@@ -154,13 +154,16 @@ export default {
 
       if (this.tags !== undefined) {
         for (let i = 0; i < this.tags.length; i++) {
-          textLength += this.tags[i].name.length + 1;
 
-          if (textLength >= this.maxTagTextlength) {
-            break;
+          if (this.tags[i].name !== undefined) {
+            textLength += this.tags[i].name.length + 1;
+
+            if (textLength >= this.maxTagTextlength) {
+              break;
+            }
+
+            numberOfTags++;
           }
-
-          numberOfTags++;
         }
       }
 
