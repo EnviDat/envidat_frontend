@@ -15,6 +15,8 @@
                       >
         </filter-view>
 
+      <img v-if="loadingMetadatasContent" src="../../assets/loadingspinner.gif" alt="" height="50px;">
+
       </v-flex>
 
         <p>{{ scrollPosition }}</p>
@@ -45,7 +47,7 @@
           <v-layout row wrap>
 
             <v-flex xs12 sm6 md4 xl3
-                    v-for="metadata in metadatasContent" :key="metadata.id">
+                    v-for="metadata in filteredMetadataContent" :key="metadata.id">
               <metadata-card
                             v-bind:title="metadata.title"
                             v-bind:id="metadata.id"
@@ -79,7 +81,6 @@
     },
     data: () => ({
       searchTerm: String,
-      searchTags: Array,
       selectedTagids: [],
       allTags: [
         {
@@ -135,7 +136,7 @@
           vocabulary_id: null,
           state: 'active',
           display_name: 'SNOW',
-          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd15',
+          id: 'c4e9ea3f-6149-45ce-8631-c872b96a9537',
           name: 'SNOW',
         },
         {
@@ -162,9 +163,9 @@
         {
           vocabulary_id: null,
           state: 'active',
-          display_name: 'LANDSCAPE AND STUFF',
-          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd18',
-          name: 'LANDSCAPE AND STUFF',
+          display_name: 'AVALANCHES',
+          id: 'e9bbed2b-85d9-49a7-bdfb-2e5785e2202b',
+          name: 'AVALANCHES',
         },
         {
           vocabulary_id: null,
@@ -176,11 +177,9 @@
       ],
       popularTagids: [
         'ba9c8c16-f908-4173-affa-f813f7f8cd13',
-        '5d5d3a6d-1047-4c33-bee7-d1bb119bbe32',
-        'ba9c8c16-f908-4173-affa-f813f7f8cd20',
-        'ba9c8c16-f908-4173-affa-f813f7f8cd17',
+        'c4e9ea3f-6149-45ce-8631-c872b96a9537',
         'ba9c8c16-f908-4173-affa-f813f7f8cd16',
-        '4a3b1721-1050-434e-8573-9c36284bb53c',
+        'e9bbed2b-85d9-49a7-bdfb-2e5785e2202b',
         '4a3b1721-1050-434e-8573-9c36284bb51c',
       ],
       scrollPosition: null,
@@ -191,8 +190,7 @@
       this.searchTerm = this.$route.query.search ? this.$route.query.search : '';
       const tagsEncoded = this.$route.query.tags ? this.$route.query.tags : '';
 
-      this.searchTags = this.decodeTagsFromUrl(tagsEncoded);
-      // console.log('this.$route.params ' + this.$route.params.length + ' query ' + this.$route.query.length);
+      this.selectedTagids = this.decodeTagsFromUrl(tagsEncoded);
     },
     destroy: function destroy() {
       // window.removeEventListener('scroll', this.updateScroll);
@@ -209,42 +207,45 @@
           },
         });
       },
-      filterViewTagClicked: function filterViewTagClicked(tag) {
-        this.searchTags.push(tag);
-
-        const tagsEncoded = this.encodeTagForUrl(this.searchTags);
+      replaceTagsInRouter: function replaceTagsInRouter() {
+        const tagsEncoded = this.encodeTagForUrl(this.selectedTagids);
 
         this.$router.push({
           name: 'BrowsePage',
-          params: {
-            query: tagsEncoded,
-          },
+          query: { tags: tagsEncoded },
         });
       },
       encodeTagForUrl: function encodeTagForUrl(jsonTags) {
-        const stringTags = JSON.parse(jsonTags);
+        if (jsonTags && jsonTags.length > 0) {
+          const jsonString = JSON.stringify(jsonTags);
 
-        let urlConformString = stringTags.replace('+', '.');
-        urlConformString = urlConformString.replace('/', '_');
-        urlConformString = urlConformString.replace('=', '-');
+          const urlquery = btoa(jsonString);
 
-        const urlquery = btoa(urlConformString);
+          let urlConformString = urlquery.replace(/\+/g, '.');
+          urlConformString = urlConformString.replace(/\//g, '_');
+          urlConformString = urlConformString.replace(/=/g, '-');
 
-        return urlquery;
+          return urlConformString;
+        }
+
+        return '';
       },
       decodeTagsFromUrl: function decodeTagsFromUrl(urlquery) {
-        const urlQueryString = atob(urlquery);
+        if (urlquery) {
+          let jsonConformString = urlquery.replace(/\./g, '+');
+          jsonConformString = jsonConformString.replace(/_/g, '/');
+          jsonConformString = jsonConformString.replace(/-/g, '=');
 
-        let jsonConformString = urlQueryString.replace('.', '+');
-        jsonConformString = jsonConformString.replace('_', '/');
-        jsonConformString = jsonConformString.replace('-', '=');
+          const jsonString = atob(jsonConformString);
 
-        const jsonTags = JSON.stringify(jsonConformString);
+          const jsonTags = JSON.parse(jsonString);
 
-        return jsonTags;
+          return jsonTags;
+        }
+
+        return '';
       },
       catchTagClicked: function catchTagClicked(tagId) {
-
         const index = this.allTags.findIndex(obj => obj.id === tagId);
         const tag = this.allTags[index];
 
@@ -254,6 +255,8 @@
 
         if (!this.isTagSelected(tagId)) {
           this.selectedTagids.push(tagId);
+
+          this.replaceTagsInRouter();
         }
       },
       catchTagCloseClicked: function catchTagCloseClicked(tagId) {
@@ -265,6 +268,8 @@
 
         if (index >= 0) {
           this.selectedTagids.splice(index, 1);
+
+          this.replaceTagsInRouter();
         }
       },
       catchTagCleared: function catchTagCleared() {
@@ -277,6 +282,22 @@
 
         return this.selectedTagids.indexOf(tagId) >= 0;
       },
+      tagsIncludeSelected: function tagsIncludeSelected(tags) {
+        for (let i = 0; i < tags.length; i++) {
+          const tagId = tags[i].id;
+
+          // let tagsMatchSelection = false;
+
+          for (let j = 0; j < this.selectedTagids.length; j++) {
+            const selectedTagId = this.selectedTagids[j];
+            if (tagId === selectedTagId) {
+              return true;
+            }
+          }
+        }
+
+        return false;
+      },
     },
     computed: {
       ...mapGetters({
@@ -288,6 +309,33 @@
       }),
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
+      },
+      filteredMetadataContent: function filteredMetadataContent() {
+        if (this.selectedTagids === undefined || this.selectedTagids.length <= 0) {
+          return Object.values(this.metadatasContent);
+        }
+
+        const contentList = [];
+
+        if (this.metadatasContentSize > 0) {
+          const metaDataKeys = Object.keys(this.metadatasContent);
+
+          for (let i = 0; i < metaDataKeys.length; i++) {
+            const key = metaDataKeys[i];
+            const value = this.metadatasContent[key];
+
+            if (value.tags && this.tagsIncludeSelected(value.tags)) {
+              contentList.push(value);
+            }
+          }
+        }
+
+        // filter out selectedTagsIds
+        // filter out searchTag?
+
+        // filter search via backend because of fulltext search via solr
+
+        return contentList;
       },
     },
 };

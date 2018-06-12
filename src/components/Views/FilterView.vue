@@ -115,7 +115,6 @@ export default {
       const selecteds = [];
 
       if (this.selectedTagids !== undefined && this.selectedTagids.length > 0) {
-
         for (let i = 0; i < this.allTags.length; i++) {
           const element = this.allTags[i];
 
