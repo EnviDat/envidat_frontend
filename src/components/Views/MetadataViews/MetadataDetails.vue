@@ -43,8 +43,8 @@
       doi: String,
       subTitle: String,
     },
-    mounted: function mounted() {
-      console.log(`props of MetadataDetails.vue ${this.props}`);
+    updated: function updated() {
+      console.log(`title of MetadataDetails ${this.metadataTitle}`);
     },
     beforeUpdate: function beforeUpdate() {
     },
