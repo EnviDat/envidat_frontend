@@ -44,12 +44,13 @@
         <v-layout row wrap>
 
           <!-- TODO: dynamicaly change the width xs1 - 12 -->
-          <v-flex xs2 v-if="tags" v-for="tag in tags" :key="tag.id" >
-            <tag-chip :id="tag.id"
+          <!-- <v-flex xs2 v-if="tags" v-for="tag in tags" :key="tag.id" > -->
+            <tag-chip v-if="tags" v-for="tag in tags" :key="tag.id"
+                      :id="tag.id"
                       :name="tag.name"
                       :closeable="tag.closeable"
                       class="header_tag" />
-          </v-flex>
+          <!-- </v-flex> -->
 
           <!--v-flex xs2 v-if="maxTagsReached">
             <tag-chip class="card_tag" :name="'...'" />
@@ -75,6 +76,9 @@ export default {
     doi: String,
     citation: String,
     tags: Array,
+  },
+  mounted: function mounted() {
+    console.log("mounted header " + this.metadataTitle);
   },
   /*
     data: () => ({
