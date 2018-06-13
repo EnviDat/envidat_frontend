@@ -41,6 +41,9 @@
       doi: String,
       resources: Array,
     },
+    updated: function updated(){
+      console.log("resources -> " + this.id + " " + this.title);
+    },
     data: () => ({
       showAllResources: false,
       // resources: [

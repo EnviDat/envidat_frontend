@@ -161,7 +161,7 @@
         };
       },
       createResources: function createResources(dataset) {
-        const resources = Array;
+        const resources = [];
 
         dataset.author.forEach((element) => {
           const res = {
@@ -186,6 +186,7 @@
             position: element.position,
             revisionId: element.revision_id,
           };
+
           resources.push(res);
         });
 
