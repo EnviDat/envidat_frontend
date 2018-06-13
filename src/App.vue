@@ -20,7 +20,7 @@
     LOAD_ALL_TAGS,
     LOAD_POPULAR_TAGS,
   } from './store/metadataMutationsConsts';
-
+  import { ADD_CARD_IMAGES } from './store/mutationsConsts';
 
   export default {
     created: function created() {
@@ -28,7 +28,10 @@
       this.loadAllTags();
       this.loadPopularTags();
 
-      this.imagesImports = this.loadImages();
+      const bgImgs = require.context('./assets/', false, /\.jpg$/);
+      this.appBGImages = this.importImages(bgImgs, 'app_b');
+
+      this.importCardBackgrounds();
 
       // const values = Object.values(this.imagesImports);
       // values.forEach(element => {
@@ -51,14 +54,35 @@
           this.$store.dispatch(`metadata/${LOAD_POPULAR_TAGS}`);
         }
       },
-      loadImages: function loadImages(){
+      importCardBackgrounds: function importCardBackgrounds(){
+        let imgPaths = require.context('./assets/cards/landscape/', false, /\.jpg$/);
+        let images = this.importImages(imgPaths);
+        this.$store.commit(ADD_CARD_IMAGES, {key: 'landscape', value: images});
+
+        imgPaths = require.context('./assets/cards/forest/', false, /\.jpg$/);
+        images = this.importImages(imgPaths);        
+        this.$store.commit(ADD_CARD_IMAGES, {key: 'forest', value: images});
+
+        imgPaths = require.context('./assets/cards/snow/', false, /\.jpg$/);
+        images = this.importImages(imgPaths);        
+        this.$store.commit(ADD_CARD_IMAGES, {key: 'snow', value: images});
+
+        imgPaths = require.context('./assets/cards/diversity/', false, /\.jpg$/);
+        images = this.importImages(imgPaths);        
+        this.$store.commit(ADD_CARD_IMAGES, {key: 'diversity', value: images});
+
+        imgPaths = require.context('./assets/cards/hazard/', false, /\.jpg$/);
+        images = this.importImages(imgPaths);        
+        this.$store.commit(ADD_CARD_IMAGES, {key: 'hazard', value: images});
+      },
+      importImages: function importImages(imgs, checkForString){
         let imgCache = {};
-        const imgs = require.context('./assets/', false, /\.jpg$/);
+        // console.log("importImages " + imgs.keys().length);
 
         imgs.keys().forEach(key => {
-          if (key.includes('app_b')){
+          if (!checkForString ||(checkForString && key.includes(checkForString))){
             imgCache[key] = imgs(key);
-            console.log(key + " -> " + imgCache[key]);
+            //console.log(key + " -> " + imgCache[key]);
           }
         });
 
@@ -97,7 +121,7 @@
       },
       dynamicBackground: function dynamicBackground(){
         const imageKey = this.appBGImage;
-        const bgImg = this.imagesImports[imageKey];
+        const bgImg = this.appBGImages[imageKey];
         // console.log(imageKey + " bgImg " + bgImg);
         let bgStyle = '';
 
@@ -114,7 +138,7 @@
       },
     },
     data: () => ({
-      bgImagesImports: {},
+      appBGImages: {},
     }),
     props: {
       source: String,

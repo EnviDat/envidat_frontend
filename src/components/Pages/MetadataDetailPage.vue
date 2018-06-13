@@ -34,7 +34,7 @@
   import MetadataDetails from '../Views/MetadataViews/MetadataDetails';
   import MetadataCitation from '../Views/MetadataViews/MetadataCitation';
   import NotFoundView from '../Views/NotFoundView';
-  // import { LOAD_METADATAS_CONTENT } from '../../store/mutation_consts';
+  // import { LOAD_METADATAS_CONTENT } from '../../store/metadataMutationsConsts';
 
   // Might want to check https://css-tricks.com/use-cases-fixed-backgrounds-css/
   // for animations between the different parts of the Metadata

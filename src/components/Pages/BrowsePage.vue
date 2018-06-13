@@ -51,10 +51,11 @@
             <v-flex xs12 sm6 md4 xl3
                     v-for="metadata in filteredMetadataContent" :key="metadata.id">
               <metadata-card
-                            v-bind:title="metadata.title"
-                            v-bind:id="metadata.id"
-                            v-bind:subtitle="metadata.notes"
-                            v-bind:tags="metadata.tags"
+                            :title="metadata.title"
+                            :id="metadata.id"
+                            :subtitle="metadata.notes"
+                            :tags="metadata.tags"
+                            :titleImg="metadata.titleImg"
                             v-on:clickedEvent="metaDataClicked($event, metadataid)">
               </metadata-card>
     
@@ -93,9 +94,17 @@
       this.$store.commit(CHANGE_APP_BG, this.browsePageBGImage);
 
       this.searchTerm = this.$route.query.search ? this.$route.query.search : '';
+      if (this.searchTerm.length > 0){
+        this.catchSearchClicked();
+      }
       const tagsEncoded = this.$route.query.tags ? this.$route.query.tags : '';
+      if (tagsEncoded.length > 0){
+        this.selectedTagids = this.decodeTagsFromUrl(tagsEncoded);
+      } else {
+        const category = this.$route.params.category ? this.$route.params.category : null;
+        this.selectedTagids = this.decodeCategoryFromUrl(category)
+      }
 
-      this.selectedTagids = this.decodeTagsFromUrl(tagsEncoded);
     },
     destroy: function destroy() {
       // window.removeEventListener('scroll', this.updateScroll);
@@ -151,6 +160,16 @@
         // return an empty array for the selectedTagIds
         return [];
       },
+      decodeCategoryFromUrl: function decodeCategoryFromUrl(urlquery) {
+        if (urlquery) {
+
+          //TODO: figure out which tags should be auto selected
+          console.log("got category via url: " + urlquery);
+        }
+
+        // return an empty array for the selectedTagIds
+        return [];
+      },
       catchTagClicked: function catchTagClicked(tagId) {
         const index = this.allTags.findIndex(obj => obj.id === tagId);
         const tag = this.allTags[index];
@@ -183,7 +202,9 @@
       },
       catchSearchClicked: function catchSearchClicked(searchTerm) {
         this.searchTerm = searchTerm;
-        this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm);
+        if (this.searchTerm.length > 0) {
+          this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm);
+        }
       },
       catchSearchCleared: function catchSearchCleared() {
         this.searchTerm = '';
@@ -254,6 +275,69 @@
 
         return searchResult;
       },
+      randomInt: function randomInt(min, max){
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      },
+      enhanceMetadata: function enhanceMetadata(metadatas){
+        if (metadatas === undefined && metadatas.length <= 0) {
+          return undefined;
+        }
+
+        for (let i = 0; i < metadatas.length; i++) {
+          const el = metadatas[i];
+
+          const category = this.getTagCategory(el.tags);
+          const categoryImgs = this.cardBGImages[category];
+          const max = Object.keys(categoryImgs).length - 1;
+          const randomIndex = this.randomInt(0, max);
+          const cardImg = randomIndex >= 0 ? Object.values(categoryImgs)[randomIndex] : 0;
+
+          // console.log("loaded " + cardImg + " for category " + category);
+          
+          el.titleImg = cardImg;
+        }
+
+        return metadatas;
+      },
+      getTagCategory: function getTagCategory(tags){
+        let category = this.tagCategory;
+
+        if (tags){
+          for (let i = 0; i < tags.length; i++) {
+            const element = tags[i];
+            if (element.name.includes('forest')){
+              category = 'forest'; break;
+            }
+            if (element.name.includes('landscape')){
+              category = 'landscape'; break;
+            }
+            if (element.name.includes('snow')){
+              category = 'snow'; break;
+            }
+            if (element.name.includes('hazard')){
+              category = 'hazard'; break;
+            }
+            if (element.name.includes('diversity')){
+              category = 'diversity'; break;
+            }
+          };
+        }
+
+        return category;
+      },
+      dynamicCardBackground: function dynamicCardBackground(){
+        const max = Object.keys(this.imagesImports).length;
+        const randomIndex = this.randomInt(0, max);
+        const cardImg = Object.values(this.imagesImports)[randomIndex];
+        // console.log(this.imageIndex + " cardImg " + cardImg);
+
+        if (cardImg){
+          return 'background-image: linear-gradient(to bottom, rgba(1,1,1,0.5), rgba(255,255,255,0)), '+
+                                  'url(' + cardImg  + '); background-position: center, center';
+        }
+
+        return '';
+      },
     },
     computed: {
       ...mapGetters({
@@ -265,6 +349,7 @@
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
         // allTags: 'metadata/allTags',
         currentMetadata: 'metadata/currentMetadata',
+        cardBGImages: 'cardBGImages',
       }),
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
@@ -283,6 +368,8 @@
           contentToFilter = Object.values(this.metadatasContent);
         }
 
+        contentToFilter = this.enhanceMetadata(contentToFilter);
+
         if (this.selectedTagids === undefined
          || this.selectedTagids.length <= 0) {
           return contentToFilter;
@@ -295,6 +382,7 @@
     },
     data: () => ({
       browsePageBGImage: './app_b_browsepage.jpg',
+      tagCategory: 'landscape', // default
       searchTerm: '',
       selectedTagids: [],
       allTags: [

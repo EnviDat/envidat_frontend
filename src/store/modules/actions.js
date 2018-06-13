@@ -94,10 +94,8 @@ export default {
   async [LOAD_METADATA_IDS]({ commit }) {
     commit(LOAD_METADATA_IDS);
 
-    /*
     commit(LOAD_METADATA_IDS_SUCCESS, packageListJSON.result);
     return;
-    */
     /* eslint-disable no-unreachable  */
 
     loadMetadataIdsPromise().then((response) => {
@@ -108,6 +106,15 @@ export default {
   },
   async [LOAD_METADATAS_CONTENT]({ dispatch, commit }, metadataIds) {
     commit(LOAD_METADATAS_CONTENT);
+
+    for (let index = 0; index < metadataIds.length; index += 1) {
+      dataset.result.id += index;
+      commit(ADD_METADATA, dataset.result);
+    }
+
+    commit(LOAD_METADATAS_CONTENT_SUCCESS);
+    return;
+    /* eslint-disable no-unreachable  */
 
     if (metadataIds === undefined || metadataIds.length <= 0) {
       loadMetadataIdsPromise().then((response) => {
@@ -121,16 +128,6 @@ export default {
       });
     }
 
-    /*
-    for (let index = 0; index < metadataIds.length; index += 1) {
-      dataset.result.id += index;
-      commit(ADD_METADATA, dataset.result);
-    }
-
-    commit(LOAD_METADATAS_CONTENT_SUCCESS);
-    return;
-    */
-    /* eslint-disable no-unreachable  */
     /*
     const calls = [];
 

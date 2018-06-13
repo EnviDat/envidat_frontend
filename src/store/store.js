@@ -15,9 +15,11 @@ export default new Vuex.Store({
     projects: [],
     // use a './' before the img for the img name for the local path
     appBGImage: './app_b_landingpage.jpg',
+    cardBGImages: {},
   },
   getters: {
     appBGImage: state => state.appBGImage,
+    cardBGImages: state => state.cardBGImages,
   },
   mutations,
   modules: {
