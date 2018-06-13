@@ -170,7 +170,7 @@
   }
 
   .card .headline {
-    font-family: 'Karma', serif;
+    font-family: 'Libre Baskerville', serif;
     /* font-weight: 700; */
 
     overflow: hidden;
