@@ -10,6 +10,9 @@ import {
   LOAD_METADATAS_CONTENT,
   LOAD_METADATAS_CONTENT_SUCCESS,
   LOAD_METADATAS_CONTENT_ERROR,
+  SEARCH_METADATA,
+  SEARCH_METADATA_SUCCESS,
+  SEARCH_METADATA_ERROR,
   ADD_METADATA,
   LOAD_ALL_TAGS,
   LOAD_ALL_TAGS_SUCCESS,
@@ -20,6 +23,7 @@ import {
 } from '../mutation_consts';
 
 const API_BASE = '/api/3/action/';
+const SOLR_API_BASE = '/solr/ckan_default/';
 
 /* eslint-disable no-unused-vars  */
 let packageListJSON = '';
@@ -71,6 +75,21 @@ export default {
     }).catch((reason) => {
       commit(LOAD_ALL_METADATA_ERROR, reason);
     });
+  },
+  async [SEARCH_METADATA]({ commit }, searchTerm) {
+    commit(SEARCH_METADATA);
+
+    // tags:SNOW%20AND%20notes:snow
+    // maybe use notes:"snow avalanche"
+    // select?indent=on&q=tags:${searchTerm}%20AND%20notes:${searchTerm}&wt=json
+
+    axios.get(`${SOLR_API_BASE}select?indent=on&q=notes:${searchTerm}&wt=json`)
+      .then((response) => {
+        commit(SEARCH_METADATA_SUCCESS, response.data.response.docs);
+      })
+      .catch((reason) => {
+        commit(SEARCH_METADATA_ERROR, reason);
+      });
   },
   async [LOAD_METADATA_IDS]({ commit }) {
     commit(LOAD_METADATA_IDS);

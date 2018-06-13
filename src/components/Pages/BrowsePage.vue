@@ -7,8 +7,17 @@
         <filter-view :searchViewLabelText="'search'"
                       :searchViewHasButton="false"
                       :allTags="allTags" 
-                      :selectedTagids="selectedTagids">
+                      :selectedTagids.sync="selectedTagids"
+                      :popularTagids="popularTagids"
+                      v-on:clickedSearch="catchSearchClicked"
+                      v-on:clearedSearch="catchSearchCleared"
+                      v-on:clickedTag="catchTagClicked"
+                      v-on:clickedTagClose="catchTagCloseClicked"
+                      v-on:clickedClear="catchTagCleared"
+                      >
         </filter-view>
+
+      <img v-if="loadingMetadatasContent || searchingMetadatasContent" src="../../assets/loadingspinner.gif" alt="" height="50px;">
 
       </v-flex>
 
@@ -40,7 +49,7 @@
           <v-layout row wrap>
 
             <v-flex xs12 sm6 md4 xl3
-                    v-for="metadata in metadatasContent" :key="metadata.id">
+                    v-for="metadata in filteredMetadataContent" :key="metadata.id">
               <metadata-card
                             v-bind:title="metadata.title"
                             v-bind:id="metadata.id"
@@ -48,6 +57,11 @@
                             v-bind:tags="metadata.tags"
                             v-on:clickedEvent="metaDataClicked($event, metadataid)">
               </metadata-card>
+    
+            </v-flex>
+
+            <v-flex xs12 v-if="!filteredMetadataContent">
+              <p>nothing found for {{ searchTerm }}</p>
     
             </v-flex>
 
@@ -63,7 +77,7 @@
   import { mapGetters } from 'vuex';
   import FilterView from '../Views/FilterView';
   import MetadataCard from '../Views/Cards/MetadataCard';
-  
+  import { SEARCH_METADATA } from '../../store/mutation_consts';
 
   // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
@@ -73,8 +87,8 @@
       MetadataCard,
     },
     data: () => ({
-      searchTerm: String,
-      searchTags: Array,
+      searchTerm: '',
+      selectedTagids: [],
       allTags: [
         {
           vocabulary_id: null,
@@ -129,7 +143,7 @@
           vocabulary_id: null,
           state: 'active',
           display_name: 'SNOW',
-          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd15',
+          id: 'c4e9ea3f-6149-45ce-8631-c872b96a9537',
           name: 'SNOW',
         },
         {
@@ -153,11 +167,27 @@
           id: 'ba9c8c16-f908-4173-affa-f813f7f8cd20',
           name: 'EARTH QUAKE',
         },
+        {
+          vocabulary_id: null,
+          state: 'active',
+          display_name: 'AVALANCHES',
+          id: 'e9bbed2b-85d9-49a7-bdfb-2e5785e2202b',
+          name: 'AVALANCHES',
+        },
+        {
+          vocabulary_id: null,
+          state: 'active',
+          display_name: 'SOIL',
+          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd21',
+          name: 'SOIL',
+        },
       ],
-      selectedTagids: [
+      popularTagids: [
         'ba9c8c16-f908-4173-affa-f813f7f8cd13',
-        '5d5d3a6d-1047-4c33-bee7-d1bb119bbe32',
-        '4a3b1721-1050-434e-8573-9c36284bb50c',
+        'c4e9ea3f-6149-45ce-8631-c872b96a9537',
+        'ba9c8c16-f908-4173-affa-f813f7f8cd16',
+        'e9bbed2b-85d9-49a7-bdfb-2e5785e2202b',
+        '4a3b1721-1050-434e-8573-9c36284bb51c',
       ],
       scrollPosition: null,
     }),
@@ -167,8 +197,7 @@
       this.searchTerm = this.$route.query.search ? this.$route.query.search : '';
       const tagsEncoded = this.$route.query.tags ? this.$route.query.tags : '';
 
-      this.searchTags = this.decodeTagsFromUrl(tagsEncoded);
-      // console.log('this.$route.params ' + this.$route.params.length + ' query ' + this.$route.query.length);
+      this.selectedTagids = this.decodeTagsFromUrl(tagsEncoded);
     },
     destroy: function destroy() {
       // window.removeEventListener('scroll', this.updateScroll);
@@ -185,63 +214,186 @@
           },
         });
       },
-      filterViewTagClicked: function filterViewTagClicked(tag) {
-        this.searchTags.push(tag);
-
-        const tagsEncoded = this.encodeTagForUrl(this.searchTags);
+      replaceTagsInRouter: function replaceTagsInRouter() {
+        const tagsEncoded = this.encodeTagForUrl(this.selectedTagids);
 
         this.$router.push({
           name: 'BrowsePage',
-          params: {
-            query: tagsEncoded,
-          },
+          query: { tags: tagsEncoded },
         });
       },
       encodeTagForUrl: function encodeTagForUrl(jsonTags) {
-        const stringTags = JSON.parse(jsonTags);
+        if (jsonTags && jsonTags.length > 0) {
+          const jsonString = JSON.stringify(jsonTags);
 
-        let urlConformString = stringTags.replace('+', '.');
-        urlConformString = urlConformString.replace('/', '_');
-        urlConformString = urlConformString.replace('=', '-');
+          const urlquery = btoa(jsonString);
 
-        const urlquery = btoa(urlConformString);
+          let urlConformString = urlquery.replace(/\+/g, '.');
+          urlConformString = urlConformString.replace(/\//g, '_');
+          urlConformString = urlConformString.replace(/=/g, '-');
 
-        return urlquery;
+          return urlConformString;
+        }
+
+        return '';
       },
       decodeTagsFromUrl: function decodeTagsFromUrl(urlquery) {
-        const urlQueryString = atob(urlquery);
+        if (urlquery) {
+          let jsonConformString = urlquery.replace(/\./g, '+');
+          jsonConformString = jsonConformString.replace(/_/g, '/');
+          jsonConformString = jsonConformString.replace(/-/g, '=');
 
-        let jsonConformString = urlQueryString.replace('.', '+');
-        jsonConformString = jsonConformString.replace('_', '/');
-        jsonConformString = jsonConformString.replace('-', '=');
+          const jsonString = atob(jsonConformString);
 
-        const jsonTags = JSON.stringify(jsonConformString);
+          const jsonTags = JSON.parse(jsonString);
 
-        return jsonTags;
+          return jsonTags;
+        }
+
+        // return an empty array for the selectedTagIds
+        return [];
+      },
+      catchTagClicked: function catchTagClicked(tagId) {
+        const index = this.allTags.findIndex(obj => obj.id === tagId);
+        const tag = this.allTags[index];
+
+        if (!tag || tag.colseable) {
+          return;
+        }
+
+        if (!this.isTagSelected(tagId)) {
+          this.selectedTagids.push(tagId);
+
+          this.replaceTagsInRouter();
+        }
+      },
+      catchTagCloseClicked: function catchTagCloseClicked(tagId) {
+        if (this.selectedTagids === undefined) {
+          return;
+        }
+
+        const index = this.selectedTagids.indexOf(tagId);
+
+        if (index >= 0) {
+          this.selectedTagids.splice(index, 1);
+
+          this.replaceTagsInRouter();
+        }
+      },
+      catchTagCleared: function catchTagCleared() {
+        this.selectedTagids = [];
+      },
+      catchSearchClicked: function catchSearchClicked(searchTerm) {
+        this.searchTerm = searchTerm;
+        this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm);
+      },
+      catchSearchCleared: function catchSearchCleared() {
+        this.searchTerm = '';
+
+        console.log("clear");
+      },
+      isTagSelected: function isTagSelected(tagId) {
+        if (!tagId || this.selectedTagids === undefined) {
+          return false;
+        }
+
+        return this.selectedTagids.indexOf(tagId) >= 0;
+      },
+      tagsIncludeSelected: function tagsIncludeSelected(tags) {
+        for (let i = 0; i < tags.length; i++) {
+          const tagId = tags[i].id;
+
+          // let tagsMatchSelection = false;
+
+          for (let j = 0; j < this.selectedTagids.length; j++) {
+            const selectedTagId = this.selectedTagids[j];
+            if (tagId === selectedTagId) {
+              return true;
+            }
+          }
+        }
+
+        return false;
+      },
+      contentFilteredByTags: function contentFilteredByTags() {
+        const contentList = [];
+
+        if (this.metadatasContentSize > 0) {
+          const metaDataKeys = Object.keys(this.metadatasContent);
+
+          for (let i = 0; i < metaDataKeys.length; i++) {
+            const key = metaDataKeys[i];
+            const value = this.metadatasContent[key];
+
+            if (value.tags && this.tagsIncludeSelected(value.tags)) {
+              contentList.push(value);
+            }
+          }
+        }
+
+        return contentList;
+      },
+      enhanceSearchWithTags: function enhanceSearchWithTags(searchResult) {
+        if (searchResult === undefined && searchResult.length <= 0) {
+          return undefined;
+        }
+
+        for (let i = 0; i < searchResult.length; i++) {
+          const el = searchResult[i];
+
+          for (let j = 0; j < el.tags.length; j++) {
+            const element = el.tags[j];
+
+            const index = this.allTags.findIndex(obj => obj.name === element);
+            const tag = this.allTags[index];
+
+            if (tag) {
+              /* eslint-disable no-param-reassign */
+              el.tags[j] = tag;
+            }
+          }
+        }
+
+        return searchResult;
       },
     },
     computed: {
       ...mapGetters({
         metadataIds: 'metadata/metadataIds',
         metadatasContent: 'metadata/metadatasContent',
+        searchedMetadatasContent: 'metadata/searchedMetadatasContent',
+        searchingMetadatasContent: 'metadata/searchingMetadatasContent',
         loadingMetadataIds: 'metadata/loadingMetadataIds',
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
+        // allTags: 'metadata/allTags',
         currentMetadata: 'metadata/currentMetadata',
       }),
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
       },
-      /*
-      allTags: function allTags() {
-        const tags = [];
-        for (let i = 0; i < this.metadatasContent.length; i++) {
-          const element = array[i];
-          tags.push(element.tags);
+      searchMetadatasContentSize: function searchMetadatasContentSize() {
+        return this.searchedMetadatasContent !== undefined ? Object.keys(this.searchedMetadatasContent).length : 0;
+      },
+      filteredMetadataContent: function filteredMetadataContent() {
+        let contentToFilter;
+
+        if (this.searchTerm && this.searchTerm.length > 0
+         && this.searchMetadatasContentSize > 0) {
+          contentToFilter = Object.values(this.searchedMetadatasContent);
+          contentToFilter = this.enhanceSearchWithTags(contentToFilter);
+        } else {
+          contentToFilter = Object.values(this.metadatasContent);
         }
 
-        return tags;
+        if (this.selectedTagids === undefined
+         || this.selectedTagids.length <= 0) {
+          return contentToFilter;
+        }
+
+        // filter search via backend because of fulltext search via solr
+
+        return this.contentFilteredByTags(contentToFilter);
       },
-      */
     },
 };
 </script>

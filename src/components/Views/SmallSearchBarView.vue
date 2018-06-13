@@ -30,32 +30,6 @@
 
     </v-layout>
 
-    <!-- small thick search bar  >
-
-    <v-layout column hidden-sm-and-up>
-
-      <v-flex xs12 mx-1>
-        <v-text-field
-          hide-details
-          full-width  
-          prepend-icon="search"
-          :prepend-icon-cb="clicked"
-          v-model="searchText"
-          :label="labelText">          
-        </v-text-field>
-      </v-flex>
-
-      <v-card-actions v-if="hasButton">
-
-        <v-spacer></v-spacer>
-
-        <v-btn  color="primary"
-                large
-                @click.native="clicked"> {{ buttonText }}</v-btn>
-      </v-card-actions>
-
-    </v-layout-->
-    
   </v-card>
 </template>
 
@@ -88,5 +62,10 @@
 .smallSearchBar > label {
   top: inherit !important;
 }
+
+.smallSearchBar .input-group__details {
+  min-height: 0px !important;
+}
+
 
 </style>
