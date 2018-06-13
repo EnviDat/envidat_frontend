@@ -19,7 +19,7 @@ import {
   LOAD_POPULAR_TAGS,
   LOAD_POPULAR_TAGS_SUCCESS,
   LOAD_POPULAR_TAGS_ERROR,
-} from '../mutation_consts';
+} from '../metadataMutationsConsts';
 import { stat } from 'fs';
 
 export default {

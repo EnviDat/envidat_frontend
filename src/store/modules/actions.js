@@ -20,7 +20,7 @@ import {
   LOAD_POPULAR_TAGS,
   LOAD_POPULAR_TAGS_SUCCESS,
   LOAD_POPULAR_TAGS_ERROR,
-} from '../mutation_consts';
+} from '../metadataMutationsConsts';
 
 const API_BASE = '/api/3/action/';
 const SOLR_API_BASE = '/solr/ckan_default/';

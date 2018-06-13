@@ -77,122 +77,20 @@
   import { mapGetters } from 'vuex';
   import FilterView from '../Views/FilterView';
   import MetadataCard from '../Views/Cards/MetadataCard';
-  import { SEARCH_METADATA } from '../../store/mutation_consts';
+  import { SEARCH_METADATA } from '../../store/metadataMutationsConsts';
+  import { CHANGE_APP_BG } from '../../store/mutationsConsts';
 
   // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
   export default {
-    components: {
-      FilterView,
-      MetadataCard,
+    beforeRouteEnter: function beforeRouteEnter (to, from, next) {
+      next(vm => {
+        vm.$store.commit(CHANGE_APP_BG, vm.browsePageBGImage);
+      })
     },
-    data: () => ({
-      searchTerm: '',
-      selectedTagids: [],
-      allTags: [
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'AIR TEMPERATURE',
-          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd13',
-          name: 'AIR TEMPERATURE',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'HUMIDITY',
-          id: '5d5d3a6d-1047-4c33-bee7-d1bb119bbe32',
-          name: 'HUMIDITY',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'LONGWAVE RADIATION',
-          id: '4a3b1721-1050-434e-8573-9c36284bb50c',
-          name: 'LONGWAVE RADIATION',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'LONGWAVE RADI',
-          id: '4a3b1721-1050-434e-8573-9c36284bb51c',
-          name: 'LONGWAVE RADI',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'LONG RADIATION',
-          id: '4a3b1721-1050-434e-8573-9c36284bb52c',
-          name: 'LONG RADIATION',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'RADIATION',
-          id: '4a3b1721-1050-434e-8573-9c36284bb53c',
-          name: 'RADIATION',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'TEMPER',
-          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd14',
-          name: 'TEMPER',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'SNOW',
-          id: 'c4e9ea3f-6149-45ce-8631-c872b96a9537',
-          name: 'SNOW',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'ICE',
-          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd16',
-          name: 'ICE',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'LANDSCAPE',
-          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd17',
-          name: 'LANDSCAPE',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'EARTH QUAKE',
-          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd20',
-          name: 'EARTH QUAKE',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'AVALANCHES',
-          id: 'e9bbed2b-85d9-49a7-bdfb-2e5785e2202b',
-          name: 'AVALANCHES',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'SOIL',
-          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd21',
-          name: 'SOIL',
-        },
-      ],
-      popularTagids: [
-        'ba9c8c16-f908-4173-affa-f813f7f8cd13',
-        'c4e9ea3f-6149-45ce-8631-c872b96a9537',
-        'ba9c8c16-f908-4173-affa-f813f7f8cd16',
-        'e9bbed2b-85d9-49a7-bdfb-2e5785e2202b',
-        '4a3b1721-1050-434e-8573-9c36284bb51c',
-      ],
-      scrollPosition: null,
-    }),
     mounted: function mounted() {
       // window.addEventListener('scroll', this.updateScroll);
+      this.$store.commit(CHANGE_APP_BG, this.browsePageBGImage);
 
       this.searchTerm = this.$route.query.search ? this.$route.query.search : '';
       const tagsEncoded = this.$route.query.tags ? this.$route.query.tags : '';
@@ -395,17 +293,120 @@
         return this.contentFilteredByTags(contentToFilter);
       },
     },
+    data: () => ({
+      browsePageBGImage: './app_b_browsepage.jpg',
+      searchTerm: '',
+      selectedTagids: [],
+      allTags: [
+        {
+          vocabulary_id: null,
+          state: 'active',
+          display_name: 'AIR TEMPERATURE',
+          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd13',
+          name: 'AIR TEMPERATURE',
+        },
+        {
+          vocabulary_id: null,
+          state: 'active',
+          display_name: 'HUMIDITY',
+          id: '5d5d3a6d-1047-4c33-bee7-d1bb119bbe32',
+          name: 'HUMIDITY',
+        },
+        {
+          vocabulary_id: null,
+          state: 'active',
+          display_name: 'LONGWAVE RADIATION',
+          id: '4a3b1721-1050-434e-8573-9c36284bb50c',
+          name: 'LONGWAVE RADIATION',
+        },
+        {
+          vocabulary_id: null,
+          state: 'active',
+          display_name: 'LONGWAVE RADI',
+          id: '4a3b1721-1050-434e-8573-9c36284bb51c',
+          name: 'LONGWAVE RADI',
+        },
+        {
+          vocabulary_id: null,
+          state: 'active',
+          display_name: 'LONG RADIATION',
+          id: '4a3b1721-1050-434e-8573-9c36284bb52c',
+          name: 'LONG RADIATION',
+        },
+        {
+          vocabulary_id: null,
+          state: 'active',
+          display_name: 'RADIATION',
+          id: '4a3b1721-1050-434e-8573-9c36284bb53c',
+          name: 'RADIATION',
+        },
+        {
+          vocabulary_id: null,
+          state: 'active',
+          display_name: 'TEMPER',
+          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd14',
+          name: 'TEMPER',
+        },
+        {
+          vocabulary_id: null,
+          state: 'active',
+          display_name: 'SNOW',
+          id: 'c4e9ea3f-6149-45ce-8631-c872b96a9537',
+          name: 'SNOW',
+        },
+        {
+          vocabulary_id: null,
+          state: 'active',
+          display_name: 'ICE',
+          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd16',
+          name: 'ICE',
+        },
+        {
+          vocabulary_id: null,
+          state: 'active',
+          display_name: 'LANDSCAPE',
+          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd17',
+          name: 'LANDSCAPE',
+        },
+        {
+          vocabulary_id: null,
+          state: 'active',
+          display_name: 'EARTH QUAKE',
+          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd20',
+          name: 'EARTH QUAKE',
+        },
+        {
+          vocabulary_id: null,
+          state: 'active',
+          display_name: 'AVALANCHES',
+          id: 'e9bbed2b-85d9-49a7-bdfb-2e5785e2202b',
+          name: 'AVALANCHES',
+        },
+        {
+          vocabulary_id: null,
+          state: 'active',
+          display_name: 'SOIL',
+          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd21',
+          name: 'SOIL',
+        },
+      ],
+      popularTagids: [
+        'ba9c8c16-f908-4173-affa-f813f7f8cd13',
+        'c4e9ea3f-6149-45ce-8631-c872b96a9537',
+        'ba9c8c16-f908-4173-affa-f813f7f8cd16',
+        'e9bbed2b-85d9-49a7-bdfb-2e5785e2202b',
+        '4a3b1721-1050-434e-8573-9c36284bb51c',
+      ],
+      scrollPosition: null,
+    }),
+    components: {
+      FilterView,
+      MetadataCard,
+    },
 };
 </script>
 
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .application {
-    background-image: url('../../assets/landingpage/noisy_pattern.png') !important;
-    background-position: center top !important;
-    /* background-size: cover !important; */
-    background-repeat: repeat !important;
-    /* background-attachment: fixed !important; */
-  }
+
 </style>

@@ -53,6 +53,7 @@
   import DataProducerCard from '../Views/Cards/DataProducerCard';
   import TitleView from '../Views/TitleView';
   import SearchBarView from '../Views/SearchBarView';
+  import { CHANGE_APP_BG } from '../../store/mutationsConsts';
 
   // Login & Register form and animation
   // https://codepen.io/yusufbkr/pen/RPBQqg
@@ -63,15 +64,11 @@
   // Here is one with a progress button/bar
   // https://codepen.io/suez/pen/dPqxoM
 
-  /* eslint-disable no-alert */
-  /* eslint-disable no-console */
-
   export default {
-    components: {
-      TitleView,
-      SearchBarView,
-      CategoryCard,
-      DataProducerCard,
+    beforeRouteEnter: function beforeRouteEnter (to, from, next) {
+      next(vm => {
+        vm.$store.commit(CHANGE_APP_BG, vm.landingPageBGImg);
+      })
     },
     methods: {
       catchCategoryClicked: function catchCategoryClicked(cardTitle) {
@@ -112,6 +109,7 @@
       },
     },
     data: () => ({
+      landingPageBGImg: './app_b_landingpage.jpg',      
       labelText: "Type ex. 'Avalanche'",
       buttonlText: 'SEARCH',
       envidatTitle: 'EnviDat',
@@ -153,6 +151,12 @@
       },
       ],
     }),
+    components: {
+      TitleView,
+      SearchBarView,
+      CategoryCard,
+      DataProducerCard,
+    },
   };
 </script>
 

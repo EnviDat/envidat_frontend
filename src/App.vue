@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire"
-        v-bind:style="'background-image: url(' + this.backgroundImg + ') !important;'">
+        v-bind:style="dynamicBackground">
 
     <!--v-btn fab top left color="success" @click="testStore" >Test</v-btn>
 
@@ -15,18 +15,25 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import backgroundImg from '@/assets/landingpage/landing_lowres.jpg';
   import {
     LOAD_ALL_METADATA,
     LOAD_ALL_TAGS,
     LOAD_POPULAR_TAGS,
-  } from './store/mutation_consts';
+  } from './store/metadataMutationsConsts';
+
 
   export default {
     created: function created() {
       this.loadAllMetadata();
       this.loadAllTags();
       this.loadPopularTags();
+
+      this.imagesImports = this.loadImages();
+
+      // const values = Object.values(this.imagesImports);
+      // values.forEach(element => {
+      //   console.log("value " + element);
+      // });
     },
     methods: {
       loadAllMetadata: function loadAllMetadata() {
@@ -44,6 +51,33 @@
           this.$store.dispatch(`metadata/${LOAD_POPULAR_TAGS}`);
         }
       },
+      loadImages: function loadImages(){
+        let imgCache = {};
+        const imgs = require.context('./assets/', false, /\.jpg$/);
+
+        imgs.keys().forEach(key => {
+          if (key.includes('app_b')){
+            imgCache[key] = imgs(key);
+            console.log(key + " -> " + imgCache[key]);
+          }
+        });
+
+        return imgCache;
+
+        /*
+        const imports = {};
+        const pic = imgs('./c_b_snow.jpg');
+        console.log("pic " + pic);
+
+        this.images.forEach(element => {
+          var imgImport = require(`../../../assets/cards/${element}`);
+          console.log("imgImport " + imgImport);
+          imports[element] = imgImport;
+        });
+
+        return imports;
+        */
+      }      
     },
     computed: {
       ...mapGetters({
@@ -56,13 +90,31 @@
         loadingAllTags: 'metadata/loadingAllTags',
         popularTags: 'metadata/popularTags',
         loadingPopularTags: 'metadata/loadingPopularTags',
+        appBGImage: 'appBGImage',
       }),
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
       },
+      dynamicBackground: function dynamicBackground(){
+        const imageKey = this.appBGImage;
+        const bgImg = this.imagesImports[imageKey];
+        // console.log(imageKey + " bgImg " + bgImg);
+        let bgStyle = '';
+
+        if (bgImg){
+          bgStyle = 'background-image: url(' + bgImg  + ') !important;';
+        }
+
+        if (bgImg.includes('browsepage')){
+          bgStyle = 'background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%,rgba(255,255,255,0.7) 100%), ' +
+                    ' url(' + bgImg  + ') !important;'
+        }
+
+        return bgStyle;
+      },
     },
     data: () => ({
-      backgroundImg,
+      bgImagesImports: {},
     }),
     props: {
       source: String,
