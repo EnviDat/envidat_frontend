@@ -14,13 +14,15 @@ export default new Router({
       name: 'LandingPage',
       component: LandingPage,
     },
+    /*
     {
-      path: '/browse/:search/category/:category',
+      path: '/browse/:category',
       name: 'BrowsePage',
       component: BrowsePage,
     },
+    */
     {
-      path: '/browse/:search',
+      path: '/browse',
       name: 'BrowsePage',
       component: BrowsePage,
     },

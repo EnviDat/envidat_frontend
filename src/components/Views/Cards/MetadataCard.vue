@@ -1,6 +1,7 @@
 <template>
 
-  <v-card
+  <v-card 
+    px-2 py-2
     ripple
     hover
     @click.native="cardClick"
@@ -17,21 +18,19 @@
           <v-flex xs12 px-3 pt-3>
             <v-layout row  align-start>
               <v-flex xs12 >
-                <h3 class="headline mb-0 white--text">{{ truncatedTitle }}</h3>
+                <h3 class="headline mb-0 white--text">{{ title | truncate(maxTitleLength) }}</h3>
               </v-flex>
             </v-layout>
           </v-flex>
 
           <v-flex xs12 px-2>
             <v-layout row  align-end >
-                <tag-chip v-if="tags" v-for="tag in tags.slice(0, maxTagNumber)" :key="tag.id"
+                <tag-chip v-if="tags" v-for="tag in tags.slice (0, maxTagNumber)" :key="tag.id"
                           :id="tag.id"
                           :name="tag.name"
                           class="card_tag" />
               
-              <v-flex v-if="maxTagsReached">
-                <tag-chip class="card_tag" :name="'...'" />
-              </v-flex>
+                <tag-chip v-if="maxTagsReached" class="card_tag" :name="'...'" />
               
             </v-layout>
           </v-flex>
@@ -44,7 +43,7 @@
     <v-card-title primary-title>
       <!--div>{{ title }}</div-->
       <div>
-        <div class="subheading">{{ truncatedSubtitle }}</div>
+        <div class="subheading">{{ subtitle | truncate(maxSubtitleLength) }}</div>
       </div>
     </v-card-title>
 
@@ -133,6 +132,15 @@ export default {
       this.$emit('clickedEvent', this.id);
     },
   },
+  /*
+  filters: {
+    uppercase: function uppercase(value) {
+      if (!value) return '';
+      value = value.toString();
+      return value.toUpperCase();
+    },
+  },
+  */
   computed: {
     maxTagsReached: function maxTagsReached() {
       return this.tags !== undefined && this.tags.length > this.maxTagNumber;
@@ -143,31 +151,20 @@ export default {
 
       if (this.tags !== undefined) {
         for (let i = 0; i < this.tags.length; i++) {
-          textLength += this.tags[i].name.length + 1;
 
-          if (textLength >= this.maxTagTextlength) {
-            break;
+          if (this.tags[i].name !== undefined) {
+            textLength += this.tags[i].name.length + 1;
+
+            if (textLength >= this.maxTagTextlength) {
+              break;
+            }
+
+            numberOfTags++;
           }
-
-          numberOfTags++;
         }
       }
 
       return numberOfTags;
-    },
-    truncatedSubtitle: function truncatedSubtitle() {
-      if (this.subtitle.length > this.maxSubtitleLength) {
-        return `${this.subtitle.substring(0, this.maxSubtitleLength)} ...`;
-      }
-
-      return this.subtitle;
-    },
-    truncatedTitle: function truncatedTitle() {
-      if (this.title.length > this.maxTitleLength) {
-        return `${this.title.substring(0, this.maxTitleLength)} ...`;
-      }
-
-      return this.title;
     },
   },
   data: () => ({
@@ -178,14 +175,6 @@ export default {
     // maxTags: 3,
     maxTagTextlength: 45,
     snowImg, // require('../../../assets/snow_background.jpg'),
-    /*
-    tags: [
-      { id: 'bla', name: 'snow', closeable: false },
-      { id: 'blaads', name: 'avalanche', closeable: true },
-      { id: 'bluu', name: 'weather', closeable: false },
-      { id: 'asdfasdf', name: 'aprettylongtagname', closeable: false },
-    ],
-    */
   }),
 };
 </script>

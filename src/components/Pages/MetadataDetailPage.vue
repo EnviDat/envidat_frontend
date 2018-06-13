@@ -1,70 +1,117 @@
 <template>
   <v-container fluid >
+    <div v-if="metadataIdValid">
+      <metadata-header v-bind="header"> </metadata-header>
 
-    <metadata-header v-bind="header"> </metadata-header>
+      <metadata-body v-bind="body"> </metadata-body>
 
-    <metadata-body v-bind="body"> </metadata-body>
+      <metadata-citation v-bind="citation"> </metadata-citation>
 
-    <metadata-citation v-bind="citation"> </metadata-citation>
+      <metadata-resources v-bind="resources" ></metadata-resources>
 
-    <metadata-resources v-bind="resources" ></metadata-resources>
+      <metadata-location v-if="location"
+                          v-bind="location" ></metadata-location>
 
-    <metadata-location v-bind="resources" ></metadata-location>
+      <metadata-details v-if="details"
+                          v-bind="details" ></metadata-details>
+    </div>
 
-    <metadata-details v-bind="resources" ></metadata-details>
+    <div v-else> 
 
+        <not-found-view :backPath="notFoundBackPath">
+        </not-found-view>
+
+    </div>
   </v-container>
 </template>
 
 <script>
+  import { mapGetters } from 'vuex';
   import MetadataHeader from '../Views/MetadataViews/MetadataHeader';
   import MetadataBody from '../Views/MetadataViews/MetadataBody';
   import MetadataResources from '../Views/MetadataViews/MetadataResources';
   import MetadataLocation from '../Views/MetadataViews/MetadataLocation';
   import MetadataDetails from '../Views/MetadataViews/MetadataDetails';
   import MetadataCitation from '../Views/MetadataViews/MetadataCitation';
+  import NotFoundView from '../Views/NotFoundView';
   // import { LOAD_METADATAS_CONTENT } from '../../store/mutation_consts';
 
   // Might want to check https://css-tricks.com/use-cases-fixed-backgrounds-css/
   // for animations between the different parts of the Metadata
 
   export default {
-    props: {
+    data: () => ({
+      // metadataId: '',
       header: Object,
       body: Object,
       citation: Object,
       resources: Array,
-    },
+      location: null,
+      details: Object,
+      notFoundBackPath: 'browse',
+    }),
     created: function created() {
-      // TODO load only this metadata content from $route.params.metadataid
-      console.log(`created MetaDataDetailPage router params: ${this.$route.params.metadataid}`);
+      // console.log(`created MetaDataDetailPage router params: ${this.$route.params.metadataid}`);
+      //this.metadataId = this.$route.params.metadataid;
+    },
+    mounted: function mounted() {
+      this.createMetadataContent();
     },
     update: function update() {
-      const metadataIds = this.$store.getters['metadata/metadataIds'];
-      const metadataIds2 = this.$store.metadataIds;
-      console.log(`updated metadataid: ${this.metadataid}`);
-      console.log(`updated metadataIds: ${metadataIds} metadataIds2: ${metadataIds2}`);
-
-      /*
-      if (metadataIds === undefined || metadataIds.length <= 0) {
-        this.$store.dispatch(`metadata/${LOAD_METADATAS_CONTENT}`, metadataIds);
-      } else
-      */
-      if (metadataIds !== undefined && metadataIds.includes(this.metadataid)) {
-        const dataset = this.$store.metadataIds[this.metadataid];
-        console.log(`found dataset: ${dataset}`);
-
-        this.body = this.createBody(dataset);
-        this.citation = this.createCitation(dataset);
-        this.resources = this.createResources(dataset);
-      }
+      this.createMetadataContent();
     },
     computed: {
-      metadataid: function metadataid() {
+      ...mapGetters({
+        metadataIds: 'metadata/metadataIds',
+        metadatasContent: 'metadata/metadatasContent',
+        loadingMetadataIds: 'metadata/loadingMetadataIds',
+        loadingMetadatasContent: 'metadata/loadingMetadatasContent',
+      }),
+      metadatasContentSize: function metadatasContentSize() {
+        return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
+      },
+      metadataId: function metadataId() {
         return this.$route.params.metadataid;
       },
+      metadataIdValid: function metadataIdValid(){
+        return true;
+        // return (this.metadataId && this.metadataIds !== undefined
+        //  && this.metadataIds.includes(this.metadataId));
+      }
     },
     methods: {
+      createMetadataContent: function createMetadataContent(){
+        let currentMetadataContent;
+
+        if (this.metadatasContentSize > 0 && this.metadataIdValid){
+          currentMetadataContent = this.metadatasContent[this.metadataId];
+        }
+
+        if (currentMetadataContent){
+          this.header = this.createHeader(currentMetadataContent);
+          this.body = this.createBody(currentMetadataContent);
+          this.citation = this.createCitation(currentMetadataContent);
+          this.resources = this.createResources(currentMetadataContent);
+          console.log("created resources " + this.resources);
+          this.location = this.createLocation(currentMetadataContent);
+          this.details = this.createDetails(currentMetadataContent);
+        }
+      },
+      createHeader: function createHeader(dataset) {
+
+        if (typeof(dataset.maintainer) === 'string'){
+          dataset.maintainer = JSON.parse(dataset.maintainer);
+        }
+
+        return {
+          metadataTitle: dataset.title,
+          doi: dataset.doi,
+          contactName: dataset.maintainer ? dataset.maintainer.name : "",
+          contactEmail: dataset.maintainer_email ? dataset.maintainer_email : dataset.maintainer.email ? dataset.maintainer.email : "",
+          citation: "",
+          tags: dataset.tags,
+        };
+      },      
       createBody: function createBody(dataset) {
         return {
           id: dataset.id,
@@ -76,12 +123,25 @@
       createCitation: function createCitation(dataset) {
         let authors = '';
 
-        dataset.author.forEach((element) => {
-          authors += ` ${element};`;
-        });
+        if (dataset.author !== undefined){
 
-        // cut of the last ';'
-        authors = authors.substring(0, authors.length - 2);
+          if (typeof(dataset.author) === 'string'){
+            dataset.author = JSON.parse(dataset.author);
+          }
+          
+          dataset.author.forEach((element) => {
+            authors += ` ${element.name};`;
+          });
+
+          // cut of the last ';'
+          if (authors.length > 1){
+            authors = authors.substring(0, authors.length - 1);
+          }
+        }
+
+        if (typeof(dataset.publication) === 'string'){
+          dataset.publication = JSON.parse(dataset.publication);
+        }
 
         let text = `${authors.trim()} (${dataset.publication.publication_year}). ${dataset.publication.publisher},`;
 
@@ -136,6 +196,22 @@
           resources,
         };
       },
+      createLocation: function createLocation(dataset) {
+        return {};
+        /*
+        return {
+          metadataTitle: dataset.title,
+          doi: dataset.doi,
+          contactName: dataset.maintainer ? dataset.maintainer : "",
+          contactEmail: dataset.maintainer_email ? maintainer_email : dataset.maintainer.email ? dataset.maintainer.email : "",
+          citation: "",
+          tags: dataset.tags,
+        };
+        */
+      },
+      createDetails: function createDetails(dataset) {
+        return {};
+      },      
     },
     components: {
       MetadataHeader,
@@ -144,6 +220,7 @@
       MetadataLocation,
       MetadataDetails,
       MetadataCitation,
+      NotFoundView,
     },
   };
   /*

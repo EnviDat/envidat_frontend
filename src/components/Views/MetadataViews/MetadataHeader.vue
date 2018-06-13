@@ -43,13 +43,11 @@
 
         <v-layout row wrap>
 
-          <!-- TODO: dynamicaly change the width xs1 - 12 -->
-          <v-flex xs2 v-if="tags" v-for="tag in tags" :key="tag.id" >
-            <tag-chip :id="tag.id"
-                      :name="tag.name"
-                      :closeable="tag.closeable"
-                      class="header_tag" />
-          </v-flex>
+          <tag-chip v-if="tags" v-for="tag in tags" :key="tag.id"
+                    :id="tag.id"
+                    :name="tag.name"
+                    :closeable="tag.closeable"
+                    class="header_tag" />
 
           <!--v-flex xs2 v-if="maxTagsReached">
             <tag-chip class="card_tag" :name="'...'" />
@@ -76,14 +74,9 @@ export default {
     citation: String,
     tags: Array,
   },
-  /*
-    data: () => ({
-      contactName: 'Dr. Muster Mann',
-      contactEmail: 'mustermann@wsl.ch',
-      doi: 'envidat.2192318293',
-      citation: 'somecitation',
-    }),
-  */
+  // mounted: function mounted() {
+  //   console.log("mounted header " + this.metadataTitle);
+  // },
   components: {
     TagChip,
   },

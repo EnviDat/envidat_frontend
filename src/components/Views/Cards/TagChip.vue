@@ -6,9 +6,10 @@
         :class="highlightedClass"
         v-bind="{['close'] : closeable,
                  [`color`]: highlighted ? 'primary' : '',
+                 ['disabled'] : selectable,
                  }"
         @click.stop="clicked"
-        @input.stop="clickedClose">
+        @input="clickedClose">
         {{ name }}
     </v-chip>
 
@@ -20,6 +21,7 @@
       id: String,
       name: String,
       closeable: Boolean,
+      selectable: Boolean,
       highlighted: Boolean,
     },
     computed: {

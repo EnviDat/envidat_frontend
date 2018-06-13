@@ -1,26 +1,23 @@
 <template>
   <v-card hover raised >
-    <v-container 
-                v-bind="{ [`pa-2`]: this.$vuetify.breakpoint.smAndUp,
-                          [`pa-1`]: this.$vuetify.breakpoint.xsOnly}"
-    >
 
     <!-- long slim search bar  -->
 
     <v-layout row
               align-center
-              hidden-xs-only
               justify-space-between>
 
-      <v-flex sm8 md8 xl9>
+      <v-flex xs12 py-0>
         <v-text-field
+          class="py-2 smallSearchBar"
           hide-details
           full-width
           single-line
-          prepend-icon="search"
+          clearable
+          prepend-icon="search"          
           :prepend-icon-cb="clicked"
           v-model="searchText"
-          :label="labelText">          
+          :label="labelText">
         </v-text-field>
       </v-flex>
 
@@ -33,33 +30,6 @@
 
     </v-layout>
 
-    <!-- small thick search bar  -->
-
-    <v-layout column hidden-sm-and-up>
-
-      <v-flex xs12 mx-1>
-        <v-text-field
-          hide-details
-          full-width  
-          prepend-icon="search"
-          :prepend-icon-cb="clicked"
-          v-model="searchText"
-          :label="labelText">          
-        </v-text-field>
-      </v-flex>
-
-      <v-card-actions v-if="hasButton">
-
-        <v-spacer></v-spacer>
-
-        <v-btn  color="primary"
-                large
-                @click.native="clicked"> {{ buttonText }}</v-btn>
-      </v-card-actions>
-
-    </v-layout>
-    
-    </v-container>
   </v-card>
 </template>
 
@@ -67,8 +37,8 @@
   export default {
     props: {
       labelText: String,
-      buttonText: String,
       hasButton: Boolean,
+      buttonText: String,
     },
     data: () => ({
       searchText: '',
@@ -89,4 +59,13 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
   
+.smallSearchBar > label {
+  top: inherit !important;
+}
+
+.smallSearchBar .input-group__details {
+  min-height: 0px !important;
+}
+
+
 </style>

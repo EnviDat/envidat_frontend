@@ -10,7 +10,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn icon @click.native="readMore()">
-            <v-icon color="accent" >{{ showFullDescription ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
+            <v-icon color="accent" >{{ showFullDescription ? 'expand_less' : 'expand_more' }}</v-icon>
           </v-btn>        
         </v-card-actions>
       </v-card>
@@ -28,21 +28,22 @@
       description: String,
     },
     mounted: function mounted() {
-      this.fullDescription = this.shortDesciption;
     },
     computed: {
-      shortDesciption: function shortDesciption() {
-        return this.description !== undefined ? `${this.description.substring(0, 1000)}...` : '';
+      fullDescription: function fullDescription() {
+        if (this.description !== undefined){
+          return this.showFullDescription ? this.description : `${this.description.substring(0, 500)}...`;
+        }
+
+        return '';
       },
     },
     data: () => ({
       showFullDescription: false,
-      fullDescription: this.shortDesciption,
     }),
     methods: {
       readMore: function readMore() {
         this.showFullDescription = !this.showFullDescription;
-        this.fullDescription = this.showFullDescription ? this.description : this.shortDesciption;
       },
     },
     components: {

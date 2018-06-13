@@ -1,78 +1,245 @@
 <template>
-  <v-layout row >
 
-    <v-flex xs3>
-        <search-bar-view
-                        :labelText="searchViewLabelText"
-                        :hasButton="serachViewHasButton"
-                        v-on:clicked="catchSearchClicked">
-        </search-bar-view>
-    </v-flex>
+  <v-container grid-list-md>
 
-    <v-flex xs9>
+    <v-layout 
+      v-bind="{
+        ['row']: this.$vuetify.breakpoint.smAndUp,
+        ['column']: this.$vuetify.breakpoint.xsOnly,
+       }"
+    row>
 
-      <v-card hover class="px-4 py-2">
+      <v-flex xs12 sm3>
+          <small-search-bar-view
+                          :labelText="searchViewLabelText"
+                          :hasButton="searchViewHasButton"
+                          v-on:clicked="catchSearchClicked"
+                          v-on:searchEmpty="catchSearchEmpty">
+          </small-search-bar-view>
+      </v-flex>
 
-        <v-layout row>
-
-          <!-- TODO: dynamicaly change the width xs1 - 12 -->
-          <v-flex xs2 v-if="tags" v-for="tag in allTags" :key="tag.id" >
-            <tag-chip :id="tag.id"
-                      :name="tag.name"
-                      :closeable="tag.closeable"
-                      class="header_tag" />
-          </v-flex>
-
-          <!--v-flex xs2 v-if="maxTagsReached">
-            <tag-chip class="card_tag" :name="'...'" />
-          </v-flex-->
-        </v-layout>
-          
-        <v-spacer></v-spacer>
+      <v-flex xs12 sm9 
+        v-bind="{
+          ['py-2']: this.$vuetify.breakpoint.xsOnly,
+        }"
+      >
         
-        <v-btn v-if="favourit" icon>
-            <v-icon color="accent">star</v-icon>
-        </v-btn>
-          
-      </v-card>
+        <filter-expanded-view v-if="expanded"
+                      :allTags="allTags" 
+                      :selectedTagids="selectedTagids"
+                      :popularTagids="popularTagids"
+                      :expanded="expanded"
+                      :expandButtonText="expandButtonText"
+                      :expandedButtonText = "expandedButtonText"
+                      :clearButtonText="clearButtonText"
+                      v-on:clickedTag="catchTagClicked"
+                      v-on:clickedTagClose="catchTagCloseClicked"
+                      v-on:clickedExpand="expandClicked"
+                      v-on:clickedClear="catchTagCleared"
+                      >
+        </filter-expanded-view>
+
+        <v-card v-else
+                hover>
+
+          <v-layout row align-center align-content-center >
+
+            <v-flex xs12 px-2 py-2 >
+              <!-- <v-icon>assignment</v-icon> -->
+
+              <tag-chip v-if="selectedTags.length > 0"
+                        v-for="tag in selectedTags.slice(0, maxTagNumber)" :key="tag.id" 
+                        :id="tag.id"
+                        :name="tag.name"
+                        :selectable="false"
+                        :highlighted="true"
+                        :closeable="true"
+                        v-on:clickedClose="catchTagCloseClicked($event, tag.id)"
+                        class="header_tag" />
+
+              <tag-chip v-if="popularTags"
+                        v-for="tag in popularTags" :key="tag.id" 
+                        :id="tag.id"
+                        :name="tag.name"
+                        :selectable="false"
+                        :highlighted="false"
+                        :closeable="false"
+                        v-on:clicked="catchTagClicked($event, tag.id)"
+                        class="header_tag" />
 
 
-    </v-flex>
+              <tag-chip v-if="maxPopularTagNumber >= popularTags.length"
+                class="header_tag" :name="'...'" />
 
-  </v-layout>
+            </v-flex>
+            
+            <v-card-actions class="pr-2">
+            
+              <filter-view-buttons :expanded.sync="expanded"
+                                    :expandButtonText="expandButtonText"
+                                    :expandedButtonText="expandedButtonText"
+                                    v-on:clickedExpand="expandClicked" >
+              </filter-view-buttons>
+
+            </v-card-actions>
+            
+          </v-layout>
+        </v-card>
+
+
+      </v-flex>
+
+    </v-layout>
+
+  </v-container>
+
 </template>
 
 <script>
 import TagChip from './Cards/TagChip';
-import SearchBarView from './SearchBarView';
+import SmallSearchBarView from './SmallSearchBarView';
+import FilterExpandedView from './FilterExpandedView';
+import FilterViewButtons from './FilterViewButtons';
 
 export default {
   props: {
     searchTerm: String,
-    selectedTags: Array,
-    popularTags: Array,
+    selectedTagids: Array,
+    popularTagids: Array,
     allTags: Array,
     searchViewLabelText: String,
-    serachViewHasButton: Boolean,
+    searchViewHasButton: Boolean,
+  },
+  computed: {
+    selectedTags: function selectedTags() {
+      const selecteds = [];
+
+      if (this.selectedTagids !== undefined && this.selectedTagids.length > 0) {
+        for (let i = 0; i < this.allTags.length; i++) {
+          const element = this.allTags[i];
+
+          if (this.isTagSelected(element.id)) {
+            selecteds.push(element);
+          }
+
+          if (selecteds.length >= this.selectedTagids.length) {
+            break;
+          }
+        }
+      }
+
+      return selecteds;
+    },
+    popularTags: function popularTags() {
+      const popTags = [];
+
+      this.allTags.forEach((element) => {
+        if (!this.isPopluarTag(element.id)
+         && !this.isTagSelected(element.id)) {
+          popTags.push(element);
+        }
+      });
+
+      return popTags;
+    },
+    maxTagNumber: function maxTagNumber() {
+      return this.getTagMaxAmout(this.selectedTags, this.maxSelectedTagsTextLength);
+    },
+    maxPopularTagNumber: function maxPopularTagNumber() {
+      let maxTextLength = this.maxPopularTagsTextLength;
+
+      if (this.$vuetify.breakpoint.xsOnly) {
+        maxTextLength = this.xsTextLength;
+      } else if (this.$vuetify.breakpoint.smAndDown) {
+        maxTextLength = this.smTextLength;
+      } else if (this.$vuetify.breakpoint.mdAndDown) {
+        maxTextLength = this.mdTextLength;
+      }
+
+      const maxNumber = this.getTagMaxAmout(this.popularTagids, maxTextLength);
+      const combinedMax = maxNumber - this.selectedTags.length;
+
+      return combinedMax >= 0 ? combinedMax : 0;
+    },
   },
   methods: {
-    catchSearchClicked: function catchSearchClicked(search) {
+    getTagMaxAmout: function getTagMaxAmout(list, maxTextLength) {
+      let textLength = 0;
+      let numberOfTags = 0;
+
+      if (list !== undefined) {
+        for (let i = 0; i < list.length; i++) {
+          textLength += list[i].length + 1;
+
+          if (textLength >= maxTextLength) {
+            break;
+          }
+
+          numberOfTags++;
+        }
+      }
+
+      // console.log("numberOfTags " + numberOfTags + " " + textLength);
+      return numberOfTags;
+    },
+    expandClicked: function expandClicked(expand) {
+      this.expanded = expand;
+    },
+    catchSearchEmpty: function catchSearchEmpty() {
+      this.$emit('clearedSearch');
+    },
+    catchSearchClicked: function catchSearchClicked(searchTerm) {
+      this.$emit('clickedSearch', searchTerm);
+    },
+    catchTagCleared: function catchTagCleared() {
+      this.$emit('clickedClear');
+    },
+    isTagSelected: function isTagSelected(tagId) {
+      if (!tagId || this.selectedTagids === undefined) {
+        return false;
+      }
+
+      return this.selectedTagids.indexOf(tagId) >= 0;
+    },
+    isPopluarTag: function isPopluarTag(tagId) {
+      if (!tagId || this.popularTagids === undefined) {
+        return false;
+      }
+
+      return this.popularTagids.indexOf(tagId) >= 0;
+    },
+    catchTagClicked: function catchTagClicked(tagId) {
+      this.$emit('clickedTag', tagId);
+    },
+    catchTagCloseClicked: function catchTagCloseClicked(tagId) {
+      this.$emit('clickedTagClose', tagId);
+    },
+    isSelected: function isSelected(tagId) {
+      return this.selectedTagids.indexOf(tagId) >= 0;
     },
   },
   data: () => ({
-    lableText: 'search',
-    contactEmail: 'mustermann@wsl.ch',
-    doi: 'envidat.2192318293',
-    citation: 'somecitation',
+    expanded: false,
+    expandButtonText: 'Show all tags',
+    expandedButtonText: 'Hide all tags',
+    clearButtonText: 'Clear Tags',
+    // selectedTagids: [],
+    maxSelectedTagsTextLength: 25,
+    maxPopularTagsTextLength: 250,
+    xsTextLength: 25,
+    smTextLength: 50,
+    mdTextLength: 100,
   }),
   components: {
     TagChip,
-    SearchBarView,
+    SmallSearchBarView,
+    FilterExpandedView,
+    FilterViewButtons,
   },
 };
 </script>
 
-<style scoped>
+<style>
 
   .envidat_subheading {
     font-family: 'Libre Baskerville', serif;

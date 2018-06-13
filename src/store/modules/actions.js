@@ -10,10 +10,20 @@ import {
   LOAD_METADATAS_CONTENT,
   LOAD_METADATAS_CONTENT_SUCCESS,
   LOAD_METADATAS_CONTENT_ERROR,
+  SEARCH_METADATA,
+  SEARCH_METADATA_SUCCESS,
+  SEARCH_METADATA_ERROR,
   ADD_METADATA,
+  LOAD_ALL_TAGS,
+  LOAD_ALL_TAGS_SUCCESS,
+  LOAD_ALL_TAGS_ERROR,
+  LOAD_POPULAR_TAGS,
+  LOAD_POPULAR_TAGS_SUCCESS,
+  LOAD_POPULAR_TAGS_ERROR,
 } from '../mutation_consts';
 
 const API_BASE = '/api/3/action/';
+const SOLR_API_BASE = '/solr/ckan_default/';
 
 /* eslint-disable no-unused-vars  */
 let packageListJSON = '';
@@ -65,6 +75,21 @@ export default {
     }).catch((reason) => {
       commit(LOAD_ALL_METADATA_ERROR, reason);
     });
+  },
+  async [SEARCH_METADATA]({ commit }, searchTerm) {
+    commit(SEARCH_METADATA);
+
+    // tags:SNOW%20AND%20notes:snow
+    // maybe use notes:"snow avalanche"
+    // select?indent=on&q=tags:${searchTerm}%20AND%20notes:${searchTerm}&wt=json
+
+    axios.get(`${SOLR_API_BASE}select?indent=on&q=notes:${searchTerm}&wt=json`)
+      .then((response) => {
+        commit(SEARCH_METADATA_SUCCESS, response.data.response.docs);
+      })
+      .catch((reason) => {
+        commit(SEARCH_METADATA_ERROR, reason);
+      });
   },
   async [LOAD_METADATA_IDS]({ commit }) {
     commit(LOAD_METADATA_IDS);
@@ -142,6 +167,40 @@ export default {
 
     commit(LOAD_METADATAS_CONTENT_SUCCESS);
     */
+  },
+  async [LOAD_ALL_TAGS]({ commit }) {
+    commit(LOAD_ALL_TAGS);
+
+    /*
+    commit(LOAD_METADATA_IDS_SUCCESS, packageListJSON.result);
+    return;
+    */
+    /* eslint-disable no-unreachable  */
+
+    axios.get(`${API_BASE}package_search?facet.field=[%22tags%22]&facet.limit=1000&rows=0`)
+      .then((response) => {
+        commit(LOAD_ALL_TAGS_SUCCESS, response.data.result);
+      })
+      .catch((reason) => {
+        commit(LOAD_ALL_TAGS_ERROR, reason);
+      });
+  },
+  async [LOAD_POPULAR_TAGS]({ commit }) {
+    commit(LOAD_POPULAR_TAGS);
+
+    /*
+    commit(LOAD_METADATA_IDS_SUCCESS, packageListJSON.result);
+    return;
+    */
+    /* eslint-disable no-unreachable  */
+
+    axios.get(`${API_BASE}package_search?facet.field=[%22tags%22]&facet.limit=25&rows=0`)
+      .then((response) => {
+        commit(LOAD_POPULAR_TAGS_SUCCESS, response.data.result);
+      })
+      .catch((reason) => {
+        commit(LOAD_POPULAR_TAGS_ERROR, reason);
+      });
   },
 };
 
