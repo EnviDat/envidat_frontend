@@ -56,9 +56,6 @@
     },
     mounted: function mounted() {
       this.createMetadataContent();
-      console.log(`created MetaDataDetailPage router params: ${this.metadataId}`);
-
-      console.log(`metadataIdValid: ${this.metadataIdValid}`);
     },
     update: function update() {
       this.createMetadataContent();
@@ -93,10 +90,9 @@
         if (currentMetadataContent){
           this.header = this.createHeader(currentMetadataContent);
           this.body = this.createBody(currentMetadataContent);
-          console.log("created body " + this.body);
           this.citation = this.createCitation(currentMetadataContent);
-
           this.resources = this.createResources(currentMetadataContent);
+          console.log("created resources " + this.resources);
           this.location = this.createLocation(currentMetadataContent);
           this.details = this.createDetails(currentMetadataContent);
         }
