@@ -181,7 +181,7 @@ export default {
     show: false,
     showDataText: 'SHOW DATA',
     maxTitleLength: 55,
-    maxSubtitleLength: 150,
+    maxSubtitleLength: 175,
     // maxTags: 3,
     maxTagTextlength: 40,
     imageDefaults: {

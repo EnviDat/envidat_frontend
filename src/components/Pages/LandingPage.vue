@@ -8,6 +8,7 @@
         <search-bar-view
                       :labelText="labelText"
                       :buttonText="buttonlText"
+                      :hasButton="true"
                       v-on:clicked="catchSearchClicked">
         </search-bar-view>
       </v-flex>
