@@ -3,7 +3,7 @@
           hover
           v-on:click.native="clicked">  
           
-    <v-container grid-list-lg pa-0>
+    <v-container grid-list-md pa-0>
       <v-layout row align-center>
 
         <v-flex xs5 py-0>
@@ -13,7 +13,7 @@
           </v-card-media>
         </v-flex>
 
-        <v-flex xs7 my-auto>
+        <v-flex xs7 mt-1>
             <div class="headline">{{ title }}</div>
         </v-flex>
 
@@ -26,9 +26,11 @@
 
 <script>
   import defaultImg from '@/assets/cards/default.png';
-  import snowImg from '@/assets/cards/snow_background.jpg';
-  import woodImg from '@/assets/cards/wood_background.jpg';
-  import landImg from '@/assets/cards/landscape_background.jpg';
+  import snowImg from '@/assets/cards/snow/c_b_snow_icy2.jpg';
+  import woodImg from '@/assets/cards/forest/c_b_forest_texture_bark2.jpg';
+  import landImg from '@/assets/cards/landscape/c_b_landscape_view.jpg';
+  import hazardImg from '@/assets/cards/hazard/c_b_hazard_cloud.jpg';
+  import diversityImg from '@/assets/cards/diversity/b_c_diversity_meadow.jpg';
 
   export default {
     props: {
@@ -46,12 +48,20 @@
           return snowImg;
         }
 
-        if (this.type === 'wood') {
+        if (this.type === 'forest') {
           return woodImg;
         }
 
-        if (this.type === 'land') {
+        if (this.type === 'landscape') {
           return landImg;
+        }
+
+        if (this.type === 'hazard') {
+          return hazardImg;
+        }
+
+        if (this.type === 'diversity') {
+          return diversityImg;
         }
 
         return defaultImg;
@@ -62,10 +72,20 @@
       snowImg,
       woodImg,
       landImg,
+      hazardImg,
+      diversityImg,
     }),
   };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+  .card .headline {
+    font-size: 1.45em !important;
+    overflow: inherit !important;
+    text-overflow: inherit !important;
+    max-height: inherit !important;
+    line-height: inherit !important;
+  }
 </style>

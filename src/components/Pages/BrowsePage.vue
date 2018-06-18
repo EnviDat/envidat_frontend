@@ -51,10 +51,11 @@
             <v-flex xs12 sm6 md4 xl3
                     v-for="metadata in filteredMetadataContent" :key="metadata.id">
               <metadata-card
-                            v-bind:title="metadata.title"
-                            v-bind:id="metadata.id"
-                            v-bind:subtitle="metadata.notes"
-                            v-bind:tags="metadata.tags"
+                            :title="metadata.title"
+                            :id="metadata.id"
+                            :subtitle="metadata.notes"
+                            :tags="metadata.tags"
+                            :titleImg="metadata.titleImg"
                             v-on:clickedEvent="metaDataClicked($event, metadataid)">
               </metadata-card>
     
@@ -77,16 +78,311 @@
   import { mapGetters } from 'vuex';
   import FilterView from '../Views/FilterView';
   import MetadataCard from '../Views/Cards/MetadataCard';
-  import { SEARCH_METADATA } from '../../store/mutation_consts';
+  import { SEARCH_METADATA } from '../../store/metadataMutationsConsts';
+  import { CHANGE_APP_BG } from '../../store/mutationsConsts';
 
   // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
   export default {
-    components: {
-      FilterView,
-      MetadataCard,
+    beforeRouteEnter: function beforeRouteEnter (to, from, next) {
+      next(vm => {
+        vm.$store.commit(CHANGE_APP_BG, vm.browsePageBGImage);
+      })
+    },
+    mounted: function mounted() {
+      // window.addEventListener('scroll', this.updateScroll);
+      this.$store.commit(CHANGE_APP_BG, this.browsePageBGImage);
+
+      this.searchTerm = this.$route.query.search ? this.$route.query.search : '';
+      if (this.searchTerm.length > 0){
+        this.catchSearchClicked();
+      }
+      const tagsEncoded = this.$route.query.tags ? this.$route.query.tags : '';
+      if (tagsEncoded.length > 0){
+        this.selectedTagids = this.decodeTagsFromUrl(tagsEncoded);
+      } else {
+        const category = this.$route.params.category ? this.$route.params.category : null;
+        this.selectedTagids = this.decodeCategoryFromUrl(category)
+      }
+
+    },
+    destroy: function destroy() {
+      // window.removeEventListener('scroll', this.updateScroll);
+    },
+    methods: {
+      updateScroll: function updateScroll() {
+        this.scrollPosition = window.scrollY;
+      },
+      metaDataClicked: function metaDataClicked(datasetname) {
+        this.$router.push({
+          name: 'MetadataDetailPage',
+          params: {
+            metadataid: datasetname,
+          },
+        });
+      },
+      replaceTagsInRouter: function replaceTagsInRouter() {
+        const tagsEncoded = this.encodeTagForUrl(this.selectedTagids);
+
+        this.$router.push({
+          name: 'BrowsePage',
+          query: { tags: tagsEncoded },
+        });
+      },
+      encodeTagForUrl: function encodeTagForUrl(jsonTags) {
+        if (jsonTags && jsonTags.length > 0) {
+          const jsonString = JSON.stringify(jsonTags);
+
+          const urlquery = btoa(jsonString);
+
+          let urlConformString = urlquery.replace(/\+/g, '.');
+          urlConformString = urlConformString.replace(/\//g, '_');
+          urlConformString = urlConformString.replace(/=/g, '-');
+
+          return urlConformString;
+        }
+
+        return '';
+      },
+      decodeTagsFromUrl: function decodeTagsFromUrl(urlquery) {
+        if (urlquery) {
+          let jsonConformString = urlquery.replace(/\./g, '+');
+          jsonConformString = jsonConformString.replace(/_/g, '/');
+          jsonConformString = jsonConformString.replace(/-/g, '=');
+
+          const jsonString = atob(jsonConformString);
+
+          const jsonTags = JSON.parse(jsonString);
+
+          return jsonTags;
+        }
+
+        // return an empty array for the selectedTagIds
+        return [];
+      },
+      decodeCategoryFromUrl: function decodeCategoryFromUrl(urlquery) {
+        if (urlquery) {
+
+          //TODO: figure out which tags should be auto selected
+          console.log("got category via url: " + urlquery);
+        }
+
+        // return an empty array for the selectedTagIds
+        return [];
+      },
+      catchTagClicked: function catchTagClicked(tagId) {
+        const index = this.allTags.findIndex(obj => obj.id === tagId);
+        const tag = this.allTags[index];
+
+        if (!tag || tag.colseable) {
+          return;
+        }
+
+        if (!this.isTagSelected(tagId)) {
+          this.selectedTagids.push(tagId);
+
+          this.replaceTagsInRouter();
+        }
+      },
+      catchTagCloseClicked: function catchTagCloseClicked(tagId) {
+        if (this.selectedTagids === undefined) {
+          return;
+        }
+
+        const index = this.selectedTagids.indexOf(tagId);
+
+        if (index >= 0) {
+          this.selectedTagids.splice(index, 1);
+
+          this.replaceTagsInRouter();
+        }
+      },
+      catchTagCleared: function catchTagCleared() {
+        this.selectedTagids = [];
+      },
+      catchSearchClicked: function catchSearchClicked(searchTerm) {
+        this.searchTerm = searchTerm;
+        if (this.searchTerm.length > 0) {
+          this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm);
+        }
+      },
+      catchSearchCleared: function catchSearchCleared() {
+        this.searchTerm = '';
+
+        console.log("clear");
+      },
+      isTagSelected: function isTagSelected(tagId) {
+        if (!tagId || this.selectedTagids === undefined) {
+          return false;
+        }
+
+        return this.selectedTagids.indexOf(tagId) >= 0;
+      },
+      tagsIncludeSelected: function tagsIncludeSelected(tags) {
+        for (let i = 0; i < tags.length; i++) {
+          const tagId = tags[i].id;
+
+          // let tagsMatchSelection = false;
+
+          for (let j = 0; j < this.selectedTagids.length; j++) {
+            const selectedTagId = this.selectedTagids[j];
+            if (tagId === selectedTagId) {
+              return true;
+            }
+          }
+        }
+
+        return false;
+      },
+      contentFilteredByTags: function contentFilteredByTags() {
+        const contentList = [];
+
+        if (this.metadatasContentSize > 0) {
+          const metaDataKeys = Object.keys(this.metadatasContent);
+
+          for (let i = 0; i < metaDataKeys.length; i++) {
+            const key = metaDataKeys[i];
+            const value = this.metadatasContent[key];
+
+            if (value.tags && this.tagsIncludeSelected(value.tags)) {
+              contentList.push(value);
+            }
+          }
+        }
+
+        return contentList;
+      },
+      enhanceSearchWithTags: function enhanceSearchWithTags(searchResult) {
+        if (searchResult === undefined && searchResult.length <= 0) {
+          return undefined;
+        }
+
+        for (let i = 0; i < searchResult.length; i++) {
+          const el = searchResult[i];
+
+          for (let j = 0; j < el.tags.length; j++) {
+            const element = el.tags[j];
+
+            const index = this.allTags.findIndex(obj => obj.name === element);
+            const tag = this.allTags[index];
+
+            if (tag) {
+              /* eslint-disable no-param-reassign */
+              el.tags[j] = tag;
+            }
+          }
+        }
+
+        return searchResult;
+      },
+      randomInt: function randomInt(min, max){
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      },
+      enhanceMetadata: function enhanceMetadata(metadatas){
+        if (metadatas === undefined && metadatas.length <= 0) {
+          return undefined;
+        }
+
+        for (let i = 0; i < metadatas.length; i++) {
+          const el = metadatas[i];
+
+          const category = this.getTagCategory(el.tags);
+          const categoryImgs = this.cardBGImages[category];
+          const max = Object.keys(categoryImgs).length - 1;
+          const randomIndex = this.randomInt(0, max);
+          const cardImg = randomIndex >= 0 ? Object.values(categoryImgs)[randomIndex] : 0;
+
+          // console.log("loaded " + cardImg + " for category " + category);
+          
+          el.titleImg = cardImg;
+        }
+
+        return metadatas;
+      },
+      getTagCategory: function getTagCategory(tags){
+        let category = this.tagCategory;
+
+        if (tags){
+          for (let i = 0; i < tags.length; i++) {
+            const element = tags[i];
+            if (element.name.includes('forest')){
+              category = 'forest'; break;
+            }
+            if (element.name.includes('landscape')){
+              category = 'landscape'; break;
+            }
+            if (element.name.includes('snow')){
+              category = 'snow'; break;
+            }
+            if (element.name.includes('hazard')){
+              category = 'hazard'; break;
+            }
+            if (element.name.includes('diversity')){
+              category = 'diversity'; break;
+            }
+          };
+        }
+
+        return category;
+      },
+      dynamicCardBackground: function dynamicCardBackground(){
+        const max = Object.keys(this.imagesImports).length;
+        const randomIndex = this.randomInt(0, max);
+        const cardImg = Object.values(this.imagesImports)[randomIndex];
+        // console.log(this.imageIndex + " cardImg " + cardImg);
+
+        if (cardImg){
+          return 'background-image: linear-gradient(to bottom, rgba(1,1,1,0.5), rgba(255,255,255,0)), '+
+                                  'url(' + cardImg  + '); background-position: center, center';
+        }
+
+        return '';
+      },
+    },
+    computed: {
+      ...mapGetters({
+        metadataIds: 'metadata/metadataIds',
+        metadatasContent: 'metadata/metadatasContent',
+        searchedMetadatasContent: 'metadata/searchedMetadatasContent',
+        searchingMetadatasContent: 'metadata/searchingMetadatasContent',
+        loadingMetadataIds: 'metadata/loadingMetadataIds',
+        loadingMetadatasContent: 'metadata/loadingMetadatasContent',
+        // allTags: 'metadata/allTags',
+        currentMetadata: 'metadata/currentMetadata',
+        cardBGImages: 'cardBGImages',
+      }),
+      metadatasContentSize: function metadatasContentSize() {
+        return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
+      },
+      searchMetadatasContentSize: function searchMetadatasContentSize() {
+        return this.searchedMetadatasContent !== undefined ? Object.keys(this.searchedMetadatasContent).length : 0;
+      },
+      filteredMetadataContent: function filteredMetadataContent() {
+        let contentToFilter;
+
+        if (this.searchTerm && this.searchTerm.length > 0
+         && this.searchMetadatasContentSize > 0) {
+          contentToFilter = Object.values(this.searchedMetadatasContent);
+          contentToFilter = this.enhanceSearchWithTags(contentToFilter);
+        } else {
+          contentToFilter = Object.values(this.metadatasContent);
+        }
+
+        contentToFilter = this.enhanceMetadata(contentToFilter);
+
+        if (this.selectedTagids === undefined
+         || this.selectedTagids.length <= 0) {
+          return contentToFilter;
+        }
+
+        // filter search via backend because of fulltext search via solr
+
+        return this.contentFilteredByTags(contentToFilter);
+      },
     },
     data: () => ({
+      browsePageBGImage: './app_b_browsepage.jpg',
+      tagCategory: 'landscape', // default
       searchTerm: '',
       selectedTagids: [],
       allTags: [
@@ -191,221 +487,14 @@
       ],
       scrollPosition: null,
     }),
-    mounted: function mounted() {
-      // window.addEventListener('scroll', this.updateScroll);
-
-      this.searchTerm = this.$route.query.search ? this.$route.query.search : '';
-      const tagsEncoded = this.$route.query.tags ? this.$route.query.tags : '';
-
-      this.selectedTagids = this.decodeTagsFromUrl(tagsEncoded);
-    },
-    destroy: function destroy() {
-      // window.removeEventListener('scroll', this.updateScroll);
-    },
-    methods: {
-      updateScroll: function updateScroll() {
-        this.scrollPosition = window.scrollY;
-      },
-      metaDataClicked: function metaDataClicked(datasetname) {
-        this.$router.push({
-          name: 'MetadataDetailPage',
-          params: {
-            metadataid: datasetname,
-          },
-        });
-      },
-      replaceTagsInRouter: function replaceTagsInRouter() {
-        const tagsEncoded = this.encodeTagForUrl(this.selectedTagids);
-
-        this.$router.push({
-          name: 'BrowsePage',
-          query: { tags: tagsEncoded },
-        });
-      },
-      encodeTagForUrl: function encodeTagForUrl(jsonTags) {
-        if (jsonTags && jsonTags.length > 0) {
-          const jsonString = JSON.stringify(jsonTags);
-
-          const urlquery = btoa(jsonString);
-
-          let urlConformString = urlquery.replace(/\+/g, '.');
-          urlConformString = urlConformString.replace(/\//g, '_');
-          urlConformString = urlConformString.replace(/=/g, '-');
-
-          return urlConformString;
-        }
-
-        return '';
-      },
-      decodeTagsFromUrl: function decodeTagsFromUrl(urlquery) {
-        if (urlquery) {
-          let jsonConformString = urlquery.replace(/\./g, '+');
-          jsonConformString = jsonConformString.replace(/_/g, '/');
-          jsonConformString = jsonConformString.replace(/-/g, '=');
-
-          const jsonString = atob(jsonConformString);
-
-          const jsonTags = JSON.parse(jsonString);
-
-          return jsonTags;
-        }
-
-        // return an empty array for the selectedTagIds
-        return [];
-      },
-      catchTagClicked: function catchTagClicked(tagId) {
-        const index = this.allTags.findIndex(obj => obj.id === tagId);
-        const tag = this.allTags[index];
-
-        if (!tag || tag.colseable) {
-          return;
-        }
-
-        if (!this.isTagSelected(tagId)) {
-          this.selectedTagids.push(tagId);
-
-          this.replaceTagsInRouter();
-        }
-      },
-      catchTagCloseClicked: function catchTagCloseClicked(tagId) {
-        if (this.selectedTagids === undefined) {
-          return;
-        }
-
-        const index = this.selectedTagids.indexOf(tagId);
-
-        if (index >= 0) {
-          this.selectedTagids.splice(index, 1);
-
-          this.replaceTagsInRouter();
-        }
-      },
-      catchTagCleared: function catchTagCleared() {
-        this.selectedTagids = [];
-      },
-      catchSearchClicked: function catchSearchClicked(searchTerm) {
-        this.searchTerm = searchTerm;
-        this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm);
-      },
-      catchSearchCleared: function catchSearchCleared() {
-        this.searchTerm = '';
-
-        console.log("clear");
-      },
-      isTagSelected: function isTagSelected(tagId) {
-        if (!tagId || this.selectedTagids === undefined) {
-          return false;
-        }
-
-        return this.selectedTagids.indexOf(tagId) >= 0;
-      },
-      tagsIncludeSelected: function tagsIncludeSelected(tags) {
-        for (let i = 0; i < tags.length; i++) {
-          const tagId = tags[i].id;
-
-          // let tagsMatchSelection = false;
-
-          for (let j = 0; j < this.selectedTagids.length; j++) {
-            const selectedTagId = this.selectedTagids[j];
-            if (tagId === selectedTagId) {
-              return true;
-            }
-          }
-        }
-
-        return false;
-      },
-      contentFilteredByTags: function contentFilteredByTags() {
-        const contentList = [];
-
-        if (this.metadatasContentSize > 0) {
-          const metaDataKeys = Object.keys(this.metadatasContent);
-
-          for (let i = 0; i < metaDataKeys.length; i++) {
-            const key = metaDataKeys[i];
-            const value = this.metadatasContent[key];
-
-            if (value.tags && this.tagsIncludeSelected(value.tags)) {
-              contentList.push(value);
-            }
-          }
-        }
-
-        return contentList;
-      },
-      enhanceSearchWithTags: function enhanceSearchWithTags(searchResult) {
-        if (searchResult === undefined && searchResult.length <= 0) {
-          return undefined;
-        }
-
-        for (let i = 0; i < searchResult.length; i++) {
-          const el = searchResult[i];
-
-          for (let j = 0; j < el.tags.length; j++) {
-            const element = el.tags[j];
-
-            const index = this.allTags.findIndex(obj => obj.name === element);
-            const tag = this.allTags[index];
-
-            if (tag) {
-              /* eslint-disable no-param-reassign */
-              el.tags[j] = tag;
-            }
-          }
-        }
-
-        return searchResult;
-      },
-    },
-    computed: {
-      ...mapGetters({
-        metadataIds: 'metadata/metadataIds',
-        metadatasContent: 'metadata/metadatasContent',
-        searchedMetadatasContent: 'metadata/searchedMetadatasContent',
-        searchingMetadatasContent: 'metadata/searchingMetadatasContent',
-        loadingMetadataIds: 'metadata/loadingMetadataIds',
-        loadingMetadatasContent: 'metadata/loadingMetadatasContent',
-        // allTags: 'metadata/allTags',
-        currentMetadata: 'metadata/currentMetadata',
-      }),
-      metadatasContentSize: function metadatasContentSize() {
-        return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
-      },
-      searchMetadatasContentSize: function searchMetadatasContentSize() {
-        return this.searchedMetadatasContent !== undefined ? Object.keys(this.searchedMetadatasContent).length : 0;
-      },
-      filteredMetadataContent: function filteredMetadataContent() {
-        let contentToFilter;
-
-        if (this.searchTerm && this.searchTerm.length > 0
-         && this.searchMetadatasContentSize > 0) {
-          contentToFilter = Object.values(this.searchedMetadatasContent);
-          contentToFilter = this.enhanceSearchWithTags(contentToFilter);
-        } else {
-          contentToFilter = Object.values(this.metadatasContent);
-        }
-
-        if (this.selectedTagids === undefined
-         || this.selectedTagids.length <= 0) {
-          return contentToFilter;
-        }
-
-        // filter search via backend because of fulltext search via solr
-
-        return this.contentFilteredByTags(contentToFilter);
-      },
+    components: {
+      FilterView,
+      MetadataCard,
     },
 };
 </script>
 
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .application {
-    background-image: url('../../assets/landingpage/noisy_pattern.png') !important;
-    background-position: center top !important;
-    /* background-size: cover !important; */
-    background-repeat: repeat !important;
-    /* background-attachment: fixed !important; */
-  }
+
 </style>

@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire"
-        v-bind:style="'background-image: url(' + this.backgroundImg + ') !important;'">
+        v-bind:style="dynamicBackground">
 
     <!--v-btn fab top left color="success" @click="testStore" >Test</v-btn>
 
@@ -15,18 +15,28 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import backgroundImg from '@/assets/landingpage/landing_lowres.jpg';
   import {
     LOAD_ALL_METADATA,
     LOAD_ALL_TAGS,
     LOAD_POPULAR_TAGS,
-  } from './store/mutation_consts';
+  } from './store/metadataMutationsConsts';
+  import { ADD_CARD_IMAGES } from './store/mutationsConsts';
 
   export default {
     created: function created() {
       this.loadAllMetadata();
       this.loadAllTags();
       this.loadPopularTags();
+
+      const bgImgs = require.context('./assets/', false, /\.jpg$/);
+      this.appBGImages = this.importImages(bgImgs, 'app_b');
+
+      this.importCardBackgrounds();
+
+      // const values = Object.values(this.imagesImports);
+      // values.forEach(element => {
+      //   console.log("value " + element);
+      // });
     },
     methods: {
       loadAllMetadata: function loadAllMetadata() {
@@ -44,6 +54,54 @@
           this.$store.dispatch(`metadata/${LOAD_POPULAR_TAGS}`);
         }
       },
+      importCardBackgrounds: function importCardBackgrounds(){
+        let imgPaths = require.context('./assets/cards/landscape/', false, /\.jpg$/);
+        let images = this.importImages(imgPaths);
+        this.$store.commit(ADD_CARD_IMAGES, {key: 'landscape', value: images});
+
+        imgPaths = require.context('./assets/cards/forest/', false, /\.jpg$/);
+        images = this.importImages(imgPaths);        
+        this.$store.commit(ADD_CARD_IMAGES, {key: 'forest', value: images});
+
+        imgPaths = require.context('./assets/cards/snow/', false, /\.jpg$/);
+        images = this.importImages(imgPaths);        
+        this.$store.commit(ADD_CARD_IMAGES, {key: 'snow', value: images});
+
+        imgPaths = require.context('./assets/cards/diversity/', false, /\.jpg$/);
+        images = this.importImages(imgPaths);        
+        this.$store.commit(ADD_CARD_IMAGES, {key: 'diversity', value: images});
+
+        imgPaths = require.context('./assets/cards/hazard/', false, /\.jpg$/);
+        images = this.importImages(imgPaths);        
+        this.$store.commit(ADD_CARD_IMAGES, {key: 'hazard', value: images});
+      },
+      importImages: function importImages(imgs, checkForString){
+        let imgCache = {};
+        // console.log("importImages " + imgs.keys().length);
+
+        imgs.keys().forEach(key => {
+          if (!checkForString ||(checkForString && key.includes(checkForString))){
+            imgCache[key] = imgs(key);
+            //console.log(key + " -> " + imgCache[key]);
+          }
+        });
+
+        return imgCache;
+
+        /*
+        const imports = {};
+        const pic = imgs('./c_b_snow.jpg');
+        console.log("pic " + pic);
+
+        this.images.forEach(element => {
+          var imgImport = require(`../../../assets/cards/${element}`);
+          console.log("imgImport " + imgImport);
+          imports[element] = imgImport;
+        });
+
+        return imports;
+        */
+      }      
     },
     computed: {
       ...mapGetters({
@@ -56,13 +114,31 @@
         loadingAllTags: 'metadata/loadingAllTags',
         popularTags: 'metadata/popularTags',
         loadingPopularTags: 'metadata/loadingPopularTags',
+        appBGImage: 'appBGImage',
       }),
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
       },
+      dynamicBackground: function dynamicBackground(){
+        const imageKey = this.appBGImage;
+        const bgImg = this.appBGImages[imageKey];
+        // console.log(imageKey + " bgImg " + bgImg);
+        let bgStyle = '';
+
+        if (bgImg){
+          bgStyle = 'background-image: url(' + bgImg  + ') !important;';
+        }
+
+        if (bgImg.includes('browsepage')){
+          bgStyle = 'background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%,rgba(255,255,255,0.7) 100%), ' +
+                    ' url(' + bgImg  + ') !important;'
+        }
+
+        return bgStyle;
+      },
     },
     data: () => ({
-      backgroundImg,
+      appBGImages: {},
     }),
     props: {
       source: String,
@@ -94,7 +170,7 @@
   }
 
   .card .headline {
-    font-family: 'Karma', serif;
+    font-family: 'Libre Baskerville', serif;
     /* font-weight: 700; */
 
     overflow: hidden;

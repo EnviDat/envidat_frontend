@@ -9,11 +9,15 @@
 
     <v-card-media
       class="imagezoom"
-      height="150px">
+      background-color="primary"
+        v-bind="{['style'] : dynamicCardBackground }"
+        height="150px"
+      >
       
-      <!-- img :src="snowImg" /-->
+      <!-- <img :src="landImg" /> -->
 
-      <v-container fill-height grid-list-xs>
+      <v-container style="position: absolute;"
+                  fill-height grid-list-xs>
         <v-layout column>
           <v-flex xs12 px-3 pt-3>
             <v-layout row  align-start>
@@ -22,9 +26,9 @@
               </v-flex>
             </v-layout>
           </v-flex>
-
+  
           <v-flex xs12 px-2>
-            <v-layout row  align-end >
+            <v-layout row align-end >
                 <tag-chip v-if="tags" v-for="tag in tags.slice (0, maxTagNumber)" :key="tag.id"
                           :id="tag.id"
                           :name="tag.name"
@@ -65,8 +69,12 @@
       -->
       <v-spacer></v-spacer>
 
-      <v-btn icon>
-        <v-icon>bookmark</v-icon>
+      <!-- <v-btn icon @click.stop="addClick">
+        <v-icon>add</v-icon>
+      </v-btn> -->
+
+      <v-btn v-if="restricted" icon>
+        <v-icon>lock</v-icon>
       </v-btn>
 
       <v-btn v-if="favourit" icon>
@@ -90,9 +98,6 @@
 
 
 <script>
-import snowImg from '@/assets/cards/snow_background.jpg';
-// import woodImg from '@/assets/cards/wood_background.jpg';
-// import landImg from '@/assets/cards/landscape_background.jpg';
 import TagChip from './TagChip';
 
 // checkout possible transition animation
@@ -117,31 +122,36 @@ export default {
     restricted: Boolean,
     favourit: Boolean,
     tags: Array,
-    /*
-    tags:[{
-      id: String,
-      name: String,
-    }],
-    */
+    titleImg: String,
   },
   components: {
     TagChip,
+  },
+  created: function created(){
   },
   methods: {
     cardClick: function cardClick() {
       this.$emit('clickedEvent', this.id);
     },
-  },
-  /*
-  filters: {
-    uppercase: function uppercase(value) {
-      if (!value) return '';
-      value = value.toString();
-      return value.toUpperCase();
+    favouritClicked: function favouritClicked() {
+      this.$emit('clickedFavourit', this.id);
     },
+    // addClick: function addClick() {
+    //   this.imageIndex++;
+    //   if (this.imageIndex >= Object.values(this.imagesImports).length){
+    //     this.imageIndex = 0;
+    //   }
+    // },
   },
-  */
   computed: {
+    dynamicCardBackground: function dynamicCardBackground(){
+      if (this.titleImg){
+        return 'background-image: linear-gradient(to bottom, rgba(1,1,1,0.5), rgba(255,255,255,0)), '+
+                                'url(' + this.titleImg  + '); background-position: center, center';
+      }
+
+      return '';
+    },
     maxTagsReached: function maxTagsReached() {
       return this.tags !== undefined && this.tags.length > this.maxTagNumber;
     },
@@ -170,11 +180,18 @@ export default {
   data: () => ({
     show: false,
     showDataText: 'SHOW DATA',
-    maxTitleLength: 65,
-    maxSubtitleLength: 125,
+    maxTitleLength: 55,
+    maxSubtitleLength: 150,
     // maxTags: 3,
-    maxTagTextlength: 45,
-    snowImg, // require('../../../assets/snow_background.jpg'),
+    maxTagTextlength: 40,
+    imageDefaults: {
+      snow: 'c_b_snow_icy2',
+      landscape: 'c_b_landscape_lake2', // or c_b_landscape_view ! c_b_landscape_long_lake
+      forest: 'c_b_forest_texture_bark', // maybe c_b_forest_texture_bark2
+      diversity: 'b_c_diversity_meadow',
+      hazard: 'c_b_hazard_cloud_road', // maybe c_b_hazard_cloud
+    },
+
   }),
 };
 </script>
@@ -183,7 +200,7 @@ export default {
 <style scoped>
 
   .card_tag {
-    opacity: 0.7;
+    /* opacity: 0.7; */
   }
 
 </style>
