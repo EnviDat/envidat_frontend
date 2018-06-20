@@ -30,7 +30,21 @@ module.exports = {
           '\?': '&amp;',
         },
         */
-      },        
+      },
+      '/solr': {
+        target: 'http://localhost/ui/ServiceProxyServlet?server=1&serverpath=',
+        /* target: 'http://envidat-prod02.wsl.ch:8983', */
+        changeOrigin: true,
+        secure: false,
+        // logLevel: 'debug',
+        pathRewrite: function (path, req) {
+          const from = path;
+          // path = encodeURIComponent(path);
+          //path = path.replace('?', '&amp;');
+          console.log('solr-replaced path from ' + from + ' to: ' + path);
+          return path;
+        }        
+      },
     },
 
     // Various Dev Server settings

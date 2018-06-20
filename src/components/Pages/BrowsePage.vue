@@ -84,27 +84,26 @@
   // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
   export default {
-    beforeRouteEnter: function beforeRouteEnter (to, from, next) {
-      next(vm => {
+    beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+      next((vm) => {
         vm.$store.commit(CHANGE_APP_BG, vm.browsePageBGImage);
-      })
+      });
     },
     mounted: function mounted() {
       // window.addEventListener('scroll', this.updateScroll);
       this.$store.commit(CHANGE_APP_BG, this.browsePageBGImage);
 
       this.searchTerm = this.$route.query.search ? this.$route.query.search : '';
-      if (this.searchTerm.length > 0){
+      if (this.searchTerm.length > 0) {
         this.catchSearchClicked();
       }
       const tagsEncoded = this.$route.query.tags ? this.$route.query.tags : '';
-      if (tagsEncoded.length > 0){
+      if (tagsEncoded.length > 0) {
         this.selectedTagids = this.decodeTagsFromUrl(tagsEncoded);
       } else {
         const category = this.$route.params.category ? this.$route.params.category : null;
-        this.selectedTagids = this.decodeCategoryFromUrl(category)
+        this.selectedTagids = this.decodeCategoryFromUrl(category);
       }
-
     },
     destroy: function destroy() {
       // window.removeEventListener('scroll', this.updateScroll);
@@ -209,6 +208,10 @@
       catchSearchCleared: function catchSearchCleared() {
         this.searchTerm = '';
 
+        this.$router.push({
+          query: {},
+        });
+
         console.log("clear");
       },
       isTagSelected: function isTagSelected(tagId) {
@@ -275,10 +278,10 @@
 
         return searchResult;
       },
-      randomInt: function randomInt(min, max){
-        return Math.floor(Math.random() * (max - min + 1)) + min;
+      randomInt: function randomInt(min, max) {
+        return Math.floor(Math.random() * (max - (min + 1))) + min;
       },
-      enhanceMetadata: function enhanceMetadata(metadatas){
+      enhanceMetadata: function enhanceMetadata(metadatas) {
         if (metadatas === undefined && metadatas.length <= 0) {
           return undefined;
         }
@@ -293,47 +296,48 @@
           const cardImg = randomIndex >= 0 ? Object.values(categoryImgs)[randomIndex] : 0;
 
           // console.log("loaded " + cardImg + " for category " + category);
-          
+
           el.titleImg = cardImg;
         }
 
         return metadatas;
       },
-      getTagCategory: function getTagCategory(tags){
+      getTagCategory: function getTagCategory(tags) {
         let category = this.tagCategory;
 
-        if (tags){
+        if (tags) {
           for (let i = 0; i < tags.length; i++) {
             const element = tags[i];
-            if (element.name.includes('forest')){
-              category = 'forest'; break;
+            if (element.name) {
+              if (element.name.includes('forest')) {
+                category = 'forest'; break;
+              }
+              if (element.name.includes('landscape')) {
+                category = 'landscape'; break;
+              }
+              if (element.name.includes('snow')) {
+                category = 'snow'; break;
+              }
+              if (element.name.includes('hazard')) {
+                category = 'hazard'; break;
+              }
+              if (element.name.includes('diversity')) {
+                category = 'diversity'; break;
+              }
             }
-            if (element.name.includes('landscape')){
-              category = 'landscape'; break;
-            }
-            if (element.name.includes('snow')){
-              category = 'snow'; break;
-            }
-            if (element.name.includes('hazard')){
-              category = 'hazard'; break;
-            }
-            if (element.name.includes('diversity')){
-              category = 'diversity'; break;
-            }
-          };
+          }
         }
 
         return category;
       },
-      dynamicCardBackground: function dynamicCardBackground(){
+      dynamicCardBackground: function dynamicCardBackground() {
         const max = Object.keys(this.imagesImports).length;
         const randomIndex = this.randomInt(0, max);
         const cardImg = Object.values(this.imagesImports)[randomIndex];
         // console.log(this.imageIndex + " cardImg " + cardImg);
 
-        if (cardImg){
-          return 'background-image: linear-gradient(to bottom, rgba(1,1,1,0.5), rgba(255,255,255,0)), '+
-                                  'url(' + cardImg  + '); background-position: center, center';
+        if (cardImg) {
+          return `background-image: linear-gradient(to bottom, rgba(1,1,1,0.5), rgba(255,255,255,0)), url(${cardImg}); background-position: center, center;`;
         }
 
         return '';
