@@ -27,14 +27,16 @@
             </v-layout>
           </v-flex>
   
-          <v-flex xs12 px-2>
+          <v-flex xs12 px-2 py-0>
             <v-layout row align-end >
-                <tag-chip v-if="tags" v-for="tag in tags.slice (0, maxTagNumber)" :key="tag.id"
+                <tag-chip py-0
+                          v-if="tags" v-for="tag in tags.slice (0, maxTagNumber)" :key="tag.id"
                           :id="tag.id"
                           :name="tag.name"
                           class="card_tag" />
               
-                <tag-chip v-if="maxTagsReached" class="card_tag" :name="'...'" />
+                <tag-chip py-0
+                          v-if="maxTagsReached" class="card_tag" :name="'...'" />
               
             </v-layout>
           </v-flex>
@@ -113,6 +115,10 @@ import TagChip from './TagChip';
 // Card opening animation
 // https://codepen.io/luizotcarvalho/pen/yyQNRO
 
+
+// check multi line truncation via css (only works with one-colored background)
+// http://hackingui.com/front-end/a-pure-css-solution-for-multiline-text-truncation/
+
 export default {
   props: {
     id: String,
@@ -127,7 +133,7 @@ export default {
   components: {
     TagChip,
   },
-  created: function created(){
+  created: function created() {
   },
   methods: {
     cardClick: function cardClick() {
@@ -144,10 +150,9 @@ export default {
     // },
   },
   computed: {
-    dynamicCardBackground: function dynamicCardBackground(){
-      if (this.titleImg){
-        return 'background-image: linear-gradient(to bottom, rgba(1,1,1,0.5), rgba(255,255,255,0)), '+
-                                'url(' + this.titleImg  + '); background-position: center, center';
+    dynamicCardBackground: function dynamicCardBackground() {
+      if (this.titleImg) {
+        return `background-image: linear-gradient(to bottom, rgba(1,1,1,0.5), rgba(255,255,255,0)), url(${this.titleImg}); background-position: center, center;`;
       }
 
       return '';
@@ -180,8 +185,8 @@ export default {
   data: () => ({
     show: false,
     showDataText: 'SHOW DATA',
-    maxTitleLength: 55,
-    maxSubtitleLength: 150,
+    maxTitleLength: 70,
+    maxSubtitleLength: 190,
     // maxTags: 3,
     maxTagTextlength: 40,
     imageDefaults: {

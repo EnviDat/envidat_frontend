@@ -54,35 +54,35 @@
           this.$store.dispatch(`metadata/${LOAD_POPULAR_TAGS}`);
         }
       },
-      importCardBackgrounds: function importCardBackgrounds(){
+      importCardBackgrounds: function importCardBackgrounds() {
         let imgPaths = require.context('./assets/cards/landscape/', false, /\.jpg$/);
         let images = this.importImages(imgPaths);
-        this.$store.commit(ADD_CARD_IMAGES, {key: 'landscape', value: images});
+        this.$store.commit(ADD_CARD_IMAGES, { key: 'landscape', value: images });
 
         imgPaths = require.context('./assets/cards/forest/', false, /\.jpg$/);
-        images = this.importImages(imgPaths);        
-        this.$store.commit(ADD_CARD_IMAGES, {key: 'forest', value: images});
+        images = this.importImages(imgPaths);
+        this.$store.commit(ADD_CARD_IMAGES, { key: 'forest', value: images });
 
         imgPaths = require.context('./assets/cards/snow/', false, /\.jpg$/);
-        images = this.importImages(imgPaths);        
-        this.$store.commit(ADD_CARD_IMAGES, {key: 'snow', value: images});
+        images = this.importImages(imgPaths);
+        this.$store.commit(ADD_CARD_IMAGES, { key: 'snow', value: images });
 
         imgPaths = require.context('./assets/cards/diversity/', false, /\.jpg$/);
-        images = this.importImages(imgPaths);        
-        this.$store.commit(ADD_CARD_IMAGES, {key: 'diversity', value: images});
+        images = this.importImages(imgPaths);
+        this.$store.commit(ADD_CARD_IMAGES, { key: 'diversity', value: images });
 
         imgPaths = require.context('./assets/cards/hazard/', false, /\.jpg$/);
-        images = this.importImages(imgPaths);        
-        this.$store.commit(ADD_CARD_IMAGES, {key: 'hazard', value: images});
+        images = this.importImages(imgPaths);
+        this.$store.commit(ADD_CARD_IMAGES, { key: 'hazard', value: images });
       },
-      importImages: function importImages(imgs, checkForString){
-        let imgCache = {};
+      importImages: function importImages(imgs, checkForString) {
+        const imgCache = {};
         // console.log("importImages " + imgs.keys().length);
 
-        imgs.keys().forEach(key => {
-          if (!checkForString ||(checkForString && key.includes(checkForString))){
+        imgs.keys().forEach((key) => {
+          if (!checkForString || (checkForString && key.includes(checkForString))) {
             imgCache[key] = imgs(key);
-            //console.log(key + " -> " + imgCache[key]);
+            // console.log(key + " -> " + imgCache[key]);
           }
         });
 
@@ -101,7 +101,7 @@
 
         return imports;
         */
-      }      
+      },
     },
     computed: {
       ...mapGetters({
@@ -119,19 +119,18 @@
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
       },
-      dynamicBackground: function dynamicBackground(){
+      dynamicBackground: function dynamicBackground() {
         const imageKey = this.appBGImage;
         const bgImg = this.appBGImages[imageKey];
         // console.log(imageKey + " bgImg " + bgImg);
         let bgStyle = '';
 
-        if (bgImg){
-          bgStyle = 'background-image: url(' + bgImg  + ') !important;';
+        if (bgImg) {
+          bgStyle = `background-image: url(${bgImg}) !important;`;
         }
 
-        if (bgImg.includes('browsepage')){
-          bgStyle = 'background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%,rgba(255,255,255,0.7) 100%), ' +
-                    ' url(' + bgImg  + ') !important;'
+        if (bgImg.includes('browsepage')) {
+          bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%,rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
         }
 
         return bgStyle;
@@ -173,17 +172,64 @@
     font-family: 'Libre Baskerville', serif;
     /* font-weight: 700; */
 
+    /*
     overflow: hidden;
     text-overflow: ellipsis;    
     max-height: 2.15em;
-    line-height: 1.1em !important;
+    */
+    line-height: 1.2em !important;
+  }
+
+  .block-with-text {
+    font-family: 'Libre Baskerville', serif;
+    
+    /* styles for '...' */ 
+    /* hide text if it more than N lines  */
+    overflow: hidden;
+    /* for set '...' in absolute position */
+    position: relative; 
+    /* use this value to count block height */
+    line-height: 1.2em !important;
+    /* max-height = line-height (1.2) * lines max number (3) */
+    max-height: 6.7em; 
+    /* fix problem when last visible word doesn't adjoin right side  */
+    text-align: justify;  
+    /* place for '...' */
+    margin-right: -1em;
+    padding-right: 1em;
+  }
+  /* create the ... */
+  .block-with-text:before {
+    /* points in the end */
+    content: '...';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of block */
+    right: 0;
+    bottom: 0;
+  }
+  /* hide ... if we have text, which is less than or equal to max lines */
+  .block-with-text:after {
+    /* points in the end */
+    content: '';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of text */
+    right: 0;
+    /* set width and height */
+    width: 1em;
+    height: 1em;
+    margin-top: 0.2em;
+    /* bg color = bg color under block */
+    background: white;
   }
 
   .card .subheading{
-    font-family: 'Libre Baskerville', serif;
+    /* font-family: 'Libre Baskerville', serif; */
     font-weight: 400;
     /* color: #555; */
     opacity: 0.75;
+    line-height: 1.25em;
   }
 
   .imagezoom,
