@@ -16,6 +16,7 @@
           clearable
           prepend-icon="search"          
           :prepend-icon-cb="clicked"
+          v-on:keyup.enter="clicked"
           v-model="searchText"
           :label="labelText">
         </v-text-field>

@@ -20,7 +20,6 @@ import {
   LOAD_POPULAR_TAGS_SUCCESS,
   LOAD_POPULAR_TAGS_ERROR,
 } from '../metadataMutationsConsts';
-import { stat } from 'fs';
 
 export default {
   [LOAD_ALL_METADATA](state) {
@@ -70,7 +69,7 @@ export default {
   },
   [SEARCH_METADATA](state) {
     state.searchingMetadatasContent = true;
-    state.metadatasContent = {};
+    state.searchedMetadatasContent = {};
   },
   [SEARCH_METADATA_SUCCESS](state, payload) {
     state.searchingMetadatasContentOK = true;

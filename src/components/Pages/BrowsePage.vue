@@ -203,6 +203,10 @@
         this.searchTerm = searchTerm;
         if (this.searchTerm.length > 0) {
           this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm);
+
+          this.$router.push({
+            query: { serach: this.searchTerm },
+          });
         }
       },
       catchSearchCleared: function catchSearchCleared() {
@@ -368,8 +372,10 @@
          && this.searchMetadatasContentSize > 0) {
           contentToFilter = Object.values(this.searchedMetadatasContent);
           contentToFilter = this.enhanceSearchWithTags(contentToFilter);
+          console.log("use search content " + contentToFilter.length);
         } else {
           contentToFilter = Object.values(this.metadatasContent);
+          console.log("use local content " + contentToFilter.length);
         }
 
         contentToFilter = this.enhanceMetadata(contentToFilter);
