@@ -211,7 +211,14 @@
         */
       },
       createDetails: function createDetails(dataset) {
-        return {};
+        return {
+          metadataId: dataset.id,
+          metadataTitle: dataset.title,
+          doi: dataset.doi,
+          created: dataset.created,
+          lastModified: dataset.last_modified,
+          authors: authors,
+        };
       },      
     },
     components: {
