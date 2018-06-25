@@ -56,6 +56,7 @@
                             :subtitle="metadata.notes"
                             :tags="metadata.tags"
                             :titleImg="metadata.titleImg"
+                            :dark="false"
                             v-on:clickedEvent="metaDataClicked($event, metadataid)">
               </metadata-card>
     

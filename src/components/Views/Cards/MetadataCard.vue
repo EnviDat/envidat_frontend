@@ -22,7 +22,10 @@
           <v-flex xs12 px-3 pt-3>
             <v-layout row  align-start>
               <v-flex xs12 >
-                <h3 class="headline mb-0 white--text">{{ title | truncate(maxTitleLength) }}</h3>
+                <h3 class="headline mb-0"
+                :class="{['black_title'] : dark ? false : true,
+                          ['white_title'] : dark ? true : false }"
+                >{{ title | truncate(maxTitleLength) }}</h3>
               </v-flex>
             </v-layout>
           </v-flex>
@@ -129,6 +132,7 @@ export default {
     favourit: Boolean,
     tags: Array,
     titleImg: String,
+    dark: Boolean,
   },
   components: {
     TagChip,
@@ -151,8 +155,10 @@ export default {
   },
   computed: {
     dynamicCardBackground: function dynamicCardBackground() {
+      const gradient = this.dark ? this.blackTopToBottom : this.whiteTopToBottom;
+
       if (this.titleImg) {
-        return `background-image: linear-gradient(to bottom, rgba(1,1,1,0.5), rgba(255,255,255,0)), url(${this.titleImg}); background-position: center, center;`;
+        return `background-image: linear-gradient(0deg, ${gradient}), url(${this.titleImg}); background-position: center, center;`;
       }
 
       return '';
@@ -166,7 +172,6 @@ export default {
 
       if (this.tags !== undefined) {
         for (let i = 0; i < this.tags.length; i++) {
-
           if (this.tags[i].name !== undefined) {
             textLength += this.tags[i].name.length + 1;
 
@@ -189,6 +194,8 @@ export default {
     maxSubtitleLength: 190,
     // maxTags: 3,
     maxTagTextlength: 40,
+    blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
+    whiteTopToBottom: 'rgba(255,255,255, 0.25) 0%, rgba(255,255,255, 0.95) 60%',
     imageDefaults: {
       snow: 'c_b_snow_icy2',
       landscape: 'c_b_landscape_lake2', // or c_b_landscape_view ! c_b_landscape_long_lake
@@ -203,6 +210,15 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+
+  .black_title{
+    color: rgba(0,0,0,.87) !important;
+  }
+
+  .white_title{
+    color: rgba(255,255,255,.9) !important;
+  }
 
   .card_tag {
     /* opacity: 0.7; */
