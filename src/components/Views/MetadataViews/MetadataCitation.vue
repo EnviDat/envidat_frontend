@@ -1,6 +1,6 @@
 <template>
 
-  <v-card class="mx-3">
+  <v-card >
     <v-card-title class="title metadata_title" >Citation</v-card-title>
 
     <v-card-text >{{ citationText }}</v-card-text>

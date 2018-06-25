@@ -1,6 +1,6 @@
 <template>
 
-  <v-card class="mx-3">
+  <v-card >
     <v-card-title class="metadata_title title" >Description</v-card-title>
 
     <v-card-text >{{ fullDescription }}</v-card-text>

@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-3">
+  <v-card >
     <v-card-title class="title metadata_title" >Location</v-card-title>
 
     <v-card-text id="mapcontainer" ref="mapcontainer">

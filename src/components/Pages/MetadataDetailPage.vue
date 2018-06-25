@@ -3,7 +3,9 @@
     <div v-if="metadataIdValid">
 
       <v-layout row wrap>
-        <v-flex xs12 md8 offset-md2
+        <v-flex xs12
+                md8 offset-md2
+                lg10 offset-lg1
                 elevation-5
                 style="z-index: 1;">
 
@@ -11,33 +13,50 @@
 
         </v-flex>
 
-        <v-flex xs12 md8 offset-md2
-                mb-2
+        <v-flex xs12
+                md8 offset-md2
+                lg10 offset-lg1
+                mb-2 
+                v-bind="fullWidthPadding"
                 style="z-index: 0;">
 
           <metadata-body v-bind="body"> </metadata-body>
         </v-flex>
 
-        <v-flex xs12 md8 offset-md2
-                my-2 >
+        <v-flex xs12
+                md4 offset-md2
+                lg5 offset-lg1
+                mb-2 
+                v-bind="compactLayout ? fullWidthPadding : halfWidthLeft"
+                 >
 
           <metadata-citation v-bind="citation"> </metadata-citation>
         </v-flex>
 
-        <v-flex xs12 md8 offset-md2
-                my-2 >
+        <v-flex xs12
+                md4
+                lg5
+                mb-2
+                v-bind="compactLayout ? fullWidthPadding : halfWidthRight"
+                >
 
           <metadata-resources v-bind="resources" ></metadata-resources>
         </v-flex>
 
-        <v-flex xs12 md8 offset-md2
-                my-2 >
+        <v-flex xs12
+                md8 offset-md2
+                lg10 offset-lg1
+                mb-2
+                v-bind="fullWidthPadding"
+                >
           <metadata-location v-if="location"
                               v-bind="location" ></metadata-location>
         </v-flex>
 
-        <v-flex xs12 md8 offset-md2
-                my-2 >
+        <v-flex xs12
+                md8 offset-md2
+                lg10 offset-lg1
+                mb-2 >
           <metadata-details v-if="details"
                               v-bind="details" ></metadata-details>
         </v-flex>
@@ -79,6 +98,7 @@
       location: null,
       details: Object,
       notFoundBackPath: 'browse',
+      compactLayout: false,
     }),
     created: function created() {
       // console.log(`created MetaDataDetailPage router params: ${this.$route.params.metadataid}`);
@@ -107,7 +127,43 @@
         return true;
         // return (this.metadataId && this.metadataIds !== undefined
         //  && this.metadataIds.includes(this.metadataId));
-      }
+      },
+      fullWidthPadding: function fullwidthPadding() {
+        if (this.$vuetify.breakpoint.xsOnly){
+          return { 'px-1': true };
+        } else if (this.$vuetify.breakpoint.mdAndUp
+          && this.$vuetify.breakpoint.lgAndDown){
+          return { 'px-2': true };
+        } else if (this.$vuetify.breakpoint.lgAndUp){
+          return { 'px-3': true };
+        }
+
+        return '';
+      },
+      halfWidthLeft: function halfWidthLeft() {
+        if (this.$vuetify.breakpoint.xsOnly){
+          return { 'px-1': true };
+        } else if (this.$vuetify.breakpoint.mdAndUp
+          && this.$vuetify.breakpoint.lgAndDown){
+          return { 'pl-2': true, 'pr-1': true };
+        } else if (this.$vuetify.breakpoint.lgAndUp){
+          return { 'pl-3': true, 'pr-1': true };
+        }
+
+        return '';
+      },
+      halfWidthRight: function halfWidthRight() {
+        if (this.$vuetify.breakpoint.xsOnly){
+          return { 'px-1': true };
+        } else if (this.$vuetify.breakpoint.mdAndUp
+          && this.$vuetify.breakpoint.lgAndDown){
+          return { 'pl-1': true, 'pr-2': true };
+        } else if (this.$vuetify.breakpoint.lgAndUp){
+          return { 'pl-1': true, 'pr-3': true };
+        }
+
+        return '';
+      },
     },
     methods: {
       createMetadataContent: function createMetadataContent(){
