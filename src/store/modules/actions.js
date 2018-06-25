@@ -168,12 +168,6 @@ export default {
   async [LOAD_ALL_TAGS]({ commit }) {
     commit(LOAD_ALL_TAGS);
 
-    /*
-    commit(LOAD_METADATA_IDS_SUCCESS, packageListJSON.result);
-    return;
-    */
-    /* eslint-disable no-unreachable  */
-
     axios.get(`${API_BASE}package_search?facet.field=[%22tags%22]&facet.limit=1000&rows=0`)
       .then((response) => {
         commit(LOAD_ALL_TAGS_SUCCESS, response.data.result);
@@ -184,12 +178,6 @@ export default {
   },
   async [LOAD_POPULAR_TAGS]({ commit }) {
     commit(LOAD_POPULAR_TAGS);
-
-    /*
-    commit(LOAD_METADATA_IDS_SUCCESS, packageListJSON.result);
-    return;
-    */
-    /* eslint-disable no-unreachable  */
 
     axios.get(`${API_BASE}package_search?facet.field=[%22tags%22]&facet.limit=25&rows=0`)
       .then((response) => {

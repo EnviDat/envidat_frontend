@@ -17,17 +17,18 @@
           prepend-icon="search"          
           :prepend-icon-cb="clicked"
           v-on:keyup.enter="clicked"
+          v-on:change="focusChanged"
           v-model="searchText"
           :label="labelText">
         </v-text-field>
       </v-flex>
 
       <v-flex xs2 pa-0>
-        <v-chip small color="primary" disabled 
+        <v-chip small disabled 
         class="envidat_chip"
-        :class="{ ['color']: searchCount > 0 ? 'primary' : '',
-                  ['white--text']: searchCount > 0 ? true : false }"
-                >
+        v-bind="{ ['color']: searchCount > 0 ? 'primary' : ''}"
+        :class="{ ['white--text']: searchCount > 0 ? true : false }"
+        >
           {{ searchCount }}
         </v-chip>
       </v-flex>
@@ -78,6 +79,13 @@
     methods: {
       clicked: function clicked() {
         this.$emit('clicked', this.searchText);
+      },
+      focusChanged: function focusChanged() {
+        if (!this.searchText) {
+          this.$emit('searchCleared');
+        } else {
+          this.$emit('clicked', this.searchText);
+        }
       },
     },
     updated: function updated() {

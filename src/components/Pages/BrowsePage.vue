@@ -101,9 +101,10 @@
         this.selectedTagids = this.decodeCategoryFromUrl(category);
       }
 
-      this.searchTerm = this.$route.query.search ? this.$route.query.search : '';
-      if (this.searchTerm.length > 0) {
-        this.catchSearchClicked(this.searchTerm);
+      const search = this.$route.query.search ? this.$route.query.search : '';
+
+      if (search.length > 0) {
+        this.catchSearchClicked(search);
       }
     },
     destroy: function destroy() {
@@ -200,18 +201,25 @@
         this.selectedTagids = [];
       },
       catchSearchClicked: function catchSearchClicked(searchTerm) {
-        this.searchTerm = searchTerm;
+        /* eslint-disable no-param-reassign */
+        searchTerm = searchTerm.trim();
 
-        if (this.searchTerm && this.searchTerm.length > 0) {
-          this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm);
+        if (this.searchTerm !== searchTerm) {
+          this.searchTerm = searchTerm;
 
-          this.$router.push({
-            query: { search: this.searchTerm },
-          });
+          if (this.searchTerm && this.searchTerm.length > 0) {
+            this.isSearchResultContent = true;
+            this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm);
+
+            this.$router.push({
+              query: { search: this.searchTerm },
+            });
+          }
         }
       },
       catchSearchCleared: function catchSearchCleared() {
         this.searchTerm = '';
+        this.isSearchResultContent = false;
 
         this.$router.push({
           query: {},
@@ -372,23 +380,27 @@
       filteredMetadataContent: function filteredMetadataContent() {
         let contentToFilter;
 
-        console.log("search content " + this.searchMetadatasContentSize);
+        if (this.isSearchResultContent) {
+          console.log("search content " + this.searchMetadatasContentSize);
 
-        if (this.searchTerm && this.searchTerm.length > 0
-         && this.searchMetadatasContentSize > 0) {
-          contentToFilter = Object.values(this.searchedMetadatasContent);
-          contentToFilter = this.enhanceSearchWithTags(contentToFilter);
-          // console.log("use search content " + contentToFilter.length);
+          if (this.searchTerm && this.searchTerm.length > 0
+          && this.searchMetadatasContentSize > 0) {
+            contentToFilter = Object.values(this.searchedMetadatasContent);
+            contentToFilter = this.enhanceSearchWithTags(contentToFilter);
+            // console.log("use search content " + contentToFilter.length);
+          }
         } else {
           contentToFilter = Object.values(this.metadatasContent);
           console.log("use local content " + contentToFilter.length);
         }
 
-        contentToFilter = this.enhanceMetadata(contentToFilter);
+        if (contentToFilter) {
+          contentToFilter = this.enhanceMetadata(contentToFilter);
 
-        if (this.selectedTagids !== undefined
-         && this.selectedTagids.length > 0) {
-          contentToFilter = this.contentFilteredByTags(contentToFilter);
+          if (this.selectedTagids !== undefined
+          && this.selectedTagids.length > 0) {
+            contentToFilter = this.contentFilteredByTags(contentToFilter);
+          }
         }
 
         this.updateSearchCount(contentToFilter);
@@ -402,6 +414,7 @@
       searchTerm: '',
       searchLabelText: 'Search',
       searchCount: 0,
+      isSearchResultContent: false,
       selectedTagids: [],
       allTags: [
         {

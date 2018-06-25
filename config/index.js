@@ -21,7 +21,8 @@ module.exports = {
           const from = path;
           // path = encodeURIComponent(path);
           path = path.replace('?', '&amp;');
-          // console.log('replaced path from ' + from + ' to: ' + path);
+          path = path.replace("'", "%22");
+          console.log('replaced path from ' + from + ' to: ' + path);
           return path;
         }        
         /*
@@ -40,8 +41,8 @@ module.exports = {
         pathRewrite: function (path, req) {
           const from = path;
           // path = encodeURIComponent(path);
-          //path = path.replace('?', '&amp;');
-          console.log('solr-replaced path from ' + from + ' to: ' + path);
+          // path = path.replace('?', '&amp;');
+          // console.log('solr-replaced path from ' + from + ' to: ' + path);
           return path;
         }        
       },

@@ -42,6 +42,7 @@
         </filter-expanded-view>
 
         <v-card v-else
+                raised
                 hover>
 
           <v-layout row align-center align-content-center >
