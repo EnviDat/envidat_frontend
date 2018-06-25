@@ -7,9 +7,9 @@
               align-center
               justify-space-between>
 
-      <v-flex xs12 py-0>
+      <v-flex xs10 pa-0>
         <v-text-field
-          class="py-2 smallSearchBar"
+          class="py-2 pl-3 pr-0 smallSearchBar"
           hide-details
           full-width
           single-line
@@ -21,6 +21,28 @@
           :label="labelText">
         </v-text-field>
       </v-flex>
+
+      <v-flex xs2 pa-0>
+        <v-chip small color="primary" disabled 
+        class="envidat_chip"
+        :class="{ ['color']: searchCount > 0 ? 'primary' : '',
+                  ['white--text']: searchCount > 0 ? true : false }"
+                >
+          {{ searchCount }}
+        </v-chip>
+      </v-flex>
+
+      <!-- <v-flex xs1 pr-2 pl-0 py-0>
+        <div class="input-group input-group--slider input-group--focused input-group--active"
+        style="padding: 0; margin: 0;">
+          <div class="slider__thumb--lable__container"
+            :value="searchCount"
+            thumb-label
+          >
+            <div class="slider__thumb--label"> <span>{{ searchCount }}</span> </div>
+          </div>
+        </div>        
+      </v-flex> -->
 
       <v-flex sm4 lg3 xl2 
               v-if="hasButton">
@@ -38,12 +60,21 @@
   export default {
     props: {
       labelText: String,
+      searchTerm: String,
+      searchCount: Number,
       hasButton: Boolean,
       buttonText: String,
+      resultCount: String,
     },
     data: () => ({
       searchText: '',
     }),
+    watch: {
+      searchTerm: function searchTerm(val) {
+        // watcher to overtake the property value to the v-model value
+        this.searchText = val;
+      },
+    },
     methods: {
       clicked: function clicked() {
         this.$emit('clicked', this.searchText);
@@ -51,7 +82,7 @@
     },
     updated: function updated() {
       if (!this.searchText) {
-        this.$emit('searchEmpty');
+        this.$emit('searchCleared');
       }
     },
   };

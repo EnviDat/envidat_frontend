@@ -11,10 +11,12 @@
 
       <v-flex xs12 sm3>
           <small-search-bar-view
+                          :searchTerm="searchTerm"
+                          :searchCount="searchCount"
                           :labelText="searchViewLabelText"
                           :hasButton="searchViewHasButton"
                           v-on:clicked="catchSearchClicked"
-                          v-on:searchEmpty="catchSearchEmpty">
+                          v-on:searchCleared="catchSearchCleared">
           </small-search-bar-view>
       </v-flex>
 
@@ -104,6 +106,8 @@ import FilterViewButtons from './FilterViewButtons';
 export default {
   props: {
     searchTerm: String,
+    searchCount: Number,
+    autoCompleteTags: Array,
     selectedTagids: Array,
     popularTagids: Array,
     allTags: Array,
@@ -185,7 +189,7 @@ export default {
     expandClicked: function expandClicked(expand) {
       this.expanded = expand;
     },
-    catchSearchEmpty: function catchSearchEmpty() {
+    catchSearchCleared: function catchSearchCleared() {
       this.$emit('clearedSearch');
     },
     catchSearchClicked: function catchSearchClicked(searchTerm) {

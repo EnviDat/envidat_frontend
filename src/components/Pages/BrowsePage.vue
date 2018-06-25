@@ -4,7 +4,9 @@
     <v-layout style="position: sticky; top: -1px; z-index: 2;">
 
       <v-flex xs12 my-2>
-        <filter-view :searchViewLabelText="'search'"
+        <filter-view :searchViewLabelText="searchLabelText"
+                      :searchTerm="searchTerm"
+                      :searchCount="searchCount"
                       :searchViewHasButton="false"
                       :allTags="allTags" 
                       :selectedTagids.sync="selectedTagids"
@@ -17,12 +19,10 @@
                       >
         </filter-view>
 
-      <img v-if="loadingMetadatasContent || searchingMetadatasContent" src="../../assets/loadingspinner.gif" alt="" height="50px;">
+        <img v-if="loadingMetadatasContent || searchingMetadatasContent" src="../../assets/loadingspinner.gif" alt="" height="50px;">
 
       </v-flex>
 
-        <p>{{ scrollPosition }}</p>
-      
     </v-layout>
 
     <v-layout column
@@ -93,16 +93,17 @@
       // window.addEventListener('scroll', this.updateScroll);
       this.$store.commit(CHANGE_APP_BG, this.browsePageBGImage);
 
-      this.searchTerm = this.$route.query.search ? this.$route.query.search : '';
-      if (this.searchTerm.length > 0) {
-        this.catchSearchClicked();
-      }
       const tagsEncoded = this.$route.query.tags ? this.$route.query.tags : '';
       if (tagsEncoded.length > 0) {
         this.selectedTagids = this.decodeTagsFromUrl(tagsEncoded);
       } else {
         const category = this.$route.params.category ? this.$route.params.category : null;
         this.selectedTagids = this.decodeCategoryFromUrl(category);
+      }
+
+      this.searchTerm = this.$route.query.search ? this.$route.query.search : '';
+      if (this.searchTerm.length > 0) {
+        this.catchSearchClicked(this.searchTerm);
       }
     },
     destroy: function destroy() {
@@ -161,8 +162,7 @@
       },
       decodeCategoryFromUrl: function decodeCategoryFromUrl(urlquery) {
         if (urlquery) {
-
-          //TODO: figure out which tags should be auto selected
+          // TODO: figure out which tags should be auto selected
           console.log("got category via url: " + urlquery);
         }
 
@@ -201,11 +201,12 @@
       },
       catchSearchClicked: function catchSearchClicked(searchTerm) {
         this.searchTerm = searchTerm;
-        if (this.searchTerm.length > 0) {
+
+        if (this.searchTerm && this.searchTerm.length > 0) {
           this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm);
 
           this.$router.push({
-            query: { serach: this.searchTerm },
+            query: { search: this.searchTerm },
           });
         }
       },
@@ -346,6 +347,9 @@
 
         return '';
       },
+      updateSearchCount: function updateSearchCount(searchResult) {
+        this.searchCount = searchResult !== undefined ? searchResult.length : 0;
+      },
     },
     computed: {
       ...mapGetters({
@@ -368,11 +372,13 @@
       filteredMetadataContent: function filteredMetadataContent() {
         let contentToFilter;
 
+        console.log("search content " + this.searchMetadatasContentSize);
+
         if (this.searchTerm && this.searchTerm.length > 0
          && this.searchMetadatasContentSize > 0) {
           contentToFilter = Object.values(this.searchedMetadatasContent);
           contentToFilter = this.enhanceSearchWithTags(contentToFilter);
-          console.log("use search content " + contentToFilter.length);
+          // console.log("use search content " + contentToFilter.length);
         } else {
           contentToFilter = Object.values(this.metadatasContent);
           console.log("use local content " + contentToFilter.length);
@@ -380,20 +386,22 @@
 
         contentToFilter = this.enhanceMetadata(contentToFilter);
 
-        if (this.selectedTagids === undefined
-         || this.selectedTagids.length <= 0) {
-          return contentToFilter;
+        if (this.selectedTagids !== undefined
+         && this.selectedTagids.length > 0) {
+          contentToFilter = this.contentFilteredByTags(contentToFilter);
         }
 
-        // filter search via backend because of fulltext search via solr
+        this.updateSearchCount(contentToFilter);
 
-        return this.contentFilteredByTags(contentToFilter);
+        return contentToFilter;
       },
     },
     data: () => ({
       browsePageBGImage: './app_b_browsepage.jpg',
       tagCategory: 'landscape', // default
       searchTerm: '',
+      searchLabelText: 'Search',
+      searchCount: 0,
       selectedTagids: [],
       allTags: [
         {
