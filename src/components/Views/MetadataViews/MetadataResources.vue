@@ -1,34 +1,28 @@
 <template>
-  <v-layout column my-2 mx-4>
-
-    <v-flex xs12 md8 offset-md2 elevation-1>
-      <v-card >
-        
-        <v-card-title class="title metadata_title" >Data and resources</v-card-title>
-
-        <v-container fluid grid-list-xs>
-          <v-layout row wrap>
-
-            <v-flex xs6 px-2 py-2 v-for="res in resources" :key="res.id">
+  <v-card class="mx-3">
     
-              <resource-card v-bind="res" v-on:clicked="resClicked(res)"></resource-card>
-    
-            </v-flex>
+    <v-card-title class="title metadata_title" >Data and resources</v-card-title>
 
-          </v-layout>
-        </v-container>
+    <v-container fluid grid-list-xs>
+      <v-layout row wrap>
+
+        <v-flex xs6 px-2 py-2 v-for="res in resources" :key="res.id">
+
+          <resource-card v-bind="res" v-on:clicked="resClicked(res)"></resource-card>
+
+        </v-flex>
+
+      </v-layout>
+    </v-container>
 
 
-        <!--v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn icon @click.native="readMore()">
-            <v-icon color="primary" >{{ showAllResources ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
-          </v-btn>        
-        </v-card-actions-->
-      </v-card>
-    </v-flex>
-
-  </v-layout>
+    <!--v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn icon @click.native="readMore()">
+        <v-icon color="primary" >{{ showAllResources ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
+      </v-btn>        
+    </v-card-actions-->
+  </v-card>
 </template>
 
 <script>

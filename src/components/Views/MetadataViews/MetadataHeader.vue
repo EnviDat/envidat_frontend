@@ -1,7 +1,5 @@
 <template>
-  <v-layout column >
-
-    <v-flex xs12 md8 offset-md2 elevation-5>
+    <v-flex >
 
       <v-card elevation-5 class="px-4" dark color="primary">
 
@@ -11,9 +9,6 @@
         <v-card-media></v-card-media>
 
       </v-card>
-    </v-flex>
-
-    <v-flex xs12 md8 offset-md2 elevation-5>
 
       <v-card class="px-4 py-2" dark color="primary">
 
@@ -58,8 +53,7 @@
 
 
     </v-flex>
-
-  </v-layout>
+    
 </template>
 
 <script>

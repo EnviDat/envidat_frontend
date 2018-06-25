@@ -1,19 +1,49 @@
 <template>
   <v-container fluid >
     <div v-if="metadataIdValid">
-      <metadata-header v-bind="header"> </metadata-header>
 
-      <metadata-body v-bind="body"> </metadata-body>
+      <v-layout row wrap>
+        <v-flex xs12 md8 offset-md2
+                elevation-5
+                style="z-index: 1;">
 
-      <metadata-citation v-bind="citation"> </metadata-citation>
+          <metadata-header v-bind="header"> </metadata-header>
 
-      <metadata-resources v-bind="resources" ></metadata-resources>
+        </v-flex>
 
-      <metadata-location v-if="location"
-                          v-bind="location" ></metadata-location>
+        <v-flex xs12 md8 offset-md2
+                mb-2
+                style="z-index: 0;">
 
-      <metadata-details v-if="details"
-                          v-bind="details" ></metadata-details>
+          <metadata-body v-bind="body"> </metadata-body>
+        </v-flex>
+
+        <v-flex xs12 md8 offset-md2
+                my-2 >
+
+          <metadata-citation v-bind="citation"> </metadata-citation>
+        </v-flex>
+
+        <v-flex xs12 md8 offset-md2
+                my-2 >
+
+          <metadata-resources v-bind="resources" ></metadata-resources>
+        </v-flex>
+
+        <v-flex xs12 md8 offset-md2
+                my-2 >
+          <metadata-location v-if="location"
+                              v-bind="location" ></metadata-location>
+        </v-flex>
+
+        <v-flex xs12 md8 offset-md2
+                my-2 >
+          <metadata-details v-if="details"
+                              v-bind="details" ></metadata-details>
+        </v-flex>
+
+      </v-layout>
+
     </div>
 
     <div v-else> 
