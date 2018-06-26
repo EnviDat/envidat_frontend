@@ -14,38 +14,30 @@
         </v-flex>
 
         <v-flex xs12
-                md8 offset-md2
-                lg10 offset-lg1
+                v-bind="leftOrFullWidth"
                 mb-2 
-                v-bind="fullWidthPadding"
                 style="z-index: 0;">
 
           <metadata-body v-bind="body"> </metadata-body>
         </v-flex>
 
         <v-flex xs12
-                md4 offset-md2
-                lg5 offset-lg1
                 mb-2 
-                v-bind="compactLayout ? fullWidthPadding : halfWidthLeft"
+                v-bind="rightOrFullWidth"
                  >
 
           <metadata-citation v-bind="citation"> </metadata-citation>
         </v-flex>
 
         <v-flex xs12
-                md4
-                lg5
                 mb-2
-                v-bind="compactLayout ? fullWidthPadding : halfWidthRight"
+                v-bind="fullWidthPadding"
                 >
 
           <metadata-resources v-bind="resources" ></metadata-resources>
         </v-flex>
 
         <v-flex xs12
-                md8 offset-md2
-                lg10 offset-lg1
                 mb-2
                 v-bind="fullWidthPadding"
                 >
@@ -54,9 +46,9 @@
         </v-flex>
 
         <v-flex xs12
-                md8 offset-md2
-                lg10 offset-lg1
-                mb-2 >
+                mb-2
+                v-bind="fullWidthPadding"
+                >
           <metadata-details v-if="details"
                               v-bind="details" ></metadata-details>
         </v-flex>
@@ -98,7 +90,7 @@
       location: null,
       details: Object,
       notFoundBackPath: 'browse',
-      compactLayout: false,
+      compactLayout: true,
     }),
     created: function created() {
       // console.log(`created MetaDataDetailPage router params: ${this.$route.params.metadataid}`);
@@ -128,41 +120,60 @@
         // return (this.metadataId && this.metadataIds !== undefined
         //  && this.metadataIds.includes(this.metadataId));
       },
+      leftOrFullWidth: function leftOrFullWidth() {
+        return this.compactLayout ? this.halfWidthLeft : this.fullWidthPadding;
+      },
+      rightOrFullWidth: function rightOrFullWidth() {
+        return this.compactLayout ? this.halfWidthRight : this.fullWidthPadding;
+      },
       fullWidthPadding: function fullwidthPadding() {
-        if (this.$vuetify.breakpoint.xsOnly){
-          return { 'px-1': true };
+        const json = {'md8': true, 'offset-md2': true,
+         'lg10': true, 'offset-lg1': true };
+
+        let padding;
+        if (this.$vuetify.breakpoint.xsOnly) {
+          json['px-1'] = true;
         } else if (this.$vuetify.breakpoint.mdAndUp
-          && this.$vuetify.breakpoint.lgAndDown){
-          return { 'px-2': true };
-        } else if (this.$vuetify.breakpoint.lgAndUp){
-          return { 'px-3': true };
+          && this.$vuetify.breakpoint.lgAndDown) {
+          json['px-2'] = true;
+        } else if (this.$vuetify.breakpoint.lgAndUp) {
+          json['px-3'] = true;
         }
 
-        return '';
+        return json;
       },
       halfWidthLeft: function halfWidthLeft() {
+        const json = {'md4': true, 'offset-md2': true,
+         'lg5': true, 'offset-lg1': true };
+
         if (this.$vuetify.breakpoint.xsOnly){
-          return { 'px-1': true };
+          json['px-1'] = true;
         } else if (this.$vuetify.breakpoint.mdAndUp
           && this.$vuetify.breakpoint.lgAndDown){
-          return { 'pl-2': true, 'pr-1': true };
+          json['pl-2'] = true;
+          json['pr-1'] = true;
         } else if (this.$vuetify.breakpoint.lgAndUp){
-          return { 'pl-3': true, 'pr-1': true };
+          json['pl-3'] = true;
+          json['pr-1'] = true;
         }
 
-        return '';
+        return json;
       },
       halfWidthRight: function halfWidthRight() {
+        const json = {'md4': true, 'lg5': true,};
+
         if (this.$vuetify.breakpoint.xsOnly){
-          return { 'px-1': true };
+          json['px-1'] = true;
         } else if (this.$vuetify.breakpoint.mdAndUp
           && this.$vuetify.breakpoint.lgAndDown){
-          return { 'pl-1': true, 'pr-2': true };
+          json['pl-1'] = true;
+          json['pr-2'] = true;
         } else if (this.$vuetify.breakpoint.lgAndUp){
-          return { 'pl-1': true, 'pr-3': true };
+          json['pl-1'] = true;
+          json['pr-3'] = true;
         }
 
-        return '';
+        return json;
       },
     },
     methods: {
