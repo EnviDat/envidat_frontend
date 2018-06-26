@@ -1,9 +1,11 @@
 <template>
 
-  <v-card >
+  <v-card :style="fixedHeight ? 'height: 304px;' : ''">
     <v-card-title class="title metadata_title" >Citation</v-card-title>
 
     <v-card-text >{{ citationText }}</v-card-text>
+
+    <v-spacer></v-spacer>          
 
     <v-card-actions>
       <v-spacer></v-spacer>          
@@ -21,6 +23,7 @@
       citationText: String,
       citationXmlLink: String,
       ciationIsoXmlLink: String,
+      fixedHeight: Boolean,
     },
     mounted: function mounted() {
     },

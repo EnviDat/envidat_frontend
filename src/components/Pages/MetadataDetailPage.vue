@@ -1,6 +1,8 @@
 <template>
   <v-container fluid >
     <div v-if="metadataIdValid">
+      
+      <v-btn @click="compactLayout = !compactLayout">layout</v-btn>
 
       <v-layout row wrap>
         <v-flex xs12
@@ -18,7 +20,7 @@
                 mb-2 
                 style="z-index: 0;">
 
-          <metadata-body v-bind="body"> </metadata-body>
+          <metadata-body v-bind="body" > </metadata-body>
         </v-flex>
 
         <v-flex xs12
@@ -26,7 +28,7 @@
                 v-bind="rightOrFullWidth"
                  >
 
-          <metadata-citation v-bind="citation"> </metadata-citation>
+          <metadata-citation v-bind="citation" :fixedHeight="compactLayout"> </metadata-citation>
         </v-flex>
 
         <v-flex xs12
@@ -50,7 +52,7 @@
                 v-bind="fullWidthPadding"
                 >
           <metadata-details v-if="details"
-                              v-bind="details" ></metadata-details>
+                              :details="details" ></metadata-details>
         </v-flex>
 
       </v-layout>
@@ -88,7 +90,7 @@
       citation: Object,
       resources: Array,
       location: null,
-      details: Object,
+      details: Array,
       notFoundBackPath: 'browse',
       compactLayout: true,
     }),
@@ -308,14 +310,14 @@
         */
       },
       createDetails: function createDetails(dataset) {
-        return {
-          metadataId: dataset.id,
-          metadataTitle: dataset.title,
-          doi: dataset.doi,
-          created: dataset.created,
-          lastModified: dataset.last_modified,
-          authors: authors,
-        };
+        return [
+          { label: 'MetadataId', text: dataset.id },
+          { label: 'Title', text: dataset.title },
+          { label: 'DOI', text: dataset.doi },
+          { label: 'Create', text: dataset.created },
+          { label: 'Last Modified', text: dataset.last_modified },
+          // authors: authors,
+        ];
       },      
     },
     components: {

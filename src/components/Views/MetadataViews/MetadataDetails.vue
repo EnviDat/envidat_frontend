@@ -7,20 +7,11 @@
     <v-form>
 
       <v-text-field
-        label="Metadata Title"
-        v-bind:name="metadataTitle"
-        :value="metadataTitle"
-        :id="key"
-        disabled
-      ></v-text-field>
-
-
-      <v-text-field
-        v-for="val in $props" :key="val"
-        v-bind:label="val"
-        v-bind:name="val"
-        :value="val"
-        :id="key"
+        v-for="val in details" :key="val.label"
+        v-bind:label="val.label"
+        v-bind:name="val.label"
+        :value="val.text"
+        :id="val.label"
         disabled
       ></v-text-field>
     </v-form>
@@ -41,9 +32,13 @@
   /* eslint-disable no-console */
   export default {
     props: {
+      details: Array,
+      metadataId: String,
       metadataTitle: String,
       doi: String,
       created: String,
+      lastModified: String,
+      authors: Array,
     },
     mounted: function mounted(){
       console.log(`title of MetadataDetails ${this.metadataTitle}`);
@@ -54,6 +49,13 @@
     beforeUpdate: function beforeUpdate() {
     },
     data: () => ({
+      infos:[
+        { label: 'label1', text: 'text1' },
+        { label: 'label2', text: 'text2' },
+        { label: 'label3', text: 'text3' },
+        { label: 'label4', text: 'text4' },
+        { label: 'label5', text: 'text5' },
+      ]
     }),
     methods: {
       clicking: function clicking() {
