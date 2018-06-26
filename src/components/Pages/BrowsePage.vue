@@ -25,21 +25,7 @@
 
     </v-layout>
 
-    <v-layout column
-                      style="margin-top: 50px; z-index: 1;">
-
-        <!--div v-if="loadingMetadatasContent">
-          <img style="width: 200px;" src="@/assets/loadingspinner.gif" alt="Loading">
-        </div>
-        <div v-else>
-          <p v-if="metadataIds" >metadataIds length: {{ metadataIds.length }}</p>
-
-          <p v-if="metadatasContent" >metadatasContent length: {{ this.metadatasContentSize }}</p>
-        </div-->
-        <!--metadata-card v-bind:title="currentMetadata.name" v-on:clickedEvent="metaDataClicked"></metadata-card-->
-        
-        <!--p v-if="currentMetadata" >currentMetadata name: {{ currentMetadata.name }}</p>
-        <p v-else>currentMetadata length: 0</p -->
+    <v-layout column style="margin-top: 25px; z-index: 1;">
 
 <!--
         v-bind:style="'opacity: ' + 1 - window.scrollTop() / 250"
@@ -238,6 +224,7 @@
 
           for (let j = 0; j < this.selectedTagids.length; j++) {
             const selectedTagId = this.selectedTagids[j];
+            console.log("check tagId " + tagId + " with selectedTagId " + selectedTagId);
             if (tagId === selectedTagId) {
               return true;
             }
@@ -246,23 +233,23 @@
 
         return false;
       },
-      contentFilteredByTags: function contentFilteredByTags() {
-        const contentList = [];
+      contentFilteredByTags: function contentFilteredByTags(contentList) {
+        const filteredContent = [];
 
-        if (this.metadatasContentSize > 0) {
-          const metaDataKeys = Object.keys(this.metadatasContent);
+        if (contentList.length > 0) {
+          const metaDataKeys = Object.keys(contentList);
 
           for (let i = 0; i < metaDataKeys.length; i++) {
             const key = metaDataKeys[i];
-            const value = this.metadatasContent[key];
+            const value = contentList[key];
 
             if (value.tags && this.tagsIncludeSelected(value.tags)) {
-              contentList.push(value);
+              filteredContent.push(value);
             }
           }
         }
 
-        return contentList;
+        return filteredContent;
       },
       enhanceSearchWithTags: function enhanceSearchWithTags(searchResult) {
         if (searchResult === undefined && searchResult.length <= 0) {
