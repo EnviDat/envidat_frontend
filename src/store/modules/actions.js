@@ -54,7 +54,7 @@ function loadMetadataContentPromises(commit, metadataIds) {
 }
 
 export default {
-  async [LOAD_ALL_METADATA]({ dispatch, commit }) {
+  async [LOAD_ALL_METADATA]({ commit }) {
     commit(LOAD_ALL_METADATA);
 
     let metadataIds = this.getters['metadata/metadataIds'];
@@ -168,9 +168,12 @@ export default {
   async [LOAD_ALL_TAGS]({ commit }) {
     commit(LOAD_ALL_TAGS);
 
-    axios.get(`${API_BASE}package_search?facet.field=[%22tags%22]&facet.limit=1000&rows=0`)
+    console.log(LOAD_ALL_TAGS);
+    // axios.get(`${API_BASE}package_search?facet.field=[%22tags%22]&facet.limit=1000&rows=0`)
+
+    axios.get(`${SOLR_API_BASE}select?q=*:*&wt=json&facet=true&facet.field=tags&rows=0`)
       .then((response) => {
-        commit(LOAD_ALL_TAGS_SUCCESS, response.data.result);
+        commit(LOAD_ALL_TAGS_SUCCESS, response.data.facet_counts.facet_fields.tags);
       })
       .catch((reason) => {
         commit(LOAD_ALL_TAGS_ERROR, reason);
@@ -179,9 +182,12 @@ export default {
   async [LOAD_POPULAR_TAGS]({ commit }) {
     commit(LOAD_POPULAR_TAGS);
 
-    axios.get(`${API_BASE}package_search?facet.field=[%22tags%22]&facet.limit=25&rows=0`)
+    console.log(LOAD_POPULAR_TAGS);
+    // axios.get(`${API_BASE}package_search?facet.field=[%22tags%22]&facet.limit=25&rows=0`)
+
+    axios.get(`${SOLR_API_BASE}select?q=*:*&wt=json&facet=true&facet.field=tags&facet.limit=25&rows=0`)
       .then((response) => {
-        commit(LOAD_POPULAR_TAGS_SUCCESS, response.data.result);
+        commit(LOAD_POPULAR_TAGS_SUCCESS, response.data.facet_counts.facet_fields.tags);
       })
       .catch((reason) => {
         commit(LOAD_POPULAR_TAGS_ERROR, reason);

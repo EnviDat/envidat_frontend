@@ -76,17 +76,16 @@
         // setTimeout(this.$router.push({ name: 'BrowsePage', params: { cardTitle }}), 1000);
 
         this.$router.push({
-          name: 'BrowsePage',
+          path: '/browse',
           params: {
             category: cardTitle,
           },
         });
       },
       catchSearchClicked: function catchSearchClicked(search) {
-
         this.$router.push({
-          name: 'BrowsePage',
-          query: { search: search },
+          path: '/browse',
+          query: { search },
         });
       },
       catchEnterclick: function catchEnterclick(search) {

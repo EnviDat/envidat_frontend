@@ -105,7 +105,7 @@ export default {
   },
   [LOAD_ALL_TAGS_SUCCESS](state, payload) {
     state.loadingAllTags = false;
-    state.allTags = payload.search_facets.tags.items;
+    state.allTags = payload;
   },
   [LOAD_ALL_TAGS_ERROR](state, reason) {
     state.loadingAllTags = false;
@@ -117,7 +117,9 @@ export default {
   },
   [LOAD_POPULAR_TAGS_SUCCESS](state, payload) {
     state.loadingPopularTags = false;
-    state.popularTags = payload.search_facets.tags.items;
+
+    console.log("popular tags: " + payload);
+    state.popularTags = payload;
   },
   [LOAD_POPULAR_TAGS_ERROR](state, reason) {
     state.loadingPopularTags = false;

@@ -7,6 +7,7 @@ import 'vuetify/dist/vuetify.min.css';
 import App from './App';
 import router from './router';
 import store from './store/store';
+import globalMethods from './components/globalMethods';
 
 Vue.use(Vue2Filters);
 
@@ -24,9 +25,12 @@ Vue.use(Vuetify, {
 
 Vue.config.productionTip = false;
 
+Vue.mixin(globalMethods);
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  // mixins: [globalMethods],
   router,
   store,
   components: { App },

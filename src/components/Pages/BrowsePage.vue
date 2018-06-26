@@ -87,31 +87,44 @@
   export default {
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
       next((vm) => {
+        // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
         vm.$store.commit(CHANGE_APP_BG, vm.browsePageBGImage);
       });
     },
     mounted: function mounted() {
+      // handle initial loading of this Page
+
       // window.addEventListener('scroll', this.updateScroll);
       this.$store.commit(CHANGE_APP_BG, this.browsePageBGImage);
 
-      const tagsEncoded = this.$route.query.tags ? this.$route.query.tags : '';
-      if (tagsEncoded.length > 0) {
-        this.selectedTagids = this.decodeTagsFromUrl(tagsEncoded);
-      } else {
-        const category = this.$route.params.category ? this.$route.params.category : null;
-        this.selectedTagids = this.decodeCategoryFromUrl(category);
-      }
-
-      const search = this.$route.query.search ? this.$route.query.search : '';
-
-      if (search.length > 0) {
-        this.catchSearchClicked(search);
-      }
+      this.loadRouteTags();
+      this.loadRouteSearch();
     },
     destroy: function destroy() {
       // window.removeEventListener('scroll', this.updateScroll);
     },
     methods: {
+      loadRouteTags: function loadRouteTags() {
+        const tagsEncoded = this.$route.query.tags ? this.$route.query.tags : '';
+        // console.log("loadRouteTags " + tagsEncoded);
+
+        if (tagsEncoded.length > 0) {
+          this.selectedTagids = this.decodeTagsFromUrl(tagsEncoded);
+        } else {
+          const category = this.$route.params.category ? this.$route.params.category : null;
+          this.selectedTagids = this.decodeCategoryFromUrl(category);
+        }
+      },
+      loadRouteSearch: function loadRouteSearch() {
+        const search = this.$route.query.search ? this.$route.query.search : '';
+        // console.log("loadRouteSearch " + search);
+
+        if (search.length > 0) {
+          this.catchSearchClicked(search);
+        } else {
+          this.catchSearchCleared();
+        }
+      },
       updateScroll: function updateScroll() {
         this.scrollPosition = window.scrollY;
       },
@@ -123,44 +136,26 @@
           },
         });
       },
-      replaceTagsInRouter: function replaceTagsInRouter() {
-        const tagsEncoded = this.encodeTagForUrl(this.selectedTagids);
+      additiveChangeRoute: function additiveChangeRoute(search, tags) {
+        const query = {};
+
+        if (search !== undefined) {
+          query.search = search;
+        } else if (this.$route.query.search) {
+          query.search = this.$route.query.search;
+        }
+
+        if (tags !== undefined) {
+          query.tags = tags;
+        } else if (this.$route.query.tags) {
+          query.tags = this.$route.query.tags;
+        }
+        // console.log("additiveChangeRoute search: " + query.search + " tags: " + query.tags);
 
         this.$router.push({
-          name: 'BrowsePage',
-          query: { tags: tagsEncoded },
+          path: '/browse',
+          query,
         });
-      },
-      encodeTagForUrl: function encodeTagForUrl(jsonTags) {
-        if (jsonTags && jsonTags.length > 0) {
-          const jsonString = JSON.stringify(jsonTags);
-
-          const urlquery = btoa(jsonString);
-
-          let urlConformString = urlquery.replace(/\+/g, '.');
-          urlConformString = urlConformString.replace(/\//g, '_');
-          urlConformString = urlConformString.replace(/=/g, '-');
-
-          return urlConformString;
-        }
-
-        return '';
-      },
-      decodeTagsFromUrl: function decodeTagsFromUrl(urlquery) {
-        if (urlquery) {
-          let jsonConformString = urlquery.replace(/\./g, '+');
-          jsonConformString = jsonConformString.replace(/_/g, '/');
-          jsonConformString = jsonConformString.replace(/-/g, '=');
-
-          const jsonString = atob(jsonConformString);
-
-          const jsonTags = JSON.parse(jsonString);
-
-          return jsonTags;
-        }
-
-        // return an empty array for the selectedTagIds
-        return [];
       },
       decodeCategoryFromUrl: function decodeCategoryFromUrl(urlquery) {
         if (urlquery) {
@@ -182,7 +177,8 @@
         if (!this.isTagSelected(tagId)) {
           this.selectedTagids.push(tagId);
 
-          this.replaceTagsInRouter();
+          const tagsEncoded = this.encodeTagForUrl(this.selectedTagids);
+          this.additiveChangeRoute(undefined, tagsEncoded);
         }
       },
       catchTagCloseClicked: function catchTagCloseClicked(tagId) {
@@ -195,7 +191,8 @@
         if (index >= 0) {
           this.selectedTagids.splice(index, 1);
 
-          this.replaceTagsInRouter();
+          const tagsEncoded = this.encodeTagForUrl(this.selectedTagids);
+          this.additiveChangeRoute(undefined, tagsEncoded);
         }
       },
       catchTagCleared: function catchTagCleared() {
@@ -212,9 +209,7 @@
             this.isSearchResultContent = true;
             this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm);
 
-            this.$router.push({
-              query: { search: this.searchTerm },
-            });
+            this.additiveChangeRoute(this.searchTerm, undefined);
           }
         }
       },
@@ -222,11 +217,11 @@
         this.searchTerm = '';
         this.isSearchResultContent = false;
 
-        this.$router.push({
-          query: {},
-        });
+        // const queryLength = Object.keys(this.$route.query).length;
 
-        console.log("clear");
+        // if (queryLength > 0 && this.$route.query.search) {
+        this.additiveChangeRoute(this.searchTerm, undefined);
+        // }
       },
       isTagSelected: function isTagSelected(tagId) {
         if (!tagId || this.selectedTagids === undefined) {
@@ -323,19 +318,19 @@
           for (let i = 0; i < tags.length; i++) {
             const element = tags[i];
             if (element.name) {
-              if (element.name.includes('forest')) {
+              if (element.name.includes('FOREST')) {
                 category = 'forest'; break;
               }
-              if (element.name.includes('landscape')) {
+              if (element.name.includes('LANDSCAPE')) {
                 category = 'landscape'; break;
               }
-              if (element.name.includes('snow')) {
+              if (element.name.includes('SNOW')) {
                 category = 'snow'; break;
               }
-              if (element.name.includes('hazard')) {
+              if (element.name.includes('HAZARD')) {
                 category = 'hazard'; break;
               }
-              if (element.name.includes('diversity')) {
+              if (element.name.includes('DIVERSITY')) {
                 category = 'diversity'; break;
               }
             }
@@ -382,7 +377,7 @@
         let contentToFilter;
 
         if (this.isSearchResultContent) {
-          console.log("search content " + this.searchMetadatasContentSize);
+          // console.log("search content " + this.searchMetadatasContentSize);
 
           if (this.searchTerm && this.searchTerm.length > 0
           && this.searchMetadatasContentSize > 0) {
@@ -392,7 +387,7 @@
           }
         } else {
           contentToFilter = Object.values(this.metadatasContent);
-          console.log("use local content " + contentToFilter.length);
+          // console.log("use local content " + contentToFilter.length);
         }
 
         if (contentToFilter) {
@@ -407,6 +402,16 @@
         this.updateSearchCount(contentToFilter);
 
         return contentToFilter;
+      },
+    },
+    watch: {
+      $route: function watchRouteChanges(to, from) {
+        // react on changes of the route (browser back / forward click)
+
+        this.loadRouteTags();
+        this.loadRouteSearch();
+
+        // console.log('watch $route ', this.$route.query.toString() + " to " + to.query + " from " + from.query);
       },
     },
     data: () => ({
