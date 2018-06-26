@@ -58,36 +58,26 @@
 
     <v-card-actions>
       
-      <v-btn icon slot="activator">
-        <v-icon color="primary">cloud_download</v-icon>
-      </v-btn>
-
-      <!-- 
       <v-tooltip bottom>
         <v-btn icon slot="activator">
           <v-icon color="primary">cloud_download</v-icon>
         </v-btn>
-        <span>download data</span>
+        <span>Download data</span>
       </v-tooltip>
-      
-       {{ showDataText }}
-      -->
+
       <v-spacer></v-spacer>
 
-      <!-- <v-btn icon @click.stop="addClick">
-        <v-icon>add</v-icon>
-      </v-btn> -->
+      <v-tooltip bottom v-if="restricted">
+        <v-icon slot="activator" color="black" >lock</v-icon>
+        <span>The data of the entry is restricted.</span>
+      </v-tooltip>
 
-      <v-btn v-if="restricted" icon>
-        <v-icon>lock</v-icon>
-      </v-btn>
-
-      <v-btn v-if="favourit" icon>
+      <!-- <v-btn v-if="favourit" icon>
         <v-icon color="accent">star</v-icon>
       </v-btn>
       <v-btn v-if="!favourit" icon>
         <v-icon>star</v-icon>
-      </v-btn>
+      </v-btn> -->
 
     </v-card-actions>
     
