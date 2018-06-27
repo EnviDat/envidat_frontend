@@ -38,17 +38,24 @@
 
         <v-layout row wrap>
 
-          <tag-chip v-if="tags" v-for="tag in tags" :key="tag.id"
+          <tag-chip v-if="tags" v-for="tag in slicedTags" :key="tag.id"
                     :id="tag.id"
                     :name="tag.name"
                     :closeable="tag.closeable"
                     class="header_tag" />
 
-          <!--v-flex xs2 v-if="maxTagsReached">
-            <tag-chip class="card_tag" :name="'...'" />
-          </v-flex-->
+          <v-flex xs2 v-if="maxTagsReached && !showTagsExpanded">
+            <tag-chip class="header_tag" :name="'...'" />
+          </v-flex>
         </v-layout>
           
+        <v-card-actions v-if="maxTagsReached">
+          <v-spacer></v-spacer>
+          <v-btn icon @click.native="showTagsExpanded = !showTagsExpanded">
+            <v-icon color="accent" >{{ showTagsExpanded ? 'expand_less' : 'expand_more' }}</v-icon>
+          </v-btn>        
+        </v-card-actions>
+
       </v-card>
 
 
@@ -67,10 +74,23 @@ export default {
     doi: String,
     citation: String,
     tags: Array,
+    maxTags: Number,
   },
-  // mounted: function mounted() {
-  //   console.log("mounted header " + this.metadataTitle);
-  // },
+  data: () => ({
+    showTagsExpanded: false,
+  }),
+  computed: {
+    maxTagsReached: function maxTagsReached() {
+      return this.tags ? this.tags.length >= this.maxTags : false;
+    },
+    slicedTags: function slicedTags() {
+      if (this.showTagsExpanded){
+        return this.tags;
+      }
+
+      return this.tags.slice(0, this.maxTags);
+    },
+  },
   components: {
     TagChip,
   },

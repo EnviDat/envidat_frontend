@@ -11,7 +11,7 @@
                 elevation-5
                 style="z-index: 1;">
 
-          <metadata-header v-bind="header"> </metadata-header>
+          <metadata-header v-bind="header" :maxTags="10"> </metadata-header>
 
         </v-flex>
 
@@ -314,7 +314,7 @@
           { label: 'MetadataId', text: dataset.id },
           { label: 'Title', text: dataset.title },
           { label: 'DOI', text: dataset.doi },
-          { label: 'Create', text: dataset.created },
+          { label: 'Created', text: dataset.created },
           { label: 'Last Modified', text: dataset.last_modified },
           // authors: authors,
         ];
