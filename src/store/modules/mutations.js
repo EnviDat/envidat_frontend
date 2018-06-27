@@ -105,7 +105,23 @@ export default {
   },
   [LOAD_ALL_TAGS_SUCCESS](state, payload) {
     state.loadingAllTags = false;
-    state.allTags = payload;
+
+    // console.log('all tags count: ' + payload.length + ' modulo 2 ' + payload.length % 2);
+
+    const tagList = [];
+
+    for (let i = 0; i < payload.length + 1; i += 2) {
+      const tag = { tag: payload[i], count: payload[i + 1] };
+
+      if (tag.tag) {
+        // console.log('adding tag: ' + JSON.stringify(tag));
+        tagList.push(tag);
+      }
+    }
+
+    // console.log('tagList count: ' + tagList.length);
+
+    state.allTags = tagList;
   },
   [LOAD_ALL_TAGS_ERROR](state, reason) {
     state.loadingAllTags = false;
@@ -118,7 +134,6 @@ export default {
   [LOAD_POPULAR_TAGS_SUCCESS](state, payload) {
     state.loadingPopularTags = false;
 
-    console.log("popular tags: " + payload);
     state.popularTags = payload;
   },
   [LOAD_POPULAR_TAGS_ERROR](state, reason) {

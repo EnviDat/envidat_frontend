@@ -28,8 +28,8 @@
         
         <filter-expanded-view v-if="expanded"
                       :allTags="allTags" 
-                      :selectedTagids="selectedTagids"
-                      :popularTagids="popularTagids"
+                      :selectedTagNames="selectedTagNames"
+                      :popularTags="popularTags"
                       :expanded="expanded"
                       :expandButtonText="expandButtonText"
                       :expandedButtonText = "expandedButtonText"
@@ -51,27 +51,25 @@
               <!-- <v-icon>assignment</v-icon> -->
 
               <tag-chip v-if="selectedTags.length > 0"
-                        v-for="tag in selectedTags.slice(0, maxTagNumber)" :key="tag.id" 
-                        :id="tag.id"
-                        :name="tag.name"
+                        v-for="tag in selectedTags" :key="tag.tag" 
+                        :name="tag.tag"
                         :selectable="false"
                         :highlighted="true"
                         :closeable="true"
-                        v-on:clickedClose="catchTagCloseClicked($event, tag.id)"
+                        v-on:clickedClose="catchTagCloseClicked($event, tag.tag)"
                         class="header_tag" />
 
-              <tag-chip v-if="popularTags"
-                        v-for="tag in popularTags" :key="tag.id" 
-                        :id="tag.id"
-                        :name="tag.name"
+              <tag-chip v-if="showPopularTags"
+                        v-for="tag in showPopularTags" :key="tag.tag" 
+                        :name="tag.tag"
                         :selectable="false"
                         :highlighted="false"
                         :closeable="false"
-                        v-on:clicked="catchTagClicked($event, tag.id)"
+                        v-on:clicked="catchTagClicked($event, tag.tag)"
                         class="header_tag" />
 
 
-              <tag-chip v-if="maxPopularTagNumber >= popularTags.length"
+              <tag-chip v-if="maxPopularTagNumber >= showPopularTags.length"
                 class="header_tag" :name="'...'" />
 
             </v-flex>
@@ -109,25 +107,27 @@ export default {
     searchTerm: String,
     searchCount: Number,
     autoCompleteTags: Array,
-    selectedTagids: Array,
-    popularTagids: Array,
+    selectedTagNames: Array,
+    popularTags: Array,
     allTags: Array,
     searchViewLabelText: String,
     searchViewHasButton: Boolean,
   },
   computed: {
     selectedTags: function selectedTags() {
+      // always get the selected as a subset of the allTags because they are the full
+      // tag JSON object
       const selecteds = [];
 
-      if (this.selectedTagids !== undefined && this.selectedTagids.length > 0) {
+      if (this.selectedTagNames !== undefined && this.selectedTagNames.length > 0) {
         for (let i = 0; i < this.allTags.length; i++) {
           const element = this.allTags[i];
 
-          if (this.isTagSelected(element.id)) {
+          if (this.isTagSelected(element.tag)) {
             selecteds.push(element);
           }
 
-          if (selecteds.length >= this.selectedTagids.length) {
+          if (selecteds.length >= this.selectedTagNames.length) {
             break;
           }
         }
@@ -135,12 +135,13 @@ export default {
 
       return selecteds;
     },
-    popularTags: function popularTags() {
+    showPopularTags: function showPopularTags() {
+      // use this computed property to make the diff between popular and selected
       const popTags = [];
 
       this.allTags.forEach((element) => {
-        if (!this.isPopluarTag(element.id)
-         && !this.isTagSelected(element.id)) {
+        if (this.isPopluarTag(element.tag)
+         && !this.isTagSelected(element.tag)) {
           popTags.push(element);
         }
       });
@@ -161,7 +162,7 @@ export default {
         maxTextLength = this.mdTextLength;
       }
 
-      const maxNumber = this.getTagMaxAmout(this.popularTagids, maxTextLength);
+      const maxNumber = this.getTagMaxAmout(this.popularTags, maxTextLength);
       const combinedMax = maxNumber - this.selectedTags.length;
 
       return combinedMax >= 0 ? combinedMax : 0;
@@ -172,15 +173,19 @@ export default {
       let textLength = 0;
       let numberOfTags = 0;
 
-      if (list !== undefined) {
+      if (list && list.length > 0) {
         for (let i = 0; i < list.length; i++) {
-          textLength += list[i].length + 1;
+          const tag = list[i];
 
-          if (textLength >= maxTextLength) {
-            break;
+          if (tag) {
+            textLength += tag.tag.length + 1;
+
+            if (textLength >= maxTextLength) {
+              break;
+            }
+
+            numberOfTags++;
           }
-
-          numberOfTags++;
         }
       }
 
@@ -199,19 +204,19 @@ export default {
     catchTagCleared: function catchTagCleared() {
       this.$emit('clickedClear');
     },
-    isTagSelected: function isTagSelected(tagId) {
-      if (!tagId || this.selectedTagids === undefined) {
+    isTagSelected: function isTagSelected(tagName) {
+      if (!tagName || this.selectedTagNames === undefined) {
         return false;
       }
 
-      return this.selectedTagids.indexOf(tagId) >= 0;
+      return this.selectedTagNames.indexOf(tagName) >= 0;
     },
-    isPopluarTag: function isPopluarTag(tagId) {
-      if (!tagId || this.popularTagids === undefined) {
+    isPopluarTag: function isPopluarTag(tagName) {
+      if (!tagName || this.popularTags === undefined) {
         return false;
       }
 
-      return this.popularTagids.indexOf(tagId) >= 0;
+      return this.popularTags.findIndex(obj => obj.tag === tagName) >= 0;
     },
     catchTagClicked: function catchTagClicked(tagId) {
       this.$emit('clickedTag', tagId);
@@ -220,7 +225,7 @@ export default {
       this.$emit('clickedTagClose', tagId);
     },
     isSelected: function isSelected(tagId) {
-      return this.selectedTagids.indexOf(tagId) >= 0;
+      return this.selectedTags.indexOf(tagId) >= 0;
     },
   },
   data: () => ({
@@ -228,7 +233,7 @@ export default {
     expandButtonText: 'Show all tags',
     expandedButtonText: 'Hide all tags',
     clearButtonText: 'Clear Tags',
-    // selectedTagids: [],
+    // selectedTags: [],
     maxSelectedTagsTextLength: 25,
     maxPopularTagsTextLength: 250,
     xsTextLength: 25,

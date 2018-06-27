@@ -23,6 +23,7 @@
       closeable: Boolean,
       selectable: Boolean,
       highlighted: Boolean,
+      count: Number,
     },
     computed: {
       highlightedClass: function highlightedClass() {
@@ -34,10 +35,10 @@
     },
     methods: {
       clicked: function clicked() {
-        this.$emit('clicked', this.id);
+        this.$emit('clicked', this.name);
       },
       clickedClose: function clickedClose() {
-        this.$emit('clickedClose', this.id);
+        this.$emit('clickedClose', this.name);
       },
     },
   };

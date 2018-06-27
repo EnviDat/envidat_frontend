@@ -9,8 +9,8 @@
                       :searchCount="searchCount"
                       :searchViewHasButton="false"
                       :allTags="allTags" 
-                      :selectedTagids.sync="selectedTagids"
-                      :popularTagids="popularTagids"
+                      :selectedTagNames.sync="selectedTagNames"
+                      :popularTags="popularTags"
                       v-on:clickedSearch="catchSearchClicked"
                       v-on:clearedSearch="catchSearchCleared"
                       v-on:clickedTag="catchTagClicked"
@@ -95,10 +95,10 @@
         // console.log("loadRouteTags " + tagsEncoded);
 
         if (tagsEncoded.length > 0) {
-          this.selectedTagids = this.decodeTagsFromUrl(tagsEncoded);
+          this.selectedTagNames = this.decodeTagsFromUrl(tagsEncoded);
         } else {
           const category = this.$route.params.category ? this.$route.params.category : null;
-          this.selectedTagids = this.decodeCategoryFromUrl(category);
+          this.selectedTagNames = this.decodeCategoryFromUrl(category);
         }
       },
       loadRouteSearch: function loadRouteSearch() {
@@ -149,40 +149,40 @@
           console.log("got category via url: " + urlquery);
         }
 
-        // return an empty array for the selectedTagIds
+        // return an empty array for the selectedTagNames
         return [];
       },
-      catchTagClicked: function catchTagClicked(tagId) {
-        const index = this.allTags.findIndex(obj => obj.id === tagId);
+      catchTagClicked: function catchTagClicked(tagName) {
+        const index = this.allTags.findIndex(obj => obj.tag === tagName);
         const tag = this.allTags[index];
 
-        if (!tag || tag.colseable) {
+        if (!tag) {
           return;
         }
 
-        if (!this.isTagSelected(tagId)) {
-          this.selectedTagids.push(tagId);
+        if (!this.isTagSelected(tagName)) {
+          this.selectedTagNames.push(tagName);
 
-          const tagsEncoded = this.encodeTagForUrl(this.selectedTagids);
+          const tagsEncoded = this.encodeTagForUrl(this.selectedTagNames);
           this.additiveChangeRoute(undefined, tagsEncoded);
         }
       },
       catchTagCloseClicked: function catchTagCloseClicked(tagId) {
-        if (this.selectedTagids === undefined) {
+        if (this.selectedTagNames === undefined) {
           return;
         }
 
-        const index = this.selectedTagids.indexOf(tagId);
+        const index = this.selectedTagNames.indexOf(tagId);
 
         if (index >= 0) {
-          this.selectedTagids.splice(index, 1);
+          this.selectedTagNames.splice(index, 1);
 
-          const tagsEncoded = this.encodeTagForUrl(this.selectedTagids);
+          const tagsEncoded = this.encodeTagForUrl(this.selectedTagNames);
           this.additiveChangeRoute(undefined, tagsEncoded);
         }
       },
       catchTagCleared: function catchTagCleared() {
-        this.selectedTagids = [];
+        this.selectedTagNames = [];
       },
       catchSearchClicked: function catchSearchClicked(searchTerm) {
         /* eslint-disable no-param-reassign */
@@ -209,24 +209,25 @@
         this.additiveChangeRoute(this.searchTerm, undefined);
         // }
       },
-      isTagSelected: function isTagSelected(tagId) {
-        if (!tagId || this.selectedTagids === undefined) {
+      isTagSelected: function isTagSelected(tagName) {
+        if (!tagName || this.selectedTagNames === undefined) {
           return false;
         }
 
-        return this.selectedTagids.indexOf(tagId) >= 0;
+        return this.selectedTagNames.indexOf(tagName) >= 0;
       },
       tagsIncludeSelected: function tagsIncludeSelected(tags) {
         for (let i = 0; i < tags.length; i++) {
-          const tagId = tags[i].id;
+          const tagName = tags[i].tag;
 
           // let tagsMatchSelection = false;
-
-          for (let j = 0; j < this.selectedTagids.length; j++) {
-            const selectedTagId = this.selectedTagids[j];
-            console.log("check tagId " + tagId + " with selectedTagId " + selectedTagId);
-            if (tagId === selectedTagId) {
-              return true;
+          if (tagName) {
+            for (let j = 0; j < this.selectedTagNames.length; j++) {
+              const selectedTagName = this.selectedTagNames[j];
+              console.log("check tagName " + tagName + " with selectedTagName " + selectedTagName);
+              if (tagName === selectedTagName) {
+                return true;
+              }
             }
           }
         }
@@ -262,7 +263,7 @@
           for (let j = 0; j < el.tags.length; j++) {
             const element = el.tags[j];
 
-            const index = this.allTags.findIndex(obj => obj.name === element);
+            const index = this.allTags.findIndex(obj => obj.tag === element);
             const tag = this.allTags[index];
 
             if (tag) {
@@ -304,20 +305,20 @@
         if (tags) {
           for (let i = 0; i < tags.length; i++) {
             const element = tags[i];
-            if (element.name) {
-              if (element.name.includes('FOREST')) {
+            if (element.tag) {
+              if (element.tag.includes('FOREST')) {
                 category = 'forest'; break;
               }
-              if (element.name.includes('LANDSCAPE')) {
+              if (element.tag.includes('LANDSCAPE')) {
                 category = 'landscape'; break;
               }
-              if (element.name.includes('SNOW')) {
+              if (element.tag.includes('SNOW')) {
                 category = 'snow'; break;
               }
-              if (element.name.includes('HAZARD')) {
+              if (element.tag.includes('HAZARD')) {
                 category = 'hazard'; break;
               }
-              if (element.name.includes('DIVERSITY')) {
+              if (element.tag.includes('DIVERSITY')) {
                 category = 'diversity'; break;
               }
             }
@@ -350,7 +351,8 @@
         searchingMetadatasContent: 'metadata/searchingMetadatasContent',
         loadingMetadataIds: 'metadata/loadingMetadataIds',
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
-        // allTags: 'metadata/allTags',
+        // tag Object structure: { tag: tagName, count: tagCount }
+        allTags: 'metadata/allTags',
         currentMetadata: 'metadata/currentMetadata',
         cardBGImages: 'cardBGImages',
       }),
@@ -380,8 +382,8 @@
         if (contentToFilter) {
           contentToFilter = this.enhanceMetadata(contentToFilter);
 
-          if (this.selectedTagids !== undefined
-          && this.selectedTagids.length > 0) {
+          if (this.selectedTagNames !== undefined
+          && this.selectedTagNames.length > 0) {
             contentToFilter = this.contentFilteredByTags(contentToFilter);
           }
         }
@@ -390,8 +392,16 @@
 
         return contentToFilter;
       },
+      popularTags: function popularTags() {
+        if (this.allTags) {
+          return this.allTags.slice(0, this.popularTagAmount);
+        }
+
+        return [];
+      },
     },
     watch: {
+      /* eslint-disable no-unused-vars */
       $route: function watchRouteChanges(to, from) {
         // react on changes of the route (browser back / forward click)
 
@@ -408,107 +418,8 @@
       searchLabelText: 'Search',
       searchCount: 0,
       isSearchResultContent: false,
-      selectedTagids: [],
-      allTags: [
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'AIR TEMPERATURE',
-          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd13',
-          name: 'AIR TEMPERATURE',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'HUMIDITY',
-          id: '5d5d3a6d-1047-4c33-bee7-d1bb119bbe32',
-          name: 'HUMIDITY',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'LONGWAVE RADIATION',
-          id: '4a3b1721-1050-434e-8573-9c36284bb50c',
-          name: 'LONGWAVE RADIATION',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'LONGWAVE RADI',
-          id: '4a3b1721-1050-434e-8573-9c36284bb51c',
-          name: 'LONGWAVE RADI',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'LONG RADIATION',
-          id: '4a3b1721-1050-434e-8573-9c36284bb52c',
-          name: 'LONG RADIATION',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'RADIATION',
-          id: '4a3b1721-1050-434e-8573-9c36284bb53c',
-          name: 'RADIATION',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'TEMPER',
-          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd14',
-          name: 'TEMPER',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'SNOW',
-          id: 'c4e9ea3f-6149-45ce-8631-c872b96a9537',
-          name: 'SNOW',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'ICE',
-          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd16',
-          name: 'ICE',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'LANDSCAPE',
-          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd17',
-          name: 'LANDSCAPE',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'EARTH QUAKE',
-          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd20',
-          name: 'EARTH QUAKE',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'AVALANCHES',
-          id: 'e9bbed2b-85d9-49a7-bdfb-2e5785e2202b',
-          name: 'AVALANCHES',
-        },
-        {
-          vocabulary_id: null,
-          state: 'active',
-          display_name: 'SOIL',
-          id: 'ba9c8c16-f908-4173-affa-f813f7f8cd21',
-          name: 'SOIL',
-        },
-      ],
-      popularTagids: [
-        'ba9c8c16-f908-4173-affa-f813f7f8cd13',
-        'c4e9ea3f-6149-45ce-8631-c872b96a9537',
-        'ba9c8c16-f908-4173-affa-f813f7f8cd16',
-        'e9bbed2b-85d9-49a7-bdfb-2e5785e2202b',
-        '4a3b1721-1050-434e-8573-9c36284bb51c',
-      ],
+      selectedTagNames: [],
+      popularTagAmount: 10,
       scrollPosition: null,
     }),
     components: {

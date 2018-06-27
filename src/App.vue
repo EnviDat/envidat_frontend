@@ -18,7 +18,6 @@
   import {
     LOAD_ALL_METADATA,
     LOAD_ALL_TAGS,
-    LOAD_POPULAR_TAGS,
   } from './store/metadataMutationsConsts';
   import { ADD_CARD_IMAGES } from './store/mutationsConsts';
 
@@ -26,7 +25,6 @@
     created: function created() {
       this.loadAllMetadata();
       this.loadAllTags();
-      this.loadPopularTags();
 
       const bgImgs = require.context('./assets/', false, /\.jpg$/);
       this.appBGImages = this.importImages(bgImgs, 'app_b');
@@ -47,11 +45,6 @@
       loadAllTags: function loadAllTags() {
         if (!this.loadingAllTags && this.allTags.length <= 0) {
           this.$store.dispatch(`metadata/${LOAD_ALL_TAGS}`);
-        }
-      },
-      loadPopularTags: function loadPopularTags() {
-        if (!this.loadingPopularTags && this.popularTags.lengt <= 0) {
-          this.$store.dispatch(`metadata/${LOAD_POPULAR_TAGS}`);
         }
       },
       importCardBackgrounds: function importCardBackgrounds() {

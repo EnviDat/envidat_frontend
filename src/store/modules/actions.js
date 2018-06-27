@@ -17,9 +17,6 @@ import {
   LOAD_ALL_TAGS,
   LOAD_ALL_TAGS_SUCCESS,
   LOAD_ALL_TAGS_ERROR,
-  LOAD_POPULAR_TAGS,
-  LOAD_POPULAR_TAGS_SUCCESS,
-  LOAD_POPULAR_TAGS_ERROR,
 } from '../metadataMutationsConsts';
 
 const API_BASE = '/api/3/action/';
@@ -171,26 +168,12 @@ export default {
     console.log(LOAD_ALL_TAGS);
     // axios.get(`${API_BASE}package_search?facet.field=[%22tags%22]&facet.limit=1000&rows=0`)
 
-    axios.get(`${SOLR_API_BASE}select&q=*:*&wt=json&facet=true&facet.field=tags&facet.limit=1000&rows=0`)
+    axios.get(`${SOLR_API_BASE}select&q=*:*&wt=json&facet=true&facet.field=tags&facet.limit=10000&rows=0`)
       .then((response) => {
         commit(LOAD_ALL_TAGS_SUCCESS, response.data.facet_counts.facet_fields.tags);
       })
       .catch((reason) => {
         commit(LOAD_ALL_TAGS_ERROR, reason);
-      });
-  },
-  async [LOAD_POPULAR_TAGS]({ commit }) {
-    commit(LOAD_POPULAR_TAGS);
-
-    console.log(LOAD_POPULAR_TAGS);
-    // axios.get(`${API_BASE}package_search?facet.field=[%22tags%22]&facet.limit=25&rows=0`)
-
-    axios.get(`${SOLR_API_BASE}select&q=*:*&wt=json&facet=true&facet.field=tags&facet.limit=25&rows=0`)
-      .then((response) => {
-        commit(LOAD_POPULAR_TAGS_SUCCESS, response.data.facet_counts.facet_fields.tags);
-      })
-      .catch((reason) => {
-        commit(LOAD_POPULAR_TAGS_ERROR, reason);
       });
   },
 };

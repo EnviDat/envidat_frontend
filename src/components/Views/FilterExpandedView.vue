@@ -15,14 +15,13 @@
           <v-flex xs11 >
 
             <tag-chip v-if="selectedTags"
-                      v-for="tag in selectedTags" :key="tag.id" 
-                      :id="tag.id"
-                      :name="tag.name"
+                      v-for="tag in selectedTags" :key="tag.tag"
+                      :name="tag.tag"
                       :selectable="false"
-                      :highlighted="isSelected(tag.id)"
-                      :closeable="isSelected(tag.id)"
-                      v-on:clicked="catchTagClicked($event, tag.id)"
-                      v-on:clickedClose="catchTagCloseClicked($event, tag.id)"
+                      :highlighted="true"
+                      :closeable="true"
+                      v-on:clicked="catchTagClicked($event, tag.tag)"
+                      v-on:clickedClose="catchTagCloseClicked($event, tag.tag)"
                       class="header_tag" />
 
           </v-flex>
@@ -39,14 +38,13 @@
           <v-flex xs11>
 
             <tag-chip v-if="unselectedTags"
-                      v-for="tag in unselectedTags" :key="tag.id" 
-                      :id="tag.id"
-                      :name="tag.name"
+                      v-for="tag in unselectedTags" :key="tag.tag" 
+                      :name="tag.tag"
                       :selectable="false"
-                      :highlighted="isSelected(tag.id)"
-                      :closeable="isSelected(tag.id)"
-                      v-on:clicked="catchTagClicked($event, tag.id)"
-                      v-on:clickedClose="catchTagCloseClicked($event, tag.id)"
+                      :highlighted="false"
+                      :closeable="false"
+                      v-on:clicked="catchTagClicked($event, tag.tag)"
+                      v-on:clickedClose="catchTagCloseClicked($event, tag.tag)"
                       class="header_tag" />
 
           </v-flex>
@@ -80,7 +78,7 @@ import FilterViewButtons from './FilterViewButtons';
 export default {
   props: {
     allTags: Array,
-    selectedTagids: Array,
+    selectedTagNames: Array,
     expanded: Boolean,
     expandButtonText: String,
     expandedButtonText: String,
@@ -90,16 +88,15 @@ export default {
     selectedTags: function selectedTags() {
       const selecteds = [];
 
-      if (this.selectedTagids !== undefined && this.selectedTagids.length > 0) {
-
+      if (this.selectedTagNames !== undefined && this.selectedTagNames.length > 0) {
         for (let i = 0; i < this.allTags.length; i++) {
           const element = this.allTags[i];
 
-          if (this.isTagSelected(element.id)) {
+          if (this.isTagSelected(element.tag)) {
             selecteds.push(element);
           }
 
-          if (selecteds.length >= this.selectedTagids.length) {
+          if (selecteds.length >= this.selectedTagNames.length) {
             break;
           }
         }
@@ -113,7 +110,7 @@ export default {
       for (let i = 0; i < this.allTags.length; i++) {
         const element = this.allTags[i];
 
-        if (!this.isTagSelected(element.id)) {
+        if (!this.isTagSelected(element.tag)) {
           unselecteds.push(element);
         }
       }
@@ -122,27 +119,24 @@ export default {
     },
   },
   methods: {
-    isTagSelected: function isTagSelected(tagId) {
-      if (!tagId || this.selectedTagids === undefined) {
+    isTagSelected: function isTagSelected(tagName) {
+      if (!tagName || this.selectedTagNames === undefined) {
         return false;
       }
 
-      return this.selectedTagids.indexOf(tagId) >= 0;
+      return this.selectedTagNames.indexOf(tagName) >= 0;
     },
-    isSelected: function isSelected(tagId) {
-      return this.selectedTagids.indexOf(tagId) >= 0;
+    catchTagClicked: function catchTagClicked(tagName) {
+      this.$emit('clickedTag', tagName);
     },
-    catchTagClicked: function catchTagClicked(tagId) {
-      this.$emit('clickedTag', tagId);
+    catchTagCloseClicked: function catchTagCloseClicked(tagName) {
+      this.$emit('clickedTagClose', tagName);
     },
-    catchTagCloseClicked: function catchTagCloseClicked(tagId) {
-      this.$emit('clickedTagClose', tagId);
+    expandClicked: function expandClicked(tagName) {
+      this.$emit('clickedExpand', tagName);
     },
-    expandClicked: function expandClicked(tagId) {
-      this.$emit('clickedExpand', tagId);
-    },
-    catchClearClicked: function catchClearClicked(tagId) {
-      this.$emit('clickedClear', tagId);
+    catchClearClicked: function catchClearClicked(tagName) {
+      this.$emit('clickedClear', tagName);
     },
   },
   components: {
