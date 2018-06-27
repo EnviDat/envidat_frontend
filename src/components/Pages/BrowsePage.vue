@@ -25,7 +25,7 @@
 
     </v-layout>
 
-    <v-layout column style="margin-top: 25px; z-index: 1;">
+    <v-layout column style="z-index: 1;">
 
 <!--
         v-bind:style="'opacity: ' + 1 - window.scrollTop() / 250"
@@ -43,13 +43,14 @@
                             :tags="metadata.tags"
                             :titleImg="metadata.titleImg"
                             :dark="false"
-                            v-on:clickedEvent="metaDataClicked($event, metadataid)">
+                            v-on:clickedEvent="metaDataClicked($event, metadataid)"
+                            v-on:clickedTag="catchTagClicked">
               </metadata-card>
     
             </v-flex>
 
             <v-flex xs12 v-if="!filteredMetadataContent">
-              <p>nothing found for {{ searchTerm }}</p>
+              <p>Nothing found for these Search criterias</p>
     
             </v-flex>
 
@@ -153,7 +154,7 @@
         return [];
       },
       catchTagClicked: function catchTagClicked(tagName) {
-        const index = this.allTags.findIndex(obj => obj.tag === tagName);
+        const index = this.allTags.findIndex(obj => obj.name === tagName);
         const tag = this.allTags[index];
 
         if (!tag) {
@@ -218,13 +219,13 @@
       },
       tagsIncludeSelected: function tagsIncludeSelected(tags) {
         for (let i = 0; i < tags.length; i++) {
-          const tagName = tags[i].tag;
+          const tagName = tags[i].name;
 
           // let tagsMatchSelection = false;
           if (tagName) {
             for (let j = 0; j < this.selectedTagNames.length; j++) {
               const selectedTagName = this.selectedTagNames[j];
-              console.log("check tagName " + tagName + " with selectedTagName " + selectedTagName);
+
               if (tagName === selectedTagName) {
                 return true;
               }
@@ -253,7 +254,7 @@
         return filteredContent;
       },
       enhanceSearchWithTags: function enhanceSearchWithTags(searchResult) {
-        if (searchResult === undefined && searchResult.length <= 0) {
+        if (searchResult === undefined || searchResult.length <= 0 || this.allTags === undefined) {
           return undefined;
         }
 
@@ -263,7 +264,7 @@
           for (let j = 0; j < el.tags.length; j++) {
             const element = el.tags[j];
 
-            const index = this.allTags.findIndex(obj => obj.tag === element);
+            const index = this.allTags.findIndex(obj => obj.name === element);
             const tag = this.allTags[index];
 
             if (tag) {

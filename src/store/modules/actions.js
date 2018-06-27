@@ -165,7 +165,6 @@ export default {
   async [LOAD_ALL_TAGS]({ commit }) {
     commit(LOAD_ALL_TAGS);
 
-    console.log(LOAD_ALL_TAGS);
     // axios.get(`${API_BASE}package_search?facet.field=[%22tags%22]&facet.limit=1000&rows=0`)
 
     axios.get(`${SOLR_API_BASE}select&q=*:*&wt=json&facet=true&facet.field=tags&facet.limit=10000&rows=0`)

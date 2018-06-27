@@ -30,7 +30,9 @@
         <v-container fluid grid-list-xs>
           <v-layout row wrap>
     
-            <v-flex pr-2 py-2 v-bind="{ [`xs${card.flex}`]: true }" v-for="card in cards" :key="card.title">
+            <v-flex pr-2 py-2
+              v-bind="{ [`xs${card.flex}`]: true }"
+              v-for="card in cards" :key="card.title">
     
               <category-card :title="card.title"
                               :type="card.type"

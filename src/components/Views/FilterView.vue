@@ -6,8 +6,7 @@
       v-bind="{
         ['row']: this.$vuetify.breakpoint.smAndUp,
         ['column']: this.$vuetify.breakpoint.xsOnly,
-       }"
-    row>
+       }" >
 
       <v-flex xs12 sm3>
           <small-search-bar-view
@@ -34,6 +33,7 @@
                       :expandButtonText="expandButtonText"
                       :expandedButtonText = "expandedButtonText"
                       :clearButtonText="clearButtonText"
+                      :minTagCountToBeVisible="5"
                       v-on:clickedTag="catchTagClicked"
                       v-on:clickedTagClose="catchTagCloseClicked"
                       v-on:clickedExpand="expandClicked"
@@ -45,27 +45,32 @@
                 raised
                 hover>
 
-          <v-layout row align-center align-content-center >
+          <v-layout  v-bind="{
+                ['row']: this.$vuetify.breakpoint.smAndUp,
+                ['align-center']: this.$vuetify.breakpoint.smAndUp,
+                ['align-content-center']: this.$vuetify.breakpoint.smAndUp,
+                ['column']: this.$vuetify.breakpoint.xsOnly,
+              }" >
 
             <v-flex xs12 px-2 py-2 >
               <!-- <v-icon>assignment</v-icon> -->
 
               <tag-chip v-if="selectedTags.length > 0"
-                        v-for="tag in selectedTags" :key="tag.tag" 
-                        :name="tag.tag"
+                        v-for="tag in selectedTags" :key="tag.name" 
+                        :name="tag.name"
                         :selectable="false"
                         :highlighted="true"
                         :closeable="true"
-                        v-on:clickedClose="catchTagCloseClicked($event, tag.tag)"
+                        v-on:clickedClose="catchTagCloseClicked($event, tag.name)"
                         class="header_tag" />
 
               <tag-chip v-if="showPopularTags"
-                        v-for="tag in showPopularTags" :key="tag.tag" 
-                        :name="tag.tag"
+                        v-for="tag in showPopularTags" :key="tag.name" 
+                        :name="tag.name"
                         :selectable="false"
                         :highlighted="false"
                         :closeable="false"
-                        v-on:clicked="catchTagClicked($event, tag.tag)"
+                        v-on:clicked="catchTagClicked($event, tag.name)"
                         class="header_tag" />
 
 
@@ -123,7 +128,7 @@ export default {
         for (let i = 0; i < this.allTags.length; i++) {
           const element = this.allTags[i];
 
-          if (this.isTagSelected(element.tag)) {
+          if (this.isTagSelected(element.name)) {
             selecteds.push(element);
           }
 
@@ -140,8 +145,9 @@ export default {
       const popTags = [];
 
       this.allTags.forEach((element) => {
-        if (this.isPopluarTag(element.tag)
-         && !this.isTagSelected(element.tag)) {
+        if (this.isPopluarTag(element.name)
+         && !this.isTagSelected(element.name)
+         && this.isCleanTag(element.name)) {
           popTags.push(element);
         }
       });
@@ -167,8 +173,22 @@ export default {
 
       return combinedMax >= 0 ? combinedMax : 0;
     },
+    dynamicLayout: function dynamicLayout() {
+
+    },
   },
   methods: {
+    isCleanTag: function isCleanTag(tagName) {
+      let maxWordsPerTag = 3;
+
+      if (this.$vuetify.breakpoint.xsOnly) {
+        maxWordsPerTag = 2;
+      } else if (this.$vuetify.breakpoint.smAndDown) {
+        maxWordsPerTag = 20;
+      }
+
+      return tagName.split(' ').length <= maxWordsPerTag;
+    },
     getTagMaxAmout: function getTagMaxAmout(list, maxTextLength) {
       let textLength = 0;
       let numberOfTags = 0;
@@ -178,7 +198,7 @@ export default {
           const tag = list[i];
 
           if (tag) {
-            textLength += tag.tag.length + 1;
+            textLength += tag.name.length + 1;
 
             if (textLength >= maxTextLength) {
               break;
@@ -216,7 +236,7 @@ export default {
         return false;
       }
 
-      return this.popularTags.findIndex(obj => obj.tag === tagName) >= 0;
+      return this.popularTags.findIndex(obj => obj.name === tagName) >= 0;
     },
     catchTagClicked: function catchTagClicked(tagId) {
       this.$emit('clickedTag', tagId);
@@ -226,6 +246,19 @@ export default {
     },
     isSelected: function isSelected(tagId) {
       return this.selectedTags.indexOf(tagId) >= 0;
+    },
+    minTagCountToBeVisible: function minTagCountToBeVisible() {
+      let minCount = 5;
+
+      if (this.$vuetify.breakpoint.xsOnly) {
+        minCount = 25;
+      } else if (this.$vuetify.breakpoint.smAndDown) {
+        minCount = 20;
+      } else if (this.$vuetify.breakpoint.mdAndDown) {
+        minCount = 10;
+      }
+
+      return minCount;
     },
   },
   data: () => ({

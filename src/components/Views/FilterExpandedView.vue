@@ -15,13 +15,13 @@
           <v-flex xs11 >
 
             <tag-chip v-if="selectedTags"
-                      v-for="tag in selectedTags" :key="tag.tag"
-                      :name="tag.tag"
+                      v-for="tag in selectedTags" :key="tag.name"
+                      :name="tag.name"
                       :selectable="false"
                       :highlighted="true"
                       :closeable="true"
-                      v-on:clicked="catchTagClicked($event, tag.tag)"
-                      v-on:clickedClose="catchTagCloseClicked($event, tag.tag)"
+                      v-on:clicked="catchTagClicked($event, tag.name)"
+                      v-on:clickedClose="catchTagCloseClicked($event, tag.name)"
                       class="header_tag" />
 
           </v-flex>
@@ -38,13 +38,13 @@
           <v-flex xs11>
 
             <tag-chip v-if="unselectedTags"
-                      v-for="tag in unselectedTags" :key="tag.tag" 
-                      :name="tag.tag"
+                      v-for="tag in unselectedTags" :key="tag.name" 
+                      :name="tag.name"
                       :selectable="false"
                       :highlighted="false"
                       :closeable="false"
-                      v-on:clicked="catchTagClicked($event, tag.tag)"
-                      v-on:clickedClose="catchTagCloseClicked($event, tag.tag)"
+                      v-on:clicked="catchTagClicked($event, tag.name)"
+                      v-on:clickedClose="catchTagCloseClicked($event, tag.name)"
                       class="header_tag" />
 
           </v-flex>
@@ -83,6 +83,7 @@ export default {
     expandButtonText: String,
     expandedButtonText: String,
     clearButtonText: String,
+    minTagCountToBeVisible: Number,
   },
   computed: {
     selectedTags: function selectedTags() {
@@ -92,7 +93,7 @@ export default {
         for (let i = 0; i < this.allTags.length; i++) {
           const element = this.allTags[i];
 
-          if (this.isTagSelected(element.tag)) {
+          if (this.isTagSelected(element.name)) {
             selecteds.push(element);
           }
 
@@ -110,8 +111,10 @@ export default {
       for (let i = 0; i < this.allTags.length; i++) {
         const element = this.allTags[i];
 
-        if (!this.isTagSelected(element.tag)) {
-          unselecteds.push(element);
+        if (element.count > this.minTagCountToBeVisible) {
+          if (!this.isTagSelected(element.name)) {
+            unselecteds.push(element);
+          }
         }
       }
 

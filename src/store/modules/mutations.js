@@ -16,9 +16,6 @@ import {
   LOAD_ALL_TAGS,
   LOAD_ALL_TAGS_SUCCESS,
   LOAD_ALL_TAGS_ERROR,
-  LOAD_POPULAR_TAGS,
-  LOAD_POPULAR_TAGS_SUCCESS,
-  LOAD_POPULAR_TAGS_ERROR,
 } from '../metadataMutationsConsts';
 
 export default {
@@ -105,39 +102,20 @@ export default {
   },
   [LOAD_ALL_TAGS_SUCCESS](state, payload) {
     state.loadingAllTags = false;
-
-    // console.log('all tags count: ' + payload.length + ' modulo 2 ' + payload.length % 2);
-
     const tagList = [];
 
     for (let i = 0; i < payload.length + 1; i += 2) {
-      const tag = { tag: payload[i], count: payload[i + 1] };
+      const tag = { name: payload[i], count: payload[i + 1] };
 
-      if (tag.tag) {
-        // console.log('adding tag: ' + JSON.stringify(tag));
+      if (tag.name) {
         tagList.push(tag);
       }
     }
-
-    // console.log('tagList count: ' + tagList.length);
 
     state.allTags = tagList;
   },
   [LOAD_ALL_TAGS_ERROR](state, reason) {
     state.loadingAllTags = false;
-    state.error = reason;
-  },
-  [LOAD_POPULAR_TAGS](state) {
-    state.loadingPopularTags = true;
-    state.popularTags = [];
-  },
-  [LOAD_POPULAR_TAGS_SUCCESS](state, payload) {
-    state.loadingPopularTags = false;
-
-    state.popularTags = payload;
-  },
-  [LOAD_POPULAR_TAGS_ERROR](state, reason) {
-    state.loadingPopularTags = false;
     state.error = reason;
   },
 };

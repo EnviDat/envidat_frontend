@@ -18,7 +18,6 @@
 <script>
   export default {
     props: {
-      id: String,
       name: String,
       closeable: Boolean,
       selectable: Boolean,

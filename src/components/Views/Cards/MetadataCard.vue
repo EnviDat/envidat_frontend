@@ -30,12 +30,13 @@
             </v-layout>
           </v-flex>
   
-          <v-flex xs12 px-2 py-0>
+          <v-flex xs12 px-3 py-0>
             <v-layout row align-end >
                 <tag-chip py-0
                           v-if="tags" v-for="tag in tags.slice (0, maxTagNumber)" :key="tag.id"
                           :id="tag.id"
                           :name="tag.name"
+                          v-on:clicked="catchTagClicked($event, tag.name)"
                           class="card_tag" />
               
                 <tag-chip py-0
@@ -136,12 +137,9 @@ export default {
     favouritClicked: function favouritClicked() {
       this.$emit('clickedFavourit', this.id);
     },
-    // addClick: function addClick() {
-    //   this.imageIndex++;
-    //   if (this.imageIndex >= Object.values(this.imagesImports).length){
-    //     this.imageIndex = 0;
-    //   }
-    // },
+    catchTagClicked: function catchTagClicked(tagId) {
+      this.$emit('clickedTag', tagId);
+    },
   },
   computed: {
     dynamicCardBackground: function dynamicCardBackground() {
