@@ -4,11 +4,10 @@
     px-2 py-2
     ripple
     hover
-    @click.native="cardClick"
     >
 
     <v-card-media
-      class="imagezoom"
+      class="imagezoom placeholder"
       background-color="primary"
         v-bind="{['style'] : dynamicCardBackground }"
         height="150px"
@@ -22,10 +21,8 @@
           <v-flex xs12 px-3 pt-3>
             <v-layout row  align-start>
               <v-flex xs12 >
-                <h3 class="headline mb-0"
-                :class="{['black_title'] : dark ? false : true,
-                          ['white_title'] : dark ? true : false }"
-                >{{ title | truncate(maxTitleLength) }}</h3>
+                <h3 class="headline mb-0 black_title"
+                >Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</h3>
               </v-flex>
             </v-layout>
           </v-flex>
@@ -33,13 +30,9 @@
           <v-flex xs12 px-3 py-0>
             <v-layout row align-end >
                 <tag-chip py-0
-                          v-if="tags" v-for="tag in tags.slice (0, maxTagNumber)" :key="tag.name"
-                          :name="tag.name"
-                          v-on:clicked="catchTagClicked($event, tag.name)"
-                          class="card_tag" />
-              
-                <tag-chip py-0
-                          v-if="maxTagsReached" class="card_tag" :name="'...'" />
+                          v-if="tags" v-for="n in 3" :key="n"
+                          name="dummy text"
+                          class="card_tag_placeholder" />
               
             </v-layout>
           </v-flex>
@@ -52,25 +45,17 @@
     <v-card-title primary-title>
       <!--div>{{ title }}</div-->
       <div>
-        <div class="subheading">{{ subtitle | truncate(maxSubtitleLength) }}</div>
+        <div class="subheading">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores</div>
       </div>
     </v-card-title>
 
     <v-card-actions>
       
-      <v-tooltip bottom>
-        <v-btn icon slot="activator">
-          <v-icon color="primary">cloud_download</v-icon>
-        </v-btn>
-        <span>Download data</span>
-      </v-tooltip>
+      <v-btn icon slot="activator">
+        <v-icon color="white">cloud_download</v-icon>
+      </v-btn>
 
       <v-spacer></v-spacer>
-
-      <v-tooltip bottom v-if="restricted">
-        <v-icon slot="activator" color="black" >lock</v-icon>
-        <span>The data of the entry is restricted.</span>
-      </v-tooltip>
 
       <!-- <v-btn v-if="favourit" icon>
         <v-icon color="accent">star</v-icon>
@@ -94,6 +79,7 @@
 
 <script>
 import TagChip from './TagChip';
+import defaultTexture from '../../../assets/cards/forest/c_b_forest_texture_bark2.jpg';
 
 // checkout possible transition animation
 // https://codepen.io/balapa/pen/embYYB
@@ -144,8 +130,8 @@ export default {
     dynamicCardBackground: function dynamicCardBackground() {
       const gradient = this.dark ? this.blackTopToBottom : this.whiteTopToBottom;
 
-      if (this.titleImg) {
-        return `background-image: linear-gradient(0deg, ${gradient}), url(${this.titleImg}); background-position: center, center;`;
+      if (this.defaultTexture) {
+        return `background-image: linear-gradient(0deg, ${gradient}), url(${this.defaultTexture}); background-position: center, center;`;
       }
 
       return '';
@@ -175,6 +161,7 @@ export default {
     },
   },
   data: () => ({
+    defaultTexture,
     show: false,
     showDataText: 'SHOW DATA',
     maxTitleLength: 70,
@@ -198,6 +185,13 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
+  .placeholder .black_title {
+    background-color: rgba(0,0,0,.87) !important;
+  }
+
+  .placeholder card__title.subheading{
+    color: white !important;
+  }
 
   .black_title{
     color: rgba(0,0,0,.87) !important;
@@ -207,7 +201,7 @@ export default {
     color: rgba(255,255,255,.9) !important;
   }
 
-  .card_tag {
+  .card_tag_placeholder {
     /* opacity: 0.7; */
   }
 
