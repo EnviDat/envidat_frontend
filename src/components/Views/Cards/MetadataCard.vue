@@ -177,7 +177,7 @@ export default {
   data: () => ({
     show: false,
     showDataText: 'SHOW DATA',
-    maxTitleLength: 70,
+    maxTitleLength: 80,
     maxSubtitleLength: 190,
     // maxTags: 3,
     maxTagTextlength: 40,

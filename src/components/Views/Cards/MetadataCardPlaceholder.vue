@@ -22,7 +22,7 @@
           <v-flex xs12 px-3 pt-3>
             <v-layout row  align-start>
               <v-flex xs12 >
-                <div class="skeleton skeleton-size-big skeleton-animation-pulse">
+                <div class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-pulse">
 
                   <div class='bone bone-type-multiline bone-style-steps'
                   :class="{['black_title'] : dark ? false : true,
@@ -50,7 +50,7 @@
     </v-card-media>
 
     <v-card-title primary-title>
-      <div class="skeleton skeleton-animation-pulse" style="width: 100%;">
+      <div class="skeleton skeleton-color-silver skeleton-animation-pulse" style="width: 100%;">
         <div class='bone bone-type-multiline'></div>
         <div class='bone bone-type-multiline bone-style-paragraph'></div>
       </div>
