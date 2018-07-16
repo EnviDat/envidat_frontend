@@ -26,11 +26,11 @@
 
 <script>
   import defaultImg from '@/assets/cards/default.png';
-  import snowImg from '@/assets/cards/snow/c_b_snow_icy2.jpg';
-  import woodImg from '@/assets/cards/forest/c_b_forest_texture_bark2.jpg';
-  import landImg from '@/assets/cards/landscape/c_b_landscape_view.jpg';
-  import hazardImg from '@/assets/cards/hazard/c_b_hazard_cloud.jpg';
-  import diversityImg from '@/assets/cards/diversity/b_c_diversity_meadow.jpg';
+  import snowImg from '@/assets/cards/snow/c_b_snow_icy2_small.jpg';
+  import woodImg from '@/assets/cards/forest/c_b_forest_texture_bark2_small.jpg';
+  import landImg from '@/assets/cards/landscape/c_b_landscape_view_small.jpg';
+  import hazardImg from '@/assets/cards/hazard/c_b_hazard_cloud_small.jpg';
+  import diversityImg from '@/assets/cards/diversity/b_c_diversity_meadow_small.jpg';
 
   export default {
     props: {

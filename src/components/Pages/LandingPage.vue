@@ -67,10 +67,11 @@
   // https://codepen.io/suez/pen/dPqxoM
 
   export default {
-    beforeRouteEnter: function beforeRouteEnter (to, from, next) {
-      next(vm => {
+    beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+      next((vm) => {
+        // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
         vm.$store.commit(CHANGE_APP_BG, vm.landingPageBGImg);
-      })
+      });
     },
     methods: {
       catchCategoryClicked: function catchCategoryClicked(cardTitle) {
@@ -108,11 +109,11 @@
       },
     },
     data: () => ({
-      landingPageBGImg: './app_b_landingpage.jpg',      
+      landingPageBGImg: './app_b_landingpage.jpg',
       labelText: "Type ex. 'Avalanche'",
       buttonlText: 'SEARCH',
       envidatTitle: 'EnviDat',
-      envidatSlogan: 'Browse the most comprehensive environmental data collection of Switzerland',
+      envidatSlogan: 'Browse the most comprehensive collcetion of environmental data from Switzerland',
       loginInfos: {
         titleText: 'Do you create data?',
         loginText: 'LOGIN',
@@ -123,31 +124,26 @@
       cards: [{
         title: 'Forest',
         type: 'forest',
-        src: 'https://i1.wp.com/www.phoenixfuels.ph/wp-content/uploads/2018/01/Placeholder.png?resize=300%2C300',
         flex: 6,
       },
       {
         title: 'Snow',
         type: 'snow',
-        src: 'https://i1.wp.com/www.phoenixfuels.ph/wp-content/uploads/2018/01/Placeholder.png?resize=300%2C300',
         flex: 6,
       },
       {
         title: 'Landscape',
         type: 'landscape',
-        src: 'https://i1.wp.com/www.phoenixfuels.ph/wp-content/uploads/2018/01/Placeholder.png?resize=300%2C300',
         flex: 6,
       },
       {
         title: 'Natural disasters',
         type: 'hazard',
-        src: 'https://i1.wp.com/www.phoenixfuels.ph/wp-content/uploads/2018/01/Placeholder.png?resize=300%2C300',
         flex: 6,
       },
       {
         title: 'Biodiversity',
         type: 'diversity',
-        src: 'https://i1.wp.com/www.phoenixfuels.ph/wp-content/uploads/2018/01/Placeholder.png?resize=300%2C300',
         flex: 6,
       },
       ],
