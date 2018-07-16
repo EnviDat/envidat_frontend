@@ -4,10 +4,11 @@
     px-2 py-2
     ripple
     hover
+    height="330"
     >
 
     <v-card-media
-      class="imagezoom placeholder"
+      class="imagezoom"
       background-color="primary"
         v-bind="{['style'] : dynamicCardBackground }"
         height="150px"
@@ -21,8 +22,13 @@
           <v-flex xs12 px-3 pt-3>
             <v-layout row  align-start>
               <v-flex xs12 >
-                <h3 class="headline mb-0 black_title"
-                >Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</h3>
+                <div class="skeleton skeleton-size-big skeleton-animation-pulse">
+
+                  <div class='bone bone-type-multiline bone-style-steps'
+                  :class="{['black_title'] : dark ? false : true,
+                            ['white_title'] : dark ? true : false }"
+                  ></div>
+                </div>
               </v-flex>
             </v-layout>
           </v-flex>
@@ -34,6 +40,7 @@
                           name="dummy text"
                           class="card_tag_placeholder" />
               
+              
             </v-layout>
           </v-flex>
         </v-layout>
@@ -43,34 +50,11 @@
     </v-card-media>
 
     <v-card-title primary-title>
-      <!--div>{{ title }}</div-->
-      <div>
-        <div class="subheading">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores</div>
+      <div class="skeleton skeleton-animation-pulse" style="width: 100%;">
+        <div class='bone bone-type-multiline'></div>
+        <div class='bone bone-type-multiline bone-style-paragraph'></div>
       </div>
     </v-card-title>
-
-    <v-card-actions>
-      
-      <v-btn icon slot="activator">
-        <v-icon color="white">cloud_download</v-icon>
-      </v-btn>
-
-      <v-spacer></v-spacer>
-
-      <!-- <v-btn v-if="favourit" icon>
-        <v-icon color="accent">star</v-icon>
-      </v-btn>
-      <v-btn v-if="!favourit" icon>
-        <v-icon>star</v-icon>
-      </v-btn> -->
-
-    </v-card-actions>
-    
-    <v-slide-y-transition>
-      <v-card-text v-show="show">
-        I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
-      </v-card-text>
-    </v-slide-y-transition>
 
   </v-card>
 
@@ -81,22 +65,8 @@
 import TagChip from './TagChip';
 import defaultTexture from '../../../assets/cards/forest/c_b_forest_texture_bark2.jpg';
 
-// checkout possible transition animation
-// https://codepen.io/balapa/pen/embYYB
-// https://codepen.io/zavoloklom/pen/eNaEBM
-
-// this one maybe for the guided content scrolling
-// https://codepen.io/pgreg/pen/EDoFB
-
-// Card design #2 probably only the header would be doable?
-// https://codepen.io/marlenesco/pen/NqOozj
-
-// Card opening animation
-// https://codepen.io/luizotcarvalho/pen/yyQNRO
-
-
-// check multi line truncation via css (only works with one-colored background)
-// http://hackingui.com/front-end/a-pure-css-solution-for-multiline-text-truncation/
+// checkout skeleton
+// https://github.com/ToxicJojo/SkeletonPlaceholder
 
 export default {
   props: {
