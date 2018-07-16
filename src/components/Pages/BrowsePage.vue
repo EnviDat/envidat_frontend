@@ -34,7 +34,18 @@
         <v-container fluid grid-list-md @scroll="updateScroll" >
           <v-layout row wrap>
 
-            <v-flex xs12 sm6 md4 xl3
+            <v-flex v-if="loading"
+                    xs12 sm6 md4 xl3
+                    v-for="n in 6" :key="n">
+              <metadata-card-placeholder
+                            :dark="false"
+                                          >
+              </metadata-card-placeholder>
+    
+            </v-flex>
+
+            <v-flex v-else
+                    xs12 sm6 md4 xl3
                     v-for="metadata in filteredMetadataContent" :key="metadata.id">
               <metadata-card
                             :title="metadata.title"
@@ -66,6 +77,7 @@
   import { mapGetters } from 'vuex';
   import FilterView from '../Views/FilterView';
   import MetadataCard from '../Views/Cards/MetadataCard';
+  import MetadataCardPlaceholder from '../Views/Cards/MetadataCardPlaceholder';
   import { SEARCH_METADATA } from '../../store/metadataMutationsConsts';
   import { CHANGE_APP_BG } from '../../store/mutationsConsts';
 
@@ -413,6 +425,7 @@
       },
     },
     data: () => ({
+      loading: true,
       browsePageBGImage: './app_b_browsepage.jpg',
       tagCategory: 'landscape', // default
       searchTerm: '',
@@ -426,6 +439,7 @@
     components: {
       FilterView,
       MetadataCard,
+      MetadataCardPlaceholder,
     },
 };
 </script>

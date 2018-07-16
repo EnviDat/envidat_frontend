@@ -4,7 +4,7 @@
     px-2 py-2
     ripple
     hover
-    @click.native="cardClick"
+    height="330"
     >
 
     <v-card-media
@@ -22,10 +22,13 @@
           <v-flex xs12 px-3 pt-3>
             <v-layout row  align-start>
               <v-flex xs12 >
-                <h3 class="headline mb-0"
-                :class="{['black_title'] : dark ? false : true,
-                          ['white_title'] : dark ? true : false }"
-                >{{ title | truncate(maxTitleLength) }}</h3>
+                <div class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-pulse">
+
+                  <div class='bone bone-type-multiline bone-style-steps'
+                  :class="{['black_title'] : dark ? false : true,
+                            ['white_title'] : dark ? true : false }"
+                  ></div>
+                </div>
               </v-flex>
             </v-layout>
           </v-flex>
@@ -33,13 +36,10 @@
           <v-flex xs12 px-3 py-0>
             <v-layout row align-end >
                 <tag-chip py-0
-                          v-if="tags" v-for="tag in tags.slice (0, maxTagNumber)" :key="tag.name"
-                          :name="tag.name"
-                          v-on:clicked="catchTagClicked($event, tag.name)"
-                          class="card_tag" />
+                          v-if="tags" v-for="n in 3" :key="n"
+                          name="dummy text"
+                          class="card_tag_placeholder" />
               
-                <tag-chip py-0
-                          v-if="maxTagsReached" class="card_tag" :name="'...'" />
               
             </v-layout>
           </v-flex>
@@ -50,42 +50,11 @@
     </v-card-media>
 
     <v-card-title primary-title>
-      <!--div>{{ title }}</div-->
-      <div>
-        <div class="subheading">{{ subtitle | truncate(maxSubtitleLength) }}</div>
+      <div class="skeleton skeleton-color-silver skeleton-animation-pulse" style="width: 100%;">
+        <div class='bone bone-type-multiline'></div>
+        <div class='bone bone-type-multiline bone-style-paragraph'></div>
       </div>
     </v-card-title>
-
-    <v-card-actions>
-      
-      <v-tooltip bottom>
-        <v-btn icon slot="activator">
-          <v-icon color="primary">cloud_download</v-icon>
-        </v-btn>
-        <span>Download data</span>
-      </v-tooltip>
-
-      <v-spacer></v-spacer>
-
-      <v-tooltip bottom v-if="restricted">
-        <v-icon slot="activator" color="black" >lock</v-icon>
-        <span>The data of the entry is restricted.</span>
-      </v-tooltip>
-
-      <!-- <v-btn v-if="favourit" icon>
-        <v-icon color="accent">star</v-icon>
-      </v-btn>
-      <v-btn v-if="!favourit" icon>
-        <v-icon>star</v-icon>
-      </v-btn> -->
-
-    </v-card-actions>
-    
-    <v-slide-y-transition>
-      <v-card-text v-show="show">
-        I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
-      </v-card-text>
-    </v-slide-y-transition>
 
   </v-card>
 
@@ -94,23 +63,10 @@
 
 <script>
 import TagChip from './TagChip';
+import defaultTexture from '../../../assets/cards/forest/c_b_forest_texture_bark2.jpg';
 
-// checkout possible transition animation
-// https://codepen.io/balapa/pen/embYYB
-// https://codepen.io/zavoloklom/pen/eNaEBM
-
-// this one maybe for the guided content scrolling
-// https://codepen.io/pgreg/pen/EDoFB
-
-// Card design #2 probably only the header would be doable?
-// https://codepen.io/marlenesco/pen/NqOozj
-
-// Card opening animation
-// https://codepen.io/luizotcarvalho/pen/yyQNRO
-
-
-// check multi line truncation via css (only works with one-colored background)
-// http://hackingui.com/front-end/a-pure-css-solution-for-multiline-text-truncation/
+// checkout skeleton
+// https://github.com/ToxicJojo/SkeletonPlaceholder
 
 export default {
   props: {
@@ -144,8 +100,8 @@ export default {
     dynamicCardBackground: function dynamicCardBackground() {
       const gradient = this.dark ? this.blackTopToBottom : this.whiteTopToBottom;
 
-      if (this.titleImg) {
-        return `background-image: linear-gradient(0deg, ${gradient}), url(${this.titleImg}); background-position: center, center;`;
+      if (this.defaultTexture) {
+        return `background-image: linear-gradient(0deg, ${gradient}), url(${this.defaultTexture}); background-position: center, center;`;
       }
 
       return '';
@@ -175,9 +131,10 @@ export default {
     },
   },
   data: () => ({
+    defaultTexture,
     show: false,
     showDataText: 'SHOW DATA',
-    maxTitleLength: 80,
+    maxTitleLength: 70,
     maxSubtitleLength: 190,
     // maxTags: 3,
     maxTagTextlength: 40,
@@ -198,6 +155,13 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
+  .placeholder .black_title {
+    background-color: rgba(0,0,0,.87) !important;
+  }
+
+  .placeholder card__title.subheading{
+    color: white !important;
+  }
 
   .black_title{
     color: rgba(0,0,0,.87) !important;
@@ -207,7 +171,7 @@ export default {
     color: rgba(255,255,255,.9) !important;
   }
 
-  .card_tag {
+  .card_tag_placeholder {
     /* opacity: 0.7; */
   }
 

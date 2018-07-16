@@ -69,6 +69,7 @@
     },
     data: () => ({
       searchText: '',
+      lastSearch: '',
     }),
     watch: {
       searchTerm: function searchTerm(val) {
@@ -79,18 +80,22 @@
     methods: {
       clicked: function clicked() {
         this.$emit('clicked', this.searchText);
+        this.lastSearch = this.searchText;
       },
       focusChanged: function focusChanged() {
         if (!this.searchText) {
           this.$emit('searchCleared');
+          this.lastSearch = '';
         } else {
           this.$emit('clicked', this.searchText);
+          this.lastSearch = this.searchText;
         }
       },
     },
     updated: function updated() {
-      if (!this.searchText) {
+      if (!this.searchText && this.lastSearch) {
         this.$emit('searchCleared');
+        this.lastSearch = '';
       }
     },
   };

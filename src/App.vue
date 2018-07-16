@@ -15,6 +15,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
+  import '../node_modules/skeleton-placeholder/dist/bone.min.css';
   import {
     LOAD_ALL_METADATA,
     LOAD_ALL_TAGS,
