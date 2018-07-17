@@ -10,8 +10,8 @@
     <v-card-media
       class="imagezoom"
       background-color="primary"
-        v-bind="{['style'] : dynamicCardBackground }"
-        height="150px"
+      v-bind="{['style'] : dynamicCardBackground }"
+      height="150px"
       >
       
       <!-- <img :src="landImg" /> -->
