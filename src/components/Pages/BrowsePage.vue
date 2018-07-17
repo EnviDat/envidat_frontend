@@ -19,8 +19,6 @@
                       >
         </filter-view>
 
-        <img v-if="loadingMetadatasContent || searchingMetadatasContent" src="../../assets/loadingspinner.gif" alt="" height="50px;">
-
       </v-flex>
 
     </v-layout>
@@ -36,17 +34,15 @@
 
             <v-flex v-if="loading"
                     xs12 sm6 md4 xl3
-                    v-for="n in 6" :key="n">
-              <metadata-card-placeholder
-                            :dark="false"
-                                          >
-              </metadata-card-placeholder>
+                    v-for="(n, index) in 6" :key="index">
+
+              <metadata-card-placeholder :dark="false" />
     
             </v-flex>
 
-            <v-flex v-else
+            <v-flex v-if="!loading"
                     xs12 sm6 md4 xl3
-                    v-for="metadata in filteredMetadataContent" :key="metadata.id">
+                    v-for="(metadata, index) in filteredMetadataContent" :key="index">
               <metadata-card
                             :title="metadata.title"
                             :id="metadata.id"
@@ -60,7 +56,7 @@
     
             </v-flex>
 
-            <v-flex xs12 v-if="!filteredMetadataContent">
+            <v-flex xs12 v-if="!loading && !filteredMetadataContent">
               <p>Nothing found for these Search criterias</p>
     
             </v-flex>
@@ -369,6 +365,9 @@
         currentMetadata: 'metadata/currentMetadata',
         cardBGImages: 'cardBGImages',
       }),
+      loading: function loading() {
+        return this.loadingMetadataIds || this.loadingMetadatasContent || this.searchingMetadatasContent;
+      },
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
       },
@@ -425,7 +424,6 @@
       },
     },
     data: () => ({
-      loading: true,
       browsePageBGImage: './app_b_browsepage.jpg',
       tagCategory: 'landscape', // default
       searchTerm: '',

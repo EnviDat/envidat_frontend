@@ -80,7 +80,7 @@ export default {
     // maybe use notes:"snow avalanche"
     // select?indent=on&q=tags:${searchTerm}%20AND%20notes:${searchTerm}&wt=json
 
-    axios.get(`${SOLR_API_BASE}select?indent=on&q=notes:${searchTerm}&wt=json`)
+    axios.get(`${SOLR_API_BASE}select?indent=on&q=notes:${searchTerm}&wt=json&rows=1000`)
       .then((response) => {
         commit(SEARCH_METADATA_SUCCESS, response.data.response.docs);
       })
