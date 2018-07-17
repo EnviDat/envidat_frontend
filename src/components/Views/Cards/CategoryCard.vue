@@ -39,7 +39,7 @@
     },
     methods: {
       clicked: function clicked() {
-        this.$emit('clicked', this.title);
+        this.$emit('clicked', this.title.toLowerCase());
       },
     },
     computed: {
