@@ -71,7 +71,7 @@
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
       next((vm) => {
         // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
-        vm.$store.commit(CHANGE_APP_BG, vm.landingPageBGImg);
+        vm.$store.commit(CHANGE_APP_BG, vm.PageBGImage);
       });
     },
     methods: {
@@ -110,7 +110,7 @@
       },
     },
     data: () => ({
-      landingPageBGImg: './app_b_landingpage.jpg',
+      PageBGImage: './app_b_landingpage.jpg',
       labelText: "Type ex. 'Avalanche'",
       buttonlText: 'SEARCH',
       envidatTitle: 'EnviDat',

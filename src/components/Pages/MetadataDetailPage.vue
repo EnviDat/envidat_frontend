@@ -70,6 +70,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
+  import { CHANGE_APP_BG } from '../../store/mutationsConsts';
   import MetadataHeader from '../Views/MetadataViews/MetadataHeader';
   import MetadataBody from '../Views/MetadataViews/MetadataBody';
   import MetadataResources from '../Views/MetadataViews/MetadataResources';
@@ -83,20 +84,26 @@
   // for animations between the different parts of the Metadata
 
   export default {
+    beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+      next((vm) => {
+        // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
+        vm.$store.commit(CHANGE_APP_BG, vm.PageBGImage);
+      });
+    },
     data: () => ({
-      // metadataId: '',
-      header: Object,
-      body: Object,
-      citation: Object,
-      resources: Array,
+      PageBGImage: './app_b_browsepage.jpg',
+      header: null,
+      body: null,
+      citation: null,
+      resources: null,
       location: null,
-      details: Array,
+      details: null,
       notFoundBackPath: 'browse',
       compactLayout: true,
     }),
     created: function created() {
       // console.log(`created MetaDataDetailPage router params: ${this.$route.params.metadataid}`);
-      //this.metadataId = this.$route.params.metadataid;
+      // this.metadataId = this.$route.params.metadataid;
     },
     mounted: function mounted() {
       this.createMetadataContent();
@@ -117,7 +124,7 @@
       metadataId: function metadataId() {
         return this.$route.params.metadataid;
       },
-      metadataIdValid: function metadataIdValid(){
+      metadataIdValid: function metadataIdValid() {
         return true;
         // return (this.metadataId && this.metadataIds !== undefined
         //  && this.metadataIds.includes(this.metadataId));
@@ -129,10 +136,13 @@
         return this.compactLayout ? this.halfWidthRight : this.fullWidthPadding;
       },
       fullWidthPadding: function fullwidthPadding() {
-        const json = {'md8': true, 'offset-md2': true,
-         'lg10': true, 'offset-lg1': true };
+        const json = {
+          md8: true,
+          'offset-md2': true,
+          lg10: true,
+          'offset-lg1': true,
+        };
 
-        let padding;
         if (this.$vuetify.breakpoint.xsOnly) {
           json['px-1'] = true;
         } else if (this.$vuetify.breakpoint.mdAndUp
@@ -145,16 +155,20 @@
         return json;
       },
       halfWidthLeft: function halfWidthLeft() {
-        const json = {'md4': true, 'offset-md2': true,
-         'lg5': true, 'offset-lg1': true };
+        const json = {
+          md4: true,
+          'offset-md2': true,
+          lg5: true,
+          'offset-lg1': true,
+        };
 
-        if (this.$vuetify.breakpoint.xsOnly){
+        if (this.$vuetify.breakpoint.xsOnly) {
           json['px-1'] = true;
         } else if (this.$vuetify.breakpoint.mdAndUp
-          && this.$vuetify.breakpoint.lgAndDown){
+          && this.$vuetify.breakpoint.lgAndDown) {
           json['pl-2'] = true;
           json['pr-1'] = true;
-        } else if (this.$vuetify.breakpoint.lgAndUp){
+        } else if (this.$vuetify.breakpoint.lgAndUp) {
           json['pl-3'] = true;
           json['pr-1'] = true;
         }
@@ -162,15 +176,18 @@
         return json;
       },
       halfWidthRight: function halfWidthRight() {
-        const json = {'md4': true, 'lg5': true,};
+        const json = {
+          md4: true,
+          lg5: true,
+        };
 
-        if (this.$vuetify.breakpoint.xsOnly){
+        if (this.$vuetify.breakpoint.xsOnly) {
           json['px-1'] = true;
         } else if (this.$vuetify.breakpoint.mdAndUp
-          && this.$vuetify.breakpoint.lgAndDown){
+          && this.$vuetify.breakpoint.lgAndDown) {
           json['pl-1'] = true;
           json['pr-2'] = true;
-        } else if (this.$vuetify.breakpoint.lgAndUp){
+        } else if (this.$vuetify.breakpoint.lgAndUp) {
           json['pl-1'] = true;
           json['pr-3'] = true;
         }
@@ -179,38 +196,45 @@
       },
     },
     methods: {
-      createMetadataContent: function createMetadataContent(){
+      createMetadataContent: function createMetadataContent() {
         let currentMetadataContent;
 
-        if (this.metadatasContentSize > 0 && this.metadataIdValid){
+        if (this.metadatasContentSize > 0 && this.metadataIdValid) {
           currentMetadataContent = this.metadatasContent[this.metadataId];
         }
 
-        if (currentMetadataContent){
+        if (currentMetadataContent) {
           this.header = this.createHeader(currentMetadataContent);
           this.body = this.createBody(currentMetadataContent);
           this.citation = this.createCitation(currentMetadataContent);
           this.resources = this.createResources(currentMetadataContent);
-          console.log("created resources " + this.resources);
           this.location = this.createLocation(currentMetadataContent);
           this.details = this.createDetails(currentMetadataContent);
         }
       },
       createHeader: function createHeader(dataset) {
+        let { maintainer } = dataset;
 
-        if (typeof(dataset.maintainer) === 'string'){
-          dataset.maintainer = JSON.parse(dataset.maintainer);
+        if (typeof (dataset.maintainer) === 'string') {
+          maintainer = JSON.parse(dataset.maintainer);
         }
+
+        let contactEmail = dataset.maintainer_email;
+        if (!dataset.maintainer_email) {
+          contactEmail = maintainer.email ? maintainer.email : '';
+        }
+
+        const license = this.createLicense(dataset);
 
         return {
           metadataTitle: dataset.title,
           doi: dataset.doi,
-          contactName: dataset.maintainer ? dataset.maintainer.name : "",
-          contactEmail: dataset.maintainer_email ? dataset.maintainer_email : dataset.maintainer.email ? dataset.maintainer.email : "",
-          citation: "",
+          contactName: maintainer ? maintainer.name : '',
+          contactEmail,
+          license: license.title,
           tags: dataset.tags,
         };
-      },      
+      },
       createBody: function createBody(dataset) {
         return {
           id: dataset.id,
@@ -219,30 +243,38 @@
           description: dataset.notes,
         };
       },
-      createCitation: function createCitation(dataset) {
+      getAuthorsString: function getAuthorsString(dataset) {
         let authors = '';
 
-        if (dataset.author !== undefined){
+        if (dataset.author !== undefined) {
+          let { author } = dataset;
 
-          if (typeof(dataset.author) === 'string'){
-            dataset.author = JSON.parse(dataset.author);
+          if (typeof (dataset.author) === 'string') {
+            author = JSON.parse(dataset.author);
           }
-          
-          dataset.author.forEach((element) => {
+
+          author.forEach((element) => {
             authors += ` ${element.name};`;
           });
 
           // cut of the last ';'
-          if (authors.length > 1){
+          if (authors.length > 1) {
             authors = authors.substring(0, authors.length - 1);
           }
         }
 
-        if (typeof(dataset.publication) === 'string'){
-          dataset.publication = JSON.parse(dataset.publication);
+        return authors;
+      },
+      createCitation: function createCitation(dataset) {
+        const authors = this.getAuthorsString(dataset);
+
+        let { publication } = dataset;
+
+        if (typeof (dataset.publication) === 'string') {
+          publication = JSON.parse(dataset.publication);
         }
 
-        let text = `${authors.trim()} (${dataset.publication.publication_year}). ${dataset.publication.publisher},`;
+        let text = `${authors.trim()} (${publication.publication_year}). ${publication.publisher},`;
 
         if (dataset.doi !== undefined) {
           text += ` doi: ${dataset.doi}`;
@@ -255,6 +287,8 @@
           publication: dataset.publication,
           citationText: text,
           // TODO how to get to the links?
+          // https://www.envidat.ch/dataset/datasets-for-testing-the-repository-and-storage
+          // add /export/datacite.xml or /export/iso19139.xml to the base url www.envidat.ch/dataset/[title]
           citationXmlLink: 'https://www.envidat.ch/dataset/number-of-natural-hazard-fatalities-per-year-in-switzerland-since-1946/export/datacite.xml',
           ciationIsoXmlLink: 'https://www.envidat.ch/dataset/number-of-natural-hazard-fatalities-per-year-in-switzerland-since-1946/export/iso19139.xml',
         };
@@ -262,32 +296,34 @@
       createResources: function createResources(dataset) {
         const resources = [];
 
-        dataset.author.forEach((element) => {
-          const res = {
-            // "hash": "",
-            description: element.description,
-            // "cache_last_updated": null,
-            datasetId: element.package_id,
-            // "mimetype_inner": null,
-            // url_type: "upload",
-            id: element.id,
-            size: element.size,
-            mimetype: element.mimetype,
-            cacheUrl: element.cache_url,
-            doi: element.doi,
-            name: element.name,
-            url: element.url,
-            restricted: element.restricted,
-            format: element.format,
-            state: element.state,
-            created: element.created,
-            lastModified: element.last_modified,
-            position: element.position,
-            revisionId: element.revision_id,
-          };
+        if (dataset.resources) {
+          dataset.resources.forEach((element) => {
+            const res = {
+              // "hash": "",
+              description: element.description,
+              // "cache_last_updated": null,
+              metadataId: element.package_id,
+              // "mimetype_inner": null,
+              // url_type: "upload",
+              id: element.id,
+              size: element.size,
+              mimetype: element.mimetype,
+              cacheUrl: element.cache_url,
+              doi: element.doi,
+              name: element.name,
+              url: element.url,
+              restricted: element.restricted,
+              format: element.format,
+              state: element.state,
+              created: element.created,
+              lastModified: element.last_modified,
+              position: element.position,
+              revisionId: element.revision_id,
+            };
 
-          resources.push(res);
-        });
+            resources.push(res);
+          });
+        }
 
         return {
           metadataId: dataset.id,
@@ -310,15 +346,36 @@
         */
       },
       createDetails: function createDetails(dataset) {
-        return [
-          { label: 'MetadataId', text: dataset.id },
-          { label: 'Title', text: dataset.title },
-          { label: 'DOI', text: dataset.doi },
-          { label: 'Created', text: dataset.created },
-          { label: 'Last Modified', text: dataset.last_modified },
-          // authors: authors,
-        ];
-      },      
+        const details = [];
+
+        details.push({ label: 'Title', text: dataset.title });
+
+        const authors = this.getAuthorsString(dataset);
+        details.push({ label: 'Authors', text: authors });
+
+        // DataCRedit
+
+        details.push({ label: 'DOI', text: dataset.doi, url: `https://doi.org/${dataset.doi}` });
+        details.push({ label: 'Created', text: dataset.created });
+        details.push({ label: 'Last Modified', text: dataset.last_modified });
+
+        const license = this.createLicense(dataset);
+        details.push({ label: 'License', text: license.title, url: license.url });
+
+        details.push({ label: 'MetadataId', text: dataset.id });
+
+
+        return details;
+      },
+      createLicense: function createLicense(dataset) {
+        const license = {};
+
+        license.id = dataset.license_id;
+        license.title = dataset.license_title;
+        license.url = dataset.license_url;
+
+        return license;
+      },
     },
     components: {
       MetadataHeader,
@@ -330,26 +387,6 @@
       NotFoundView,
     },
   };
-  /*
-  body: {
-    metaid: '1',
-    metadataTitle: 'Awesome Metadata #1',
-    doi: 'envidat.2192318293',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean non nisl condimentum, consequat tellus quis, mollis ex. Nulla a lorem non sapien molestie efficitur. Nam auctor felis id fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis porttitor odio sed dolor viverra, at efficitur arcu aliquam. Nam facilisis, ipsum sit amet bibendum faucibus, magna dolor pellentesque neque, vel tincidunt metus mi non nisl. Nullam vitae congue nisi, ut accumsan sem. Vivamus vestibulum, lectus ut vehicula dignissim, augue dolor dictum eros, vel congue odio magna et ex. Maecenas luctus vestibulum nisl. Sed laoreet ultricies nulla ut luctus. Nunc et dolor ornare, pretium diam in, tristique dui. Ut lorem mi, finibus non orci sit amet, faucibus pellentesque magna. Nulla vitae gravida neque, vitae facilisis tellus. Vestibulum facilisis elementum augue sed dignissim. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nullam arcu est, interdum sed maximus vel, interdum sit amet mi. Vivamus pellentesque lorem eget ante blandit, in consequat nisi bibendum. Etiam luctus, nibh ut sagittis vulputate, ligula sapien faucibus justo, eu ullamcorper diam lectus sed diam. Morbi cursus congue magna, sed pulvinar leo elementum ut. Nunc arcu turpis, suscipit id mattis ut, semper et est. Aliquam pharetra et diam ut consectetur. Curabitur maximus, ante vitae accumsan consectetur, orci purus vehicula sapien, ac tempor est nulla sed leo. Mauris eu augue hendrerit, placerat risus sit amet, pulvinar diam. Donec non semper neque. Phasellus bibendum libero justo, vel mattis metus ornare sed. Integer in nisl in dui dapibus dapibus pharetra vitae erat. Quisque lacinia ac lorem at dapibus. Cras fringilla commodo risus, sed dapibus lorem ultrices imperdiet. Aliquam erat volutpat. Sed dapibus ligula scelerisque lectus dictum, eget ullamcorper odio faucibus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas molestie magna non felis sagittis, ut imperdiet dolor euismod. Suspendisse quis risus at lorem ornare maximus sit amet quis ligula. Ut odio felis, suscipit nec justo et, tempus molestie nisl. Pellentesque et sapien lacinia, semper mauris ac, consectetur arcu. Curabitur eget orci et enim sollicitudin consectetur. Pellentesque lacinia malesuada imperdiet. Nulla ornare lectus in dapibus scelerisque. Maecenas blandit condimentum purus vel sagittis. In venenatis libero sit amet commodo gravida. Vivamus fringilla, sapien non pulvinar placerat, nisi lacus laoreet odio, a cursus nulla risus at justo. Aliquam erat volutpat. Aenean dictum vehicula eros. Phasellus posuere rutrum posuere. In finibus eu velit id tincidunt. Vivamus vulputate urna quis aliquet faucibus. Aenean vestibulum ligula leo, in tincidunt lorem imperdiet quis. Mauris mi enim, tempor id consequat sit amet, suscipit vel lectus. In risus lectus, mollis vel pretium pretium, maximus venenatis felis. Donec mattis velit quis risus fermentum blandit. Etiam vel porta odio, ut iaculis metus. Aenean pharetra, lorem et accumsan tempus, ex orci dictum neque, ac aliquam leo neque ut nisl. Duis eget tempor dui, vitae bibendum sapien. Pellentesque pharetra magna ac interdum varius. Sed congue bibendum mauris, id eleifend diam sagittis non. Etiam convallis feugiat magna eu lobortis. Donec bibendum. ',
-  },
-  citation: {
-    metaid: '1',
-    citationText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean non nisl condimentum, consequat tellus quis, mollis ex. Nulla a lorem non sapien molestie efficitur. Nam auctor felis id fringilla faucibus. ',
-    citationXmlLink: 'https://www.envidat.ch/dataset/number-of-natural-hazard-fatalities-per-year-in-switzerland-since-1946/export/datacite.xml',
-    ciationIsoXmlLink: 'https://www.envidat.ch/dataset/number-of-natural-hazard-fatalities-per-year-in-switzerland-since-1946/export/iso19139.xml',
-  },
-  resources: {
-    metaid: '1',
-    id: '68ae000b-1eff-4468-afe0-fa6b9addc8e1',
-    resource_link: 'https://www.envidat.ch/dataset/number-of-natural-hazard-fatalities-per-year-in-switzerland-since-1946/resource/68ae000b-1eff-4468-afe0-fa6b9addc8e1',
-    download_link: 'https://www.envidat.ch/dataset/17732065-e90f-452d-838d-ba70bfd01a5e/resource/68ae000b-1eff-4468-afe0-fa6b9addc8e1/download/nathaz_fat_wsl_1946-15.csv',
-  },
-  */
 </script>
 
 <style>

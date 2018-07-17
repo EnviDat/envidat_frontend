@@ -4,7 +4,7 @@
       <v-card elevation-5 class="px-4" dark color="primary">
 
         <!--h1 class="py-3" >{{ metadataTitle }} id: {{ $route.params.id }}</h1-->
-        <div class="display-2 metadata_title py-3">{{ metadataTitle }}</div>  
+        <div class="display-2 headerTitle py-3">{{ metadataTitle }}</div>  
 
         <v-card-media></v-card-media>
 
@@ -13,23 +13,23 @@
       <v-card class="px-4 py-2" dark color="primary">
 
         <v-layout row wrap>
-          <v-flex xs6 class="envidat_subheading">
+          <v-flex xs6 class="headerInfo">
               <v-icon>person</v-icon> {{ contactName }} 
           </v-flex>
 
-          <v-flex xs6 class="envidat_subheading">
+          <v-flex xs6 class="headerInfo">
             <div class="my-1">
               <v-icon>call_received</v-icon> {{ doi }} 
             </div>
           </v-flex>
 
-          <v-flex xs6 class="envidat_subheading">
+          <v-flex xs6 class="headerInfo">
             <v-icon>email</v-icon> {{ contactEmail }}
           </v-flex>
 
-          <v-flex xs6 class="envidat_subheading">
+          <v-flex xs6 class="headerInfo">
             <div class="my-1">
-              <v-icon>format_quote</v-icon> {{ citation }} 
+              <v-icon>format_quote</v-icon> {{ license }} 
             </div>          
           </v-flex>
         </v-layout>
@@ -42,10 +42,10 @@
                     :id="tag.id"
                     :name="tag.name"
                     :closeable="tag.closeable"
-                    class="header_tag" />
+                    class="headerTag" />
 
           <v-flex xs2 v-if="maxTagsReached && !showTagsExpanded">
-            <tag-chip class="header_tag" :name="'...'" />
+            <tag-chip class="headerTag" :name="'...'" />
           </v-flex>
         </v-layout>
           
@@ -72,7 +72,7 @@ export default {
     contactName: String,
     contactEmail: String,
     doi: String,
-    citation: String,
+    license: String,
     tags: Array,
     maxTags: Number,
   },
@@ -84,7 +84,11 @@ export default {
       return this.tags ? this.tags.length >= this.maxTags : false;
     },
     slicedTags: function slicedTags() {
-      if (this.showTagsExpanded){
+      if (!this.tags) {
+        return false;
+      }
+
+      if (this.showTagsExpanded) {
         return this.tags;
       }
 
@@ -99,13 +103,19 @@ export default {
 
 <style scoped>
 
-  .envidat_subheading {
+  .headerTitle {
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 400;
+    opacity: 1;
+  }
+
+  .headerInfo {
     font-family: 'Libre Baskerville', serif;
     font-weight: 400;
     opacity: 0.85;
   }
 
-  .header_tag {
+  .header {
     opacity: 0.7;
   }
 

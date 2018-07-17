@@ -83,14 +83,13 @@
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
       next((vm) => {
         // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
-        vm.$store.commit(CHANGE_APP_BG, vm.browsePageBGImage);
+        vm.$store.commit(CHANGE_APP_BG, vm.PageBGImage);
       });
     },
     mounted: function mounted() {
       // handle initial loading of this Page
 
       // window.addEventListener('scroll', this.updateScroll);
-      this.$store.commit(CHANGE_APP_BG, this.browsePageBGImage);
 
       this.loadRouteTags();
       this.loadRouteSearch();
@@ -424,7 +423,7 @@
       },
     },
     data: () => ({
-      browsePageBGImage: './app_b_browsepage.jpg',
+      PageBGImage: './app_b_browsepage.jpg',
       tagCategory: 'landscape', // default
       searchTerm: '',
       searchLabelText: 'Search',

@@ -33,14 +33,8 @@
   export default {
     props: {
       details: Array,
-      metadataId: String,
-      metadataTitle: String,
-      doi: String,
-      created: String,
-      lastModified: String,
-      authors: Array,
     },
-    mounted: function mounted(){
+    mounted: function mounted() {
       console.log(`title of MetadataDetails ${this.metadataTitle}`);
     },
     updated: function updated() {
@@ -49,13 +43,13 @@
     beforeUpdate: function beforeUpdate() {
     },
     data: () => ({
-      infos:[
+      infos: [
         { label: 'label1', text: 'text1' },
         { label: 'label2', text: 'text2' },
         { label: 'label3', text: 'text3' },
         { label: 'label4', text: 'text4' },
         { label: 'label5', text: 'text5' },
-      ]
+      ],
     }),
     methods: {
       clicking: function clicking() {
