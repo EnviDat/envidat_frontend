@@ -8,6 +8,9 @@ import {
   LOAD_METADATAS_CONTENT,
   LOAD_METADATAS_CONTENT_SUCCESS,
   LOAD_METADATAS_CONTENT_ERROR,
+  LOAD_METADATA_CONTENT_BY_ID,
+  LOAD_METADATA_CONTENT_BY_ID_SUCCESS,
+  LOAD_METADATA_CONTENT_BY_ID_ERROR,
   SEARCH_METADATA,
   SEARCH_METADATA_SUCCESS,
   SEARCH_METADATA_ERROR,
@@ -95,7 +98,20 @@ export default {
   [ADD_TEST_METADATA](state, payload) {
     this._vm.$set(state.metadatasContent, payload.id, payload);
   },
-
+  [LOAD_METADATA_CONTENT_BY_ID](state) {
+    state.loadingCurrentMetadataContent = true;
+    state.currentMetadataContent = {};
+    // this._vm.$set(state.currentMetadataContent, {});
+  },
+  [LOAD_METADATA_CONTENT_BY_ID_SUCCESS](state, payload) {
+    state.loadingCurrentMetadataContent = false;
+    state.currentMetadataContent = payload;
+    // this._vm.$set(state.currentMetadataContent, payload);
+  },
+  [LOAD_METADATA_CONTENT_BY_ID_ERROR](state, reason) {
+    state.loadingCurrentMetadataContent = false;
+    state.error = reason;
+  },
   [LOAD_ALL_TAGS](state) {
     state.loadingAllTags = true;
     state.allTags = [];

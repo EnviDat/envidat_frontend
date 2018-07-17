@@ -1,6 +1,6 @@
 <template>
   <v-container fluid >
-    <div v-if="metadataIdValid">
+    <div v-if="currentMetadataContent">
       
       <v-btn @click="compactLayout = !compactLayout">layout</v-btn>
 
@@ -71,6 +71,7 @@
 <script>
   import { mapGetters } from 'vuex';
   import { CHANGE_APP_BG } from '../../store/mutationsConsts';
+  import { LOAD_METADATA_CONTENT_BY_ID } from '../../store/metadataMutationsConsts';
   import MetadataHeader from '../Views/MetadataViews/MetadataHeader';
   import MetadataBody from '../Views/MetadataViews/MetadataBody';
   import MetadataResources from '../Views/MetadataViews/MetadataResources';
@@ -90,33 +91,27 @@
         vm.$store.commit(CHANGE_APP_BG, vm.PageBGImage);
       });
     },
-    data: () => ({
-      PageBGImage: './app_b_browsepage.jpg',
-      header: null,
-      body: null,
-      citation: null,
-      resources: null,
-      location: null,
-      details: null,
-      notFoundBackPath: 'browse',
-      compactLayout: true,
-    }),
     created: function created() {
-      // console.log(`created MetaDataDetailPage router params: ${this.$route.params.metadataid}`);
-      // this.metadataId = this.$route.params.metadataid;
+      // console.log('created ' + this.metadataId + ' loading ' + this.currentMetadataContent.title + ' ' + this.metadatasContentSize);
+      this.createMetadataContent();
     },
     mounted: function mounted() {
-      this.createMetadataContent();
-    },
-    update: function update() {
-      this.createMetadataContent();
+      // console.log('mounted ' + this.metadataId + ' loading ' + this.currentMetadataContent.title + ' ' + this.metadatasContentSize);
+      if (!this.loadingMetadatasContent && this.currentMetadataContent.title === undefined) {
+        // in case of directly entring the page load the content directly via Id
+        this.$store.dispatch(`metadata/${LOAD_METADATA_CONTENT_BY_ID}`, this.metadataId);
+      } else {
+        this.createMetadataContent();
+      }
     },
     computed: {
       ...mapGetters({
-        metadataIds: 'metadata/metadataIds',
         metadatasContent: 'metadata/metadatasContent',
-        loadingMetadataIds: 'metadata/loadingMetadataIds',
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
+        loadingCurrentMetadataContent: 'metadata/loadingCurrentMetadataContent',
+        currentMetadataContent: 'metadata/currentMetadataContent',
+        allTags: 'metadata/allTags',
+        loadingAllTags: 'metadata/loadingAllTags',
       }),
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
@@ -197,19 +192,21 @@
     },
     methods: {
       createMetadataContent: function createMetadataContent() {
-        let currentMetadataContent;
+        let currentContent = this.currentMetadataContent;
 
-        if (this.metadatasContentSize > 0 && this.metadataIdValid) {
-          currentMetadataContent = this.metadatasContent[this.metadataId];
+        if (!currentContent && this.loadingMetadatasContent
+          && this.metadatasContentSize > 0 && this.metadataId) {
+          // in case all the metadataContents are already loaded take it from there
+          currentContent = this.metadatasContent[this.metadataId];
         }
 
-        if (currentMetadataContent) {
-          this.header = this.createHeader(currentMetadataContent);
-          this.body = this.createBody(currentMetadataContent);
-          this.citation = this.createCitation(currentMetadataContent);
-          this.resources = this.createResources(currentMetadataContent);
-          this.location = this.createLocation(currentMetadataContent);
-          this.details = this.createDetails(currentMetadataContent);
+        if (currentContent) {
+          this.header = this.createHeader(currentContent);
+          this.body = this.createBody(currentContent);
+          this.citation = this.createCitation(currentContent);
+          this.resources = this.createResources(currentContent);
+          this.location = this.createLocation(currentContent);
+          this.details = this.createDetails(currentContent);
         }
       },
       createHeader: function createHeader(dataset) {
@@ -220,7 +217,7 @@
         }
 
         let contactEmail = dataset.maintainer_email;
-        if (!dataset.maintainer_email) {
+        if (!dataset.maintainer_email && maintainer) {
           contactEmail = maintainer.email ? maintainer.email : '';
         }
 
@@ -274,7 +271,10 @@
           publication = JSON.parse(dataset.publication);
         }
 
-        let text = `${authors.trim()} (${publication.publication_year}). ${publication.publisher},`;
+        let text = '';
+        if (publication) {
+          text = `${authors.trim()} (${publication.publication_year}). ${publication.publisher},`;
+        }
 
         if (dataset.doi !== undefined) {
           text += ` doi: ${dataset.doi}`;
@@ -377,6 +377,22 @@
         return license;
       },
     },
+    watch: {
+      currentMetadataContent: function updateContent() {
+        this.createMetadataContent();
+      },
+    },
+    data: () => ({
+      PageBGImage: './app_b_browsepage.jpg',
+      header: null,
+      body: null,
+      citation: null,
+      resources: null,
+      location: null,
+      details: null,
+      notFoundBackPath: 'browse',
+      compactLayout: true,
+    }),
     components: {
       MetadataHeader,
       MetadataBody,

@@ -19,12 +19,19 @@
   import {
     LOAD_ALL_METADATA,
     LOAD_ALL_TAGS,
-  } from './store/metadataMutationsConsts';
+    LOAD_METADATA_CONTENT_BY_ID,
+} from './store/metadataMutationsConsts';
   import { ADD_CARD_IMAGES } from './store/mutationsConsts';
 
   export default {
     created: function created() {
-      this.loadAllMetadata();
+      const metadataId = this.$route.params.metadataid;
+
+      if (metadataId && !this.loadingCurrentMetadataContent) {
+        this.$store.dispatch(`metadata/${LOAD_METADATA_CONTENT_BY_ID}`, metadataId);
+      } else {
+        this.loadAllMetadata();
+      }
       this.loadAllTags();
 
       const bgImgs = require.context('./assets/', false, /\.jpg$/);
@@ -103,7 +110,8 @@
         metadatasContent: 'metadata/metadatasContent',
         loadingMetadataIds: 'metadata/loadingMetadataIds',
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
-        currentMetadata: 'metadata/currentMetadata',
+        loadingCurrentMetadataContent: 'metadata/loadingCurrentMetadataContent',
+        currentMetadataContent: 'metadata/currentMetadataContent',
         allTags: 'metadata/allTags',
         loadingAllTags: 'metadata/loadingAllTags',
         popularTags: 'metadata/popularTags',

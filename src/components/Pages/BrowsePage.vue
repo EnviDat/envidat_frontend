@@ -50,7 +50,7 @@
                             :tags="metadata.tags"
                             :titleImg="metadata.titleImg"
                             :dark="false"
-                            v-on:clickedEvent="metaDataClicked($event, metadataid)"
+                            v-on:clickedEvent="metaDataClicked"
                             v-on:clickedTag="catchTagClicked">
               </metadata-card>
     

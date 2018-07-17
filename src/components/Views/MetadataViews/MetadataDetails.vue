@@ -34,23 +34,7 @@
     props: {
       details: Array,
     },
-    mounted: function mounted() {
-      console.log(`title of MetadataDetails ${this.metadataTitle}`);
-    },
-    updated: function updated() {
-      console.log(`title of MetadataDetails ${this.metadataTitle}`);
-    },
-    beforeUpdate: function beforeUpdate() {
-    },
-    data: () => ({
-      infos: [
-        { label: 'label1', text: 'text1' },
-        { label: 'label2', text: 'text2' },
-        { label: 'label3', text: 'text3' },
-        { label: 'label4', text: 'text4' },
-        { label: 'label5', text: 'text5' },
-      ],
-    }),
+    data: () => ({ }),
     methods: {
       clicking: function clicking() {
         alert(this.props);
