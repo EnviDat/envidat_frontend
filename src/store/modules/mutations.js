@@ -34,7 +34,7 @@ export default {
   [LOAD_ALL_METADATA_ERROR](state, reason) {
     state.loadingMetadataIds = false;
     state.loadingMetadatasContent = false;
-    state.metadataIdsOK = false;
+    state.metadatasContentOK = false;
     state.error = reason;
   },
   [LOAD_METADATA_IDS](state) {
