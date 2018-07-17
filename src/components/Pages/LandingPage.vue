@@ -8,6 +8,7 @@
         <search-bar-view
                       :labelText="labelText"
                       :buttonText="buttonlText"
+                      :hasButton="true"
                       v-on:clicked="catchSearchClicked">
         </search-bar-view>
       </v-flex>
@@ -30,7 +31,9 @@
         <v-container fluid grid-list-xs>
           <v-layout row wrap>
     
-            <v-flex pr-2 py-2 v-bind="{ [`xs${card.flex}`]: true }" v-for="card in cards" :key="card.title">
+            <v-flex pr-2 py-2
+              v-bind="{ [`xs${card.flex}`]: true }"
+              v-for="card in cards" :key="card.title">
     
               <category-card :title="card.title"
                               :type="card.type"
@@ -53,6 +56,7 @@
   import DataProducerCard from '../Views/Cards/DataProducerCard';
   import TitleView from '../Views/TitleView';
   import SearchBarView from '../Views/SearchBarView';
+  import { CHANGE_APP_BG } from '../../store/mutationsConsts';
 
   // Login & Register form and animation
   // https://codepen.io/yusufbkr/pen/RPBQqg
@@ -63,35 +67,29 @@
   // Here is one with a progress button/bar
   // https://codepen.io/suez/pen/dPqxoM
 
-  /* eslint-disable no-alert */
-  /* eslint-disable no-console */
-
   export default {
-    components: {
-      TitleView,
-      SearchBarView,
-      CategoryCard,
-      DataProducerCard,
+    beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+      next((vm) => {
+        // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
+        vm.$store.commit(CHANGE_APP_BG, vm.landingPageBGImg);
+      });
     },
     methods: {
       catchCategoryClicked: function catchCategoryClicked(cardTitle) {
         // sleep(500);
         // setTimeout(this.$router.push({ name: 'BrowsePage', params: { cardTitle }}), 1000);
+
         this.$router.push({
-          name: 'BrowsePage',
+          path: '/browse',
           params: {
             category: cardTitle,
-            search: 'none',
           },
         });
       },
       catchSearchClicked: function catchSearchClicked(search) {
         this.$router.push({
-          name: 'BrowsePage',
-          params: {
-            category: 'none',
-            search,
-          },
+          path: '/browse',
+          query: { search },
         });
       },
       catchEnterclick: function catchEnterclick(search) {
@@ -112,10 +110,11 @@
       },
     },
     data: () => ({
+      landingPageBGImg: './app_b_landingpage.jpg',
       labelText: "Type ex. 'Avalanche'",
       buttonlText: 'SEARCH',
       envidatTitle: 'EnviDat',
-      envidatSlogan: 'Browse the most comprehensive environmental data collection of Switzerland',
+      envidatSlogan: 'Browse the most comprehensive collcetion of environmental data from Switzerland',
       loginInfos: {
         titleText: 'Do you create data?',
         loginText: 'LOGIN',
@@ -124,35 +123,38 @@
         loggedinText: 'ENTER DASHBOARD',
       },
       cards: [{
-        title: 'Wald',
-        type: 'wood',
-        src: 'https://i1.wp.com/www.phoenixfuels.ph/wp-content/uploads/2018/01/Placeholder.png?resize=300%2C300',
+        title: 'Forest',
+        type: 'forest',
         flex: 6,
       },
       {
-        title: 'Schnee',
+        title: 'Snow',
         type: 'snow',
-        src: 'https://i1.wp.com/www.phoenixfuels.ph/wp-content/uploads/2018/01/Placeholder.png?resize=300%2C300',
         flex: 6,
       },
       {
-        title: 'Landschaft',
-        type: 'land',
-        src: 'https://i1.wp.com/www.phoenixfuels.ph/wp-content/uploads/2018/01/Placeholder.png?resize=300%2C300',
+        title: 'Landscape',
+        type: 'landscape',
         flex: 6,
       },
       {
-        title: 'Naturgefahren',
-        src: 'https://i1.wp.com/www.phoenixfuels.ph/wp-content/uploads/2018/01/Placeholder.png?resize=300%2C300',
+        title: 'Natural disasters',
+        type: 'hazard',
         flex: 6,
       },
       {
-        title: 'Artenvielfalt',
-        src: 'https://i1.wp.com/www.phoenixfuels.ph/wp-content/uploads/2018/01/Placeholder.png?resize=300%2C300',
+        title: 'Biodiversity',
+        type: 'diversity',
         flex: 6,
       },
       ],
     }),
+    components: {
+      TitleView,
+      SearchBarView,
+      CategoryCard,
+      DataProducerCard,
+    },
   };
 </script>
 

@@ -16,11 +16,7 @@ import {
   LOAD_ALL_TAGS,
   LOAD_ALL_TAGS_SUCCESS,
   LOAD_ALL_TAGS_ERROR,
-  LOAD_POPULAR_TAGS,
-  LOAD_POPULAR_TAGS_SUCCESS,
-  LOAD_POPULAR_TAGS_ERROR,
-} from '../mutation_consts';
-import { stat } from 'fs';
+} from '../metadataMutationsConsts';
 
 export default {
   [LOAD_ALL_METADATA](state) {
@@ -38,7 +34,7 @@ export default {
   [LOAD_ALL_METADATA_ERROR](state, reason) {
     state.loadingMetadataIds = false;
     state.loadingMetadatasContent = false;
-    state.metadataIdsOK = false;
+    state.metadatasContentOK = false;
     state.error = reason;
   },
   [LOAD_METADATA_IDS](state) {
@@ -70,7 +66,7 @@ export default {
   },
   [SEARCH_METADATA](state) {
     state.searchingMetadatasContent = true;
-    state.metadatasContent = {};
+    state.searchedMetadatasContent = {};
   },
   [SEARCH_METADATA_SUCCESS](state, payload) {
     state.searchingMetadatasContentOK = true;
@@ -106,22 +102,20 @@ export default {
   },
   [LOAD_ALL_TAGS_SUCCESS](state, payload) {
     state.loadingAllTags = false;
-    state.allTags = payload.search_facets.tags.items;
+    const tagList = [];
+
+    for (let i = 0; i < payload.length + 1; i += 2) {
+      const tag = { name: payload[i], count: payload[i + 1] };
+
+      if (tag.name) {
+        tagList.push(tag);
+      }
+    }
+
+    state.allTags = tagList;
   },
   [LOAD_ALL_TAGS_ERROR](state, reason) {
     state.loadingAllTags = false;
-    state.error = reason;
-  },
-  [LOAD_POPULAR_TAGS](state) {
-    state.loadingPopularTags = true;
-    state.popularTags = [];
-  },
-  [LOAD_POPULAR_TAGS_SUCCESS](state, payload) {
-    state.loadingPopularTags = false;
-    state.popularTags = payload.search_facets.tags.items;
-  },
-  [LOAD_POPULAR_TAGS_ERROR](state, reason) {
-    state.loadingPopularTags = false;
     state.error = reason;
   },
 };

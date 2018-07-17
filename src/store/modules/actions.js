@@ -17,10 +17,7 @@ import {
   LOAD_ALL_TAGS,
   LOAD_ALL_TAGS_SUCCESS,
   LOAD_ALL_TAGS_ERROR,
-  LOAD_POPULAR_TAGS,
-  LOAD_POPULAR_TAGS_SUCCESS,
-  LOAD_POPULAR_TAGS_ERROR,
-} from '../mutation_consts';
+} from '../metadataMutationsConsts';
 
 const API_BASE = '/api/3/action/';
 const SOLR_API_BASE = '/solr/ckan_default/';
@@ -54,7 +51,7 @@ function loadMetadataContentPromises(commit, metadataIds) {
 }
 
 export default {
-  async [LOAD_ALL_METADATA]({ dispatch, commit }) {
+  async [LOAD_ALL_METADATA]({ commit }) {
     commit(LOAD_ALL_METADATA);
 
     let metadataIds = this.getters['metadata/metadataIds'];
@@ -83,7 +80,7 @@ export default {
     // maybe use notes:"snow avalanche"
     // select?indent=on&q=tags:${searchTerm}%20AND%20notes:${searchTerm}&wt=json
 
-    axios.get(`${SOLR_API_BASE}select?indent=on&q=notes:${searchTerm}&wt=json`)
+    axios.get(`${SOLR_API_BASE}select?indent=on&q=notes:${searchTerm}&wt=json&rows=1000`)
       .then((response) => {
         commit(SEARCH_METADATA_SUCCESS, response.data.response.docs);
       })
@@ -94,10 +91,8 @@ export default {
   async [LOAD_METADATA_IDS]({ commit }) {
     commit(LOAD_METADATA_IDS);
 
-    /*
     commit(LOAD_METADATA_IDS_SUCCESS, packageListJSON.result);
     return;
-    */
     /* eslint-disable no-unreachable  */
 
     loadMetadataIdsPromise().then((response) => {
@@ -108,6 +103,15 @@ export default {
   },
   async [LOAD_METADATAS_CONTENT]({ dispatch, commit }, metadataIds) {
     commit(LOAD_METADATAS_CONTENT);
+
+    for (let index = 0; index < metadataIds.length; index += 1) {
+      dataset.result.id += index;
+      commit(ADD_METADATA, dataset.result);
+    }
+
+    commit(LOAD_METADATAS_CONTENT_SUCCESS);
+    return;
+    /* eslint-disable no-unreachable  */
 
     if (metadataIds === undefined || metadataIds.length <= 0) {
       loadMetadataIdsPromise().then((response) => {
@@ -121,16 +125,6 @@ export default {
       });
     }
 
-    /*
-    for (let index = 0; index < metadataIds.length; index += 1) {
-      dataset.result.id += index;
-      commit(ADD_METADATA, dataset.result);
-    }
-
-    commit(LOAD_METADATAS_CONTENT_SUCCESS);
-    return;
-    */
-    /* eslint-disable no-unreachable  */
     /*
     const calls = [];
 
@@ -171,35 +165,14 @@ export default {
   async [LOAD_ALL_TAGS]({ commit }) {
     commit(LOAD_ALL_TAGS);
 
-    /*
-    commit(LOAD_METADATA_IDS_SUCCESS, packageListJSON.result);
-    return;
-    */
-    /* eslint-disable no-unreachable  */
+    // axios.get(`${API_BASE}package_search?facet.field=[%22tags%22]&facet.limit=1000&rows=0`)
 
-    axios.get(`${API_BASE}package_search?facet.field=[%22tags%22]&facet.limit=1000&rows=0`)
+    axios.get(`${SOLR_API_BASE}select&q=*:*&wt=json&facet=true&facet.field=tags&facet.limit=10000&rows=0`)
       .then((response) => {
-        commit(LOAD_ALL_TAGS_SUCCESS, response.data.result);
+        commit(LOAD_ALL_TAGS_SUCCESS, response.data.facet_counts.facet_fields.tags);
       })
       .catch((reason) => {
         commit(LOAD_ALL_TAGS_ERROR, reason);
-      });
-  },
-  async [LOAD_POPULAR_TAGS]({ commit }) {
-    commit(LOAD_POPULAR_TAGS);
-
-    /*
-    commit(LOAD_METADATA_IDS_SUCCESS, packageListJSON.result);
-    return;
-    */
-    /* eslint-disable no-unreachable  */
-
-    axios.get(`${API_BASE}package_search?facet.field=[%22tags%22]&facet.limit=25&rows=0`)
-      .then((response) => {
-        commit(LOAD_POPULAR_TAGS_SUCCESS, response.data.result);
-      })
-      .catch((reason) => {
-        commit(LOAD_POPULAR_TAGS_ERROR, reason);
       });
   },
 };

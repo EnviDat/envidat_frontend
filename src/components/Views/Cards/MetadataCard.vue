@@ -9,28 +9,37 @@
 
     <v-card-media
       class="imagezoom"
-      height="150px">
+      background-color="primary"
+        v-bind="{['style'] : dynamicCardBackground }"
+        height="150px"
+      >
       
-      <!-- img :src="snowImg" /-->
+      <!-- <img :src="landImg" /> -->
 
-      <v-container fill-height grid-list-xs>
+      <v-container style="position: absolute;"
+                  fill-height grid-list-xs>
         <v-layout column>
           <v-flex xs12 px-3 pt-3>
             <v-layout row  align-start>
               <v-flex xs12 >
-                <h3 class="headline mb-0 white--text">{{ title | truncate(maxTitleLength) }}</h3>
+                <h3 class="headline mb-0"
+                :class="{['black_title'] : dark ? false : true,
+                          ['white_title'] : dark ? true : false }"
+                >{{ title | truncate(maxTitleLength) }}</h3>
               </v-flex>
             </v-layout>
           </v-flex>
-
-          <v-flex xs12 px-2>
-            <v-layout row  align-end >
-                <tag-chip v-if="tags" v-for="tag in tags.slice (0, maxTagNumber)" :key="tag.id"
-                          :id="tag.id"
+  
+          <v-flex xs12 px-3 py-0>
+            <v-layout row align-end >
+                <tag-chip py-0
+                          v-if="tags" v-for="tag in tags.slice (0, maxTagNumber)" :key="tag.name"
                           :name="tag.name"
+                          v-on:clicked="catchTagClicked($event, tag.name)"
                           class="card_tag" />
               
-                <tag-chip v-if="maxTagsReached" class="card_tag" :name="'...'" />
+                <tag-chip py-0
+                          v-if="maxTagsReached" class="card_tag" :name="'...'" />
               
             </v-layout>
           </v-flex>
@@ -49,36 +58,27 @@
 
     <v-card-actions>
       
-      <v-btn icon slot="activator">
-        <v-icon color="primary">cloud_download</v-icon>
-      </v-btn>
-
-      <!-- 
       <v-tooltip bottom>
         <v-btn icon slot="activator">
           <v-icon color="primary">cloud_download</v-icon>
         </v-btn>
-        <span>download data</span>
+        <span>Download data</span>
       </v-tooltip>
-      
-       {{ showDataText }}
-      -->
+
       <v-spacer></v-spacer>
 
-      <v-btn icon>
-        <v-icon>bookmark</v-icon>
-      </v-btn>
+      <v-tooltip bottom v-if="restricted">
+        <v-icon slot="activator" color="black" >lock</v-icon>
+        <span>The data of the entry is restricted.</span>
+      </v-tooltip>
 
-      <v-btn v-if="favourit" icon>
+      <!-- <v-btn v-if="favourit" icon>
         <v-icon color="accent">star</v-icon>
       </v-btn>
       <v-btn v-if="!favourit" icon>
         <v-icon>star</v-icon>
-      </v-btn>
+      </v-btn> -->
 
-      <v-btn icon @click.native="show = !show">
-        <v-icon>{{ show ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</v-icon>
-      </v-btn>      
     </v-card-actions>
     
     <v-slide-y-transition>
@@ -93,9 +93,6 @@
 
 
 <script>
-import snowImg from '@/assets/cards/snow_background.jpg';
-// import woodImg from '@/assets/cards/wood_background.jpg';
-// import landImg from '@/assets/cards/landscape_background.jpg';
 import TagChip from './TagChip';
 
 // checkout possible transition animation
@@ -111,6 +108,10 @@ import TagChip from './TagChip';
 // Card opening animation
 // https://codepen.io/luizotcarvalho/pen/yyQNRO
 
+
+// check multi line truncation via css (only works with one-colored background)
+// http://hackingui.com/front-end/a-pure-css-solution-for-multiline-text-truncation/
+
 export default {
   props: {
     id: String,
@@ -120,31 +121,35 @@ export default {
     restricted: Boolean,
     favourit: Boolean,
     tags: Array,
-    /*
-    tags:[{
-      id: String,
-      name: String,
-    }],
-    */
+    titleImg: String,
+    dark: Boolean,
   },
   components: {
     TagChip,
+  },
+  created: function created() {
   },
   methods: {
     cardClick: function cardClick() {
       this.$emit('clickedEvent', this.id);
     },
-  },
-  /*
-  filters: {
-    uppercase: function uppercase(value) {
-      if (!value) return '';
-      value = value.toString();
-      return value.toUpperCase();
+    favouritClicked: function favouritClicked() {
+      this.$emit('clickedFavourit', this.id);
+    },
+    catchTagClicked: function catchTagClicked(tagId) {
+      this.$emit('clickedTag', tagId);
     },
   },
-  */
   computed: {
+    dynamicCardBackground: function dynamicCardBackground() {
+      const gradient = this.dark ? this.blackTopToBottom : this.whiteTopToBottom;
+
+      if (this.titleImg) {
+        return `background-image: linear-gradient(0deg, ${gradient}), url(${this.titleImg}); background-position: center, center;`;
+      }
+
+      return '';
+    },
     maxTagsReached: function maxTagsReached() {
       return this.tags !== undefined && this.tags.length > this.maxTagNumber;
     },
@@ -154,7 +159,6 @@ export default {
 
       if (this.tags !== undefined) {
         for (let i = 0; i < this.tags.length; i++) {
-
           if (this.tags[i].name !== undefined) {
             textLength += this.tags[i].name.length + 1;
 
@@ -173,11 +177,20 @@ export default {
   data: () => ({
     show: false,
     showDataText: 'SHOW DATA',
-    maxTitleLength: 65,
-    maxSubtitleLength: 125,
+    maxTitleLength: 70,
+    maxSubtitleLength: 180,
     // maxTags: 3,
-    maxTagTextlength: 45,
-    snowImg, // require('../../../assets/snow_background.jpg'),
+    maxTagTextlength: 40,
+    blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
+    whiteTopToBottom: 'rgba(255,255,255, 0.25) 0%, rgba(255,255,255, 0.95) 60%',
+    imageDefaults: {
+      snow: 'c_b_snow_icy2',
+      landscape: 'c_b_landscape_lake2', // or c_b_landscape_view ! c_b_landscape_long_lake
+      forest: 'c_b_forest_texture_bark', // maybe c_b_forest_texture_bark2
+      diversity: 'b_c_diversity_meadow',
+      hazard: 'c_b_hazard_cloud_road', // maybe c_b_hazard_cloud
+    },
+
   }),
 };
 </script>
@@ -185,8 +198,17 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
+
+  .black_title{
+    color: rgba(0,0,0,.87) !important;
+  }
+
+  .white_title{
+    color: rgba(255,255,255,.9) !important;
+  }
+
   .card_tag {
-    opacity: 0.7;
+    /* opacity: 0.7; */
   }
 
 </style>
