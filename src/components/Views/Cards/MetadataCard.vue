@@ -177,8 +177,8 @@ export default {
   data: () => ({
     show: false,
     showDataText: 'SHOW DATA',
-    maxTitleLength: 80,
-    maxSubtitleLength: 190,
+    maxTitleLength: 70,
+    maxSubtitleLength: 180,
     // maxTags: 3,
     maxTagTextlength: 40,
     blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
