@@ -1,41 +1,47 @@
 <template>
-  <v-layout column >
+    <v-flex >
 
-    <v-flex xs12 md8 offset-md2 elevation-5>
-
-      <v-card elevation-5 class="px-4" dark color="primary">
+      <v-card elevation-5 class="px-4 py-2" dark color="primary">
 
         <!--h1 class="py-3" >{{ metadataTitle }} id: {{ $route.params.id }}</h1-->
-        <div class="display-2 metadata_title py-3">{{ metadataTitle }}</div>  
+        <div class="display-2 headerTitle py-3">{{ metadataTitle }}</div>  
 
         <v-card-media></v-card-media>
 
-      </v-card>
-    </v-flex>
+      <!-- </v-card>
 
-    <v-flex xs12 md8 offset-md2 elevation-5>
+      <v-card class="px-4 py-2" dark color="primary"> -->
 
-      <v-card class="px-4 py-2" dark color="primary">
+        <v-divider dark class="my-2" ></v-divider>
 
-        <v-layout row wrap>
-          <v-flex xs6 class="envidat_subheading">
-              <v-icon>person</v-icon> {{ contactName }} 
+        <v-layout py-1 row wrap>
+          <v-flex xs6 class="headerInfo">
+            <icon-label-view  :text="contactName"
+                              :icon="getIcon('contact2_w')"
+                              iconTooltip="Main contact"
+                              :alignLeft="true" />
           </v-flex>
 
-          <v-flex xs6 class="envidat_subheading">
-            <div class="my-1">
-              <v-icon>call_received</v-icon> {{ doi }} 
-            </div>
+          <v-flex xs6 py-1 class="headerInfo">
+            <icon-label-view  :text="doi"
+                              :icon="getIcon('doi_w')"
+                              iconTooltip="Data Object Identifier"
+                              :alignLeft="true" />
           </v-flex>
 
-          <v-flex xs6 class="envidat_subheading">
-            <v-icon>email</v-icon> {{ contactEmail }}
+          <v-flex xs6 py-1 class="headerInfo">
+            <icon-label-view  :text="contactEmail"
+                              :icon="getIcon('mail_w')"
+                              iconTooltip="Email adress of the main contact"
+                              :alignLeft="true" />
           </v-flex>
 
-          <v-flex xs6 class="envidat_subheading">
-            <div class="my-1">
-              <v-icon>format_quote</v-icon> {{ citation }} 
-            </div>          
+          <v-flex xs6 py-1 class="headerInfo">
+            <icon-label-view :text="license"
+                              :icon="getIcon('license_w')"
+                              iconTooltip="License for Datafiles"
+                              :alignLeft="true"
+                               />
           </v-flex>
         </v-layout>
 
@@ -43,27 +49,38 @@
 
         <v-layout row wrap>
 
-          <tag-chip v-if="tags" v-for="tag in tags" :key="tag.id"
+          <tag-chip v-if="tags" v-for="tag in slicedTags" :key="tag.id"
                     :id="tag.id"
                     :name="tag.name"
                     :closeable="tag.closeable"
-                    class="header_tag" />
+                    class="headerTag" />
 
-          <!--v-flex xs2 v-if="maxTagsReached">
-            <tag-chip class="card_tag" :name="'...'" />
-          </v-flex-->
+          <v-flex xs2 v-if="maxTagsReached && !showTagsExpanded">
+            <tag-chip class="headerTag" :name="'...'" />
+          </v-flex>
         </v-layout>
           
+        <v-card-actions v-if="maxTagsReached">
+          <v-spacer></v-spacer>
+
+          <v-tooltip bottom>
+            <v-btn icon @click.native="showTagsExpanded = !showTagsExpanded" slot="activator">
+              <v-icon color="accent" >{{ showTagsExpanded ? 'expand_less' : 'expand_more' }}</v-icon>
+            </v-btn>        
+            <span>Show all tags</span>
+          </v-tooltip>
+        </v-card-actions>
+
       </v-card>
 
 
     </v-flex>
-
-  </v-layout>
+    
 </template>
 
 <script>
 import TagChip from '../Cards/TagChip';
+import IconLabelView from '../IconLabelView';
 
 export default {
   props: {
@@ -71,28 +88,57 @@ export default {
     contactName: String,
     contactEmail: String,
     doi: String,
-    citation: String,
+    license: String,
     tags: Array,
+    maxTags: Number,
   },
-  // mounted: function mounted() {
-  //   console.log("mounted header " + this.metadataTitle);
-  // },
+  data: () => ({
+    showTagsExpanded: false,
+  }),
+  computed: {
+    maxTagsReached: function maxTagsReached() {
+      return this.tags ? this.tags.length >= this.maxTags : false;
+    },
+    slicedTags: function slicedTags() {
+      if (!this.tags) {
+        return false;
+      }
+
+      if (this.showTagsExpanded) {
+        return this.tags;
+      }
+
+      return this.tags.slice(0, this.maxTags);
+    },
+  },
   components: {
     TagChip,
+    IconLabelView,
   },
 };
 </script>
 
 <style scoped>
 
-  .envidat_subheading {
+  .headerTitle {
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 400;
+    opacity: 1;
+  }
+
+  .headerInfo {
     font-family: 'Libre Baskerville', serif;
     font-weight: 400;
     opacity: 0.85;
   }
 
-  .header_tag {
-    opacity: 0.7;
+  .headerInfo img,
+  .headerInfo > .envidatIcon {
+    opacity: 0.85;
+  }
+
+  .headerTag {
+    opacity: 0.75;
   }
 
 </style>

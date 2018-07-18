@@ -1,22 +1,18 @@
 <template>
-  <v-layout column my-2 mx-4>
 
-    <v-flex xs12 md8 offset-md2 elevation-1>
-      <v-card >
-        <v-card-title class="metadata_title title" >Description</v-card-title>
+  <v-card >
+    <v-card-title class="metadata_title title" >Description</v-card-title>
 
-        <v-card-text >{{ fullDescription }}</v-card-text>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn icon @click.native="readMore()">
-            <v-icon color="accent" >{{ showFullDescription ? 'expand_less' : 'expand_more' }}</v-icon>
-          </v-btn>        
-        </v-card-actions>
-      </v-card>
-    </v-flex>
-
-  </v-layout>
+    <v-card-text >{{ fullDescription }}</v-card-text>
+<!-- {{ title | truncate(maxTitleLength) }} -->
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn icon @click.native="readMore()">
+        <v-icon color="accent" >{{ showFullDescription ? 'expand_less' : 'expand_more' }}</v-icon>
+      </v-btn>        
+    </v-card-actions>
+  </v-card>
+  
 </template>
 
 <script>
@@ -31,7 +27,7 @@
     },
     computed: {
       fullDescription: function fullDescription() {
-        if (this.description !== undefined){
+        if (this.description !== undefined) {
           return this.showFullDescription ? this.description : `${this.description.substring(0, 500)}...`;
         }
 

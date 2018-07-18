@@ -10,6 +10,9 @@ import {
   LOAD_METADATAS_CONTENT,
   LOAD_METADATAS_CONTENT_SUCCESS,
   LOAD_METADATAS_CONTENT_ERROR,
+  LOAD_METADATA_CONTENT_BY_ID,
+  LOAD_METADATA_CONTENT_BY_ID_SUCCESS,
+  LOAD_METADATA_CONTENT_BY_ID_ERROR,
   SEARCH_METADATA,
   SEARCH_METADATA_SUCCESS,
   SEARCH_METADATA_ERROR,
@@ -162,6 +165,17 @@ export default {
     commit(LOAD_METADATAS_CONTENT_SUCCESS);
     */
   },
+
+  async [LOAD_METADATA_CONTENT_BY_ID]({ commit }, metadataId) {
+    commit(LOAD_METADATA_CONTENT_BY_ID);
+
+    axios.get(`${API_BASE}package_show?id=${metadataId}`).then((response) => {
+      commit(LOAD_METADATA_CONTENT_BY_ID_SUCCESS, response.data.result);
+    }).catch((reason) => {
+      commit(LOAD_METADATA_CONTENT_BY_ID_ERROR, reason);
+    });
+  },
+
   async [LOAD_ALL_TAGS]({ commit }) {
     commit(LOAD_ALL_TAGS);
 

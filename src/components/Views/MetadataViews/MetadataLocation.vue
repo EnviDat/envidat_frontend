@@ -1,28 +1,22 @@
 <template>
-  <v-layout column my-2 mx-4>
+  <v-card >
+    <v-card-title class="title metadata_title" >Location</v-card-title>
 
-    <v-flex xs12 md8 offset-md2 elevation-1>
-      <v-card >
-        <v-card-title class="title metadata_title" >Location</v-card-title>
+    <v-card-text id="mapcontainer" ref="mapcontainer">
+      <v-flex elevation-1>
+        <div id="map" ref="map" style="height: 500px;"></div>
+      </v-flex>
+    </v-card-text>
+    
 
-        <v-card-text id="mapcontainer" ref="mapcontainer">
-          <v-flex elevation-1>
-            <div id="map" ref="map" style="height: 500px;"></div>
-          </v-flex>
-        </v-card-text>
-        
-
-        <!--v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn icon @click.native="resize()">
-            <v-icon color="accent" >{{ fullSize ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
-          </v-btn>        
-        </v-card-actions-->
-        
-      </v-card>
-    </v-flex>
-
-  </v-layout>
+    <!--v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn icon @click.native="resize()">
+        <v-icon color="accent" >{{ fullSize ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
+      </v-btn>        
+    </v-card-actions-->
+    
+  </v-card>
 </template>
 
 <script>

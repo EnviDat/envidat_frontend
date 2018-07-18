@@ -20,13 +20,25 @@
                   fill-height grid-list-xs>
         <v-layout column>
           <v-flex xs12 px-3 pt-3>
-            <v-layout row  align-start>
-              <v-flex xs12 >
+            <v-layout row align-start>
+
+              <v-flex xs12 v-if="!maxTitleLengthReached">
                 <h3 class="headline mb-0"
                 :class="{['black_title'] : dark ? false : true,
                           ['white_title'] : dark ? true : false }"
                 >{{ title | truncate(maxTitleLength) }}</h3>
               </v-flex>
+
+              <v-flex xs12 v-if="maxTitleLengthReached">
+                <v-tooltip bottom>
+                  <h3 slot="activator" class="headline mb-0"
+                    :class="{['black_title'] : dark ? false : true,
+                              ['white_title'] : dark ? true : false }"
+                    >{{ title | truncate(maxTitleLength) }}</h3>
+                  <span>{{ title }}</span>
+                </v-tooltip>
+              </v-flex>
+              
             </v-layout>
           </v-flex>
   
@@ -50,10 +62,7 @@
     </v-card-media>
 
     <v-card-title primary-title>
-      <!--div>{{ title }}</div-->
-      <div>
-        <div class="subheading">{{ subtitle | truncate(maxSubtitleLength) }}</div>
-      </div>
+      <div class="subheading">{{ subtitle | truncate(maxSubtitleLength) }}</div>
     </v-card-title>
 
     <v-card-actions>
@@ -173,6 +182,9 @@ export default {
 
       return numberOfTags;
     },
+    maxTitleLengthReached: function maxTitleLengthReached() {
+      return this.title && this.title.length > this.maxTitleLength;
+    },
   },
   data: () => ({
     show: false,
@@ -198,6 +210,15 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
+
+  .card .card__media {
+    /* Fallback if the background images don't work */
+    background: #00695c; /* Old Browsers */
+    background: -webkit-linear-gradient(top,#00695c,#00897b); /*Safari 5.1-6*/
+    background: -o-linear-gradient(top,#00695c,#00897b); /*Opera 11.1-12*/
+    background: -moz-linear-gradient(top,#00695c,#00897b); /*Fx 3.6-15*/
+    background: linear-gradient(to bottom, #00695c, #00897b); /*Standard*/
+  }
 
   .black_title{
     color: rgba(0,0,0,.87) !important;

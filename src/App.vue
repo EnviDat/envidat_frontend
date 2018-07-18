@@ -19,18 +19,29 @@
   import {
     LOAD_ALL_METADATA,
     LOAD_ALL_TAGS,
-  } from './store/metadataMutationsConsts';
-  import { ADD_CARD_IMAGES } from './store/mutationsConsts';
+    LOAD_METADATA_CONTENT_BY_ID,
+} from './store/metadataMutationsConsts';
+  import {
+    ADD_CARD_IMAGES,
+    ADD_ICON_IMAGE,
+  } from './store/mutationsConsts';
 
   export default {
     created: function created() {
-      this.loadAllMetadata();
+      const metadataId = this.$route.params.metadataid;
+
+      if (metadataId && !this.loadingCurrentMetadataContent) {
+        this.$store.dispatch(`metadata/${LOAD_METADATA_CONTENT_BY_ID}`, metadataId);
+      } else {
+        this.loadAllMetadata();
+      }
       this.loadAllTags();
 
       const bgImgs = require.context('./assets/', false, /\.jpg$/);
       this.appBGImages = this.importImages(bgImgs, 'app_b');
 
       this.importCardBackgrounds();
+      this.importIcons();
 
       // const values = Object.values(this.imagesImports);
       // values.forEach(element => {
@@ -69,32 +80,15 @@
         images = this.importImages(imgPaths);
         this.$store.commit(ADD_CARD_IMAGES, { key: 'hazard', value: images });
       },
-      importImages: function importImages(imgs, checkForString) {
-        const imgCache = {};
-        // console.log("importImages " + imgs.keys().length);
+      importIcons: function importIcons() {
+        const imgPaths = require.context('./assets/icons/', false, /\.png$/);
+        const images = this.importImages(imgPaths);
 
-        imgs.keys().forEach((key) => {
-          if (!checkForString || (checkForString && key.includes(checkForString))) {
-            imgCache[key] = imgs(key);
-            // console.log(key + " -> " + imgCache[key]);
-          }
+        const keys = Object.keys(images);
+        keys.forEach((key) => {
+          // console.log('icon ' + key + ' value ' + images[key]);
+          this.$store.commit(ADD_ICON_IMAGE, { key, value: images[key] });
         });
-
-        return imgCache;
-
-        /*
-        const imports = {};
-        const pic = imgs('./c_b_snow.jpg');
-        console.log("pic " + pic);
-
-        this.images.forEach(element => {
-          var imgImport = require(`../../../assets/cards/${element}`);
-          console.log("imgImport " + imgImport);
-          imports[element] = imgImport;
-        });
-
-        return imports;
-        */
       },
     },
     computed: {
@@ -103,7 +97,8 @@
         metadatasContent: 'metadata/metadatasContent',
         loadingMetadataIds: 'metadata/loadingMetadataIds',
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
-        currentMetadata: 'metadata/currentMetadata',
+        loadingCurrentMetadataContent: 'metadata/loadingCurrentMetadataContent',
+        currentMetadataContent: 'metadata/currentMetadataContent',
         allTags: 'metadata/allTags',
         loadingAllTags: 'metadata/loadingAllTags',
         popularTags: 'metadata/popularTags',
@@ -152,15 +147,6 @@
 
   /*** General Card styles ***/
 
-
-
-  .card .card__media {
-    background: #00695c; /* Old Browsers */
-    background: -webkit-linear-gradient(top,#00695c,#00897b); /*Safari 5.1-6*/
-    background: -o-linear-gradient(top,#00695c,#00897b); /*Opera 11.1-12*/
-    background: -moz-linear-gradient(top,#00695c,#00897b); /*Fx 3.6-15*/
-    background: linear-gradient(to bottom, #00695c, #00897b); /*Standard*/
-  }
 
   .card .headline {
     font-family: 'Libre Baskerville', serif;
@@ -235,5 +221,15 @@
   .imagezoom img:focus {
     transform: scale(1.2);
   }
-  
+
+  .envidatIcon {
+    height: 24px !important;
+    width: 24px !important;
+  }
+
+  .envidatIconWhite {
+    height: 24px !important;
+    width: 24px !important;
+  }
+
 </style>
