@@ -1,27 +1,19 @@
 <template>
   <v-container grid-list-xs>
 
-    <v-layout style="position: sticky; top: -1px; z-index: 2;">
-
-      <v-flex xs12 my-2>
-        <filter-view :searchViewLabelText="searchLabelText"
-                      :searchTerm="searchTerm"
-                      :searchCount="searchCount"
-                      :searchViewHasButton="false"
-                      :allTags="allTags" 
-                      :selectedTagNames.sync="selectedTagNames"
-                      :popularTags="popularTags"
-                      v-on:clickedSearch="catchSearchClicked"
-                      v-on:clearedSearch="catchSearchCleared"
-                      v-on:clickedTag="catchTagClicked"
-                      v-on:clickedTagClose="catchTagCloseClicked"
-                      v-on:clickedClear="catchTagCleared"
-                      >
-        </filter-view>
-
-      </v-flex>
-
-    </v-layout>
+    <nav-bar-view :searchViewLabelText="searchLabelText"
+                  :searchTerm="searchTerm"
+                  :searchCount="searchCount"
+                  :searchViewHasButton="false"
+                  :allTags="allTags" 
+                  :selectedTagNames.sync="selectedTagNames"
+                  :popularTags="popularTags"
+                  v-on:clickedSearch="catchSearchClicked"
+                  v-on:clearedSearch="catchSearchCleared"
+                  v-on:clickedTag="catchTagClicked"
+                  v-on:clickedTagClose="catchTagCloseClicked"
+                  v-on:clickedClear="catchTagCleared"
+                  />
 
     <v-layout column style="z-index: 1;">
 
@@ -71,7 +63,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import FilterView from '../Views/FilterView';
+  import NavBarView from '../Views/NavBarView';
   import MetadataCard from '../Views/Cards/MetadataCard';
   import MetadataCardPlaceholder from '../Views/Cards/MetadataCardPlaceholder';
   import { SEARCH_METADATA } from '../../store/metadataMutationsConsts';
@@ -434,7 +426,7 @@
       scrollPosition: null,
     }),
     components: {
-      FilterView,
+      NavBarView,
       MetadataCard,
       MetadataCardPlaceholder,
     },

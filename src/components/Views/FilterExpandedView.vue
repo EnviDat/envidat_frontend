@@ -1,6 +1,6 @@
 <template>
 
-  <v-card hover raised>
+  <v-card raised>
 
     <v-layout column px-2 pt-2>
       <v-flex >

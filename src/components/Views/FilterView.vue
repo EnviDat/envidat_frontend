@@ -1,6 +1,6 @@
 <template>
 
-  <v-container grid-list-md>
+  <v-container fluid grid-list-md>
 
     <v-layout 
       v-bind="{
@@ -43,7 +43,7 @@
 
         <v-card v-else
                 raised
-                hover>
+                >
 
           <v-layout  v-bind="{
                 ['row']: this.$vuetify.breakpoint.smAndUp,
@@ -224,6 +224,12 @@ export default {
     catchTagCleared: function catchTagCleared() {
       this.$emit('clickedClear');
     },
+    catchTagClicked: function catchTagClicked(tagId) {
+      this.$emit('clickedTag', tagId);
+    },
+    catchTagCloseClicked: function catchTagCloseClicked(tagId) {
+      this.$emit('clickedTagClose', tagId);
+    },
     isTagSelected: function isTagSelected(tagName) {
       if (!tagName || this.selectedTagNames === undefined) {
         return false;
@@ -237,12 +243,6 @@ export default {
       }
 
       return this.popularTags.findIndex(obj => obj.name === tagName) >= 0;
-    },
-    catchTagClicked: function catchTagClicked(tagId) {
-      this.$emit('clickedTag', tagId);
-    },
-    catchTagCloseClicked: function catchTagCloseClicked(tagId) {
-      this.$emit('clickedTagClose', tagId);
     },
     isSelected: function isSelected(tagId) {
       return this.selectedTags.indexOf(tagId) >= 0;
@@ -292,6 +292,10 @@ export default {
 
   .header_tag {
     opacity: 0.7;
+  }
+
+  .chip__content span {
+    cursor: pointer !important;
   }
 
 </style>
