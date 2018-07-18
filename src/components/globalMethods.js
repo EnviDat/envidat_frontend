@@ -66,7 +66,13 @@ export default {
     getIconFileExtension: function getIconFileExtension(fileExtension) {
       const ext = fileExtension.toLowerCase();
       const iconKey = `./file${ext}.png`;
-      return this.$store.getters.iconImages[iconKey];
+
+      const iconPath = this.$store.getters.iconImages[iconKey];
+
+      // if (!iconPath) {
+      //   iconPath = this.$store.getters.iconImages['./file.png'];
+      // }
+      return iconPath;
     },
     importImages: function importImages(imgs, checkForString) {
       const imgCache = {};

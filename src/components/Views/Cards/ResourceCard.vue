@@ -33,7 +33,7 @@
             <v-container grid-list-xs>
               <v-layout column>
                 <icon-label-view :text="doi" :icon="getIcon('doi')" iconTooltip="Data Object Identifier" />
-                <icon-label-view :text="format" :icon="getIconFileExtension(format)" iconTooltip="Format of the file" :alignLeft="true" />
+                <icon-label-view :label="fileFormatLabel" :text="format" :icon="fileExtensionIcon" iconTooltip="Format of the file" :alignLeft="true" />
                 <icon-label-view :text="formatedBytes" :icon="getIcon('fileSize')" iconTooltip="Filesize" :alignLeft="true" />
                 <icon-label-view :text="formatedDate(created)" :icon="getIcon('dateCreated')" iconTooltip="Date of file creation" />
                 <icon-label-view :text="formatedDate(lastModified)" :icon="getIcon('dateModified')" iconTooltip="Date of last modification" />
@@ -115,6 +115,13 @@ export default {
     },
     maxDescriptionLengthReached: function maxDescriptionLengthReached() {
       return this.description && this.description.length > this.maxDescriptionLength;
+    },
+    fileExtensionIcon: function fileExtensionIcon() {
+      return this.getIconFileExtension(this.format);
+    },
+    fileFormatLabel: function fileFormatLabel() {
+      const label = this.fileExtensionIcon ? '' : 'Format:';
+      return label;
     },
   },
   methods: {

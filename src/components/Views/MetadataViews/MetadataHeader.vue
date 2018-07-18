@@ -62,9 +62,13 @@
           
         <v-card-actions v-if="maxTagsReached">
           <v-spacer></v-spacer>
-          <v-btn icon @click.native="showTagsExpanded = !showTagsExpanded">
-            <v-icon color="accent" >{{ showTagsExpanded ? 'expand_less' : 'expand_more' }}</v-icon>
-          </v-btn>        
+
+          <v-tooltip bottom>
+            <v-btn icon @click.native="showTagsExpanded = !showTagsExpanded" slot="activator">
+              <v-icon color="accent" >{{ showTagsExpanded ? 'expand_less' : 'expand_more' }}</v-icon>
+            </v-btn>        
+            <span>Show all tags</span>
+          </v-tooltip>
         </v-card-actions>
 
       </v-card>
