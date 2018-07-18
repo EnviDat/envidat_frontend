@@ -28,7 +28,7 @@
     computed: {
       fullDescription: function fullDescription() {
         if (this.description !== undefined) {
-          return this.showFullDescription ? this.description : `${this.description.substring(0, 500)}...`;
+          return this.showFullDescription ? this.description : `${this.description.substring(0, this.maxTextLength)}...`;
         }
 
         return '';
@@ -36,6 +36,7 @@
     },
     data: () => ({
       showFullDescription: false,
+      maxTextLength: 750,
     }),
     methods: {
       readMore: function readMore() {

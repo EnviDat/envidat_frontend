@@ -7,7 +7,10 @@
       <v-container>
         <v-layout row>
 
-          <v-flex xs8>
+          <v-flex v-bind="{ [`xs8`]: !this.compactLayout , 
+                            [`xs6`]: this.compactLayout  }"
+          >
+
             <v-layout column>
               <v-flex xs11 mb-3>
                 <div class="headline">{{ name }}</div>
@@ -29,7 +32,9 @@
             </v-layout>
           </v-flex>
     
-          <v-flex xs4>
+          <v-flex v-bind="{ [`xs4`]: !this.compactLayout , 
+                            [`xs6`]: this.compactLayout  }"
+          >
             <v-container grid-list-xs>
               <v-layout column>
                 <icon-label-view :text="doi" :icon="getIcon('doi')" iconTooltip="Data Object Identifier" />
@@ -81,6 +86,7 @@ export default {
     lastModified: String,
     size: Number,
     format: String,
+    compactLayout: Boolean,
   },
   data: () => ({
     defaultTexture,

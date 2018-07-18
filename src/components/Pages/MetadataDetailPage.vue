@@ -4,7 +4,64 @@
       
       <v-btn @click="compactLayout = !compactLayout">layout</v-btn>
 
-      <v-layout row wrap>
+      <v-layout row wrap v-if="compactLayout">
+        <v-flex xs12
+                md8 offset-md2
+                lg10 offset-lg1
+                elevation-5
+                style="z-index: 1;">
+
+          <metadata-header v-bind="header" :maxTags="10"
+                            v-on:clickedTag="catchTagClicked" />
+
+        </v-flex>
+
+        <v-flex 
+                v-bind="leftOrFullWidth"
+                mb-2 
+                style="z-index: 0;">
+
+          <v-layout column>
+
+            <v-flex mb-2 >
+              <metadata-body v-bind="body" />
+            </v-flex>
+
+            <v-flex mb-2>
+              <metadata-citation v-bind="citation" />
+            </v-flex>
+
+            <v-flex mb-2>
+              <metadata-details v-if="details"
+                              :details="details" />
+            </v-flex>
+
+
+          </v-layout>
+        </v-flex>
+
+
+        <v-flex 
+                v-bind="rightOrFullWidth"
+                mb-2 
+                style="z-index: 0;">
+
+          <v-layout row wrap>
+            <v-flex mb-2>
+              <metadata-resources v-bind="resources" :compactLayout="compactLayout" />
+            </v-flex>
+
+            <v-flex mb-2>
+              <metadata-location v-if="location"
+                                  v-bind="location" />
+            </v-flex>
+
+          </v-layout>
+        </v-flex>
+
+      </v-layout>
+
+      <v-layout row wrap v-if="!compactLayout">
         <v-flex xs12
                 md8 offset-md2
                 lg10 offset-lg1
@@ -56,7 +113,6 @@
         </v-flex>
 
       </v-layout>
-
     </div>
 
     <div v-else> 
@@ -199,6 +255,19 @@
       },
     },
     methods: {
+      catchTagClicked: function catchTagClicked(tagName) {
+        const tagNames = [];
+        tagNames.push(tagName);
+
+        const tagsEncoded = this.encodeTagForUrl(tagNames);
+        const query = {};
+        query.tags = tagsEncoded;
+
+        this.$router.push({
+          path: '/browse',
+          query,
+        });
+      },
       createMetadataContent: function createMetadataContent() {
         let currentContent = this.currentMetadataContent;
 

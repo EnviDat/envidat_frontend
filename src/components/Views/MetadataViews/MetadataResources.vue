@@ -8,7 +8,7 @@
 
         <v-flex xs6 px-2 py-2 v-for="res in resources" :key="res.id">
 
-          <resource-card v-bind="res" v-on:clicked="resClicked(res)"></resource-card>
+          <resource-card v-bind="res" v-on:clicked="resClicked(res)" :compactLayout="compactLayout" />
 
         </v-flex>
 
@@ -34,6 +34,7 @@
       metadataTitle: String,
       doi: String,
       resources: Array,
+      compactLayout: Boolean,
     },
     updated: function updated() {
     },
