@@ -1,6 +1,5 @@
 <template>
   <v-card
-  hover
   color="primary"
   class="white--text">
     
@@ -52,9 +51,9 @@
       <v-spacer></v-spacer>
       <v-tooltip bottom>
         <v-btn icon color="accent" slot="activator" :href="url" 
-        v-bind="{['target'] : isLink ? '_blank' : '' }">
-          <v-icon dark v-if="isFile">cloud_download</v-icon>
-          <v-icon dark v-if="isLink">link</v-icon>
+                v-bind="{['target'] : isLink ? '_blank' : '' }">
+          <v-icon v-if="isFile">cloud_download</v-icon>
+          <v-icon v-if="isLink">link</v-icon>
         </v-btn>
         <span v-if="isFile">Download file</span>
         <span v-if="isLink">Open link</span>

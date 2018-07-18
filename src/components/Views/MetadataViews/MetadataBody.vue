@@ -27,7 +27,7 @@
     },
     computed: {
       fullDescription: function fullDescription() {
-        if (this.description !== undefined){
+        if (this.description !== undefined) {
           return this.showFullDescription ? this.description : `${this.description.substring(0, 500)}...`;
         }
 
