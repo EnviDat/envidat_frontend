@@ -119,6 +119,7 @@
         currentMetadataContent: 'metadata/currentMetadataContent',
         allTags: 'metadata/allTags',
         loadingAllTags: 'metadata/loadingAllTags',
+        iconImages: 'iconImages',
       }),
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;

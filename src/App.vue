@@ -21,7 +21,10 @@
     LOAD_ALL_TAGS,
     LOAD_METADATA_CONTENT_BY_ID,
 } from './store/metadataMutationsConsts';
-  import { ADD_CARD_IMAGES } from './store/mutationsConsts';
+  import {
+    ADD_CARD_IMAGES,
+    ADD_ICON_IMAGE,
+  } from './store/mutationsConsts';
 
   export default {
     created: function created() {
@@ -38,6 +41,7 @@
       this.appBGImages = this.importImages(bgImgs, 'app_b');
 
       this.importCardBackgrounds();
+      this.importIcons();
 
       // const values = Object.values(this.imagesImports);
       // values.forEach(element => {
@@ -76,32 +80,15 @@
         images = this.importImages(imgPaths);
         this.$store.commit(ADD_CARD_IMAGES, { key: 'hazard', value: images });
       },
-      importImages: function importImages(imgs, checkForString) {
-        const imgCache = {};
-        // console.log("importImages " + imgs.keys().length);
+      importIcons: function importIcons() {
+        const imgPaths = require.context('./assets/icons/', false, /\.png$/);
+        const images = this.importImages(imgPaths);
 
-        imgs.keys().forEach((key) => {
-          if (!checkForString || (checkForString && key.includes(checkForString))) {
-            imgCache[key] = imgs(key);
-            // console.log(key + " -> " + imgCache[key]);
-          }
+        const keys = Object.keys(images);
+        keys.forEach((key) => {
+          // console.log('icon ' + key + ' value ' + images[key]);
+          this.$store.commit(ADD_ICON_IMAGE, { key, value: images[key] });
         });
-
-        return imgCache;
-
-        /*
-        const imports = {};
-        const pic = imgs('./c_b_snow.jpg');
-        console.log("pic " + pic);
-
-        this.images.forEach(element => {
-          var imgImport = require(`../../../assets/cards/${element}`);
-          console.log("imgImport " + imgImport);
-          imports[element] = imgImport;
-        });
-
-        return imports;
-        */
       },
     },
     computed: {
@@ -234,5 +221,15 @@
   .imagezoom img:focus {
     transform: scale(1.2);
   }
-  
+
+  .envidatIcon {
+    height: 24px !important;
+    width: 24px !important;
+  }
+
+  .envidatIconWhite {
+    height: 24px !important;
+    width: 24px !important;
+  }
+
 </style>

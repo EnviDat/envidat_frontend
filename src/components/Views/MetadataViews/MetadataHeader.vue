@@ -1,36 +1,47 @@
 <template>
     <v-flex >
 
-      <v-card elevation-5 class="px-4" dark color="primary">
+      <v-card elevation-5 class="px-4 py-2" dark color="primary">
 
         <!--h1 class="py-3" >{{ metadataTitle }} id: {{ $route.params.id }}</h1-->
         <div class="display-2 headerTitle py-3">{{ metadataTitle }}</div>  
 
         <v-card-media></v-card-media>
 
-      </v-card>
+      <!-- </v-card>
 
-      <v-card class="px-4 py-2" dark color="primary">
+      <v-card class="px-4 py-2" dark color="primary"> -->
 
-        <v-layout row wrap>
+        <v-divider dark class="my-2" ></v-divider>
+
+        <v-layout py-1 row wrap>
           <v-flex xs6 class="headerInfo">
-              <v-icon>person</v-icon> {{ contactName }} 
+            <icon-label-view  :text="contactName"
+                              :icon="getIcon('contact2_w')"
+                              iconTooltip="Main contact"
+                              :alignLeft="true" />
           </v-flex>
 
-          <v-flex xs6 class="headerInfo">
-            <div class="my-1">
-              <v-icon>call_received</v-icon> {{ doi }} 
-            </div>
+          <v-flex xs6 py-1 class="headerInfo">
+            <icon-label-view  :text="doi"
+                              :icon="getIcon('doi_w')"
+                              iconTooltip="Data Object Identifier"
+                              :alignLeft="true" />
           </v-flex>
 
-          <v-flex xs6 class="headerInfo">
-            <v-icon>email</v-icon> {{ contactEmail }}
+          <v-flex xs6 py-1 class="headerInfo">
+            <icon-label-view  :text="contactEmail"
+                              :icon="getIcon('mail_w')"
+                              iconTooltip="Email adress of the main contact"
+                              :alignLeft="true" />
           </v-flex>
 
-          <v-flex xs6 class="headerInfo">
-            <div class="my-1">
-              <v-icon>format_quote</v-icon> {{ license }} 
-            </div>          
+          <v-flex xs6 py-1 class="headerInfo">
+            <icon-label-view :text="license"
+                              :icon="getIcon('license_w')"
+                              iconTooltip="License for Datafiles"
+                              :alignLeft="true"
+                               />
           </v-flex>
         </v-layout>
 
@@ -65,6 +76,7 @@
 
 <script>
 import TagChip from '../Cards/TagChip';
+import IconLabelView from '../IconLabelView';
 
 export default {
   props: {
@@ -97,6 +109,7 @@ export default {
   },
   components: {
     TagChip,
+    IconLabelView,
   },
 };
 </script>
@@ -115,8 +128,13 @@ export default {
     opacity: 0.85;
   }
 
-  .header {
-    opacity: 0.7;
+  .headerInfo img,
+  .headerInfo > .envidatIcon {
+    opacity: 0.85;
+  }
+
+  .headerTag {
+    opacity: 0.75;
   }
 
 </style>

@@ -59,8 +59,44 @@ export default {
 
       return formatedDate;
     },
+    getIcon: function getIcon(iconName) {
+      const iconKey = `./${iconName}.png`;
+      return this.$store.getters.iconImages[iconKey];
+    },
+    getIconFileExtension: function getIconFileExtension(fileExtension) {
+      const ext = fileExtension.toLowerCase();
+      const iconKey = `./file${ext}.png`;
+      return this.$store.getters.iconImages[iconKey];
+    },
+    importImages: function importImages(imgs, checkForString) {
+      const imgCache = {};
+      // console.log("importImages " + imgs.keys().length);
+
+      imgs.keys().forEach((key) => {
+        if (!checkForString || (checkForString && key.includes(checkForString))) {
+          imgCache[key] = imgs(key);
+          // console.log(key + " -> " + imgCache[key]);
+        }
+      });
+
+      return imgCache;
+
+      /*
+      const imports = {};
+      const pic = imgs('./c_b_snow.jpg');
+      console.log("pic " + pic);
+
+      this.images.forEach(element => {
+        var imgImport = require(`../../../assets/cards/${element}`);
+        console.log("imgImport " + imgImport);
+        imports[element] = imgImport;
+      });
+
+      return imports;
+      */
+    },
     /* eslint-disable */
     // for details: https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
-    formatBytes: function formatBytes(a,b){if(0==a)return"0 Bytes";var c=1024,d=b||2,e=["Bytes","KB","MB","GB","TB","PB","EB","ZB","YB"],f=Math.floor(Math.log(a)/Math.log(c));return parseFloat((a/Math.pow(c,f)).toFixed(d))+" "+e[f]}
+    formatBytes: function formatBytes(a,b){if(0==a)return"0 Bytes";var c=1024,d=b||2,e=["Bytes","KB","MB","GB","TB","PB","EB","ZB","YB"],f=Math.floor(Math.log(a)/Math.log(c));return parseFloat((a/Math.pow(c,f)).toFixed(d))+" "+e[f]},
   },
 };

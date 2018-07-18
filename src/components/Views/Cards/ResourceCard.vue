@@ -33,10 +33,13 @@
           <v-flex xs4>
             <v-container grid-list-xs>
               <v-layout column>
-                <icon-label-view label="Format:" :text="format" icon="cloud_download" iconTooltip="Format of the file" />
-                <icon-label-view :text="formatedBytes" icon="cloud_download" iconTooltip="Filesize" />
-                <icon-label-view :text="formatedDate(created)" icon="cloud_download" iconTooltip="Date of file creation" />
-                <icon-label-view :text="formatedDate(lastModified)" icon="cloud_download" iconTooltip="Date of last modification" />
+                <icon-label-view :text="doi" :icon="getIcon('doi')" iconTooltip="Data Object Identifier" />
+                <icon-label-view :text="format" :icon="getIconFileExtension(format)" iconTooltip="Format of the file" :alignLeft="true" />
+                <icon-label-view :text="formatedBytes" :icon="getIcon('fileSize')" iconTooltip="Filesize" :alignLeft="true" />
+                <icon-label-view :text="formatedDate(created)" :icon="getIcon('dateCreated')" iconTooltip="Date of file creation" />
+                <icon-label-view :text="formatedDate(lastModified)" :icon="getIcon('dateModified')" iconTooltip="Date of last modification" />
+
+
               </v-layout>
             </v-container>
           </v-flex>
@@ -71,6 +74,7 @@ export default {
   props: {
     id: String,
     metadataId: String,
+    doi: String,
     name: String,
     description: String,
     url: String,

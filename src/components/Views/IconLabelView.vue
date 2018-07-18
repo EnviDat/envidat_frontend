@@ -1,18 +1,28 @@
 <template>
   
-    <v-layout row >
+    <v-layout row align-center
+      v-if="label || text">
 
-      <v-flex v-if="icon && iconTooltip"
+      <!-- <v-flex v-if="icon && iconTooltip"
         xs2 >
         <v-tooltip bottom>
-        <v-icon slot="activator" >{{ icon }}</v-icon>
-        <span>{{ iconTooltip }}</span>
+          <img slot="activator" class="envidatIcon" :src="icon" />          
+          <span>{{ iconTooltip }}</span>
         </v-tooltip>
-      </v-flex>
+      </v-flex> -->
+
+      <div v-if="icon && iconTooltip"
+        :class="alignClass"
+        >
+        <v-tooltip bottom>
+          <img slot="activator" class="envidatIcon" :src="icon" />          
+          <span>{{ iconTooltip }}</span>
+        </v-tooltip>
+      </div>
 
       <v-flex v-if="icon && !iconTooltip"
-        xs2 >
-        <v-icon >{{ icon }}</v-icon>
+        xs2 pr-2>
+          <img class="envidatIcon" :src="icon" />          
       </v-flex>
 
       <v-flex v-if="label"
@@ -35,6 +45,16 @@
       iconTooltip: String,
       label: String,
       text: String,
+      alignLeft: Boolean,
+    },
+    computed: {
+      alignClass: function alignClass() {
+        return {
+          flex: !this.alignLeft,
+          xs2: !this.alignLeft,
+          'pr-3': this.alignLeft,
+        };
+      },
     },
   };
 </script>
