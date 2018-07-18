@@ -38,6 +38,27 @@ export default {
       // return an empty array for the selectedTagIds
       return [];
     },
+    formatDate: function formatDate(date) {
+      // expecting a format like 2017-08-15T15:25:45.175790
+      let formatedDate = '';
+
+      if (date) {
+        const split = date.split('T');
+        if (split.length > 0) {
+          const dateOnly = split[0];
+          const timeOnly = split[1];
+          const timeSplit = timeOnly.split('.');
+          const timeToMinutes = timeSplit[0];
+
+          formatedDate = `${dateOnly} ${timeToMinutes}`;
+        } else {
+          // fallback: just return the input
+          formatedDate = date;
+        }
+      }
+
+      return formatedDate;
+    },
     /* eslint-disable */
     // for details: https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
     formatBytes: function formatBytes(a,b){if(0==a)return"0 Bytes";var c=1024,d=b||2,e=["Bytes","KB","MB","GB","TB","PB","EB","ZB","YB"],f=Math.floor(Math.log(a)/Math.log(c));return parseFloat((a/Math.pow(c,f)).toFixed(d))+" "+e[f]}

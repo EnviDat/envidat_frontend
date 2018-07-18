@@ -71,7 +71,10 @@
 <script>
   import { mapGetters } from 'vuex';
   import { CHANGE_APP_BG } from '../../store/mutationsConsts';
-  import { LOAD_METADATA_CONTENT_BY_ID } from '../../store/metadataMutationsConsts';
+  import {
+    LOAD_METADATA_CONTENT_BY_ID,
+    CLEAN_CURRENT_METADATA,
+  } from '../../store/metadataMutationsConsts';
   import MetadataHeader from '../Views/MetadataViews/MetadataHeader';
   import MetadataBody from '../Views/MetadataViews/MetadataBody';
   import MetadataResources from '../Views/MetadataViews/MetadataResources';
@@ -103,6 +106,10 @@
       } else {
         this.createMetadataContent();
       }
+    },
+    beforeDestroy: function beforeDestroy() {
+      // clean current metadata to make be empty for the next to load up
+      this.$store.commit(`metadata/${CLEAN_CURRENT_METADATA}`);
     },
     computed: {
       ...mapGetters({

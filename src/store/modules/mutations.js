@@ -11,6 +11,7 @@ import {
   LOAD_METADATA_CONTENT_BY_ID,
   LOAD_METADATA_CONTENT_BY_ID_SUCCESS,
   LOAD_METADATA_CONTENT_BY_ID_ERROR,
+  CLEAN_CURRENT_METADATA,
   SEARCH_METADATA,
   SEARCH_METADATA_SUCCESS,
   SEARCH_METADATA_ERROR,
@@ -111,6 +112,10 @@ export default {
   [LOAD_METADATA_CONTENT_BY_ID_ERROR](state, reason) {
     state.loadingCurrentMetadataContent = false;
     state.error = reason;
+  },
+  [CLEAN_CURRENT_METADATA](state) {
+    state.loadingCurrentMetadataContent = false;
+    state.currentMetadataContent = {};
   },
   [LOAD_ALL_TAGS](state) {
     state.loadingAllTags = true;
