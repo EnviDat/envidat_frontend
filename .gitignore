@@ -17,7 +17,8 @@
 [Rr]eleases/
 x64/
 x86/
-build/
+# commented build folder for the webpack configs
+# build/
 bld/
 [Bb]in/
 [Oo]bj/
@@ -215,3 +216,7 @@ FakesAssemblies/
 **/*.Server/GeneratedArtifacts
 **/*.Server/ModelManifest.xml
 _Pvt_Extensions
+
+dist/
+
+\.vscode/
