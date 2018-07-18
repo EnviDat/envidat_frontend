@@ -37,8 +37,8 @@
                     >{{ title | truncate(maxTitleLength) }}</h3>
                   <span>{{ title }}</span>
                 </v-tooltip>
-
               </v-flex>
+              
             </v-layout>
           </v-flex>
   

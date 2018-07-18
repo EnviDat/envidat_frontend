@@ -4,29 +4,46 @@
   color="primary"
   class="white--text">
     
-    <v-container fluid grid-list-md>
-      <v-layout row>
-  
-        <v-flex xs8>
-          <v-layout column>
-            <v-flex class="headline">{{ name | capitalize }}</v-flex>
-            <v-flex>{{ description }}</v-flex>
-          </v-layout>
-        </v-flex>
-  
-        <v-flex xs4>
-          <v-layout column>
-            <icon-label-view label="Format:" :text="format" icon="cloud_download" iconTooltip="Format of the file" />
-            <icon-label-view :text="converToBytes" icon="cloud_download" iconTooltip="Filesize" />
-            <icon-label-view :text="created" icon="cloud_download" iconTooltip="Date of file creation" />
-            <icon-label-view :text="lastModified" icon="cloud_download" iconTooltip="Date of last modification" />
-          </v-layout>
-        </v-flex>
-  
-      </v-layout>
+    <v-card-media>
+      <v-container>
+        <v-layout row>
 
+          <v-flex xs8>
+            <v-layout column>
+              <v-flex xs11 mb-3>
+                <div class="headline">{{ name }}</div>
+              </v-flex>
 
-    </v-container>
+              <v-flex xs11 v-if="!maxDescriptionLengthReached">
+                {{ description }}
+              </v-flex>
+
+              <v-flex xs11 v-if="maxDescriptionLengthReached">
+                <v-tooltip bottom>
+                  <div slot="activator">
+                    {{ description | truncate(maxDescriptionLength) }}
+                  </div>
+                  <span>{{ description }}</span>
+                </v-tooltip>
+              </v-flex>
+
+            </v-layout>
+          </v-flex>
+    
+          <v-flex xs4>
+            <v-container grid-list-xs>
+              <v-layout column>
+                <icon-label-view label="Format:" :text="format" icon="cloud_download" iconTooltip="Format of the file" />
+                <icon-label-view :text="formatedBytes" icon="cloud_download" iconTooltip="Filesize" />
+                <icon-label-view :text="formatedDate(created)" icon="cloud_download" iconTooltip="Date of file creation" />
+                <icon-label-view :text="formatedDate(lastModified)" icon="cloud_download" iconTooltip="Date of last modification" />
+              </v-layout>
+            </v-container>
+          </v-flex>
+    
+        </v-layout>
+      </v-container>
+    </v-card-media>
 
     <v-card-actions>      
       <v-spacer></v-spacer>
@@ -64,6 +81,7 @@ export default {
   },
   data: () => ({
     defaultTexture,
+    maxDescriptionLength: 300,
   }),
   computed: {
     dynamicCardBackground: function dynamicCardBackground() {
@@ -75,10 +93,16 @@ export default {
 
       return '';
     },
-    converToBytes: function converToBytes() {
+    formatedBytes: function formatedBytes() {
       if (!this.size) return '';
       const bytesString = this.formatBytes(this.size);
       return bytesString;
+    },
+    formatedCreated: function formatedCreated() {
+      return this.formatDate(this.created);
+    },
+    formatedLastModified: function formatedLastModified() {
+      return this.formatDate(this.lastModified);
     },
     isLink: function isLink() {
       return this.format && this.format.toLowerCase() === 'link';
@@ -86,18 +110,16 @@ export default {
     isFile: function isFile() {
       return this.format && this.format.toLowerCase() !== 'link';
     },
+    maxDescriptionLengthReached: function maxDescriptionLengthReached() {
+      return this.description && this.description.length > this.maxDescriptionLength;
+    },
   },
   methods: {
     clicked: function clicked() {
       this.$emit('clicked');
     },
-  },
-  filters: {
-    capitalize: function capitalize(value) {
-      /* eslint-disable no-param-reassign */
-      if (!value) return '';
-      value = value.toString();
-      return value.charAt(0).toUpperCase() + value.slice(1);
+    formatedDate: function formatedDate(value) {
+      return this.formatDate(value);
     },
   },
   components: {
@@ -106,3 +128,20 @@ export default {
 };
 </script>
 
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+
+
+  .black_title{
+    color: rgba(0,0,0,.87) !important;
+  }
+
+  .white_title{
+    color: rgba(255,255,255,.9) !important;
+  }
+
+  .card_tag {
+    /* opacity: 0.7; */
+  }
+
+</style>

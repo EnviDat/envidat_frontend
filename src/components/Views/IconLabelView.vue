@@ -20,8 +20,7 @@
         {{ label }}
       </v-flex>
 
-      <v-flex v-if="text"
-        xs5 >
+      <v-flex v-if="text" >
         {{ text }}
       </v-flex>
     
