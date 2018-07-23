@@ -88,13 +88,38 @@
         <v-icon>star</v-icon>
       </v-btn> -->
 
+      <!-- <v-tooltip bottom>
+          <v-chip slot="activator"
+                  small disabled 
+                  class="envidat_chip"
+                  v-bind="{ ['color']: resourceCount > 0 ? 'secondary' : ''}"
+                  :class="{ ['white--text']: resourceCount > 0 ? true : false }"
+          >
+            {{ resourceCount }}
+          </v-chip>
+
+          <span>This entry has {{ resourceCount}} resources</span>
+      </v-tooltip> -->
+
+      <v-tooltip bottom>
+          <div slot="activator" class="metadataInfoIcon">
+            <v-layout row >
+              <v-flex pa-0>{{ resourceCount }}</v-flex>
+              <v-flex pa-0 >
+                <img class="envidatIcon" :src="getIcon('file')" />                
+              </v-flex>
+            </v-layout>
+            <!-- <div class="iconCentering">
+              <img class="envidatIcon" :src="getIcon('file')" />
+            </div> -->
+          </div>
+
+          <span>Metadata with {{ resourceCount }} resources</span>
+      </v-tooltip>
+
+
+
     </v-card-actions>
-    
-    <v-slide-y-transition>
-      <v-card-text v-show="show">
-        I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
-      </v-card-text>
-    </v-slide-y-transition>
 
   </v-card>
 
@@ -132,6 +157,7 @@ export default {
     tags: Array,
     titleImg: String,
     dark: Boolean,
+    resourceCount: Number,
   },
   components: {
     TagChip,
