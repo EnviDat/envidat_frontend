@@ -11,14 +11,14 @@
         </v-tooltip>
       </v-flex> -->
 
-      <div v-if="icon && iconTooltip"
-        :class="alignClass"
+      <v-flex v-if="icon && iconTooltip"
+        xs3 md2
         >
         <v-tooltip bottom>
           <img slot="activator" class="envidatIcon" :src="icon" />          
           <span>{{ iconTooltip }}</span>
         </v-tooltip>
-      </div>
+      </v-flex>
 
       <v-flex v-if="icon && !iconTooltip"
         xs2 pr-2>
@@ -53,6 +53,7 @@
           flex: !this.alignLeft,
           xs2: !this.alignLeft,
           'pr-3': this.alignLeft,
+          'pl-1': this.alignLeft,
         };
       },
     },

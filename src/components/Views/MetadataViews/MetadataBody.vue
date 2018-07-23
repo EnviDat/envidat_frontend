@@ -1,6 +1,7 @@
 <template>
 
-  <v-card >
+  <v-card :class="{ ['pt-2']: this.isOnTop }">
+    
     <v-card-title class="metadata_title title" >Description</v-card-title>
 
     <v-card-text >{{ fullDescription }}</v-card-text>
@@ -22,6 +23,7 @@
       title: String,
       doi: String,
       description: String,
+      isOnTop: Boolean,
     },
     mounted: function mounted() {
     },

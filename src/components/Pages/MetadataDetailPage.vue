@@ -1,10 +1,11 @@
 <template>
-  <v-container fluid >
+  <v-container fluid
+              tag="article"
+              v-bind="{ [`pa-0`]: this.$vuetify.breakpoint.smAndDown}"
+  >
     <div v-if="currentMetadataContent">
       
-      <v-btn @click="compactLayout = !compactLayout">layout</v-btn>
-
-      <v-layout row wrap v-if="compactLayout">
+      <v-layout row wrap v-if="twoColumnLayout">
         <v-flex xs12
                 md8 offset-md2
                 lg10 offset-lg1
@@ -24,7 +25,7 @@
           <v-layout column>
 
             <v-flex mb-2 >
-              <metadata-body v-bind="body" />
+              <metadata-body v-bind="body" :isOnTop="true" />
             </v-flex>
 
             <v-flex mb-2>
@@ -32,10 +33,14 @@
             </v-flex>
 
             <v-flex mb-2>
+              <metadata-location v-if="location"
+                                  v-bind="location" />
+            </v-flex>
+
+            <v-flex mb-2 v-if="showDetailsOnTheLeft">
               <metadata-details v-if="details"
                               :details="details" />
             </v-flex>
-
 
           </v-layout>
         </v-flex>
@@ -48,12 +53,14 @@
 
           <v-layout row wrap>
             <v-flex mb-2>
-              <metadata-resources v-bind="resources" :compactLayout="compactLayout" />
+              <metadata-resources v-bind="resources"
+                                  :isOnTop="true"
+                                  :twoColumnLayout="twoColumnLayout" />
             </v-flex>
 
-            <v-flex mb-2>
-              <metadata-location v-if="location"
-                                  v-bind="location" />
+            <v-flex mb-2 v-if="!showDetailsOnTheLeft">
+              <metadata-details v-if="details"
+                              :details="details" />
             </v-flex>
 
           </v-layout>
@@ -61,14 +68,13 @@
 
       </v-layout>
 
-      <v-layout row wrap v-if="!compactLayout">
+      <v-layout row wrap v-if="!twoColumnLayout">
         <v-flex xs12
-                md8 offset-md2
-                lg10 offset-lg1
+                md10 offset-md1
                 elevation-5
                 style="z-index: 1;">
 
-          <metadata-header v-bind="header" :maxTags="10"> </metadata-header>
+          <metadata-header v-bind="header" :maxTags="10" />
 
         </v-flex>
 
@@ -77,7 +83,7 @@
                 mb-2 
                 style="z-index: 0;">
 
-          <metadata-body v-bind="body" > </metadata-body>
+          <metadata-body v-bind="body" :isOnTop="true" />
         </v-flex>
 
         <v-flex xs12
@@ -85,7 +91,7 @@
                 v-bind="rightOrFullWidth"
                  >
 
-          <metadata-citation v-bind="citation" :fixedHeight="compactLayout"> </metadata-citation>
+          <metadata-citation v-bind="citation" :fixedHeight="twoColumnLayout" />
         </v-flex>
 
         <v-flex xs12
@@ -93,23 +99,21 @@
                 v-bind="fullWidthPadding"
                 >
 
-          <metadata-resources v-bind="resources" ></metadata-resources>
+          <metadata-resources v-bind="resources" :twoColumnLayout="twoColumnLayout" />
         </v-flex>
 
         <v-flex xs12
                 mb-2
                 v-bind="fullWidthPadding"
                 >
-          <metadata-location v-if="location"
-                              v-bind="location" ></metadata-location>
+          <metadata-location v-if="location" v-bind="location" />
         </v-flex>
 
         <v-flex xs12
                 mb-2
                 v-bind="fullWidthPadding"
                 >
-          <metadata-details v-if="details"
-                              :details="details" ></metadata-details>
+          <metadata-details v-if="details" :details="details" />
         </v-flex>
 
       </v-layout>
@@ -189,17 +193,24 @@
         //  && this.metadataIds.includes(this.metadataId));
       },
       leftOrFullWidth: function leftOrFullWidth() {
-        return this.compactLayout ? this.halfWidthLeft : this.fullWidthPadding;
+        return this.twoColumnLayout ? this.halfWidthLeft : this.fullWidthPadding;
       },
       rightOrFullWidth: function rightOrFullWidth() {
-        return this.compactLayout ? this.halfWidthRight : this.fullWidthPadding;
+        return this.twoColumnLayout ? this.halfWidthRight : this.fullWidthPadding;
+      },
+      twoColumnLayout: function twoColumnLayout() {
+        return this.$vuetify.breakpoint.lgAndUp;
       },
       fullWidthPadding: function fullwidthPadding() {
         const json = {
+          /*
           md8: true,
           'offset-md2': true,
           lg10: true,
           'offset-lg1': true,
+          */
+          md10: true,
+          'offset-md1': true,
         };
 
         if (this.$vuetify.breakpoint.xsOnly) {
@@ -252,6 +263,10 @@
         }
 
         return json;
+      },
+      showDetailsOnTheLeft: function showDetailsOnTheLeft() {
+        const left = this.resources && this.resources.resources.length > this.amountOfResourcesToShowDetailsLeft;
+        return left;
       },
     },
     methods: {
@@ -467,8 +482,8 @@
       resources: null,
       location: null,
       details: null,
+      amountOfResourcesToShowDetailsLeft: 4,
       notFoundBackPath: 'browse',
-      compactLayout: true,
     }),
     components: {
       MetadataHeader,
@@ -487,6 +502,11 @@
   .metadata_title{
     font-family: 'Karma', serif;
     font-weight: 700 !important;
+  }
+
+  .metadataResourceCard{
+    /* min-height: 100% !important; */
+    min-height: 200px !important;
   }
 
 </style>
