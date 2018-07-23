@@ -227,9 +227,5 @@
     width: 24px !important;
   }
 
-  .envidatIconWhite {
-    height: 24px !important;
-    width: 24px !important;
-  }
 
 </style>

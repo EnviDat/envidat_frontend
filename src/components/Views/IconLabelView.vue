@@ -13,16 +13,22 @@
 
       <div v-if="icon && iconTooltip"
         :class="alignClass"
+        style="position: relative: top: 2px;"
         >
         <v-tooltip bottom>
-          <img slot="activator" class="envidatIcon" :src="icon" />          
+          <div slot="activator" class="iconCentering">
+            <img class="envidatIcon" :src="icon" />          
+          </div>
           <span>{{ iconTooltip }}</span>
         </v-tooltip>
       </div>
 
       <v-flex v-if="icon && !iconTooltip"
-        xs2 pr-2>
+        xs2 pr-2
+        >
+        <div class="iconCentering">
           <img class="envidatIcon" :src="icon" />          
+        </div>
       </v-flex>
 
       <v-flex v-if="label"
@@ -51,8 +57,11 @@
       alignClass: function alignClass() {
         return {
           flex: !this.alignLeft,
-          xs2: !this.alignLeft,
+          xs3: !this.alignLeft,
+          md2: !this.alignLeft,
           'pr-3': this.alignLeft,
+          'pl-1': this.alignLeft,
+          'py-0': true,
         };
       },
     },
@@ -60,5 +69,8 @@
 </script>
 
 <style>
-  
+  .iconCentering {
+    position: relative;
+    top: 2px;
+  }
 </style>

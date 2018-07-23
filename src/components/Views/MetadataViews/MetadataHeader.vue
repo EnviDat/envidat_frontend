@@ -49,10 +49,9 @@
 
         <v-layout row wrap>
 
-          <tag-chip v-if="tags" v-for="tag in slicedTags" :key="tag.id"
-                    :id="tag.id"
+          <tag-chip v-if="tags" v-for="tag in slicedTags" :key="tag.name"
                     :name="tag.name"
-                    :closeable="tag.closeable"
+                    v-on:clicked="catchTagClicked($event, tag.name)"
                     class="headerTag" />
 
           <v-flex xs2 v-if="maxTagsReached && !showTagsExpanded">
@@ -65,7 +64,9 @@
 
           <v-tooltip bottom>
             <v-btn icon @click.native="showTagsExpanded = !showTagsExpanded" slot="activator">
-              <v-icon color="accent" >{{ showTagsExpanded ? 'expand_less' : 'expand_more' }}</v-icon>
+              <v-icon color="accent" 
+                      :style="this.showTagsExpanded ? 'transform: rotate(-180deg);' : 'transform: rotate(0deg);'"
+              >expand_more</v-icon>
             </v-btn>        
             <span>Show all tags</span>
           </v-tooltip>
@@ -95,6 +96,11 @@ export default {
   data: () => ({
     showTagsExpanded: false,
   }),
+  methods: {
+    catchTagClicked: function catchTagClicked(tagId) {
+      this.$emit('clickedTag', tagId);
+    },
+  },
   computed: {
     maxTagsReached: function maxTagsReached() {
       return this.tags ? this.tags.length >= this.maxTags : false;

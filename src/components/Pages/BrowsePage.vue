@@ -41,6 +41,7 @@
                             :subtitle="metadata.notes"
                             :tags="metadata.tags"
                             :titleImg="metadata.titleImg"
+                            :resourceCount="metadata.num_resources"
                             :dark="false"
                             v-on:clickedEvent="metaDataClicked"
                             v-on:clickedTag="catchTagClicked">
