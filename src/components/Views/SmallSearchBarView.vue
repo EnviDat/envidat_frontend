@@ -24,26 +24,19 @@
       </v-flex>
 
       <v-flex xs2 pa-0>
-        <v-chip small disabled 
-        class="envidat_chip"
-        v-bind="{ ['color']: searchCount > 0 ? 'primary' : ''}"
-        :class="{ ['white--text']: searchCount > 0 ? true : false }"
-        >
-          {{ searchCount }}
-        </v-chip>
-      </v-flex>
 
-      <!-- <v-flex xs1 pr-2 pl-0 py-0>
-        <div class="input-group input-group--slider input-group--focused input-group--active"
-        style="padding: 0; margin: 0;">
-          <div class="slider__thumb--lable__container"
-            :value="searchCount"
-            thumb-label
+        <v-tooltip bottom >
+          <v-chip slot="activator"
+                  small disabled 
+                  class="envidat_chip"
+                  v-bind="{ ['color']: searchCount > 0 ? 'primary' : ''}"
+                  :class="{ ['white--text']: searchCount > 0 ? true : false }"
           >
-            <div class="slider__thumb--label"> <span>{{ searchCount }}</span> </div>
-          </div>
-        </div>        
-      </v-flex> -->
+            {{ searchCount }}
+          </v-chip>
+          <span>{{ searchCount }} metadata entries found</span>
+        </v-tooltip>
+      </v-flex>
 
       <v-flex sm4 lg3 xl2 
               v-if="hasButton">
