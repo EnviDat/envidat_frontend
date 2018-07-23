@@ -258,8 +258,4 @@ export default {
     /* opacity: 0.7; */
   }
 
-  .metadataInfoIcon {
-    opacity: 0.75;
-  }
-
 </style>
