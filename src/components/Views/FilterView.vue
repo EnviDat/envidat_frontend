@@ -1,6 +1,6 @@
 <template>
 
-  <v-container fluid grid-list-md>
+  <v-container fluid grid-list-md py-0>
 
     <v-layout 
       v-bind="{

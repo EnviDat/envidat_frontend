@@ -4,24 +4,45 @@
               style="position: sticky; top: -1px; z-index: 2;">
 
       <v-flex xs12>
-        <v-container fluid px-2 py-1>
-        <v-card raised
-                hover >
+        <v-container px-2 py-0 style="height: 32px;">
 
-          <v-card-actions>      
-            <v-spacer></v-spacer>
-            <v-tooltip bottom>
-              <v-btn icon color="accent" slot="activator" :href="url" 
-                      v-bind="{['target'] : isLink ? '_blank' : '' }">
-                <v-icon v-if="isFile">cloud_download</v-icon>
-                <v-icon v-if="isLink">link</v-icon>
-              </v-btn>
-              <span v-if="isFile">Download file</span>
-              <span v-if="isLink">Open link</span>
-            </v-tooltip>
-          </v-card-actions>
+        <v-card raised >
+
+          <v-container grid-list-xs py-0 px-0>
+            <v-layout row align-center
+                      style="text-align: center;">
+
+              <v-flex xs2 sm1 >
+                <img :src="Logo" alt="envidat_logo" style="width: 24px; height 24px;">
+              </v-flex>
+
+              <v-flex xs6 sm9>
+                <!-- spacer -->
+              </v-flex>
+
+              <v-flex xs2 sm1>
+                <a :href="aboutUrl">{{ aboutText }}</a>
+              </v-flex>
+
+              <v-flex xs2 sm1 >
+                <a :href="loginUrl">{{ loginText }}</a>
+              </v-flex>
+
+              <!-- <v-flex xs1 justify-end>
+                <v-tooltip bottom>
+                  <v-btn icon color="accent" slot="activator" :href="url" 
+                          v-bind="{['target'] : isLink ? '_blank' : '' }">
+                    <v-icon >right</v-icon>
+                  </v-btn>
+                  <span >Login</span>
+                </v-tooltip>
+              </v-flex> -->
+            
+            </v-layout>
+          </v-container>
 
         </v-card>
+
         </v-container>
       </v-flex>
 
@@ -50,6 +71,7 @@
 
 <script>
   import FilterView from './FilterView';
+  import Logo from '../../assets/logo.png'
 
   export default {
     props: {
@@ -89,6 +111,13 @@
         this.$emit('clickedTagClose', tagId);
       },
     },
+    data: () => ({
+      Logo,
+      aboutText: 'About',
+      aboutUrl: './about',
+      loginText: 'Login',
+      loginUrl: './login',
+    }),
     components: {
       FilterView,
     },
