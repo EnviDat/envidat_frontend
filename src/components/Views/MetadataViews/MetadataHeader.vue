@@ -49,10 +49,9 @@
 
         <v-layout row wrap>
 
-          <tag-chip v-if="tags" v-for="tag in slicedTags" :key="tag.id"
-                    :id="tag.id"
+          <tag-chip v-if="tags" v-for="tag in slicedTags" :key="tag.name"
                     :name="tag.name"
-                    :closeable="tag.closeable"
+                    v-on:clicked="catchTagClicked($event, tag.name)"
                     class="headerTag" />
 
           <v-flex xs2 v-if="maxTagsReached && !showTagsExpanded">
@@ -95,6 +94,11 @@ export default {
   data: () => ({
     showTagsExpanded: false,
   }),
+  methods: {
+    catchTagClicked: function catchTagClicked(tagId) {
+      this.$emit('clickedTag', tagId);
+    },
+  },
   computed: {
     maxTagsReached: function maxTagsReached() {
       return this.tags ? this.tags.length >= this.maxTags : false;

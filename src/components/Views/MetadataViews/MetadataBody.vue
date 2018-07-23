@@ -1,6 +1,7 @@
 <template>
 
-  <v-card >
+  <v-card :class="{ ['pt-2']: this.isOnTop }">
+    
     <v-card-title class="metadata_title title" >Description</v-card-title>
 
     <v-card-text >{{ fullDescription }}</v-card-text>
@@ -22,13 +23,14 @@
       title: String,
       doi: String,
       description: String,
+      isOnTop: Boolean,
     },
     mounted: function mounted() {
     },
     computed: {
       fullDescription: function fullDescription() {
         if (this.description !== undefined) {
-          return this.showFullDescription ? this.description : `${this.description.substring(0, 500)}...`;
+          return this.showFullDescription ? this.description : `${this.description.substring(0, this.maxTextLength)}...`;
         }
 
         return '';
@@ -36,6 +38,7 @@
     },
     data: () => ({
       showFullDescription: false,
+      maxTextLength: 750,
     }),
     methods: {
       readMore: function readMore() {
