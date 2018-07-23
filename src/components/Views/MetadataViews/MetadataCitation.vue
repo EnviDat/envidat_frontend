@@ -3,9 +3,7 @@
   <v-card :style="fixedHeight ? 'height: 304px;' : ''">
     <v-card-title class="title metadata_title" >Citation</v-card-title>
 
-    <v-card-text >{{ citationText }}</v-card-text>
-
-    <v-spacer></v-spacer>          
+    <v-card-text style="font-style: italic; ">{{ citationText }}</v-card-text>
 
     <v-card-actions>
       <v-spacer></v-spacer>          

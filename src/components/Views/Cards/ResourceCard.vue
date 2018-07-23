@@ -1,55 +1,80 @@
 <template>
   <v-card
   color="primary"
-  class="white--text">
-    
-    <v-card-media>
-      <v-container>
-        <v-layout row>
+  class="metadataResourceCard white--text"
+  style="height: 100%;"
+  >
 
-          <v-flex xs8>
+    <v-card-title>
+      <div class="headline">{{ name }}</div>
+    </v-card-title>
+
+    <v-card-text class="pt-0">
+      <v-container grid-list-xs>
+        <v-layout row wrap>
+
+          <v-flex v-bind="{ [`xs8`]: !this.twoColumnLayout , 
+                            [`xs12`]: this.twoColumnLayout  }"
+          >
+
             <v-layout column>
-              <v-flex xs11 mb-3>
-                <div class="headline">{{ name }}</div>
-              </v-flex>
-
-              <v-flex xs11 v-if="!maxDescriptionLengthReached">
+              <v-flex xs11 v-if="showFullDescription">
                 {{ description }}
               </v-flex>
 
-              <v-flex xs11 v-if="maxDescriptionLengthReached">
-                <v-tooltip bottom>
-                  <div slot="activator">
-                    {{ description | truncate(maxDescriptionLength) }}
-                  </div>
-                  <span>{{ description }}</span>
-                </v-tooltip>
+              <v-flex xs11 v-if="!showFullDescription">
+                {{ description | truncate(maxDescriptionLength) }}
               </v-flex>
 
             </v-layout>
           </v-flex>
     
-          <v-flex xs4>
-            <v-container grid-list-xs>
-              <v-layout column>
-                <icon-label-view :text="doi" :icon="getIcon('doi')" iconTooltip="Data Object Identifier" />
-                <icon-label-view :label="fileFormatLabel" :text="format" :icon="fileExtensionIcon" iconTooltip="Format of the file" :alignLeft="true" />
-                <icon-label-view :text="formatedBytes" :icon="getIcon('fileSize')" iconTooltip="Filesize" :alignLeft="true" />
-                <icon-label-view :text="formatedDate(created)" :icon="getIcon('dateCreated')" iconTooltip="Date of file creation" />
-                <icon-label-view :text="formatedDate(lastModified)" :icon="getIcon('dateModified')" iconTooltip="Date of last modification" />
-
-
-              </v-layout>
-            </v-container>
+          <v-flex v-bind="{ [`xs4`]: !this.twoColumnLayout , 
+                            [`xs12`]: this.twoColumnLayout,
+                            [`pt-3`]: this.twoColumnLayout  }"
+          >
+            <v-layout column>
+              <v-flex px-0 v-if="doi">
+                <icon-label-view :text="doi" :icon="getIcon('doi')"
+                                  iconTooltip="Data Object Identifier" 
+                                  :alignLeft="twoColumnLayout"/>
+              </v-flex>
+              <v-flex px-0 v-if="format">
+                <icon-label-view :label="fileFormatLabel" :text="format"
+                                  :icon="fileExtensionIcon" iconTooltip="Format of the file"
+                                  :alignLeft="twoColumnLayout" />
+              </v-flex>
+              <v-flex px-0 v-if="size">
+                <icon-label-view :text="formatedBytes" :icon="getIcon('fileSize')"
+                                  iconTooltip="Filesize"
+                                  :alignLeft="twoColumnLayout" />
+              </v-flex>
+              <v-flex px-0 v-if="created">
+                <icon-label-view :text="formatedDate(created)" :icon="getIcon('dateCreated')" 
+                                  iconTooltip="Date of file creation" 
+                                  :alignLeft="twoColumnLayout"/>
+              </v-flex>
+              <v-flex px-0 v-if="lastModified">
+                <icon-label-view :text="formatedDate(lastModified)" :icon="getIcon('dateModified')"
+                                  iconTooltip="Date of last modification" 
+                                  :alignLeft="twoColumnLayout"/>
+              </v-flex>
+            </v-layout>
           </v-flex>
     
         </v-layout>
       </v-container>
-    </v-card-media>
+    </v-card-text>
 
-    <v-card-actions>      
+    <v-card-actions class="mb-2 pa-0" style="position: absolute; bottom: 0; right: 0;">
       <v-spacer></v-spacer>
-      <v-tooltip bottom>
+
+        <v-btn icon v-if="maxDescriptionLengthReached" @click.native=" showFullDescription = !showFullDescription">
+          <v-icon color="accent" >{{ showFullDescription ? 'expand_less' : 'expand_more' }}</v-icon>
+        </v-btn>
+
+
+      <v-tooltip bottom >
         <v-btn icon color="accent" slot="activator" :href="url" 
                 v-bind="{['target'] : isLink ? '_blank' : '' }">
           <v-icon v-if="isFile">cloud_download</v-icon>
@@ -59,7 +84,6 @@
         <span v-if="isLink">Open link</span>
       </v-tooltip>
     </v-card-actions>
-
 
   </v-card>
 </template>
@@ -81,10 +105,13 @@ export default {
     lastModified: String,
     size: Number,
     format: String,
+    twoColumnLayout: Boolean,
+    height: String,
   },
   data: () => ({
     defaultTexture,
-    maxDescriptionLength: 300,
+    maxDescriptionLength: 275,
+    showFullDescription: false,
   }),
   computed: {
     dynamicCardBackground: function dynamicCardBackground() {
@@ -111,7 +138,7 @@ export default {
       return this.format && this.format.toLowerCase() === 'link';
     },
     isFile: function isFile() {
-      return this.format && this.format.toLowerCase() !== 'link';
+      return !this.format || this.format.toLowerCase() !== 'link';
     },
     maxDescriptionLengthReached: function maxDescriptionLengthReached() {
       return this.description && this.description.length > this.maxDescriptionLength;
