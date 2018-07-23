@@ -4,13 +4,18 @@
       <v-card elevation-5 class="px-4 py-2" dark color="primary">
 
         <!--h1 class="py-3" >{{ metadataTitle }} id: {{ $route.params.id }}</h1-->
-        <div class="display-2 headerTitle py-3">{{ metadataTitle }}</div>  
+        <div v-if="metadataTitle"
+            class="display-2 headerTitle py-3">
+          {{ metadataTitle }}
+        </div>
+        
+        <div v-if="!metadataTitle"
+          class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-pulse" >
+          <div class='bone bone-type-multiline bone-style-steps' ></div>
+        </div>
 
-        <v-card-media></v-card-media>
+        <!-- <v-card-media></v-card-media> -->
 
-      <!-- </v-card>
-
-      <v-card class="px-4 py-2" dark color="primary"> -->
 
         <v-divider dark class="my-2" ></v-divider>
 
@@ -19,7 +24,8 @@
             <icon-label-view  :text="contactName"
                               :icon="getIcon('contact2_w')"
                               iconTooltip="Main contact"
-                              :alignLeft="true" />
+                              :alignLeft="true"
+                              :usePlaceholder="true" />
           </v-flex>
 
           <v-flex xs6 py-1 class="headerInfo">
