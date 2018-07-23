@@ -26,15 +26,6 @@
       <v-flex xs2 sm4 md3 lg2 pa-0
               style="text-align: center;">
 
-        <v-chip small disabled 
-        class="envidat_chip"        
-        v-bind="{ ['color']: searchCount > 0 ? 'primary' : ''}"
-        :class="{ ['white--text']: searchCount > 0 ? true : false }"
-        >
-          {{ searchCount }}
-        </v-chip>
-      </v-flex>
-
         <v-tooltip bottom >
           <v-chip slot="activator"
                   small disabled 
