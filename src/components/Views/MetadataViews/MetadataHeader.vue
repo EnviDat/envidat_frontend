@@ -64,7 +64,9 @@
 
           <v-tooltip bottom>
             <v-btn icon @click.native="showTagsExpanded = !showTagsExpanded" slot="activator">
-              <v-icon color="accent" >{{ showTagsExpanded ? 'expand_less' : 'expand_more' }}</v-icon>
+              <v-icon color="accent" 
+                      :style="this.showTagsExpanded ? 'transform: rotate(-180deg);' : 'transform: rotate(0deg);'"
+              >expand_more</v-icon>
             </v-btn>        
             <span>Show all tags</span>
           </v-tooltip>

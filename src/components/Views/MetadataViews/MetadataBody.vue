@@ -9,7 +9,9 @@
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn icon @click.native="readMore()">
-        <v-icon color="accent" >{{ showFullDescription ? 'expand_less' : 'expand_more' }}</v-icon>
+        <v-icon color="accent" 
+                :style="this.showFullDescription ? 'transform: rotate(-180deg);' : 'transform: rotate(0deg);'"
+        >expand_more</v-icon>
       </v-btn>        
     </v-card-actions>
   </v-card>
