@@ -66,20 +66,32 @@
       </v-container>
     </v-card-text>
 
-    <v-card-actions class="mb-2 pa-0" style="position: absolute; bottom: 0; right: 0;">
+    <v-card-actions class="mb-2 pa-0"
+                    style="position: absolute; bottom: 0; right: 0;">
       <v-spacer></v-spacer>
 
         <v-btn icon v-if="maxDescriptionLengthReached" @click.native=" showFullDescription = !showFullDescription">
-          <v-icon color="accent" >{{ showFullDescription ? 'expand_less' : 'expand_more' }}</v-icon>
+          <v-icon color="accent" 
+                  :style="this.showFullDescription ? 'transform: rotate(-180deg);' : 'transform: rotate(0deg);'"
+          >expand_more</v-icon>
+
         </v-btn>
 
 
       <v-tooltip bottom >
         <v-btn icon color="accent" slot="activator" :href="url" 
                 v-bind="{['target'] : isLink ? '_blank' : '' }">
-          <v-icon v-if="isFile">cloud_download</v-icon>
-          <v-icon v-if="isLink">link</v-icon>
+
+          <div v-if="isFile"
+                class="iconCentering">
+            <img class="envidatIcon" :src="getIcon('download')" />          
+          </div>
+          <div v-if="isLink"
+                class="iconCentering">
+            <img class="envidatIcon" :src="getIcon('link')" />          
+          </div>
         </v-btn>
+
         <span v-if="isFile">Download file</span>
         <span v-if="isLink">Open link</span>
       </v-tooltip>
