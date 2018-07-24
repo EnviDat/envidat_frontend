@@ -41,6 +41,7 @@
                             :subtitle="metadata.notes"
                             :tags="metadata.tags"
                             :titleImg="metadata.titleImg"
+                            :restricted="hasRestrictedResources(metadata)"
                             :resourceCount="metadata.num_resources"
                             :dark="false"
                             v-on:clickedEvent="metaDataClicked"
@@ -187,7 +188,7 @@
       },
       catchSearchClicked: function catchSearchClicked(searchTerm) {
         /* eslint-disable no-param-reassign */
-        searchTerm = searchTerm.trim();
+        searchTerm = searchTerm ? searchTerm.trim() : '';
 
         if (this.searchTerm !== searchTerm) {
           this.searchTerm = searchTerm;
@@ -342,6 +343,21 @@
       },
       updateSearchCount: function updateSearchCount(searchResult) {
         this.searchCount = searchResult !== undefined ? searchResult.length : 0;
+      },
+      hasRestrictedResources: function hasRestrictedResources(metadata) {
+        if (!metadata || !metadata.resources || metadata.resources.length <= 0) {
+          return false;
+        }
+
+        metadata.resources.forEach((res) => {
+          if (res.restricted !== undefined
+            && (res.restricted.allowed_users !== undefined ||
+            (res.restricted.level !== undefined && res.restricted.level !== 'public'))) {
+            return true;
+          }
+        });
+
+        return false;
       },
     },
     computed: {

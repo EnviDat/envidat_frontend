@@ -48,4 +48,8 @@
     height: 1.5rem;
     font-size: 0.75rem;
   }
+
+  .envidat_chip span {
+    cursor: pointer !important;
+  }
 </style>

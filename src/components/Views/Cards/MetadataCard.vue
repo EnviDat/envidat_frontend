@@ -5,6 +5,7 @@
     ripple
     hover
     @click.native="cardClick"
+    style="height: 100%;"
     >
 
     <v-card-media
@@ -61,24 +62,37 @@
 
     </v-card-media>
 
-    <v-card-title primary-title>
+    <v-card-title primary-title class="pb-0">
       <div class="subheading">{{ subtitle | truncate(maxSubtitleLength) }}</div>
     </v-card-title>
 
-    <v-card-actions>
+
+    <!-- <v-card-actions style="position: absolute; bottom: 0; right: 0;"> -->
+    <v-card-actions >
       
-      <v-tooltip bottom>
+      <!-- <v-tooltip bottom>
         <v-btn icon slot="activator">
           <v-icon color="primary">cloud_download</v-icon>
         </v-btn>
         <span>Download data</span>
-      </v-tooltip>
+      </v-tooltip> -->
 
       <v-spacer></v-spacer>
 
-      <v-tooltip bottom v-if="restricted">
+      <v-tooltip bottom v-if="isRestricted">
         <v-icon slot="activator" color="black" >lock</v-icon>
-        <span>The data of the entry is restricted.</span>
+          <div v-if="userHasAccess"
+                class="iconCentering">
+            <img class="envidatIcon" :src="getIcon('lock2Open')" />          
+            <span>The data of this entry is only accessible with permission.</span>
+          </div>
+
+          <div v-if="userHasAccess"
+                class="iconCentering">
+            <img class="envidatIcon" :src="getIcon('lock2Closed')" />          
+            <span>The data of this entry is only accessible with permission.</span>
+          </div>
+
       </v-tooltip>
 
       <!-- <v-btn v-if="favourit" icon>
@@ -210,6 +224,21 @@ export default {
     },
     maxTitleLengthReached: function maxTitleLengthReached() {
       return this.title && this.title.length > this.maxTitleLength;
+    },
+    isRestricted: function isRestricted() {
+      return this.restricted;
+      // return this.restricted &&
+      // (this.restricted.allowed_users !== undefined || this.restricted.level !== 'public');
+    },
+    userHasAccess: function userHasAccess() {
+      if (!this.isRestricted) {
+        return false;
+      }
+
+      const userAccess = this.restricted.allowed_users;
+      const accessLvl = this.restricted.level;
+
+      return userAccess || accessLvl;
     },
   },
   data: () => ({

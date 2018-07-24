@@ -20,7 +20,7 @@
     LOAD_ALL_METADATA,
     LOAD_ALL_TAGS,
     LOAD_METADATA_CONTENT_BY_ID,
-} from './store/metadataMutationsConsts';
+  } from './store/metadataMutationsConsts';
   import {
     ADD_CARD_IMAGES,
     ADD_ICON_IMAGE,
