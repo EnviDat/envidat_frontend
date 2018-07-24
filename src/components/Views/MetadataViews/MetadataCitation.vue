@@ -3,7 +3,16 @@
   <v-card :style="fixedHeight ? 'height: 304px;' : ''">
     <v-card-title class="title metadata_title" >Citation</v-card-title>
 
-    <v-card-text style="font-style: italic; ">{{ citationText }}</v-card-text>
+    <v-card-text v-if="citationText"
+                  style="font-style: italic; ">
+      {{ citationText }}
+    </v-card-text>
+
+    <v-card-text v-if="!citationText && showPlaceholder" >
+      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-pulse" >
+        <div class='bone bone-type-multiline bone-style-paragraph' ></div>
+      </div>
+    </v-card-text>
 
     <v-card-actions>
       <v-spacer></v-spacer>          
@@ -22,6 +31,7 @@
       citationXmlLink: String,
       ciationIsoXmlLink: String,
       fixedHeight: Boolean,
+      showPlaceholder: Boolean,
     },
     mounted: function mounted() {
     },

@@ -40,8 +40,8 @@
       </v-flex>
 
       <v-flex v-if="!text && usePlaceholder" >
-        <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-pulse" >
-          <div class='bone bone-type-multiline bone-style-steps' ></div>
+        <div class="pr-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-pulse" >
+          <div class='bone bone-type-text bone-style-steps' ></div>
         </div>
       </v-flex>
 

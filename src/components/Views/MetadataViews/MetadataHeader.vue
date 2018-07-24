@@ -9,7 +9,7 @@
           {{ metadataTitle }}
         </div>
         
-        <div v-if="!metadataTitle"
+        <div v-if="!metadataTitle && showPlaceholder"
           class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-pulse" >
           <div class='bone bone-type-multiline bone-style-steps' ></div>
         </div>
@@ -19,35 +19,33 @@
 
         <v-divider dark class="my-2" ></v-divider>
 
-        <v-layout py-1 row wrap>
-          <v-flex xs6 class="headerInfo">
+        <v-layout row wrap>
+          <v-flex xs6 py-1 class="headerInfo">
             <icon-label-view  :text="contactName"
                               :icon="getIcon('contact2_w')"
                               iconTooltip="Main contact"
-                              :alignLeft="true"
-                              :usePlaceholder="true" />
+                              :alignLeft="true" :usePlaceholder="showPlaceholder" />
           </v-flex>
 
           <v-flex xs6 py-1 class="headerInfo">
             <icon-label-view  :text="doi"
                               :icon="getIcon('doi_w')"
                               iconTooltip="Data Object Identifier"
-                              :alignLeft="true" />
+                              :alignLeft="true" :usePlaceholder="showPlaceholder" />
           </v-flex>
 
           <v-flex xs6 py-1 class="headerInfo">
             <icon-label-view  :text="contactEmail"
                               :icon="getIcon('mail_w')"
                               iconTooltip="Email adress of the main contact"
-                              :alignLeft="true" />
+                              :alignLeft="true" :usePlaceholder="showPlaceholder" />
           </v-flex>
 
           <v-flex xs6 py-1 class="headerInfo">
             <icon-label-view :text="license"
                               :icon="getIcon('license_w')"
                               iconTooltip="License for Datafiles"
-                              :alignLeft="true"
-                               />
+                              :alignLeft="true" :usePlaceholder="showPlaceholder" />
           </v-flex>
         </v-layout>
 
@@ -98,6 +96,7 @@ export default {
     license: String,
     tags: Array,
     maxTags: Number,
+    showPlaceholder: Boolean
   },
   data: () => ({
     showTagsExpanded: false,
