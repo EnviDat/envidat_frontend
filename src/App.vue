@@ -135,6 +135,9 @@
 </script>
 
 <style>
+
+  @import '../node_modules/leaflet/dist/leaflet.css';
+
 /* overrite the applications background https://css-tricks.com/use-cases-fixed-backgrounds-css/ */
   .application {
     /* font-family: 'Libre Baskerville', serif !important; */
