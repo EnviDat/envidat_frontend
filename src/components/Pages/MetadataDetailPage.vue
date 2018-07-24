@@ -156,15 +156,12 @@
     },
     created: function created() {
       // console.log('created ' + this.metadataId + ' loading ' + this.currentMetadataContent.title + ' ' + this.metadatasContentSize);
-      this.createMetadataContent();
     },
     mounted: function mounted() {
       // console.log('mounted ' + this.metadataId + ' loading ' + this.currentMetadataContent.title + ' ' + this.metadatasContentSize);
       if (!this.loadingMetadatasContent && this.currentMetadataContent.title === undefined) {
         // in case of directly entring the page load the content directly via Id
         this.$store.dispatch(`metadata/${LOAD_METADATA_CONTENT_BY_ID}`, this.metadataId);
-      } else {
-        this.createMetadataContent();
       }
     },
     beforeDestroy: function beforeDestroy() {
@@ -293,6 +290,7 @@
         }
 
         if (currentContent) {
+          // console.log("create content " + currentContent.spatial + " " + this.header);
           this.header = this.createHeader(currentContent);
           this.body = this.createBody(currentContent);
           this.citation = this.createCitation(currentContent);
@@ -425,7 +423,44 @@
         };
       },
       createLocation: function createLocation(dataset) {
-        return {};
+        const location = {};
+        if (dataset && dataset.spatial) {
+          location.geoJSON = dataset.spatial;
+
+          // parseJSON because the geoJOSN from CKAN might be invalid!
+          const spatialJSON = JSON.parse(dataset.spatial);
+          console.log("spatial " + spatialJSON.coordinates);
+
+          if (spatialJSON) {
+            location.isPolygon = spatialJSON.type === 'Polygon';
+            location.isPoint = spatialJSON.type === 'Point';
+            location.isMultiPoint = spatialJSON.type === 'MultiPoint';
+
+            if (location.isPoint) {
+              // swap coords for the leaflet map
+              location.coordinates = [spatialJSON.coordinates[1], spatialJSON.coordinates[0]];
+            }
+
+            if (location.isPolygon) {
+              location.pointArray = [];
+
+              for (let i = 0; i < spatialJSON.coordinates.length; i++) {
+                const pointElement = spatialJSON.coordinates[i];
+                const pointObject = [];
+
+                // swap coords for the leaflet map
+                for (let j = 0; j < pointElement.length; j++) {
+                  const coord = pointElement[j];
+                  pointObject.push([coord[1], coord[0]]);
+                }
+
+                location.pointArray.push(pointObject);
+              }
+            }
+          }
+        }
+
+        return location;
         /*
         return {
           metadataTitle: dataset.title,
