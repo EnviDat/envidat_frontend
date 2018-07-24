@@ -227,5 +227,8 @@
     width: 24px !important;
   }
 
+  .metadataInfoIcon {
+    opacity: 0.75;
+  }
 
 </style>

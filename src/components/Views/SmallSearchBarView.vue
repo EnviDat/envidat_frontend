@@ -7,7 +7,7 @@
               align-center
               justify-space-between>
 
-      <v-flex xs10 pa-0>
+      <v-flex xs10 sm8 md9 lg10 pa-0>
         <v-text-field
           class="py-2 pl-3 pr-0 smallSearchBar"
           hide-details
@@ -23,7 +23,8 @@
         </v-text-field>
       </v-flex>
 
-      <v-flex xs2 pa-0>
+      <v-flex xs2 sm4 md3 lg2 pa-0
+              style="text-align: center;">
 
         <v-tooltip bottom >
           <v-chip slot="activator"
