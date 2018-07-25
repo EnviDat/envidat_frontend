@@ -17,7 +17,7 @@
       <!-- <img :src="landImg" /> -->
 
       <v-container style="position: absolute;"
-                  fill-height grid-list-xs>
+                  fill-height grid-list-xs pa-0>
         <v-layout column>
           <v-flex xs12 px-3 pt-3>
             <v-layout row  align-start>

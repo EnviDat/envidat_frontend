@@ -1,5 +1,5 @@
 <template>
-  <v-container grid-list-xs>
+  <v-container grid-list-xs fluid py-1>
 
     <nav-bar-view :searchViewLabelText="searchLabelText"
                   :searchTerm="searchTerm"
@@ -21,42 +21,42 @@
         v-bind:style="'opacity: ' + 1 - window.scrollTop() / 250"
 -->  
 
-        <v-container fluid grid-list-md @scroll="updateScroll" >
-          <v-layout row wrap>
+      <v-container fluid grid-list-md pa-3 @scroll="updateScroll" >
+        <v-layout row wrap>
 
-            <v-flex v-if="loading"
-                    xs12 sm6 md4 xl3
-                    v-for="(n, index) in 6" :key="index">
+          <v-flex v-if="loading"
+                  xs12 sm6 md4 xl3
+                  v-for="(n, index) in 6" :key="index">
 
-              <metadata-card-placeholder :dark="false" />
-    
-            </v-flex>
+            <metadata-card-placeholder :dark="false" />
+  
+          </v-flex>
 
-            <v-flex v-if="!loading"
-                    xs12 sm6 md4 xl3
-                    v-for="(metadata, index) in filteredMetadataContent" :key="index">
-              <metadata-card
-                            :title="metadata.title"
-                            :id="metadata.id"
-                            :subtitle="metadata.notes"
-                            :tags="metadata.tags"
-                            :titleImg="metadata.titleImg"
-                            :restricted="hasRestrictedResources(metadata)"
-                            :resourceCount="metadata.num_resources"
-                            :dark="false"
-                            v-on:clickedEvent="metaDataClicked"
-                            v-on:clickedTag="catchTagClicked">
-              </metadata-card>
-    
-            </v-flex>
+          <v-flex v-if="!loading"
+                  xs12 sm6 md4 xl3
+                  v-for="(metadata, index) in filteredMetadataContent" :key="index">
+            <metadata-card
+                          :title="metadata.title"
+                          :id="metadata.id"
+                          :subtitle="metadata.notes"
+                          :tags="metadata.tags"
+                          :titleImg="metadata.titleImg"
+                          :restricted="hasRestrictedResources(metadata)"
+                          :resourceCount="metadata.num_resources"
+                          :dark="false"
+                          v-on:clickedEvent="metaDataClicked"
+                          v-on:clickedTag="catchTagClicked">
+            </metadata-card>
+  
+          </v-flex>
 
-            <v-flex xs12 v-if="!loading && !filteredMetadataContent">
-              <p>Nothing found for these Search criterias</p>
-    
-            </v-flex>
+          <v-flex xs12 v-if="!loading && !filteredMetadataContent">
+            <p>Nothing found for these Search criterias</p>
+  
+          </v-flex>
 
-          </v-layout>
-        </v-container>
+        </v-layout>
+      </v-container>
 
     </v-layout>
   </v-container>
@@ -65,7 +65,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import NavBarView from '../Views/NavBarView';
+  import NavBarView from '../Views/NavbarView';
   import MetadataCard from '../Views/Cards/MetadataCard';
   import MetadataCardPlaceholder from '../Views/Cards/MetadataCardPlaceholder';
   import { SEARCH_METADATA } from '../../store/metadataMutationsConsts';

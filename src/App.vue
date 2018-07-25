@@ -137,6 +137,8 @@
 <style>
 
   @import '../node_modules/leaflet/dist/leaflet.css';
+  /* import vuetify.css here to be able to overwrite the fonts */
+  @import '../node_modules/vuetify/dist/vuetify.min.css';
 
 /* overrite the applications background https://css-tricks.com/use-cases-fixed-backgrounds-css/ */
   .application {
@@ -150,9 +152,8 @@
 
   /*** General Card styles ***/
 
-
-  .card .headline {
-    font-family: 'Libre Baskerville', serif;
+  .headline {
+    font-family: 'Libre Baskerville', serif !important;
     /* font-weight: 700; */
 
     /*
@@ -163,8 +164,9 @@
     line-height: 1.2em !important;
   }
 
+
   .block-with-text {
-    font-family: 'Libre Baskerville', serif;
+    font-family: 'Libre Baskerville', serif !important;
     
     /* styles for '...' */ 
     /* hide text if it more than N lines  */

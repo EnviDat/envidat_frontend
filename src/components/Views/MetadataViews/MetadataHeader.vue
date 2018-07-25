@@ -4,7 +4,7 @@
       <v-card elevation-5 class="px-4 py-2" dark color="primary">
 
         <!--h1 class="py-3" >{{ metadataTitle }} id: {{ $route.params.id }}</h1-->
-        <div class="display-2 headerTitle py-3">{{ metadataTitle }}</div>  
+        <div class="headerTitle display-2 py-3">{{ metadataTitle }}</div>  
 
         <v-card-media></v-card-media>
 
@@ -63,7 +63,8 @@
           <v-spacer></v-spacer>
 
           <v-tooltip bottom>
-            <v-btn icon @click.native="showTagsExpanded = !showTagsExpanded" slot="activator">
+            <v-btn icon fab small
+                    @click.native="showTagsExpanded = !showTagsExpanded" slot="activator">
               <v-icon color="accent" 
                       :style="this.showTagsExpanded ? 'transform: rotate(-180deg);' : 'transform: rotate(0deg);'"
               >expand_more</v-icon>
@@ -127,13 +128,13 @@ export default {
 <style scoped>
 
   .headerTitle {
-    font-family: 'Libre Baskerville', serif;
+    font-family: 'Libre Baskerville', serif !important;
     font-weight: 400;
     opacity: 1;
   }
 
   .headerInfo {
-    font-family: 'Libre Baskerville', serif;
+    font-family: 'Libre Baskerville', serif !important;
     font-weight: 400;
     opacity: 0.85;
   }

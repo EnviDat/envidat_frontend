@@ -7,19 +7,18 @@
               align-center
               justify-space-between>
 
-      <v-flex xs10 sm8 md9 lg10 pa-0>
+      <v-flex xs10 sm8 md9 lg10 py-0 pl-3 >
         <v-text-field
-          class="py-2 pl-3 pr-0 smallSearchBar"
-          hide-details
-          full-width
-          single-line
-          clearable
-          prepend-icon="search"          
-          :prepend-icon-cb="clicked"
-          v-on:keyup.enter="clicked"
-          v-on:change="focusChanged"
-          v-model="searchText"
-          :label="labelText">
+            single-line
+            hide-details
+            clearable
+            solo
+            flat
+            append-outer-icon="search"
+            :append-outer-icon-cb="clicked"
+            v-on:keyup.enter="clicked"
+            v-model="searchText"
+            placeholder="Search">
         </v-text-field>
       </v-flex>
 

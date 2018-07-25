@@ -3,7 +3,7 @@
   <v-card raised>
 
     <v-layout column px-2 pt-2>
-      <v-flex >
+      <v-flex xs12 >
         <v-layout row>
 
           <v-flex xs1 py-2 class="metadataInfoIcon" >

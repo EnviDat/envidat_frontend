@@ -8,7 +8,8 @@
 <!-- {{ title | truncate(maxTitleLength) }} -->
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn icon @click.native="readMore()">
+      <v-btn icon 
+              @click.native="readMore()">
         <v-icon color="accent" 
                 :style="this.showFullDescription ? 'transform: rotate(-180deg);' : 'transform: rotate(0deg);'"
         >expand_more</v-icon>
