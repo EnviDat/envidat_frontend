@@ -14,9 +14,9 @@
         height="150px"
       >
       
-      <v-container grid-list-xs fill-height pa-0>
+      <v-container grid-list-xs fill-height px-3 pt-3 pb-0>
         <v-layout column>
-          <v-flex xs12 px-3 pt-3>
+          <v-flex xs12 py-0>
             <v-layout row >
 
               <v-flex xs12 v-if="!maxTitleLengthReached">
@@ -39,7 +39,7 @@
             </v-layout>
           </v-flex>
   
-          <v-flex xs12 px-3 py-0>
+          <v-flex xs12 py-0>
             <v-layout row fill-height align-end >
                 <tag-chip py-0
                           v-if="tags" v-for="tag in tags.slice (0, maxTagNumber)" :key="tag.name"
@@ -272,5 +272,6 @@ export default {
   .card_tag {
     /* opacity: 0.7; */
   }
+
 
 </style>

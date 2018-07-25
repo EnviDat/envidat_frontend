@@ -1,7 +1,8 @@
 <template>
   <v-container fluid
               tag="article"
-              v-bind="{ [`pa-0`]: this.$vuetify.breakpoint.smAndDown}"
+              v-bind="{ [`pa-0`]: this.$vuetify.breakpoint.smAndDown,
+                        [`pa-2`]: this.$vuetify.breakpoint.mdAndUp }"
   >
     <div v-if="currentMetadataContent">
       
@@ -534,7 +535,7 @@
 <style>
 
   .metadata_title{
-    font-family: 'Karma', serif;
+    font-family: 'Libre Baskerville', serif !important;
     font-weight: 700 !important;
   }
 

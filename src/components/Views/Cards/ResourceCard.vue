@@ -10,7 +10,7 @@
     </v-card-title>
 
     <v-card-text class="pt-0">
-      <v-container grid-list-xs>
+      <v-container grid-list-xs pa-0>
         <v-layout row wrap>
 
           <v-flex v-bind="{ [`xs8`]: !this.twoColumnLayout , 
@@ -66,11 +66,13 @@
       </v-container>
     </v-card-text>
 
-    <v-card-actions class="mb-2 pa-0"
+    <v-card-actions class="ma-0 pa-2"
                     style="position: absolute; bottom: 0; right: 0;">
       <v-spacer></v-spacer>
 
-        <v-btn icon v-if="maxDescriptionLengthReached" @click.native=" showFullDescription = !showFullDescription">
+        <v-btn v-if="maxDescriptionLengthReached"
+                icon class="mr-2"
+                @click.native=" showFullDescription = !showFullDescription">
           <v-icon color="accent" 
                   :style="this.showFullDescription ? 'transform: rotate(-180deg);' : 'transform: rotate(0deg);'"
           >expand_more</v-icon>
@@ -79,7 +81,8 @@
 
 
       <v-tooltip bottom >
-        <v-btn icon color="accent" slot="activator" :href="url" 
+        <v-btn fab small
+                color="accent" slot="activator" :href="url" 
                 v-bind="{['target'] : isLink ? '_blank' : '' }">
 
           <div v-if="isFile"

@@ -3,7 +3,7 @@
     
     <v-card-title class="title metadata_title" >Data and resources</v-card-title>
 
-    <v-container fluid grid-list-xs grid-list-md>
+    <v-container fluid grid-list-xs grid-list-md pa-3>
       <v-layout row wrap>
 
         <v-flex xs12 sm6

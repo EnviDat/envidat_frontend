@@ -3,17 +3,16 @@
     <v-layout column
               style="position: sticky; top: -1px; z-index: 2;">
 
-      <v-flex xs12>
-        <v-container fluid py-0 style="height: 32px;">
+      <v-flex xs12 px-3 py-1>
 
         <v-card raised >
 
-          <v-container grid-list-xs py-0 px-0>
-            <v-layout row align-center
-                      style="text-align: center;">
+            <v-layout row align-center >
 
               <v-flex xs2 sm1 >
-                <img :src="Logo" alt="envidat_logo" style="width: 24px; height 24px;">
+                <v-btn icon href="./">
+                  <img :src="Logo" alt="envidat_logo" >
+                </v-btn>
               </v-flex>
 
               <v-flex xs6 sm9>
@@ -21,11 +20,18 @@
               </v-flex>
 
               <v-flex xs2 sm1>
-                <a :href="aboutUrl">{{ aboutText }}</a>
+                <v-btn flat
+                       :href="aboutUrl" >
+                  {{ aboutText }}
+                </v-btn>
               </v-flex>
 
               <v-flex xs2 sm1 >
-                <a :href="loginUrl">{{ loginText }}</a>
+                <v-btn flat
+                        color="primary"
+                        :href="loginUrl" >
+                  {{ loginText }}
+                </v-btn>
               </v-flex>
 
               <!-- <v-flex xs1 justify-end>
@@ -39,15 +45,13 @@
               </v-flex> -->
             
             </v-layout>
-          </v-container>
 
         </v-card>
 
-        </v-container>
       </v-flex>
 
 
-      <v-flex xs12>
+      <v-flex xs12 px-3 >
         <filter-view :searchViewLabelText="searchLabelText"
                       :searchTerm="searchTerm"
                       :searchCount="searchCount"
