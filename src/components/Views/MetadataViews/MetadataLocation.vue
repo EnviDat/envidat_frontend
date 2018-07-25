@@ -42,7 +42,7 @@
           return;
         }
 
-        console.log("pointArray " + this.pointArray + " " + this.geoJSON);
+        // console.log("pointArray " + this.pointArray + " " + this.geoJSON);
 
         this.map = this.initLeaflet(this.$refs.map, this.pointArray);
         this.addOpenStreetMapLayer(this.map);
@@ -51,7 +51,7 @@
 
         if (validGeoJSON) {
           L.geoJSON(this.geoJSON).addTo(this.map);
-        } else {
+        } else if (this.pointArray) {
           if (this.isPoint) {
             this.addPoint(this.map, this.pointArray);
           }
@@ -70,13 +70,21 @@
         this.mapIsSetup = true;
       },
       initLeaflet: function initLeaflet(mapElement, coords) {
-        let viewCoords = coords;
+        const map = L.map(mapElement);
 
-        if (this.isPolygon || this.isMultiPoint) {
-          viewCoords = coords[0][0];
+        if (coords) {
+          let viewCoords = coords;
+
+          if (this.isPolygon) {
+            viewCoords = coords[0][0];
+          } else if (this.isMultiPoint) {
+            viewCoords = coords[0];
+          }
+
+          map.setView(viewCoords, 9);
         }
 
-        return L.map(mapElement).setView(viewCoords, 9);
+        return map;
       },
       parseGeoJSON: function parseGeoJSON(geoJsonString) {
         try {
@@ -120,6 +128,12 @@
       },
       addMultiPoint: function addMultiPoint(map, coords) {
 
+        for (let i = 0; i < coords.length; i++) {
+          const pointCoord = coords[i];
+          this.addPoint(map, pointCoord);
+        }
+
+        map.fitBounds(coords);
       },
       onMapClick: function onMapClick(e) {
         alert("You clicked the map at " + e.latlng);
@@ -135,7 +149,7 @@
       // },
     },
     watch: {
-      geoJSON: function udpateGeoJSON() {
+      geoJSON: function updateGeoJSON() {
         if (this.geoJSON) {
           this.setupMap();
         }

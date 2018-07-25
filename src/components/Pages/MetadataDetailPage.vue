@@ -52,13 +52,13 @@
                 style="z-index: 0;">
 
           <v-layout row wrap>
-            <v-flex mb-2>
+            <v-flex xs12 mb-2>
               <metadata-resources v-bind="resources"
                                   :isOnTop="true"
                                   :twoColumnLayout="twoColumnLayout" />
             </v-flex>
 
-            <v-flex mb-2 v-if="!showDetailsOnTheLeft">
+            <v-flex xs12 mb-2 v-if="!showDetailsOnTheLeft">
               <metadata-details v-if="details"
                               :details="details" />
             </v-flex>
@@ -429,26 +429,25 @@
 
           // parseJSON because the geoJOSN from CKAN might be invalid!
           const spatialJSON = JSON.parse(dataset.spatial);
-          console.log("spatial " + spatialJSON.coordinates);
+          // console.log("createLocation spatial " + spatialJSON.coordinates);
 
           if (spatialJSON) {
             location.isPolygon = spatialJSON.type === 'Polygon';
             location.isPoint = spatialJSON.type === 'Point';
             location.isMultiPoint = spatialJSON.type === 'MultiPoint';
 
+            // Swap lngLat to latLng because the geoJOSN from CKAN might be invalid!
+
             if (location.isPoint) {
               // swap coords for the leaflet map
-              location.coordinates = [spatialJSON.coordinates[1], spatialJSON.coordinates[0]];
-            }
-
-            if (location.isPolygon) {
+              location.pointArray = [spatialJSON.coordinates[1], spatialJSON.coordinates[0]];
+            } else if (location.isPolygon) {
               location.pointArray = [];
 
               for (let i = 0; i < spatialJSON.coordinates.length; i++) {
                 const pointElement = spatialJSON.coordinates[i];
                 const pointObject = [];
 
-                // swap coords for the leaflet map
                 for (let j = 0; j < pointElement.length; j++) {
                   const coord = pointElement[j];
                   pointObject.push([coord[1], coord[0]]);
@@ -456,21 +455,21 @@
 
                 location.pointArray.push(pointObject);
               }
+            } else if (location.isMultiPoint) {
+              location.pointArray = [];
+
+              for (let i = 0; i < spatialJSON.coordinates.length; i++) {
+                const pointElement = spatialJSON.coordinates[i];
+                const pointObject = [pointElement[1], pointElement[0]];
+                location.pointArray.push(pointObject);
+              }
             }
           }
         }
 
+        // console.log("createLocation " + location.pointArray + " " + location.geoJSON);
+
         return location;
-        /*
-        return {
-          metadataTitle: dataset.title,
-          doi: dataset.doi,
-          contactName: dataset.maintainer ? dataset.maintainer : "",
-          contactEmail: dataset.maintainer_email ? maintainer_email : dataset.maintainer.email ? dataset.maintainer.email : "",
-          citation: "",
-          tags: dataset.tags,
-        };
-        */
       },
       createDetails: function createDetails(dataset) {
         const details = [];
