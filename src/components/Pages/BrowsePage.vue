@@ -1,5 +1,5 @@
 <template>
-  <v-container grid-list-xs>
+  <v-container grid-list-xs fluid py-0>
 
     <nav-bar-view :searchViewLabelText="searchLabelText"
                   :searchTerm="searchTerm"
@@ -65,7 +65,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import NavBarView from '../Views/NavBarView';
+  import NavBarView from '../Views/NavbarView';
   import MetadataCard from '../Views/Cards/MetadataCard';
   import MetadataCardPlaceholder from '../Views/Cards/MetadataCardPlaceholder';
   import { SEARCH_METADATA } from '../../store/metadataMutationsConsts';

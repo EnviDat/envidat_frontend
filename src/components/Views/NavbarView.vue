@@ -4,7 +4,7 @@
               style="position: sticky; top: -1px; z-index: 2;">
 
       <v-flex xs12>
-        <v-container px-2 py-0 style="height: 32px;">
+        <v-container fluid py-0 style="height: 32px;">
 
         <v-card raised >
 
@@ -71,7 +71,7 @@
 
 <script>
   import FilterView from './FilterView';
-  import Logo from '../../assets/logo.png'
+  import Logo from '../../assets/logo/EnviDat_logo_32.png';
 
   export default {
     props: {

@@ -9,33 +9,29 @@
     >
 
     <v-card-media
-      class="imagezoom"
-      background-color="primary"
+        background-color="primary"
         v-bind="{['style'] : dynamicCardBackground }"
         height="150px"
       >
       
-      <!-- <img :src="landImg" /> -->
-
-      <v-container style="position: absolute;"
-                  fill-height grid-list-xs>
+      <v-container grid-list-xs fill-height pa-0>
         <v-layout column>
           <v-flex xs12 px-3 pt-3>
-            <v-layout row align-start>
+            <v-layout row >
 
               <v-flex xs12 v-if="!maxTitleLengthReached">
-                <h3 class="headline mb-0"
+                <div class="headline mb-0"
                 :class="{['black_title'] : dark ? false : true,
                           ['white_title'] : dark ? true : false }"
-                >{{ title | truncate(maxTitleLength) }}</h3>
+                >{{ title | truncate(maxTitleLength) }}</div>
               </v-flex>
 
               <v-flex xs12 v-if="maxTitleLengthReached">
                 <v-tooltip bottom>
-                  <h3 slot="activator" class="headline mb-0"
+                  <div slot="activator" class="headline mb-0"
                     :class="{['black_title'] : dark ? false : true,
                               ['white_title'] : dark ? true : false }"
-                    >{{ title | truncate(maxTitleLength) }}</h3>
+                    >{{ title | truncate(maxTitleLength) }}</div>
                   <span>{{ title }}</span>
                 </v-tooltip>
               </v-flex>
@@ -44,7 +40,7 @@
           </v-flex>
   
           <v-flex xs12 px-3 py-0>
-            <v-layout row align-end >
+            <v-layout row fill-height align-end >
                 <tag-chip py-0
                           v-if="tags" v-for="tag in tags.slice (0, maxTagNumber)" :key="tag.name"
                           :name="tag.name"
@@ -62,13 +58,14 @@
 
     </v-card-media>
 
-    <v-card-title primary-title class="pb-0">
-      <div class="subheading">{{ subtitle | truncate(maxSubtitleLength) }}</div>
-    </v-card-title>
+    <v-card-text >
+      {{ subtitle | truncate(maxSubtitleLength) }}
+    </v-card-text>
 
 
     <!-- <v-card-actions style="position: absolute; bottom: 0; right: 0;"> -->
-    <v-card-actions >
+    <v-card-actions class="ma-0 pa-2"
+                    style="position: absolute; bottom: 0; right: 0;">
       
       <!-- <v-tooltip bottom>
         <v-btn icon slot="activator">
@@ -102,36 +99,22 @@
         <v-icon>star</v-icon>
       </v-btn> -->
 
-      <!-- <v-tooltip bottom>
-          <v-chip slot="activator"
-                  small disabled 
-                  class="envidat_chip"
-                  v-bind="{ ['color']: resourceCount > 0 ? 'secondary' : ''}"
-                  :class="{ ['white--text']: resourceCount > 0 ? true : false }"
-          >
-            {{ resourceCount }}
-          </v-chip>
-
-          <span>This entry has {{ resourceCount}} resources</span>
-      </v-tooltip> -->
-
       <v-tooltip bottom>
           <div slot="activator" class="metadataInfoIcon">
-            <v-layout row >
-              <v-flex pa-0>{{ resourceCount }}</v-flex>
+            <v-layout row @mouseover="hoverBadge = true" @mouseleave="hoverBadge = false">
+              <v-flex pa-0>
+                <v-badge v-bind="{ left: !hoverBadge }" overlap>
+                  <span slot="badge">{{ resourceCount }}</span>
+                </v-badge>              
+              </v-flex>
               <v-flex pa-0 >
                 <img class="envidatIcon" :src="getIcon('file')" />                
               </v-flex>
             </v-layout>
-            <!-- <div class="iconCentering">
-              <img class="envidatIcon" :src="getIcon('file')" />
-            </div> -->
           </div>
 
           <span>Metadata with {{ resourceCount }} resources</span>
       </v-tooltip>
-
-
 
     </v-card-actions>
 
@@ -187,6 +170,9 @@ export default {
     },
     catchTagClicked: function catchTagClicked(tagId) {
       this.$emit('clickedTag', tagId);
+    },
+    badgeOnMouseover: function badgeOnMouseover() {
+      this.hoverBadge = !this.hoverBadge;
     },
   },
   computed: {
@@ -257,7 +243,7 @@ export default {
       diversity: 'b_c_diversity_meadow',
       hazard: 'c_b_hazard_cloud_road', // maybe c_b_hazard_cloud
     },
-
+    hoverBadge: false,
   }),
 };
 </script>
