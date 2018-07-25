@@ -12,7 +12,7 @@
         v-bind:name="val.label"
         :value="val.text"
         :id="val.label"
-        disabled
+        readonly
       ></v-text-field>
     </v-form>
 
