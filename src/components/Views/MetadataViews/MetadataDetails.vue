@@ -7,34 +7,30 @@
       <v-form>
 
         <div v-for="val in details" :key="val.label" >
+
           <v-text-field v-if="val.text"
-              v-bind:label="val.label"
-              v-bind:name="val.label"
-              :value="val.text"
-              :id="val.label"
-              disabled
+                        v-bind:label="val.label"
+                        v-bind:name="val.label"
+                        :value="val.text"
+                        :id="val.label"
+                        disabled
           />
-          <div v-if="!val.text && showPlaceholder"
-              style="float: left;">
-            {{ val.label }}
-          </div>
 
-          <div v-if="!val.text && showPlaceholder" 
-              style="float: right; width: 80%; "
-                class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-pulse" >
-            <div class='bone bone-type-heading ' ></div>
-          </div>
+          <div v-if="showPlaceholder
+              && !val.text" >
+            <v-layout row>
+              <div style="width: 20%;"
+                    class="flex pr-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-pulse" >
+                <div class='bone bone-type-text ' ></div>
+              </div>
 
+              <div style="width: 80%;"
+                    class="flex pl-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-pulse" >
+                <div class='bone bone-type-text ' ></div>
+              </div>
+            </v-layout>
+          </div>
         </div>
-
-        <!-- <v-text-field v-if="details"
-          v-for="val in details" :key="val.label"
-          v-bind:label="val.label"
-          v-bind:name="val.label"
-          :value="val.text"
-          :id="val.label"
-          disabled
-        ></v-text-field> -->
         
       </v-form>
 
