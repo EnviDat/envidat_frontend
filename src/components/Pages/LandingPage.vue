@@ -13,7 +13,7 @@
         </search-bar-view>
       </v-flex>
 
-      <v-flex mt-5 offset-sm6>
+      <!-- <v-flex mt-5 offset-sm6>
         <data-producer-card 
                         :titleText="loginInfos.titleText"
                         :loginText="loginInfos.loginText"
@@ -24,14 +24,14 @@
                         v-on:singupclick="catchSingupclick"
                         v-on:loginclick="catchLoginclick">
         </data-producer-card>
-      </v-flex>
+      </v-flex> -->
 
       <v-flex mt-5 offset-sm6>
     
-        <v-container fluid grid-list-xs>
+        <v-container fluid grid-list-md pa-0>
           <v-layout row wrap>
     
-            <v-flex pr-2 py-2
+            <v-flex py-2
               v-bind="{ [`xs${card.flex}`]: true }"
               v-for="card in cards" :key="card.title">
     
@@ -41,6 +41,11 @@
                               v-on:clicked="catchCategoryClicked">
               </category-card>
     
+            </v-flex>
+
+            <v-flex xs6 py-2>
+              <login-card title="Login"
+                          v-on:clicked="catchLoginclick" />
             </v-flex>
           </v-layout>
         </v-container>
@@ -53,7 +58,7 @@
 
 <script>
   import CategoryCard from '../Views/Cards/CategoryCard';
-  import DataProducerCard from '../Views/Cards/DataProducerCard';
+  import LoginCard from '../Views/Cards/LoginCard';
   import TitleView from '../Views/TitleView';
   import SearchBarView from '../Views/SearchBarView';
   import { CHANGE_APP_BG } from '../../store/mutationsConsts';
@@ -153,7 +158,7 @@
       TitleView,
       SearchBarView,
       CategoryCard,
-      DataProducerCard,
+      LoginCard,
     },
   };
 </script>
