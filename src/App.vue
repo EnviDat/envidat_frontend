@@ -232,6 +232,15 @@
     width: 24px !important;
   }
 
+  .envidat_title {
+    font-family: 'Libre Baskerville', serif !important;
+    letter-spacing: 0em !important;
+  }
+
+  .envidat_slogan {
+    font-family: 'Raleway', sans-serif !important;
+  }
+
   .metadataInfoIcon {
     opacity: 0.75;
   }

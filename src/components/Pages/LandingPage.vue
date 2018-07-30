@@ -1,5 +1,5 @@
 <template>
-  <v-container >  
+  <v-container fluid >  
     <v-layout column >
   
       <title-view :title="envidatTitle" :slogan="envidatSlogan"></title-view>
@@ -47,7 +47,7 @@
     
       </v-flex>
 
-    </v-layout>  
+    </v-layout>
   </v-container>
 </template>
 
