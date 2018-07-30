@@ -8,6 +8,7 @@
                   :allTags="allTags" 
                   :selectedTagNames.sync="selectedTagNames"
                   :popularTags="popularTags"
+                  :showPlaceholder="loading"
                   v-on:clickedSearch="catchSearchClicked"
                   v-on:clearedSearch="catchSearchCleared"
                   v-on:clickedTag="catchTagClicked"

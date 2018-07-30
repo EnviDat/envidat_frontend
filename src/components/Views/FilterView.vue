@@ -52,10 +52,10 @@
                 ['column']: this.$vuetify.breakpoint.xsOnly,
               }" >
 
-            <v-flex xs12 px-2 py-2 >
-              <!-- <v-icon>assignment</v-icon> -->
+            <v-flex v-if="selectedTags.length > 0"
+                    xs12 px-2 py-2 >
 
-              <tag-chip v-if="selectedTags.length > 0"
+              <tag-chip 
                         v-for="tag in selectedTags" :key="tag.name" 
                         :name="tag.name"
                         :selectable="false"
@@ -78,7 +78,19 @@
                 class="header_tag" :name="'...'" />
 
             </v-flex>
-            
+
+            <v-flex v-if="showPlaceholder && selectedTags.length <= 0"
+                    xs12 px-2 py-2 >
+
+              <tag-chip-placeholder
+                        v-for="n in 5" :key="n" 
+                        :selectable="false"
+                        :highlighted="false"
+                        :closeable="false"
+                        class="header_tag" />
+
+            </v-flex>
+
             <v-card-actions class="pr-2">
             
               <filter-view-buttons :expanded.sync="expanded"
@@ -103,6 +115,7 @@
 
 <script>
 import TagChip from './Cards/TagChip';
+import TagChipPlaceholder from './Cards/TagChipPlaceholder';
 import SmallSearchBarView from './SmallSearchBarView';
 import FilterExpandedView from './FilterExpandedView';
 import FilterViewButtons from './FilterViewButtons';
@@ -117,6 +130,7 @@ export default {
     allTags: Array,
     searchViewLabelText: String,
     searchViewHasButton: Boolean,
+    showPlaceholder: Boolean,
   },
   computed: {
     selectedTags: function selectedTags() {
@@ -275,6 +289,7 @@ export default {
   }),
   components: {
     TagChip,
+    TagChipPlaceholder,
     SmallSearchBarView,
     FilterExpandedView,
     FilterViewButtons,
