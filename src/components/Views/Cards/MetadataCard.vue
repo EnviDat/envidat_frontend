@@ -104,7 +104,7 @@
             <v-layout row @mouseover="hoverBadge = true" @mouseleave="hoverBadge = false">
               <v-flex pa-0>
                 <v-badge v-bind="{ left: !hoverBadge }" overlap>
-                  <span slot="badge">{{ resourceCount }}</span>
+                  <span slot="badge">{{ resourceAmount }}</span>
                 </v-badge>              
               </v-flex>
               <v-flex pa-0 >
@@ -113,7 +113,7 @@
             </v-layout>
           </div>
 
-          <span>Metadata with {{ resourceCount }} resources</span>
+          <span>Metadata with {{ resourceAmount }} resources</span>
       </v-tooltip>
 
     </v-card-actions>
@@ -155,6 +155,7 @@ export default {
     titleImg: String,
     dark: Boolean,
     resourceCount: Number,
+    resources: Array,
   },
   components: {
     TagChip,
@@ -225,6 +226,17 @@ export default {
       const accessLvl = this.restricted.level;
 
       return userAccess || accessLvl;
+    },
+    resourceAmount: function resourceAmount() {
+      if (this.resourceCount) {
+        return this.resourceCount;
+      }
+
+      if (this.resources) {
+        return this.resources.length;
+      }
+
+      return 0;
     },
   },
   data: () => ({

@@ -81,8 +81,8 @@
 
         this.$router.push({
           path: '/browse',
-          params: {
-            category: cardTitle,
+          query: {
+            search: cardTitle,
           },
         });
       },

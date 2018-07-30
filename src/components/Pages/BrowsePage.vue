@@ -26,7 +26,7 @@
 
           <v-flex v-if="loading"
                   xs12 sm6 md4 xl3
-                  v-for="(n, index) in 6" :key="index">
+                  v-for="(n, index) in palceHolderAmount" :key="index">
 
             <metadata-card-placeholder :dark="false" />
   
@@ -43,6 +43,7 @@
                           :titleImg="metadata.titleImg"
                           :restricted="hasRestrictedResources(metadata)"
                           :resourceCount="metadata.num_resources"
+                          :resources="metadata.resources"
                           :dark="false"
                           v-on:clickedEvent="metaDataClicked"
                           v-on:clickedTag="catchTagClicked">
@@ -51,9 +52,9 @@
           </v-flex>
 
           <v-flex xs12 v-if="!loading && !filteredMetadataContent">
-            <p>Nothing found for these Search criterias</p>
-  
+            <no-search-result-view />  
           </v-flex>
+
 
         </v-layout>
       </v-container>
@@ -68,6 +69,7 @@
   import NavBarView from '../Views/NavbarView';
   import MetadataCard from '../Views/Cards/MetadataCard';
   import MetadataCardPlaceholder from '../Views/Cards/MetadataCardPlaceholder';
+  import NoSearchResultsView from '../Views/NoSearchResultsView';
   import { SEARCH_METADATA } from '../../store/metadataMutationsConsts';
   import { CHANGE_APP_BG } from '../../store/mutationsConsts';
 
@@ -374,7 +376,8 @@
         cardBGImages: 'cardBGImages',
       }),
       loading: function loading() {
-        return this.loadingMetadataIds || this.loadingMetadatasContent || this.searchingMetadatasContent;
+        return this.loadingMetadataIds || this.searchingMetadatasContent ||
+        (this.loadingMetadatasContent && this.metadatasContentSize < this.palceHolderAmount);
       },
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
@@ -437,6 +440,7 @@
       searchTerm: '',
       searchLabelText: 'Search',
       searchCount: 0,
+      palceHolderAmount: 6,
       isSearchResultContent: false,
       selectedTagNames: [],
       popularTagAmount: 10,
@@ -444,6 +448,7 @@
     }),
     components: {
       NavBarView,
+      NoSearchResultsView,
       MetadataCard,
       MetadataCardPlaceholder,
     },

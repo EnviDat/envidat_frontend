@@ -18,6 +18,7 @@
             :append-outer-icon-cb="clicked"
             v-on:keyup.enter="clicked"
             v-model="searchText"
+            @click:clear="clearClicked"
             placeholder="Search">
         </v-text-field>
       </v-flex>
@@ -75,9 +76,12 @@
         this.$emit('clicked', this.searchText);
         this.lastSearch = this.searchText;
       },
+      clearClicked: function clearClicked() {
+        this.$emit('searchCleared');
+      },
       focusChanged: function focusChanged() {
         if (!this.searchText) {
-          this.$emit('searchCleared');
+          this.clearClicked();
           this.lastSearch = '';
         } else {
           this.$emit('clicked', this.searchText);
