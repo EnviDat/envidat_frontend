@@ -31,13 +31,11 @@
         <v-container fluid grid-list-xs>
           <v-layout row wrap>
     
-            <v-flex pr-2 py-2
-              v-bind="{ [`xs${card.flex}`]: true }"
-              v-for="card in cards" :key="card.title">
+            <v-flex py-2 xs6
+              v-for="card in categorycards" :key="card.title">
     
               <category-card :title="card.title"
                               :type="card.type"
-                              :src="card.src"
                               v-on:clicked="catchCategoryClicked">
               </category-card>
     
@@ -52,6 +50,7 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex';
   import CategoryCard from '../Views/Cards/CategoryCard';
   import DataProducerCard from '../Views/Cards/DataProducerCard';
   import TitleView from '../Views/TitleView';
@@ -73,6 +72,11 @@
         // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
         vm.$store.commit(CHANGE_APP_BG, vm.PageBGImage);
       });
+    },
+    computed: {
+      ...mapGetters({
+        categorycards: 'metadata/categorycards',
+      }),
     },
     methods: {
       catchCategoryClicked: function catchCategoryClicked(cardTitle) {
@@ -122,32 +126,6 @@
         loggedIn: false,
         loggedinText: 'ENTER DASHBOARD',
       },
-      cards: [{
-        title: 'Forest',
-        type: 'forest',
-        flex: 6,
-      },
-      {
-        title: 'Snow',
-        type: 'snow',
-        flex: 6,
-      },
-      {
-        title: 'Landscape',
-        type: 'landscape',
-        flex: 6,
-      },
-      {
-        title: 'Natural disasters',
-        type: 'hazard',
-        flex: 6,
-      },
-      {
-        title: 'Biodiversity',
-        type: 'diversity',
-        flex: 6,
-      },
-      ],
     }),
     components: {
       TitleView,

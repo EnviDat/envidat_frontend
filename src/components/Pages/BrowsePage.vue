@@ -25,7 +25,7 @@
         <v-container fluid grid-list-md @scroll="updateScroll" >
           <v-layout row wrap>
 
-            <v-flex v-if="loading"
+            <!-- <v-flex v-if="!loading"
                     xs12 sm6 md4 xl3
                     v-for="(n, index) in 6" :key="index">
 
@@ -48,11 +48,12 @@
                             v-on:clickedTag="catchTagClicked">
               </metadata-card>
     
-            </v-flex>
+            </v-flex> -->
 
-            <v-flex xs12 v-if="!loading && !filteredMetadataContent">
-              <p>Nothing found for these Search criterias</p>
-    
+            <v-flex xs12 >
+              <no-search-results-view v-on:clicked="catchCategoryClicked"
+                                      :noResultText="noResultText"
+                                      :suggestionText="suggestionText" />  
             </v-flex>
 
           </v-layout>
@@ -68,6 +69,7 @@
   import NavBarView from '../Views/NavBarView';
   import MetadataCard from '../Views/Cards/MetadataCard';
   import MetadataCardPlaceholder from '../Views/Cards/MetadataCardPlaceholder';
+  import NoSearchResultsView from '../Views/NoSearchResultsView';
   import { SEARCH_METADATA } from '../../store/metadataMutationsConsts';
   import { CHANGE_APP_BG } from '../../store/mutationsConsts';
 
@@ -210,6 +212,17 @@
         // if (queryLength > 0 && this.$route.query.search) {
         this.additiveChangeRoute(this.searchTerm, undefined);
         // }
+      },
+      catchCategoryClicked: function catchCategoryClicked(cardTitle) {
+        // sleep(500);
+        // setTimeout(this.$router.push({ name: 'BrowsePage', params: { cardTitle }}), 1000);
+
+        this.$router.push({
+          path: '/browse',
+          query: {
+            search: cardTitle,
+          },
+        });
       },
       isTagSelected: function isTagSelected(tagName) {
         if (!tagName || this.selectedTagNames === undefined) {
@@ -423,12 +436,15 @@
       searchLabelText: 'Search',
       searchCount: 0,
       isSearchResultContent: false,
+      noResultText: 'Nothing found for these Search criterias',
+      suggestionText: 'Try one of these categories',
       selectedTagNames: [],
       popularTagAmount: 10,
       scrollPosition: null,
     }),
     components: {
       NavBarView,
+      NoSearchResultsView,
       MetadataCard,
       MetadataCardPlaceholder,
     },

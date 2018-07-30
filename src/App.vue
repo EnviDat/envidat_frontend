@@ -115,7 +115,8 @@
         let bgStyle = '';
 
         if (bgImg) {
-          bgStyle = `background-image: url(${bgImg}) !important;`;
+          // bgStyle = `background-image: url(${bgImg}) !important;`;
+          bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.05) 0%,rgba(255,255,255,0.25) 100%), url(${bgImg}) !important;`;
         }
 
         if (bgImg.includes('browsepage')) {
