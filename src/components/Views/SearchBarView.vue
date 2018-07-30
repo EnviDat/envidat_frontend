@@ -1,10 +1,5 @@
 <template>
   <v-card hover raised >
-    <v-container 
-                v-bind="{ [`pa-2`]: this.$vuetify.breakpoint.smAndUp,
-                          [`pa-1`]: this.$vuetify.breakpoint.xsOnly}"
-    >
-
     <!-- long slim search bar  -->
 
     <v-layout row
@@ -12,11 +7,13 @@
               hidden-xs-only
               justify-space-between>
 
-      <v-flex sm8 md8 xl9>
+      <v-flex sm8 md8 xl10 pl-3>
         <v-text-field
+          single-line
           hide-details
           full-width
-          single-line
+          solo
+          flat
           prepend-icon="search"
           :prepend-icon-cb="clicked"
           v-on:keyup.enter="clicked"
@@ -60,7 +57,6 @@
 
     </v-layout>
     
-    </v-container>
   </v-card>
 </template>
 
