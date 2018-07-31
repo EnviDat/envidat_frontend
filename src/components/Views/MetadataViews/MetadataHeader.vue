@@ -53,14 +53,24 @@
 
         <v-layout row wrap>
 
-          <tag-chip v-if="tags" v-for="tag in slicedTags" :key="tag.name"
+          <tag-chip v-if="tags"
+                    v-for="tag in slicedTags" :key="tag.name"
                     :name="tag.name"
                     v-on:clicked="catchTagClicked($event, tag.name)"
                     class="headerTag" />
 
-          <v-flex xs2 v-if="maxTagsReached && !showTagsExpanded">
+          <v-flex xs2 v-if="tags && maxTagsReached && !showTagsExpanded">
             <tag-chip class="headerTag" :name="'...'" />
           </v-flex>
+
+
+          <tag-chip-placeholder v-if="!tags && showPlaceholder"
+                    v-for="n in 5" :key="n" 
+                    :selectable="false"
+                    :highlighted="false"
+                    :closeable="false"
+                    class="headerTag" />
+
         </v-layout>
           
         <v-card-actions v-if="maxTagsReached">
@@ -85,6 +95,7 @@
 
 <script>
 import TagChip from '../Cards/TagChip';
+import TagChipPlaceholder from '../Cards/TagChipPlaceholder';
 import IconLabelView from '../IconLabelView';
 
 export default {
@@ -124,6 +135,7 @@ export default {
   },
   components: {
     TagChip,
+    TagChipPlaceholder,
     IconLabelView,
   },
 };

@@ -62,7 +62,7 @@
                         :highlighted="true"
                         :closeable="true"
                         v-on:clickedClose="catchTagCloseClicked($event, tag.name)"
-                        class="header_tag" />
+                        class="filterTag" />
 
               <tag-chip v-if="showPopularTags"
                         v-for="tag in showPopularTags" :key="tag.name" 
@@ -71,11 +71,11 @@
                         :highlighted="false"
                         :closeable="false"
                         v-on:clicked="catchTagClicked($event, tag.name)"
-                        class="header_tag" />
+                        class="filterTag" />
 
 
               <tag-chip v-if="maxPopularTagNumber >= showPopularTags.length"
-                class="header_tag" :name="'...'" />
+                class="filterTag" :name="'...'" />
 
             </v-flex>
 
@@ -87,7 +87,7 @@
                         :selectable="false"
                         :highlighted="false"
                         :closeable="false"
-                        class="header_tag" />
+                        class="filterTag" />
 
             </v-flex>
 
@@ -305,7 +305,7 @@ export default {
     opacity: 0.85;
   }
 
-  .header_tag {
+  .filterTag {
     opacity: 0.7;
   }
 
