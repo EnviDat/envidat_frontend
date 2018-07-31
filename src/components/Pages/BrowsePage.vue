@@ -51,9 +51,9 @@
   
           </v-flex>
 
-          <v-flex xs12 v-if="!loading && !filteredMetadataContent">
+          <!-- <v-flex xs12 v-if="!loading && !filteredMetadataContent">
             <no-search-result-view />  
-          </v-flex>
+          </v-flex> -->
 
 
         </v-layout>
@@ -69,7 +69,7 @@
   import NavBarView from '../Views/NavbarView';
   import MetadataCard from '../Views/Cards/MetadataCard';
   import MetadataCardPlaceholder from '../Views/Cards/MetadataCardPlaceholder';
-  import NoSearchResultsView from '../Views/NoSearchResultsView';
+  // import NoSearchResultsView from '../Views/NoSearchResultsView';
   import { SEARCH_METADATA } from '../../store/metadataMutationsConsts';
   import { CHANGE_APP_BG } from '../../store/mutationsConsts';
 
