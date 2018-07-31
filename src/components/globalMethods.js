@@ -1,3 +1,4 @@
+import seedrandom from 'seedrandom';
 
 export default {
   methods: {
@@ -100,6 +101,85 @@ export default {
 
       return imports;
       */
+    },
+    randomInt: function randomInt(min, max, seed) {
+      if (!seed) {
+        seed = 'For the Horde!';
+      }
+
+      const rng = seedrandom(seed);
+      const r = Math.floor(rng() * 10);
+
+      if (r > max) {
+        return max;
+      }
+      if (r < min) {
+        return min;
+      }
+
+      return r;
+      // return Math.floor(this.rNG() * (max - (min + 1))) + min;
+      // return Math.floor(Math.random() * (max - (min + 1))) + min;
+    },
+    enhanceMetadata: function enhanceMetadata(metadatas, cardBGImages) {
+      if (metadatas === undefined && metadatas.length <= 0) {
+        return undefined;
+      }
+
+      // console.log("enhanceMetadata " + Array.isArray(metadatas) + " " + cardBGImages );
+
+      if (Array.isArray(metadatas)) {
+        for (let i = 0; i < metadatas.length; i++) {
+          const el = metadatas[i];
+
+          if (!el.titleImg) {
+            this.enhanceTitleImg(el, cardBGImages);
+          }
+        }
+      } else {
+        this.enhanceTitleImg(metadatas, cardBGImages);
+      }
+
+      return metadatas;
+    },
+    enhanceTitleImg: function enhanceTitleImg(metadata, cardBGImages) {
+      /* eslint-disable no-param-reassign */
+      const category = this.getTagCategory(metadata.tags);
+      const categoryImgs = cardBGImages[category];
+      const max = Object.keys(categoryImgs).length - 1;
+      const randomIndex = this.randomInt(0, max, metadata.title);
+      const cardImg = randomIndex >= 0 ? Object.values(categoryImgs)[randomIndex] : 0;
+
+      // console.log("loaded " + randomIndex + " category " + category + " img " + cardImg);
+      metadata.titleImg = cardImg;
+    },
+    getTagCategory: function getTagCategory(tags) {
+      let category = 'landscape';
+
+      if (tags) {
+        for (let i = 0; i < tags.length; i++) {
+          const element = tags[i];
+          if (element.name) {
+            if (element.name.includes('HAZARD')) {
+              category = 'hazard'; break;
+            }
+            if (element.name.includes('DIVERSITY')) {
+              category = 'diversity'; break;
+            }
+            if (element.name.includes('FOREST')) {
+              category = 'forest'; break;
+            }
+            if (element.name.includes('SNOW')) {
+              category = 'snow'; break;
+            }
+            if (element.name.includes('LANDSCAPE')) {
+              category = 'landscape'; break;
+            }
+          }
+        }
+      }
+
+      return category;
     },
     /* eslint-disable */
     // for details: https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript

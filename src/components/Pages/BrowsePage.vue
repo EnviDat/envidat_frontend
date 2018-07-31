@@ -66,7 +66,6 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import seedrandom from 'seedrandom';
   import NavBarView from '../Views/NavbarView';
   import MetadataCard from '../Views/Cards/MetadataCard';
   import MetadataCardPlaceholder from '../Views/Cards/MetadataCardPlaceholder';
@@ -82,10 +81,6 @@
         // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
         vm.$store.commit(CHANGE_APP_BG, vm.PageBGImage);
       });
-    },
-    created: function created() {
-      // intialize predicatable random number generator for the cardimages
-      this.rNG = seedrandom('For the Horde!');
     },
     mounted: function mounted() {
       // handle initial loading of this Page
@@ -291,75 +286,6 @@
 
         return searchResult;
       },
-      randomInt: function randomInt(min, max, seed) {
-        if (!seed) {
-          seed = 'For the Horde!';
-        }
-
-        const rng = seedrandom(seed);
-        const r = Math.floor(rng() * 10);
-
-        if (r > max) {
-          return max;
-        }
-        if (r < min) {
-          return min;
-        }
-
-        return r;
-        // return Math.floor(this.rNG() * (max - (min + 1))) + min;
-        // return Math.floor(Math.random() * (max - (min + 1))) + min;
-      },
-      enhanceMetadata: function enhanceMetadata(metadatas) {
-        if (metadatas === undefined && metadatas.length <= 0) {
-          return undefined;
-        }
-
-        for (let i = 0; i < metadatas.length; i++) {
-          const el = metadatas[i];
-
-          if (!el.titleImg) {
-            const category = this.getTagCategory(el.tags);
-            const categoryImgs = this.cardBGImages[category];
-            const max = Object.keys(categoryImgs).length - 1;
-            const randomIndex = this.randomInt(0, max, el.title);
-            const cardImg = randomIndex >= 0 ? Object.values(categoryImgs)[randomIndex] : 0;
-
-            // console.log("loaded " + randomIndex + " category " + category + " img " + cardImg);
-            el.titleImg = cardImg;
-          }
-        }
-
-        return metadatas;
-      },
-      getTagCategory: function getTagCategory(tags) {
-        let category = 'landscape';
-
-        if (tags) {
-          for (let i = 0; i < tags.length; i++) {
-            const element = tags[i];
-            if (element.name) {
-              if (element.name.includes('HAZARD')) {
-                category = 'hazard'; break;
-              }
-              if (element.name.includes('DIVERSITY')) {
-                category = 'diversity'; break;
-              }
-              if (element.name.includes('FOREST')) {
-                category = 'forest'; break;
-              }
-              if (element.name.includes('SNOW')) {
-                category = 'snow'; break;
-              }
-              if (element.name.includes('LANDSCAPE')) {
-                category = 'landscape'; break;
-              }
-            }
-          }
-        }
-
-        return category;
-      },
       dynamicCardBackground: function dynamicCardBackground() {
         const max = Object.keys(this.imagesImports).length;
         const randomIndex = this.randomInt(0, max);
@@ -432,7 +358,7 @@
         }
 
         if (contentToFilter) {
-          contentToFilter = this.enhanceMetadata(contentToFilter);
+          contentToFilter = this.enhanceMetadata(contentToFilter, this.cardBGImages);
 
           if (this.selectedTagNames !== undefined
           && this.selectedTagNames.length > 0) {
@@ -473,7 +399,6 @@
       selectedTagNames: [],
       popularTagAmount: 10,
       scrollPosition: null,
-      rNG: null,
     }),
     components: {
       NavBarView,
