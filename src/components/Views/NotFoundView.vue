@@ -12,10 +12,10 @@ export default {
   props: {
     backPath: String,
   },
-  computed:{
+  computed: {
     path: function path() {
-      return "/" + this.backPath + "/";
-    }
-  }
+      return `/${this.backPath}/`;
+    },
+  },
 };
 </script>

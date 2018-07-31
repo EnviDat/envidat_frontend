@@ -14,7 +14,8 @@
                 style="z-index: 1;">
 
           <metadata-header v-bind="header" :maxTags="10"
-                            v-on:clickedTag="catchTagClicked" />
+                            v-on:clickedTag="catchTagClicked"
+                            :showPlaceholder="showPlaceholder" />
 
         </v-flex>
 
@@ -26,11 +27,13 @@
           <v-layout column>
 
             <v-flex mb-2 >
-              <metadata-body v-bind="body" :isOnTop="true" />
+              <metadata-body v-bind="body" :isOnTop="true" 
+                              :showPlaceholder="showPlaceholder" />
             </v-flex>
 
             <v-flex mb-2>
-              <metadata-citation v-bind="citation" />
+              <metadata-citation v-bind="citation"
+                                  :showPlaceholder="showPlaceholder" />
             </v-flex>
 
             <v-flex mb-2>
@@ -40,7 +43,8 @@
 
             <v-flex mb-2 v-if="showDetailsOnTheLeft">
               <metadata-details v-if="details"
-                              :details="details" />
+                              :details="details"
+                              :showPlaceholder="showPlaceholder" />
             </v-flex>
 
           </v-layout>
@@ -56,12 +60,14 @@
             <v-flex xs12 mb-2>
               <metadata-resources v-bind="resources"
                                   :isOnTop="true"
-                                  :twoColumnLayout="twoColumnLayout" />
+                                  :twoColumnLayout="twoColumnLayout"
+                                  :showPlaceholder="showPlaceholder" />
             </v-flex>
 
             <v-flex xs12 mb-2 v-if="!showDetailsOnTheLeft">
               <metadata-details v-if="details"
-                              :details="details" />
+                                :details="details"
+                                :showPlaceholder="showPlaceholder" />
             </v-flex>
 
           </v-layout>
@@ -75,7 +81,8 @@
                 elevation-5
                 style="z-index: 1;">
 
-          <metadata-header v-bind="header" :maxTags="10" />
+          <metadata-header v-bind="header" :maxTags="10"
+                            :showPlaceholder="showPlaceholder" />
 
         </v-flex>
 
@@ -84,7 +91,8 @@
                 mb-2 
                 style="z-index: 0;">
 
-          <metadata-body v-bind="body" :isOnTop="true" />
+          <metadata-body v-bind="body" :isOnTop="true"
+                          :showPlaceholder="showPlaceholder" />
         </v-flex>
 
         <v-flex xs12
@@ -92,7 +100,8 @@
                 v-bind="rightOrFullWidth"
                  >
 
-          <metadata-citation v-bind="citation" :fixedHeight="twoColumnLayout" />
+          <metadata-citation v-bind="citation" :fixedHeight="twoColumnLayout"
+                              :showPlaceholder="showPlaceholder" />
         </v-flex>
 
         <v-flex xs12
@@ -100,7 +109,8 @@
                 v-bind="fullWidthPadding"
                 >
 
-          <metadata-resources v-bind="resources" :twoColumnLayout="twoColumnLayout" />
+          <metadata-resources v-bind="resources" :twoColumnLayout="twoColumnLayout"
+                              :showPlaceholder="showPlaceholder" />
         </v-flex>
 
         <v-flex xs12
@@ -114,7 +124,8 @@
                 mb-2
                 v-bind="fullWidthPadding"
                 >
-          <metadata-details v-if="details" :details="details" />
+          <metadata-details v-if="details" :details="details"
+                              :showPlaceholder="showPlaceholder" />
         </v-flex>
 
       </v-layout>
@@ -190,6 +201,10 @@
         // return (this.metadataId && this.metadataIds !== undefined
         //  && this.metadataIds.includes(this.metadataId));
       },
+      showPlaceholder: function showPlaceholder() {
+        return true; // testing;
+        // return this.loadingCurrentMetadataContent;
+      },
       leftOrFullWidth: function leftOrFullWidth() {
         return this.twoColumnLayout ? this.halfWidthLeft : this.fullWidthPadding;
       },
@@ -263,7 +278,8 @@
         return json;
       },
       showDetailsOnTheLeft: function showDetailsOnTheLeft() {
-        const left = this.resources && this.resources.resources.length > this.amountOfResourcesToShowDetailsLeft;
+        const left = this.resources
+        && this.resources.resources.length > this.amountOfResourcesToShowDetailsLeft;
         return left;
       },
     },

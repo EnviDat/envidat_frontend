@@ -59,6 +59,7 @@
                       :allTags="allTags" 
                       :selectedTagNames.sync="selectedTagNames"
                       :popularTags="popularTags"
+                      :showPlaceholder="showPlaceholder"
                       v-on:clickedSearch="catchSearchClicked"
                       v-on:clearedSearch="catchSearchCleared"
                       v-on:clickedTag="catchTagClicked"
@@ -88,6 +89,7 @@
       allTags: Array,
       popularTags: Array,
       selectedTagNames: Array,
+      showPlaceholder: Boolean,
     },
     computed: {
       alignClass: function alignClass() {

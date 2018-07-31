@@ -1,7 +1,6 @@
 <template>
   
-    <v-layout row align-center
-      v-if="label || text">
+    <v-layout row align-center>
 
       <!-- <v-flex v-if="icon && iconTooltip"
         xs2 >
@@ -39,7 +38,13 @@
       <v-flex v-if="text" >
         {{ text }}
       </v-flex>
-    
+
+      <v-flex v-if="!text && usePlaceholder" >
+        <div class="pr-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-pulse" >
+          <div class='bone bone-type-text bone-style-steps' ></div>
+        </div>
+      </v-flex>
+
     </v-layout>
 
 </template>
@@ -52,6 +57,7 @@
       label: String,
       text: String,
       alignLeft: Boolean,
+      usePlaceholder: Boolean,
     },
     computed: {
       alignClass: function alignClass() {

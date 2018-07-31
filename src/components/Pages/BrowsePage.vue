@@ -8,6 +8,7 @@
                   :allTags="allTags" 
                   :selectedTagNames.sync="selectedTagNames"
                   :popularTags="popularTags"
+                  :showPlaceholder="loading"
                   v-on:clickedSearch="catchSearchClicked"
                   v-on:clearedSearch="catchSearchCleared"
                   v-on:clickedTag="catchTagClicked"
@@ -51,9 +52,11 @@
   
           </v-flex>
 
-          <v-flex xs12 v-if="!loading && !filteredMetadataContent">
-            <no-search-result-view />  
-          </v-flex>
+            <v-flex xs12 >
+              <no-search-results-view v-on:clicked="catchCategoryClicked"
+                                      :noResultText="noResultText"
+                                      :suggestionText="suggestionText" />  
+            </v-flex>
 
 
         </v-layout>
@@ -212,6 +215,17 @@
         // if (queryLength > 0 && this.$route.query.search) {
         this.additiveChangeRoute(this.searchTerm, undefined);
         // }
+      },
+      catchCategoryClicked: function catchCategoryClicked(cardTitle) {
+        // sleep(500);
+        // setTimeout(this.$router.push({ name: 'BrowsePage', params: { cardTitle }}), 1000);
+
+        this.$router.push({
+          path: '/browse',
+          query: {
+            search: cardTitle,
+          },
+        });
       },
       isTagSelected: function isTagSelected(tagName) {
         if (!tagName || this.selectedTagNames === undefined) {
@@ -442,6 +456,8 @@
       searchCount: 0,
       palceHolderAmount: 6,
       isSearchResultContent: false,
+      noResultText: 'Nothing found for these Search criterias',
+      suggestionText: 'Try one of these categories',
       selectedTagNames: [],
       popularTagAmount: 10,
       scrollPosition: null,
