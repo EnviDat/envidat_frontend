@@ -4,8 +4,10 @@
     
     <v-card-title class="metadata_title title" >Description</v-card-title>
 
-    <v-card-text >{{ fullDescription }}</v-card-text>
-<!-- {{ title | truncate(maxTitleLength) }} -->
+    <v-card-text >
+      <m-markdown-preview :markdown="fullDescription" :options="{html: true}" />
+    </v-card-text>
+
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn icon 
@@ -20,6 +22,8 @@
 </template>
 
 <script>
+  import MMarkdownPreview from 'm-markdown-preview';
+
   export default {
     props: {
       id: String,
@@ -33,7 +37,8 @@
     computed: {
       fullDescription: function fullDescription() {
         if (this.description !== undefined) {
-          return this.showFullDescription ? this.description : `${this.description.substring(0, this.maxTextLength)}...`;
+          console.log("desc: " + this.description);
+          return this.showFullDescription ? this.description.trim() : `${this.description.trim().substring(0, this.maxTextLength)}...`;
         }
 
         return '';
@@ -49,6 +54,7 @@
       },
     },
     components: {
+      MMarkdownPreview,
     },
   };
 </script>
