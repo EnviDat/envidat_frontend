@@ -48,7 +48,7 @@
                           class="card_tag" />
               
                 <tag-chip py-0
-                          v-if="maxTagsReached" class="card_tag" :name="'...'" />
+                          v-if="maxTagsReached" class="card_tag" name="..." />
               
             </v-layout>
           </v-flex>
