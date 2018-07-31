@@ -66,6 +66,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
+  import seedrandom from 'seedrandom';
   import NavBarView from '../Views/NavbarView';
   import MetadataCard from '../Views/Cards/MetadataCard';
   import MetadataCardPlaceholder from '../Views/Cards/MetadataCardPlaceholder';
@@ -81,6 +82,10 @@
         // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
         vm.$store.commit(CHANGE_APP_BG, vm.PageBGImage);
       });
+    },
+    created: function created() {
+      // intialize predicatable random number generator for the cardimages
+      this.rNG = seedrandom('For the Horde!');
     },
     mounted: function mounted() {
       // handle initial loading of this Page
@@ -221,8 +226,8 @@
         return this.selectedTagNames.indexOf(tagName) >= 0;
       },
       tagsIncludedInSelectedTags: function tagsIncludedInSelectedTags(tags) {
-
         const tagNames = [];
+
         for (let i = 0; i < tags.length; i++) {
           const tagName = tags[i].name;
 
@@ -286,8 +291,24 @@
 
         return searchResult;
       },
-      randomInt: function randomInt(min, max) {
-        return Math.floor(Math.random() * (max - (min + 1))) + min;
+      randomInt: function randomInt(min, max, seed) {
+        if (!seed) {
+          seed = 'For the Horde!';
+        }
+
+        const rng = seedrandom(seed);
+        const r = Math.floor(rng() * 10);
+
+        if (r > max) {
+          return max;
+        }
+        if (r < min) {
+          return min;
+        }
+
+        return r;
+        // return Math.floor(this.rNG() * (max - (min + 1))) + min;
+        // return Math.floor(Math.random() * (max - (min + 1))) + min;
       },
       enhanceMetadata: function enhanceMetadata(metadatas) {
         if (metadatas === undefined && metadatas.length <= 0) {
@@ -297,40 +318,41 @@
         for (let i = 0; i < metadatas.length; i++) {
           const el = metadatas[i];
 
-          const category = this.getTagCategory(el.tags);
-          const categoryImgs = this.cardBGImages[category];
-          const max = Object.keys(categoryImgs).length - 1;
-          const randomIndex = this.randomInt(0, max);
-          const cardImg = randomIndex >= 0 ? Object.values(categoryImgs)[randomIndex] : 0;
+          if (!el.titleImg) {
+            const category = this.getTagCategory(el.tags);
+            const categoryImgs = this.cardBGImages[category];
+            const max = Object.keys(categoryImgs).length - 1;
+            const randomIndex = this.randomInt(0, max, el.title);
+            const cardImg = randomIndex >= 0 ? Object.values(categoryImgs)[randomIndex] : 0;
 
-          // console.log("loaded " + cardImg + " for category " + category);
-
-          el.titleImg = cardImg;
+            // console.log("loaded " + randomIndex + " category " + category + " img " + cardImg);
+            el.titleImg = cardImg;
+          }
         }
 
         return metadatas;
       },
       getTagCategory: function getTagCategory(tags) {
-        let category = this.tagCategory;
+        let category = 'landscape';
 
         if (tags) {
           for (let i = 0; i < tags.length; i++) {
             const element = tags[i];
-            if (element.tag) {
-              if (element.tag.includes('FOREST')) {
-                category = 'forest'; break;
-              }
-              if (element.tag.includes('LANDSCAPE')) {
-                category = 'landscape'; break;
-              }
-              if (element.tag.includes('SNOW')) {
-                category = 'snow'; break;
-              }
-              if (element.tag.includes('HAZARD')) {
+            if (element.name) {
+              if (element.name.includes('HAZARD')) {
                 category = 'hazard'; break;
               }
-              if (element.tag.includes('DIVERSITY')) {
+              if (element.name.includes('DIVERSITY')) {
                 category = 'diversity'; break;
+              }
+              if (element.name.includes('FOREST')) {
+                category = 'forest'; break;
+              }
+              if (element.name.includes('SNOW')) {
+                category = 'snow'; break;
+              }
+              if (element.name.includes('LANDSCAPE')) {
+                category = 'landscape'; break;
               }
             }
           }
@@ -443,7 +465,6 @@
     },
     data: () => ({
       PageBGImage: './app_b_browsepage.jpg',
-      tagCategory: 'landscape', // default
       searchTerm: '',
       searchLabelText: 'Search',
       searchCount: 0,
@@ -452,6 +473,7 @@
       selectedTagNames: [],
       popularTagAmount: 10,
       scrollPosition: null,
+      rNG: null,
     }),
     components: {
       NavBarView,

@@ -105,7 +105,7 @@
 
 
 <script>
-import defaultTexture from '../../../assets/cards/forest/c_b_forest_texture_bark2_small.jpg';
+import defaultTexture from '../../../assets/cards/c_b_forest_texture_bark2_small.jpg';
 import IconLabelView from '../IconLabelView';
 
 export default {
