@@ -21,7 +21,8 @@
 
               <v-flex xs2 sm1>
                 <v-btn flat
-                       :href="aboutUrl" >
+                       :href="aboutUrl"
+                       target="_blank" >
                   {{ aboutText }}
                 </v-btn>
               </v-flex>
@@ -29,7 +30,8 @@
               <v-flex xs2 sm1 >
                 <v-btn flat
                         color="primary"
-                        :href="loginUrl" >
+                        :href="loginUrl"
+                         target="_blank" >
                   {{ loginText }}
                 </v-btn>
               </v-flex>
@@ -118,9 +120,9 @@
     data: () => ({
       Logo,
       aboutText: 'About',
-      aboutUrl: './about',
+      aboutUrl: 'https://www.envidat.ch/about',
       loginText: 'Login',
-      loginUrl: './login',
+      loginUrl: 'https://www.envidat.ch/user/reset',
     }),
     components: {
       FilterView,
