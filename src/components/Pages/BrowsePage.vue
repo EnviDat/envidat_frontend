@@ -220,23 +220,30 @@
 
         return this.selectedTagNames.indexOf(tagName) >= 0;
       },
-      tagsIncludeSelected: function tagsIncludeSelected(tags) {
+      tagsIncludedInSelectedTags: function tagsIncludedInSelectedTags(tags) {
+
+        const tagNames = [];
         for (let i = 0; i < tags.length; i++) {
           const tagName = tags[i].name;
 
-          // let tagsMatchSelection = false;
           if (tagName) {
-            for (let j = 0; j < this.selectedTagNames.length; j++) {
-              const selectedTagName = this.selectedTagNames[j];
-
-              if (tagName === selectedTagName) {
-                return true;
-              }
-            }
+            tagNames.push(tagName);
           }
         }
 
-        return false;
+        if (tagNames.length <= 0) {
+          return false;
+        }
+
+        for (let j = 0; j < this.selectedTagNames.length; j++) {
+          const selectedTagName = this.selectedTagNames[j];
+
+          if (!tagNames.includes(selectedTagName)) {
+            return false;
+          }
+        }
+
+        return true;
       },
       contentFilteredByTags: function contentFilteredByTags(contentList) {
         const filteredContent = [];
@@ -248,7 +255,7 @@
             const key = metaDataKeys[i];
             const value = contentList[key];
 
-            if (value.tags && this.tagsIncludeSelected(value.tags)) {
+            if (value.tags && this.tagsIncludedInSelectedTags(value.tags)) {
               filteredContent.push(value);
             }
           }
