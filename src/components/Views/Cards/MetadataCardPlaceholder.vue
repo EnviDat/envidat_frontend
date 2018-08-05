@@ -5,9 +5,21 @@
     ripple
     hover
     height="330"
+    @click.native="show = !show"
     >
 
+    <!-- <transition name="expand">
+      <div v-if="show" >
+
+        <div class="skeleton skeleton-size-big skeleton-color-concrete">
+          <div class='bone bone-type-multiline bone-style-steps'></div>
+        </div>
+    
+      </div>
+    </transition> -->
+
     <v-card-media
+      transition="expand"
       class="imagezoom"
       background-color="primary"
       v-bind="{['style'] : dynamicCardBackground }"
@@ -45,7 +57,7 @@
 
     </v-card-media>
 
-    <v-card-title primary-title>
+    <v-card-title primary-title v-if="!show">
       <div class="skeleton skeleton-color-silver skeleton-animation-pulse" style="width: 100%;">
         <div class='bone bone-type-multiline'></div>
         <div class='bone bone-type-multiline bone-style-paragraph'></div>
@@ -169,6 +181,16 @@ export default {
 
   .card_tag_placeholder {
     /* opacity: 0.7; */
+  }
+
+  .expand-enter-active, .expand-leave-active {
+    transition: all 4s ease;
+    background-color: red;
+  }
+
+  .expand-enter, .expand-leave-to {
+    opacity: 0;
+    background-color: black;
   }
 
 </style>
