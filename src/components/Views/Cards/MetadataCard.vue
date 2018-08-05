@@ -48,7 +48,7 @@
                           class="card_tag" />
               
                 <tag-chip py-0
-                          v-if="maxTagsReached" class="card_tag" :name="'...'" />
+                          v-if="maxTagsReached" class="card_tag" name="..." />
               
             </v-layout>
           </v-flex>
@@ -102,14 +102,19 @@
       <v-tooltip bottom>
           <div slot="activator" class="metadataInfoIcon">
             <v-layout row @mouseover="hoverBadge = true" @mouseleave="hoverBadge = false">
+
               <v-flex pa-0>
-                <v-badge v-bind="{ left: !hoverBadge }" overlap>
+                <v-badge v-bind="{ left: !hoverBadge }"
+                        overlap
+                        class="envidat_badge">
                   <span slot="badge">{{ resourceAmount }}</span>
                 </v-badge>              
               </v-flex>
+
               <v-flex pa-0 >
                 <img class="envidatIcon" :src="getIcon('file')" />                
               </v-flex>
+              
             </v-layout>
           </div>
 
@@ -285,5 +290,8 @@ export default {
     /* opacity: 0.7; */
   }
 
+  .envidat_badge {
+    font-size: 0.8em !important;
+  }
 
 </style>

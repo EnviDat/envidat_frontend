@@ -72,7 +72,7 @@
   import NavBarView from '../Views/NavbarView';
   import MetadataCard from '../Views/Cards/MetadataCard';
   import MetadataCardPlaceholder from '../Views/Cards/MetadataCardPlaceholder';
-  import NoSearchResultsView from '../Views/NoSearchResultsView';
+  // import NoSearchResultsView from '../Views/NoSearchResultsView';
   import { SEARCH_METADATA } from '../../store/metadataMutationsConsts';
   import { CHANGE_APP_BG } from '../../store/mutationsConsts';
 
@@ -234,23 +234,30 @@
 
         return this.selectedTagNames.indexOf(tagName) >= 0;
       },
-      tagsIncludeSelected: function tagsIncludeSelected(tags) {
+      tagsIncludedInSelectedTags: function tagsIncludedInSelectedTags(tags) {
+        const tagNames = [];
+
         for (let i = 0; i < tags.length; i++) {
           const tagName = tags[i].name;
 
-          // let tagsMatchSelection = false;
           if (tagName) {
-            for (let j = 0; j < this.selectedTagNames.length; j++) {
-              const selectedTagName = this.selectedTagNames[j];
-
-              if (tagName === selectedTagName) {
-                return true;
-              }
-            }
+            tagNames.push(tagName);
           }
         }
 
-        return false;
+        if (tagNames.length <= 0) {
+          return false;
+        }
+
+        for (let j = 0; j < this.selectedTagNames.length; j++) {
+          const selectedTagName = this.selectedTagNames[j];
+
+          if (!tagNames.includes(selectedTagName)) {
+            return false;
+          }
+        }
+
+        return true;
       },
       contentFilteredByTags: function contentFilteredByTags(contentList) {
         const filteredContent = [];
@@ -262,7 +269,7 @@
             const key = metaDataKeys[i];
             const value = contentList[key];
 
-            if (value.tags && this.tagsIncludeSelected(value.tags)) {
+            if (value.tags && this.tagsIncludedInSelectedTags(value.tags)) {
               filteredContent.push(value);
             }
           }
@@ -292,58 +299,6 @@
         }
 
         return searchResult;
-      },
-      randomInt: function randomInt(min, max) {
-        return Math.floor(Math.random() * (max - (min + 1))) + min;
-      },
-      enhanceMetadata: function enhanceMetadata(metadatas) {
-        if (metadatas === undefined && metadatas.length <= 0) {
-          return undefined;
-        }
-
-        for (let i = 0; i < metadatas.length; i++) {
-          const el = metadatas[i];
-
-          const category = this.getTagCategory(el.tags);
-          const categoryImgs = this.cardBGImages[category];
-          const max = Object.keys(categoryImgs).length - 1;
-          const randomIndex = this.randomInt(0, max);
-          const cardImg = randomIndex >= 0 ? Object.values(categoryImgs)[randomIndex] : 0;
-
-          // console.log("loaded " + cardImg + " for category " + category);
-
-          el.titleImg = cardImg;
-        }
-
-        return metadatas;
-      },
-      getTagCategory: function getTagCategory(tags) {
-        let category = this.tagCategory;
-
-        if (tags) {
-          for (let i = 0; i < tags.length; i++) {
-            const element = tags[i];
-            if (element.tag) {
-              if (element.tag.includes('FOREST')) {
-                category = 'forest'; break;
-              }
-              if (element.tag.includes('LANDSCAPE')) {
-                category = 'landscape'; break;
-              }
-              if (element.tag.includes('SNOW')) {
-                category = 'snow'; break;
-              }
-              if (element.tag.includes('HAZARD')) {
-                category = 'hazard'; break;
-              }
-              if (element.tag.includes('DIVERSITY')) {
-                category = 'diversity'; break;
-              }
-            }
-          }
-        }
-
-        return category;
       },
       dynamicCardBackground: function dynamicCardBackground() {
         const max = Object.keys(this.imagesImports).length;
@@ -417,7 +372,7 @@
         }
 
         if (contentToFilter) {
-          contentToFilter = this.enhanceMetadata(contentToFilter);
+          contentToFilter = this.enhanceMetadata(contentToFilter, this.cardBGImages);
 
           if (this.selectedTagNames !== undefined
           && this.selectedTagNames.length > 0) {
@@ -450,7 +405,6 @@
     },
     data: () => ({
       PageBGImage: './app_b_browsepage.jpg',
-      tagCategory: 'landscape', // default
       searchTerm: '',
       searchLabelText: 'Search',
       searchCount: 0,
@@ -464,7 +418,7 @@
     }),
     components: {
       NavBarView,
-      NoSearchResultsView,
+      // NoSearchResultsView,
       MetadataCard,
       MetadataCardPlaceholder,
     },

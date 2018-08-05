@@ -31,11 +31,15 @@
       </v-flex>
 
       <v-flex v-if="label"
-        xs4 >
+              xs4 
+              v-bind:style="this.bold ? 'font-weight: 700 !important;': ''"
+      >
         {{ label }}
       </v-flex>
 
-      <v-flex v-if="text" >
+      <v-flex v-if="text"
+              v-bind:style="this.bold ? 'font-weight: 700 !important;': ''"
+      >
         {{ text }}
       </v-flex>
 
@@ -57,6 +61,7 @@
       label: String,
       text: String,
       alignLeft: Boolean,
+      bold: Boolean,
       usePlaceholder: Boolean,
     },
     computed: {

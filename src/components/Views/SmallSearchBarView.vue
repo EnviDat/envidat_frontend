@@ -27,14 +27,21 @@
               style="text-align: center;">
 
         <v-tooltip bottom >
-          <v-chip slot="activator"
+          <!-- <v-chip slot="activator"
                   small disabled 
                   class="envidat_chip"
                   v-bind="{ ['color']: searchCount > 0 ? 'primary' : ''}"
                   :class="{ ['white--text']: searchCount > 0 ? true : false }"
           >
             {{ searchCount }}
-          </v-chip>
+          </v-chip> -->
+
+          <tag-chip slot="activator"
+                  :name="searchCount.toString()"
+                  :selectable="false"
+                  :highlighted="searchCount > 0"
+                  :closeable="false"  />
+
           <span>{{ searchCount }} metadata entries found</span>
         </v-tooltip>
       </v-flex>
@@ -52,6 +59,8 @@
 </template>
 
 <script>
+  import TagChip from './Cards/TagChip';
+
   export default {
     props: {
       labelText: String,
@@ -65,6 +74,12 @@
       searchText: '',
       lastSearch: '',
     }),
+    updated: function updated() {
+      if (!this.searchText && this.lastSearch) {
+        this.$emit('searchCleared');
+        this.lastSearch = '';
+      }
+    },
     watch: {
       searchTerm: function searchTerm(val) {
         // watcher to overtake the property value to the v-model value
@@ -89,11 +104,8 @@
         }
       },
     },
-    updated: function updated() {
-      if (!this.searchText && this.lastSearch) {
-        this.$emit('searchCleared');
-        this.lastSearch = '';
-      }
+    components: {
+      TagChip,
     },
   };
 </script>

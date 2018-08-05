@@ -1,7 +1,12 @@
 <template>
     <v-flex >
 
-      <v-card elevation-5 class="px-4 py-2" dark color="primary">
+      <v-card elevation-5
+              class="px-4 py-2"
+              :dark="dark"
+              color="primary"
+              v-bind="{['style'] : dynamicCardBackground }"
+      >
 
         <!--h1 class="py-3" >{{ metadataTitle }} id: {{ $route.params.id }}</h1-->
         <div v-if="metadataTitle"
@@ -17,39 +22,40 @@
         <!-- <v-card-media></v-card-media> -->
 
 
-        <v-divider dark class="my-2" ></v-divider>
+        <v-divider :dark="dark" class="my-2" ></v-divider>
 
         <v-layout row wrap>
           <v-flex xs6 py-1 class="headerInfo">
             <icon-label-view  :text="contactName"
-                              :icon="getIcon('contact2_w')"
+                              :icon="getIcon(this.iconFlip('contact2'))"
                               iconTooltip="Main contact"
-                              :alignLeft="true" :usePlaceholder="showPlaceholder" />
+                              :alignLeft="true" />
           </v-flex>
 
           <v-flex xs6 py-1 class="headerInfo">
             <icon-label-view  :text="doi"
-                              :icon="getIcon('doi_w')"
+                              :icon="getIcon(iconFlip('doi'))"
                               iconTooltip="Data Object Identifier"
-                              :alignLeft="true" :usePlaceholder="showPlaceholder" />
+                              :alignLeft="true" />
           </v-flex>
 
           <v-flex xs6 py-1 class="headerInfo">
             <icon-label-view  :text="contactEmail"
-                              :icon="getIcon('mail_w')"
+                              :icon="getIcon(iconFlip('mail'))"
                               iconTooltip="Email adress of the main contact"
-                              :alignLeft="true" :usePlaceholder="showPlaceholder" />
+                              :alignLeft="true" />
           </v-flex>
 
           <v-flex xs6 py-1 class="headerInfo">
             <icon-label-view :text="license"
-                              :icon="getIcon('license_w')"
+                              :icon="getIcon(iconFlip('license'))"
                               iconTooltip="License for Datafiles"
-                              :alignLeft="true" :usePlaceholder="showPlaceholder" />
+                              :alignLeft="true"
+                               />
           </v-flex>
         </v-layout>
 
-        <v-divider dark class="my-2" ></v-divider>
+        <v-divider :dark="dark" class="my-2" ></v-divider>
 
         <v-layout row wrap>
 
@@ -102,6 +108,7 @@ import IconLabelView from '../IconLabelView';
 export default {
   props: {
     metadataTitle: String,
+    titleImg: String,
     contactName: String,
     contactEmail: String,
     doi: String,
@@ -112,10 +119,17 @@ export default {
   },
   data: () => ({
     showTagsExpanded: false,
+    dark: true,
+    blackTopToBottom: 'rgba(80,80,80, 0.1) 0%, rgba(80,80,80, 0.9) 70%',
+    whiteTopToBottom: 'rgba(245,245,245, 0.25) 0%, rgba(245,245,245, 0.9) 50%',
   }),
   methods: {
     catchTagClicked: function catchTagClicked(tagId) {
       this.$emit('clickedTag', tagId);
+    },
+    iconFlip: function iconFlip(icon) {
+      const iconflip = this.dark ? `${icon}_w` : icon;
+      return iconflip;
     },
   },
   computed: {
@@ -132,6 +146,16 @@ export default {
       }
 
       return this.tags.slice(0, this.maxTags);
+    },
+    dynamicCardBackground: function dynamicCardBackground() {
+      const gradient = this.dark ? this.blackTopToBottom : this.whiteTopToBottom;
+
+      if (this.titleImg) {
+        return `background-image: linear-gradient(0deg, ${gradient}), url(${this.titleImg});
+        background-position: center, center; background-size: cover;`;
+      }
+
+      return '';
     },
   },
   components: {

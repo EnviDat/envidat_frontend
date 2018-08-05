@@ -189,6 +189,7 @@
         allTags: 'metadata/allTags',
         loadingAllTags: 'metadata/loadingAllTags',
         iconImages: 'iconImages',
+        cardBGImages: 'cardBGImages',
       }),
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
@@ -306,6 +307,8 @@
           currentContent = this.metadatasContent[this.metadataId];
         }
 
+        currentContent = this.enhanceMetadata(currentContent, this.cardBGImages);
+
         if (currentContent) {
           // console.log("create content " + currentContent.spatial + " " + this.header);
           this.header = this.createHeader(currentContent);
@@ -337,6 +340,7 @@
           contactEmail,
           license: license.title,
           tags: dataset.tags,
+          titleImg: dataset.titleImg,
         };
       },
       createBody: function createBody(dataset) {
