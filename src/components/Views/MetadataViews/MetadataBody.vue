@@ -4,6 +4,16 @@
     
     <v-card-title class="metadata_title title" >Description</v-card-title>
 
+<!--
+    <v-card-text v-if="fullDescription" >{{ fullDescription }}</v-card-text>
+
+    <v-card-text v-if="!fullDescription && showPlaceholder" >
+      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-pulse" >
+        <div class='bone bone-type-multiline bone-style-paragraph' ></div>
+      </div>
+    </v-card-text>
+
+ {{ title | truncate(maxTitleLength) }} -->
     <v-card-text >
       <m-markdown-preview :markdown="fullDescription" :options="{html: true}" />
     </v-card-text>
@@ -31,6 +41,7 @@
       doi: String,
       description: String,
       isOnTop: Boolean,
+      showPlaceholder: Boolean
     },
     mounted: function mounted() {
     },

@@ -39,6 +39,7 @@ export default {
     state.loadingMetadataIds = false;
     state.loadingMetadatasContent = false;
     state.metadatasContentOK = false;
+    state.metadataIdsOK = false;
     state.error = reason;
   },
   [LOAD_METADATA_IDS](state) {

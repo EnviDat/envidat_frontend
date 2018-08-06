@@ -6,7 +6,16 @@
     <v-container fluid grid-list-xs grid-list-md pa-3>
       <v-layout row wrap>
 
-        <v-flex xs12 sm6
+        <v-flex v-if="showPlaceholder"
+                xs12 sm6
+                v-for="n in 2" :key="n">
+
+          <resource-card-placeholder :twoColumnLayout="twoColumnLayout" />
+
+        </v-flex>
+
+        <v-flex v-if="showPlaceholder"
+                xs12 sm6
                 v-for="res in resources" :key="res.id">
 
           <resource-card v-bind="res" v-on:clicked="resClicked(res)" :twoColumnLayout="twoColumnLayout" />
@@ -28,6 +37,7 @@
 
 <script>
   import ResourceCard from '../Cards/ResourceCard';
+  import ResourceCardPlaceholder from '../Cards/ResourceCardPlaceholder';
 
   export default {
     props: {
@@ -37,6 +47,7 @@
       resources: Array,
       twoColumnLayout: Boolean,
       isOnTop: Boolean,
+      showPlaceholder: Boolean,
     },
     updated: function updated() {
     },
@@ -60,6 +71,7 @@
     },
     components: {
       ResourceCard,
+      ResourceCardPlaceholder,
     },
   };
 </script>

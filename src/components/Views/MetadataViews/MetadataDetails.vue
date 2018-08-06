@@ -4,17 +4,35 @@
 
     <v-card-text >
 
-    <v-form>
+      <v-form>
 
-      <v-text-field
-        v-for="val in details" :key="val.label"
-        v-bind:label="val.label"
-        v-bind:name="val.label"
-        :value="val.text"
-        :id="val.label"
-        readonly
-      ></v-text-field>
-    </v-form>
+        <div v-for="val in details" :key="val.label" >
+
+          <v-text-field v-if="val.text"
+                        v-bind:label="val.label"
+                        v-bind:name="val.label"
+                        :value="val.text"
+                        :id="val.label"
+                        readonly
+          />
+
+          <div v-if="showPlaceholder
+              && !val.text" >
+            <v-layout row>
+              <div style="width: 20%;"
+                    class="flex pr-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-pulse" >
+                <div class='bone bone-type-text ' ></div>
+              </div>
+
+              <div style="width: 80%;"
+                    class="flex pl-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-pulse" >
+                <div class='bone bone-type-text ' ></div>
+              </div>
+            </v-layout>
+          </div>
+        </div>
+        
+      </v-form>
 
     </v-card-text>
 
@@ -33,6 +51,7 @@
   export default {
     props: {
       details: Array,
+      showPlaceholder: Boolean,
     },
     data: () => ({ }),
     methods: {

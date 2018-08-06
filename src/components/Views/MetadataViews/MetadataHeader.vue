@@ -9,41 +9,41 @@
       >
 
         <!--h1 class="py-3" >{{ metadataTitle }} id: {{ $route.params.id }}</h1-->
-        <div class="headerTitle display-2 py-3">{{ metadataTitle }}</div>  
+        <div v-if="metadataTitle"
+            class="display-2 headerTitle py-3">
+          {{ metadataTitle }}
+        </div>
+        
+        <div v-if="!metadataTitle && showPlaceholder"
+          class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-pulse" >
+          <div class='bone bone-type-multiline bone-style-steps' ></div>
+        </div>
 
-        <v-card-media></v-card-media>
+        <!-- <v-card-media></v-card-media> -->
 
-      <!-- </v-card>
-
-      <v-card class="px-4 py-2" dark color="primary"> -->
 
         <v-divider :dark="dark" class="my-2" ></v-divider>
 
-        <v-layout py-1 row wrap>
-          <v-flex xs6 class="headerInfo">
+        <v-layout row wrap>
+          <v-flex xs6 py-1 class="headerInfo">
             <icon-label-view  :text="contactName"
                               :icon="getIcon(this.iconFlip('contact2'))"
                               iconTooltip="Main contact"
-                              :alignLeft="true"
-                              :bold="!dark"/>
+                              :alignLeft="true" />
           </v-flex>
 
           <v-flex xs6 py-1 class="headerInfo">
             <icon-label-view  :text="doi"
                               :icon="getIcon(iconFlip('doi'))"
                               iconTooltip="Data Object Identifier"
-                              :alignLeft="true"
-                              :bold="!dark"
-                              />
+                              :alignLeft="true" />
           </v-flex>
 
           <v-flex xs6 py-1 class="headerInfo">
             <icon-label-view  :text="contactEmail"
                               :icon="getIcon(iconFlip('mail'))"
                               iconTooltip="Email adress of the main contact"
-                              :alignLeft="true"
-                              :bold="!dark"
-                              />
+                              :alignLeft="true" />
           </v-flex>
 
           <v-flex xs6 py-1 class="headerInfo">
@@ -51,7 +51,6 @@
                               :icon="getIcon(iconFlip('license'))"
                               iconTooltip="License for Datafiles"
                               :alignLeft="true"
-                              :bold="!dark"
                                />
           </v-flex>
         </v-layout>
@@ -60,14 +59,24 @@
 
         <v-layout row wrap>
 
-          <tag-chip v-if="tags" v-for="tag in slicedTags" :key="tag.name"
+          <tag-chip v-if="tags"
+                    v-for="tag in slicedTags" :key="tag.name"
                     :name="tag.name"
                     v-on:clicked="catchTagClicked($event, tag.name)"
                     class="headerTag" />
 
-          <v-flex xs2 v-if="maxTagsReached && !showTagsExpanded">
+          <v-flex xs2 v-if="tags && maxTagsReached && !showTagsExpanded">
             <tag-chip class="headerTag" :name="'...'" />
           </v-flex>
+
+
+          <tag-chip-placeholder v-if="!tags && showPlaceholder"
+                    v-for="n in 5" :key="n" 
+                    :selectable="false"
+                    :highlighted="false"
+                    :closeable="false"
+                    class="headerTag" />
+
         </v-layout>
           
         <v-card-actions v-if="maxTagsReached">
@@ -93,6 +102,7 @@
 
 <script>
 import TagChip from '../Cards/TagChip';
+import TagChipPlaceholder from '../Cards/TagChipPlaceholder';
 import IconLabelView from '../IconLabelView';
 
 export default {
@@ -105,6 +115,7 @@ export default {
     license: String,
     tags: Array,
     maxTags: Number,
+    showPlaceholder: Boolean
   },
   data: () => ({
     showTagsExpanded: false,
@@ -149,6 +160,7 @@ export default {
   },
   components: {
     TagChip,
+    TagChipPlaceholder,
     IconLabelView,
   },
 };

@@ -52,17 +52,17 @@
                 ['column']: this.$vuetify.breakpoint.xsOnly,
               }" >
 
-            <v-flex xs12 px-2 py-2 >
-              <!-- <v-icon>assignment</v-icon> -->
+            <v-flex v-if="selectedTags.length > 0"
+                    xs12 px-2 py-2 >
 
-              <tag-chip v-if="selectedTags.length > 0"
+              <tag-chip 
                         v-for="tag in selectedTags" :key="tag.name" 
                         :name="tag.name"
                         :selectable="false"
                         :highlighted="true"
                         :closeable="true"
                         v-on:clickedClose="catchTagCloseClicked($event, tag.name)"
-                        class="header_tag" />
+                        class="filterTag" />
 
               <tag-chip v-if="showPopularTags"
                         v-for="tag in showPopularTags" :key="tag.name" 
@@ -71,14 +71,26 @@
                         :highlighted="false"
                         :closeable="false"
                         v-on:clicked="catchTagClicked($event, tag.name)"
-                        class="header_tag" />
+                        class="filterTag" />
 
 
               <tag-chip v-if="maxPopularTagNumber >= showPopularTags.length"
-                class="header_tag" :name="'...'" />
+                class="filterTag" :name="'...'" />
 
             </v-flex>
-            
+
+            <v-flex v-if="showPlaceholder && selectedTags.length <= 0"
+                    xs12 px-2 py-2 >
+
+              <tag-chip-placeholder
+                        v-for="n in 5" :key="n" 
+                        :selectable="false"
+                        :highlighted="false"
+                        :closeable="false"
+                        class="filterTag" />
+
+            </v-flex>
+
             <v-card-actions class="pr-2">
             
               <filter-view-buttons :expanded.sync="expanded"
@@ -103,6 +115,7 @@
 
 <script>
 import TagChip from './Cards/TagChip';
+import TagChipPlaceholder from './Cards/TagChipPlaceholder';
 import SmallSearchBarView from './SmallSearchBarView';
 import FilterExpandedView from './FilterExpandedView';
 import FilterViewButtons from './FilterViewButtons';
@@ -117,6 +130,7 @@ export default {
     allTags: Array,
     searchViewLabelText: String,
     searchViewHasButton: Boolean,
+    showPlaceholder: Boolean,
   },
   computed: {
     selectedTags: function selectedTags() {
@@ -275,6 +289,7 @@ export default {
   }),
   components: {
     TagChip,
+    TagChipPlaceholder,
     SmallSearchBarView,
     FilterExpandedView,
     FilterViewButtons,
@@ -290,7 +305,7 @@ export default {
     opacity: 0.85;
   }
 
-  .header_tag {
+  .filterTag {
     opacity: 0.7;
   }
 
