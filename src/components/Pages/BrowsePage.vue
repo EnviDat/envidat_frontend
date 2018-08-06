@@ -72,7 +72,7 @@
   import NavBarView from '../Views/NavbarView';
   import MetadataCard from '../Views/Cards/MetadataCard';
   import MetadataCardPlaceholder from '../Views/Cards/MetadataCardPlaceholder';
-  // import NoSearchResultsView from '../Views/NoSearchResultsView';
+  import NoSearchResultsView from '../Views/Errors/NoSearchResultsView';
   import { SEARCH_METADATA } from '../../store/metadataMutationsConsts';
   import { CHANGE_APP_BG } from '../../store/mutationsConsts';
 
@@ -418,7 +418,7 @@
     }),
     components: {
       NavBarView,
-      // NoSearchResultsView,
+      NoSearchResultsView,
       MetadataCard,
       MetadataCardPlaceholder,
     },

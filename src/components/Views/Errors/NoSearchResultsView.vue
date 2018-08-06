@@ -29,7 +29,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import CategoryCard from './Cards/CategoryCard';
+  import CategoryCard from '../Cards/CategoryCard';
 
   export default {
     props: {
