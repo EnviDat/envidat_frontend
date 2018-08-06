@@ -1,5 +1,6 @@
 import mutations from './mutations';
 import actions from './actions';
+import categorycards from './categorycards';
 
 export const metadata = {
   namespaced: true,
@@ -21,6 +22,7 @@ export const metadata = {
     popularTags: [],
     loadingPopularTags: false,
     error: Object,
+    categorycards,
   },
   getters: {
     loadingMetadataIds: state => state.loadingMetadataIds,
@@ -36,6 +38,7 @@ export const metadata = {
     loadingAllTags: state => state.loadingAllTags,
     popularTags: state => state.popularTags,
     loadingPopularTags: state => state.loadingPopularTags,
+    categorycards: state => state.categorycards,
   },
   mutations,
   actions,
