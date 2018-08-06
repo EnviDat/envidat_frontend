@@ -76,9 +76,9 @@
 </template>
 
 <script>
-import TagChip from './Cards/TagChip';
+import TagChip from '../Cards/TagChip';
 import FilterViewButtons from './FilterViewButtons';
-import IconLabelView from './IconLabelView';
+import IconLabelView from '../IconLabelView';
 
 export default {
   props: {

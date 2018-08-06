@@ -1,9 +1,8 @@
 <template>
   
-    <v-layout column
-              style="position: sticky; top: -1px; z-index: 2;">
+    <v-layout column >
 
-      <v-flex xs12 px-3 py-1>
+      <v-flex xs12 py-1>
 
         <v-card raised >
 
@@ -53,7 +52,7 @@
       </v-flex>
 
 
-      <v-flex xs12 px-3 >
+      <v-flex xs12 >
         <filter-view :searchViewLabelText="searchLabelText"
                       :searchTerm="searchTerm"
                       :searchCount="searchCount"
@@ -67,9 +66,16 @@
                       v-on:clickedTag="catchTagClicked"
                       v-on:clickedTagClose="catchTagCloseClicked"
                       v-on:clickedClear="catchTagCleared"
-                      >
+          >
         </filter-view>
 
+      </v-flex>
+
+      <v-flex xs4 offset-xs8 py-1
+              v-if="showMapFilter" >
+        <filter-map-view :totalHeight="mapFilterHeight"
+                          v-on:viewChanged="catchViewChanged"
+                          v-on:pointClicked="catchPointClicked" />
       </v-flex>
 
     </v-layout>
@@ -77,7 +83,8 @@
 </template>
 
 <script>
-  import FilterView from './FilterView';
+  import FilterView from './Filtering/FilterView';
+  import FilterMapView from './Filtering/FilterMapView';
   import Logo from '../../assets/logo/EnviDat_logo_32.png';
 
   export default {
@@ -92,6 +99,8 @@
       popularTags: Array,
       selectedTagNames: Array,
       showPlaceholder: Boolean,
+      showMapFilter: Boolean,
+      mapFilterHeight: Number,
     },
     computed: {
       alignClass: function alignClass() {
@@ -118,6 +127,12 @@
       catchTagCloseClicked: function catchTagCloseClicked(tagId) {
         this.$emit('clickedTagClose', tagId);
       },
+      catchViewChanged: function catchViewChanged(visibleIds) {
+        this.$emit('mapFilterChanged', visibleIds);
+      },
+      catchPointClicked: function catchPointClicked(id) {
+        this.$emit('pointClicked', id);
+      },
     },
     data: () => ({
       Logo,
@@ -128,6 +143,7 @@
     }),
     components: {
       FilterView,
+      FilterMapView,
     },
   };
 </script>

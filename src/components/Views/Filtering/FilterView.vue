@@ -114,8 +114,8 @@
 </template>
 
 <script>
-import TagChip from './Cards/TagChip';
-import TagChipPlaceholder from './Cards/TagChipPlaceholder';
+import TagChip from '../Cards/TagChip';
+import TagChipPlaceholder from '../Cards/TagChipPlaceholder';
 import SmallSearchBarView from './SmallSearchBarView';
 import FilterExpandedView from './FilterExpandedView';
 import FilterViewButtons from './FilterViewButtons';

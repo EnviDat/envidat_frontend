@@ -70,7 +70,9 @@
         this.mapIsSetup = true;
       },
       initLeaflet: function initLeaflet(mapElement, coords) {
-        const map = L.map(mapElement);
+        const map = L.map(mapElement, {
+          scrollWheelZoom: false,
+        });
 
         if (coords) {
           let viewCoords = coords;

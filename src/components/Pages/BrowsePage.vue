@@ -1,68 +1,95 @@
 <template>
   <v-container grid-list-xs fluid py-1>
 
-    <nav-bar-view :searchViewLabelText="searchLabelText"
-                  :searchTerm="searchTerm"
-                  :searchCount="searchCount"
-                  :searchViewHasButton="false"
-                  :allTags="allTags" 
-                  :selectedTagNames.sync="selectedTagNames"
-                  :popularTags="popularTags"
-                  :showPlaceholder="loading"
-                  v-on:clickedSearch="catchSearchClicked"
-                  v-on:clearedSearch="catchSearchCleared"
-                  v-on:clickedTag="catchTagClicked"
-                  v-on:clickedTagClose="catchTagCloseClicked"
-                  v-on:clickedClear="catchTagCleared"
-                  />
+    <v-layout row wrap>
 
-    <v-layout column style="z-index: 1;">
+      <v-flex xs12 px-3 
+              style="position: sticky; top: -1px; z-index: 2;" >
 
-<!--
-        v-bind:style="'opacity: ' + 1 - window.scrollTop() / 250"
--->  
+        <nav-bar-view :searchViewLabelText="searchLabelText"
+                      :searchTerm="searchTerm"
+                      :searchCount="searchCount"
+                      :searchViewHasButton="false"
+                      :allTags="allTags" 
+                      :selectedTagNames.sync="selectedTagNames"
+                      :popularTags="popularTags"
+                      :showPlaceholder="loading"
+                      :showMapFilter="showMapFilter"
+                      :mapFilterHeight="mapFilterHeightPx"
+                      v-on:clickedSearch="catchSearchClicked"
+                      v-on:clearedSearch="catchSearchCleared"
+                      v-on:clickedTag="catchTagClicked"
+                      v-on:clickedTagClose="catchTagCloseClicked"
+                      v-on:clickedClear="catchTagCleared"
+                      v-on:mapFilterChanged="catchMapFilterChanged"
+                      v-on:pointClicked="catchPointClicked"
+                      />
 
-      <v-container fluid grid-list-md pa-3 @scroll="updateScroll" >
-        <v-layout row wrap>
+      </v-flex>
 
-          <v-flex v-if="loading"
-                  xs12 sm6 md4 xl3
-                  v-for="(n, index) in palceHolderAmount" :key="index">
 
-            <metadata-card-placeholder :dark="false" />
-  
-          </v-flex>
+      <v-flex px-3
+              v-bind="metadataListStyling"
+       >
+        <v-layout column style="z-index: 1;">
 
-          <v-flex v-if="!loading"
-                  xs12 sm6 md4 xl3
-                  v-for="(metadata, index) in filteredMetadataContent" :key="index">
-            <metadata-card
-                          :title="metadata.title"
-                          :id="metadata.id"
-                          :subtitle="metadata.notes"
-                          :tags="metadata.tags"
-                          :titleImg="metadata.titleImg"
-                          :restricted="hasRestrictedResources(metadata)"
-                          :resourceCount="metadata.num_resources"
-                          :resources="metadata.resources"
-                          :dark="false"
-                          v-on:clickedEvent="metaDataClicked"
-                          v-on:clickedTag="catchTagClicked">
-            </metadata-card>
-  
-          </v-flex>
+          <v-container fluid grid-list-md pa-0
+                        @scroll="updateScroll" >
 
-            <v-flex xs12 >
-              <no-search-results-view v-on:clicked="catchCategoryClicked"
-                                      :noResultText="noResultText"
-                                      :suggestionText="suggestionText" />  
-            </v-flex>
+            <v-layout row wrap>
 
+              <v-flex v-if="loading"
+                      v-bind="cardGridClass"
+                      v-for="(n, index) in palceHolderAmount" :key="index">
+
+                <metadata-card-placeholder :dark="false" />
+      
+              </v-flex>
+
+              <v-flex v-if="!loading"
+                      v-bind="cardGridClass"
+                      v-for="(metadata, index) in filteredMetadataContent" :key="index">
+                <metadata-card
+                              :title="metadata.title"
+                              :id="metadata.id"
+                              :subtitle="metadata.notes"
+                              :tags="metadata.tags"
+                              :titleImg="metadata.titleImg"
+                              :restricted="hasRestrictedResources(metadata)"
+                              :resourceCount="metadata.num_resources"
+                              :resources="metadata.resources"
+                              :dark="false"
+                              :compactLayout="showMapFilter"
+                              v-on:clickedEvent="metaDataClicked"
+                              v-on:clickedTag="catchTagClicked">
+                </metadata-card>
+      
+              </v-flex>
+
+                <v-flex xs12 >
+                  <no-search-results-view v-on:clicked="catchCategoryClicked"
+                                          :noResultText="noResultText"
+                                          :suggestionText="suggestionText" />  
+                </v-flex>
+
+
+            </v-layout>
+          </v-container>
 
         </v-layout>
-      </v-container>
+      </v-flex>
 
+      <!-- <v-flex px-3
+              v-bind="{ ['xs4']: showMapFilter,
+                        ['xs0']: !showMapFilter }"
+       >
+
+        <v-card height="300px">
+
+        </v-card>
+      </v-flex> -->
     </v-layout>
+
   </v-container>
   
 </template>
@@ -72,7 +99,7 @@
   import NavBarView from '../Views/NavbarView';
   import MetadataCard from '../Views/Cards/MetadataCard';
   import MetadataCardPlaceholder from '../Views/Cards/MetadataCardPlaceholder';
-  // import NoSearchResultsView from '../Views/NoSearchResultsView';
+  import NoSearchResultsView from '../Views/NoSearchResultsView';
   import { SEARCH_METADATA } from '../../store/metadataMutationsConsts';
   import { CHANGE_APP_BG } from '../../store/mutationsConsts';
 
@@ -217,15 +244,22 @@
         // }
       },
       catchCategoryClicked: function catchCategoryClicked(cardTitle) {
-        // sleep(500);
-        // setTimeout(this.$router.push({ name: 'BrowsePage', params: { cardTitle }}), 1000);
-
         this.$router.push({
           path: '/browse',
           query: {
             search: cardTitle,
           },
         });
+      },
+      catchMapFilterChanged: function catchMapFilterChanged(visibleIds) {
+        // add visibleIds contentfilter
+        // retrigger filtering
+
+        // console.log("catchMapFilterChanged " + visibleIds)
+      },
+      catchPointClicked: function catchPointClicked(id) {
+        // bring to top
+        // highlight entry
       },
       isTagSelected: function isTagSelected(tagName) {
         if (!tagName || this.selectedTagNames === undefined) {
@@ -391,6 +425,38 @@
 
         return [];
       },
+      cardGridClass: function cardGridClass() {
+        const fullSize = {
+          xs12: true,
+          sm6: true,
+          md4: true,
+          xl3: true,
+        };
+
+        const twoThridsSize = {
+          xs12: true,
+          sm8: true,
+          md6: true,
+          xl4: true,
+        };
+
+        if (this.showMapFilter) {
+          return twoThridsSize;
+        }
+
+        return fullSize;
+      },
+      metadataListStyling: function metadataListStyling() {
+        const json = {
+          xs8: this.showMapFilter,
+          xs12: !this.showMapFilter,
+          'mt-2': !this.showMapFilter,
+          style: this.showMapFilter ? `margin-top: -${this.mapFilterHeightPx}px;` : '',
+        };
+
+        return json;
+      },
+
     },
     watch: {
       /* eslint-disable no-unused-vars */
@@ -415,10 +481,12 @@
       selectedTagNames: [],
       popularTagAmount: 10,
       scrollPosition: null,
+      showMapFilter: true,
+      mapFilterHeightPx: 450,
     }),
     components: {
       NavBarView,
-      // NoSearchResultsView,
+      NoSearchResultsView,
       MetadataCard,
       MetadataCardPlaceholder,
     },

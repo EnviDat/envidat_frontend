@@ -315,6 +315,7 @@
           this.body = this.createBody(currentContent);
           this.citation = this.createCitation(currentContent);
           this.resources = this.createResources(currentContent);
+          // createLocation is a globalMethod
           this.location = this.createLocation(currentContent);
           this.details = this.createDetails(currentContent);
         }
@@ -442,55 +443,6 @@
           doi: dataset.doi,
           resources,
         };
-      },
-      createLocation: function createLocation(dataset) {
-        const location = {};
-        if (dataset && dataset.spatial) {
-          location.geoJSON = dataset.spatial;
-
-          // parseJSON because the geoJOSN from CKAN might be invalid!
-          const spatialJSON = JSON.parse(dataset.spatial);
-          // console.log("createLocation spatial " + spatialJSON.coordinates);
-
-          if (spatialJSON) {
-            location.isPolygon = spatialJSON.type === 'Polygon';
-            location.isPoint = spatialJSON.type === 'Point';
-            location.isMultiPoint = spatialJSON.type === 'MultiPoint';
-
-            // Swap lngLat to latLng because the geoJOSN from CKAN might be invalid!
-
-            if (location.isPoint) {
-              // swap coords for the leaflet map
-              location.pointArray = [spatialJSON.coordinates[1], spatialJSON.coordinates[0]];
-            } else if (location.isPolygon) {
-              location.pointArray = [];
-
-              for (let i = 0; i < spatialJSON.coordinates.length; i++) {
-                const pointElement = spatialJSON.coordinates[i];
-                const pointObject = [];
-
-                for (let j = 0; j < pointElement.length; j++) {
-                  const coord = pointElement[j];
-                  pointObject.push([coord[1], coord[0]]);
-                }
-
-                location.pointArray.push(pointObject);
-              }
-            } else if (location.isMultiPoint) {
-              location.pointArray = [];
-
-              for (let i = 0; i < spatialJSON.coordinates.length; i++) {
-                const pointElement = spatialJSON.coordinates[i];
-                const pointObject = [pointElement[1], pointElement[0]];
-                location.pointArray.push(pointObject);
-              }
-            }
-          }
-        }
-
-        // console.log("createLocation " + location.pointArray + " " + location.geoJSON);
-
-        return location;
       },
       createDetails: function createDetails(dataset) {
         const details = [];

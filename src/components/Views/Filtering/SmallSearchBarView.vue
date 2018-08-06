@@ -59,7 +59,7 @@
 </template>
 
 <script>
-  import TagChip from './Cards/TagChip';
+  import TagChip from '../Cards/TagChip';
 
   export default {
     props: {
