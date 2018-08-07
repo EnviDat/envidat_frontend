@@ -119,11 +119,11 @@ export default {
     license: String,
     tags: Array,
     maxTags: Number,
-    showPlaceholder: Boolean
+    showPlaceholder: Boolean,
   },
   data: () => ({
     showTagsExpanded: false,
-    dark: true,
+    dark: false,
     blackTopToBottom: 'rgba(80,80,80, 0.1) 0%, rgba(80,80,80, 0.9) 70%',
     whiteTopToBottom: 'rgba(245,245,245, 0.25) 0%, rgba(245,245,245, 0.9) 50%',
   }),

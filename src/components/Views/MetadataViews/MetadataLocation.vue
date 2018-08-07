@@ -2,8 +2,15 @@
   <v-card  >
     <v-card-title class="title metadata_title" >Location</v-card-title>
 
-    <v-card-text v-resize="onResize" id="mapcontainer" ref="mapcontainer">
-      <div id="map" ref="map" style="width: 100%; height: 500px;"></div>
+    <v-card-text >
+      <div id="mapcontainer"
+                  ref="mapcontainer">
+        <div id="map"
+              ref="map" 
+              v-bind="mapSize"
+        >
+        </div>
+      </div>
     </v-card-text>
     
   </v-card>
@@ -27,6 +34,29 @@
 
     },
     updated: function updated() {
+    },
+    computed: {
+      mapSize: function mapSize() {
+        let width = this.largeSize;
+        let height = this.mediumSize;
+
+        if (this.$vuetify.breakpoint.xsOnly) {
+          width = this.mediumSize;
+          height = this.smallSize;
+        } else if (this.$vuetify.breakpoint.smAndDown) {
+          width = this.fullWidthSize;
+          height = this.smallSize;
+        } else if (this.$vuetify.breakpoint.mdAndDown) {
+          width = this.fullWidthSize;
+          height = this.mediumSize;
+        }
+
+        return {
+          style: `width: ${width}px !important;
+                  max-width: 100%;
+                  height: ${height}px !important;`,
+        };
+      },
     },
     methods: {
       setupMap: function setupMap() {
@@ -132,20 +162,6 @@
       onMapClick: function onMapClick(e) {
         alert("You clicked the map at " + e.latlng);
       },
-      resize: function resize() {
-        let width = this.largeSize;
-
-        if (this.$vuetify.breakpoint.mdAndDown) {
-          width = this.mediumSize;
-        } else if (this.$vuetify.breakpoint.smAndDown) {
-          width = this.smallSize;
-        }
-
-        this.$refs.map.setAttribute('style', `width: ${width}px;`);
-        // height += 32;
-        // this.$refs.mapcontainer.setAttribute('style', `height: ${height}px;`);
-        this.map.invalidateSize();
-      },
     },
     watch: {
       geoJSON: function updateGeoJSON() {
@@ -163,6 +179,7 @@
       smallSize: 300,
       mediumSize: 500,
       largeSize: 725,
+      fullWidthSize: 875,
       map: null,
       mapIsSetup: false,
     }),
