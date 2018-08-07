@@ -10,7 +10,11 @@
 
         <!--h1 class="py-3" >{{ metadataTitle }} id: {{ $route.params.id }}</h1-->
         <div v-if="metadataTitle"
-            class="display-2 headerTitle py-3">
+            class="headerTitle py-3"
+            :class="{ 'display-2': $vuetify.breakpoint.lgAndUp,
+                      'display-1': $vuetify.breakpoint.mdAndDown, 
+                      'headline': $vuetify.breakpoint.smAndDown, 
+                      }">
           {{ metadataTitle }}
         </div>
         

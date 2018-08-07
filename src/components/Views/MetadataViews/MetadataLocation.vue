@@ -1,18 +1,10 @@
 <template>
-  <v-card >
+  <v-card  >
     <v-card-title class="title metadata_title" >Location</v-card-title>
 
-    <v-card-text id="mapcontainer" ref="mapcontainer">
-      <div id="map" ref="map" style="width: 725px; height: 500px;"></div>
+    <v-card-text v-resize="onResize" id="mapcontainer" ref="mapcontainer">
+      <div id="map" ref="map" style="width: 100%; height: 500px;"></div>
     </v-card-text>
-    
-
-    <!--v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn icon @click.native="resize()">
-        <v-icon color="accent" >{{ fullSize ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
-      </v-btn>        
-    </v-card-actions-->
     
   </v-card>
 
@@ -70,7 +62,9 @@
         this.mapIsSetup = true;
       },
       initLeaflet: function initLeaflet(mapElement, coords) {
-        const map = L.map(mapElement);
+        const map = L.map(mapElement, {
+          scrollWheelZoom: false,
+        });
 
         if (coords) {
           let viewCoords = coords;
@@ -138,15 +132,20 @@
       onMapClick: function onMapClick(e) {
         alert("You clicked the map at " + e.latlng);
       },
-      // resize: function resize() {
-      //   let height = this.fullSize ? 500 : 300;
-      //   console.log("resize " + height);
-      //   this.fullSize = !this.fullSize;
-      //   this.$refs.map.setAttribute('style', `height: ${height}px;`);
-      //   height += 32;
-      //   this.$refs.mapcontainer.setAttribute('style', `height: ${height}px;`);
-      //   this.map.invalidateSize();
-      // },
+      resize: function resize() {
+        let width = this.largeSize;
+
+        if (this.$vuetify.breakpoint.mdAndDown) {
+          width = this.mediumSize;
+        } else if (this.$vuetify.breakpoint.smAndDown) {
+          width = this.smallSize;
+        }
+
+        this.$refs.map.setAttribute('style', `width: ${width}px;`);
+        // height += 32;
+        // this.$refs.mapcontainer.setAttribute('style', `height: ${height}px;`);
+        this.map.invalidateSize();
+      },
     },
     watch: {
       geoJSON: function updateGeoJSON() {
@@ -161,7 +160,9 @@
       },
     },
     data: () => ({
-      fullSize: false,
+      smallSize: 300,
+      mediumSize: 500,
+      largeSize: 725,
       map: null,
       mapIsSetup: false,
     }),
