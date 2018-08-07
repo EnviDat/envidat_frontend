@@ -260,6 +260,25 @@
 
         return true;
       },
+      contentFilterAccessibility: function contentFilterAccessibility(contentList) {
+        const accessibleContent = [];
+
+        if (contentList.length > 0) {
+          const metaDataKeys = Object.keys(contentList);
+
+          for (let i = 0; i < metaDataKeys.length; i++) {
+            const key = metaDataKeys[i];
+            const value = contentList[key];
+
+            if (value.capacity && value.capacity === 'public') {
+              // unpublished entries have 'private'
+              accessibleContent.push(value);
+            }
+          }
+        }
+
+        return accessibleContent;
+      },
       contentFilteredByTags: function contentFilteredByTags(contentList) {
         const filteredContent = [];
 
@@ -373,6 +392,8 @@
         }
 
         if (contentToFilter) {
+          contentToFilter = this.contentFilterAccessibility(contentToFilter);
+
           contentToFilter = this.enhanceMetadata(contentToFilter, this.cardBGImages);
 
           if (this.selectedTagNames !== undefined
