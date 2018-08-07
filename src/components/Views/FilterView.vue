@@ -45,12 +45,14 @@
                 raised
                 >
 
-          <v-layout  v-bind="{
-                ['row']: this.$vuetify.breakpoint.smAndUp,
-                ['align-center']: this.$vuetify.breakpoint.smAndUp,
-                ['align-content-center']: this.$vuetify.breakpoint.smAndUp,
-                ['column']: this.$vuetify.breakpoint.xsOnly,
-              }" >
+          <v-layout style="min-height: 48px;"
+                    v-bind="{
+                      ['row']: this.$vuetify.breakpoint.smAndUp,
+                      ['align-center']: this.$vuetify.breakpoint.smAndUp,
+                      ['align-content-center']: this.$vuetify.breakpoint.smAndUp,
+                      ['column']: this.$vuetify.breakpoint.xsOnly,
+                    }"
+            >
 
             <v-flex xs12 px-2 py-2 >
 
