@@ -9,8 +9,8 @@
 
             <v-layout row align-center >
 
-              <v-flex xs2 sm1 >
-                <v-btn icon href="./">
+              <v-flex xs2 sm1 pl-1>
+                <v-btn icon href="./" class="ma-0">
                   <img :src="Logo" alt="envidat_logo" >
                 </v-btn>
               </v-flex>
@@ -20,31 +20,25 @@
               </v-flex>
 
               <v-flex xs2 sm1>
-                <v-btn flat
-                       :href="aboutUrl"
-                       target="_blank" >
+                <v-btn class="ma-0"
+                        flat
+                        small
+                        :href="aboutUrl"
+                        target="_blank" >
                   {{ aboutText }}
                 </v-btn>
               </v-flex>
 
               <v-flex xs2 sm1 >
-                <v-btn flat
+                <v-btn class="ma-0"
+                        flat
                         color="primary"
+                        small
                         :href="loginUrl"
-                         target="_blank" >
+                        target="_blank" >
                   {{ loginText }}
                 </v-btn>
               </v-flex>
-
-              <!-- <v-flex xs1 justify-end>
-                <v-tooltip bottom>
-                  <v-btn icon color="accent" slot="activator" :href="url" 
-                          v-bind="{['target'] : isLink ? '_blank' : '' }">
-                    <v-icon >right</v-icon>
-                  </v-btn>
-                  <span >Login</span>
-                </v-tooltip>
-              </v-flex> -->
             
             </v-layout>
 
