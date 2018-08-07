@@ -1,5 +1,6 @@
 <template>
-  <v-container grid-list-xs fluid py-1>
+  <v-container grid-list-xs fluid py-1
+                v-bind="{ 'pa-0': $vuetify.breakpoint.xsOnly }">
 
     <nav-bar-view :searchViewLabelText="searchLabelText"
                   :searchTerm="searchTerm"

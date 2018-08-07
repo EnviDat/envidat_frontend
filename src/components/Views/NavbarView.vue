@@ -9,17 +9,17 @@
 
             <v-layout row align-center >
 
-              <v-flex xs2 sm1 pl-1>
+              <v-flex xs2 sm1 md1 pl-1>
                 <v-btn icon href="./" class="ma-0">
                   <img :src="Logo" alt="envidat_logo" >
                 </v-btn>
               </v-flex>
 
-              <v-flex xs6 sm9>
+              <v-flex xs6 sm6 md9>
                 <!-- spacer -->
               </v-flex>
 
-              <v-flex xs2 sm1>
+              <v-flex xs4 sm2 md1 >
                 <v-btn class="ma-0"
                         flat
                         small
@@ -29,7 +29,7 @@
                 </v-btn>
               </v-flex>
 
-              <v-flex xs2 sm1 >
+              <v-flex xs4 sm2 md1 >
                 <v-btn class="ma-0"
                         flat
                         color="primary"
