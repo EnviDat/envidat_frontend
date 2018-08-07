@@ -2,7 +2,9 @@
   <v-container fluid >  
     <v-layout column >
   
-      <title-view :title="envidatTitle" :slogan="envidatSlogan"></title-view>
+      <title-view :title="envidatTitle"
+                  :slogan="envidatSlogan">
+      </title-view>
 
       <v-flex mt-5 offset-sm6>
         <search-bar-view
@@ -28,7 +30,7 @@
 
       <v-flex mt-5 offset-sm6>
     
-        <v-container fluid grid-list-xs>
+        <v-container fluid grid-list-md pa-0>
           <v-layout row wrap>
     
             <v-flex py-2 xs6

@@ -1,8 +1,7 @@
 <template>
-  <v-card
-  color="primary"
-  class="metadataResourceCard white--text"
-  style="height: 100%;"
+  <v-card color="primary"
+          class="metadataResourceCard white--text"
+          style="height: 100%;"
   >
 
     <v-card-title>
