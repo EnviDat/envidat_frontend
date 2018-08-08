@@ -1,18 +1,44 @@
 <template>
 
-  <v-card raised :height="totalHeight"
+  <v-card raised
+          :height="totalHeight"
   >
-      <div id="map" ref="map" v-bind="mapViewHeight" />
-    </v-card-text>
+    <div id="map" ref="map" v-bind="mapViewHeight" />
       
     <v-card-actions class="pr-2">
 
-      <v-btn icon @click.native="">
-        <img class="envidatIcon" :src="getIcon('map')" />                
+        <v-btn class="px-0"
+                color="accent"
+                style="min-width: 40px !important;"
+                @click.native="toggleActive"
+                :outline="!mapFilteringActive"
+        >
+          <img class="envidatIcon" :src="getIcon('map')" />                
+        </v-btn>
+
+      <v-spacer />
+
+      <div class="pr-2">
+        <img v-if="loading"
+              class="envidatIcon rotating" :src="getIcon('spinner')" />                
+      </div>
+
+      <v-btn icon
+              @click.native="">
+        <v-icon color="accent" 
+                :style="this.showFullDescription ? 'transform: rotate(-180deg);' : 'transform: rotate(0deg);'"
+        >expand_more</v-icon>
       </v-btn>
 
-      <img v-if="loading"
-            class="envidatIcon rotating" :src="getIcon('spinner')" />                
+      <!-- 
+
+      <v-btn color="red"
+              small
+              outline >Reset</v-btn>
+
+      <v-btn color="primary"
+              @click.native=""
+              small >Apply</v-btn> -->
 
     </v-card-actions>
 
@@ -23,6 +49,26 @@
 <script>
 import { mapGetters } from 'vuex';
 import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+// HACK start
+// Solution to loading in the imgs correctly via webpack
+// see more https://github.com/PaulLeCam/react-leaflet/issues/255
+// stupid hack so that leaflet's images work after going through webpack
+import marker from 'leaflet/dist/images/marker-icon.png';
+import marker2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+/* eslint-disable no-underscore-dangle */
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: marker2x,
+  iconUrl: marker,
+  shadowUrl: markerShadow,
+});
+
+// HACK end
 
 export default {
   props: {
@@ -59,6 +105,11 @@ export default {
     },
     catchPointClick: function catchPointClick(e) {
       this.$emit('pointClicked', e.target.id);
+    },
+    toggleActive: function toggleActive() {
+      this.mapFilteringActive = !this.mapFilteringActive;
+
+      this.reFilter();
     },
     setupMap: function setupMap() {
       if (this.mapIsSetup) {
@@ -136,9 +187,9 @@ export default {
         //   this.addPolygon(this.map, location.pointArray, location.id);
         // }
 
-        if (location.isMultiPoint) {
-          this.addMultiPoint(this.map, location.pointArray, location.id);
-        }
+        // if (location.isMultiPoint) {
+        //   this.addMultiPoint(this.map, location.pointArray, location.id);
+        // }
       }
     },
     addPoint: function addPoint(map, coords, id) {
@@ -178,27 +229,28 @@ export default {
       // map.fitBounds(coords);
     },
     reFilter: function reFilter() {
-      console.log("reFilter");
-
       const visibleMetadataIds = [];
+console.log("active: " + this.mapFilteringActive);
+      if (this.mapFilteringActive) {
+        const currentBounds = this.map.getBounds();
+        const keys = Object.keys(this.map._layers);
 
-      const currentBounds = this.map.getBounds();
-      this.map._layers.forEach((layer) => {
-        if (layer instanceof L.Marker) {
-          if (currentBounds.contains(layer.getLatLng()) && layer.id) {
-            visibleMetadataIds.push(layer.id);
+        for (let i = 0; i < keys.length; i++) {
+          const key = keys[i];
+          const layer = this.map._layers[key];
+
+          if (layer instanceof L.Marker) {
+            const markerPos = layer.getLatLng();
+
+            // console.log(key + " marker " + markerPos + " in " + currentBounds + " " + contains);
+            if (currentBounds.contains(markerPos) && layer.id) {
+              visibleMetadataIds.push(layer.id);
+            }
           }
         }
-      });
 
-      // 		this._layer.eachLayer(function(layer) {
-      // 			if(layer instanceof L.Marker)
-      // 				if( that._map.getBounds().contains(layer.getLatLng()) )
-      // 					if(++n < that.options.maxItems)
-      // 						that._list.appendChild( that._createItem(layer) );
-      // });      
-
-      console.log("visible ids " + visibleMetadataIds);
+        // console.log("visible ids " + visibleMetadataIds.length);
+      }
 
       this.$emit('viewChanged', visibleMetadataIds);
     },
@@ -232,6 +284,7 @@ export default {
     buttonHeight: 50,
     updatingMap: true,
     addedObjectsKeys: [],
+    mapFilteringActive: false,
   }),
   components: {
   },

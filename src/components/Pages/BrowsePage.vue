@@ -254,10 +254,7 @@
         });
       },
       catchMapFilterChanged: function catchMapFilterChanged(visibleIds) {
-        // add visibleIds contentfilter
-        // retrigger filtering
-
-        // console.log("catchMapFilterChanged " + visibleIds)
+        this.mapFilterVisibleIds = visibleIds;
       },
       catchPointClicked: function catchPointClicked(id) {
         // bring to top
@@ -354,6 +351,19 @@
 
         return searchResult;
       },
+      contentFilterMapIds: function contentFilterMapIds(contentList) {
+        const visibleContent = [];
+
+        for (let i = 0; i < contentList.length; i++) {
+          const el = contentList[i];
+
+          if (this.mapFilterVisibleIds.includes(el.id)) {
+            visibleContent.push(el);
+          }
+        }
+
+        return visibleContent;
+      },
       dynamicCardBackground: function dynamicCardBackground() {
         const max = Object.keys(this.imagesImports).length;
         const randomIndex = this.randomInt(0, max);
@@ -440,6 +450,10 @@
           }
         }
 
+        if (this.mapFilterVisibleIds.length > 0) {
+          contentToFilter = this.contentFilterMapIds(contentToFilter);
+        }
+
         this.updateSearchCount(contentToFilter);
 
         return contentToFilter;
@@ -509,6 +523,7 @@
       scrollPosition: null,
       showMapFilter: true,
       mapFilterHeightPx: 450,
+      mapFilterVisibleIds: [],
     }),
     components: {
       NavBarView,
