@@ -98,16 +98,13 @@
           query: { search },
         });
       },
-      catchEnterclick: function catchEnterclick(search) {
-        alert(`clicked ${search}`);
+      catchEnterclick: function catchEnterclick() {
         this.redirectToDashboard();
       },
-      catchSingupclick: function catchSingupclick(search) {
-        alert(`clicked ${search}`);
+      catchSingupclick: function catchSingupclick() {
         this.redirectToDashboard();
       },
-      catchLoginclick: function catchLoginclick(search) {
-        alert(`clicked ${search}`);
+      catchLoginclick: function catchLoginclick() {
         this.redirectToDashboard();
       },
       redirectToDashboard: function redirectToDashboard() {

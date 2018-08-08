@@ -339,6 +339,7 @@
           return false;
         }
 
+        /* eslint-disable consistent-return  */
         metadata.resources.forEach((res) => {
           if (res.restricted !== undefined
             && (res.restricted.allowed_users !== undefined ||

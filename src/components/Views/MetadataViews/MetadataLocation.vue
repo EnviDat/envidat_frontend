@@ -114,28 +114,15 @@
         try {
           return L.geoJSON(geoJsonString);
         } catch (error) {
-          console.log(`Tried to parse GeoJSON ${geoJsonString} failed with ${error}`);
+          // console.log(`Tried to parse GeoJSON ${geoJsonString} failed with ${error}`);
           return undefined;
         }
       },
       addOpenStreetMapLayer: function addOpenStreetMapLayer(map) {
         L.tileLayer(
           'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-          { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }
+          { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' },
         ).addTo(map);
-      },
-      addGoogleMapsLayer: function addGoogleMapsLayer(map) {
-        // const styled = L.gridLayer.googleMutant({
-        //   type: 'roadmap',
-        //   styles: [
-        //     { elementType: 'labels', stylers: [{ visibility: 'off' }] },
-        //     { featureType: 'water', stylers: [{ color: '#444444' }] },
-        //   ],
-        // }).addTo(map);
-
-        const roads = L.gridLayer.googleMutant({
-          type: 'roadmap', // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
-        }).addTo(map);
       },
       addPoint: function addPoint(map, coords) {
         const point = L.marker(coords).addTo(map);
@@ -151,16 +138,12 @@
         return polygon;
       },
       addMultiPoint: function addMultiPoint(map, coords) {
-
         for (let i = 0; i < coords.length; i++) {
           const pointCoord = coords[i];
           this.addPoint(map, pointCoord);
         }
 
         map.fitBounds(coords);
-      },
-      onMapClick: function onMapClick(e) {
-        alert("You clicked the map at " + e.latlng);
       },
     },
     watch: {
