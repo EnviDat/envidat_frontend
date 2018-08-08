@@ -14,7 +14,11 @@
         </v-flex>
 
         <v-flex xs7 mt-1>
-            <div class="headline">{{ title }}</div>
+            <div class="headline"
+                :class="{ 'compactTitle' : this.$vuetify.breakpoint.mdAndDown }"
+            >
+              {{ title }}
+            </div>
         </v-flex>
 
       </v-layout>
@@ -87,5 +91,14 @@
     text-overflow: inherit !important;
     max-height: inherit !important;
     line-height: inherit !important;
+  }
+
+  .compactTitle { 
+    font-size: 15px !important; 
+    line-height: 1.3em !important; 
+  } 
+
+  .v-card__media img {
+    width: inherit !important;
   }
 </style>

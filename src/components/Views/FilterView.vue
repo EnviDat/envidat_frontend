@@ -45,17 +45,18 @@
                 raised
                 >
 
-          <v-layout  v-bind="{
-                ['row']: this.$vuetify.breakpoint.smAndUp,
-                ['align-center']: this.$vuetify.breakpoint.smAndUp,
-                ['align-content-center']: this.$vuetify.breakpoint.smAndUp,
-                ['column']: this.$vuetify.breakpoint.xsOnly,
-              }" >
+          <v-layout style="min-height: 48px;"
+                    v-bind="{
+                      ['row']: this.$vuetify.breakpoint.smAndUp,
+                      ['align-center']: this.$vuetify.breakpoint.smAndUp,
+                      ['align-content-center']: this.$vuetify.breakpoint.smAndUp,
+                      ['column']: this.$vuetify.breakpoint.xsOnly,
+                    }"
+            >
 
-            <v-flex v-if="selectedTags.length > 0"
-                    xs12 px-2 py-2 >
+            <v-flex xs12 px-2 py-2 >
 
-              <tag-chip 
+              <tag-chip v-if="selectedTags.length > 0"
                         v-for="tag in selectedTags" :key="tag.name" 
                         :name="tag.name"
                         :selectable="false"

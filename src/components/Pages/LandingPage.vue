@@ -2,7 +2,9 @@
   <v-container fluid >  
     <v-layout column >
   
-      <title-view :title="envidatTitle" :slogan="envidatSlogan"></title-view>
+      <title-view :title="envidatTitle"
+                  :slogan="envidatSlogan">
+      </title-view>
 
       <v-flex mt-5 offset-sm6>
         <search-bar-view
@@ -28,7 +30,7 @@
 
       <v-flex mt-5 offset-sm6>
     
-        <v-container fluid grid-list-xs>
+        <v-container fluid grid-list-md pa-0>
           <v-layout row wrap>
     
             <v-flex py-2 xs6
@@ -96,16 +98,13 @@
           query: { search },
         });
       },
-      catchEnterclick: function catchEnterclick(search) {
-        alert(`clicked ${search}`);
+      catchEnterclick: function catchEnterclick() {
         this.redirectToDashboard();
       },
-      catchSingupclick: function catchSingupclick(search) {
-        alert(`clicked ${search}`);
+      catchSingupclick: function catchSingupclick() {
         this.redirectToDashboard();
       },
-      catchLoginclick: function catchLoginclick(search) {
-        alert(`clicked ${search}`);
+      catchLoginclick: function catchLoginclick() {
         this.redirectToDashboard();
       },
       redirectToDashboard: function redirectToDashboard() {
