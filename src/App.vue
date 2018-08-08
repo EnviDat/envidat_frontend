@@ -1,6 +1,5 @@
 <template>
-  <v-app id="inspire"
-        v-bind:style="dynamicBackground">
+  <v-app v-bind:style="dynamicBackground">
 
     <!--v-btn fab top left color="success" @click="testStore" >Test</v-btn>
 
@@ -20,7 +19,7 @@
     LOAD_ALL_METADATA,
     LOAD_ALL_TAGS,
     LOAD_METADATA_CONTENT_BY_ID,
-} from './store/metadataMutationsConsts';
+  } from './store/metadataMutationsConsts';
   import {
     ADD_CARD_IMAGES,
     ADD_ICON_IMAGE,
@@ -115,12 +114,18 @@
         let bgStyle = '';
 
         if (bgImg) {
-          bgStyle = `background-image: url(${bgImg}) !important;`;
+          // bgStyle = `background-image: url(${bgImg}) !important;`;
+          bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.05) 0%,rgba(255,255,255,0.25) 100%), url(${bgImg}) !important;`;
         }
 
         if (bgImg.includes('browsepage')) {
           bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%,rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
         }
+
+        bgStyle += `background-position: center top !important;
+                    background-size: cover !important;
+                    background-repeat: no-repeat !important;
+                    background-attachment: fixed !important; `;
 
         return bgStyle;
       },
@@ -135,21 +140,24 @@
 </script>
 
 <style>
-/* overrite the applications background https://css-tricks.com/use-cases-fixed-backgrounds-css/ */
+
+  @import '../node_modules/leaflet/dist/leaflet.css';
+  /* import vuetify.css here to be able to overwrite the fonts */
+  @import '../node_modules/vuetify/dist/vuetify.min.css';
+
+/* overwrite the applications background https://css-tricks.com/use-cases-fixed-backgrounds-css/ */
   .application {
-    /* font-family: 'Libre Baskerville', serif !important; */
     font-family: 'Raleway', sans-serif !important;
-    background-position: center top !important;
+    /* background-position: center top !important;
     background-size: cover !important;
     background-repeat: no-repeat !important;
-    background-attachment: fixed !important;
+    background-attachment: fixed !important; */
   }  
 
   /*** General Card styles ***/
 
-
-  .card .headline {
-    font-family: 'Libre Baskerville', serif;
+  .headline {
+    font-family: 'Libre Baskerville', serif !important;
     /* font-weight: 700; */
 
     /*
@@ -160,8 +168,9 @@
     line-height: 1.2em !important;
   }
 
+
   .block-with-text {
-    font-family: 'Libre Baskerville', serif;
+    font-family: 'Libre Baskerville', serif !important;
     
     /* styles for '...' */ 
     /* hide text if it more than N lines  */
@@ -227,9 +236,17 @@
     width: 24px !important;
   }
 
-  .envidatIconWhite {
-    height: 24px !important;
-    width: 24px !important;
+  .envidat_title {
+    font-family: 'Libre Baskerville', serif !important;
+    letter-spacing: 0em !important;
+  }
+
+  .envidat_slogan {
+    font-family: 'Raleway', sans-serif !important;
+  }
+
+  .metadataInfoIcon {
+    opacity: 0.75;
   }
 
 </style>

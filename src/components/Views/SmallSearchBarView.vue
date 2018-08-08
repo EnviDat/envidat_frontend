@@ -7,43 +7,44 @@
               align-center
               justify-space-between>
 
-      <v-flex xs10 pa-0>
+      <v-flex xs10 sm8 md9 lg10 py-0 pl-3 >
         <v-text-field
-          class="py-2 pl-3 pr-0 smallSearchBar"
-          hide-details
-          full-width
-          single-line
-          clearable
-          prepend-icon="search"          
-          :prepend-icon-cb="clicked"
-          v-on:keyup.enter="clicked"
-          v-on:change="focusChanged"
-          v-model="searchText"
-          :label="labelText">
+            single-line
+            hide-details
+            clearable
+            solo
+            flat
+            append-outer-icon="search"
+            :append-outer-icon-cb="clicked"
+            v-on:keyup.enter="clicked"
+            v-model="searchText"
+            @click:clear="clearClicked"
+            placeholder="Search">
         </v-text-field>
       </v-flex>
 
-      <v-flex xs2 pa-0>
-        <v-chip small disabled 
-        class="envidat_chip"
-        v-bind="{ ['color']: searchCount > 0 ? 'primary' : ''}"
-        :class="{ ['white--text']: searchCount > 0 ? true : false }"
-        >
-          {{ searchCount }}
-        </v-chip>
-      </v-flex>
+      <v-flex xs2 sm4 md3 lg2 pa-0
+              style="text-align: center;">
 
-      <!-- <v-flex xs1 pr-2 pl-0 py-0>
-        <div class="input-group input-group--slider input-group--focused input-group--active"
-        style="padding: 0; margin: 0;">
-          <div class="slider__thumb--lable__container"
-            :value="searchCount"
-            thumb-label
+        <v-tooltip bottom >
+          <!-- <v-chip slot="activator"
+                  small disabled 
+                  class="envidat_chip"
+                  v-bind="{ ['color']: searchCount > 0 ? 'primary' : ''}"
+                  :class="{ ['white--text']: searchCount > 0 ? true : false }"
           >
-            <div class="slider__thumb--label"> <span>{{ searchCount }}</span> </div>
-          </div>
-        </div>        
-      </v-flex> -->
+            {{ searchCount }}
+          </v-chip> -->
+
+          <tag-chip slot="activator"
+                  :name="searchCount.toString()"
+                  :selectable="false"
+                  :highlighted="searchCount > 0"
+                  :closeable="false"  />
+
+          <span>{{ searchCount }} metadata entries found</span>
+        </v-tooltip>
+      </v-flex>
 
       <v-flex sm4 lg3 xl2 
               v-if="hasButton">
@@ -58,6 +59,8 @@
 </template>
 
 <script>
+  import TagChip from './Cards/TagChip';
+
   export default {
     props: {
       labelText: String,
@@ -71,6 +74,12 @@
       searchText: '',
       lastSearch: '',
     }),
+    updated: function updated() {
+      if (!this.searchText && this.lastSearch) {
+        this.$emit('searchCleared');
+        this.lastSearch = '';
+      }
+    },
     watch: {
       searchTerm: function searchTerm(val) {
         // watcher to overtake the property value to the v-model value
@@ -82,9 +91,12 @@
         this.$emit('clicked', this.searchText);
         this.lastSearch = this.searchText;
       },
+      clearClicked: function clearClicked() {
+        this.$emit('searchCleared');
+      },
       focusChanged: function focusChanged() {
         if (!this.searchText) {
-          this.$emit('searchCleared');
+          this.clearClicked();
           this.lastSearch = '';
         } else {
           this.$emit('clicked', this.searchText);
@@ -92,11 +104,8 @@
         }
       },
     },
-    updated: function updated() {
-      if (!this.searchText && this.lastSearch) {
-        this.$emit('searchCleared');
-        this.lastSearch = '';
-      }
+    components: {
+      TagChip,
     },
   };
 </script>

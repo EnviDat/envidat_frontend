@@ -17,17 +17,13 @@
       <!-- <img :src="landImg" /> -->
 
       <v-container style="position: absolute;"
-                  fill-height grid-list-xs>
+                  fill-height grid-list-xs pa-0>
         <v-layout column>
           <v-flex xs12 px-3 pt-3>
             <v-layout row  align-start>
               <v-flex xs12 >
                 <div class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-pulse">
-
-                  <div class='bone bone-type-multiline bone-style-steps'
-                  :class="{['black_title'] : dark ? false : true,
-                            ['white_title'] : dark ? true : false }"
-                  ></div>
+                  <div class='bone bone-type-multiline bone-style-steps'></div>
                 </div>
               </v-flex>
             </v-layout>

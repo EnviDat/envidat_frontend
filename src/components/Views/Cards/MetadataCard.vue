@@ -5,36 +5,33 @@
     ripple
     hover
     @click.native="cardClick"
+    style="height: 100%;"
     >
 
     <v-card-media
-      class="imagezoom"
-      background-color="primary"
+        background-color="primary"
         v-bind="{['style'] : dynamicCardBackground }"
         height="150px"
       >
       
-      <!-- <img :src="landImg" /> -->
-
-      <v-container style="position: absolute;"
-                  fill-height grid-list-xs>
+      <v-container grid-list-xs fill-height px-3 pt-3 pb-0>
         <v-layout column>
-          <v-flex xs12 px-3 pt-3>
-            <v-layout row align-start>
+          <v-flex xs12 py-0>
+            <v-layout row >
 
               <v-flex xs12 v-if="!maxTitleLengthReached">
-                <h3 class="headline mb-0"
+                <div class="headline mb-0"
                 :class="{['black_title'] : dark ? false : true,
                           ['white_title'] : dark ? true : false }"
-                >{{ title | truncate(maxTitleLength) }}</h3>
+                >{{ title | truncate(maxTitleLength) }}</div>
               </v-flex>
 
               <v-flex xs12 v-if="maxTitleLengthReached">
                 <v-tooltip bottom>
-                  <h3 slot="activator" class="headline mb-0"
+                  <div slot="activator" class="headline mb-0"
                     :class="{['black_title'] : dark ? false : true,
                               ['white_title'] : dark ? true : false }"
-                    >{{ title | truncate(maxTitleLength) }}</h3>
+                    >{{ title | truncate(maxTitleLength) }}</div>
                   <span>{{ title }}</span>
                 </v-tooltip>
               </v-flex>
@@ -42,8 +39,8 @@
             </v-layout>
           </v-flex>
   
-          <v-flex xs12 px-3 py-0>
-            <v-layout row align-end >
+          <v-flex xs12 py-0>
+            <v-layout row fill-height align-end >
                 <tag-chip py-0
                           v-if="tags" v-for="tag in tags.slice (0, maxTagNumber)" :key="tag.name"
                           :name="tag.name"
@@ -51,7 +48,7 @@
                           class="card_tag" />
               
                 <tag-chip py-0
-                          v-if="maxTagsReached" class="card_tag" :name="'...'" />
+                          v-if="maxTagsReached" class="card_tag" name="..." />
               
             </v-layout>
           </v-flex>
@@ -61,24 +58,38 @@
 
     </v-card-media>
 
-    <v-card-title primary-title>
-      <div class="subheading">{{ subtitle | truncate(maxSubtitleLength) }}</div>
-    </v-card-title>
+    <v-card-text >
+      {{ subtitle | truncate(maxSubtitleLength) }}
+    </v-card-text>
 
-    <v-card-actions>
+
+    <!-- <v-card-actions style="position: absolute; bottom: 0; right: 0;"> -->
+    <v-card-actions class="ma-0 pa-2"
+                    style="position: absolute; bottom: 0; right: 0;">
       
-      <v-tooltip bottom>
+      <!-- <v-tooltip bottom>
         <v-btn icon slot="activator">
           <v-icon color="primary">cloud_download</v-icon>
         </v-btn>
         <span>Download data</span>
-      </v-tooltip>
+      </v-tooltip> -->
 
       <v-spacer></v-spacer>
 
-      <v-tooltip bottom v-if="restricted">
+      <v-tooltip bottom v-if="isRestricted">
         <v-icon slot="activator" color="black" >lock</v-icon>
-        <span>The data of the entry is restricted.</span>
+          <div v-if="userHasAccess"
+                class="iconCentering">
+            <img class="envidatIcon" :src="getIcon('lock2Open')" />          
+            <span>The data of this entry is only accessible with permission.</span>
+          </div>
+
+          <div v-if="userHasAccess"
+                class="iconCentering">
+            <img class="envidatIcon" :src="getIcon('lock2Closed')" />          
+            <span>The data of this entry is only accessible with permission.</span>
+          </div>
+
       </v-tooltip>
 
       <!-- <v-btn v-if="favourit" icon>
@@ -88,13 +99,29 @@
         <v-icon>star</v-icon>
       </v-btn> -->
 
+      <v-tooltip bottom>
+          <div slot="activator" class="metadataInfoIcon">
+            <v-layout row @mouseover="hoverBadge = true" @mouseleave="hoverBadge = false">
+
+              <v-flex pa-0>
+                <v-badge v-bind="{ left: !hoverBadge }"
+                        overlap
+                        class="envidat_badge">
+                  <span slot="badge">{{ resourceAmount }}</span>
+                </v-badge>              
+              </v-flex>
+
+              <v-flex pa-0 >
+                <img class="envidatIcon" :src="getIcon('file')" />                
+              </v-flex>
+              
+            </v-layout>
+          </div>
+
+          <span>Metadata with {{ resourceAmount }} resources</span>
+      </v-tooltip>
+
     </v-card-actions>
-    
-    <v-slide-y-transition>
-      <v-card-text v-show="show">
-        I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
-      </v-card-text>
-    </v-slide-y-transition>
 
   </v-card>
 
@@ -132,6 +159,8 @@ export default {
     tags: Array,
     titleImg: String,
     dark: Boolean,
+    resourceCount: Number,
+    resources: Array,
   },
   components: {
     TagChip,
@@ -147,6 +176,9 @@ export default {
     },
     catchTagClicked: function catchTagClicked(tagId) {
       this.$emit('clickedTag', tagId);
+    },
+    badgeOnMouseover: function badgeOnMouseover() {
+      this.hoverBadge = !this.hoverBadge;
     },
   },
   computed: {
@@ -185,6 +217,32 @@ export default {
     maxTitleLengthReached: function maxTitleLengthReached() {
       return this.title && this.title.length > this.maxTitleLength;
     },
+    isRestricted: function isRestricted() {
+      return this.restricted;
+      // return this.restricted &&
+      // (this.restricted.allowed_users !== undefined || this.restricted.level !== 'public');
+    },
+    userHasAccess: function userHasAccess() {
+      if (!this.isRestricted) {
+        return false;
+      }
+
+      const userAccess = this.restricted.allowed_users;
+      const accessLvl = this.restricted.level;
+
+      return userAccess || accessLvl;
+    },
+    resourceAmount: function resourceAmount() {
+      if (this.resourceCount) {
+        return this.resourceCount;
+      }
+
+      if (this.resources) {
+        return this.resources.length;
+      }
+
+      return 0;
+    },
   },
   data: () => ({
     show: false,
@@ -202,7 +260,7 @@ export default {
       diversity: 'b_c_diversity_meadow',
       hazard: 'c_b_hazard_cloud_road', // maybe c_b_hazard_cloud
     },
-
+    hoverBadge: false,
   }),
 };
 </script>
@@ -230,6 +288,10 @@ export default {
 
   .card_tag {
     /* opacity: 0.7; */
+  }
+
+  .envidat_badge {
+    font-size: 0.8em !important;
   }
 
 </style>

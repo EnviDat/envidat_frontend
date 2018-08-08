@@ -48,6 +48,8 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'no-plusplus': 'off',
     'max-len': 'off',
+    'prefer-destructuring': 'off',
+    'no-param-reassign': 'off',
     'linebreak-style' : 0
     // enforce CLRF linebreaks = 'linebreak-style' : ["error", "unix"]
     // windows linebreaks when not in production environment

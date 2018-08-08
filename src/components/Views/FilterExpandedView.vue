@@ -1,15 +1,16 @@
 <template>
 
-  <v-card hover raised>
+  <v-card raised>
 
     <v-layout column px-2 pt-2>
-      <v-flex >
+      <v-flex xs12 >
         <v-layout row>
 
-          <v-flex xs1 py-2>
-            <div>
-              <!-- <v-icon>assignment</v-icon> -->
-               Filtered Tags</div>
+          <v-flex xs1 py-2 class="metadataInfoIcon" >
+            
+            <icon-label-view :icon="getIcon('tag')" 
+                              iconTooltip="Filtered Tags" 
+                              />
           </v-flex>
 
           <v-flex xs11 >
@@ -31,8 +32,11 @@
       <v-flex >
         <v-layout row>
 
-          <v-flex xs1 py-2>
-            <div>All Tags</div>
+          <v-flex xs1 py-2 class="metadataInfoIcon" >
+
+            <icon-label-view :icon="getIcon('tags')" 
+                              iconTooltip="All Tags" 
+                              />
           </v-flex>
 
           <v-flex xs11>
@@ -74,6 +78,7 @@
 <script>
 import TagChip from './Cards/TagChip';
 import FilterViewButtons from './FilterViewButtons';
+import IconLabelView from './IconLabelView';
 
 export default {
   props: {
@@ -145,6 +150,7 @@ export default {
   components: {
     TagChip,
     FilterViewButtons,
+    IconLabelView,
   },
 };
 </script>

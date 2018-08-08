@@ -1,6 +1,6 @@
 <template>
 
-  <v-container grid-list-md>
+  <v-container fluid grid-list-md pa-0>
 
     <v-layout 
       v-bind="{
@@ -43,17 +43,18 @@
 
         <v-card v-else
                 raised
-                hover>
+                >
 
-          <v-layout  v-bind="{
-                ['row']: this.$vuetify.breakpoint.smAndUp,
-                ['align-center']: this.$vuetify.breakpoint.smAndUp,
-                ['align-content-center']: this.$vuetify.breakpoint.smAndUp,
-                ['column']: this.$vuetify.breakpoint.xsOnly,
-              }" >
+          <v-layout style="min-height: 48px;"
+                    v-bind="{
+                      ['row']: this.$vuetify.breakpoint.smAndUp,
+                      ['align-center']: this.$vuetify.breakpoint.smAndUp,
+                      ['align-content-center']: this.$vuetify.breakpoint.smAndUp,
+                      ['column']: this.$vuetify.breakpoint.xsOnly,
+                    }"
+            >
 
             <v-flex xs12 px-2 py-2 >
-              <!-- <v-icon>assignment</v-icon> -->
 
               <tag-chip v-if="selectedTags.length > 0"
                         v-for="tag in selectedTags" :key="tag.name" 
@@ -62,7 +63,7 @@
                         :highlighted="true"
                         :closeable="true"
                         v-on:clickedClose="catchTagCloseClicked($event, tag.name)"
-                        class="header_tag" />
+                        class="filterTag" />
 
               <tag-chip v-if="showPopularTags"
                         v-for="tag in showPopularTags" :key="tag.name" 
@@ -71,14 +72,26 @@
                         :highlighted="false"
                         :closeable="false"
                         v-on:clicked="catchTagClicked($event, tag.name)"
-                        class="header_tag" />
+                        class="filterTag" />
 
 
               <tag-chip v-if="maxPopularTagNumber >= showPopularTags.length"
-                class="header_tag" :name="'...'" />
+                class="filterTag" :name="'...'" />
 
             </v-flex>
-            
+
+            <v-flex v-if="showPlaceholder && selectedTags.length <= 0"
+                    xs12 px-2 py-2 >
+
+              <tag-chip-placeholder
+                        v-for="n in 5" :key="n" 
+                        :selectable="false"
+                        :highlighted="false"
+                        :closeable="false"
+                        class="filterTag" />
+
+            </v-flex>
+
             <v-card-actions class="pr-2">
             
               <filter-view-buttons :expanded.sync="expanded"
@@ -103,6 +116,7 @@
 
 <script>
 import TagChip from './Cards/TagChip';
+import TagChipPlaceholder from './Cards/TagChipPlaceholder';
 import SmallSearchBarView from './SmallSearchBarView';
 import FilterExpandedView from './FilterExpandedView';
 import FilterViewButtons from './FilterViewButtons';
@@ -117,6 +131,7 @@ export default {
     allTags: Array,
     searchViewLabelText: String,
     searchViewHasButton: Boolean,
+    showPlaceholder: Boolean,
   },
   computed: {
     selectedTags: function selectedTags() {
@@ -224,6 +239,12 @@ export default {
     catchTagCleared: function catchTagCleared() {
       this.$emit('clickedClear');
     },
+    catchTagClicked: function catchTagClicked(tagId) {
+      this.$emit('clickedTag', tagId);
+    },
+    catchTagCloseClicked: function catchTagCloseClicked(tagId) {
+      this.$emit('clickedTagClose', tagId);
+    },
     isTagSelected: function isTagSelected(tagName) {
       if (!tagName || this.selectedTagNames === undefined) {
         return false;
@@ -237,12 +258,6 @@ export default {
       }
 
       return this.popularTags.findIndex(obj => obj.name === tagName) >= 0;
-    },
-    catchTagClicked: function catchTagClicked(tagId) {
-      this.$emit('clickedTag', tagId);
-    },
-    catchTagCloseClicked: function catchTagCloseClicked(tagId) {
-      this.$emit('clickedTagClose', tagId);
     },
     isSelected: function isSelected(tagId) {
       return this.selectedTags.indexOf(tagId) >= 0;
@@ -275,6 +290,7 @@ export default {
   }),
   components: {
     TagChip,
+    TagChipPlaceholder,
     SmallSearchBarView,
     FilterExpandedView,
     FilterViewButtons,
@@ -290,8 +306,12 @@ export default {
     opacity: 0.85;
   }
 
-  .header_tag {
+  .filterTag {
     opacity: 0.7;
+  }
+
+  .chip__content span {
+    cursor: pointer !important;
   }
 
 </style>

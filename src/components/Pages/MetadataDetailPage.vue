@@ -1,17 +1,88 @@
 <template>
-  <v-container fluid >
+  <v-container fluid
+              tag="article"
+              v-bind="{ [`pa-0`]: this.$vuetify.breakpoint.smAndDown,
+                        [`pa-2`]: this.$vuetify.breakpoint.mdAndUp }"
+  >
     <div v-if="currentMetadataContent">
       
-      <v-btn @click="compactLayout = !compactLayout">layout</v-btn>
-
-      <v-layout row wrap>
+      <v-layout row wrap v-if="twoColumnLayout">
         <v-flex xs12
                 md8 offset-md2
                 lg10 offset-lg1
                 elevation-5
                 style="z-index: 1;">
 
-          <metadata-header v-bind="header" :maxTags="10"> </metadata-header>
+          <metadata-header v-bind="header" :maxTags="10"
+                            v-on:clickedTag="catchTagClicked"
+                            :showPlaceholder="showPlaceholder" />
+
+        </v-flex>
+
+        <v-flex 
+                v-bind="leftOrFullWidth"
+                mb-2 
+                style="z-index: 0;">
+
+          <v-layout column>
+
+            <v-flex mb-2 >
+              <metadata-body v-bind="body" :isOnTop="true" 
+                              :showPlaceholder="showPlaceholder" />
+            </v-flex>
+
+            <v-flex mb-2>
+              <metadata-citation v-bind="citation"
+                                  :showPlaceholder="showPlaceholder" />
+            </v-flex>
+
+            <v-flex mb-2>
+              <metadata-location v-if="location"
+                                  v-bind="location" />
+            </v-flex>
+
+            <v-flex mb-2 v-if="showDetailsOnTheLeft">
+              <metadata-details v-if="details"
+                              :details="details"
+                              :showPlaceholder="showPlaceholder" />
+            </v-flex>
+
+          </v-layout>
+        </v-flex>
+
+
+        <v-flex 
+                v-bind="rightOrFullWidth"
+                mb-2 
+                style="z-index: 0;">
+
+          <v-layout row wrap>
+            <v-flex xs12 mb-2>
+              <metadata-resources v-bind="resources"
+                                  :isOnTop="true"
+                                  :twoColumnLayout="twoColumnLayout"
+                                  :showPlaceholder="showPlaceholder" />
+            </v-flex>
+
+            <v-flex xs12 mb-2 v-if="!showDetailsOnTheLeft">
+              <metadata-details v-if="details"
+                                :details="details"
+                                :showPlaceholder="showPlaceholder" />
+            </v-flex>
+
+          </v-layout>
+        </v-flex>
+
+      </v-layout>
+
+      <v-layout row wrap v-if="!twoColumnLayout">
+        <v-flex xs12
+                md10 offset-md1
+                elevation-5
+                style="z-index: 1;">
+
+          <metadata-header v-bind="header" :maxTags="10"
+                            :showPlaceholder="showPlaceholder" />
 
         </v-flex>
 
@@ -20,7 +91,8 @@
                 mb-2 
                 style="z-index: 0;">
 
-          <metadata-body v-bind="body" > </metadata-body>
+          <metadata-body v-bind="body" :isOnTop="true"
+                          :showPlaceholder="showPlaceholder" />
         </v-flex>
 
         <v-flex xs12
@@ -28,7 +100,8 @@
                 v-bind="rightOrFullWidth"
                  >
 
-          <metadata-citation v-bind="citation" :fixedHeight="compactLayout"> </metadata-citation>
+          <metadata-citation v-bind="citation" :fixedHeight="twoColumnLayout"
+                              :showPlaceholder="showPlaceholder" />
         </v-flex>
 
         <v-flex xs12
@@ -36,27 +109,26 @@
                 v-bind="fullWidthPadding"
                 >
 
-          <metadata-resources v-bind="resources" ></metadata-resources>
+          <metadata-resources v-bind="resources" :twoColumnLayout="twoColumnLayout"
+                              :showPlaceholder="showPlaceholder" />
         </v-flex>
 
         <v-flex xs12
                 mb-2
                 v-bind="fullWidthPadding"
                 >
-          <metadata-location v-if="location"
-                              v-bind="location" ></metadata-location>
+          <metadata-location v-if="location" v-bind="location" />
         </v-flex>
 
         <v-flex xs12
                 mb-2
                 v-bind="fullWidthPadding"
                 >
-          <metadata-details v-if="details"
-                              :details="details" ></metadata-details>
+          <metadata-details v-if="details" :details="details"
+                              :showPlaceholder="showPlaceholder" />
         </v-flex>
 
       </v-layout>
-
     </div>
 
     <div v-else> 
@@ -96,15 +168,12 @@
     },
     created: function created() {
       // console.log('created ' + this.metadataId + ' loading ' + this.currentMetadataContent.title + ' ' + this.metadatasContentSize);
-      this.createMetadataContent();
     },
     mounted: function mounted() {
       // console.log('mounted ' + this.metadataId + ' loading ' + this.currentMetadataContent.title + ' ' + this.metadatasContentSize);
       if (!this.loadingMetadatasContent && this.currentMetadataContent.title === undefined) {
         // in case of directly entring the page load the content directly via Id
         this.$store.dispatch(`metadata/${LOAD_METADATA_CONTENT_BY_ID}`, this.metadataId);
-      } else {
-        this.createMetadataContent();
       }
     },
     beforeDestroy: function beforeDestroy() {
@@ -120,6 +189,7 @@
         allTags: 'metadata/allTags',
         loadingAllTags: 'metadata/loadingAllTags',
         iconImages: 'iconImages',
+        cardBGImages: 'cardBGImages',
       }),
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
@@ -132,18 +202,28 @@
         // return (this.metadataId && this.metadataIds !== undefined
         //  && this.metadataIds.includes(this.metadataId));
       },
+      showPlaceholder: function showPlaceholder() {
+        return this.loadingCurrentMetadataContent;
+      },
       leftOrFullWidth: function leftOrFullWidth() {
-        return this.compactLayout ? this.halfWidthLeft : this.fullWidthPadding;
+        return this.twoColumnLayout ? this.halfWidthLeft : this.fullWidthPadding;
       },
       rightOrFullWidth: function rightOrFullWidth() {
-        return this.compactLayout ? this.halfWidthRight : this.fullWidthPadding;
+        return this.twoColumnLayout ? this.halfWidthRight : this.fullWidthPadding;
+      },
+      twoColumnLayout: function twoColumnLayout() {
+        return this.$vuetify.breakpoint.lgAndUp;
       },
       fullWidthPadding: function fullwidthPadding() {
         const json = {
+          /*
           md8: true,
           'offset-md2': true,
           lg10: true,
           'offset-lg1': true,
+          */
+          md10: true,
+          'offset-md1': true,
         };
 
         if (this.$vuetify.breakpoint.xsOnly) {
@@ -197,8 +277,26 @@
 
         return json;
       },
+      showDetailsOnTheLeft: function showDetailsOnTheLeft() {
+        const left = this.resources
+        && this.resources.resources.length > this.amountOfResourcesToShowDetailsLeft;
+        return left;
+      },
     },
     methods: {
+      catchTagClicked: function catchTagClicked(tagName) {
+        const tagNames = [];
+        tagNames.push(tagName);
+
+        const tagsEncoded = this.encodeTagForUrl(tagNames);
+        const query = {};
+        query.tags = tagsEncoded;
+
+        this.$router.push({
+          path: '/browse',
+          query,
+        });
+      },
       createMetadataContent: function createMetadataContent() {
         let currentContent = this.currentMetadataContent;
 
@@ -208,7 +306,10 @@
           currentContent = this.metadatasContent[this.metadataId];
         }
 
+        currentContent = this.enhanceMetadata(currentContent, this.cardBGImages);
+
         if (currentContent) {
+          // console.log("create content " + currentContent.spatial + " " + this.header);
           this.header = this.createHeader(currentContent);
           this.body = this.createBody(currentContent);
           this.citation = this.createCitation(currentContent);
@@ -238,6 +339,7 @@
           contactEmail,
           license: license.title,
           tags: dataset.tags,
+          titleImg: dataset.titleImg,
         };
       },
       createBody: function createBody(dataset) {
@@ -341,17 +443,53 @@
         };
       },
       createLocation: function createLocation(dataset) {
-        return {};
-        /*
-        return {
-          metadataTitle: dataset.title,
-          doi: dataset.doi,
-          contactName: dataset.maintainer ? dataset.maintainer : "",
-          contactEmail: dataset.maintainer_email ? maintainer_email : dataset.maintainer.email ? dataset.maintainer.email : "",
-          citation: "",
-          tags: dataset.tags,
-        };
-        */
+        const location = {};
+        if (dataset && dataset.spatial) {
+          location.geoJSON = dataset.spatial;
+
+          // parseJSON because the geoJOSN from CKAN might be invalid!
+          const spatialJSON = JSON.parse(dataset.spatial);
+          // console.log("createLocation spatial " + spatialJSON.coordinates);
+
+          if (spatialJSON) {
+            location.isPolygon = spatialJSON.type === 'Polygon';
+            location.isPoint = spatialJSON.type === 'Point';
+            location.isMultiPoint = spatialJSON.type === 'MultiPoint';
+
+            // Swap lngLat to latLng because the geoJOSN from CKAN might be invalid!
+
+            if (location.isPoint) {
+              // swap coords for the leaflet map
+              location.pointArray = [spatialJSON.coordinates[1], spatialJSON.coordinates[0]];
+            } else if (location.isPolygon) {
+              location.pointArray = [];
+
+              for (let i = 0; i < spatialJSON.coordinates.length; i++) {
+                const pointElement = spatialJSON.coordinates[i];
+                const pointObject = [];
+
+                for (let j = 0; j < pointElement.length; j++) {
+                  const coord = pointElement[j];
+                  pointObject.push([coord[1], coord[0]]);
+                }
+
+                location.pointArray.push(pointObject);
+              }
+            } else if (location.isMultiPoint) {
+              location.pointArray = [];
+
+              for (let i = 0; i < spatialJSON.coordinates.length; i++) {
+                const pointElement = spatialJSON.coordinates[i];
+                const pointObject = [pointElement[1], pointElement[0]];
+                location.pointArray.push(pointObject);
+              }
+            }
+          }
+        }
+
+        // console.log("createLocation " + location.pointArray + " " + location.geoJSON);
+
+        return location;
       },
       createDetails: function createDetails(dataset) {
         const details = [];
@@ -398,8 +536,8 @@
       resources: null,
       location: null,
       details: null,
+      amountOfResourcesToShowDetailsLeft: 4,
       notFoundBackPath: 'browse',
-      compactLayout: true,
     }),
     components: {
       MetadataHeader,
@@ -416,8 +554,12 @@
 <style>
 
   .metadata_title{
-    font-family: 'Karma', serif;
+    font-family: 'Libre Baskerville', serif !important;
     font-weight: 700 !important;
+  }
+
+  .metadataResourceCard{
+    min-height: 200px !important;
   }
 
 </style>

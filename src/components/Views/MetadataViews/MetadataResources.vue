@@ -1,14 +1,24 @@
 <template>
-  <v-card >
+  <v-card :class="{ ['pt-2']: this.isOnTop }">
     
     <v-card-title class="title metadata_title" >Data and resources</v-card-title>
 
-    <v-container fluid grid-list-xs>
+    <v-container fluid grid-list-xs grid-list-md pa-3>
       <v-layout row wrap>
 
-        <v-flex xs6 px-2 py-2 v-for="res in resources" :key="res.id">
+        <v-flex v-if="showPlaceholder"
+                xs12 sm6
+                v-for="n in 2" :key="n">
 
-          <resource-card v-bind="res" v-on:clicked="resClicked(res)"></resource-card>
+          <resource-card-placeholder :twoColumnLayout="twoColumnLayout" />
+
+        </v-flex>
+
+        <v-flex v-if="!showPlaceholder"
+                xs12 sm6
+                v-for="res in resources" :key="res.id">
+
+          <resource-card v-bind="res" v-on:clicked="resClicked(res)" :twoColumnLayout="twoColumnLayout" />
 
         </v-flex>
 
@@ -27,6 +37,7 @@
 
 <script>
   import ResourceCard from '../Cards/ResourceCard';
+  import ResourceCardPlaceholder from '../Cards/ResourceCardPlaceholder';
 
   export default {
     props: {
@@ -34,12 +45,17 @@
       metadataTitle: String,
       doi: String,
       resources: Array,
+      twoColumnLayout: Boolean,
+      isOnTop: Boolean,
+      showPlaceholder: Boolean,
     },
     updated: function updated() {
     },
     data: () => ({
       showAllResources: false,
     }),
+    computed: {
+    },
     methods: {
       readMore: function readMore() {
         this.showAllResources = !this.showAllResources;
@@ -55,6 +71,7 @@
     },
     components: {
       ResourceCard,
+      ResourceCardPlaceholder,
     },
   };
 </script>
