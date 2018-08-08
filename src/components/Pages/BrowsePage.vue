@@ -1,5 +1,6 @@
 <template>
-  <v-container grid-list-xs fluid py-1>
+  <v-container grid-list-xs fluid py-1
+                v-bind="{ 'pa-0': $vuetify.breakpoint.xsOnly }">
 
     <v-layout row wrap>
 
@@ -13,7 +14,7 @@
                       :allTags="allTags" 
                       :selectedTagNames.sync="selectedTagNames"
                       :popularTags="popularTags"
-                      :showPlaceholder="loading"
+                      :showPlaceholder="loadingAllTags"
                       :showMapFilter="showMapFilter"
                       :mapFilterHeight="mapFilterHeightPx"
                       v-on:clickedSearch="catchSearchClicked"
@@ -37,6 +38,7 @@
                         @scroll="updateScroll" >
 
             <v-layout row wrap>
+
 
               <v-flex v-if="loading"
                       v-bind="cardGridClass"
@@ -66,11 +68,11 @@
       
               </v-flex>
 
-                <v-flex xs12 >
-                  <no-search-results-view v-on:clicked="catchCategoryClicked"
-                                          :noResultText="noResultText"
-                                          :suggestionText="suggestionText" />  
-                </v-flex>
+              <v-flex xs12 v-if="!loading && !filteredMetadataContent">
+                <no-search-results-view v-on:clicked="catchCategoryClicked"
+                                        :noResultText="noResultText"
+                                        :suggestionText="suggestionText" />  
+              </v-flex>
 
 
             </v-layout>
@@ -180,7 +182,7 @@
       decodeCategoryFromUrl: function decodeCategoryFromUrl(urlquery) {
         if (urlquery) {
           // TODO: figure out which tags should be auto selected
-          console.log("got category via url: " + urlquery);
+          // console.log("got category via url: " + urlquery);
         }
 
         // return an empty array for the selectedTagNames
@@ -293,6 +295,24 @@
 
         return true;
       },
+      contentFilterAccessibility: function contentFilterAccessibility(contentList) {
+        const accessibleContent = [];
+
+        for (let i = 0; i < contentList.length; i++) {
+          const value = contentList[i];
+
+          if (value.capacity && value.capacity === 'public') {
+            // unpublished entries have 'private'
+            accessibleContent.push(value);
+          } else if (value.private && value.private === false) {
+            accessibleContent.push(value);
+          } else {
+            accessibleContent.push(value);
+          }
+        }
+
+        return accessibleContent;
+      },
       contentFilteredByTags: function contentFilteredByTags(contentList) {
         const filteredContent = [];
 
@@ -354,6 +374,7 @@
           return false;
         }
 
+        /* eslint-disable consistent-return  */
         metadata.resources.forEach((res) => {
           if (res.restricted !== undefined
             && (res.restricted.allowed_users !== undefined ||
@@ -375,12 +396,15 @@
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
         // tag Object structure: { tag: tagName, count: tagCount }
         allTags: 'metadata/allTags',
+        loadingAllTags: 'metadata/loadingAllTags',
         currentMetadata: 'metadata/currentMetadata',
         cardBGImages: 'cardBGImages',
       }),
       loading: function loading() {
-        return this.loadingMetadataIds || this.searchingMetadatasContent ||
-        (this.loadingMetadatasContent && this.metadatasContentSize < this.palceHolderAmount);
+        return this.loadingMetadataIds || this.searchingMetadatasContent;
+      },
+      loadingContent: function loadingContent() {
+        return (this.loadingMetadatasContent && this.metadatasContentSize < this.palceHolderAmount);
       },
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
@@ -405,7 +429,9 @@
           // console.log("use local content " + contentToFilter.length);
         }
 
-        if (contentToFilter) {
+        if (contentToFilter && contentToFilter.length > 0) {
+          contentToFilter = this.contentFilterAccessibility(contentToFilter);
+
           contentToFilter = this.enhanceMetadata(contentToFilter, this.cardBGImages);
 
           if (this.selectedTagNames !== undefined

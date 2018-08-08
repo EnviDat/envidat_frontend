@@ -203,8 +203,7 @@
         //  && this.metadataIds.includes(this.metadataId));
       },
       showPlaceholder: function showPlaceholder() {
-        return true; // testing;
-        // return this.loadingCurrentMetadataContent;
+        return this.loadingCurrentMetadataContent;
       },
       leftOrFullWidth: function leftOrFullWidth() {
         return this.twoColumnLayout ? this.halfWidthLeft : this.fullWidthPadding;
