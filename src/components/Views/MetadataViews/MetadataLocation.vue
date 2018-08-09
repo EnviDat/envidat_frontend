@@ -1,18 +1,17 @@
 <template>
-  <v-card >
+  <v-card  >
     <v-card-title class="title metadata_title" >Location</v-card-title>
 
-    <v-card-text id="mapcontainer" ref="mapcontainer">
-      <div id="map" ref="map" style="width: 725px; height: 500px;"></div>
+    <v-card-text >
+      <div id="mapcontainer"
+                  ref="mapcontainer">
+        <div id="map"
+              ref="map" 
+              v-bind="mapSize"
+        >
+        </div>
+      </div>
     </v-card-text>
-    
-
-    <!--v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn icon @click.native="resize()">
-        <v-icon color="accent" >{{ fullSize ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
-      </v-btn>        
-    </v-card-actions-->
     
   </v-card>
 
@@ -21,6 +20,27 @@
 <script>
   import L from 'leaflet';
   // import gL from 'leaflet.gridlayer.googlemutant';
+  /* eslint-disable no-unused-vars */
+  import 'leaflet/dist/leaflet.css';
+
+  // HACK start
+  // Solution to loading in the imgs correctly via webpack
+  // see more https://github.com/PaulLeCam/react-leaflet/issues/255
+  // stupid hack so that leaflet's images work after going through webpack
+  import marker from 'leaflet/dist/images/marker-icon.png';
+  import marker2x from 'leaflet/dist/images/marker-icon-2x.png';
+  import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+  /* eslint-disable no-underscore-dangle */
+  delete L.Icon.Default.prototype._getIconUrl;
+
+  L.Icon.Default.mergeOptions({
+    iconRetinaUrl: marker2x,
+    iconUrl: marker,
+    shadowUrl: markerShadow,
+  });
+
+  // HACK end
 
   export default {
     props: {
@@ -35,6 +55,29 @@
 
     },
     updated: function updated() {
+    },
+    computed: {
+      mapSize: function mapSize() {
+        let width = this.largeSize;
+        let height = this.mediumSize;
+
+        if (this.$vuetify.breakpoint.xsOnly) {
+          width = this.mediumSize;
+          height = this.smallSize;
+        } else if (this.$vuetify.breakpoint.smAndDown) {
+          width = this.fullWidthSize;
+          height = this.smallSize;
+        } else if (this.$vuetify.breakpoint.mdAndDown) {
+          width = this.fullWidthSize;
+          height = this.mediumSize;
+        }
+
+        return {
+          style: `width: ${width}px !important;
+                  max-width: 100%;
+                  height: ${height}px !important;`,
+        };
+      },
     },
     methods: {
       setupMap: function setupMap() {
@@ -70,7 +113,9 @@
         this.mapIsSetup = true;
       },
       initLeaflet: function initLeaflet(mapElement, coords) {
-        const map = L.map(mapElement);
+        const map = L.map(mapElement, {
+          scrollWheelZoom: false,
+        });
 
         if (coords) {
           let viewCoords = coords;
@@ -90,28 +135,15 @@
         try {
           return L.geoJSON(geoJsonString);
         } catch (error) {
-          console.log(`Tried to parse GeoJSON ${geoJsonString} failed with ${error}`);
+          // console.log(`Tried to parse GeoJSON ${geoJsonString} failed with ${error}`);
           return undefined;
         }
       },
       addOpenStreetMapLayer: function addOpenStreetMapLayer(map) {
         L.tileLayer(
           'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-          { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }
+          { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' },
         ).addTo(map);
-      },
-      addGoogleMapsLayer: function addGoogleMapsLayer(map) {
-        // const styled = L.gridLayer.googleMutant({
-        //   type: 'roadmap',
-        //   styles: [
-        //     { elementType: 'labels', stylers: [{ visibility: 'off' }] },
-        //     { featureType: 'water', stylers: [{ color: '#444444' }] },
-        //   ],
-        // }).addTo(map);
-
-        const roads = L.gridLayer.googleMutant({
-          type: 'roadmap', // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
-        }).addTo(map);
       },
       addPoint: function addPoint(map, coords) {
         const point = L.marker(coords).addTo(map);
@@ -127,7 +159,6 @@
         return polygon;
       },
       addMultiPoint: function addMultiPoint(map, coords) {
-
         for (let i = 0; i < coords.length; i++) {
           const pointCoord = coords[i];
           this.addPoint(map, pointCoord);
@@ -135,18 +166,6 @@
 
         map.fitBounds(coords);
       },
-      onMapClick: function onMapClick(e) {
-        alert("You clicked the map at " + e.latlng);
-      },
-      // resize: function resize() {
-      //   let height = this.fullSize ? 500 : 300;
-      //   console.log("resize " + height);
-      //   this.fullSize = !this.fullSize;
-      //   this.$refs.map.setAttribute('style', `height: ${height}px;`);
-      //   height += 32;
-      //   this.$refs.mapcontainer.setAttribute('style', `height: ${height}px;`);
-      //   this.map.invalidateSize();
-      // },
     },
     watch: {
       geoJSON: function updateGeoJSON() {
@@ -161,7 +180,10 @@
       },
     },
     data: () => ({
-      fullSize: false,
+      smallSize: 300,
+      mediumSize: 500,
+      largeSize: 725,
+      fullWidthSize: 875,
       map: null,
       mapIsSetup: false,
     }),

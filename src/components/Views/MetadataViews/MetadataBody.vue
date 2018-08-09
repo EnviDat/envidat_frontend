@@ -34,7 +34,7 @@
       doi: String,
       description: String,
       isOnTop: Boolean,
-      showPlaceholder: Boolean
+      showPlaceholder: Boolean,
     },
     mounted: function mounted() {
     },

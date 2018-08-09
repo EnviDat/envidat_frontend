@@ -123,7 +123,6 @@ export default {
     state.allTags = [];
   },
   [LOAD_ALL_TAGS_SUCCESS](state, payload) {
-    state.loadingAllTags = false;
     const tagList = [];
 
     for (let i = 0; i < payload.length + 1; i += 2) {
@@ -135,6 +134,7 @@ export default {
     }
 
     state.allTags = tagList;
+    state.loadingAllTags = false;
   },
   [LOAD_ALL_TAGS_ERROR](state, reason) {
     state.loadingAllTags = false;

@@ -14,7 +14,7 @@
 
         </v-flex>
 
-        <v-flex v-if="showPlaceholder"
+        <v-flex v-if="!showPlaceholder"
                 xs12 sm6
                 v-for="res in resources" :key="res.id">
 
