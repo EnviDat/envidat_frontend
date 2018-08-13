@@ -27,15 +27,7 @@
               style="text-align: center;">
 
         <v-tooltip bottom >
-          <!-- <v-chip slot="activator"
-                  small disabled 
-                  class="envidat_chip"
-                  v-bind="{ ['color']: searchCount > 0 ? 'primary' : ''}"
-                  :class="{ ['white--text']: searchCount > 0 ? true : false }"
-          >
-            {{ searchCount }}
-          </v-chip> -->
-
+          
           <tag-chip slot="activator"
                   :name="searchCount.toString()"
                   :selectable="false"
@@ -59,7 +51,7 @@
 </template>
 
 <script>
-  import TagChip from './Cards/TagChip';
+  import TagChip from '../Cards/TagChip';
 
   export default {
     props: {

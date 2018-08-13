@@ -23,7 +23,7 @@
                       :closeable="true"
                       v-on:clicked="catchTagClicked($event, tag.name)"
                       v-on:clickedClose="catchTagCloseClicked($event, tag.name)"
-                      class="header_tag" />
+                      class="filterTag" />
 
           </v-flex>
         </v-layout>
@@ -49,36 +49,33 @@
                       :closeable="false"
                       v-on:clicked="catchTagClicked($event, tag.name)"
                       v-on:clickedClose="catchTagCloseClicked($event, tag.name)"
-                      class="header_tag" />
+                      class="filterTag" />
 
           </v-flex>
         </v-layout>
       </v-flex>
 
     </v-layout>
-      
+
     <v-card-actions>
-                  
-      <filter-view-buttons :expanded.sync="expanded"
-                            :expandButtonText="expandButtonText"
-                            :expandedButtonText="expandedButtonText"
-                            :showClearTags="true"
-                            :clearButtonText="clearButtonText"
-                            v-on:clickedExpand="expandClicked"
-                            v-on:clickedClearTags="catchClearClicked"
-                             >
-      </filter-view-buttons>
+      <v-spacer />
       
+        <v-btn small flat 
+                :disabled="selectedTags.length <= 0"
+                @click.native="catchClearTags">
+            {{ clearButtonText }}
+            <v-icon color="red" style="font-size: 20px !important">close</v-icon>
+        </v-btn>
+
     </v-card-actions>
-      
+            
   </v-card>
 
 </template>
 
 <script>
-import TagChip from './Cards/TagChip';
-import FilterViewButtons from './FilterViewButtons';
-import IconLabelView from './IconLabelView';
+import TagChip from '../Cards/TagChip';
+import IconLabelView from '../IconLabelView';
 
 export default {
   props: {
@@ -87,6 +84,9 @@ export default {
     expanded: Boolean,
     expandButtonText: String,
     expandedButtonText: String,
+    mapExpanded: Boolean,
+    mapExpandButtonText: String,
+    mapExpandedButtonText: String,
     clearButtonText: String,
     minTagCountToBeVisible: Number,
   },
@@ -140,16 +140,12 @@ export default {
     catchTagCloseClicked: function catchTagCloseClicked(tagName) {
       this.$emit('clickedTagClose', tagName);
     },
-    expandClicked: function expandClicked(tagName) {
-      this.$emit('clickedExpand', tagName);
-    },
-    catchClearClicked: function catchClearClicked(tagName) {
-      this.$emit('clickedClear', tagName);
+    catchClearTags: function catchClearTags() {
+      this.$emit('clickedClear');
     },
   },
   components: {
     TagChip,
-    FilterViewButtons,
     IconLabelView,
   },
 };
