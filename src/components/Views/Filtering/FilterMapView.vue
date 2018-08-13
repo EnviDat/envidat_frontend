@@ -10,15 +10,21 @@
       
     <v-card-actions class="pr-2">
 
-        <v-btn v-if="expanded"
-                class="px-0"
-                color="accent"
-                style="min-width: 40px !important;"
-                @click.native="toggleActive"
-                :outline="!mapFilteringActive"
-        >
-          <img class="envidatIcon" :src="getIcon('mapMarker')" />                
-        </v-btn>
+
+        <v-tooltip bottom>
+          <v-btn v-if="expanded"
+                  slot="activator"
+                  class="px-0"
+                  color="accent"
+                  style="min-width: 40px !important;"
+                  @click.native="toggleActive"
+                  :outline="!mapFilteringActive"
+          >
+            <img class="envidatIcon" :src="getIcon('mapMarker')" />                
+          </v-btn>
+
+          <span>Map filtering is {{ mapFilteringActive ? '' : 'not' }} active</span>
+        </v-tooltip>
 
       <v-spacer />
 
@@ -26,24 +32,6 @@
         <img v-if="loading"
               class="envidatIcon rotating" :src="getIcon('spinner')" />                
       </div>
-
-      <!-- <v-btn small flat
-              @click.native="toggleMapExpand">
-        {{ expanded ? expandedButtonText : expandButtonText  }}
-        <v-icon color="accent" 
-                :style="expanded ? 'transform: rotate(-180deg);' : 'transform: rotate(0deg);'"
-        >expand_more</v-icon>
-      </v-btn> -->
-
-      <!-- 
-
-      <v-btn color="red"
-              small
-              outline >Reset</v-btn>
-
-      <v-btn color="primary"
-              @click.native=""
-              small >Apply</v-btn> -->
 
     </v-card-actions>
 
