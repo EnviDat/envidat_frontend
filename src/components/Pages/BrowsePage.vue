@@ -11,19 +11,21 @@
                       :searchTerm="searchTerm"
                       :searchCount="searchCount"
                       :searchViewHasButton="false"
+                      v-on:clickedSearch="catchSearchClicked"
+                      v-on:clearedSearch="catchSearchCleared"
                       :allTags="allTags" 
                       :selectedTagNames.sync="selectedTagNames"
                       :popularTags="popularTags"
-                      :showPlaceholder="loadingAllTags"
-                      :showMapFilter="showMapFilter"
-                      :mapFilterHeight="mapFilterHeightPx"
-                      v-on:clickedSearch="catchSearchClicked"
-                      v-on:clearedSearch="catchSearchCleared"
                       v-on:clickedTag="catchTagClicked"
                       v-on:clickedTagClose="catchTagCloseClicked"
                       v-on:clickedClear="catchTagCleared"
+                      :showMapFilter="showMapFilter"
+                      :mapFilteringEnabled="mapFilteringEnabled"
+                      :mapFilterHeight="mapFilterHeightPx"
+                      v-on:clickedMapExpand="toggleMapExpand"
                       v-on:mapFilterChanged="catchMapFilterChanged"
                       v-on:pointClicked="catchPointClicked"
+                      :showPlaceholder="loadingAllTags"
                       />
 
       </v-flex>
@@ -260,6 +262,9 @@
         // bring to top
         // highlight entry
       },
+      toggleMapExpand: function toggleMapExpand() {
+        this.showMapFilter = !this.showMapFilter;
+      },
       isTagSelected: function isTagSelected(tagName) {
         if (!tagName || this.selectedTagNames === undefined) {
           return false;
@@ -466,6 +471,17 @@
         return [];
       },
       cardGridClass: function cardGridClass() {
+        if (this.mapFilteringEnabled && this.showMapFilter) {
+          const twoThridsSize = {
+            xs12: true,
+            sm8: true,
+            md6: true,
+            xl4: true,
+          };
+
+          return twoThridsSize;
+        }
+
         const fullSize = {
           xs12: true,
           sm6: true,
@@ -473,30 +489,21 @@
           xl3: true,
         };
 
-        const twoThridsSize = {
-          xs12: true,
-          sm8: true,
-          md6: true,
-          xl4: true,
-        };
-
-        if (this.showMapFilter) {
-          return twoThridsSize;
-        }
-
         return fullSize;
       },
       metadataListStyling: function metadataListStyling() {
         const json = {
-          xs8: this.showMapFilter,
-          xs12: !this.showMapFilter,
+          xs8: this.mapFilteringEnabled && this.showMapFilter,
+          xs12: this.mapFilteringEnabled && !this.showMapFilter,
           'mt-2': !this.showMapFilter,
           style: this.showMapFilter ? `margin-top: -${this.mapFilterHeightPx}px;` : '',
         };
 
         return json;
       },
-
+      mapFilteringEnabled: function mapFilteringEnabled() {
+        return this.$vuetify.breakpoint.lgAndUp;
+      },
     },
     watch: {
       /* eslint-disable no-unused-vars */

@@ -3,17 +3,21 @@
   <v-card raised
           :height="totalHeight"
   >
-    <div id="map" ref="map" v-bind="mapViewHeight" />
+    <div v-if="expanded"
+          id="map"
+          ref="map"
+          v-bind="mapViewHeight" />
       
     <v-card-actions class="pr-2">
 
-        <v-btn class="px-0"
+        <v-btn v-if="expanded"
+                class="px-0"
                 color="accent"
                 style="min-width: 40px !important;"
                 @click.native="toggleActive"
                 :outline="!mapFilteringActive"
         >
-          <img class="envidatIcon" :src="getIcon('map')" />                
+          <img class="envidatIcon" :src="getIcon('mapMarker')" />                
         </v-btn>
 
       <v-spacer />
@@ -23,12 +27,13 @@
               class="envidatIcon rotating" :src="getIcon('spinner')" />                
       </div>
 
-      <v-btn icon
-              @click.native="">
+      <!-- <v-btn small flat
+              @click.native="toggleMapExpand">
+        {{ expanded ? expandedButtonText : expandButtonText  }}
         <v-icon color="accent" 
-                :style="this.showFullDescription ? 'transform: rotate(-180deg);' : 'transform: rotate(0deg);'"
+                :style="expanded ? 'transform: rotate(-180deg);' : 'transform: rotate(0deg);'"
         >expand_more</v-icon>
-      </v-btn>
+      </v-btn> -->
 
       <!-- 
 
@@ -74,9 +79,14 @@ export default {
   props: {
     locations: Array,
     totalHeight: Number,
+    expanded: Boolean,
   },
   mounted: function mounted() {
     this.setupMap();
+  },
+  beforeDestroy: function beforeDestroy() {
+    this.mapFilteringActive = false;
+    this.reFilter();
   },
   computed: {
     ...mapGetters({
@@ -88,7 +98,7 @@ export default {
       loadingMetadatasContent: 'metadata/loadingMetadatasContent',
     }),
     loading: function loading() {
-      return this.loadingMetadatasContent;
+      return this.loadingMetadataIds || this.loadingMetadatasContent;
     },
     mapViewHeight: function mapViewHeight() {
       return {
@@ -98,6 +108,13 @@ export default {
     mapHeight: function mapHeight() {
       return this.totalHeight - this.buttonHeight;
     },
+    // cardHeight: function cardHeight() {
+    //   if (this.expanded) {
+    //     return this.totalHeight + this.buttonHeight;
+    //   }
+
+    //   return this.buttonHeight;
+    // },
   },
   methods: {
     expandClicked: function expandClicked(expand) {
@@ -106,20 +123,27 @@ export default {
     catchPointClick: function catchPointClick(e) {
       this.$emit('pointClicked', e.target.id);
     },
+    toggleMapExpand: function toggleMapExpand() {
+      this.toggleActive();
+
+      return this.$emit('toggleMapFilterExpand');
+    },
     toggleActive: function toggleActive() {
       this.mapFilteringActive = !this.mapFilteringActive;
 
       this.reFilter();
     },
     setupMap: function setupMap() {
-      if (this.mapIsSetup) {
-        return;
-      }
+      // if (this.mapIsSetup) {
+      //   return;
+      // }
 
       // console.log("pointArray " + this.pointArray + " " + this.geoJSON);
 
       this.map = this.initLeaflet(this.$refs.map, this.pointArray);
       this.addOpenStreetMapLayer(this.map);
+
+      this.addGeoJSONToMap();
 
       this.map.on('moveend', this.reFilter);
 
@@ -230,7 +254,7 @@ export default {
     },
     reFilter: function reFilter() {
       const visibleMetadataIds = [];
-console.log("active: " + this.mapFilteringActive);
+
       if (this.mapFilteringActive) {
         const currentBounds = this.map.getBounds();
         const keys = Object.keys(this.map._layers);
@@ -254,9 +278,7 @@ console.log("active: " + this.mapFilteringActive);
 
       this.$emit('viewChanged', visibleMetadataIds);
     },
-  },
-  watch: {
-    metadatasContent: function addGeoJSONToMap() {
+    addGeoJSONToMap: function addGeoJSONToMap() {
       const keys = Object.keys(this.metadatasContent);
 
       for (let i = 0; i < keys.length; i++) {
@@ -275,10 +297,14 @@ console.log("active: " + this.mapFilteringActive);
       }
     },
   },
+  watch: {
+    metadatasContent: function updateMetadatasContent() {
+      this.addGeoJSONToMap();
+    },
+  },
   data: () => ({
-    expanded: false,
-    expandButtonText: 'Show all tags',
-    expandedButtonText: 'Hide all tags',
+    expandButtonText: 'Show Map Filter',
+    expandedButtonText: 'Hide Map Filter',
     map: null,
     mapIsSetup: false,
     buttonHeight: 50,

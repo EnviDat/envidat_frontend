@@ -11,14 +11,17 @@
         <v-btn small flat 
                 @click.stop="toggleExpand">
             {{ expanded ? expandedButtonText : expandButtonText }}
-            <v-icon color="primary">{{ expanded ? 'expand_less' : 'expand_more' }}</v-icon>
+            <v-icon color="accent">{{ expanded ? 'expand_less' : 'expand_more' }}</v-icon>
         </v-btn>
 
-        <!-- <v-btn icon 
-            @click.stop="toggleExpand">
-            <v-icon color="primary">{{ expanded ? 'expand_less' : 'expand_more' }}</v-icon>
+        <v-btn small flat
+                @click.native="toggleMapExpand">
+          {{ mapExpanded ? mapExpandedButtonText : mapExpandButtonText  }}
+          <v-icon color="accent" 
+                  :style="mapExpanded ? 'transform: rotate(-180deg);' : 'transform: rotate(0deg);'"
+          >expand_more</v-icon>
         </v-btn>
-        -->
+
     </v-layout>
 </template>
 
@@ -30,10 +33,16 @@ export default {
     expandedButtonText: String,
     showClearTags: Boolean,
     clearButtonText: String,
+    mapExpanded: Boolean,
+    mapExpandButtonText: String,
+    mapExpandedButtonText: String,
   },
   methods: {
     toggleExpand: function toggleExpand() {
       this.$emit('clickedExpand', !this.expanded);
+    },
+    toggleMapExpand: function toggleMapExpand() {
+      this.$emit('clickedMapExpand');
     },
     clearTags: function clearTags() {
       this.$emit('clickedClearTags');

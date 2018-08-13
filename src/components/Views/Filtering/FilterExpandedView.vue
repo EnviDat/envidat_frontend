@@ -66,6 +66,10 @@
                             :clearButtonText="clearButtonText"
                             v-on:clickedExpand="expandClicked"
                             v-on:clickedClearTags="catchClearClicked"
+                            :mapExpanded="mapExpanded"
+                            :mapExpandButtonText="mapExpandButtonText"
+                            :mapExpandedButtonText="mapExpandedButtonText"
+                            v-on:clickedMapExpand="catchMapExpandClicked" >
                              >
       </filter-view-buttons>
       
@@ -87,6 +91,9 @@ export default {
     expanded: Boolean,
     expandButtonText: String,
     expandedButtonText: String,
+    mapExpanded: Boolean,
+    mapExpandButtonText: String,
+    mapExpandedButtonText: String,
     clearButtonText: String,
     minTagCountToBeVisible: Number,
   },
@@ -133,6 +140,9 @@ export default {
       }
 
       return this.selectedTagNames.indexOf(tagName) >= 0;
+    },
+    catchMapExpandClicked: function catchMapExpandClicked() {
+      this.$emit('clickedMapExpand');
     },
     catchTagClicked: function catchTagClicked(tagName) {
       this.$emit('clickedTag', tagName);

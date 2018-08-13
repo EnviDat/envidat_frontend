@@ -51,25 +51,31 @@
                       :searchTerm="searchTerm"
                       :searchCount="searchCount"
                       :searchViewHasButton="false"
+                      v-on:clickedSearch="catchSearchClicked"
+                      v-on:clearedSearch="catchSearchCleared"
                       :allTags="allTags" 
                       :selectedTagNames.sync="selectedTagNames"
                       :popularTags="popularTags"
-                      :showPlaceholder="showPlaceholder"
-                      v-on:clickedSearch="catchSearchClicked"
-                      v-on:clearedSearch="catchSearchCleared"
                       v-on:clickedTag="catchTagClicked"
                       v-on:clickedTagClose="catchTagCloseClicked"
                       v-on:clickedClear="catchTagCleared"
+                      :mapExpanded="showMapFilter"
+                      v-on:clickedMapExpand="catchMapExpandClicked"
+                      :showPlaceholder="showPlaceholder"
           >
         </filter-view>
 
       </v-flex>
 
       <v-flex xs4 offset-xs8 py-1
-              v-if="showMapFilter" >
+              v-if="mapFilteringEnabled && showMapFilter" >
+
         <filter-map-view :totalHeight="mapFilterHeight"
+                          :expanded="showMapFilter"
+                          v-on:toggleMapFilterExpand="catchMapExpandClicked"
                           v-on:viewChanged="catchViewChanged"
                           v-on:pointClicked="catchPointClicked" />
+
       </v-flex>
 
     </v-layout>
@@ -94,18 +100,23 @@
       selectedTagNames: Array,
       showPlaceholder: Boolean,
       showMapFilter: Boolean,
+      mapFilteringEnabled: Boolean,
       mapFilterHeight: Number,
     },
     computed: {
-      alignClass: function alignClass() {
+      mapFilterAlignment: function mapFilterAlignment() {
         return {
-          flex: !this.alignLeft,
-          xs2: !this.alignLeft,
-          'pr-3': this.alignLeft,
+          xs4: this.showMapFilter,
+          'offset-xs8': this.showMapFilter,
+          xs1: !this.showMapFilter,
+          'offset-xs11': !this.showMapFilter,
         };
       },
     },
     methods: {
+      catchMapExpandClicked: function catchMapExpandClicked() {
+        this.$emit('clickedMapExpand');
+      },
       catchSearchCleared: function catchSearchCleared() {
         this.$emit('clearedSearch');
       },

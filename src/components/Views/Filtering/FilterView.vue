@@ -31,7 +31,11 @@
                       :popularTags="popularTags"
                       :expanded="expanded"
                       :expandButtonText="expandButtonText"
-                      :expandedButtonText = "expandedButtonText"
+                      :expandedButtonText="expandedButtonText"
+                      :mapExpanded="mapExpanded"
+                      :mapExpandButtonText="mapExpandButtonText"
+                      :mapExpandedButtonText="mapExpandedButtonText"
+                      v-on:clickedMapExpand="catchMapExpandClicked"
                       :clearButtonText="clearButtonText"
                       :minTagCountToBeVisible="5"
                       v-on:clickedTag="catchTagClicked"
@@ -97,7 +101,11 @@
               <filter-view-buttons :expanded.sync="expanded"
                                     :expandButtonText="expandButtonText"
                                     :expandedButtonText="expandedButtonText"
-                                    v-on:clickedExpand="expandClicked" >
+                                    v-on:clickedExpand="expandClicked"
+                                    :mapExpanded="mapExpanded"
+                                    :mapExpandButtonText="mapExpandButtonText"
+                                    :mapExpandedButtonText="mapExpandedButtonText"
+                                    v-on:clickedMapExpand="catchMapExpandClicked" >
               </filter-view-buttons>
 
             </v-card-actions>
@@ -132,6 +140,7 @@ export default {
     searchViewLabelText: String,
     searchViewHasButton: Boolean,
     showPlaceholder: Boolean,
+    mapExpanded: Boolean,
   },
   computed: {
     selectedTags: function selectedTags() {
@@ -230,6 +239,9 @@ export default {
     expandClicked: function expandClicked(expand) {
       this.expanded = expand;
     },
+    catchMapExpandClicked: function catchMapExpandClicked() {
+      this.$emit('clickedMapExpand');
+    },
     catchSearchCleared: function catchSearchCleared() {
       this.$emit('clearedSearch');
     },
@@ -281,6 +293,9 @@ export default {
     expandButtonText: 'Show all tags',
     expandedButtonText: 'Hide all tags',
     clearButtonText: 'Clear Tags',
+    mapFilterExpanded: false,
+    mapExpandButtonText: 'Show Map',
+    mapExpandedButtonText: 'Hide Map',
     // selectedTags: [],
     maxSelectedTagsTextLength: 25,
     maxPopularTagsTextLength: 250,
