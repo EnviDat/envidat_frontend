@@ -23,7 +23,7 @@
                       :closeable="true"
                       v-on:clicked="catchTagClicked($event, tag.name)"
                       v-on:clickedClose="catchTagCloseClicked($event, tag.name)"
-                      class="header_tag" />
+                      class="filterTag" />
 
           </v-flex>
         </v-layout>
@@ -49,39 +49,32 @@
                       :closeable="false"
                       v-on:clicked="catchTagClicked($event, tag.name)"
                       v-on:clickedClose="catchTagCloseClicked($event, tag.name)"
-                      class="header_tag" />
+                      class="filterTag" />
 
           </v-flex>
         </v-layout>
       </v-flex>
 
     </v-layout>
-      
+
     <v-card-actions>
-                  
-      <filter-view-buttons :expanded.sync="expanded"
-                            :expandButtonText="expandButtonText"
-                            :expandedButtonText="expandedButtonText"
-                            :showClearTags="true"
-                            :clearButtonText="clearButtonText"
-                            v-on:clickedExpand="expandClicked"
-                            v-on:clickedClearTags="catchClearClicked"
-                            :mapExpanded="mapExpanded"
-                            :mapExpandButtonText="mapExpandButtonText"
-                            :mapExpandedButtonText="mapExpandedButtonText"
-                            v-on:clickedMapExpand="catchMapExpandClicked" >
-                             >
-      </filter-view-buttons>
+      <v-spacer />
       
+        <v-btn small flat 
+                :disabled="selectedTags.length <= 0"
+                @click.native="catchClearTags">
+            {{ clearButtonText }}
+            <v-icon color="red" style="font-size: 20px !important">close</v-icon>
+        </v-btn>
+
     </v-card-actions>
-      
+            
   </v-card>
 
 </template>
 
 <script>
 import TagChip from '../Cards/TagChip';
-import FilterViewButtons from './FilterViewButtons';
 import IconLabelView from '../IconLabelView';
 
 export default {
@@ -141,25 +134,18 @@ export default {
 
       return this.selectedTagNames.indexOf(tagName) >= 0;
     },
-    catchMapExpandClicked: function catchMapExpandClicked() {
-      this.$emit('clickedMapExpand');
-    },
     catchTagClicked: function catchTagClicked(tagName) {
       this.$emit('clickedTag', tagName);
     },
     catchTagCloseClicked: function catchTagCloseClicked(tagName) {
       this.$emit('clickedTagClose', tagName);
     },
-    expandClicked: function expandClicked(tagName) {
-      this.$emit('clickedExpand', tagName);
-    },
-    catchClearClicked: function catchClearClicked(tagName) {
-      this.$emit('clickedClear', tagName);
+    catchClearTags: function catchClearTags() {
+      this.$emit('clickedClear');
     },
   },
   components: {
     TagChip,
-    FilterViewButtons,
     IconLabelView,
   },
 };

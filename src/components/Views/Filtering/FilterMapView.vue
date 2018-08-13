@@ -117,9 +117,9 @@ export default {
     // },
   },
   methods: {
-    expandClicked: function expandClicked(expand) {
-      this.expanded = expand;
-    },
+    // expandClicked: function expandClicked(expand) {
+    //   this.expanded = expand;
+    // },
     catchPointClick: function catchPointClick(e) {
       this.$emit('pointClicked', e.target.id);
     },
@@ -303,8 +303,6 @@ export default {
     },
   },
   data: () => ({
-    expandButtonText: 'Show Map Filter',
-    expandedButtonText: 'Hide Map Filter',
     map: null,
     mapIsSetup: false,
     buttonHeight: 50,

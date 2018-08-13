@@ -47,27 +47,98 @@
 
 
       <v-flex xs12 >
-        <filter-view :searchViewLabelText="searchLabelText"
-                      :searchTerm="searchTerm"
-                      :searchCount="searchCount"
-                      :searchViewHasButton="false"
-                      v-on:clickedSearch="catchSearchClicked"
-                      v-on:clearedSearch="catchSearchCleared"
-                      :allTags="allTags" 
-                      :selectedTagNames.sync="selectedTagNames"
-                      :popularTags="popularTags"
-                      v-on:clickedTag="catchTagClicked"
-                      v-on:clickedTagClose="catchTagCloseClicked"
-                      v-on:clickedClear="catchTagCleared"
-                      :mapExpanded="showMapFilter"
-                      v-on:clickedMapExpand="catchMapExpandClicked"
-                      :showPlaceholder="showPlaceholder"
-          >
-        </filter-view>
+
+        <v-container fluid grid-list-md pa-0>
+
+          <v-layout 
+            v-bind="{
+              ['row']: this.$vuetify.breakpoint.smAndUp,
+              ['column']: this.$vuetify.breakpoint.xsOnly,
+            }" >
+
+            <v-flex xs12 sm3>
+                <small-search-bar-view
+                                :searchTerm="searchTerm"
+                                :searchCount="searchCount"
+                                :labelText="searchViewLabelText"
+                                :hasButton="searchViewHasButton"
+                                v-on:clicked="catchSearchClicked"
+                                v-on:searchCleared="catchSearchCleared">
+                </small-search-bar-view>
+            </v-flex>
+
+            <v-flex xs10 sm7 
+              v-bind="{
+                ['py-2']: this.$vuetify.breakpoint.xsOnly,
+              }"
+            >
+              
+              <filter-expanded-view v-if="expanded"
+                            :allTags="allTags" 
+                            :selectedTagNames="selectedTagNames"
+                            :popularTags="popularTags"
+                            :expanded="expanded"
+                            :expandButtonText="expandButtonText"
+                            :expandedButtonText="expandedButtonText"
+                            :mapExpanded="showMapFilter"
+                            :mapExpandButtonText="mapExpandButtonText"
+                            :mapExpandedButtonText="mapExpandedButtonText"
+                            v-on:clickedMapExpand="catchMapExpandClicked"
+                            :clearButtonText="clearButtonText"
+                            :minTagCountToBeVisible="5"
+                            v-on:clickedTag="catchTagClicked"
+                            v-on:clickedTagClose="catchTagCloseClicked"
+                            v-on:clickedExpand="catchExpandClicked"
+                            v-on:clickedClear="catchTagCleared"
+                            >
+              </filter-expanded-view>
+
+              <filter-view v-if="!expanded"
+                            :allTags="allTags" 
+                            :selectedTagNames.sync="selectedTagNames"
+                            :popularTags="popularTags"
+                            :expanded="expanded"
+                            :expandButtonText="expandButtonText"
+                            :expandedButtonText="expandedButtonText"
+                            v-on:clickedExpand="catchExpandClicked"
+                            v-on:clickedTag="catchTagClicked"
+                            v-on:clickedTagClose="catchTagCloseClicked"
+                            :mapExpanded="showMapFilter"
+                            :mapExpandButtonText="mapExpandButtonText"
+                            :mapExpandedButtonText="mapExpandedButtonText"
+                            v-on:clickedMapExpand="catchMapExpandClicked"
+                            :showPlaceholder="showPlaceholder"
+                >
+              </filter-view>
+
+            </v-flex>
+
+            <v-flex xs2
+              v-bind="{
+                ['py-2']: this.$vuetify.breakpoint.xsOnly,
+              }"
+            >
+
+              <filter-view-buttons
+                                    :expanded="expanded"
+                                    :expandButtonText="expandButtonText"
+                                    :expandedButtonText="expandedButtonText"
+                                    v-on:clickedExpand="catchExpandClicked"
+                                    :mapExpanded="showMapFilter"
+                                    :mapExpandButtonText="mapExpandButtonText"
+                                    :mapExpandedButtonText="mapExpandedButtonText"
+                                    v-on:clickedMapExpand="catchMapExpandClicked" >
+              </filter-view-buttons>
+
+            </v-flex>
+
+          </v-layout>
+
+        </v-container>
 
       </v-flex>
 
-      <v-flex xs4 offset-xs8 py-1
+      <!-- <v-flex xs4 offset-xs8 py-1 style="pointer-events: none;"
               v-if="mapFilteringEnabled && showMapFilter" >
 
         <filter-map-view :totalHeight="mapFilterHeight"
@@ -76,7 +147,7 @@
                           v-on:viewChanged="catchViewChanged"
                           v-on:pointClicked="catchPointClicked" />
 
-      </v-flex>
+      </v-flex> -->
 
     </v-layout>
 
@@ -85,6 +156,9 @@
 <script>
   import FilterView from './Filtering/FilterView';
   import FilterMapView from './Filtering/FilterMapView';
+  import SmallSearchBarView from './Filtering/SmallSearchBarView';
+  import FilterExpandedView from './Filtering/FilterExpandedView';
+  import FilterViewButtons from './Filtering/FilterViewButtons';
   import Logo from '../../assets/logo/EnviDat_logo_32.png';
 
   export default {
@@ -138,6 +212,9 @@
       catchPointClicked: function catchPointClicked(id) {
         this.$emit('pointClicked', id);
       },
+      catchExpandClicked: function catchExpandClicked() {
+        this.expanded = !this.expanded;
+      },
     },
     data: () => ({
       Logo,
@@ -145,14 +222,40 @@
       aboutUrl: 'https://www.envidat.ch/about',
       loginText: 'Login',
       loginUrl: 'https://www.envidat.ch/user/reset',
+      expanded: false,
+      expandButtonText: 'Show all tags',
+      expandedButtonText: 'Hide all tags',
+      clearButtonText: 'Clear Tags',
+      mapExpandButtonText: 'Show Map',
+      mapExpandedButtonText: 'Hide Map',
     }),
     components: {
       FilterView,
+      SmallSearchBarView,
+      FilterExpandedView,
+      FilterViewButtons,
       FilterMapView,
     },
   };
 </script>
 
 <style>
-  
+
+  .envidat_chip{
+    height: 1.5rem;
+    font-size: 0.75rem;
+  }
+
+  .envidat_chip span {
+    cursor: pointer !important;
+  }
+
+  .filterTag {
+    opacity: 0.7;
+  }
+
+  .chip__content span {
+    cursor: pointer !important;
+  }
+
 </style>

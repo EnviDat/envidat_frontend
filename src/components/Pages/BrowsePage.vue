@@ -31,67 +31,68 @@
       </v-flex>
 
 
-      <v-flex px-3
+      <v-flex px-3 py-2 style="z-index: 1;"
               v-bind="metadataListStyling"
        >
-        <v-layout column style="z-index: 1;">
+        <v-container fluid grid-list-md pa-0
+                      @scroll="updateScroll" >
 
-          <v-container fluid grid-list-md pa-0
-                        @scroll="updateScroll" >
+          <v-layout row wrap>
 
-            <v-layout row wrap>
+            <v-flex v-if="loading"
+                    v-bind="cardGridClass"
+                    v-for="(n, index) in palceHolderAmount" :key="index">
 
+              <metadata-card-placeholder :dark="false" />
+    
+            </v-flex>
 
-              <v-flex v-if="loading"
-                      v-bind="cardGridClass"
-                      v-for="(n, index) in palceHolderAmount" :key="index">
+            <v-flex v-if="!loading"
+                    v-bind="cardGridClass"
+                    v-for="(metadata, index) in filteredMetadataContent" :key="index">
+              <metadata-card
+                            :title="metadata.title"
+                            :id="metadata.id"
+                            :subtitle="metadata.notes"
+                            :tags="metadata.tags"
+                            :titleImg="metadata.titleImg"
+                            :restricted="hasRestrictedResources(metadata)"
+                            :resourceCount="metadata.num_resources"
+                            :resources="metadata.resources"
+                            :dark="false"
+                            :compactLayout="showMapFilter"
+                            v-on:clickedEvent="metaDataClicked"
+                            v-on:clickedTag="catchTagClicked">
+              </metadata-card>
+    
+            </v-flex>
 
-                <metadata-card-placeholder :dark="false" />
-      
-              </v-flex>
-
-              <v-flex v-if="!loading"
-                      v-bind="cardGridClass"
-                      v-for="(metadata, index) in filteredMetadataContent" :key="index">
-                <metadata-card
-                              :title="metadata.title"
-                              :id="metadata.id"
-                              :subtitle="metadata.notes"
-                              :tags="metadata.tags"
-                              :titleImg="metadata.titleImg"
-                              :restricted="hasRestrictedResources(metadata)"
-                              :resourceCount="metadata.num_resources"
-                              :resources="metadata.resources"
-                              :dark="false"
-                              :compactLayout="showMapFilter"
-                              v-on:clickedEvent="metaDataClicked"
-                              v-on:clickedTag="catchTagClicked">
-                </metadata-card>
-      
-              </v-flex>
-
-              <v-flex xs12 v-if="!loading && !filteredMetadataContent">
-                <no-search-results-view v-on:clicked="catchCategoryClicked"
-                                        :noResultText="noResultText"
-                                        :suggestionText="suggestionText" />  
-              </v-flex>
+            <v-flex xs12 v-if="!loading && !filteredMetadataContent">
+              <no-search-results-view v-on:clicked="catchCategoryClicked"
+                                      :noResultText="noResultText"
+                                      :suggestionText="suggestionText" />  
+            </v-flex>
 
 
-            </v-layout>
-          </v-container>
+          </v-layout>
 
-        </v-layout>
+        </v-container>
+
       </v-flex>
 
-      <!-- <v-flex px-3
-              v-bind="{ ['xs4']: showMapFilter,
-                        ['xs0']: !showMapFilter }"
-       >
+      <v-flex xs4 py-2 pr-3
+              v-if="mapFilteringEnabled && showMapFilter" >
 
-        <v-card height="300px">
+        <filter-map-view style="position: sticky; top: 100px;"
+                          :totalHeight="mapFilterHeightPx"
+                          :expanded="showMapFilter"
+                          v-on:clickedMapExpand="toggleMapExpand"
+                          v-on:viewChanged="catchMapFilterChanged"
+                          v-on:pointClicked="catchPointClicked"
+                           />
 
-        </v-card>
-      </v-flex> -->
+      </v-flex>
+
     </v-layout>
 
   </v-container>
@@ -101,6 +102,7 @@
 <script>
   import { mapGetters } from 'vuex';
   import NavBarView from '../Views/NavbarView';
+  import FilterMapView from '../Views/Filtering/FilterMapView';
   import MetadataCard from '../Views/Cards/MetadataCard';
   import MetadataCardPlaceholder from '../Views/Cards/MetadataCardPlaceholder';
   import NoSearchResultsView from '../Views/NoSearchResultsView';
@@ -496,7 +498,7 @@
           xs8: this.mapFilteringEnabled && this.showMapFilter,
           xs12: this.mapFilteringEnabled && !this.showMapFilter,
           'mt-2': !this.showMapFilter,
-          style: this.showMapFilter ? `margin-top: -${this.mapFilterHeightPx}px;` : '',
+          // style: this.showMapFilter ? `margin-top: -${this.mapFilterHeightPx}px;` : '',
         };
 
         return json;
@@ -534,6 +536,7 @@
     }),
     components: {
       NavBarView,
+      FilterMapView,
       NoSearchResultsView,
       MetadataCard,
       MetadataCardPlaceholder,
