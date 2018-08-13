@@ -21,17 +21,17 @@
 
               <v-flex xs12 v-if="!maxTitleLengthReached">
                 <div class="headline mb-0"
-                :class="{['black_title'] : dark ? false : true,
-                          ['white_title'] : dark ? true : false }"
-                >{{ title | truncate(maxTitleLength) }}</div>
+                    :class="titleClass"
+                >
+                  {{ title | truncate(maxTitleLength) }}</div>
               </v-flex>
 
               <v-flex xs12 v-if="maxTitleLengthReached">
                 <v-tooltip bottom>
                   <div slot="activator" class="headline mb-0"
-                    :class="{['black_title'] : dark ? false : true,
-                              ['white_title'] : dark ? true : false }"
-                    >{{ title | truncate(maxTitleLength) }}</div>
+                      :class="titleClass"
+                  >
+                    {{ title | truncate(maxTitleLength) }}</div>
                   <span>{{ title }}</span>
                 </v-tooltip>
               </v-flex>
@@ -161,6 +161,7 @@ export default {
     dark: Boolean,
     resourceCount: Number,
     resources: Array,
+    compactLayout: Boolean,
   },
   components: {
     TagChip,
@@ -243,6 +244,13 @@ export default {
 
       return 0;
     },
+    titleClass: function titleClass() {
+      return {
+        black_title: !this.dark,
+        white_title: this.dark,
+        compactTitle: this.compactLayout,
+      };
+    },
   },
   data: () => ({
     show: false,
@@ -284,6 +292,11 @@ export default {
 
   .white_title{
     color: rgba(255,255,255,.9) !important;
+  }
+  
+  .compactTitle {
+    font-size: 18px !important;
+    line-height: 1.3em !important;
   }
 
   .card_tag {
