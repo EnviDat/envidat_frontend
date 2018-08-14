@@ -62,18 +62,28 @@
       showPlaceholder: Boolean,
     },
     data: () => ({
-      maxSingleTextLength: 55,
+      maxSingleTextLengthLg: 80,
+      maxSingleTextLengthMd: 80,
+      maxSingleTextLengthXs: 70,
     }),
     methods: {
       clicking: function clicking() {
         alert(this.props);
       },
       isSingleText: function isSingleText(text, label) {
-        if (!text || text.length <= 0){
-          return true;          
+        if (!text || text.length <= 0) {
+          return true;
         }
 
-        return text.length <= this.maxSingleTextLength;
+        if (this.$vuetify.breakpoint.xsOnly) {
+          return text.length <= this.maxSingleTextLengthXs;
+        }
+
+        if (this.$vuetify.breakpoint.mdAndDown) {
+          return text.length <= this.maxSingleTextLengthMd;
+        }
+
+        return text.length <= this.maxSingleTextLengthLg;
       },
     },
     components: {
