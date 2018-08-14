@@ -22,6 +22,8 @@ import {
   LOAD_ALL_TAGS_ERROR,
 } from '../metadataMutationsConsts';
 
+const conversion = require('./conversion');
+
 export default {
   [LOAD_ALL_METADATA](state) {
     state.loadingMetadataIds = true;
@@ -79,7 +81,9 @@ export default {
     /* eslint-disable no-underscore-dangle */
     for (let i = 0; i < payload.length; i++) {
       const element = payload[i];
-      this._vm.$set(state.searchedMetadatasContent, element.id, element);
+      const ckanJSON = conversion.solrResultToCKANJSON(element);
+
+      this._vm.$set(state.searchedMetadatasContent, ckanJSON.id, ckanJSON);
     }
 
     state.searchingMetadatasContent = false;
