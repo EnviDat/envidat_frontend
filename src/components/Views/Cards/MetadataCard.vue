@@ -232,7 +232,7 @@ export default {
     // maxTags: 3,
     maxTagTextlength: 40,
     blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
-    whiteTopToBottom: 'rgba(255,255,255, 0.25) 0%, rgba(255,255,255, 0.95) 60%',
+    whiteTopToBottom: 'rgba(255,255,255, 0.3) 0%, rgba(255,255,255, 1) 60%',
     imageDefaults: {
       snow: 'c_b_snow_icy2',
       landscape: 'c_b_landscape_lake2', // or c_b_landscape_view ! c_b_landscape_long_lake

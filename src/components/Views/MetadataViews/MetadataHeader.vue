@@ -125,7 +125,7 @@ export default {
     showTagsExpanded: false,
     dark: false,
     blackTopToBottom: 'rgba(80,80,80, 0.1) 0%, rgba(80,80,80, 0.9) 70%',
-    whiteTopToBottom: 'rgba(245,245,245, 0.25) 0%, rgba(245,245,245, 0.9) 50%',
+    whiteTopToBottom: 'rgba(255,255,255, 0.3) 0%, rgba(255,255,255, 1) 60%',
   }),
   methods: {
     catchTagClicked: function catchTagClicked(tagId) {

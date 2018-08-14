@@ -14,7 +14,7 @@
                 </v-btn>
               </v-flex>
 
-              <v-flex xs6 sm6 md8>
+              <v-flex xs6 sm6 md8 lg9>
                 <!-- spacer -->
               </v-flex>
 
