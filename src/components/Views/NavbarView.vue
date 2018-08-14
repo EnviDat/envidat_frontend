@@ -14,7 +14,7 @@
                 </v-btn>
               </v-flex>
 
-              <v-flex xs6 sm6 md9>
+              <v-flex xs6 sm6 md8>
                 <!-- spacer -->
               </v-flex>
 
@@ -28,7 +28,7 @@
                 </v-btn>
               </v-flex>
 
-              <v-flex xs4 sm2 md1 >
+              <v-flex xs4 sm2 md2 lg1>
                 <v-btn class="ma-0"
                         flat
                         color="primary"
@@ -220,7 +220,7 @@
       Logo,
       aboutText: 'About',
       aboutUrl: 'https://www.envidat.ch/about',
-      loginText: 'Login',
+      loginText: 'Creator Login',
       loginUrl: 'https://www.envidat.ch/user/reset',
       expanded: false,
       expandButtonText: 'Show all tags',
