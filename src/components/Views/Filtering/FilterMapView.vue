@@ -198,9 +198,9 @@ export default {
       //   ],
       // }).addTo(map);
 
-      const roads = L.gridLayer.googleMutant({
-        type: 'roadmap', // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
-      }).addTo(map);
+      // const roads = L.gridLayer.googleMutant({
+      //   type: 'roadmap', // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
+      // }).addTo(map);
     },
     addGeoData: function addGeoData(location) {
       const validGeoJSON = this.parseGeoJSON(location.geoJSON);
@@ -253,7 +253,6 @@ export default {
       return polygon;
     },
     addMultiPoint: function addMultiPoint(map, coords, id) {
-
       for (let i = 0; i < coords.length; i++) {
         const pointCoord = coords[i];
         this.addPoint(map, pointCoord, id);

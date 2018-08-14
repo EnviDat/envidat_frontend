@@ -53,6 +53,7 @@
               <metadata-card
                             :title="metadata.title"
                             :id="metadata.id"
+                            :name="metadata.name"
                             :ref="metadata.id"
                             :subtitle="metadata.notes"
                             :tags="metadata.tags"

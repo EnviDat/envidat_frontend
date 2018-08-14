@@ -63,17 +63,9 @@
     </v-card-text>
 
 
-    <!-- <v-card-actions style="position: absolute; bottom: 0; right: 0;"> -->
     <v-card-actions class="ma-0 pa-2"
                     style="position: absolute; bottom: 0; right: 0;">
       
-      <!-- <v-tooltip bottom>
-        <v-btn icon slot="activator">
-          <v-icon color="primary">cloud_download</v-icon>
-        </v-btn>
-        <span>Download data</span>
-      </v-tooltip> -->
-
       <v-spacer></v-spacer>
 
       <v-tooltip bottom v-if="isRestricted">
@@ -91,13 +83,6 @@
           </div>
 
       </v-tooltip>
-
-      <!-- <v-btn v-if="favourit" icon>
-        <v-icon color="accent">star</v-icon>
-      </v-btn>
-      <v-btn v-if="!favourit" icon>
-        <v-icon>star</v-icon>
-      </v-btn> -->
 
       <icon-count-view :count="resourceAmount"
                         iconString="file"
@@ -137,6 +122,7 @@ export default {
     id: String,
     title: String,
     subtitle: String,
+    name: String,
     type: Number,
     restricted: Boolean,
     favourit: Boolean,
@@ -155,7 +141,11 @@ export default {
   },
   methods: {
     cardClick: function cardClick() {
-      this.$emit('clickedEvent', this.id);
+      let detailParam = this.name;
+      if (!detailParam) {
+        detailParam = this.id; // fallback id in url isn't too nice
+      }
+      this.$emit('clickedEvent', detailParam);
     },
     favouritClicked: function favouritClicked() {
       this.$emit('clickedFavourit', this.id);
