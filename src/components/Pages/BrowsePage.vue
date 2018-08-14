@@ -53,6 +53,7 @@
               <metadata-card
                             :title="metadata.title"
                             :id="metadata.id"
+                            :ref="metadata.id"
                             :subtitle="metadata.notes"
                             :tags="metadata.tags"
                             :titleImg="metadata.titleImg"
@@ -61,6 +62,7 @@
                             :resources="metadata.resources"
                             :dark="false"
                             :compactLayout="showMapFilter"
+                            :class="{ ['elevation-10'] : hoverId === metadata.id }"
                             v-on:clickedEvent="metaDataClicked"
                             v-on:clickedTag="catchTagClicked">
               </metadata-card>
@@ -89,6 +91,8 @@
                           v-on:clickedMapExpand="toggleMapExpand"
                           v-on:viewChanged="catchMapFilterChanged"
                           v-on:pointClicked="catchPointClicked"
+                          v-on:pointHover="catchPointHovered"
+                          v-on:pointHoverLeave="catchPointHoverLeave"
                            />
 
       </v-flex>
@@ -263,6 +267,22 @@
       catchPointClicked: function catchPointClicked(id) {
         // bring to top
         // highlight entry
+      },
+      catchPointHovered: function catchPointHovered(id) {
+        // bring to top
+        // highlight entry
+        const domElement = this.$refs[id];
+        if (domElement && domElement.length > 0) {
+          this.hoverId = id;
+        }
+      },
+      catchPointHoverLeave: function catchPointHoverLeave(id) {
+        // bring to top
+        // highlight entry
+        this.hoverId = '';
+      },
+      getMetaCard: function getMetaCard() {
+
       },
       toggleMapExpand: function toggleMapExpand() {
         this.showMapFilter = !this.showMapFilter;
@@ -533,6 +553,7 @@
       showMapFilter: true,
       mapFilterHeightPx: 450,
       mapFilterVisibleIds: [],
+      hoverId: '',
     }),
     components: {
       NavBarView,

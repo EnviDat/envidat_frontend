@@ -111,6 +111,12 @@ export default {
     catchPointClick: function catchPointClick(e) {
       this.$emit('pointClicked', e.target.id);
     },
+    catchPointHover: function catchPointHover(e) {
+      this.$emit('pointHover', e.target.id);
+    },
+    catchPointHoverLeave: function catchPointHoverLeave(e) {
+      this.$emit('pointHoverLeave', e.target.id);
+    },
     toggleMapExpand: function toggleMapExpand() {
       this.toggleActive();
 
@@ -141,6 +147,7 @@ export default {
       const map = L.map(mapElement, {
         scrollWheelZoom: false,
         center: [46.943961, 8.199240],
+        riseOnHover: true,
         zoom: 8,
       });
 
@@ -209,10 +216,13 @@ export default {
         color: this.$vuetify.theme.primary,
         opacity: 0.65,
         riseOnHover: true,
+        title: id,
       }).addTo(map);
 
       point.id = id;
       point.on('click', this.catchPointClick);
+      point.on('mouseover', this.catchPointHover);
+      point.on('mouseout ', this.catchPointHoverLeave);
 
       return point;
     },

@@ -6,7 +6,9 @@
         
         <v-flex xs6>
 
-          <v-btn small flat 
+          <v-btn small
+                  flat
+                  color="primary"
                   @click.stop="toggleExpand">
               {{ expanded ? expandedButtonText : expandButtonText }}
               <v-icon color="accent">{{ expanded ? 'expand_less' : 'expand_more' }}</v-icon>
@@ -16,7 +18,9 @@
         
         <v-flex xs6>
 
-          <v-btn small flat
+          <v-btn small
+                  flat
+                  color="primary"
                   @click.native="toggleMapExpand">
             {{ mapExpanded ? mapExpandedButtonText : mapExpandButtonText  }}
             <v-icon color="accent" 
