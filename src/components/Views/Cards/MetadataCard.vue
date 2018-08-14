@@ -99,27 +99,10 @@
         <v-icon>star</v-icon>
       </v-btn> -->
 
-      <v-tooltip bottom>
-          <div slot="activator" class="metadataInfoIcon">
-            <v-layout row @mouseover="hoverBadge = true" @mouseleave="hoverBadge = false">
-
-              <v-flex pa-0>
-                <v-badge v-bind="{ left: !hoverBadge }"
-                        overlap
-                        class="envidat_badge">
-                  <span slot="badge">{{ resourceAmount }}</span>
-                </v-badge>              
-              </v-flex>
-
-              <v-flex pa-0 >
-                <img class="envidatIcon" :src="getIcon('file')" />                
-              </v-flex>
-              
-            </v-layout>
-          </div>
-
-          <span>Metadata with {{ resourceAmount }} resources</span>
-      </v-tooltip>
+      <icon-count-view :count="resourceAmount"
+                        iconString="file"
+                        :tooltip="`Metadata with ${resourceAmount} resources`">
+      </icon-count-view>
 
     </v-card-actions>
 
@@ -130,6 +113,7 @@
 
 <script>
 import TagChip from './TagChip';
+import IconCountView from '../IconCountView';
 
 // checkout possible transition animation
 // https://codepen.io/balapa/pen/embYYB
@@ -165,6 +149,7 @@ export default {
   },
   components: {
     TagChip,
+    IconCountView,
   },
   created: function created() {
   },
@@ -177,9 +162,6 @@ export default {
     },
     catchTagClicked: function catchTagClicked(tagId) {
       this.$emit('clickedTag', tagId);
-    },
-    badgeOnMouseover: function badgeOnMouseover() {
-      this.hoverBadge = !this.hoverBadge;
     },
   },
   computed: {
@@ -301,10 +283,6 @@ export default {
 
   .card_tag {
     /* opacity: 0.7; */
-  }
-
-  .envidat_badge {
-    font-size: 0.8em !important;
   }
 
 </style>

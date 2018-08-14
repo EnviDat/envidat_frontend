@@ -249,4 +249,12 @@
     opacity: 0.75;
   }
 
+  .envidat_badge span {
+    font-size: 0.95em !important;
+  }
+
+  .envidat_badgeBigNumber span {
+    font-size: 0.9em !important;
+  }
+
 </style>
