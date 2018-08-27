@@ -28,10 +28,15 @@
 
       <v-spacer />
 
-      <div class="pr-2">
+      <div class="pr-3">
         <img v-if="loading"
               class="envidatIcon rotating" :src="getIcon('spinner')" />                
       </div>
+
+      <icon-count-view :count="markerCount"
+                        iconString="marker"
+                        :tooltip="`${markerCount} makers pinned on the map`">
+      </icon-count-view>
 
     </v-card-actions>
 
@@ -43,8 +48,10 @@
 import { mapGetters } from 'vuex';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import IconCountView from '../IconCountView';
 
 // HACK start
+/* eslint-disable import/first */
 // Solution to loading in the imgs correctly via webpack
 // see more https://github.com/PaulLeCam/react-leaflet/issues/255
 // stupid hack so that leaflet's images work after going through webpack
@@ -62,6 +69,7 @@ L.Icon.Default.mergeOptions({
 });
 
 // HACK end
+
 
 export default {
   props: {
@@ -135,6 +143,8 @@ export default {
       // console.log("pointArray " + this.pointArray + " " + this.geoJSON);
 
       this.map = this.initLeaflet(this.$refs.map, this.pointArray);
+      this.markerCount = 0;
+
       this.addOpenStreetMapLayer(this.map);
 
       this.addGeoJSONToMap();
@@ -188,9 +198,9 @@ export default {
       //   ],
       // }).addTo(map);
 
-      const roads = L.gridLayer.googleMutant({
-        type: 'roadmap', // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
-      }).addTo(map);
+      // const roads = L.gridLayer.googleMutant({
+      //   type: 'roadmap', // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
+      // }).addTo(map);
     },
     addGeoData: function addGeoData(location) {
       const validGeoJSON = this.parseGeoJSON(location.geoJSON);
@@ -200,6 +210,7 @@ export default {
       } else if (location.pointArray) {
         if (location.isPoint) {
           this.addPoint(this.map, location.pointArray, location.id);
+          this.markerCount++;
         }
 
         // if (location.isPolygon) {
@@ -242,7 +253,6 @@ export default {
       return polygon;
     },
     addMultiPoint: function addMultiPoint(map, coords, id) {
-
       for (let i = 0; i < coords.length; i++) {
         const pointCoord = coords[i];
         this.addPoint(map, pointCoord, id);
@@ -307,8 +317,11 @@ export default {
     updatingMap: true,
     addedObjectsKeys: [],
     mapFilteringActive: false,
+    markerCount: 0,
+    hoverBadge: false,
   }),
   components: {
+    IconCountView,
   },
 };
 </script>
