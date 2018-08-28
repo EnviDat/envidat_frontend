@@ -22,13 +22,26 @@ import {
   LOAD_ALL_TAGS_ERROR,
 } from '../metadataMutationsConsts';
 
+/* eslint-disable no-unused-vars  */
+
+const ENVIDAT_PROXY = process.env.ENVIDAT_PROXY;
+const SOLR_PROXY = process.env.SOLR_PROXY;
 const API_BASE = '/api/3/action/';
 const SOLR_API_BASE = '/solr/ckan_default/';
 
-/* eslint-disable no-unused-vars  */
+function urlRewrite(url, baseUrl, proxyUrl) {
+  // const from = url;
+  url = url.replace('?', '&amp;');
+  url = url.replace("'", '%22');
+
+  url = `${proxyUrl}${baseUrl}${url}`;
+
+  // console.log("from " + from + " to " + url);
+  return url;
+}
 
 function loadMetadataIdsPromise() {
-  return axios.get(`${API_BASE}package_list`);
+  return axios.get(urlRewrite('package_list', API_BASE, ENVIDAT_PROXY));
 }
 
 function loadMetadataContentPromises(commit, metadataIds) {
@@ -41,7 +54,10 @@ function loadMetadataContentPromises(commit, metadataIds) {
     // calls.push(axios.get(`${API_BASE}package_show?id=${packageId}`));
 
     /* eslint-disable no-loop-func */
-    calls.push(axios.get(`${API_BASE}package_show?id=${packageId}`).then((response) => {
+
+    const url = urlRewrite(`package_show?id=${packageId}`, API_BASE, ENVIDAT_PROXY);
+
+    calls.push(axios.get(url).then((response) => {
       commit(ADD_METADATA, response.data.result);
     }).catch((reason) => {
       commit(LOAD_METADATAS_CONTENT_ERROR, reason);
@@ -81,7 +97,9 @@ export default {
     // maybe use notes:"snow avalanche"
     // select?indent=on&q=tags:${searchTerm}%20AND%20notes:${searchTerm}&wt=json
 
-    axios.get(`${SOLR_API_BASE}select?indent=on&q=notes:${searchTerm} OR title:${searchTerm}&wt=json&rows=1000`)
+    const url = urlRewrite(`select?indent=on&q=notes:${searchTerm} OR title:${searchTerm}&wt=json&rows=1000`, SOLR_API_BASE, SOLR_PROXY);
+
+    axios.get(url)
       .then((response) => {
         commit(SEARCH_METADATA_SUCCESS, response.data.response.docs);
       })
@@ -138,7 +156,9 @@ export default {
   async [LOAD_METADATA_CONTENT_BY_ID]({ commit }, metadataId) {
     commit(LOAD_METADATA_CONTENT_BY_ID);
 
-    axios.get(`${API_BASE}package_show?id=${metadataId}`).then((response) => {
+    const url = urlRewrite(`package_show?id=${metadataId}`, API_BASE, ENVIDAT_PROXY);
+
+    axios.get(url).then((response) => {
       commit(LOAD_METADATA_CONTENT_BY_ID_SUCCESS, response.data.result);
     }).catch((reason) => {
       commit(LOAD_METADATA_CONTENT_BY_ID_ERROR, reason);
@@ -148,9 +168,9 @@ export default {
   async [LOAD_ALL_TAGS]({ commit }) {
     commit(LOAD_ALL_TAGS);
 
-    // axios.get(`${API_BASE}package_search?facet.field=[%22tags%22]&facet.limit=1000&rows=0`)
+    const url = urlRewrite('select&q=*:*&wt=json&facet=true&facet.field=tags&facet.limit=10000&rows=0', SOLR_API_BASE, SOLR_PROXY);
 
-    axios.get(`${SOLR_API_BASE}select&q=*:*&wt=json&facet=true&facet.field=tags&facet.limit=10000&rows=0`)
+    axios.get(url)
       .then((response) => {
         commit(LOAD_ALL_TAGS_SUCCESS, response.data.facet_counts.facet_fields.tags);
       })
