@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://localhost/ui/ServiceProxyServlet?server=0&serverpath=',
+        target: 'https://www.envidat.ch/gui/ui/ServiceProxyServlet?server=0&serverpath=',
         /* target: 'http://www.envidat.ch', */
         changeOrigin: true,
         secure: false,
@@ -33,7 +33,7 @@ module.exports = {
         */
       },
       '/solr': {
-        target: 'http://localhost/ui/ServiceProxyServlet?server=1&serverpath=',
+        target: 'https://www.envidat.ch/gui/ui/ServiceProxyServlet?server=1&serverpath=',
         /* target: 'http://envidat-prod02.wsl.ch:8983', */
         changeOrigin: true,
         secure: false,
