@@ -8,6 +8,14 @@
               v-bind="{['style'] : dynamicCardBackground }"
       >
 
+        <v-tooltip bottom style="position: absolute; top 0; right: 0;">
+          <v-btn fab flat small color="primary"
+                  @click.native="$router.go(-1)" slot="activator">
+            <v-icon>close</v-icon>
+          </v-btn>        
+          <span>Close Metadata</span>
+        </v-tooltip>
+
         <!--h1 class="py-3" >{{ metadataTitle }} id: {{ $route.params.id }}</h1-->
         <div v-if="metadataTitle"
             class="headerTitle py-3"
@@ -87,13 +95,13 @@
           <v-spacer></v-spacer>
 
           <v-tooltip bottom>
-            <v-btn icon fab small
+            <v-btn fab outline small color="primary"
                     @click.native="showTagsExpanded = !showTagsExpanded" slot="activator">
-              <v-icon color="accent" 
+              <v-icon  color="accent"
                       :style="this.showTagsExpanded ? 'transform: rotate(-180deg);' : 'transform: rotate(0deg);'"
               >expand_more</v-icon>
             </v-btn>        
-            <span>Show all tags</span>
+            <span>{{ this.showTagsExpanded ? 'Hide all tags' : 'Show all tags' }}</span>
           </v-tooltip>
         </v-card-actions>
 
