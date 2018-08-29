@@ -149,10 +149,10 @@ export default {
       return this.formatDate(this.lastModified);
     },
     isLink: function isLink() {
-      return this.format && this.format.toLowerCase() === 'link';
+      return this.format && (this.format.toLowerCase() === 'link' || this.format.toLowerCase() === 'url');
     },
     isFile: function isFile() {
-      return !this.format || this.format.toLowerCase() !== 'link';
+      return !this.format || !(this.format.toLowerCase() === 'link' || this.format.toLowerCase() === 'url');
     },
     maxDescriptionLengthReached: function maxDescriptionLengthReached() {
       return this.description && this.description.length > this.maxDescriptionLength;
