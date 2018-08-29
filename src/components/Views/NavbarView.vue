@@ -12,6 +12,10 @@
                 <v-btn icon href="./" class="ma-0">
                   <img :src="Logo" alt="envidat_logo" >
                 </v-btn>
+
+                <div class="headline envidatLogoText">
+                    {{ logoText }}
+                </div>
               </v-flex>
 
               <v-flex xs6 sm6 md8 lg9>
@@ -218,6 +222,7 @@
     },
     data: () => ({
       Logo,
+      logoText: 'EnviDat',
       aboutText: 'About',
       aboutUrl: 'https://www.envidat.ch/about',
       loginText: 'Creator Login',
@@ -256,6 +261,13 @@
 
   .chip__content span {
     cursor: pointer !important;
+  }
+
+  .envidatLogoText {
+    display: inline;
+    vertical-align: middle;
+    position: relative;
+    bottom: -2px;
   }
 
 </style>
