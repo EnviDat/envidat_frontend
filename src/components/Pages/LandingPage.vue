@@ -122,7 +122,7 @@
       labelText: "Type ex. 'Avalanche'",
       buttonlText: 'SEARCH',
       envidatTitle: 'EnviDat',
-      envidatSlogan: 'Browse the most comprehensive collcetion of environmental data from Switzerland',
+      envidatSlogan: 'Browse a comprehensive collection of environmental data from Switzerland',
       loginInfos: {
         titleText: 'Do you create data?',
         loginText: 'LOGIN',
