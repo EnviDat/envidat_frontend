@@ -64,7 +64,7 @@
 
 
     <v-card-actions class="ma-0 pa-2"
-                    style="position: absolute; bottom: 0; right: 0;">
+                    style="position: absolute; bottom: 5px; right: 5px;">
       
       <v-spacer></v-spacer>
 

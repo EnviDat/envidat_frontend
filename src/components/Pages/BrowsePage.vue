@@ -34,7 +34,7 @@
       <v-flex px-3 py-2 style="z-index: 1;"
               v-bind="metadataListStyling"
        >
-        <v-container fluid grid-list-md pa-0
+        <v-container fluid grid-list-lg pa-0
                       @scroll="updateScroll" >
 
           <v-layout row wrap>
@@ -83,7 +83,7 @@
 
       </v-flex>
 
-      <v-flex xs4 py-2 pr-3
+      <v-flex xs4 py-3 pr-3
               v-if="mapFilteringEnabled && showMapFilter" >
 
         <filter-map-view style="position: sticky; top: 100px;"
