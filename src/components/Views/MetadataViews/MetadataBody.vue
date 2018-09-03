@@ -15,10 +15,10 @@
 <!-- {{ title | truncate(maxTitleLength) }} -->
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn icon 
+      <v-btn icon
               @click.native="readMore()">
         <v-icon color="accent" 
-                :style="this.showFullDescription ? 'transform: rotate(-180deg);' : 'transform: rotate(0deg);'"
+                :style="this.showFullDescription ? 'transform: rotate(-180deg); font-size: 30px !important;' : 'transform: rotate(0deg); font-size: 30px !important;'"
         >expand_more</v-icon>
       </v-btn>        
     </v-card-actions>

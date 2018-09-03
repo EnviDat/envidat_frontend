@@ -9,7 +9,8 @@
       >
 
         <v-tooltip bottom style="position: absolute; top 0; right: 0;">
-          <v-btn fab flat small color="primary"
+          <v-btn icon flat color="primary"
+                  style="font-size: 30px !important;"
                   @click.native="$router.go(-1)" slot="activator">
             <v-icon>close</v-icon>
           </v-btn>        
@@ -98,7 +99,7 @@
             <v-btn fab outline small color="primary"
                     @click.native="showTagsExpanded = !showTagsExpanded" slot="activator">
               <v-icon  color="accent"
-                      :style="this.showTagsExpanded ? 'transform: rotate(-180deg);' : 'transform: rotate(0deg);'"
+                      :style="this.showTagsExpanded ? 'transform: rotate(-180deg); font-size: 30px !important;' : 'transform: rotate(0deg); font-size: 30px !important;'"
               >expand_more</v-icon>
             </v-btn>        
             <span>{{ this.showTagsExpanded ? 'Hide all tags' : 'Show all tags' }}</span>
