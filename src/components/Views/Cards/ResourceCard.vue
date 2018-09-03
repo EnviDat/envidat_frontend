@@ -1,15 +1,14 @@
 <template>
-  <v-card
-  color="primary"
-  class="metadataResourceCard white--text"
-  style="height: 100%;"
+  <v-card color="primary"
+          class="metadataResourceCard white--text"
+          style="height: 100%;"
   >
 
     <v-card-title>
       <div class="headline">{{ name }}</div>
     </v-card-title>
 
-    <v-card-text class="pt-0">
+    <v-card-text class="pt-0 pb-5">
       <v-container grid-list-xs pa-0>
         <v-layout row wrap>
 
@@ -150,10 +149,10 @@ export default {
       return this.formatDate(this.lastModified);
     },
     isLink: function isLink() {
-      return this.format && this.format.toLowerCase() === 'link';
+      return this.format && (this.format.toLowerCase() === 'link' || this.format.toLowerCase() === 'url');
     },
     isFile: function isFile() {
-      return !this.format || this.format.toLowerCase() !== 'link';
+      return !this.format || !(this.format.toLowerCase() === 'link' || this.format.toLowerCase() === 'url');
     },
     maxDescriptionLengthReached: function maxDescriptionLengthReached() {
       return this.description && this.description.length > this.maxDescriptionLength;

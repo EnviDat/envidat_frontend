@@ -1,68 +1,105 @@
 <template>
-  <v-container grid-list-xs fluid py-1>
+  <v-container grid-list-xs fluid py-1
+                v-bind="{ 'pa-0': $vuetify.breakpoint.xsOnly }">
 
-    <nav-bar-view :searchViewLabelText="searchLabelText"
-                  :searchTerm="searchTerm"
-                  :searchCount="searchCount"
-                  :searchViewHasButton="false"
-                  :allTags="allTags" 
-                  :selectedTagNames.sync="selectedTagNames"
-                  :popularTags="popularTags"
-                  :showPlaceholder="loading"
-                  v-on:clickedSearch="catchSearchClicked"
-                  v-on:clearedSearch="catchSearchCleared"
-                  v-on:clickedTag="catchTagClicked"
-                  v-on:clickedTagClose="catchTagCloseClicked"
-                  v-on:clickedClear="catchTagCleared"
-                  />
+    <v-layout row wrap>
 
-    <v-layout column style="z-index: 1;">
+      <v-flex xs12 px-3 
+              style="position: sticky; top: -1px; z-index: 2;" >
 
-<!--
-        v-bind:style="'opacity: ' + 1 - window.scrollTop() / 250"
--->  
+        <nav-bar-view :searchViewLabelText="searchLabelText"
+                      :searchTerm="searchTerm"
+                      :searchCount="searchCount"
+                      :searchViewHasButton="false"
+                      v-on:clickedSearch="catchSearchClicked"
+                      v-on:clearedSearch="catchSearchCleared"
+                      :allTags="allTags" 
+                      :selectedTagNames.sync="selectedTagNames"
+                      :popularTags="popularTags"
+                      v-on:clickedTag="catchTagClicked"
+                      v-on:clickedTagClose="catchTagCloseClicked"
+                      v-on:clickedClear="catchTagCleared"
+                      :showMapFilter="showMapFilter"
+                      :mapFilteringEnabled="mapFilteringEnabled"
+                      :mapFilterHeight="mapFilterHeight"
+                      v-on:clickedMapExpand="toggleMapExpand"
+                      v-on:mapFilterChanged="catchMapFilterChanged"
+                      v-on:pointClicked="catchPointClicked"
+                      :showPlaceholder="loadingAllTags"
+                      />
 
-      <v-container fluid grid-list-md pa-3 @scroll="updateScroll" >
-        <v-layout row wrap>
+      </v-flex>
 
-          <v-flex v-if="loading"
-                  xs12 sm6 md4 xl3
-                  v-for="(n, index) in palceHolderAmount" :key="index">
 
-            <metadata-card-placeholder :dark="false" />
-  
-          </v-flex>
+      <v-flex px-3 py-2 style="z-index: 1;"
+              v-bind="metadataListStyling"
+       >
+        <v-container fluid grid-list-lg pa-0
+                      @scroll="updateScroll" >
 
-          <v-flex v-if="!loading"
-                  xs12 sm6 md4 xl3
-                  v-for="(metadata, index) in filteredMetadataContent" :key="index">
-            <metadata-card
-                          :title="metadata.title"
-                          :id="metadata.id"
-                          :subtitle="metadata.notes"
-                          :tags="metadata.tags"
-                          :titleImg="metadata.titleImg"
-                          :restricted="hasRestrictedResources(metadata)"
-                          :resourceCount="metadata.num_resources"
-                          :resources="metadata.resources"
-                          :dark="false"
-                          v-on:clickedEvent="metaDataClicked"
-                          v-on:clickedTag="catchTagClicked">
-            </metadata-card>
-  
-          </v-flex>
+          <v-layout row wrap>
 
-            <v-flex xs12 >
+            <v-flex v-if="loading"
+                    v-bind="cardGridClass"
+                    v-for="(n, index) in palceHolderAmount" :key="index">
+
+              <metadata-card-placeholder :dark="false" />
+    
+            </v-flex>
+
+            <v-flex v-if="!loading"
+                    v-bind="cardGridClass"
+                    v-for="(metadata, index) in filteredMetadataContent" :key="index">
+              <metadata-card
+                            :title="metadata.title"
+                            :id="metadata.id"
+                            :name="metadata.name"
+                            :ref="metadata.id"
+                            :subtitle="metadata.notes"
+                            :tags="metadata.tags"
+                            :titleImg="metadata.titleImg"
+                            :restricted="hasRestrictedResources(metadata)"
+                            :resourceCount="metadata.num_resources"
+                            :resources="metadata.resources"
+                            :dark="false"
+                            :compactLayout="showMapFilter"
+                            :class="{ ['elevation-10'] : hoverId === metadata.id }"
+                            v-on:clickedEvent="metaDataClicked"
+                            v-on:clickedTag="catchTagClicked">
+              </metadata-card>
+    
+            </v-flex>
+
+            <v-flex xs12 v-if="!loading && !filteredMetadataContent">
               <no-search-results-view v-on:clicked="catchCategoryClicked"
                                       :noResultText="noResultText"
                                       :suggestionText="suggestionText" />  
             </v-flex>
 
 
-        </v-layout>
-      </v-container>
+          </v-layout>
+
+        </v-container>
+
+      </v-flex>
+
+      <v-flex xs4 py-3 pr-3
+              v-if="mapFilteringEnabled && showMapFilter" >
+
+        <filter-map-view style="position: sticky; top: 100px;"
+                          :totalHeight="mapFilterHeight"
+                          :expanded="showMapFilter"
+                          v-on:clickedMapExpand="toggleMapExpand"
+                          v-on:viewChanged="catchMapFilterChanged"
+                          v-on:pointClicked="catchPointClicked"
+                          v-on:pointHover="catchPointHovered"
+                          v-on:pointHoverLeave="catchPointHoverLeave"
+                           />
+
+      </v-flex>
 
     </v-layout>
+
   </v-container>
   
 </template>
@@ -70,9 +107,10 @@
 <script>
   import { mapGetters } from 'vuex';
   import NavBarView from '../Views/NavbarView';
+  import FilterMapView from '../Views/Filtering/FilterMapView';
   import MetadataCard from '../Views/Cards/MetadataCard';
   import MetadataCardPlaceholder from '../Views/Cards/MetadataCardPlaceholder';
-  // import NoSearchResultsView from '../Views/NoSearchResultsView';
+  import NoSearchResultsView from '../Views/NoSearchResultsView';
   import { SEARCH_METADATA } from '../../store/metadataMutationsConsts';
   import { CHANGE_APP_BG } from '../../store/mutationsConsts';
 
@@ -153,7 +191,7 @@
       decodeCategoryFromUrl: function decodeCategoryFromUrl(urlquery) {
         if (urlquery) {
           // TODO: figure out which tags should be auto selected
-          console.log("got category via url: " + urlquery);
+          // console.log("got category via url: " + urlquery);
         }
 
         // return an empty array for the selectedTagNames
@@ -217,15 +255,38 @@
         // }
       },
       catchCategoryClicked: function catchCategoryClicked(cardTitle) {
-        // sleep(500);
-        // setTimeout(this.$router.push({ name: 'BrowsePage', params: { cardTitle }}), 1000);
-
         this.$router.push({
           path: '/browse',
           query: {
             search: cardTitle,
           },
         });
+      },
+      catchMapFilterChanged: function catchMapFilterChanged(visibleIds) {
+        this.mapFilterVisibleIds = visibleIds;
+      },
+      catchPointClicked: function catchPointClicked(id) {
+        // bring to top
+        // highlight entry
+      },
+      catchPointHovered: function catchPointHovered(id) {
+        // bring to top
+        // highlight entry
+        const domElement = this.$refs[id];
+        if (domElement && domElement.length > 0) {
+          this.hoverId = id;
+        }
+      },
+      catchPointHoverLeave: function catchPointHoverLeave(id) {
+        // bring to top
+        // highlight entry
+        this.hoverId = '';
+      },
+      getMetaCard: function getMetaCard() {
+
+      },
+      toggleMapExpand: function toggleMapExpand() {
+        this.showMapFilter = !this.showMapFilter;
       },
       isTagSelected: function isTagSelected(tagName) {
         if (!tagName || this.selectedTagNames === undefined) {
@@ -258,6 +319,24 @@
         }
 
         return true;
+      },
+      contentFilterAccessibility: function contentFilterAccessibility(contentList) {
+        const accessibleContent = [];
+
+        for (let i = 0; i < contentList.length; i++) {
+          const value = contentList[i];
+
+          if (value.capacity && value.capacity === 'public') {
+            // unpublished entries have 'private'
+            accessibleContent.push(value);
+          } else if (value.private && value.private === false) {
+            accessibleContent.push(value);
+          } else {
+            accessibleContent.push(value);
+          }
+        }
+
+        return accessibleContent;
       },
       contentFilteredByTags: function contentFilteredByTags(contentList) {
         const filteredContent = [];
@@ -300,6 +379,19 @@
 
         return searchResult;
       },
+      contentFilterMapIds: function contentFilterMapIds(contentList) {
+        const visibleContent = [];
+
+        for (let i = 0; i < contentList.length; i++) {
+          const el = contentList[i];
+
+          if (this.mapFilterVisibleIds.includes(el.id)) {
+            visibleContent.push(el);
+          }
+        }
+
+        return visibleContent;
+      },
       dynamicCardBackground: function dynamicCardBackground() {
         const max = Object.keys(this.imagesImports).length;
         const randomIndex = this.randomInt(0, max);
@@ -320,6 +412,7 @@
           return false;
         }
 
+        /* eslint-disable consistent-return  */
         metadata.resources.forEach((res) => {
           if (res.restricted !== undefined
             && (res.restricted.allowed_users !== undefined ||
@@ -341,18 +434,31 @@
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
         // tag Object structure: { tag: tagName, count: tagCount }
         allTags: 'metadata/allTags',
+        loadingAllTags: 'metadata/loadingAllTags',
         currentMetadata: 'metadata/currentMetadata',
         cardBGImages: 'cardBGImages',
       }),
       loading: function loading() {
-        return this.loadingMetadataIds || this.searchingMetadatasContent ||
-        (this.loadingMetadatasContent && this.metadatasContentSize < this.palceHolderAmount);
+        return this.loadingMetadataIds || this.searchingMetadatasContent;
+      },
+      loadingContent: function loadingContent() {
+        return (this.loadingMetadatasContent && this.metadatasContentSize < this.palceHolderAmount);
       },
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
       },
       searchMetadatasContentSize: function searchMetadatasContentSize() {
         return this.searchedMetadatasContent !== undefined ? Object.keys(this.searchedMetadatasContent).length : 0;
+      },
+      mapFilterHeight: function mapFilterHeight() {
+        const sHeight = document.documentElement.clientHeight;
+        let height = this.maxMapFilterHeight;
+
+        if (sHeight < this.maxMapFilterHeight) {
+          height = sHeight - 110;
+        }
+
+        return height;
       },
       filteredMetadataContent: function filteredMetadataContent() {
         let contentToFilter;
@@ -371,7 +477,9 @@
           // console.log("use local content " + contentToFilter.length);
         }
 
-        if (contentToFilter) {
+        if (contentToFilter && contentToFilter.length > 0) {
+          contentToFilter = this.contentFilterAccessibility(contentToFilter);
+
           contentToFilter = this.enhanceMetadata(contentToFilter, this.cardBGImages);
 
           if (this.selectedTagNames !== undefined
@@ -380,16 +488,71 @@
           }
         }
 
+        if (this.mapFilterVisibleIds.length > 0) {
+          contentToFilter = this.contentFilterMapIds(contentToFilter);
+        }
+
         this.updateSearchCount(contentToFilter);
 
         return contentToFilter;
       },
       popularTags: function popularTags() {
+        const popTags = [];
+
         if (this.allTags) {
-          return this.allTags.slice(0, this.popularTagAmount);
+          for (let i = 0; i < this.allTags.length; i++) {
+            const tag = this.allTags[i];
+            const words = tag.name.split(' ').length;
+            // const dashs = tag.name.split('-').length;
+
+            if (words < 2) {
+              // only use single word tags
+              popTags.push(tag);
+            }
+
+            if (popTags.length >= this.popularTagAmount) {
+              break;
+            }
+          }
+
+          // return this.allTags.slice(0, this.popularTagAmount);
         }
 
-        return [];
+        return popTags;
+      },
+      cardGridClass: function cardGridClass() {
+        if (this.mapFilteringEnabled && this.showMapFilter) {
+          const twoThridsSize = {
+            xs12: true,
+            sm8: true,
+            md6: true,
+            xl4: true,
+          };
+
+          return twoThridsSize;
+        }
+
+        const fullSize = {
+          xs12: true,
+          sm6: true,
+          md4: true,
+          xl3: true,
+        };
+
+        return fullSize;
+      },
+      metadataListStyling: function metadataListStyling() {
+        const json = {
+          xs8: this.mapFilteringEnabled && this.showMapFilter,
+          xs12: this.mapFilteringEnabled && !this.showMapFilter,
+          'mt-2': !this.showMapFilter,
+          // style: this.showMapFilter ? `margin-top: -${this.mapFilterHeight}px;` : '',
+        };
+
+        return json;
+      },
+      mapFilteringEnabled: function mapFilteringEnabled() {
+        return this.$vuetify.breakpoint.lgAndUp;
       },
     },
     watch: {
@@ -415,10 +578,15 @@
       selectedTagNames: [],
       popularTagAmount: 10,
       scrollPosition: null,
+      showMapFilter: true,
+      maxMapFilterHeight: 750,
+      mapFilterVisibleIds: [],
+      hoverId: '',
     }),
     components: {
       NavBarView,
-      // NoSearchResultsView,
+      FilterMapView,
+      NoSearchResultsView,
       MetadataCard,
       MetadataCardPlaceholder,
     },

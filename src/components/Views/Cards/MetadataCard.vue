@@ -21,17 +21,17 @@
 
               <v-flex xs12 v-if="!maxTitleLengthReached">
                 <div class="headline mb-0"
-                :class="{['black_title'] : dark ? false : true,
-                          ['white_title'] : dark ? true : false }"
-                >{{ title | truncate(maxTitleLength) }}</div>
+                    :class="titleClass"
+                >
+                  {{ title | truncate(maxTitleLength) }}</div>
               </v-flex>
 
               <v-flex xs12 v-if="maxTitleLengthReached">
                 <v-tooltip bottom>
                   <div slot="activator" class="headline mb-0"
-                    :class="{['black_title'] : dark ? false : true,
-                              ['white_title'] : dark ? true : false }"
-                    >{{ title | truncate(maxTitleLength) }}</div>
+                      :class="titleClass"
+                  >
+                    {{ title | truncate(maxTitleLength) }}</div>
                   <span>{{ title }}</span>
                 </v-tooltip>
               </v-flex>
@@ -64,17 +64,9 @@
     </v-card-text>
 
 
-    <!-- <v-card-actions style="position: absolute; bottom: 0; right: 0;"> -->
     <v-card-actions class="ma-0 pa-2"
-                    style="position: absolute; bottom: 0; right: 0;">
+                    style="position: absolute; bottom: 5px; right: 5px;">
       
-      <!-- <v-tooltip bottom>
-        <v-btn icon slot="activator">
-          <v-icon color="primary">cloud_download</v-icon>
-        </v-btn>
-        <span>Download data</span>
-      </v-tooltip> -->
-
       <v-spacer></v-spacer>
 
       <v-tooltip bottom v-if="isRestricted">
@@ -93,34 +85,10 @@
 
       </v-tooltip>
 
-      <!-- <v-btn v-if="favourit" icon>
-        <v-icon color="accent">star</v-icon>
-      </v-btn>
-      <v-btn v-if="!favourit" icon>
-        <v-icon>star</v-icon>
-      </v-btn> -->
-
-      <v-tooltip bottom>
-          <div slot="activator" class="metadataInfoIcon">
-            <v-layout row @mouseover="hoverBadge = true" @mouseleave="hoverBadge = false">
-
-              <v-flex pa-0>
-                <v-badge v-bind="{ left: !hoverBadge }"
-                        overlap
-                        class="envidat_badge">
-                  <span slot="badge">{{ resourceAmount }}</span>
-                </v-badge>              
-              </v-flex>
-
-              <v-flex pa-0 >
-                <img class="envidatIcon" :src="getIcon('file')" />                
-              </v-flex>
-              
-            </v-layout>
-          </div>
-
-          <span>Metadata with {{ resourceAmount }} resources</span>
-      </v-tooltip>
+      <icon-count-view :count="resourceAmount"
+                        iconString="file"
+                        :tooltip="`Metadata with ${resourceAmount} resources`">
+      </icon-count-view>
 
     </v-card-actions>
 
@@ -131,6 +99,7 @@
 
 <script>
 import TagChip from './TagChip';
+import IconCountView from '../IconCountView';
 
 // checkout possible transition animation
 // https://codepen.io/balapa/pen/embYYB
@@ -154,6 +123,7 @@ export default {
     id: String,
     title: String,
     subtitle: String,
+    name: String,
     type: Number,
     restricted: Boolean,
     favourit: Boolean,
@@ -162,24 +132,27 @@ export default {
     dark: Boolean,
     resourceCount: Number,
     resources: Array,
+    compactLayout: Boolean,
   },
   components: {
     TagChip,
+    IconCountView,
   },
   created: function created() {
   },
   methods: {
     cardClick: function cardClick() {
-      this.$emit('clickedEvent', this.id);
+      let detailParam = this.name;
+      if (!detailParam) {
+        detailParam = this.id; // fallback id in url isn't too nice
+      }
+      this.$emit('clickedEvent', detailParam);
     },
     favouritClicked: function favouritClicked() {
       this.$emit('clickedFavourit', this.id);
     },
     catchTagClicked: function catchTagClicked(tagId) {
       this.$emit('clickedTag', tagId);
-    },
-    badgeOnMouseover: function badgeOnMouseover() {
-      this.hoverBadge = !this.hoverBadge;
     },
   },
   computed: {
@@ -251,6 +224,13 @@ export default {
 
       return 0;
     },
+    titleClass: function titleClass() {
+      return {
+        black_title: !this.dark,
+        white_title: this.dark,
+        compactTitle: this.compactLayout,
+      };
+    },
   },
   data: () => ({
     show: false,
@@ -260,7 +240,7 @@ export default {
     // maxTags: 3,
     maxTagTextlength: 40,
     blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
-    whiteTopToBottom: 'rgba(255,255,255, 0.25) 0%, rgba(255,255,255, 0.95) 60%',
+    whiteTopToBottom: 'rgba(255,255,255, 0.3) 0%, rgba(255,255,255, 1) 60%',
     imageDefaults: {
       snow: 'c_b_snow_icy2',
       landscape: 'c_b_landscape_lake2', // or c_b_landscape_view ! c_b_landscape_long_lake
@@ -293,13 +273,14 @@ export default {
   .white_title{
     color: rgba(255,255,255,.9) !important;
   }
+  
+  .compactTitle {
+    font-size: 18px !important;
+    line-height: 1.3em !important;
+  }
 
   .card_tag {
     /* opacity: 0.7; */
-  }
-
-  .envidat_badge {
-    font-size: 0.8em !important;
   }
 
 </style>

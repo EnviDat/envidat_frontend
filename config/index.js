@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://localhost/ui/ServiceProxyServlet?server=0&serverpath=',
+        target: 'https://www.envidat.ch/gui/ui/ServiceProxyServlet?server=0&serverpath=',
         /* target: 'http://www.envidat.ch', */
         changeOrigin: true,
         secure: false,
@@ -33,7 +33,7 @@ module.exports = {
         */
       },
       '/solr': {
-        target: 'http://localhost/ui/ServiceProxyServlet?server=1&serverpath=',
+        target: 'https://www.envidat.ch/gui/ui/ServiceProxyServlet?server=1&serverpath=',
         /* target: 'http://envidat-prod02.wsl.ch:8983', */
         changeOrigin: true,
         secure: false,
@@ -69,7 +69,8 @@ module.exports = {
      */
 
     // https://webpack.js.org/configuration/devtool/#development
-    devtool: 'cheap-module-eval-source-map',
+    // devtool: 'cheap-module-eval-source-map',
+    devtool: 'source-map',
 
     // If you have problems debugging vue-files in devtools,
     // set this to false - it *may* help

@@ -1,6 +1,5 @@
 <template>
-  <v-app id="inspire"
-        v-bind:style="dynamicBackground">
+  <v-app v-bind:style="dynamicBackground">
 
     <!--v-btn fab top left color="success" @click="testStore" >Test</v-btn>
 
@@ -123,6 +122,11 @@
           bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%,rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
         }
 
+        bgStyle += `background-position: center top !important;
+                    background-size: cover !important;
+                    background-repeat: no-repeat !important;
+                    background-attachment: fixed !important; `;
+
         return bgStyle;
       },
     },
@@ -141,14 +145,13 @@
   /* import vuetify.css here to be able to overwrite the fonts */
   @import '../node_modules/vuetify/dist/vuetify.min.css';
 
-/* overrite the applications background https://css-tricks.com/use-cases-fixed-backgrounds-css/ */
+/* overwrite the applications background https://css-tricks.com/use-cases-fixed-backgrounds-css/ */
   .application {
-    /* font-family: 'Libre Baskerville', serif !important; */
     font-family: 'Raleway', sans-serif !important;
-    background-position: center top !important;
+    /* background-position: center top !important;
     background-size: cover !important;
     background-repeat: no-repeat !important;
-    background-attachment: fixed !important;
+    background-attachment: fixed !important; */
   }  
 
   /*** General Card styles ***/
@@ -244,6 +247,14 @@
 
   .metadataInfoIcon {
     opacity: 0.75;
+  }
+
+  .envidat_badge span {
+    font-size: 0.95em !important;
+  }
+
+  .envidat_badgeBigNumber span {
+    font-size: 0.9em !important;
   }
 
 </style>

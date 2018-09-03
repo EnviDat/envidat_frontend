@@ -2,7 +2,9 @@
   <v-container fluid >  
     <v-layout column >
   
-      <title-view :title="envidatTitle" :slogan="envidatSlogan"></title-view>
+      <title-view :title="envidatTitle"
+                  :slogan="envidatSlogan">
+      </title-view>
 
       <v-flex mt-5 offset-sm6>
         <search-bar-view
@@ -13,7 +15,7 @@
         </search-bar-view>
       </v-flex>
 
-      <v-flex mt-5 offset-sm6>
+      <!-- <v-flex mt-5 offset-sm6>
         <data-producer-card 
                         :titleText="loginInfos.titleText"
                         :loginText="loginInfos.loginText"
@@ -24,11 +26,11 @@
                         v-on:singupclick="catchSingupclick"
                         v-on:loginclick="catchLoginclick">
         </data-producer-card>
-      </v-flex>
+      </v-flex> -->
 
       <v-flex mt-5 offset-sm6>
     
-        <v-container fluid grid-list-xs>
+        <v-container fluid grid-list-md pa-0>
           <v-layout row wrap>
     
             <v-flex py-2 xs6
@@ -39,6 +41,11 @@
                               v-on:clicked="catchCategoryClicked">
               </category-card>
     
+            </v-flex>
+
+            <v-flex xs6 py-2>
+              <login-card title="Login"
+                          v-on:clicked="catchLoginclick" />
             </v-flex>
           </v-layout>
         </v-container>
@@ -52,7 +59,7 @@
 <script>
   import { mapGetters } from 'vuex';
   import CategoryCard from '../Views/Cards/CategoryCard';
-  import DataProducerCard from '../Views/Cards/DataProducerCard';
+  import LoginCard from '../Views/Cards/LoginCard';
   import TitleView from '../Views/TitleView';
   import SearchBarView from '../Views/SearchBarView';
   import { CHANGE_APP_BG } from '../../store/mutationsConsts';
@@ -96,16 +103,13 @@
           query: { search },
         });
       },
-      catchEnterclick: function catchEnterclick(search) {
-        alert(`clicked ${search}`);
+      catchEnterclick: function catchEnterclick() {
         this.redirectToDashboard();
       },
-      catchSingupclick: function catchSingupclick(search) {
-        alert(`clicked ${search}`);
+      catchSingupclick: function catchSingupclick() {
         this.redirectToDashboard();
       },
-      catchLoginclick: function catchLoginclick(search) {
-        alert(`clicked ${search}`);
+      catchLoginclick: function catchLoginclick() {
         this.redirectToDashboard();
       },
       redirectToDashboard: function redirectToDashboard() {
@@ -118,7 +122,7 @@
       labelText: "Type ex. 'Avalanche'",
       buttonlText: 'SEARCH',
       envidatTitle: 'EnviDat',
-      envidatSlogan: 'Browse the most comprehensive collcetion of environmental data from Switzerland',
+      envidatSlogan: 'Browse a comprehensive collection of environmental data from Switzerland',
       loginInfos: {
         titleText: 'Do you create data?',
         loginText: 'LOGIN',
@@ -131,7 +135,7 @@
       TitleView,
       SearchBarView,
       CategoryCard,
-      DataProducerCard,
+      LoginCard,
     },
   };
 </script>
