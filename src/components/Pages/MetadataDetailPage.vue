@@ -400,8 +400,10 @@
           // TODO how to get to the links?
           // https://www.envidat.ch/dataset/datasets-for-testing-the-repository-and-storage
           // add /export/datacite.xml or /export/iso19139.xml to the base url www.envidat.ch/dataset/[title]
-          citationXmlLink: 'https://www.envidat.ch/dataset/number-of-natural-hazard-fatalities-per-year-in-switzerland-since-1946/export/datacite.xml',
-          ciationIsoXmlLink: 'https://www.envidat.ch/dataset/number-of-natural-hazard-fatalities-per-year-in-switzerland-since-1946/export/iso19139.xml',
+          // citationXmlLink: 'https://www.envidat.ch/dataset/number-of-natural-hazard-fatalities-per-year-in-switzerland-since-1946/export/datacite.xml',
+          // ciationIsoXmlLink: 'https://www.envidat.ch/dataset/number-of-natural-hazard-fatalities-per-year-in-switzerland-since-1946/export/iso19139.xml',
+          citationXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/datacite.xml`,
+          ciationIsoXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/iso19139.xml`,
         };
       },
       createResources: function createResources(dataset) {
