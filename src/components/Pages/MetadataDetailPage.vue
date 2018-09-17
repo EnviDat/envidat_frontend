@@ -404,6 +404,7 @@
           // ciationIsoXmlLink: 'https://www.envidat.ch/dataset/number-of-natural-hazard-fatalities-per-year-in-switzerland-since-1946/export/iso19139.xml',
           citationXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/datacite.xml`,
           ciationIsoXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/iso19139.xml`,
+          ciationGCMDXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/gcmd_diff.xml`,
         };
       },
       createResources: function createResources(dataset) {
