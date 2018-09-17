@@ -21,7 +21,7 @@
                       v-on:clickedClear="catchTagCleared"
                       :showMapFilter="showMapFilter"
                       :mapFilteringEnabled="mapFilteringEnabled"
-                      :mapFilterHeight="mapFilterHeightPx"
+                      :mapFilterHeight="mapFilterHeight"
                       v-on:clickedMapExpand="toggleMapExpand"
                       v-on:mapFilterChanged="catchMapFilterChanged"
                       v-on:pointClicked="catchPointClicked"
@@ -34,7 +34,7 @@
       <v-flex px-3 py-2 style="z-index: 1;"
               v-bind="metadataListStyling"
        >
-        <v-container fluid grid-list-md pa-0
+        <v-container fluid grid-list-lg pa-0
                       @scroll="updateScroll" >
 
           <v-layout row wrap>
@@ -83,11 +83,11 @@
 
       </v-flex>
 
-      <v-flex xs4 py-2 pr-3
+      <v-flex xs4 py-3 pr-3
               v-if="mapFilteringEnabled && showMapFilter" >
 
         <filter-map-view style="position: sticky; top: 100px;"
-                          :totalHeight="mapFilterHeightPx"
+                          :totalHeight="mapFilterHeight"
                           :expanded="showMapFilter"
                           v-on:clickedMapExpand="toggleMapExpand"
                           v-on:viewChanged="catchMapFilterChanged"
@@ -450,6 +450,16 @@
       searchMetadatasContentSize: function searchMetadatasContentSize() {
         return this.searchedMetadatasContent !== undefined ? Object.keys(this.searchedMetadatasContent).length : 0;
       },
+      mapFilterHeight: function mapFilterHeight() {
+        const sHeight = document.documentElement.clientHeight;
+        let height = this.maxMapFilterHeight;
+
+        if (sHeight < this.maxMapFilterHeight) {
+          height = sHeight - 110;
+        }
+
+        return height;
+      },
       filteredMetadataContent: function filteredMetadataContent() {
         let contentToFilter;
 
@@ -487,11 +497,28 @@
         return contentToFilter;
       },
       popularTags: function popularTags() {
+        const popTags = [];
+
         if (this.allTags) {
-          return this.allTags.slice(0, this.popularTagAmount);
+          for (let i = 0; i < this.allTags.length; i++) {
+            const tag = this.allTags[i];
+            const words = tag.name.split(' ').length;
+            // const dashs = tag.name.split('-').length;
+
+            if (words < 2) {
+              // only use single word tags
+              popTags.push(tag);
+            }
+
+            if (popTags.length >= this.popularTagAmount) {
+              break;
+            }
+          }
+
+          // return this.allTags.slice(0, this.popularTagAmount);
         }
 
-        return [];
+        return popTags;
       },
       cardGridClass: function cardGridClass() {
         if (this.mapFilteringEnabled && this.showMapFilter) {
@@ -519,7 +546,7 @@
           xs8: this.mapFilteringEnabled && this.showMapFilter,
           xs12: this.mapFilteringEnabled && !this.showMapFilter,
           'mt-2': !this.showMapFilter,
-          // style: this.showMapFilter ? `margin-top: -${this.mapFilterHeightPx}px;` : '',
+          // style: this.showMapFilter ? `margin-top: -${this.mapFilterHeight}px;` : '',
         };
 
         return json;
@@ -552,7 +579,7 @@
       popularTagAmount: 10,
       scrollPosition: null,
       showMapFilter: true,
-      mapFilterHeightPx: 450,
+      maxMapFilterHeight: 750,
       mapFilterVisibleIds: [],
       hoverId: '',
     }),

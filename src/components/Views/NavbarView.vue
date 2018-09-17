@@ -8,21 +8,34 @@
 
             <v-layout row align-center >
 
-              <v-flex xs2 sm1 md1 pl-1>
-                <v-btn icon href="./" class="ma-0">
+              <v-flex xs5 sm3 md2 lg2 pl-1>
+                <v-btn icon
+                        href="./" class="ma-0"
+                        >
                   <img :src="Logo" alt="envidat_logo" >
                 </v-btn>
+
+                <div class="headline envidatLogoText"
+                    :class="{
+                      ['envidatNavbarTitleSmall']: this.$vuetify.breakpoint.xsOnly,
+                    }" 
+                >
+                    {{ logoText }}
+                </div>
               </v-flex>
 
-              <v-flex xs6 sm6 md8 lg9>
+              <v-flex sm5 md8 lg8>
                 <!-- spacer -->
               </v-flex>
 
-              <v-flex xs4 sm2 md1 >
+              <v-flex xs3 sm2 md1 >
                 <v-btn class="ma-0"
                         flat
                         small
                         :href="aboutUrl"
+                        :class="{
+                          ['envidatNavbarLinksSmall']: this.$vuetify.breakpoint.xsOnly,
+                        }" 
                         target="_blank" >
                   {{ aboutText }}
                 </v-btn>
@@ -34,6 +47,9 @@
                         color="primary"
                         small
                         :href="loginUrl"
+                        :class="{
+                          ['envidatNavbarLinksSmall']: this.$vuetify.breakpoint.xsOnly,
+                        }" 
                         target="_blank" >
                   {{ loginText }}
                 </v-btn>
@@ -218,6 +234,7 @@
     },
     data: () => ({
       Logo,
+      logoText: 'EnviDat',
       aboutText: 'About',
       aboutUrl: 'https://www.envidat.ch/about',
       loginText: 'Creator Login',
@@ -256,6 +273,21 @@
 
   .chip__content span {
     cursor: pointer !important;
+  }
+
+  .envidatLogoText {
+    display: inline;
+    vertical-align: middle;
+    position: relative;
+    bottom: -2px;
+  }
+
+  .envidatNavbarLinksSmall {
+    font-size: 10px !important;
+  }
+
+  .envidatNavbarTitleSmall {
+    font-size: 18px !important;
   }
 
 </style>
