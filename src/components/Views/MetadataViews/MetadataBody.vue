@@ -20,6 +20,7 @@
 
     <v-card-actions>
       <v-spacer></v-spacer>
+
       <v-btn icon
               @click.native="readMore()">
         <v-icon color="accent" 
@@ -48,7 +49,6 @@
     computed: {
       fullDescription: function fullDescription() {
         if (this.description !== undefined) {
-          console.log("desc: " + this.description);
           return this.showFullDescription ? this.description.trim() : `${this.description.trim().substring(0, this.maxTextLength)}...`;
         }
 
@@ -57,7 +57,7 @@
     },
     data: () => ({
       showFullDescription: false,
-      maxTextLength: 750,
+      maxTextLength: 1000,
     }),
     methods: {
       readMore: function readMore() {

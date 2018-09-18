@@ -13,7 +13,7 @@
                 elevation-5
                 style="z-index: 1;">
 
-          <metadata-header v-bind="header" :maxTags="10"
+          <metadata-header v-bind="header"
                             v-on:clickedTag="catchTagClicked"
                             :showPlaceholder="showPlaceholder" />
 
@@ -341,6 +341,7 @@
           license: license.title,
           tags: dataset.tags,
           titleImg: dataset.titleImg,
+          maxTags: 12,
         };
       },
       createBody: function createBody(dataset) {
