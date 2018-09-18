@@ -78,7 +78,7 @@ export default {
     state.searchingMetadatasContent = true;
     state.searchedMetadatasContent = {};
   },
-  [SEARCH_METADATA_SUCCESS](state, payload) {
+  [SEARCH_METADATA_SUCCESS](state, payload, showRestrictedContent = false) {
     state.searchingMetadatasContentOK = true;
 
     /* eslint-disable no-underscore-dangle */
@@ -86,7 +86,10 @@ export default {
       const element = payload[i];
       const ckanJSON = conversion.solrResultToCKANJSON(element);
 
-      this._vm.$set(state.searchedMetadatasContent, ckanJSON.id, ckanJSON);
+      if ((showRestrictedContent && ckanJSON.private)
+      || (!showRestrictedContent && !ckanJSON.private)) {
+        this._vm.$set(state.searchedMetadatasContent, ckanJSON.id, ckanJSON);
+      }
     }
 
     state.searchingMetadatasContent = false;
