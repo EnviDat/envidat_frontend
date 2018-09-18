@@ -57,8 +57,9 @@
 
     </v-card-media>
 
-    <v-card-text >
-      {{ subtitle | truncate(maxSubtitleLength) }}
+    <v-card-text class="pb-4">
+      <!-- TODO: need to strip the markdown characters from the desc -->
+      {{ truncatedSubtitle }}
     </v-card-text>
 
 
@@ -188,6 +189,13 @@ export default {
     },
     maxTitleLengthReached: function maxTitleLengthReached() {
       return this.title && this.title.length > this.maxTitleLength;
+    },
+    truncatedSubtitle: function truncatedSubtitle() {
+      if (this.subtitle !== undefined) {
+        return `${this.subtitle.substring(0, this.maxSubtitleLength)}...`;
+      }
+
+      return '';
     },
     isRestricted: function isRestricted() {
       return this.restricted;
