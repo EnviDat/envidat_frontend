@@ -17,9 +17,9 @@
       <!-- <img :src="landImg" /> -->
 
       <v-container style="position: absolute;"
-                  fill-height grid-list-xs pa-0>
+                  fill-height grid-list-xs pb-0>
         <v-layout column>
-          <v-flex xs12 px-3 pt-3>
+          <v-flex xs12 py-0>
             <v-layout row  align-start>
               <v-flex xs12 >
                 <div class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-pulse">
@@ -29,7 +29,7 @@
             </v-layout>
           </v-flex>
   
-          <v-flex xs12 px-3 py-0>
+          <v-flex xs12 py-0>
             <v-layout row align-end >
                 <tag-chip py-0
                           v-if="tags" v-for="n in 3" :key="n"
