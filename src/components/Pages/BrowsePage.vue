@@ -39,7 +39,7 @@
 
           <v-layout row wrap>
 
-            <v-flex v-if="loading"
+            <v-flex v-if="loading || loadingContent"
                     v-bind="cardGridClass"
                     v-for="(n, index) in palceHolderAmount" :key="index">
 
