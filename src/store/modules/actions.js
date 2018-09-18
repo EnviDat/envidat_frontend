@@ -101,6 +101,15 @@ export default {
     // maybe use notes:"snow avalanche"
     // select?indent=on&q=tags:${searchTerm}%20AND%20notes:${searchTerm}&wt=json
 
+    const splitSpaces = searchTerm.split(' ');
+    if (splitSpaces.length > 1) {
+      searchTerm = splitSpaces[0];
+      for (let i = 1; i < splitSpaces.length; i++) {
+        const el = splitSpaces[i];
+        searchTerm += ` OR ${el}`;
+      }
+    }
+
     const url = urlRewrite(`select?indent=on&q=notes:${searchTerm} OR title:${searchTerm}&wt=json&rows=1000`, SOLR_API_BASE, SOLR_PROXY);
 
     axios.get(url)
