@@ -19,6 +19,7 @@
     LOAD_ALL_METADATA,
     LOAD_ALL_TAGS,
     LOAD_METADATA_CONTENT_BY_ID,
+    BULK_LOAD_METADATAS_CONTENT,
   } from './store/metadataMutationsConsts';
   import {
     ADD_CARD_IMAGES,
@@ -50,7 +51,7 @@
     methods: {
       loadAllMetadata: function loadAllMetadata() {
         if (!this.loadingMetadatasContent && this.metadatasContentSize <= 0) {
-          this.$store.dispatch(`metadata/${LOAD_ALL_METADATA}`);
+          this.$store.dispatch(`metadata/${BULK_LOAD_METADATAS_CONTENT}`);
         }
       },
       loadAllTags: function loadAllTags() {
