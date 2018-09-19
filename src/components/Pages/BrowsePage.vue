@@ -1,6 +1,9 @@
 <template>
   <v-container grid-list-xs fluid py-1
-                v-bind="{ 'pa-0': $vuetify.breakpoint.xsOnly }">
+                v-bind="{ 'pa-0': $vuetify.breakpoint.xsOnly }"
+                @scroll="updateScroll"
+                style="position: absolute; min-height: 100%;"
+  >
 
     <v-layout row wrap>
 
@@ -30,12 +33,11 @@
 
       </v-flex>
 
-
       <v-flex px-3 py-2 style="z-index: 1;"
               v-bind="metadataListStyling"
        >
         <v-container fluid grid-list-lg pa-0
-                      @scroll="updateScroll" >
+                       >
 
           <v-layout row wrap>
 
@@ -50,6 +52,8 @@
             <v-flex v-if="!loading"
                     v-bind="cardGridClass"
                     v-for="(metadata, index) in filteredMetadataContent" :key="index">
+
+              <transition name="fadeIn">                    
               <metadata-card
                             :title="metadata.title"
                             :id="metadata.id"
@@ -67,6 +71,7 @@
                             v-on:clickedEvent="metaDataClicked"
                             v-on:clickedTag="catchTagClicked">
               </metadata-card>
+              </transition>
     
             </v-flex>
 
@@ -563,6 +568,7 @@
         this.loadRouteTags();
         this.loadRouteSearch();
 
+        window.scrollTo(0, this.scrollPosition);
         // console.log('watch $route ', this.$route.query.toString() + " to " + to.query + " from " + from.query);
       },
     },
@@ -577,7 +583,7 @@
       suggestionText: 'Try one of these categories',
       selectedTagNames: [],
       popularTagAmount: 10,
-      scrollPosition: null,
+      scrollPosition: 0,
       showMapFilter: true,
       maxMapFilterHeight: 750,
       mapFilterVisibleIds: [],

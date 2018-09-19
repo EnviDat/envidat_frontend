@@ -3,7 +3,9 @@
               tag="article"
               v-bind="{ [`pa-0`]: this.$vuetify.breakpoint.smAndDown,
                         [`pa-2`]: this.$vuetify.breakpoint.mdAndUp }"
+              style="position: absolute; min-height: 100%;"
   >
+
     <div v-if="currentMetadataContent">
       
       <v-layout row wrap v-if="twoColumnLayout">
@@ -388,15 +390,15 @@
           text = `${authors.trim()} (${publication.publication_year}). ${publication.publisher},`;
         }
 
-        if (dataset.doi !== undefined) {
+        if (dataset.doi) {
           text += ` doi: ${dataset.doi}`;
         }
 
         return {
           id: dataset.id,
-          title: dataset.title,
-          authors: dataset.author,
-          publication: dataset.publication,
+          // title: dataset.title,
+          // authors: dataset.author,
+          // publication: dataset.publication,
           citationText: text,
           // TODO how to get to the links?
           // https://www.envidat.ch/dataset/datasets-for-testing-the-repository-and-storage
@@ -478,6 +480,9 @@
 
         return license;
       },
+      OnScroll: function OnScroll(scrollPos) {
+        this.savedPosition = scrollPos;
+      },
     },
     watch: {
       currentMetadataContent: function updateContent() {
@@ -509,13 +514,21 @@
 
 <style>
 
-  .metadata_title{
+  .metadata_title {
     font-family: 'Libre Baskerville', serif !important;
     font-weight: 700 !important;
   }
 
-  .metadataResourceCard{
-    min-height: 200px !important;
+  .metadataResourceCard {
+    min-height: 100px !important;
+  }
+
+  .metadataResourceCard .headline {
+    font-size: 20px !important;
+  }
+
+  .resourceCardText {
+    font-size: 12px;
   }
 
 </style>
