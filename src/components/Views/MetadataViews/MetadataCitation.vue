@@ -64,7 +64,7 @@
 <script>
   export default {
     props: {
-      metaid: String,
+      id: String,
       citationText: String,
       citationXmlLink: String,
       ciationIsoXmlLink: String,

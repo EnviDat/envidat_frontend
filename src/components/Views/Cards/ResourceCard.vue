@@ -8,7 +8,8 @@
       <div class="headline">{{ name }}</div>
     </v-card-title>
 
-    <v-card-text class="pt-0 pb-5">
+    <v-card-text class="pt-0 pb-3">
+
       <v-container grid-list-xs pa-0>
         <v-layout row wrap>
 
@@ -17,11 +18,13 @@
           >
 
             <v-layout column>
-              <v-flex xs11 v-if="showFullDescription">
+              <v-flex xs11 v-if="showFullDescription"
+                            class="resourceCardText">
                 {{ description }}
               </v-flex>
 
-              <v-flex xs11 v-if="!showFullDescription">
+              <v-flex xs11 v-if="!showFullDescription"
+                            class="resourceCardText">
                 {{ description | truncate(maxDescriptionLength) }}
               </v-flex>
 
@@ -124,7 +127,7 @@ export default {
   },
   data: () => ({
     defaultTexture,
-    maxDescriptionLength: 275,
+    maxDescriptionLength: 175,
     showFullDescription: false,
   }),
   computed: {
