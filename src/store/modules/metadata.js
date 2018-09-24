@@ -1,29 +1,33 @@
+// import createPersist from 'vuex-localstorage';
+
 import mutations from './mutations';
 import actions from './actions';
 import categorycards from './categorycards';
 
+const initialState = {
+  loadingMetadataIds: false,
+  metadataIdsOK: false,
+  metadataIds: [],
+  loadingMetadatasContent: false,
+  metadatasContentOK: false,
+  metadatasContent: {},
+  loadingCurrentMetadataContent: false,
+  currentMetadataContent: {},
+  searchedMetadatasContent: {},
+  searchingMetadatasContent: false,
+  searchingMetadatasContentOK: false,
+  filteredMetadataIds: [],
+  allTags: [],
+  loadingAllTags: false,
+  popularTags: [],
+  loadingPopularTags: false,
+  error: Object,
+  categorycards,
+};
+
 export const metadata = {
   namespaced: true,
-  state: {
-    loadingMetadataIds: false,
-    metadataIdsOK: false,
-    metadataIds: [],
-    loadingMetadatasContent: false,
-    metadatasContentOK: false,
-    metadatasContent: {},
-    loadingCurrentMetadataContent: false,
-    currentMetadataContent: {},
-    searchedMetadatasContent: {},
-    searchingMetadatasContent: false,
-    searchingMetadatasContentOK: false,
-    filteredMetadataIds: [],
-    allTags: [],
-    loadingAllTags: false,
-    popularTags: [],
-    loadingPopularTags: false,
-    error: Object,
-    categorycards,
-  },
+  state: initialState,
   getters: {
     loadingMetadataIds: state => state.loadingMetadataIds,
     loadingMetadatasContent: state => state.loadingMetadatasContent,

@@ -136,9 +136,9 @@ export default {
       this.reFilter();
     },
     setupMap: function setupMap() {
-      // if (this.mapIsSetup) {
-      //   return;
-      // }
+      if (this.mapIsSetup) {
+        return;
+      }
 
       // console.log("pointArray " + this.pointArray + " " + this.geoJSON);
 
@@ -154,15 +154,10 @@ export default {
       this.mapIsSetup = true;
     },
     initLeaflet: function initLeaflet(mapElement, coords) {
-      const map = L.map(mapElement, {
-        scrollWheelZoom: false,
-        center: [46.943961, 8.199240],
-        riseOnHover: true,
-        zoom: 8,
-      });
+      let viewCoords = [46.943961, 8.199240];
 
       if (coords) {
-        let viewCoords = coords;
+        viewCoords = coords;
 
         if (this.isPolygon) {
           viewCoords = coords[0][0];
@@ -170,8 +165,16 @@ export default {
           viewCoords = coords[0];
         }
 
-        map.setView(viewCoords, 9);
+        // map.setView(viewCoords, 9);
       }
+
+      const map = L.map(mapElement, {
+        scrollWheelZoom: false,
+        center: viewCoords,
+        riseOnHover: true,
+        zoom: 8,
+      });
+
 
       return map;
     },

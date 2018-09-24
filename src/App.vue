@@ -56,7 +56,7 @@
         }
       },
       loadAllTags: function loadAllTags() {
-        if (!this.loadingAllTags && this.allTags.length <= 0) {
+        if (!this.loadingAllTags && this.allTags && this.allTags.length <= 0) {
           this.$store.dispatch(`metadata/${LOAD_ALL_TAGS}`);
         }
       },

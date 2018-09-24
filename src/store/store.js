@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import createPersist from 'vuex-localstorage';
 
 /* eslint-disable no-unused-vars */
 import { metadata } from './modules/metadata';
@@ -27,4 +28,15 @@ export default new Vuex.Store({
   modules: {
     metadata,
   },
+  plugins: [createPersist({
+    namespace: 'metadata',
+    // using this.state seems to prevent a double allocation of the metadata.state
+    // but the whole state is part of the localStorage (sessionStorage)
+    initialState: this.state,
+    // use sessionStorage which expires once the browser is closed
+    provider: sessionStorage,
+    // ONE_WEEK
+    // expires: 7 * 24 * 60 * 60 * 1e3,
+  })],
+
 });
