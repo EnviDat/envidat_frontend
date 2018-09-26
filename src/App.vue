@@ -6,9 +6,9 @@
     <v-icon v-if="loading" color="warning">autorenew</v-icon-->
 
     <v-content>
-      <transition :name="transitionName">
+      <!-- <transition :name="transitionName"> -->
         <router-view />
-      </transition>
+      <!-- </transition> -->
     </v-content>
         
   </v-app>

@@ -81,6 +81,10 @@ export default {
     this.setupMap();
   },
   beforeDestroy: function beforeDestroy() {
+    if (this.map) {
+      this.map.remove();
+    }
+
     this.mapFilteringActive = false;
     this.reFilter();
   },
