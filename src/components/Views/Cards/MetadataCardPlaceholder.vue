@@ -7,7 +7,7 @@
     height="330"
     >
 
-    <v-card-media
+    <v-img
       class="imagezoom"
       background-color="primary"
       v-bind="{['style'] : dynamicCardBackground }"
@@ -31,11 +31,10 @@
   
           <v-flex xs12 py-0>
             <v-layout row align-end >
-                <tag-chip py-0
-                          v-if="tags" v-for="n in 3" :key="n"
-                          name="dummy text"
-                          class="card_tag_placeholder" />
-              
+
+                <tag-chip-placeholder
+                          v-for="n in 3" :key="n"
+                          class="card_tag_placeholder" />              
               
             </v-layout>
           </v-flex>
@@ -43,7 +42,7 @@
       </v-container>
 
 
-    </v-card-media>
+    </v-img>
 
     <v-card-title primary-title>
       <div class="skeleton skeleton-color-silver skeleton-animation-pulse" style="width: 100%;">
@@ -58,7 +57,7 @@
 
 
 <script>
-import TagChip from './TagChip';
+import TagChipPlaceholder from './TagChip';
 import defaultTexture from '../../../assets/cards/forest/c_b_forest_texture_bark2.jpg';
 
 // checkout skeleton
@@ -77,7 +76,7 @@ export default {
     dark: Boolean,
   },
   components: {
-    TagChip,
+    TagChipPlaceholder,
   },
   created: function created() {
   },
@@ -168,7 +167,7 @@ export default {
   }
 
   .card_tag_placeholder {
-    /* opacity: 0.7; */
+    opacity: 0.75;
   }
 
 </style>

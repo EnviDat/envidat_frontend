@@ -7,7 +7,7 @@
     style="height: 100%;"
     >
 
-    <v-card-media
+    <v-img
         background-color="primary"
         v-bind="{['style'] : dynamicCardBackground }"
         height="150px"
@@ -55,7 +55,7 @@
       </v-container>
 
 
-    </v-card-media>
+    </v-img>
 
     <v-card-text class="pb-4">
       <!-- TODO: need to strip the markdown characters from the desc -->
