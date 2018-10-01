@@ -3,6 +3,7 @@
 import mutations from './mutations';
 import actions from './actions';
 import categorycards from './categorycards';
+import tags from './tags';
 
 const initialState = {
   loadingMetadataIds: false,
@@ -17,7 +18,7 @@ const initialState = {
   searchingMetadatasContent: false,
   searchingMetadatasContentOK: false,
   filteredMetadataIds: [],
-  allTags: [],
+  allTags: tags,
   loadingAllTags: false,
   popularTags: [],
   loadingPopularTags: false,

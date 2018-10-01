@@ -94,7 +94,7 @@ export default {
       // use this computed property to make the diff between popular and selected
       const popTags = [];
 
-      this.allTags.forEach((element) => {
+      this.popularTags.forEach((element) => {
         if (this.isPopluarTag(element.name)
          && !this.isTagSelected(element.name)
          && this.isCleanTag(element.name)) {

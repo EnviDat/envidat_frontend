@@ -315,6 +315,21 @@
           return false;
         }
 
+        for (let j = 0; j < tagNames.length; j++) {
+          const element = tagNames[j];
+
+          for (let k = 0; k < this.selectedTagNames.length; k++) {
+            const selectedTag = this.selectedTagNames[k];
+
+            if (element.includes(selectedTag)) {
+              return true;
+            }
+          }
+        }
+
+        return false;
+
+        /*
         for (let j = 0; j < this.selectedTagNames.length; j++) {
           const selectedTagName = this.selectedTagNames[j];
 
@@ -324,6 +339,7 @@
         }
 
         return true;
+        */
       },
       contentFilterAccessibility: function contentFilterAccessibility(contentList) {
         const accessibleContent = [];
@@ -507,6 +523,9 @@
         if (this.allTags) {
           for (let i = 0; i < this.allTags.length; i++) {
             const tag = this.allTags[i];
+
+            popTags.push(tag);
+            /*
             const words = tag.name.split(' ').length;
             // const dashs = tag.name.split('-').length;
 
@@ -518,6 +537,7 @@
             if (popTags.length >= this.popularTagAmount) {
               break;
             }
+            */
           }
 
           // return this.allTags.slice(0, this.popularTagAmount);

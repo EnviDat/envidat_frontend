@@ -30,7 +30,7 @@
           </v-flex>
   
           <v-flex xs12 py-0>
-            <v-layout row align-end >
+            <v-layout row align-end ma-0>
 
                 <tag-chip-placeholder
                           v-for="n in 3" :key="n"
