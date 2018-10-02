@@ -64,55 +64,11 @@
           </v-flex>
 
           <v-flex pt-5 >
-
-            <v-card>
-
-              <v-img
-                  background-color="primary"
-                >
-                  <!-- v-bind="{['style'] : dynamicCardBackground }"
-                  height="150px" -->
-                
-                <v-container grid-list-xs fill-height px-3 pt-3 pb-0>
-                  <v-layout column>
-                    <v-flex xs12 py-0>
-
-                      <div class="hidden-sm-and-down envidat_slogan display-1">
-                        {{ slogan }}
-                      </div>
-
-                      <div class="hidden-xs-only hidden-md-and-up envidat_slogan headline">
-                        {{ slogan }}
-                      </div>
-
-                      <div class="hidden-sm-and-up envidat_slogan headline">
-                        {{ slogan }}
-                      </div>
-                    </v-flex>
-
-                  </v-layout>
-                </v-container>
-
-
-              </v-img>
-
-              <v-card-title primary-title>
-                      <div>{{ subSlogan }}</div>
-              </v-card-title>
-
-              <!-- <v-card-actions class="ma-0 pa-2"
-                              style="position: absolute; bottom: 0; right: 0;"> -->
-              <v-card-actions >
-                <v-spacer></v-spacer>
-
-                <v-btn @click.native="buttonCallback"
-                        color="primary"
-                        small
-                >
-                  {{ buttonText }}
-                </v-btn>
-              </v-card-actions>
-            </v-card>
+            <slogan-card :title="envidatTitle"
+                        :slogan="envidatSlogan"
+                        :subSlogan="envidatSubSlogan"
+                        :buttonText="sloganButtonText"
+                        :buttonCallback="catchBrowseClicked" >
           </v-flex>
 
           <!-- <v-flex hidden-sm-and-down pt-5
@@ -138,31 +94,33 @@
 </template>
 
 <script>
-  // import xsLogo from '../../assets/logo/EnviDat_logo_32.png';
-  import smLogo from '../../assets/logo/EnviDat_logo_64.png';
-  import mdLogo from '../../assets/logo/EnviDat_logo_128.png';
-  import lgLogo from '../../assets/logo/EnviDat_logo_256.png';
+import SloganCard from './Cards/SloganCard';
+// import xsLogo from '../../assets/logo/EnviDat_logo_32.png';
+import smLogo from '../../assets/logo/EnviDat_logo_64.png';
+import mdLogo from '../../assets/logo/EnviDat_logo_128.png';
+import lgLogo from '../../assets/logo/EnviDat_logo_256.png';
 
-  export default {
-    props: {
-      title: String,
-      slogan: String,
-      subSlogan: String,
-      buttonText: String,
-      buttonCallback: Function,
-    },
-    data: () => ({
-      // xsLogo,
-      smLogo,
-      mdLogo,
-      lgLogo,
-      alternativeText: 'EnviDat logo',
-    }),
-    computed: {
-    },
-    components: {
-    },
-  };
+export default {
+  props: {
+    title: String,
+    slogan: String,
+    subSlogan: String,
+    buttonText: String,
+    buttonCallback: Function,
+  },
+  data: () => ({
+    // xsLogo,
+    smLogo,
+    mdLogo,
+    lgLogo,
+    alternativeText: 'EnviDat logo',
+  }),
+  computed: {
+  },
+  components: {
+    SloganCard,
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
