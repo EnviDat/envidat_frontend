@@ -15,7 +15,7 @@
             solo
             flat
             append-outer-icon="search"
-            :append-outer-icon-cb="clicked"
+            @click:append-outer="clicked"
             v-on:keyup.enter="clicked"
             v-model="searchText"
             @click:clear="clearClicked"
