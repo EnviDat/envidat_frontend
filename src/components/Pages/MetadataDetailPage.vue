@@ -3,7 +3,9 @@
               tag="article"
               v-bind="{ [`pa-0`]: this.$vuetify.breakpoint.smAndDown,
                         [`pa-2`]: this.$vuetify.breakpoint.mdAndUp }"
+              style="position: absolute; min-height: 100%;"
   >
+
     <div v-if="currentMetadataContent">
       
       <v-layout row wrap v-if="twoColumnLayout">
@@ -13,7 +15,7 @@
                 elevation-5
                 style="z-index: 1;">
 
-          <metadata-header v-bind="header" :maxTags="10"
+          <metadata-header v-bind="header"
                             v-on:clickedTag="catchTagClicked"
                             :showPlaceholder="showPlaceholder" />
 
@@ -341,6 +343,7 @@
           license: license.title,
           tags: dataset.tags,
           titleImg: dataset.titleImg,
+          maxTags: 12,
         };
       },
       createBody: function createBody(dataset) {
@@ -387,21 +390,24 @@
           text = `${authors.trim()} (${publication.publication_year}). ${publication.publisher},`;
         }
 
-        if (dataset.doi !== undefined) {
+        if (dataset.doi) {
           text += ` doi: ${dataset.doi}`;
         }
 
         return {
           id: dataset.id,
-          title: dataset.title,
-          authors: dataset.author,
-          publication: dataset.publication,
+          // title: dataset.title,
+          // authors: dataset.author,
+          // publication: dataset.publication,
           citationText: text,
           // TODO how to get to the links?
           // https://www.envidat.ch/dataset/datasets-for-testing-the-repository-and-storage
           // add /export/datacite.xml or /export/iso19139.xml to the base url www.envidat.ch/dataset/[title]
-          citationXmlLink: 'https://www.envidat.ch/dataset/number-of-natural-hazard-fatalities-per-year-in-switzerland-since-1946/export/datacite.xml',
-          ciationIsoXmlLink: 'https://www.envidat.ch/dataset/number-of-natural-hazard-fatalities-per-year-in-switzerland-since-1946/export/iso19139.xml',
+          // citationXmlLink: 'https://www.envidat.ch/dataset/number-of-natural-hazard-fatalities-per-year-in-switzerland-since-1946/export/datacite.xml',
+          // ciationIsoXmlLink: 'https://www.envidat.ch/dataset/number-of-natural-hazard-fatalities-per-year-in-switzerland-since-1946/export/iso19139.xml',
+          citationXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/datacite.xml`,
+          ciationIsoXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/iso19139.xml`,
+          ciationGCMDXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/gcmd_diff.xml`,
         };
       },
       createResources: function createResources(dataset) {
@@ -474,6 +480,9 @@
 
         return license;
       },
+      OnScroll: function OnScroll(scrollPos) {
+        this.savedPosition = scrollPos;
+      },
     },
     watch: {
       currentMetadataContent: function updateContent() {
@@ -505,13 +514,21 @@
 
 <style>
 
-  .metadata_title{
+  .metadata_title {
     font-family: 'Libre Baskerville', serif !important;
     font-weight: 700 !important;
   }
 
-  .metadataResourceCard{
-    min-height: 200px !important;
+  .metadataResourceCard {
+    min-height: 100px !important;
+  }
+
+  .metadataResourceCard .headline {
+    font-size: 20px !important;
+  }
+
+  .resourceCardText {
+    font-size: 12px;
   }
 
 </style>

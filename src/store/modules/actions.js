@@ -20,6 +20,9 @@ import {
   LOAD_ALL_TAGS,
   LOAD_ALL_TAGS_SUCCESS,
   LOAD_ALL_TAGS_ERROR,
+  BULK_LOAD_METADATAS_CONTENT,
+  BULK_LOAD_METADATAS_CONTENT_SUCCESS,
+  BULK_LOAD_METADATAS_CONTENT_ERROR,
 } from '../metadataMutationsConsts';
 
 /* eslint-disable no-unused-vars  */
@@ -31,6 +34,7 @@ const SOLR_API_BASE = '/solr/ckan_default/';
 
 function urlRewrite(url, baseUrl, proxyUrl) {
   // const from = url;
+  // url = url.replace(/&/g, '%26');
   url = url.replace('?', '&amp;');
   url = url.replace("'", '%22');
 
@@ -96,6 +100,15 @@ export default {
     // tags:SNOW%20AND%20notes:snow
     // maybe use notes:"snow avalanche"
     // select?indent=on&q=tags:${searchTerm}%20AND%20notes:${searchTerm}&wt=json
+
+    const splitSpaces = searchTerm.split(' ');
+    if (splitSpaces.length > 1) {
+      searchTerm = splitSpaces[0];
+      for (let i = 1; i < splitSpaces.length; i++) {
+        const el = splitSpaces[i];
+        searchTerm += ` OR ${el}`;
+      }
+    }
 
     const url = urlRewrite(`select?indent=on&q=notes:${searchTerm} OR title:${searchTerm}&wt=json&rows=1000`, SOLR_API_BASE, SOLR_PROXY);
 
@@ -168,7 +181,7 @@ export default {
   async [LOAD_ALL_TAGS]({ commit }) {
     commit(LOAD_ALL_TAGS);
 
-    const url = urlRewrite('select&q=*:*&wt=json&facet=true&facet.field=tags&facet.limit=10000&rows=0', SOLR_API_BASE, SOLR_PROXY);
+    const url = urlRewrite('select&q=*:*&wt=json&facet=true&facet.field=tags&facet.limit=1000&rows=0', SOLR_API_BASE, SOLR_PROXY);
 
     axios.get(url)
       .then((response) => {
@@ -178,5 +191,21 @@ export default {
         commit(LOAD_ALL_TAGS_ERROR, reason);
       });
   },
+  async [BULK_LOAD_METADATAS_CONTENT]({ commit, showRestrictedContent = false }) {
+    commit(BULK_LOAD_METADATAS_CONTENT);
+
+    // const url = urlRewrite('package_search', API_BASE, ENVIDAT_PROXY);
+    // const url = urlRewrite('select?q=title:*&wt=json&rows=1000', SOLR_API_BASE, SOLR_PROXY);
+    const url = `${SOLR_PROXY}${SOLR_API_BASE}select&q=title:*&wt=json&rows=1000`;
+
+    axios.get(url)
+      .then((response) => {
+        commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, response.data.response.docs, showRestrictedContent);
+      })
+      .catch((reason) => {
+        commit(BULK_LOAD_METADATAS_CONTENT_ERROR, reason);
+      });
+  },
+
 };
 

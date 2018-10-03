@@ -36,6 +36,9 @@
   import hazardImg from '@/assets/cards/c_b_hazard_cloud_small.jpg';
   import diversityImg from '@/assets/cards/b_c_diversity_meadow_small.jpg';
 
+  // un blurry zooming
+  // https://stackoverflow.com/questions/36143337/how-to-prevent-blur-from-css-transform
+
   export default {
     props: {
       title: String,

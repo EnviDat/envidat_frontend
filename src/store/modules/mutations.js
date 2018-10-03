@@ -20,6 +20,9 @@ import {
   LOAD_ALL_TAGS,
   LOAD_ALL_TAGS_SUCCESS,
   LOAD_ALL_TAGS_ERROR,
+  BULK_LOAD_METADATAS_CONTENT,
+  BULK_LOAD_METADATAS_CONTENT_SUCCESS,
+  BULK_LOAD_METADATAS_CONTENT_ERROR,
 } from '../metadataMutationsConsts';
 
 const conversion = require('./conversion');
@@ -75,7 +78,7 @@ export default {
     state.searchingMetadatasContent = true;
     state.searchedMetadatasContent = {};
   },
-  [SEARCH_METADATA_SUCCESS](state, payload) {
+  [SEARCH_METADATA_SUCCESS](state, payload, showRestrictedContent = false) {
     state.searchingMetadatasContentOK = true;
 
     /* eslint-disable no-underscore-dangle */
@@ -83,7 +86,10 @@ export default {
       const element = payload[i];
       const ckanJSON = conversion.solrResultToCKANJSON(element);
 
-      this._vm.$set(state.searchedMetadatasContent, ckanJSON.id, ckanJSON);
+      if ((showRestrictedContent && ckanJSON.private)
+      || (!showRestrictedContent && !ckanJSON.private)) {
+        this._vm.$set(state.searchedMetadatasContent, ckanJSON.id, ckanJSON);
+      }
     }
 
     state.searchingMetadatasContent = false;
@@ -144,4 +150,31 @@ export default {
     state.loadingAllTags = false;
     state.error = reason;
   },
+  [BULK_LOAD_METADATAS_CONTENT](state) {
+    state.loadingMetadatasContent = true;
+    state.metadatasContent = {};
+  },
+  [BULK_LOAD_METADATAS_CONTENT_SUCCESS](state, payload, showRestrictedContent) {
+    // state.loadingMetadatasContent = false;
+    state.metadatasContentOK = true;
+
+    /* eslint-disable no-underscore-dangle */
+    for (let i = 0; i < payload.length; i++) {
+      const element = payload[i];
+      const ckanJSON = conversion.solrResultToCKANJSON(element);
+
+      if ((showRestrictedContent && ckanJSON.private)
+      || (!showRestrictedContent && !ckanJSON.private)) {
+        this._vm.$set(state.metadatasContent, ckanJSON.id, ckanJSON);
+      }
+    }
+
+    state.loadingMetadatasContent = false;
+  },
+  [BULK_LOAD_METADATAS_CONTENT_ERROR](state, reason) {
+    state.loadingMetadatasContent = false;
+    state.metadatasContentOK = false;
+    state.error = reason;
+  },
+
 };

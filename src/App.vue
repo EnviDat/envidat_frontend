@@ -6,7 +6,9 @@
     <v-icon v-if="loading" color="warning">autorenew</v-icon-->
 
     <v-content>
-      <router-view/>
+      <!-- <transition :name="transitionName"> -->
+        <router-view />
+      <!-- </transition> -->
     </v-content>
         
   </v-app>
@@ -16,9 +18,9 @@
   import { mapGetters } from 'vuex';
   import '../node_modules/skeleton-placeholder/dist/bone.min.css';
   import {
-    LOAD_ALL_METADATA,
     LOAD_ALL_TAGS,
     LOAD_METADATA_CONTENT_BY_ID,
+    BULK_LOAD_METADATAS_CONTENT,
   } from './store/metadataMutationsConsts';
   import {
     ADD_CARD_IMAGES,
@@ -50,11 +52,11 @@
     methods: {
       loadAllMetadata: function loadAllMetadata() {
         if (!this.loadingMetadatasContent && this.metadatasContentSize <= 0) {
-          this.$store.dispatch(`metadata/${LOAD_ALL_METADATA}`);
+          this.$store.dispatch(`metadata/${BULK_LOAD_METADATAS_CONTENT}`);
         }
       },
       loadAllTags: function loadAllTags() {
-        if (!this.loadingAllTags && this.allTags.length <= 0) {
+        if (!this.loadingAllTags && this.allTags && this.allTags.length <= 0) {
           this.$store.dispatch(`metadata/${LOAD_ALL_TAGS}`);
         }
       },
@@ -132,6 +134,7 @@
     },
     data: () => ({
       appBGImages: {},
+      transitionName: 'fadeOut',
     }),
     props: {
       source: String,
@@ -256,5 +259,30 @@
   .envidat_badgeBigNumber span {
     font-size: 0.9em !important;
   }
+
+  .fadeOut-enter-active, .fadeOut-leave-active {
+    transition: all .3s;
+  }
+
+  .fadeOut-leave {
+    opacity: 1;
+  }  
+
+  .fadeOut-leave-to {
+    opacity: 0;
+  }  
+
+  .fadeIn-enter-active, .fadeIn-leave-active {
+    transition: all .3s;
+  }
+
+  .fadeIn-enter {
+    opacity: 0
+  }  
+
+  .fadeIn-enter-to {
+    opacity: 1;
+  }  
+
 
 </style>

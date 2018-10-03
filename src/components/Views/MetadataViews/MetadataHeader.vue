@@ -85,14 +85,13 @@
 
           <tag-chip-placeholder v-if="!tags && showPlaceholder"
                     v-for="n in 5" :key="n" 
-                    :selectable="false"
-                    :highlighted="false"
-                    :closeable="false"
                     class="headerTag" />
 
         </v-layout>
           
-        <v-card-actions v-if="maxTagsReached">
+        <v-card-actions v-if="maxTagsReached"
+                        class="ma-0 pa-2"
+                        style="position: absolute; bottom: 5px; right: 5px;" >
           <v-spacer></v-spacer>
 
           <v-tooltip bottom>
