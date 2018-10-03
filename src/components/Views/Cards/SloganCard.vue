@@ -52,7 +52,7 @@
     <v-card-actions class="ma-0 pa-2"
                     style="position: absolute; bottom: 0; right: 0;">
     <!-- <v-card-actions > -->
-      <v-spacer></v-spacer>
+      <!-- <v-spacer></v-spacer> -->
 
       <v-btn @click.native="buttonCallback"
               color="primary"

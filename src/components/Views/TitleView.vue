@@ -64,8 +64,7 @@
           </v-flex>
 
           <v-flex pt-5 >
-            <slogan-card :title="title"
-                        :slogan="slogan"
+            <slogan-card :slogan="slogan"
                         :subSlogan="subSlogan"
                         :buttonText="buttonText"
                         :buttonCallback="buttonCallback" />

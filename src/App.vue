@@ -242,7 +242,7 @@
   }
 
   .envidat_slogan {
-    font-family: 'Raleway', sans-serif !important;
+    font-family: 'Libre Baskerville', serif !important;
   }
 
   .metadataInfoIcon {
