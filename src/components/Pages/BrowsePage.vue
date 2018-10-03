@@ -10,7 +10,8 @@
       <v-flex xs12 px-3 
               style="position: sticky; top: -1px; z-index: 2;" >
 
-        <nav-bar-view :searchViewLabelText="searchLabelText"
+        <nav-bar-view :showFiltering="true"
+                      :searchViewLabelText="searchLabelText"
                       :searchTerm="searchTerm"
                       :searchCount="searchCount"
                       :searchViewHasButton="false"

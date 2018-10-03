@@ -3,7 +3,10 @@
     <v-layout column >
   
       <title-view :title="envidatTitle"
-                  :slogan="envidatSlogan">
+                  :slogan="envidatSlogan"
+                  :subSlogan="envidatSubSlogan"
+                  :buttonText="sloganButtonText"
+                  :buttonCallback="catchBrowseClicked" >
       </title-view>
 
       <v-flex mt-5 offset-sm6>
@@ -103,6 +106,12 @@
           query: { search },
         });
       },
+      catchBrowseClicked: function catchBrowseClicked() {
+        this.$router.push({
+          path: '/browse',
+          // query: { '' },
+        });
+      },
       catchEnterclick: function catchEnterclick() {
         this.redirectToDashboard();
       },
@@ -119,10 +128,14 @@
     },
     data: () => ({
       PageBGImage: './app_b_landingpage.jpg',
-      labelText: "Type ex. 'Avalanche'",
-      buttonlText: 'SEARCH',
+      labelText: "Search for research data topics ex. 'Avalanche'",
+      buttonlText: 'SEARCH DATA',
       envidatTitle: 'EnviDat',
-      envidatSlogan: 'Browse a comprehensive collection of environmental data from Switzerland',
+      // envidatSlogan: 'Browse a comprehensive collection of environmental data from Switzerland',
+      envidatSlogan: 'Environmental Research Data<br/>at your Fingertips',
+      // envidatSlogan: 'Environmental Research Data at your Fingertips. Provided by the many research units of the Swiss Federal Institute for Forest, Snow and Landscape WSL.',
+      envidatSubSlogan: 'The data is being provided by the many research units of the Swiss Federal Institute for Forest, Snow and Landscape WSL.',
+      sloganButtonText: 'BROWSE DATA',
       loginInfos: {
         titleText: 'Do you create data?',
         loginText: 'LOGIN',
