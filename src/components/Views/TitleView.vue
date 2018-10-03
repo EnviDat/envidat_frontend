@@ -64,11 +64,11 @@
           </v-flex>
 
           <v-flex pt-5 >
-            <slogan-card :title="envidatTitle"
-                        :slogan="envidatSlogan"
-                        :subSlogan="envidatSubSlogan"
-                        :buttonText="sloganButtonText"
-                        :buttonCallback="catchBrowseClicked" >
+            <slogan-card :title="title"
+                        :slogan="slogan"
+                        :subSlogan="subSlogan"
+                        :buttonText="buttonText"
+                        :buttonCallback="buttonCallback" />
           </v-flex>
 
           <!-- <v-flex hidden-sm-and-down pt-5

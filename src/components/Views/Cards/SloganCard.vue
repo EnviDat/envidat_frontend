@@ -1,43 +1,57 @@
 <template>
 
-  <v-card>
+  <v-card ripple
+          hover
+          v-on:click.native="buttonCallback">  
 
-    <v-img
-        background-color="primary"
-      >
         <!-- v-bind="{['style'] : dynamicCardBackground }"
         height="150px" -->
       
-      <v-container grid-list-xs fill-height px-3 pt-3 pb-0>
-        <v-layout column>
-          <v-flex xs12 py-0>
+      <v-container grid-list-md pa-0>
+        <v-layout row align-center>
 
-            <div class="hidden-sm-and-down envidat_slogan display-1">
-              {{ slogan }}
+          <v-flex xs5 py-0>
+            <v-img
+                :src="fingertipsImg"
+                height="200px"
+            />
+          </v-flex>
+
+          <!-- <v-flex xs5 py-0>
+            <v-card-media class="imagezoom"
+                          height="100px">
+              <img :src="imageSrc" />                        
+            </v-card-media>
+          </v-flex> -->
+
+          <v-flex xs7>
+
+            <div class="hidden-sm-and-down envidat_slogan display-1"
+              v-html="slogan">
             </div>
 
-            <div class="hidden-xs-only hidden-md-and-up envidat_slogan headline">
-              {{ slogan }}
+            <div class="hidden-xs-only hidden-md-and-up envidat_slogan headline"
+              v-html="slogan">
             </div>
 
-            <div class="hidden-sm-and-up envidat_slogan headline">
-              {{ slogan }}
+            <div class="hidden-sm-and-up envidat_slogan headline"
+              v-html="slogan">
             </div>
+
+            <div class="pt-3">{{ subSlogan }}</div>
           </v-flex>
 
         </v-layout>
       </v-container>
 
 
-    </v-img>
-
-    <v-card-title primary-title>
+    <!-- <v-card-title primary-title>
       <div>{{ subSlogan }}</div>
-    </v-card-title>
+    </v-card-title> -->
 
-    <!-- <v-card-actions class="ma-0 pa-2"
-                    style="position: absolute; bottom: 0; right: 0;"> -->
-    <v-card-actions >
+    <v-card-actions class="ma-0 pa-2"
+                    style="position: absolute; bottom: 0; right: 0;">
+    <!-- <v-card-actions > -->
       <v-spacer></v-spacer>
 
       <v-btn @click.native="buttonCallback"
@@ -53,6 +67,7 @@
 
 
 <script>
+import fingertipsImg from '../../../assets/cards/fingertips_small.jpg';
 
 export default {
   props: {
@@ -70,6 +85,7 @@ export default {
   computed: {
   },
   data: () => ({
+    fingertipsImg,
   }),
 };
 </script>
