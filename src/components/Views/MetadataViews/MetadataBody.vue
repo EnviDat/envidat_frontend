@@ -18,7 +18,9 @@
       <m-markdown-preview :markdown="fullDescription" :options="{html: true}" />
     </v-card-text>
 
-    <v-card-actions>
+    <v-card-actions v-if="maxDescriptionLengthReached"
+                    style="position: absolute; bottom: 0; right: 0;" >
+
       <v-spacer></v-spacer>
 
       <v-btn icon
@@ -49,10 +51,17 @@
     computed: {
       fullDescription: function fullDescription() {
         if (this.description !== undefined) {
-          return this.showFullDescription ? this.description.trim() : `${this.description.trim().substring(0, this.maxTextLength)}...`;
+          if (this.maxDescriptionLengthReached) {
+            return this.showFullDescription ? this.description.trim() : `${this.description.trim().substring(0, this.maxTextLength)}...`;
+          }
+
+          return this.description.trim();
         }
 
         return '';
+      },
+      maxDescriptionLengthReached: function maxDescriptionLengthReached() {
+        return this.description && this.description.length > this.maxTextLength;
       },
     },
     data: () => ({

@@ -85,9 +85,6 @@
 
           <tag-chip-placeholder v-if="!tags && showPlaceholder"
                     v-for="n in 5" :key="n" 
-                    :selectable="false"
-                    :highlighted="false"
-                    :closeable="false"
                     class="headerTag" />
 
         </v-layout>

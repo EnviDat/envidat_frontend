@@ -54,6 +54,11 @@
       // this.map = L.map('map').setView([51.505, -0.09], 13);
 
     },
+    beforeDestroy: function beforeDestroy() {
+      if (this.map) {
+        this.map.remove();
+      }
+    },
     updated: function updated() {
     },
     computed: {

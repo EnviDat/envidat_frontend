@@ -21,7 +21,8 @@
     "ssri": "^5.3.0",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
-    "vuetify": "^1.2.4"
+    "vuetify": "^1.2.4",
+    "vuex-localstorage": "^1.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
