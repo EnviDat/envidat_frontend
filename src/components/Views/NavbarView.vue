@@ -62,7 +62,7 @@
       </v-flex>
 
 
-      <v-flex xs12 >
+      <v-flex xs12 v-if="showFiltering">
 
         <v-container fluid grid-list-md pa-0>
 
@@ -188,6 +188,7 @@
       allTags: Array,
       popularTags: Array,
       selectedTagNames: Array,
+      showFiltering: Boolean,
       showPlaceholder: Boolean,
       showMapFilter: Boolean,
       mapFilteringEnabled: Boolean,
