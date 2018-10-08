@@ -3,7 +3,6 @@
               tag="article"
               v-bind="{ [`pa-0`]: this.$vuetify.breakpoint.smAndDown,
                         [`pa-2`]: this.$vuetify.breakpoint.mdAndUp }"
-              style="position: absolute; min-height: 100%;"
   >
 
     <div v-if="currentMetadataContent">

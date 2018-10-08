@@ -159,7 +159,9 @@ export default {
       const gradient = this.dark ? this.blackTopToBottom : this.whiteTopToBottom;
 
       if (this.titleImg) {
-        return `background-image: linear-gradient(0deg, ${gradient}), url(${this.titleImg}); background-position: center, center;`;
+        return `background-image: linear-gradient(0deg, ${gradient}), url(${this.titleImg});
+                background-position: center, center;
+                background-size: cover; background-repeat: initial; `;
       }
 
       return '';

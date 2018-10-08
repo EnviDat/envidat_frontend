@@ -12,10 +12,10 @@
           solo
           flat
           prepend-icon="search"
-          :prepend-icon-cb="clicked"
+          @click:prepend="clicked"
           v-on:keyup.enter="clicked"
           v-model="searchText"
-          :label="labelText">          
+          :label="labelText">
         </v-text-field>
       </v-flex>
     </v-layout>

@@ -2,7 +2,6 @@
   <v-container grid-list-xs fluid py-1
                 v-bind="{ 'pa-0': $vuetify.breakpoint.xsOnly }"
                 @scroll="updateScroll"
-                style="position: absolute; min-height: 100%;"
   >
 
     <v-layout row wrap>
