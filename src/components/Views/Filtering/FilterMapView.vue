@@ -196,19 +196,19 @@ export default {
         { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' },
       ).addTo(map);
     },
-    addGoogleMapsLayer: function addGoogleMapsLayer(map) {
-      // const styled = L.gridLayer.googleMutant({
-      //   type: 'roadmap',
-      //   styles: [
-      //     { elementType: 'labels', stylers: [{ visibility: 'off' }] },
-      //     { featureType: 'water', stylers: [{ color: '#444444' }] },
-      //   ],
-      // }).addTo(map);
+    // addGoogleMapsLayer: function addGoogleMapsLayer(map) {
+    // const styled = L.gridLayer.googleMutant({
+    //   type: 'roadmap',
+    //   styles: [
+    //     { elementType: 'labels', stylers: [{ visibility: 'off' }] },
+    //     { featureType: 'water', stylers: [{ color: '#444444' }] },
+    //   ],
+    // }).addTo(map);
 
-      // const roads = L.gridLayer.googleMutant({
-      //   type: 'roadmap', // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
-      // }).addTo(map);
-    },
+    // const roads = L.gridLayer.googleMutant({
+    //   type: 'roadmap', // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
+    // }).addTo(map);
+    // },
     addGeoData: function addGeoData(location) {
       const validGeoJSON = this.parseGeoJSON(location.geoJSON);
 
@@ -216,7 +216,7 @@ export default {
         L.geoJSON(location.geoJSON).addTo(this.map);
       } else if (location.pointArray) {
         if (location.isPoint) {
-          this.addPoint(this.map, location.pointArray, location.id);
+          this.addPoint(this.map, location.pointArray, location.title);
           this.markerCount++;
         }
 
