@@ -1,5 +1,9 @@
 <template>
-  <v-card raised >
+  <v-card raised
+              v-bind="{
+                ['color']: this.isHighlighted ? 'secondary' : '',
+              }"
+  >
     <v-layout style="min-height: 48px;"
               v-bind="{
                 ['row']: this.$vuetify.breakpoint.smAndUp,
@@ -67,6 +71,7 @@ export default {
     mapExpanded: Boolean,
     mapExpandButtonText: String,
     mapExpandedButtonText: String,
+    isHighlighted: Boolean,
   },
   computed: {
     selectedTags: function selectedTags() {

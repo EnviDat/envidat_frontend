@@ -124,6 +124,7 @@
                             :mapExpandedButtonText="mapExpandedButtonText"
                             v-on:clickedMapExpand="catchMapExpandClicked"
                             :showPlaceholder="showPlaceholder"
+                            :isHighlighted="tagsAreHighligted"
                 >
               </filter-view>
 
@@ -193,6 +194,7 @@
       showMapFilter: Boolean,
       mapFilteringEnabled: Boolean,
       mapFilterHeight: Number,
+      tagsAreHighligted: Boolean,
     },
     computed: {
       mapFilterAlignment: function mapFilterAlignment() {

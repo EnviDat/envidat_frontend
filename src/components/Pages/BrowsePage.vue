@@ -29,6 +29,7 @@
                       v-on:mapFilterChanged="catchMapFilterChanged"
                       v-on:pointClicked="catchPointClicked"
                       :showPlaceholder="loadingAllTags"
+                      :tagsAreHighligted="this.selectedTagNames.length > 0"
                       />
 
       </v-flex>
