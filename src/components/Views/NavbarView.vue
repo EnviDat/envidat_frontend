@@ -83,7 +83,7 @@
                 </small-search-bar-view>
             </v-flex>
 
-            <v-flex xs10 sm7 
+            <v-flex xs10 sm9 
               v-bind="{
                 ['py-2']: this.$vuetify.breakpoint.xsOnly,
               }"
@@ -127,25 +127,6 @@
                             :isHighlighted="tagsAreHighligted"
                 >
               </filter-view>
-
-            </v-flex>
-
-            <v-flex xs2
-              v-bind="{
-                ['py-2']: this.$vuetify.breakpoint.xsOnly,
-              }"
-            >
-
-              <filter-view-buttons
-                                    :expanded="expanded"
-                                    :expandButtonText="expandButtonText"
-                                    :expandedButtonText="expandedButtonText"
-                                    v-on:clickedExpand="catchExpandClicked"
-                                    :mapExpanded="showMapFilter"
-                                    :mapExpandButtonText="mapExpandButtonText"
-                                    :mapExpandedButtonText="mapExpandedButtonText"
-                                    v-on:clickedMapExpand="catchMapExpandClicked" >
-              </filter-view-buttons>
 
             </v-flex>
 
@@ -263,7 +244,8 @@
 
   .envidat_chip{
     height: 1.5rem;
-    font-size: 0.75rem;
+    font-size: 0.65rem;
+    margin: 0 2px;
   }
 
   .envidat_chip span {
