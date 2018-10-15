@@ -35,7 +35,7 @@ const SOLR_API_BASE = '/solr/ckan_default/';
 function urlRewrite(url, baseUrl, proxyUrl) {
   // const from = url;
   // url = url.replace(/&/g, '%26');
-  url = url.replace('?', '&amp;');
+  url = url.replace('?', '&');
   url = url.replace("'", '%22');
 
   url = `${proxyUrl}${baseUrl}${url}`;
