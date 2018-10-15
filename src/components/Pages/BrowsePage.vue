@@ -38,6 +38,7 @@
        >
 
        <metadata-list-view :filteredMetadataContent="filteredMetadataContent"
+                            :listView="true"
                             :compactLayout="showMapFilter"
                             :hoverId="hoverId"
                             :mapFilteringEnabled="mapFilteringEnabled"

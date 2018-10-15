@@ -1,9 +1,17 @@
 <template>
 
-    <v-container fluid grid-list-lg pa-0
-                    >
+    <v-container fluid
+                  :class="{ ['grid-list-sm'] : listView,
+                          ['grid-list-lg'] : !listView,
+                        }"
+                  pa-0
+    >
 
-        <v-layout row wrap>
+      <v-layout :class="{ ['column'] : listView,
+                          ['row'] : !listView,
+                          ['wrap'] : !listView
+                        }"
+                >
 
         <v-flex v-if="loading || loadingContent"
                 v-bind="cardGridClass"
@@ -30,7 +38,7 @@
                         :resourceCount="metadata.num_resources"
                         :resources="metadata.resources"
                         :dark="false"
-                        :compactLayout="compactLayout"
+                        :compactLayout="listView"
                         :class="{ ['elevation-10'] : hoverId === metadata.id }"
                         v-on:clickedEvent="metaDataClicked"
                         v-on:clickedTag="catchTagClicked">
@@ -45,8 +53,8 @@
                                     :suggestionText="suggestionText" />  
         </v-flex>
 
+      </v-layout>
 
-        </v-layout>
 
     </v-container>
   
@@ -57,8 +65,6 @@
   import MetadataCard from '../Cards/MetadataCard';
   import MetadataCardPlaceholder from '../Cards/MetadataCardPlaceholder';
   import NoSearchResultsView from '../NoSearchResultsView';
-  import { SEARCH_METADATA } from '../../../store/metadataMutationsConsts';
-  import { CHANGE_APP_BG } from '../../../store/mutationsConsts';
 
   // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
@@ -74,8 +80,6 @@ export default {
     data: () => ({
       noResultText: 'Nothing found for these Search criterias',
       suggestionText: 'Try one of these categories',
-      maxMapFilterHeight: 750,
-      mapFilterVisibleIds: [],
     }),
     computed: {
       ...mapGetters({
