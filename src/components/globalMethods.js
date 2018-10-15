@@ -184,6 +184,8 @@ export default {
     createLocation: function createLocation(dataset) {
       const location = {};
       location.id = dataset.id;
+      location.name = dataset.name;
+      location.title = dataset.title;
 
       if (dataset && dataset.spatial) {
         location.geoJSON = dataset.spatial;

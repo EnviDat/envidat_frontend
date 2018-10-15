@@ -3,7 +3,6 @@
               tag="article"
               v-bind="{ [`pa-0`]: this.$vuetify.breakpoint.smAndDown,
                         [`pa-2`]: this.$vuetify.breakpoint.mdAndUp }"
-              style="position: absolute; min-height: 100%;"
   >
 
     <div v-if="currentMetadataContent">
@@ -13,7 +12,7 @@
         <v-flex xs12 
               md8 offset-md2
               lg10 offset-lg1
-              style="position: sticky; top: -1px; z-index: 2;" >
+              class="envidatNavbar" >
 
           <nav-bar-view />
 

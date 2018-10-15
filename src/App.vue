@@ -117,17 +117,21 @@
 
         if (bgImg) {
           // bgStyle = `background-image: url(${bgImg}) !important;`;
-          bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.05) 0%,rgba(255,255,255,0.25) 100%), url(${bgImg}) !important;`;
+          bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.25) 100%), url(${bgImg}) !important;`;
+
+          bgStyle += `background-position: center top !important;
+                      background-repeat: no-repeat !important;
+                      background-size: cover !important; `;
         }
 
         if (bgImg.includes('browsepage')) {
-          bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%,rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
+          // bgStyle = `background-image: url(${bgImg}) !important;`;
+          bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
+
+          bgStyle += `background-position: center top !important;
+                      background-repeat: repeat !important; `;
         }
 
-        bgStyle += `background-position: center top !important;
-                    background-size: cover !important;
-                    background-repeat: no-repeat !important;
-                    background-attachment: fixed !important; `;
 
         return bgStyle;
       },
@@ -156,6 +160,13 @@
     background-repeat: no-repeat !important;
     background-attachment: fixed !important; */
   }  
+
+  .envidatNavbar {
+    position: -webkit-sticky;
+    position: sticky;
+    top: -1px;
+    z-index: 2;
+  }
 
   /*** General Card styles ***/
 

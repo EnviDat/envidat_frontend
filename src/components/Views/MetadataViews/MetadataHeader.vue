@@ -164,7 +164,8 @@ export default {
 
       if (this.titleImg) {
         return `background-image: linear-gradient(0deg, ${gradient}), url(${this.titleImg});
-        background-position: center, center; background-size: cover;`;
+        background-position: center, center; background-size: cover;
+        background-repeat: initial;`;
       }
 
       return '';
