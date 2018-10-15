@@ -36,55 +36,14 @@
       <v-flex px-3 py-2 style="z-index: 1;"
               v-bind="metadataListStyling"
        >
-        <v-container fluid grid-list-lg pa-0
-                       >
 
-          <v-layout row wrap>
-
-            <v-flex v-if="loading || loadingContent"
-                    v-bind="cardGridClass"
-                    v-for="(n, index) in palceHolderAmount" :key="index">
-
-              <metadata-card-placeholder :dark="false" />
-    
-            </v-flex>
-
-            <v-flex v-if="!loading"
-                    v-bind="cardGridClass"
-                    v-for="(metadata, index) in filteredMetadataContent" :key="index">
-
-              <transition name="fadeIn">                    
-              <metadata-card
-                            :title="metadata.title"
-                            :id="metadata.id"
-                            :name="metadata.name"
-                            :ref="metadata.id"
-                            :subtitle="metadata.notes"
-                            :tags="metadata.tags"
-                            :titleImg="metadata.titleImg"
-                            :restricted="hasRestrictedResources(metadata)"
-                            :resourceCount="metadata.num_resources"
-                            :resources="metadata.resources"
-                            :dark="false"
+       <metadata-list-view :filteredMetadataContent="filteredMetadataContent"
                             :compactLayout="showMapFilter"
-                            :class="{ ['elevation-10'] : hoverId === metadata.id }"
-                            v-on:clickedEvent="metaDataClicked"
-                            v-on:clickedTag="catchTagClicked">
-              </metadata-card>
-              </transition>
-    
-            </v-flex>
-
-            <v-flex xs12 v-if="!loading && !filteredMetadataContent">
-              <no-search-results-view v-on:clicked="catchCategoryClicked"
-                                      :noResultText="noResultText"
-                                      :suggestionText="suggestionText" />  
-            </v-flex>
-
-
-          </v-layout>
-
-        </v-container>
+                            :hoverId="hoverId"
+                            :mapFilteringEnabled="mapFilteringEnabled"
+                            :palceHolderAmount="palceHolderAmount"
+                            v-on:clickedTag="catchTagClicked"
+       />
 
       </v-flex>
 
@@ -113,9 +72,7 @@
   import { mapGetters } from 'vuex';
   import NavBarView from '../Views/NavbarView';
   import FilterMapView from '../Views/Filtering/FilterMapView';
-  import MetadataCard from '../Views/Cards/MetadataCard';
-  import MetadataCardPlaceholder from '../Views/Cards/MetadataCardPlaceholder';
-  import NoSearchResultsView from '../Views/NoSearchResultsView';
+  import MetadataListView from '../Views/MetadataViews/MetadataListView';
   import { SEARCH_METADATA } from '../../store/metadataMutationsConsts';
   import { CHANGE_APP_BG } from '../../store/mutationsConsts';
 
@@ -163,35 +120,6 @@
       },
       updateScroll: function updateScroll() {
         this.scrollPosition = window.scrollY;
-      },
-      metaDataClicked: function metaDataClicked(datasetname) {
-        this.$router.push({
-          name: 'MetadataDetailPage',
-          params: {
-            metadataid: datasetname,
-          },
-        });
-      },
-      additiveChangeRoute: function additiveChangeRoute(search, tags) {
-        const query = {};
-
-        if (search !== undefined) {
-          query.search = search;
-        } else if (this.$route.query.search) {
-          query.search = this.$route.query.search;
-        }
-
-        if (tags !== undefined) {
-          query.tags = tags;
-        } else if (this.$route.query.tags) {
-          query.tags = this.$route.query.tags;
-        }
-        // console.log("additiveChangeRoute search: " + query.search + " tags: " + query.tags);
-
-        this.$router.push({
-          path: '/browse',
-          query,
-        });
       },
       decodeCategoryFromUrl: function decodeCategoryFromUrl(urlquery) {
         if (urlquery) {
@@ -258,14 +186,6 @@
         // if (queryLength > 0 && this.$route.query.search) {
         this.additiveChangeRoute(this.searchTerm, undefined);
         // }
-      },
-      catchCategoryClicked: function catchCategoryClicked(cardTitle) {
-        this.$router.push({
-          path: '/browse',
-          query: {
-            search: cardTitle,
-          },
-        });
       },
       catchMapFilterChanged: function catchMapFilterChanged(visibleIds) {
         this.mapFilterVisibleIds = visibleIds;
@@ -428,22 +348,6 @@
       updateSearchCount: function updateSearchCount(searchResult) {
         this.searchCount = searchResult !== undefined ? searchResult.length : 0;
       },
-      hasRestrictedResources: function hasRestrictedResources(metadata) {
-        if (!metadata || !metadata.resources || metadata.resources.length <= 0) {
-          return false;
-        }
-
-        /* eslint-disable consistent-return  */
-        metadata.resources.forEach((res) => {
-          if (res.restricted !== undefined
-            && (res.restricted.allowed_users !== undefined ||
-            (res.restricted.level !== undefined && res.restricted.level !== 'public'))) {
-            return true;
-          }
-        });
-
-        return false;
-      },
     },
     computed: {
       ...mapGetters({
@@ -459,12 +363,6 @@
         currentMetadata: 'metadata/currentMetadata',
         cardBGImages: 'cardBGImages',
       }),
-      loading: function loading() {
-        return this.loadingMetadataIds || this.searchingMetadatasContent;
-      },
-      loadingContent: function loadingContent() {
-        return (this.loadingMetadatasContent && this.metadatasContentSize < this.palceHolderAmount);
-      },
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
       },
@@ -545,27 +443,6 @@
 
         return popTags;
       },
-      cardGridClass: function cardGridClass() {
-        if (this.mapFilteringEnabled && this.showMapFilter) {
-          const twoThridsSize = {
-            xs12: true,
-            sm8: true,
-            md6: true,
-            xl4: true,
-          };
-
-          return twoThridsSize;
-        }
-
-        const fullSize = {
-          xs12: true,
-          sm6: true,
-          md4: true,
-          xl3: true,
-        };
-
-        return fullSize;
-      },
       metadataListStyling: function metadataListStyling() {
         const json = {
           xs8: this.mapFilteringEnabled && this.showMapFilter,
@@ -612,9 +489,7 @@
     components: {
       NavBarView,
       FilterMapView,
-      NoSearchResultsView,
-      MetadataCard,
-      MetadataCardPlaceholder,
+      MetadataListView,
     },
 };
 </script>
