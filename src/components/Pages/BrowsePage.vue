@@ -7,7 +7,7 @@
     <v-layout row wrap>
 
       <v-flex xs12 px-3 
-              style="position: sticky; top: -1px; z-index: 2;" >
+              class="envidatNavbar" >
 
         <nav-bar-view :showFiltering="true"
                       :searchViewLabelText="searchLabelText"
@@ -91,7 +91,7 @@
       <v-flex xs4 py-3 pr-3
               v-if="mapFilteringEnabled && showMapFilter" >
 
-        <filter-map-view style="position: sticky; top: 100px;"
+        <filter-map-view style="position: -webkit-sticky; position: sticky; top: 100px;"
                           :totalHeight="mapFilterHeight"
                           :expanded="showMapFilter"
                           v-on:clickedMapExpand="toggleMapExpand"
