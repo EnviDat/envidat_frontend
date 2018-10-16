@@ -242,13 +242,13 @@
 
 <style>
 
-  .envidat_chip{
+  .envidatChip{
     height: 1.5rem;
     font-size: 0.65rem;
-    margin: 0 2px;
+    margin: 1px 2px;
   }
 
-  .envidat_chip span {
+  .envidatChip span {
     cursor: pointer !important;
   }
 
