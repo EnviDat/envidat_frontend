@@ -23,6 +23,7 @@ import {
   BULK_LOAD_METADATAS_CONTENT,
   BULK_LOAD_METADATAS_CONTENT_SUCCESS,
   BULK_LOAD_METADATAS_CONTENT_ERROR,
+  ENABLE_TAG,
 } from '../metadataMutationsConsts';
 
 const conversion = require('./conversion');
@@ -176,5 +177,11 @@ export default {
     state.metadatasContentOK = false;
     state.error = reason;
   },
+  [ENABLE_TAG](state, { tagName, enabled }) {
+    const index = state.allTags.findIndex(obj => obj.name === tagName);
 
+    if (index >= 0) {
+      state.allTags[index].enabled = enabled;
+    }
+  },
 };

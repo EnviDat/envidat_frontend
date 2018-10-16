@@ -76,13 +76,13 @@
                             :expandedButtonText="expandedButtonText"
                             :showClearTags="true"
                             :clearButtonText="clearButtonText"
-                            v-on:clickedExpand="expandClicked"
-                            v-on:clickedClearTags="catchClearClicked"
+                            v-on:clickedExpand="catchExpandClicked"
+                            v-on:clickedClearTags="catchClearTags"
                             :mapExpanded="mapExpanded"
                             :mapExpandButtonText="mapExpandButtonText"
                             :mapExpandedButtonText="mapExpandedButtonText"
                             v-on:clickedMapExpand="catchMapExpandClicked" >
-                             >
+                            
       </filter-view-buttons>
 
     </v-card-actions>

@@ -1,44 +1,51 @@
 <template>
   <v-card raised
-              v-bind="{
-                ['color']: this.isHighlighted ? 'secondary' : '',
-              }"
   >
     <v-layout style="min-height: 48px;"
+              row
               v-bind="{
-                ['row']: this.$vuetify.breakpoint.smAndUp,
                 ['align-center']: this.$vuetify.breakpoint.smAndUp,
                 ['align-content-center']: this.$vuetify.breakpoint.smAndUp,
-                ['column']: this.$vuetify.breakpoint.xsOnly,
               }"
       >
 
-      <v-flex xs9 px-2 py-2 >
+      <v-flex pl-2 py-2 class="metadataInfoIcon"
+              >
+
+        <!-- <img :src="getIcon('filter2')" /> -->
+
+        <icon-label-view :icon="getIcon('filter2')"
+                          iconTooltip="Keyword filtering"
+                          />
+      </v-flex>
+
+      <v-flex xs12 px-2 py-2 >
 
         <tag-chip v-if="selectedTags.length > 0"
                   v-for="tag in selectedTags" :key="tag.name" 
                   :name="tag.name"
-                  :selectable="false"
+                  :selectable="true"
                   :highlighted="true"
                   :closeable="true"
                   v-on:clickedClose="catchTagCloseClicked($event, tag.name)"
+                  v-on:clicked="catchTagCloseClicked($event, tag.name)"
                   class="filterTag" />
 
-        <tag-chip v-if="showPopularTags"
-                  v-for="tag in showPopularTags.slice(0, maxPopularTagNumber)"
+        <tag-chip v-if="showPopularTags && tag.enabled"
+                  v-for="tag in showPopularTags"
                   :key="tag.name" 
                   :name="tag.name"
-                  :selectable="false"
+                  :selectable="tag.enabled"
                   :highlighted="false"
                   :closeable="false"
                   v-on:clicked="catchTagClicked($event, tag.name)"
                   class="filterTag" />
 
 
-        <tag-chip v-if="showPopularTags.length >= maxPopularTagNumber"
+        <!-- <tag-chip v-if="showPopularTags.length >= maxPopularTagNumber"
           class="filterTag" :name="'...'"
           @click.native="catchExpandClicked"
-        />
+        /> -->
 
       </v-flex>
 
@@ -69,7 +76,7 @@
 
       </v-flex> -->
 
-      <v-flex xs3>
+      <!-- <v-flex xs3>
         <filter-view-buttons
                               :expanded="expanded"
                               :expandButtonText="expandButtonText"
@@ -80,7 +87,7 @@
                               :mapExpandedButtonText="mapExpandedButtonText"
                               v-on:clickedMapExpand="catchMapExpandClicked" >
         </filter-view-buttons>
-      </v-flex>
+      </v-flex> -->
 
       
     </v-layout>
@@ -134,9 +141,7 @@ export default {
       const popTags = [];
 
       this.popularTags.forEach((element) => {
-        if (this.isPopluarTag(element.name)
-         && !this.isTagSelected(element.name)
-         && this.isCleanTag(element.name)) {
+        if (element.enabled && !this.isTagSelected(element.name)) {
           popTags.push(element);
         }
       });

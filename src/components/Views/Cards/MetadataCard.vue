@@ -43,6 +43,7 @@
                 <tag-chip py-0
                           v-if="tags" v-for="tag in tags.slice (0, maxTagNumber)" :key="tag.name"
                           :name="tag.name"
+                          :selectable="true"
                           v-on:clicked="catchTagClicked($event, tag.name)"
                           class="card_tag" />
               
