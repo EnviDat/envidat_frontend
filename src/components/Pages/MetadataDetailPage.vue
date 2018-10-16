@@ -12,7 +12,7 @@
         <v-flex xs12 
               md8 offset-md2
               lg10 offset-lg1
-              style="position: sticky; top: -1px; z-index: 2;" >
+              class="envidatNavbar" >
 
           <nav-bar-view />
 

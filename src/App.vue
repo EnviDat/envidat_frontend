@@ -161,6 +161,13 @@
     background-attachment: fixed !important; */
   }  
 
+  .envidatNavbar {
+    position: -webkit-sticky;
+    position: sticky;
+    top: -1px;
+    z-index: 2;
+  }
+
   /*** General Card styles ***/
 
   .headline {
