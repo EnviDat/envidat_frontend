@@ -9,12 +9,15 @@
       >
 
         <v-tooltip bottom style="position: absolute; top 0; right: 0;">
-          <v-btn icon flat color="primary"
+
+          <v-btn icon flat
+                  color="primary"
                   style="font-size: 30px !important;"
                   @click.native="$router.go(-1)" slot="activator">
             <v-icon>close</v-icon>
           </v-btn>        
           <span>Close Metadata</span>
+
         </v-tooltip>
 
         <!--h1 class="py-3" >{{ metadataTitle }} id: {{ $route.params.id }}</h1-->

@@ -1,5 +1,5 @@
 <template>
-  <v-card hover raised >
+  <v-card raised height="40">
 
     <!-- long slim search bar  -->
 

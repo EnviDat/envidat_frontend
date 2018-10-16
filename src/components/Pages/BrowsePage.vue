@@ -29,6 +29,7 @@
                       v-on:mapFilterChanged="catchMapFilterChanged"
                       v-on:pointClicked="catchPointClicked"
                       :showPlaceholder="loadingAllTags"
+                      v-on:controlsChanged="controlsChanged"
                       />
 
       </v-flex>
@@ -287,8 +288,25 @@
         // highlight entry
         this.hoverId = '';
       },
-      getMetaCard: function getMetaCard() {
+      controlsChanged: function controlsChanged(controlsActive) {
+        // 0-entry: listView, 1-entry: mapActive
+        // console.log('controlsActive ' + controlsActive + ' ' + JSON.stringify(controlsActive));
+        let listActive = false;
+        let mapToggled = false;
 
+        for (let index = 0; index < controlsActive.length; index++) {
+          const el = controlsActive[index];
+
+          if (el === 0) {
+            listActive = true;
+          }
+          if (el === 1) {
+            mapToggled = true;
+          }
+        }
+
+        this.listViewActive = listActive;
+        this.showMapFilter = mapToggled;
       },
       toggleMapExpand: function toggleMapExpand() {
         this.showMapFilter = !this.showMapFilter;
@@ -608,6 +626,7 @@
       maxMapFilterHeight: 750,
       mapFilterVisibleIds: [],
       hoverId: '',
+      listViewActive: false,
     }),
     components: {
       NavBarView,
