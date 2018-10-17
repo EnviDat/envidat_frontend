@@ -45,6 +45,7 @@
                 <tag-chip py-0
                           v-if="tags" v-for="tag in tags.slice (0, maxTagNumber)" :key="tag.name"
                           :name="tag.name"
+                          :selectable="true"
                           v-on:clicked="catchTagClicked($event, tag.name)"
                           class="card_tag" />
               
@@ -62,6 +63,7 @@
     <v-card-text :class="{['cardText'] : true,
                           ['compactText'] : compactLayout,
                           ['py-2'] : compactLayout,
+                          ['pr-5'] : compactLayout,
                           ['pb-4'] : !compactLayout,
                         }"
     >
@@ -188,7 +190,8 @@ export default {
           if (this.tags[i].name !== undefined) {
             textLength += this.tags[i].name.length + 1;
 
-            if (textLength >= this.maxTagTextlength) {
+            if ((this.compactLayout && textLength >= this.maxCompactTagtextLength)
+            || (!this.compactLayout && textLength >= this.maxTagtextLength)) {
               break;
             }
 
@@ -272,7 +275,8 @@ export default {
     maxSubtitleLength: 280,
     compactSubtitleLength: 320,
     // maxTags: 3,
-    maxTagTextlength: 40,
+    maxTagtextLength: 40,
+    maxCompactTagtextLength: 170,
     blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
     whiteTopToBottom: 'rgba(255,255,255, 0.3) 0%, rgba(255,255,255, 1) 60%',
     imageDefaults: {

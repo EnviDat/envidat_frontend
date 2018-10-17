@@ -39,7 +39,7 @@
        >
 
        <metadata-list-view :filteredMetadataContent="filteredMetadataContent"
-                            :listView="true"
+                            :listView="listViewActive"
                             :compactLayout="showMapFilter"
                             :hoverId="hoverId"
                             :mapFilteringEnabled="mapFilteringEnabled"
@@ -75,8 +75,11 @@
   import NavBarView from '../Views/NavbarView';
   import FilterMapView from '../Views/Filtering/FilterMapView';
   import MetadataListView from '../Views/MetadataViews/MetadataListView';
-  import { SEARCH_METADATA } from '../../store/metadataMutationsConsts';
-  import { CHANGE_APP_BG } from '../../store/mutationsConsts';
+  import {
+    SEARCH_METADATA,
+    ENABLE_TAG,
+  } from '../../store/metadataMutationsConsts';
+  import { SET_APP_BACKGROUND } from '../../store/mutationsConsts';
 
   // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
