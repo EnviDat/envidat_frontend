@@ -73,14 +73,27 @@
             }" >
 
             <v-flex xs12 sm3>
-                <small-search-bar-view
-                                :searchTerm="searchTerm"
-                                :searchCount="searchCount"
-                                :labelText="searchViewLabelText"
-                                :hasButton="searchViewHasButton"
-                                v-on:clicked="catchSearchClicked"
-                                v-on:searchCleared="catchSearchCleared">
-                </small-search-bar-view>
+
+              <v-layout column>
+
+                <v-flex>
+                  <small-search-bar-view
+                                  :searchTerm="searchTerm"
+                                  :searchCount="searchCount"
+                                  :labelText="searchViewLabelText"
+                                  :hasButton="searchViewHasButton"
+                                  v-on:clicked="catchSearchClicked"
+                                  v-on:searchCleared="catchSearchCleared">
+                  </small-search-bar-view>
+                </v-flex>
+
+                <v-flex py-0 fill-height>
+                  <control-panel-view v-on:controlsChanged="catchControlsChanged"
+                  />
+
+                </v-flex>
+
+              </v-layout>
             </v-flex>
 
             <v-flex xs10 sm9 
@@ -124,7 +137,6 @@
                             :mapExpandedButtonText="mapExpandedButtonText"
                             v-on:clickedMapExpand="catchMapExpandClicked"
                             :showPlaceholder="showPlaceholder"
-                            :isHighlighted="tagsAreHighligted"
                 >
               </filter-view>
 
@@ -155,6 +167,7 @@
   import FilterView from './Filtering/FilterView';
   import FilterMapView from './Filtering/FilterMapView';
   import SmallSearchBarView from './Filtering/SmallSearchBarView';
+  import ControlPanelView from './Filtering/ControlPanelView';
   import FilterExpandedView from './Filtering/FilterExpandedView';
   import FilterViewButtons from './Filtering/FilterViewButtons';
   import Logo from '../../assets/logo/EnviDat_logo_32.png';
@@ -175,7 +188,7 @@
       showMapFilter: Boolean,
       mapFilteringEnabled: Boolean,
       mapFilterHeight: Number,
-      tagsAreHighligted: Boolean,
+      controlsActive: Array,
     },
     computed: {
       mapFilterAlignment: function mapFilterAlignment() {
@@ -215,6 +228,9 @@
       catchExpandClicked: function catchExpandClicked() {
         this.expanded = !this.expanded;
       },
+      catchControlsChanged: function catchControlsChanged(controlsActive) {
+        this.$emit('controlsChanged', controlsActive);
+      },
     },
     data: () => ({
       Logo,
@@ -233,6 +249,7 @@
     components: {
       FilterView,
       SmallSearchBarView,
+      ControlPanelView,
       FilterExpandedView,
       FilterViewButtons,
       FilterMapView,
