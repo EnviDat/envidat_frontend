@@ -60,12 +60,6 @@
                       v-on:clicked="catchTagClicked($event, tag.name)"
                       class="filterTag" />
 
-
-            <!-- <tag-chip v-if="showPopularTags.length >= maxPopularTagNumber"
-              class="filterTag" :name="'...'"
-              @click.native="catchExpandClicked"
-            /> -->
-
           </v-flex>
 
           <v-flex xs12 px-2 py-2 
@@ -99,35 +93,6 @@
         </v-layout>
 
       </v-flex>
-
-      <!-- <v-flex xs3
-        v-bind="{
-          ['py-2']: this.$vuetify.breakpoint.xsOnly,
-        }"
-      >
-        <v-btn small
-                flat
-                color="primary"
-                @click.stop="toggleExpand">
-            {{ expanded ? expandedButtonText : expandButtonText }}
-            <v-icon color="accent">{{ expanded ? 'expand_less' : 'expand_more' }}</v-icon>
-        </v-btn>
-
-      </v-flex> -->
-
-      <!-- <v-flex xs3>
-        <filter-view-buttons
-                              :expanded="expanded"
-                              :expandButtonText="expandButtonText"
-                              :expandedButtonText="expandedButtonText"
-                              v-on:clickedExpand="catchExpandClicked"
-                              :mapExpanded="mapExpanded"
-                              :mapExpandButtonText="mapExpandButtonText"
-                              :mapExpandedButtonText="mapExpandedButtonText"
-                              v-on:clickedMapExpand="catchMapExpandClicked" >
-        </filter-view-buttons>
-      </v-flex> -->
-
       
     </v-layout>
   </v-card>
@@ -160,16 +125,10 @@ export default {
       const selecteds = [];
 
       if (this.selectedTagNames !== undefined && this.selectedTagNames.length > 0) {
-        for (let i = 0; i < this.allTags.length; i++) {
-          const element = this.allTags[i];
+        for (let i = 0; i < this.selectedTagNames.length; i++) {
+          const element = this.selectedTagNames[i];
 
-          if (this.isTagSelected(element.name)) {
-            selecteds.push(element);
-          }
-
-          if (selecteds.length >= this.selectedTagNames.length) {
-            break;
-          }
+          selecteds.push({ name: element, enabled: true });
         }
       }
 

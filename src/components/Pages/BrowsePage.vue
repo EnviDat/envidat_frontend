@@ -136,13 +136,6 @@
         return [];
       },
       catchTagClicked: function catchTagClicked(tagName) {
-        const index = this.allTags.findIndex(obj => obj.name === tagName);
-        const tag = this.allTags[index];
-
-        if (!tag) {
-          return;
-        }
-
         if (!this.isTagSelected(tagName)) {
           this.selectedTagNames.push(tagName);
 
@@ -534,7 +527,7 @@
       selectedTagNames: [],
       popularTagAmount: 10,
       scrollPosition: 0,
-      showMapFilter: true,
+      showMapFilter: false,
       maxMapFilterHeight: 750,
       mapFilterVisibleIds: [],
       hoverId: '',
