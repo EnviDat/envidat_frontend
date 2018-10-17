@@ -39,6 +39,27 @@ export default {
       // return an empty array for the selectedTagIds
       return [];
     },
+    additiveChangeRoute: function additiveChangeRoute(search, tags) {
+      const query = {};
+
+      if (search !== undefined) {
+        query.search = search;
+      } else if (this.$route.query.search) {
+        query.search = this.$route.query.search;
+      }
+
+      if (tags !== undefined) {
+        query.tags = tags;
+      } else if (this.$route.query.tags) {
+        query.tags = this.$route.query.tags;
+      }
+      // console.log("additiveChangeRoute search: " + query.search + " tags: " + query.tags);
+
+      this.$router.push({
+        path: '/browse',
+        query,
+      });
+    },
     formatDate: function formatDate(date) {
       // expecting a format like 2017-08-15T15:25:45.175790
       let formatedDate = '';
