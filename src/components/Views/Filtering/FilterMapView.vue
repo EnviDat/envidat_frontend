@@ -3,11 +3,16 @@
   <v-card raised
           :height="totalHeight"
   >
-    <div v-if="expanded"
+    <div v-if="expanded && !errorLoadingLeaflet"
           id="map"
           ref="map"
           v-bind="mapViewHeight" />
-      
+
+    <div v-if="expanded && errorLoadingLeaflet"
+          v-bind="mapViewHeight" >
+          Error loading leaflet
+    </div>
+
     <v-card-actions class="pr-2">
 
 
@@ -78,6 +83,9 @@ export default {
     expanded: Boolean,
   },
   mounted: function mounted() {
+    // if (L){
+    //   L.on('error', this.checkError);
+    // }
     this.setupMap();
   },
   beforeDestroy: function beforeDestroy() {
@@ -117,6 +125,10 @@ export default {
     // },
   },
   methods: {
+    checkError: function checkError(e) {
+      console.log('got error ' + e);
+      this.errorLoadingLeaflet = true;
+    },
     // expandClicked: function expandClicked(expand) {
     //   this.expanded = expand;
     // },
@@ -149,15 +161,24 @@ export default {
       this.map = this.initLeaflet(this.$refs.map, this.pointArray);
       this.markerCount = 0;
 
-      this.addOpenStreetMapLayer(this.map);
+      if (this.map){
+        this.map.on('locationerror', this.checkError);
 
-      this.addGeoJSONToMap();
+        this.addOpenStreetMapLayer(this.map);
 
-      this.map.on('moveend', this.reFilter);
+        this.addGeoJSONToMap();
 
-      this.mapIsSetup = true;
+        this.map.on('moveend', this.reFilter);
+
+        this.mapIsSetup = true;
+      }
     },
     initLeaflet: function initLeaflet(mapElement, coords) {
+      // if (!L){
+      //   errorLoadingLeaflet = true;
+      //   return undefined;
+      // }
+
       let viewCoords = [46.943961, 8.199240];
 
       if (coords) {
@@ -326,6 +347,7 @@ export default {
     mapFilteringActive: false,
     markerCount: 0,
     hoverBadge: false,
+    errorLoadingLeaflet: false,
   }),
   components: {
     IconCountView,

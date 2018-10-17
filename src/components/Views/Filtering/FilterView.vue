@@ -1,94 +1,98 @@
 <template>
+
+
   <v-card raised
+          style="height: 84px !important; "
   >
-    <v-layout style="min-height: 48px;"
+    <v-layout 
               row
+              fill-height
               v-bind="{
                 ['align-center']: this.$vuetify.breakpoint.smAndUp,
                 ['align-content-center']: this.$vuetify.breakpoint.smAndUp,
               }"
       >
 
-      <v-flex pl-2 py-2 class="metadataInfoIcon"
-              >
+      <v-flex pl-2 py-2 >
 
-        <!-- <img :src="getIcon('filter2')" /> -->
+        <v-layout column
+                  fill-height
+        >
 
-        <icon-label-view :icon="getIcon('filter2')"
-                          iconTooltip="Keyword filtering"
-                          />
+          <v-flex pl-2 py-2 class="metadataInfoIcon" 
+                  style="min-height: 42px;"
+          >
+            <icon-label-view :icon="getIcon('tags')"
+                              iconTooltip="Possible Keywords"
+            />
+          </v-flex>
+
+          <v-flex pl-2 py-2 class="metadataInfoIcon"
+                  style="min-height: 42px;"
+          >
+            <icon-label-view :icon="getIcon('tag')"
+                              iconTooltip="Active Keyword filter"
+            />
+          </v-flex>
+
+        </v-layout>
+
       </v-flex>
 
       <v-flex xs12 px-2 py-2 >
 
-        <tag-chip v-if="selectedTags.length > 0"
-                  v-for="tag in selectedTags" :key="tag.name" 
-                  :name="tag.name"
-                  :selectable="true"
-                  :highlighted="true"
-                  :closeable="true"
-                  v-on:clickedClose="catchTagCloseClicked($event, tag.name)"
-                  v-on:clicked="catchTagCloseClicked($event, tag.name)"
-                  class="filterTag" />
-
-        <tag-chip v-if="showPopularTags && tag.enabled"
-                  v-for="tag in showPopularTags"
-                  :key="tag.name" 
-                  :name="tag.name"
-                  :selectable="tag.enabled"
-                  :highlighted="false"
-                  :closeable="false"
-                  v-on:clicked="catchTagClicked($event, tag.name)"
-                  class="filterTag" />
+        <v-layout column
+                  fill-height
+        >
 
 
-        <!-- <tag-chip v-if="showPopularTags.length >= maxPopularTagNumber"
-          class="filterTag" :name="'...'"
-          @click.native="catchExpandClicked"
-        /> -->
+          <v-flex xs12 px-2 py-2
+                  style="min-height: 42px;"
+          >
+
+            <tag-chip v-if="showPopularTags && tag.enabled"
+                      v-for="tag in showPopularTags"
+                      :key="tag.name" 
+                      :name="tag.name"
+                      :selectable="tag.enabled"
+                      :highlighted="false"
+                      :closeable="false"
+                      v-on:clicked="catchTagClicked($event, tag.name)"
+                      class="filterTag" />
+
+          </v-flex>
+
+          <v-flex xs12 px-2 py-2 
+                  style="min-height: 42px;"
+          >
+
+            <tag-chip v-if="selectedTags.length > 0"
+                      v-for="tag in selectedTags" :key="tag.name" 
+                      :name="tag.name"
+                      :selectable="true"
+                      :highlighted="true"
+                      :closeable="true"
+                      v-on:clickedClose="catchTagCloseClicked($event, tag.name)"
+                      v-on:clicked="catchTagCloseClicked($event, tag.name)"
+                      class="filterTag" />
+
+          </v-flex>
+
+          <v-flex v-if="showPlaceholder && selectedTags.length <= 0"
+                  xs9 px-2 py-2 >
+
+            <tag-chip-placeholder
+                      v-for="n in 5" :key="n" 
+                      :selectable="false"
+                      :highlighted="false"
+                      :closeable="false"
+                      class="filterTag" />
+
+          </v-flex>
+
+        </v-layout>
 
       </v-flex>
-
-      <v-flex v-if="showPlaceholder && selectedTags.length <= 0"
-              xs9 px-2 py-2 >
-
-        <tag-chip-placeholder
-                  v-for="n in 5" :key="n" 
-                  :selectable="false"
-                  :highlighted="false"
-                  :closeable="false"
-                  class="filterTag" />
-
-      </v-flex>
-
-      <!-- <v-flex xs3
-        v-bind="{
-          ['py-2']: this.$vuetify.breakpoint.xsOnly,
-        }"
-      >
-        <v-btn small
-                flat
-                color="primary"
-                @click.stop="toggleExpand">
-            {{ expanded ? expandedButtonText : expandButtonText }}
-            <v-icon color="accent">{{ expanded ? 'expand_less' : 'expand_more' }}</v-icon>
-        </v-btn>
-
-      </v-flex> -->
-
-      <!-- <v-flex xs3>
-        <filter-view-buttons
-                              :expanded="expanded"
-                              :expandButtonText="expandButtonText"
-                              :expandedButtonText="expandedButtonText"
-                              v-on:clickedExpand="catchExpandClicked"
-                              :mapExpanded="mapExpanded"
-                              :mapExpandButtonText="mapExpandButtonText"
-                              :mapExpandedButtonText="mapExpandedButtonText"
-                              v-on:clickedMapExpand="catchMapExpandClicked" >
-        </filter-view-buttons>
-      </v-flex> -->
-
       
     </v-layout>
   </v-card>
@@ -121,16 +125,10 @@ export default {
       const selecteds = [];
 
       if (this.selectedTagNames !== undefined && this.selectedTagNames.length > 0) {
-        for (let i = 0; i < this.allTags.length; i++) {
-          const element = this.allTags[i];
+        for (let i = 0; i < this.selectedTagNames.length; i++) {
+          const element = this.selectedTagNames[i];
 
-          if (this.isTagSelected(element.name)) {
-            selecteds.push(element);
-          }
-
-          if (selecteds.length >= this.selectedTagNames.length) {
-            break;
-          }
+          selecteds.push({ name: element, enabled: true });
         }
       }
 

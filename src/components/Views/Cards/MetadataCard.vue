@@ -9,11 +9,13 @@
 
     <v-img
         background-color="primary"
-        v-bind="{['style'] : dynamicCardBackground }"
-        height="150px"
+        :style="!compactLayout ? dynamicCardBackground : ''"        
+        :height="compactLayout? '85px' : '125px'"
       >
       
-      <v-container grid-list-xs fill-height px-3 pt-3 pb-0>
+      <v-container grid-list-xs fluid fill-height
+                    px-3 pt-3 pb-0>
+
         <v-layout column>
           <v-flex xs12 py-0>
             <v-layout row >
@@ -22,7 +24,7 @@
                 <div class="headline mb-0"
                     :class="titleClass"
                 >
-                  {{ title | truncate(maxTitleLength) }}</div>
+                  {{ truncatedTitle }}</div>
               </v-flex>
 
               <v-flex xs12 v-if="maxTitleLengthReached">
@@ -30,7 +32,7 @@
                   <div slot="activator" class="headline mb-0"
                       :class="titleClass"
                   >
-                    {{ title | truncate(maxTitleLength) }}</div>
+                    {{ truncatedTitle }}</div>
                   <span>{{ title }}</span>
                 </v-tooltip>
               </v-flex>
@@ -58,7 +60,13 @@
 
     </v-img>
 
-    <v-card-text class="pb-4">
+    <v-card-text :class="{['cardText'] : true,
+                          ['compactText'] : compactLayout,
+                          ['py-2'] : compactLayout,
+                          ['pr-5'] : compactLayout,
+                          ['pb-4'] : !compactLayout,
+                        }"
+    >
       <!-- TODO: need to strip the markdown characters from the desc -->
       {{ truncatedSubtitle }}
     </v-card-text>
@@ -171,6 +179,9 @@ export default {
       return this.tags !== undefined && this.tags.length > this.maxTagNumber;
     },
     maxTagNumber: function maxTagNumber() {
+      // if (this.compactLayout) {
+      //   return 10;
+      // }
       let textLength = 0;
       let numberOfTags = 0;
 
@@ -179,7 +190,8 @@ export default {
           if (this.tags[i].name !== undefined) {
             textLength += this.tags[i].name.length + 1;
 
-            if (textLength >= this.maxTagTextlength) {
+            if ((this.compactLayout && textLength >= this.maxCompactTagtextLength)
+            || (!this.compactLayout && textLength >= this.maxTagtextLength)) {
               break;
             }
 
@@ -191,11 +203,31 @@ export default {
       return numberOfTags;
     },
     maxTitleLengthReached: function maxTitleLengthReached() {
-      return this.title && this.title.length > this.maxTitleLength;
+      return (!this.compactLayout && this.title.length > this.maxTitleLength)
+          || (this.compactLayout && this.title.length > this.compactTitleLength);
+    },
+    truncatedTitle: function truncatedTitle() {
+      let maxLength = this.maxTitleLength;
+
+      if (this.compactLayout) {
+        maxLength = this.compactTitleLength;
+      }
+
+      if (this.title !== undefined && this.maxTitleLengthReached) {
+        return `${this.title.substring(0, maxLength)}...`;
+      }
+
+      return this.title;
     },
     truncatedSubtitle: function truncatedSubtitle() {
+      let maxLength = this.maxSubtitleLength;
+
+      if (this.compactLayout) {
+        maxLength = this.compactSubtitleLength;
+      }
+
       if (this.subtitle !== undefined) {
-        return `${this.subtitle.substring(0, this.maxSubtitleLength)}...`;
+        return `${this.subtitle.substring(0, maxLength)}...`;
       }
 
       return '';
@@ -230,17 +262,21 @@ export default {
       return {
         black_title: !this.dark,
         white_title: this.dark,
-        compactTitle: this.compactLayout,
+        // compactTitle: this.$vuetify.breakpoint.smAndDown || this.compactLayout,
+        compactTitle: true,
       };
     },
   },
   data: () => ({
     show: false,
     showDataText: 'SHOW DATA',
-    maxTitleLength: 70,
-    maxSubtitleLength: 180,
+    maxTitleLength: 80,
+    compactTitleLength: 100,
+    maxSubtitleLength: 280,
+    compactSubtitleLength: 320,
     // maxTags: 3,
-    maxTagTextlength: 40,
+    maxTagtextLength: 40,
+    maxCompactTagtextLength: 170,
     blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
     whiteTopToBottom: 'rgba(255,255,255, 0.3) 0%, rgba(255,255,255, 1) 60%',
     imageDefaults: {
@@ -277,7 +313,16 @@ export default {
   }
   
   .compactTitle {
-    font-size: 18px !important;
+    font-size: 20px !important;
+    line-height: 1.1em !important;
+  }
+
+  .compactText {
+    font-size: 12px !important;
+    line-height: 1.3em !important;
+  }
+
+  .cardText {
     line-height: 1.3em !important;
   }
 
