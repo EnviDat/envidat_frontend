@@ -52,7 +52,7 @@
       <v-flex xs4 py-3 pr-3
               v-if="mapFilteringEnabled && showMapFilter" >
 
-        <filter-map-view style="position: -webkit-sticky; position: sticky; top: 100px;"
+        <filter-map-view style="position: -webkit-sticky; position: sticky; top: 151px;"
                           :totalHeight="mapFilterHeight"
                           :expanded="showMapFilter"
                           v-on:clickedMapExpand="toggleMapExpand"

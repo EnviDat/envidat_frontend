@@ -164,7 +164,7 @@
   .envidatNavbar {
     position: -webkit-sticky;
     position: sticky;
-    top: -1px;
+    top: 3px;
     z-index: 2;
   }
 
