@@ -8,7 +8,7 @@
               fill-height
               justify-space-between>
 
-      <v-flex xs10 sm8 md9 lg10 py-0 pl-3 fill-height>
+      <v-flex xs10 sm8 md9 lg10 py-0 pl-2 fill-height>
 
         <v-text-field
             class="envidatSmallSearch"
@@ -22,7 +22,7 @@
             v-on:keyup.enter="clicked"
             v-model="searchText"
             @click:clear="clearClicked"
-            placeholder="Search">
+            :placeholder="placeHolderText">
         </v-text-field>
 
       </v-flex>
@@ -70,6 +70,7 @@
     data: () => ({
       searchText: '',
       lastSearch: '',
+      placeHolderText: 'Search for research topics',
     }),
     updated: function updated() {
       if (!this.searchText && this.lastSearch) {

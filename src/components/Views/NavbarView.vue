@@ -137,6 +137,7 @@
                             :mapExpandedButtonText="mapExpandedButtonText"
                             v-on:clickedMapExpand="catchMapExpandClicked"
                             :showPlaceholder="showPlaceholder"
+                            v-on:clickedClear="catchTagCleared"
                 >
               </filter-view>
 
