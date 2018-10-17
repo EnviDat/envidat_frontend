@@ -119,7 +119,7 @@
   import NoSearchResultsView from '../Views/NoSearchResultsView';
   import {
     SEARCH_METADATA,
-    ENABLE_TAG
+    ENABLE_TAG,
   } from '../../store/metadataMutationsConsts';
   import { SET_APP_BACKGROUND } from '../../store/mutationsConsts';
 
@@ -426,17 +426,16 @@
         // console.log("");
 
         for (let i = 0; i < this.allTags.length; i++) {
-
           let found = false;
           const tag = this.allTags[i];
 
           for (let j = 0; j < filteredContent.length; j++) {
             const el = filteredContent[j];
 
-            if (el.tags && el.tags.length > 0){
+            if (el.tags && el.tags.length > 0) {
               const index = el.tags.findIndex(obj => obj.name.includes(tag.name));
 
-              if (index >= 0){
+              if (index >= 0) {
                 found = true;
                 break;
               }
@@ -502,8 +501,6 @@
       filteredMetadataContent: function filteredMetadataContent() {
         let contentToFilter;
 
-        console.log("filteredMetadataContent");
-        
         if (this.isSearchResultContent) {
           // console.log("search content " + this.searchMetadatasContentSize);
 
@@ -527,7 +524,6 @@
           if (this.selectedTagNames !== undefined
           && this.selectedTagNames.length > 0) {
             contentToFilter = this.contentFilteredByTags(contentToFilter);
-
           }
         }
 
