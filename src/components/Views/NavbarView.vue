@@ -76,7 +76,13 @@
 
               <v-layout column>
 
-                <v-flex>
+                <v-flex pt-0 fill-height>
+                  <control-panel-view v-on:controlsChanged="catchControlsChanged"
+                  />
+
+                </v-flex>
+
+                <v-flex py-1>
                   <small-search-bar-view
                                   :searchTerm="searchTerm"
                                   :searchCount="searchCount"
@@ -87,11 +93,6 @@
                   </small-search-bar-view>
                 </v-flex>
 
-                <v-flex py-0 fill-height>
-                  <control-panel-view v-on:controlsChanged="catchControlsChanged"
-                  />
-
-                </v-flex>
 
               </v-layout>
             </v-flex>
