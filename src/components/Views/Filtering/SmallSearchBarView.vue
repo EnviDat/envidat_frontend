@@ -29,6 +29,7 @@
         <v-tooltip bottom >
           
           <tag-chip slot="activator"
+                  style="font-size: 0.75rem !important;"
                   :name="searchCount.toString()"
                   :selectable="false"
                   :highlighted="searchCount > 0"

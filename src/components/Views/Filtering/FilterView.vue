@@ -1,42 +1,56 @@
 <template>
-  <v-card raised >
+  <v-card raised
+  >
     <v-layout style="min-height: 48px;"
+              row
               v-bind="{
-                ['row']: this.$vuetify.breakpoint.smAndUp,
                 ['align-center']: this.$vuetify.breakpoint.smAndUp,
                 ['align-content-center']: this.$vuetify.breakpoint.smAndUp,
-                ['column']: this.$vuetify.breakpoint.xsOnly,
               }"
       >
+
+      <v-flex pl-2 py-2 class="metadataInfoIcon"
+              >
+
+        <!-- <img :src="getIcon('filter2')" /> -->
+
+        <icon-label-view :icon="getIcon('filter2')"
+                          iconTooltip="Keyword filtering"
+                          />
+      </v-flex>
 
       <v-flex xs12 px-2 py-2 >
 
         <tag-chip v-if="selectedTags.length > 0"
                   v-for="tag in selectedTags" :key="tag.name" 
                   :name="tag.name"
-                  :selectable="false"
+                  :selectable="true"
                   :highlighted="true"
                   :closeable="true"
                   v-on:clickedClose="catchTagCloseClicked($event, tag.name)"
+                  v-on:clicked="catchTagCloseClicked($event, tag.name)"
                   class="filterTag" />
 
-        <tag-chip v-if="showPopularTags"
-                  v-for="tag in showPopularTags" :key="tag.name" 
+        <tag-chip v-if="showPopularTags && tag.enabled"
+                  v-for="tag in showPopularTags"
+                  :key="tag.name" 
                   :name="tag.name"
-                  :selectable="false"
+                  :selectable="tag.enabled"
                   :highlighted="false"
                   :closeable="false"
                   v-on:clicked="catchTagClicked($event, tag.name)"
                   class="filterTag" />
 
 
-        <tag-chip v-if="maxPopularTagNumber >= showPopularTags.length"
-          class="filterTag" :name="'...'" />
+        <!-- <tag-chip v-if="showPopularTags.length >= maxPopularTagNumber"
+          class="filterTag" :name="'...'"
+          @click.native="catchExpandClicked"
+        /> -->
 
       </v-flex>
 
       <v-flex v-if="showPlaceholder && selectedTags.length <= 0"
-              xs12 px-2 py-2 >
+              xs9 px-2 py-2 >
 
         <tag-chip-placeholder
                   v-for="n in 5" :key="n" 
@@ -46,14 +60,45 @@
                   class="filterTag" />
 
       </v-flex>
+
+      <!-- <v-flex xs3
+        v-bind="{
+          ['py-2']: this.$vuetify.breakpoint.xsOnly,
+        }"
+      >
+        <v-btn small
+                flat
+                color="primary"
+                @click.stop="toggleExpand">
+            {{ expanded ? expandedButtonText : expandButtonText }}
+            <v-icon color="accent">{{ expanded ? 'expand_less' : 'expand_more' }}</v-icon>
+        </v-btn>
+
+      </v-flex> -->
+
+      <!-- <v-flex xs3>
+        <filter-view-buttons
+                              :expanded="expanded"
+                              :expandButtonText="expandButtonText"
+                              :expandedButtonText="expandedButtonText"
+                              v-on:clickedExpand="catchExpandClicked"
+                              :mapExpanded="mapExpanded"
+                              :mapExpandButtonText="mapExpandButtonText"
+                              :mapExpandedButtonText="mapExpandedButtonText"
+                              v-on:clickedMapExpand="catchMapExpandClicked" >
+        </filter-view-buttons>
+      </v-flex> -->
+
       
     </v-layout>
   </v-card>
 </template>
 
 <script>
+import IconLabelView from '../IconLabelView';
 import TagChip from '../Cards/TagChip';
 import TagChipPlaceholder from '../Cards/TagChipPlaceholder';
+import FilterViewButtons from './FilterViewButtons';
 
 export default {
   props: {
@@ -67,6 +112,7 @@ export default {
     mapExpanded: Boolean,
     mapExpandButtonText: String,
     mapExpandedButtonText: String,
+    isHighlighted: Boolean,
   },
   computed: {
     selectedTags: function selectedTags() {
@@ -95,9 +141,7 @@ export default {
       const popTags = [];
 
       this.popularTags.forEach((element) => {
-        if (this.isPopluarTag(element.name)
-         && !this.isTagSelected(element.name)
-         && this.isCleanTag(element.name)) {
+        if (element.enabled && !this.isTagSelected(element.name)) {
           popTags.push(element);
         }
       });
@@ -115,6 +159,8 @@ export default {
       } else if (this.$vuetify.breakpoint.smAndDown) {
         maxTextLength = this.smTextLength;
       } else if (this.$vuetify.breakpoint.mdAndDown) {
+        maxTextLength = this.mdTextLength;
+      } else if (this.$vuetify.breakpoint.lgAndDown) {
         maxTextLength = this.mdTextLength;
       }
 
@@ -210,11 +256,13 @@ export default {
     maxPopularTagsTextLength: 250,
     xsTextLength: 25,
     smTextLength: 50,
-    mdTextLength: 100,
+    mdTextLength: 65,
   }),
   components: {
+    IconLabelView,
     TagChip,
     TagChipPlaceholder,
+    FilterViewButtons,
   },
 };
 </script>
@@ -226,9 +274,6 @@ export default {
     font-weight: 400;
     opacity: 0.85;
   }
-
-
-
 
 </style>
 

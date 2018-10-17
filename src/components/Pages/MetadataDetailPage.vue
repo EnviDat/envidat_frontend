@@ -153,7 +153,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import { CHANGE_APP_BG } from '../../store/mutationsConsts';
+  import { SET_APP_BACKGROUND } from '../../store/mutationsConsts';
   import {
     LOAD_METADATA_CONTENT_BY_ID,
     CLEAN_CURRENT_METADATA,
@@ -175,7 +175,7 @@
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
       next((vm) => {
         // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
-        vm.$store.commit(CHANGE_APP_BG, vm.PageBGImage);
+        vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
     },
     created: function created() {

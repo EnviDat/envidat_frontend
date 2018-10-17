@@ -117,8 +117,11 @@
   import MetadataCard from '../Views/Cards/MetadataCard';
   import MetadataCardPlaceholder from '../Views/Cards/MetadataCardPlaceholder';
   import NoSearchResultsView from '../Views/NoSearchResultsView';
-  import { SEARCH_METADATA } from '../../store/metadataMutationsConsts';
-  import { CHANGE_APP_BG } from '../../store/mutationsConsts';
+  import {
+    SEARCH_METADATA,
+    ENABLE_TAG,
+  } from '../../store/metadataMutationsConsts';
+  import { SET_APP_BACKGROUND } from '../../store/mutationsConsts';
 
   // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
@@ -126,7 +129,7 @@
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
       next((vm) => {
         // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
-        vm.$store.commit(CHANGE_APP_BG, vm.PageBGImage);
+        vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
     },
     mounted: function mounted() {
@@ -319,33 +322,23 @@
         return this.selectedTagNames.indexOf(tagName) >= 0;
       },
       tagsIncludedInSelectedTags: function tagsIncludedInSelectedTags(tags) {
-        const tagNames = [];
 
-        for (let i = 0; i < tags.length; i++) {
-          const tagName = tags[i].name;
+        let selectedTagFound = 0;
 
-          if (tagName) {
-            tagNames.push(tagName);
-          }
-        }
+        for (let j = 0; j < this.selectedTagNames.length; j++) {
+          const el = this.selectedTagNames[j];
 
-        if (tagNames.length <= 0) {
-          return false;
-        }
+          for (let k = 0; k < tags.length; k++) {
+            const tag = tags[k];
 
-        for (let j = 0; j < tagNames.length; j++) {
-          const element = tagNames[j];
-
-          for (let k = 0; k < this.selectedTagNames.length; k++) {
-            const selectedTag = this.selectedTagNames[k];
-
-            if (element.includes(selectedTag)) {
-              return true;
+            if (tag.name.includes(el)) {
+              selectedTagFound++;
+              break;
             }
           }
         }
 
-        return false;
+        return selectedTagFound === this.selectedTagNames.length;
 
         /*
         for (let j = 0; j < this.selectedTagNames.length; j++) {
@@ -446,6 +439,29 @@
       updateSearchCount: function updateSearchCount(searchResult) {
         this.searchCount = searchResult !== undefined ? searchResult.length : 0;
       },
+      updateFilterViewTags: function updateFilterViewTags(filteredContent) {
+        // console.log("");
+
+        for (let i = 0; i < this.allTags.length; i++) {
+          let found = false;
+          const tag = this.allTags[i];
+
+          for (let j = 0; j < filteredContent.length; j++) {
+            const el = filteredContent[j];
+
+            if (el.tags && el.tags.length > 0) {
+              const index = el.tags.findIndex(obj => obj.name.includes(tag.name));
+
+              if (index >= 0) {
+                found = true;
+                break;
+              }
+            }
+          }
+
+          this.$store.commit(`metadata/${ENABLE_TAG}`, { tagName: tag.name, enabled: found });
+        }
+      },
       hasRestrictedResources: function hasRestrictedResources(metadata) {
         if (!metadata || !metadata.resources || metadata.resources.length <= 0) {
           return false;
@@ -516,7 +532,8 @@
           // console.log("use local content " + contentToFilter.length);
         }
 
-        if (contentToFilter && contentToFilter.length > 0) {
+        if (contentToFilter && contentToFilter.length > 0)
+        {
           contentToFilter = this.contentFilterAccessibility(contentToFilter);
 
           contentToFilter = this.enhanceMetadata(contentToFilter, this.cardBGImages);
@@ -531,6 +548,7 @@
           contentToFilter = this.contentFilterMapIds(contentToFilter);
         }
 
+        this.updateFilterViewTags(contentToFilter);
         this.updateSearchCount(contentToFilter);
 
         return contentToFilter;

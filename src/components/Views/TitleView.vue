@@ -35,7 +35,7 @@
 
               <v-flex xs8 lg9 pl-5
                       hidden-md-and-down
-                      class="envidat_title display-4"
+                      class="envidatTitle display-4"
                       style="font-size: 100px !important;"
                       >
                 {{ title }}
@@ -43,19 +43,19 @@
 
               <v-flex xs8 pl-2
                       hidden-sm-and-down hidden-lg-and-up 
-                      class="envidat_title display-3">
+                      class="envidatTitle display-3">
                 {{ title }}
               </v-flex>
 
               <v-flex xs8 pl-2
                       hidden-xs-only hidden-md-and-up
-                      class="envidat_title display-2">
+                      class="envidatTitle display-2">
                 {{ title }}
               </v-flex>
 
               <v-flex xs9 
                       hidden-sm-and-up
-                      class="envidat_title display-3">
+                      class="envidatTitle display-3">
                 {{ title }}
               </v-flex>
 
@@ -71,17 +71,17 @@
           </v-flex>
 
           <!-- <v-flex hidden-sm-and-down pt-5
-                  class="envidat_slogan display-1">
+                  class="envidatSlogan display-1">
             {{ slogan }}
           </v-flex>
 
           <v-flex hidden-xs-only hidden-md-and-up pt-3
-                  class="envidat_slogan headline">
+                  class="envidatSlogan headline">
             {{ slogan }}
           </v-flex>
 
           <v-flex hidden-sm-and-up pt-3
-                  class="envidat_slogan headline">
+                  class="envidatSlogan headline">
             {{ slogan }}
           </v-flex> -->
 

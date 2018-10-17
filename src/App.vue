@@ -250,12 +250,12 @@
     width: 24px !important;
   }
 
-  .envidat_title {
+  .envidatTitle {
     font-family: 'Libre Baskerville', serif !important;
     letter-spacing: 0em !important;
   }
 
-  .envidat_slogan {
+  .envidatSlogan {
     font-family: 'Libre Baskerville', serif !important;
   }
 
@@ -263,11 +263,11 @@
     opacity: 0.75;
   }
 
-  .envidat_badge span {
+  .envidatBadge span {
     font-size: 0.95em !important;
   }
 
-  .envidat_badgeBigNumber span {
+  .envidatBadgeBigNumber span {
     font-size: 0.9em !important;
   }
 

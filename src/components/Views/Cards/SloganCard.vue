@@ -26,15 +26,15 @@
 
           <v-flex xs7>
 
-            <div class="hidden-sm-and-down envidat_slogan display-1"
+            <div class="hidden-sm-and-down envidatSlogan display-1"
               v-html="slogan">
             </div>
 
-            <div class="hidden-xs-only hidden-md-and-up envidat_slogan headline"
+            <div class="hidden-xs-only hidden-md-and-up envidatSlogan headline"
               v-html="slogan">
             </div>
 
-            <div class="hidden-sm-and-up envidat_slogan headline"
+            <div class="hidden-sm-and-up envidatSlogan headline"
               v-html="slogan">
             </div>
 
