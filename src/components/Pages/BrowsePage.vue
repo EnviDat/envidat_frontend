@@ -527,7 +527,7 @@
       popularTagAmount: 10,
       scrollPosition: 0,
       showMapFilter: false,
-      maxMapFilterHeight: 730,
+      maxMapFilterHeight: 750,
       mapFilterVisibleIds: [],
       hoverId: '',
       listViewActive: false,

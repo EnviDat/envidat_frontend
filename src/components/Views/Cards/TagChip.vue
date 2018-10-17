@@ -34,10 +34,10 @@
     },
     methods: {
       clicked: function clicked() {
-        if (!this.selectable){
+        if (!this.selectable) {
           return;
         }
-        
+
         this.$emit('clicked', this.name);
       },
       clickedClose: function clickedClose() {
