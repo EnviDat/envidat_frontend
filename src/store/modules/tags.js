@@ -1,5 +1,5 @@
 export default [
-  { name: 'AVALANCHE', enabled: true},
+  { name: 'AVALANCHE', enabled: true },
   { name: 'BIOGEOGRAPHICAL', enabled: true },
   { name: 'CLIMATE', enabled: true },
   { name: 'ECONOMIC', enabled: true },

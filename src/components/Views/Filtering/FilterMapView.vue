@@ -3,6 +3,12 @@
   <v-card raised
           :height="totalHeight"
   >
+
+    <v-card-title>
+      <div class="headline mb-0">Cartographic Filtering is under construction</div>
+      <div class="pt-2" style="color: red;" >Filtering is not implemented! Currently the map is just for browsing.</div>
+    </v-card-title>  
+
     <div v-if="expanded && !errorLoadingLeaflet"
           id="map"
           ref="map"
@@ -16,7 +22,7 @@
     <v-card-actions class="pr-2">
 
 
-        <v-tooltip bottom>
+        <!-- <v-tooltip bottom>
           <v-btn v-if="expanded"
                   slot="activator"
                   class="px-0"
@@ -29,7 +35,7 @@
           </v-btn>
 
           <span>Map filtering is {{ mapFilteringActive ? '' : 'not' }} active</span>
-        </v-tooltip>
+        </v-tooltip> -->
 
       <v-spacer />
 
@@ -126,7 +132,7 @@ export default {
   },
   methods: {
     checkError: function checkError(e) {
-      console.log('got error ' + e);
+      // console.log('got error ' + e);
       this.errorLoadingLeaflet = true;
     },
     // expandClicked: function expandClicked(expand) {
@@ -134,6 +140,7 @@ export default {
     // },
     catchPointClick: function catchPointClick(e) {
       this.$emit('pointClicked', e.target.id);
+      this.$emit('pointHover', e.target.id);
     },
     catchPointHover: function catchPointHover(e) {
       this.$emit('pointHover', e.target.id);
@@ -161,7 +168,7 @@ export default {
       this.map = this.initLeaflet(this.$refs.map, this.pointArray);
       this.markerCount = 0;
 
-      if (this.map){
+      if (this.map) {
         this.map.on('locationerror', this.checkError);
 
         this.addOpenStreetMapLayer(this.map);
@@ -341,7 +348,7 @@ export default {
   data: () => ({
     map: null,
     mapIsSetup: false,
-    buttonHeight: 50,
+    buttonHeight: 130,
     updatingMap: true,
     addedObjectsKeys: [],
     mapFilteringActive: false,

@@ -136,9 +136,9 @@ export default {
         const element = this.allTags[i];
 
         // if (element.count > this.minTagCountToBeVisible) {
-          if (!this.isTagSelected(element.name)) {
-            unselecteds.push(element);
-          }
+        if (!this.isTagSelected(element.name)) {
+          unselecteds.push(element);
+        }
         // }
       }
 
@@ -172,7 +172,7 @@ export default {
   components: {
     TagChip,
     IconLabelView,
-    FilterViewButtons,    
+    FilterViewButtons,
   },
 };
 </script>
