@@ -5,10 +5,13 @@
 
     <v-layout row
               align-center
+              fill-height
               justify-space-between>
 
-      <v-flex xs10 sm8 md9 lg10 py-0 pl-3 >
+      <v-flex xs10 sm8 md9 lg10 py-0 pl-3 fill-height>
+
         <v-text-field
+            class="envidatSmallSearch"
             single-line
             hide-details
             clearable
@@ -21,6 +24,7 @@
             @click:clear="clearClicked"
             placeholder="Search">
         </v-text-field>
+
       </v-flex>
 
       <v-flex xs2 sm4 md3 lg2 pa-0
@@ -114,5 +118,18 @@
   min-height: 0px !important;
 }
 
+/*
+.envidatSmallSearch {
+    height: 40px !important; 
+}
+*/
+
+.envidatSmallSearch > .v-input__control {
+    min-height: 40px !important;
+}
+
+.envidatSmallSearch > .v-input__append-outer {
+  margin: auto !important;
+}
 
 </style>

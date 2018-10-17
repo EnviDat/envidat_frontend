@@ -1,63 +1,102 @@
 <template>
+
+
   <v-card raised
+          style="height: 84px !important; "
   >
-    <v-layout style="min-height: 48px;"
+    <v-layout 
               row
+              fill-height
               v-bind="{
                 ['align-center']: this.$vuetify.breakpoint.smAndUp,
                 ['align-content-center']: this.$vuetify.breakpoint.smAndUp,
               }"
       >
 
-      <v-flex pl-2 py-2 class="metadataInfoIcon"
-              >
+      <v-flex pl-2 py-2 >
 
-        <!-- <img :src="getIcon('filter2')" /> -->
+        <v-layout column
+                  fill-height
+        >
 
-        <icon-label-view :icon="getIcon('filter2')"
-                          iconTooltip="Keyword filtering"
-                          />
+          <v-flex pl-2 py-2 class="metadataInfoIcon" 
+                  style="min-height: 42px;"
+          >
+            <icon-label-view :icon="getIcon('tags')"
+                              iconTooltip="Possible Keywords"
+            />
+          </v-flex>
+
+          <v-flex pl-2 py-2 class="metadataInfoIcon"
+                  style="min-height: 42px;"
+          >
+            <icon-label-view :icon="getIcon('tag')"
+                              iconTooltip="Active Keyword filter"
+            />
+          </v-flex>
+
+        </v-layout>
+
       </v-flex>
 
       <v-flex xs12 px-2 py-2 >
 
-        <tag-chip v-if="selectedTags.length > 0"
-                  v-for="tag in selectedTags" :key="tag.name" 
-                  :name="tag.name"
-                  :selectable="true"
-                  :highlighted="true"
-                  :closeable="true"
-                  v-on:clickedClose="catchTagCloseClicked($event, tag.name)"
-                  v-on:clicked="catchTagCloseClicked($event, tag.name)"
-                  class="filterTag" />
-
-        <tag-chip v-if="showPopularTags && tag.enabled"
-                  v-for="tag in showPopularTags"
-                  :key="tag.name" 
-                  :name="tag.name"
-                  :selectable="tag.enabled"
-                  :highlighted="false"
-                  :closeable="false"
-                  v-on:clicked="catchTagClicked($event, tag.name)"
-                  class="filterTag" />
+        <v-layout column
+                  fill-height
+        >
 
 
-        <!-- <tag-chip v-if="showPopularTags.length >= maxPopularTagNumber"
-          class="filterTag" :name="'...'"
-          @click.native="catchExpandClicked"
-        /> -->
+          <v-flex xs12 px-2 py-2
+                  style="min-height: 42px;"
+          >
 
-      </v-flex>
+            <tag-chip v-if="showPopularTags && tag.enabled"
+                      v-for="tag in showPopularTags"
+                      :key="tag.name" 
+                      :name="tag.name"
+                      :selectable="tag.enabled"
+                      :highlighted="false"
+                      :closeable="false"
+                      v-on:clicked="catchTagClicked($event, tag.name)"
+                      class="filterTag" />
 
-      <v-flex v-if="showPlaceholder && selectedTags.length <= 0"
-              xs9 px-2 py-2 >
 
-        <tag-chip-placeholder
-                  v-for="n in 5" :key="n" 
-                  :selectable="false"
-                  :highlighted="false"
-                  :closeable="false"
-                  class="filterTag" />
+            <!-- <tag-chip v-if="showPopularTags.length >= maxPopularTagNumber"
+              class="filterTag" :name="'...'"
+              @click.native="catchExpandClicked"
+            /> -->
+
+          </v-flex>
+
+          <v-flex xs12 px-2 py-2 
+                  style="min-height: 42px;"
+          >
+
+            <tag-chip v-if="selectedTags.length > 0"
+                      v-for="tag in selectedTags" :key="tag.name" 
+                      :name="tag.name"
+                      :selectable="true"
+                      :highlighted="true"
+                      :closeable="true"
+                      v-on:clickedClose="catchTagCloseClicked($event, tag.name)"
+                      v-on:clicked="catchTagCloseClicked($event, tag.name)"
+                      class="filterTag" />
+
+          </v-flex>
+
+          <v-flex v-if="showPlaceholder && selectedTags.length <= 0"
+                  xs9 px-2 py-2 >
+
+            <tag-chip-placeholder
+                      v-for="n in 5" :key="n" 
+                      :selectable="false"
+                      :highlighted="false"
+                      :closeable="false"
+                      class="filterTag" />
+
+          </v-flex>
+
+        </v-layout>
 
       </v-flex>
 

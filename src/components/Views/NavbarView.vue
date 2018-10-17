@@ -87,7 +87,7 @@
                   </small-search-bar-view>
                 </v-flex>
 
-                <v-flex py-0 >
+                <v-flex py-0 fill-height>
                   <control-panel-view v-on:controlsChanged="catchControlsChanged"
                   />
 
@@ -137,7 +137,6 @@
                             :mapExpandedButtonText="mapExpandedButtonText"
                             v-on:clickedMapExpand="catchMapExpandClicked"
                             :showPlaceholder="showPlaceholder"
-                            :isHighlighted="tagsAreHighligted"
                 >
               </filter-view>
 
