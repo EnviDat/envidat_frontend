@@ -78,6 +78,7 @@
           <tag-chip v-if="tags"
                     v-for="tag in slicedTags" :key="tag.name"
                     :name="tag.name"
+                    :selectable="true"
                     v-on:clicked="catchTagClicked($event, tag.name)"
                     class="headerTag" />
 
