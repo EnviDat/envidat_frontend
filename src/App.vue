@@ -1,10 +1,6 @@
 <template>
   <v-app v-bind:style="dynamicBackground">
 
-    <!--v-btn fab top left color="success" @click="testStore" >Test</v-btn>
-
-    <v-icon v-if="loading" color="warning">autorenew</v-icon-->
-
     <v-content>
       <!-- <transition :name="transitionName"> -->
         <router-view />
@@ -17,11 +13,7 @@
 <script>
   import { mapGetters } from 'vuex';
   import '../node_modules/skeleton-placeholder/dist/bone.min.css';
-  import {
-    LOAD_ALL_TAGS,
-    LOAD_METADATA_CONTENT_BY_ID,
-    BULK_LOAD_METADATAS_CONTENT,
-  } from './store/metadataMutationsConsts';
+  import { BULK_LOAD_METADATAS_CONTENT } from './store/metadataMutationsConsts';
   import {
     ADD_CARD_IMAGES,
     ADD_ICON_IMAGE,
@@ -29,25 +21,13 @@
 
   export default {
     created: function created() {
-      const metadataId = this.$route.params.metadataid;
-
-      if (metadataId && !this.loadingCurrentMetadataContent) {
-        this.$store.dispatch(`metadata/${LOAD_METADATA_CONTENT_BY_ID}`, metadataId);
-      } else {
-        this.loadAllMetadata();
-      }
-      this.loadAllTags();
+      this.loadAllMetadata();
 
       const bgImgs = require.context('./assets/', false, /\.jpg$/);
       this.appBGImages = this.importImages(bgImgs, 'app_b');
 
       this.importCardBackgrounds();
       this.importIcons();
-
-      // const values = Object.values(this.imagesImports);
-      // values.forEach(element => {
-      //   console.log("value " + element);
-      // });
     },
     methods: {
       loadAllMetadata: function loadAllMetadata() {
