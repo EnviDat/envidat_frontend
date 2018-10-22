@@ -137,7 +137,8 @@ export default {
     showTagsExpanded: false,
     dark: false,
     blackTopToBottom: 'rgba(80,80,80, 0.1) 0%, rgba(80,80,80, 0.9) 70%',
-    whiteTopToBottom: 'rgba(255,255,255, 0.3) 0%, rgba(255,255,255, 1) 60%',
+    // whiteTopToBottom: 'rgba(255,255,255, 0.3) 0%, rgba(255,255,255, 1) 60%',
+    whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
   }),
   methods: {
     catchTagClicked: function catchTagClicked(tagId) {
@@ -203,7 +204,7 @@ export default {
   }
 
   .headerTag {
-    opacity: 0.75;
+    opacity: 0.85;
   }
 
 </style>

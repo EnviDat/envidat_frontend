@@ -125,7 +125,7 @@
 
               <filter-view v-if="!expanded"
                             :allTags="allTags" 
-                            :selectedTagNames.sync="selectedTagNames"
+                            :selectedTagNames="selectedTagNames"
                             :popularTags="popularTags"
                             :expanded="expanded"
                             :expandButtonText="expandButtonText"
@@ -265,6 +265,7 @@
     height: 1.5rem;
     font-size: 0.65rem;
     margin: 1px 2px;
+    opacity: 0.85;
   }
 
   .envidatChip span {

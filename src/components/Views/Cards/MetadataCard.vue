@@ -47,10 +47,10 @@
                           :name="tag.name"
                           :selectable="true"
                           v-on:clicked="catchTagClicked($event, tag.name)"
-                          class="card_tag" />
+                />
               
                 <tag-chip py-0
-                          v-if="maxTagsReached" class="card_tag" name="..." />
+                          v-if="maxTagsReached" name="..." />
               
             </v-layout>
           </v-flex>
@@ -279,7 +279,7 @@ export default {
     maxCompactTagtextLength: 170,
     blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
     // whiteTopToBottom: 'rgba(255,255,255, 0.3) 0%, rgba(255,255,255, 1) 60%',
-    whiteTopToBottom: 'rgba(255,255,255, 0.4) 0%, rgba(255,255,255, 1) 70%',
+    whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
     imageDefaults: {
       snow: 'c_b_snow_icy2',
       landscape: 'c_b_landscape_lake2', // or c_b_landscape_view ! c_b_landscape_long_lake
@@ -327,8 +327,5 @@ export default {
     line-height: 1.3em !important;
   }
 
-  .card_tag {
-    /* opacity: 0.7; */
-  }
 
 </style>
