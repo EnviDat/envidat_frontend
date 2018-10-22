@@ -125,7 +125,7 @@
 
               <filter-view v-if="!expanded"
                             :allTags="allTags" 
-                            :selectedTagNames.sync="selectedTagNames"
+                            :selectedTagNames="selectedTagNames"
                             :popularTags="popularTags"
                             :expanded="expanded"
                             :expandButtonText="expandButtonText"

@@ -23,7 +23,10 @@ import {
   BULK_LOAD_METADATAS_CONTENT,
   BULK_LOAD_METADATAS_CONTENT_SUCCESS,
   BULK_LOAD_METADATAS_CONTENT_ERROR,
-  ENABLE_TAG,
+  UPDATE_TAGS,
+  UPDATE_TAGS_SUCCESS,
+  UPDATE_TAGS_ERROR,
+  SET_FILTERED_CONTENT,
 } from '../metadataMutationsConsts';
 
 const conversion = require('./conversion');
@@ -177,11 +180,18 @@ export default {
     state.metadatasContentOK = false;
     state.error = reason;
   },
-  [ENABLE_TAG](state, { tagName, enabled }) {
-    const index = state.allTags.findIndex(obj => obj.name === tagName);
-
-    if (index >= 0) {
-      state.allTags[index].enabled = enabled;
-    }
+  [UPDATE_TAGS](state) {
+    state.updatingTags = true;
+  },
+  [UPDATE_TAGS_SUCCESS](state, payload) {
+    state.updatingTags = false;
+    state.allTags = payload;
+  },
+  [UPDATE_TAGS_ERROR](state, reason) {
+    state.updatingTags = false;
+    state.error = reason;
+  },
+  [SET_FILTERED_CONTENT](state, payload) {
+    state.filteredContent = payload;
   },
 };

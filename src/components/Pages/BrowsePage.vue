@@ -17,7 +17,7 @@
                       v-on:clickedSearch="catchSearchClicked"
                       v-on:clearedSearch="catchSearchCleared"
                       :allTags="allTags" 
-                      :selectedTagNames.sync="selectedTagNames"
+                      :selectedTagNames="selectedTagNames"
                       :popularTags="popularTags"
                       v-on:clickedTag="catchTagClicked"
                       v-on:clickedTagClose="catchTagCloseClicked"
@@ -43,7 +43,7 @@
                             :compactLayout="showMapFilter"
                             :hoverId="hoverId"
                             :mapFilteringEnabled="mapFilteringEnabled"
-                            :palceHolderAmount="palceHolderAmount"
+                            :placeHolderAmount="placeHolderAmount"
                             v-on:clickedTag="catchTagClicked"
        />
 
@@ -77,7 +77,8 @@
   import MetadataListView from '../Views/MetadataViews/MetadataListView';
   import {
     SEARCH_METADATA,
-    ENABLE_TAG,
+    UPDATE_TAGS,
+    SET_FILTERED_CONTENT,
   } from '../../store/metadataMutationsConsts';
   import { SET_APP_BACKGROUND } from '../../store/mutationsConsts';
 
@@ -104,17 +105,24 @@
     methods: {
       loadRouteTags: function loadRouteTags() {
         const tagsEncoded = this.$route.query.tags ? this.$route.query.tags : '';
-        // console.log("loadRouteTags " + tagsEncoded);
+        let decodedTags = [];
 
         if (tagsEncoded.length > 0) {
-          this.selectedTagNames = this.decodeTagsFromUrl(tagsEncoded);
-        } else {
-          const category = this.$route.params.category ? this.$route.params.category : null;
-          this.selectedTagNames = this.decodeCategoryFromUrl(category);
+          decodedTags = this.decodeTagsFromUrl(tagsEncoded);
+        }
+
+        if (this.selectedTagNames !== decodedTags) {
+          // console.log("loadRouteTags " + this.selectedTagNames + " " + decodedTags);
+          this.selectedTagNames = decodedTags;
         }
       },
       loadRouteSearch: function loadRouteSearch() {
         const search = this.$route.query.search ? this.$route.query.search : '';
+
+        if (this.searchTerm === search) {
+          return;
+        }
+
         // console.log("loadRouteSearch " + search);
 
         if (search.length > 0) {
@@ -353,29 +361,6 @@
       updateSearchCount: function updateSearchCount(searchResult) {
         this.searchCount = searchResult !== undefined ? searchResult.length : 0;
       },
-      updateFilterViewTags: function updateFilterViewTags(filteredContent) {
-        // console.log("");
-
-        for (let i = 0; i < this.allTags.length; i++) {
-          let found = false;
-          const tag = this.allTags[i];
-
-          for (let j = 0; j < filteredContent.length; j++) {
-            const el = filteredContent[j];
-
-            if (el.tags && el.tags.length > 0) {
-              const index = el.tags.findIndex(obj => obj.name.includes(tag.name));
-
-              if (index >= 0) {
-                found = true;
-                break;
-              }
-            }
-          }
-
-          this.$store.commit(`metadata/${ENABLE_TAG}`, { tagName: tag.name, enabled: found });
-        }
-      },
       hasRestrictedResources: function hasRestrictedResources(metadata) {
         if (!metadata || !metadata.resources || metadata.resources.length <= 0) {
           return false;
@@ -423,43 +408,6 @@
 
         return height;
       },
-      filteredMetadataContent: function filteredMetadataContent() {
-        let contentToFilter;
-
-        if (this.isSearchResultContent) {
-          // console.log("search content " + this.searchMetadatasContentSize);
-
-          if (this.searchTerm && this.searchTerm.length > 0
-          && this.searchMetadatasContentSize > 0) {
-            contentToFilter = Object.values(this.searchedMetadatasContent);
-            contentToFilter = this.enhanceSearchWithTags(contentToFilter);
-            // console.log("use search content " + contentToFilter.length);
-          }
-        } else {
-          contentToFilter = Object.values(this.metadatasContent);
-          // console.log("use local content " + contentToFilter.length);
-        }
-
-        if (contentToFilter && contentToFilter.length > 0) {
-          contentToFilter = this.contentFilterAccessibility(contentToFilter);
-
-          contentToFilter = this.enhanceMetadata(contentToFilter, this.cardBGImages);
-
-          if (this.selectedTagNames !== undefined
-          && this.selectedTagNames.length > 0) {
-            contentToFilter = this.contentFilteredByTags(contentToFilter);
-          }
-        }
-
-        if (this.mapFilterVisibleIds.length > 0) {
-          contentToFilter = this.contentFilterMapIds(contentToFilter);
-        }
-
-        this.updateFilterViewTags(contentToFilter);
-        this.updateSearchCount(contentToFilter);
-
-        return contentToFilter;
-      },
       popularTags: function popularTags() {
         const popTags = [];
 
@@ -468,22 +416,7 @@
             const tag = this.allTags[i];
 
             popTags.push(tag);
-            /*
-            const words = tag.name.split(' ').length;
-            // const dashs = tag.name.split('-').length;
-
-            if (words < 2) {
-              // only use single word tags
-              popTags.push(tag);
-            }
-
-            if (popTags.length >= this.popularTagAmount) {
-              break;
-            }
-            */
           }
-
-          // return this.allTags.slice(0, this.popularTagAmount);
         }
 
         return popTags;
@@ -501,14 +434,51 @@
       mapFilteringEnabled: function mapFilteringEnabled() {
         return this.$vuetify.breakpoint.lgAndUp;
       },
+      filteredMetadataContent: function filteredMetadataContent() {
+        let contentToFilter;
+        // console.log("filteredMetadataContent");
+
+        if (this.isSearchResultContent) {
+          if (this.searchTerm && this.searchTerm.length > 0
+          && this.searchMetadatasContentSize > 0) {
+            contentToFilter = Object.values(this.searchedMetadatasContent);
+            contentToFilter = this.enhanceSearchWithTags(contentToFilter);
+          }
+        } else {
+          contentToFilter = Object.values(this.metadatasContent);
+        }
+
+        if (contentToFilter && contentToFilter.length > 0) {
+          contentToFilter = this.contentFilterAccessibility(contentToFilter);
+
+          contentToFilter = this.enhanceMetadata(contentToFilter, this.cardBGImages);
+
+          if (this.selectedTagNames !== undefined
+          && this.selectedTagNames.length > 0) {
+            contentToFilter = this.contentFilteredByTags(contentToFilter);
+          }
+        }
+
+        if (this.mapFilterVisibleIds.length > 0) {
+          contentToFilter = this.contentFilterMapIds(contentToFilter);
+        }
+
+        this.$store.commit(`metadata/${SET_FILTERED_CONTENT}`, contentToFilter);
+
+        this.$store.dispatch(`metadata/${UPDATE_TAGS}`);
+
+        this.updateSearchCount(contentToFilter);
+
+        return contentToFilter;
+      },
     },
     watch: {
       /* eslint-disable no-unused-vars */
       $route: function watchRouteChanges(to, from) {
         // react on changes of the route (browser back / forward click)
 
-        this.loadRouteTags();
-        this.loadRouteSearch();
+        // this.loadRouteTags();
+        // this.loadRouteSearch();
 
         window.scrollTo(0, this.scrollPosition);
         // console.log('watch $route ', this.$route.query.toString() + " to " + to.query + " from " + from.query);
@@ -519,7 +489,7 @@
       searchTerm: '',
       searchLabelText: 'Search',
       searchCount: 0,
-      palceHolderAmount: 6,
+      placeHolderAmount: 6,
       isSearchResultContent: false,
       noResultText: 'Nothing found for these Search criterias',
       suggestionText: 'Try one of these categories',
