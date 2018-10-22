@@ -194,8 +194,5 @@ export default {
     color: rgba(255,255,255,.9) !important;
   }
 
-  .card_tag {
-    /* opacity: 0.7; */
-  }
 
 </style>
