@@ -85,7 +85,7 @@
       <v-tooltip bottom >
         <v-btn fab small
                 color="accent" slot="activator" :href="url" 
-                v-bind="{['target'] : isLink ? '_blank' : '' }">
+                v-bind="{['target'] : '_blank' }">
 
           <div v-if="isFile"
                 class="iconCentering">
