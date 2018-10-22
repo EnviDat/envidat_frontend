@@ -35,12 +35,14 @@
           this.$store.dispatch(`metadata/${BULK_LOAD_METADATAS_CONTENT}`);
         }
       },
-      loadAllTags: function loadAllTags() {
-        if (!this.loadingAllTags && this.allTags && this.allTags.length <= 0) {
-          this.$store.dispatch(`metadata/${LOAD_ALL_TAGS}`);
-        }
-      },
       importCardBackgrounds: function importCardBackgrounds() {
+        const imgs = this.$store.getters.cardBGImages;
+
+        if (imgs && Object.keys(imgs).length > 0) {
+          // already loaded in localStorage
+          return;
+        }
+
         let imgPaths = require.context('./assets/cards/landscape/', false, /\.jpg$/);
         let images = this.importImages(imgPaths);
         this.$store.commit(ADD_CARD_IMAGES, { key: 'landscape', value: images });
@@ -62,6 +64,13 @@
         this.$store.commit(ADD_CARD_IMAGES, { key: 'hazard', value: images });
       },
       importIcons: function importIcons() {
+        const imgs = this.$store.getters.iconImages;
+
+        if (imgs && Object.keys(imgs).length > 0) {
+          // already loaded in localStorage
+          return;
+        }
+
         const imgPaths = require.context('./assets/icons/', false, /\.png$/);
         const images = this.importImages(imgPaths);
 
