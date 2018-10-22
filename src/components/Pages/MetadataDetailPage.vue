@@ -186,6 +186,9 @@
       if (!this.loadingMetadatasContent && this.currentMetadataContent.title === undefined) {
         // in case of directly entring the page load the content directly via Id
         this.$store.dispatch(`metadata/${LOAD_METADATA_CONTENT_BY_ID}`, this.metadataId);
+        // console.log('mounted dispached content by id');
+      } else {
+        this.createMetadataContent();
       }
     },
     beforeDestroy: function beforeDestroy() {
@@ -198,8 +201,6 @@
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
         loadingCurrentMetadataContent: 'metadata/loadingCurrentMetadataContent',
         currentMetadataContent: 'metadata/currentMetadataContent',
-        allTags: 'metadata/allTags',
-        loadingAllTags: 'metadata/loadingAllTags',
         iconImages: 'iconImages',
         cardBGImages: 'cardBGImages',
       }),
@@ -215,7 +216,7 @@
         //  && this.metadataIds.includes(this.metadataId));
       },
       showPlaceholder: function showPlaceholder() {
-        return this.loadingCurrentMetadataContent;
+        return this.loadingMetadatasContent || this.loadingCurrentMetadataContent;
       },
       leftOrFullWidth: function leftOrFullWidth() {
         return this.twoColumnLayout ? this.halfWidthLeft : this.fullWidthPadding;
@@ -312,15 +313,18 @@
       createMetadataContent: function createMetadataContent() {
         let currentContent = this.currentMetadataContent;
 
-        if (!currentContent && this.loadingMetadatasContent
-          && this.metadatasContentSize > 0 && this.metadataId) {
-          // in case all the metadataContents are already loaded take it from there
-          currentContent = this.metadatasContent[this.metadataId];
-        }
+        // console.log('createMetadataContent title? ' + currentContent.title + ' ' + this.loadingMetadatasContent);
+
+        // if (!currentContent.title === undefined
+        // && this.metadatasContentSize > 0 && this.metadataId) {
+        //   // console.log('createMetadataContent ' + this.metadataId + ' loading ' + this.currentMetadataContent.title + ' ' + this.metadatasContentSize);
+        //   currentContent = this.metadatasContent[this.metadataId];
+        //   // console.log('createMetadataContent ' + this.metadataId + ' currentContent ' + currentContent);
+        // }
 
         currentContent = this.enhanceMetadata(currentContent, this.cardBGImages);
 
-        if (currentContent) {
+        if (currentContent && currentContent.title !== undefined) {
           // console.log("create content " + currentContent.spatial + " " + this.header);
           this.header = this.createHeader(currentContent);
           this.body = this.createBody(currentContent);
@@ -497,6 +501,14 @@
     watch: {
       currentMetadataContent: function updateContent() {
         this.createMetadataContent();
+      },
+      metadatasContent: function updateContent() {
+        // in case all the metadataContents are already loaded take it from there
+        // if EnviDat is called via MetadataDetailPage URL directly
+
+        if (!this.loadingCurrentMetadataContent) {
+          this.$store.dispatch(`metadata/${LOAD_METADATA_CONTENT_BY_ID}`, this.metadataId);
+        }
       },
     },
     data: () => ({
