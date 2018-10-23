@@ -164,8 +164,6 @@ export default {
             this.enhanceTitleImg(el, cardBGImages);
           }
         }
-      } else {
-        this.enhanceTitleImg(metadatas, cardBGImages);
       }
 
       return metadatas;

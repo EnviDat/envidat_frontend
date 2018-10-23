@@ -6,6 +6,7 @@ import {
   SEARCH_METADATA,
   SEARCH_METADATA_SUCCESS,
   SEARCH_METADATA_ERROR,
+  CLEAR_SEARCH_METADATA,
   LOAD_ALL_TAGS,
   LOAD_ALL_TAGS_SUCCESS,
   LOAD_ALL_TAGS_ERROR,
@@ -15,7 +16,9 @@ import {
   UPDATE_TAGS,
   UPDATE_TAGS_SUCCESS,
   UPDATE_TAGS_ERROR,
-  SET_FILTERED_CONTENT,
+  FILTER_METADATA,
+  FILTER_METADATA_SUCESS,
+  FILTER_METADATA_ERROR,
 } from '../metadataMutationsConsts';
 
 const conversion = require('./conversion');
@@ -45,6 +48,11 @@ export default {
     state.searchingMetadatasContent = false;
     state.searchingMetadatasContentOK = false;
     state.error = reason;
+  },
+  [CLEAR_SEARCH_METADATA](state) {
+    state.searchingMetadatasContent = false;
+    state.searchingMetadatasContentOK = false;
+    state.searchedMetadatasContent = {};
   },
   [LOAD_METADATA_CONTENT_BY_ID](state) {
     state.loadingCurrentMetadataContent = true;
@@ -91,7 +99,6 @@ export default {
     state.metadatasContent = {};
   },
   [BULK_LOAD_METADATAS_CONTENT_SUCCESS](state, payload, showRestrictedContent) {
-    // state.loadingMetadatasContent = false;
     state.metadatasContentOK = true;
 
     /* eslint-disable no-underscore-dangle */
@@ -123,7 +130,15 @@ export default {
     state.updatingTags = false;
     state.error = reason;
   },
-  [SET_FILTERED_CONTENT](state, payload) {
+  [FILTER_METADATA](state) {
+    state.isFilteringContent = true;
+  },
+  [FILTER_METADATA_SUCESS](state, payload) {
+    state.isFilteringContent = false;
     state.filteredContent = payload;
+  },
+  [FILTER_METADATA_ERROR](state, reason) {
+    state.isFilteringContent = false;
+    state.error = reason;
   },
 };

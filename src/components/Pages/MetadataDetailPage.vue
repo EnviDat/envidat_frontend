@@ -322,7 +322,7 @@
         //   // console.log('createMetadataContent ' + this.metadataId + ' currentContent ' + currentContent);
         // }
 
-        currentContent = this.enhanceMetadata(currentContent, this.cardBGImages);
+        currentContent = this.enhanceMetadataEntry(currentContent, this.cardBGImages);
 
         if (currentContent && currentContent.title !== undefined) {
           // console.log("create content " + currentContent.spatial + " " + this.header);
