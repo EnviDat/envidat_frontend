@@ -5,6 +5,7 @@
     ripple
     hover
     height="330"
+    @click.native="show = !show"
     >
 
     <v-img
@@ -44,7 +45,7 @@
 
     </v-img>
 
-    <v-card-title primary-title>
+    <v-card-title primary-title v-if="!show">
       <div class="skeleton skeleton-color-silver skeleton-animation-pulse" style="width: 100%;">
         <div class='bone bone-type-multiline'></div>
         <div class='bone bone-type-multiline bone-style-paragraph'></div>
@@ -168,6 +169,16 @@ export default {
 
   .card_tag_placeholder {
     opacity: 0.75;
+  }
+
+  .expand-enter-active, .expand-leave-active {
+    transition: all 4s ease;
+    background-color: red;
+  }
+
+  .expand-enter, .expand-leave-to {
+    opacity: 0;
+    background-color: black;
   }
 
 </style>

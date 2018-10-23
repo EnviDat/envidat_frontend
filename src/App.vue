@@ -2,9 +2,15 @@
   <v-app v-bind:style="dynamicBackground">
 
     <v-content>
-      <!-- <transition :name="transitionName"> -->
+      <transition
+        name="fade"
+        mode="out-in"
+        @beforeLeave="beforeLeave"
+        @enter="enter"
+        @afterEnter="afterEnter"
+      >
         <router-view />
-      <!-- </transition> -->
+      </transition>
     </v-content>
         
   </v-app>
@@ -30,6 +36,22 @@
       this.importIcons();
     },
     methods: {
+      beforeLeave(element) {
+        const style = getComputedStyle(element);
+        this.prevHeight = style.height;
+      },
+      enter(element) {
+        const { height } = getComputedStyle(element);
+
+        element.style.height = this.prevHeight;
+
+        setTimeout(() => {
+          element.style.height = height;
+        });
+      },
+      afterEnter(element) {
+        element.style.height = 'auto';
+      },
       loadAllMetadata: function loadAllMetadata() {
         if (!this.loadingMetadatasContent && this.metadatasContentSize <= 0) {
           this.$store.dispatch(`metadata/${BULK_LOAD_METADATAS_CONTENT}`);
@@ -125,7 +147,7 @@
     },
     data: () => ({
       appBGImages: {},
-      transitionName: 'fadeOut',
+      prevHeight: 0,
     }),
     props: {
       source: String,
@@ -258,29 +280,18 @@
     font-size: 0.9em !important;
   }
 
-  .fadeOut-enter-active, .fadeOut-leave-active {
-    transition: all .3s;
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition-duration: 0.3s;
+    transition-property: height, opacity;
+    transition-timing-function: ease;
+    /* overflow: hidden; */
   }
 
-  .fadeOut-leave {
-    opacity: 1;
-  }  
-
-  .fadeOut-leave-to {
-    opacity: 0;
-  }  
-
-  .fadeIn-enter-active, .fadeIn-leave-active {
-    transition: all .3s;
-  }
-
-  .fadeIn-enter {
+  .fade-enter,
+  .fade-leave-active {
     opacity: 0
-  }  
-
-  .fadeIn-enter-to {
-    opacity: 1;
-  }  
-
+  }
 
 </style>
