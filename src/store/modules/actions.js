@@ -142,8 +142,9 @@ export default {
       commit(LOAD_METADATA_CONTENT_BY_ID_ERROR, reason);
     });
   },
-  async [BULK_LOAD_METADATAS_CONTENT]({ commit, showRestrictedContent = false }) {
+  async [BULK_LOAD_METADATAS_CONTENT]({ dispatch, commit, showRestrictedContent = false }) {
     commit(BULK_LOAD_METADATAS_CONTENT);
+    // console.log(BULK_LOAD_METADATAS_CONTENT);
 
     // const url = urlRewrite('package_search', API_BASE, ENVIDAT_PROXY);
     // const url = urlRewrite('select?q=title:*&wt=json&rows=1000', SOLR_API_BASE, SOLR_PROXY);
@@ -152,6 +153,9 @@ export default {
     axios.get(url)
       .then((response) => {
         commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, response.data.response.docs, showRestrictedContent);
+
+        // for the case when loaded up on landingpage
+        dispatch(FILTER_METADATA, []);
       })
       .catch((reason) => {
         commit(BULK_LOAD_METADATAS_CONTENT_ERROR, reason);

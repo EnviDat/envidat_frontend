@@ -168,7 +168,7 @@
   import MetadataLocation from '../Views/MetadataViews/MetadataLocation';
   import MetadataDetails from '../Views/MetadataViews/MetadataDetails';
   import MetadataCitation from '../Views/MetadataViews/MetadataCitation';
-  import NotFoundView from '../Views/NotFoundView';
+  import NotFoundView from '../Views/Errors/NotFoundView';
   // import { LOAD_METADATAS_CONTENT } from '../../store/metadataMutationsConsts';
 
   // Might want to check https://css-tricks.com/use-cases-fixed-backgrounds-css/
