@@ -178,7 +178,6 @@
           this.searchTerm = searchTerm;
 
           if (this.searchTerm && this.searchTerm.length > 0) {
-            this.isSearchResultContent = true;
             this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm, this.selectedTagNames);
 
             this.additiveChangeRoute(this.searchTerm, undefined);
@@ -189,7 +188,6 @@
       },
       catchSearchCleared: function catchSearchCleared() {
         this.searchTerm = '';
-        this.isSearchResultContent = false;
 
         // const queryLength = Object.keys(this.$route.query).length;
 
@@ -378,7 +376,6 @@
       searchTerm: '',
       searchLabelText: 'Search',
       placeHolderAmount: 6,
-      isSearchResultContent: false,
       noResultText: 'Nothing found for these Search criterias',
       suggestionText: 'Try one of these categories',
       selectedTagNames: [],
