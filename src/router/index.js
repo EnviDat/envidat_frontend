@@ -35,4 +35,17 @@ export default new Router({
       component: ResourceDetailPage,
     },
   ],
+  scrollBehavior(to, from, savedPosition) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(() => {
+          if (savedPosition) {
+            return savedPosition;
+          }
+
+          return { x: 0, y: 0 };
+        });
+      }, 450);
+    });
+  },
 });

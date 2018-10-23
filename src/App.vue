@@ -1,13 +1,16 @@
 <template>
-  <v-app id="inspire"
-        v-bind:style="dynamicBackground">
-
-    <!--v-btn fab top left color="success" @click="testStore" >Test</v-btn>
-
-    <v-icon v-if="loading" color="warning">autorenew</v-icon-->
+  <v-app v-bind:style="dynamicBackground">
 
     <v-content>
-      <router-view/>
+      <transition
+        name="fade"
+        mode="out-in"
+        @beforeLeave="beforeLeave"
+        @enter="enter"
+        @afterEnter="afterEnter"
+      >
+        <router-view />
+      </transition>
     </v-content>
         
   </v-app>
@@ -16,11 +19,7 @@
 <script>
   import { mapGetters } from 'vuex';
   import '../node_modules/skeleton-placeholder/dist/bone.min.css';
-  import {
-    LOAD_ALL_METADATA,
-    LOAD_ALL_TAGS,
-    LOAD_METADATA_CONTENT_BY_ID,
-  } from './store/metadataMutationsConsts';
+  import { BULK_LOAD_METADATAS_CONTENT } from './store/metadataMutationsConsts';
   import {
     ADD_CARD_IMAGES,
     ADD_ICON_IMAGE,
@@ -28,38 +27,44 @@
 
   export default {
     created: function created() {
-      const metadataId = this.$route.params.metadataid;
-
-      if (metadataId && !this.loadingCurrentMetadataContent) {
-        this.$store.dispatch(`metadata/${LOAD_METADATA_CONTENT_BY_ID}`, metadataId);
-      } else {
-        this.loadAllMetadata();
-      }
-      this.loadAllTags();
+      this.loadAllMetadata();
 
       const bgImgs = require.context('./assets/', false, /\.jpg$/);
       this.appBGImages = this.importImages(bgImgs, 'app_b');
 
       this.importCardBackgrounds();
       this.importIcons();
-
-      // const values = Object.values(this.imagesImports);
-      // values.forEach(element => {
-      //   console.log("value " + element);
-      // });
     },
     methods: {
+      beforeLeave(element) {
+        const style = getComputedStyle(element);
+        this.prevHeight = style.height;
+      },
+      enter(element) {
+        const { height } = getComputedStyle(element);
+
+        element.style.height = this.prevHeight;
+
+        setTimeout(() => {
+          element.style.height = height;
+        });
+      },
+      afterEnter(element) {
+        element.style.height = 'auto';
+      },
       loadAllMetadata: function loadAllMetadata() {
         if (!this.loadingMetadatasContent && this.metadatasContentSize <= 0) {
-          this.$store.dispatch(`metadata/${LOAD_ALL_METADATA}`);
-        }
-      },
-      loadAllTags: function loadAllTags() {
-        if (!this.loadingAllTags && this.allTags.length <= 0) {
-          this.$store.dispatch(`metadata/${LOAD_ALL_TAGS}`);
+          this.$store.dispatch(`metadata/${BULK_LOAD_METADATAS_CONTENT}`);
         }
       },
       importCardBackgrounds: function importCardBackgrounds() {
+        const imgs = this.$store.getters.cardBGImages;
+
+        if (imgs && Object.keys(imgs).length > 0) {
+          // already loaded in localStorage
+          return;
+        }
+
         let imgPaths = require.context('./assets/cards/landscape/', false, /\.jpg$/);
         let images = this.importImages(imgPaths);
         this.$store.commit(ADD_CARD_IMAGES, { key: 'landscape', value: images });
@@ -81,6 +86,13 @@
         this.$store.commit(ADD_CARD_IMAGES, { key: 'hazard', value: images });
       },
       importIcons: function importIcons() {
+        const imgs = this.$store.getters.iconImages;
+
+        if (imgs && Object.keys(imgs).length > 0) {
+          // already loaded in localStorage
+          return;
+        }
+
         const imgPaths = require.context('./assets/icons/', false, /\.png$/);
         const images = this.importImages(imgPaths);
 
@@ -99,8 +111,6 @@
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
         loadingCurrentMetadataContent: 'metadata/loadingCurrentMetadataContent',
         currentMetadataContent: 'metadata/currentMetadataContent',
-        allTags: 'metadata/allTags',
-        loadingAllTags: 'metadata/loadingAllTags',
         popularTags: 'metadata/popularTags',
         loadingPopularTags: 'metadata/loadingPopularTags',
         appBGImage: 'appBGImage',
@@ -116,18 +126,28 @@
 
         if (bgImg) {
           // bgStyle = `background-image: url(${bgImg}) !important;`;
-          bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.05) 0%,rgba(255,255,255,0.25) 100%), url(${bgImg}) !important;`;
+          bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.25) 100%), url(${bgImg}) !important;`;
+
+          bgStyle += `background-position: center top !important;
+                      background-repeat: no-repeat !important;
+                      background-size: cover !important; `;
         }
 
         if (bgImg.includes('browsepage')) {
-          bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%,rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
+          // bgStyle = `background-image: url(${bgImg}) !important;`;
+          bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
+
+          bgStyle += `background-position: center top !important;
+                      background-repeat: repeat !important; `;
         }
+
 
         return bgStyle;
       },
     },
     data: () => ({
       appBGImages: {},
+      prevHeight: 0,
     }),
     props: {
       source: String,
@@ -141,15 +161,21 @@
   /* import vuetify.css here to be able to overwrite the fonts */
   @import '../node_modules/vuetify/dist/vuetify.min.css';
 
-/* overrite the applications background https://css-tricks.com/use-cases-fixed-backgrounds-css/ */
+/* overwrite the applications background https://css-tricks.com/use-cases-fixed-backgrounds-css/ */
   .application {
-    /* font-family: 'Libre Baskerville', serif !important; */
     font-family: 'Raleway', sans-serif !important;
-    background-position: center top !important;
+    /* background-position: center top !important;
     background-size: cover !important;
     background-repeat: no-repeat !important;
-    background-attachment: fixed !important;
+    background-attachment: fixed !important; */
   }  
+
+  .envidatNavbar {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 3px;
+    z-index: 2;
+  }
 
   /*** General Card styles ***/
 
@@ -233,17 +259,39 @@
     width: 24px !important;
   }
 
-  .envidat_title {
+  .envidatTitle {
     font-family: 'Libre Baskerville', serif !important;
     letter-spacing: 0em !important;
   }
 
-  .envidat_slogan {
-    font-family: 'Raleway', sans-serif !important;
+  .envidatSlogan {
+    font-family: 'Libre Baskerville', serif !important;
   }
 
   .metadataInfoIcon {
     opacity: 0.75;
+  }
+
+  .envidatBadge span {
+    font-size: 0.95em !important;
+  }
+
+  .envidatBadgeBigNumber span {
+    font-size: 0.9em !important;
+  }
+
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition-duration: 0.3s;
+    transition-property: height, opacity;
+    transition-timing-function: ease;
+    /* overflow: hidden; */
+  }
+
+  .fade-enter,
+  .fade-leave-active {
+    opacity: 0
   }
 
 </style>

@@ -8,13 +8,21 @@
 
         <div v-for="val in details" :key="val.label" >
 
-          <v-text-field v-if="val.text"
-                        v-bind:label="val.label"
-                        v-bind:name="val.label"
+          <v-text-field v-if="isSingleText(val.text, val.label)"
+                        :label="val.label"
+                        :name="val.label"
                         :value="val.text"
                         :id="val.label"
                         readonly
           />
+
+          <v-textarea v-if="!isSingleText(val.text, val.label)"
+                        :label="val.label"
+                        :name="val.label"
+                        :value="val.text"
+                        :id="val.label"
+                        readonly
+           />
 
           <div v-if="showPlaceholder
               && !val.text" >
@@ -53,10 +61,29 @@
       details: Array,
       showPlaceholder: Boolean,
     },
-    data: () => ({ }),
+    data: () => ({
+      maxSingleTextLengthLg: 80,
+      maxSingleTextLengthMd: 80,
+      maxSingleTextLengthXs: 70,
+    }),
     methods: {
       clicking: function clicking() {
         alert(this.props);
+      },
+      isSingleText: function isSingleText(text, label) {
+        if (!text || text.length <= 0) {
+          return true;
+        }
+
+        if (this.$vuetify.breakpoint.xsOnly) {
+          return text.length <= this.maxSingleTextLengthXs;
+        }
+
+        if (this.$vuetify.breakpoint.mdAndDown) {
+          return text.length <= this.maxSingleTextLengthMd;
+        }
+
+        return text.length <= this.maxSingleTextLengthLg;
       },
     },
     components: {

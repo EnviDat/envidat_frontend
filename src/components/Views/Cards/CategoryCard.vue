@@ -14,7 +14,11 @@
         </v-flex>
 
         <v-flex xs7 mt-1>
-            <div class="headline">{{ title }}</div>
+            <div class="headline"
+                :class="{ 'compactTitle' : this.$vuetify.breakpoint.mdAndDown }"
+            >
+              {{ title }}
+            </div>
         </v-flex>
 
       </v-layout>
@@ -31,6 +35,9 @@
   import landImg from '@/assets/cards/c_b_landscape_view_small.jpg';
   import hazardImg from '@/assets/cards/c_b_hazard_cloud_small.jpg';
   import diversityImg from '@/assets/cards/b_c_diversity_meadow_small.jpg';
+
+  // un blurry zooming
+  // https://stackoverflow.com/questions/36143337/how-to-prevent-blur-from-css-transform
 
   export default {
     props: {
@@ -87,5 +94,14 @@
     text-overflow: inherit !important;
     max-height: inherit !important;
     line-height: inherit !important;
+  }
+
+  .compactTitle { 
+    font-size: 15px !important; 
+    line-height: 1.3em !important; 
+  } 
+
+  .v-card__media img {
+    width: inherit !important;
   }
 </style>

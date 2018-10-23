@@ -8,9 +8,25 @@
               v-bind="{['style'] : dynamicCardBackground }"
       >
 
+        <v-tooltip bottom style="position: absolute; top 0; right: 0;">
+
+          <v-btn icon flat
+                  color="primary"
+                  style="font-size: 30px !important;"
+                  @click.native="catchBackClicked" slot="activator">
+            <v-icon>close</v-icon>
+          </v-btn>        
+          <span>Close Metadata</span>
+
+        </v-tooltip>
+
         <!--h1 class="py-3" >{{ metadataTitle }} id: {{ $route.params.id }}</h1-->
         <div v-if="metadataTitle"
-            class="display-2 headerTitle py-3">
+            class="headerTitle py-3"
+            :class="{ 'display-2': $vuetify.breakpoint.lgAndUp,
+                      'display-1': $vuetify.breakpoint.mdAndDown, 
+                      'headline': $vuetify.breakpoint.smAndDown, 
+                      }">
           {{ metadataTitle }}
         </div>
         
@@ -62,6 +78,7 @@
           <tag-chip v-if="tags"
                     v-for="tag in slicedTags" :key="tag.name"
                     :name="tag.name"
+                    :selectable="true"
                     v-on:clicked="catchTagClicked($event, tag.name)"
                     class="headerTag" />
 
@@ -72,24 +89,23 @@
 
           <tag-chip-placeholder v-if="!tags && showPlaceholder"
                     v-for="n in 5" :key="n" 
-                    :selectable="false"
-                    :highlighted="false"
-                    :closeable="false"
                     class="headerTag" />
 
         </v-layout>
           
-        <v-card-actions v-if="maxTagsReached">
+        <v-card-actions v-if="maxTagsReached"
+                        class="ma-0 pa-2"
+                        style="position: absolute; bottom: 5px; right: 5px;" >
           <v-spacer></v-spacer>
 
           <v-tooltip bottom>
-            <v-btn icon fab small
+            <v-btn fab outline small color="primary"
                     @click.native="showTagsExpanded = !showTagsExpanded" slot="activator">
-              <v-icon color="accent" 
-                      :style="this.showTagsExpanded ? 'transform: rotate(-180deg);' : 'transform: rotate(0deg);'"
+              <v-icon  color="accent"
+                      :style="this.showTagsExpanded ? 'transform: rotate(-180deg); font-size: 30px !important;' : 'transform: rotate(0deg); font-size: 30px !important;'"
               >expand_more</v-icon>
             </v-btn>        
-            <span>Show all tags</span>
+            <span>{{ this.showTagsExpanded ? 'Hide all tags' : 'Show all tags' }}</span>
           </v-tooltip>
         </v-card-actions>
 
@@ -115,17 +131,21 @@ export default {
     license: String,
     tags: Array,
     maxTags: Number,
-    showPlaceholder: Boolean
+    showPlaceholder: Boolean,
   },
   data: () => ({
     showTagsExpanded: false,
-    dark: true,
+    dark: false,
     blackTopToBottom: 'rgba(80,80,80, 0.1) 0%, rgba(80,80,80, 0.9) 70%',
-    whiteTopToBottom: 'rgba(245,245,245, 0.25) 0%, rgba(245,245,245, 0.9) 50%',
+    // whiteTopToBottom: 'rgba(255,255,255, 0.3) 0%, rgba(255,255,255, 1) 60%',
+    whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
   }),
   methods: {
     catchTagClicked: function catchTagClicked(tagId) {
       this.$emit('clickedTag', tagId);
+    },
+    catchBackClicked: function catchBackClicked() {
+      this.$emit('clickedBack');
     },
     iconFlip: function iconFlip(icon) {
       const iconflip = this.dark ? `${icon}_w` : icon;
@@ -152,7 +172,8 @@ export default {
 
       if (this.titleImg) {
         return `background-image: linear-gradient(0deg, ${gradient}), url(${this.titleImg});
-        background-position: center, center; background-size: cover;`;
+        background-position: center, center; background-size: cover;
+        background-repeat: initial;`;
       }
 
       return '';
@@ -186,7 +207,7 @@ export default {
   }
 
   .headerTag {
-    opacity: 0.75;
+    opacity: 0.85;
   }
 
 </style>

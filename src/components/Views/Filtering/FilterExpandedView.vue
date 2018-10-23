@@ -13,7 +13,7 @@
                               />
           </v-flex>
 
-          <v-flex xs11 >
+          <v-flex xs9 >
 
             <tag-chip v-if="selectedTags"
                       v-for="tag in selectedTags" :key="tag.name"
@@ -23,9 +23,20 @@
                       :closeable="true"
                       v-on:clicked="catchTagClicked($event, tag.name)"
                       v-on:clickedClose="catchTagCloseClicked($event, tag.name)"
-                      class="header_tag" />
+                      class="filterTag" />
 
           </v-flex>
+
+          <v-flex xs1 >
+            <v-btn v-if="selectedTags.length > 0"
+                    small
+                    flat 
+                    @click.native="catchClearTags">
+                {{ clearButtonText }}
+                <v-icon color="red" style="font-size: 20px !important">close</v-icon>
+            </v-btn>
+          </v-flex>
+
         </v-layout>
       </v-flex>
 
@@ -49,36 +60,41 @@
                       :closeable="false"
                       v-on:clicked="catchTagClicked($event, tag.name)"
                       v-on:clickedClose="catchTagCloseClicked($event, tag.name)"
-                      class="header_tag" />
+                      class="filterTag" />
 
           </v-flex>
         </v-layout>
       </v-flex>
 
     </v-layout>
-      
+
     <v-card-actions>
-                  
+      <v-spacer />
+
       <filter-view-buttons :expanded.sync="expanded"
                             :expandButtonText="expandButtonText"
                             :expandedButtonText="expandedButtonText"
                             :showClearTags="true"
                             :clearButtonText="clearButtonText"
-                            v-on:clickedExpand="expandClicked"
-                            v-on:clickedClearTags="catchClearClicked"
-                             >
+                            v-on:clickedExpand="catchExpandClicked"
+                            v-on:clickedClearTags="catchClearTags"
+                            :mapExpanded="mapExpanded"
+                            :mapExpandButtonText="mapExpandButtonText"
+                            :mapExpandedButtonText="mapExpandedButtonText"
+                            v-on:clickedMapExpand="catchMapExpandClicked" >
+                            
       </filter-view-buttons>
-      
+
     </v-card-actions>
-      
+            
   </v-card>
 
 </template>
 
 <script>
-import TagChip from './Cards/TagChip';
+import TagChip from '../Cards/TagChip';
+import IconLabelView from '../IconLabelView';
 import FilterViewButtons from './FilterViewButtons';
-import IconLabelView from './IconLabelView';
 
 export default {
   props: {
@@ -87,6 +103,9 @@ export default {
     expanded: Boolean,
     expandButtonText: String,
     expandedButtonText: String,
+    mapExpanded: Boolean,
+    mapExpandButtonText: String,
+    mapExpandedButtonText: String,
     clearButtonText: String,
     minTagCountToBeVisible: Number,
   },
@@ -116,11 +135,11 @@ export default {
       for (let i = 0; i < this.allTags.length; i++) {
         const element = this.allTags[i];
 
-        if (element.count > this.minTagCountToBeVisible) {
-          if (!this.isTagSelected(element.name)) {
-            unselecteds.push(element);
-          }
+        // if (element.count > this.minTagCountToBeVisible) {
+        if (!this.isTagSelected(element.name)) {
+          unselecteds.push(element);
         }
+        // }
       }
 
       return unselecteds;
@@ -134,23 +153,26 @@ export default {
 
       return this.selectedTagNames.indexOf(tagName) >= 0;
     },
+    catchExpandClicked: function catchExpandClicked() {
+      this.$emit('clickedExpand');
+    },
+    catchMapExpandClicked: function catchMapExpandClicked() {
+      this.$emit('clickedMapExpand');
+    },
     catchTagClicked: function catchTagClicked(tagName) {
       this.$emit('clickedTag', tagName);
     },
     catchTagCloseClicked: function catchTagCloseClicked(tagName) {
       this.$emit('clickedTagClose', tagName);
     },
-    expandClicked: function expandClicked(tagName) {
-      this.$emit('clickedExpand', tagName);
-    },
-    catchClearClicked: function catchClearClicked(tagName) {
-      this.$emit('clickedClear', tagName);
+    catchClearTags: function catchClearTags() {
+      this.$emit('clickedClear');
     },
   },
   components: {
     TagChip,
-    FilterViewButtons,
     IconLabelView,
+    FilterViewButtons,
   },
 };
 </script>

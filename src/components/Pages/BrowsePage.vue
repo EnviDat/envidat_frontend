@@ -1,68 +1,70 @@
 <template>
-  <v-container grid-list-xs fluid py-1>
+  <v-container grid-list-xs fluid py-1
+                v-bind="{ 'pa-0': $vuetify.breakpoint.xsOnly }"
+                @scroll="updateScroll"
+  >
 
-    <nav-bar-view :searchViewLabelText="searchLabelText"
-                  :searchTerm="searchTerm"
-                  :searchCount="searchCount"
-                  :searchViewHasButton="false"
-                  :allTags="allTags" 
-                  :selectedTagNames.sync="selectedTagNames"
-                  :popularTags="popularTags"
-                  :showPlaceholder="loading"
-                  v-on:clickedSearch="catchSearchClicked"
-                  v-on:clearedSearch="catchSearchCleared"
-                  v-on:clickedTag="catchTagClicked"
-                  v-on:clickedTagClose="catchTagCloseClicked"
-                  v-on:clickedClear="catchTagCleared"
-                  />
+    <v-layout row wrap>
 
-    <v-layout column style="z-index: 1;">
+      <v-flex xs12 px-3 
+              class="envidatNavbar" >
 
-<!--
-        v-bind:style="'opacity: ' + 1 - window.scrollTop() / 250"
--->  
+        <nav-bar-view :showFiltering="true"
+                      :searchViewLabelText="searchLabelText"
+                      :searchTerm="searchTerm"
+                      :searchCount="searchCount"
+                      :searchViewHasButton="false"
+                      v-on:clickedSearch="catchSearchClicked"
+                      v-on:clearedSearch="catchSearchCleared"
+                      :allTags="allTags" 
+                      :selectedTagNames="selectedTagNames"
+                      :popularTags="popularTags"
+                      v-on:clickedTag="catchTagClicked"
+                      v-on:clickedTagClose="catchTagCloseClicked"
+                      v-on:clickedClear="catchTagCleared"
+                      :showMapFilter="showMapFilter"
+                      :mapFilteringEnabled="mapFilteringEnabled"
+                      :mapFilterHeight="mapFilterHeight"
+                      v-on:clickedMapExpand="toggleMapExpand"
+                      v-on:mapFilterChanged="catchMapFilterChanged"
+                      v-on:pointClicked="catchPointClicked"
+                      :showPlaceholder="updatingTags"
+                      v-on:controlsChanged="controlsChanged"
+                      />
 
-      <v-container fluid grid-list-md pa-3 @scroll="updateScroll" >
-        <v-layout row wrap>
+      </v-flex>
 
-          <v-flex v-if="loading"
-                  xs12 sm6 md4 xl3
-                  v-for="(n, index) in palceHolderAmount" :key="index">
+      <v-flex px-3 py-2 style="z-index: 1;"
+              v-bind="metadataListStyling"
+       >
 
-            <metadata-card-placeholder :dark="false" />
-  
-          </v-flex>
+       <metadata-list-view :listView="listViewActive"
+                            :compactLayout="showMapFilter"
+                            :hoverId="hoverId"
+                            :mapFilteringEnabled="mapFilteringEnabled"
+                            :placeHolderAmount="placeHolderAmount"
+                            v-on:clickedTag="catchTagClicked"
+       />
 
-          <v-flex v-if="!loading"
-                  xs12 sm6 md4 xl3
-                  v-for="(metadata, index) in filteredMetadataContent" :key="index">
-            <metadata-card
-                          :title="metadata.title"
-                          :id="metadata.id"
-                          :subtitle="metadata.notes"
-                          :tags="metadata.tags"
-                          :titleImg="metadata.titleImg"
-                          :restricted="hasRestrictedResources(metadata)"
-                          :resourceCount="metadata.num_resources"
-                          :resources="metadata.resources"
-                          :dark="false"
-                          v-on:clickedEvent="metaDataClicked"
-                          v-on:clickedTag="catchTagClicked">
-            </metadata-card>
-  
-          </v-flex>
+      </v-flex>
 
-            <v-flex xs12 >
-              <no-search-results-view v-on:clicked="catchCategoryClicked"
-                                      :noResultText="noResultText"
-                                      :suggestionText="suggestionText" />  
-            </v-flex>
+      <v-flex xs4 py-3 pr-3
+              v-if="mapFilteringEnabled && showMapFilter" >
 
+        <filter-map-view style="position: -webkit-sticky; position: sticky; top: 151px;"
+                          :totalHeight="mapFilterHeight"
+                          :expanded="showMapFilter"
+                          v-on:clickedMapExpand="toggleMapExpand"
+                          v-on:viewChanged="catchMapFilterChanged"
+                          v-on:pointClicked="catchPointClicked"
+                          v-on:pointHover="catchPointHovered"
+                          v-on:pointHoverLeave="catchPointHoverLeave"
+                           />
 
-        </v-layout>
-      </v-container>
+      </v-flex>
 
     </v-layout>
+
   </v-container>
   
 </template>
@@ -70,11 +72,14 @@
 <script>
   import { mapGetters } from 'vuex';
   import NavBarView from '../Views/NavbarView';
-  import MetadataCard from '../Views/Cards/MetadataCard';
-  import MetadataCardPlaceholder from '../Views/Cards/MetadataCardPlaceholder';
-  import NoSearchResultsView from '../Views/Errors/NoSearchResultsView';
-  import { SEARCH_METADATA } from '../../store/metadataMutationsConsts';
-  import { CHANGE_APP_BG } from '../../store/mutationsConsts';
+  import FilterMapView from '../Views/Filtering/FilterMapView';
+  import MetadataListView from '../Views/MetadataViews/MetadataListView';
+  import {
+    SEARCH_METADATA,
+    CLEAR_SEARCH_METADATA,
+    FILTER_METADATA,
+  } from '../../store/metadataMutationsConsts';
+  import { SET_APP_BACKGROUND } from '../../store/mutationsConsts';
 
   // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
@@ -82,7 +87,7 @@
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
       next((vm) => {
         // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
-        vm.$store.commit(CHANGE_APP_BG, vm.PageBGImage);
+        vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
     },
     mounted: function mounted() {
@@ -99,17 +104,24 @@
     methods: {
       loadRouteTags: function loadRouteTags() {
         const tagsEncoded = this.$route.query.tags ? this.$route.query.tags : '';
-        // console.log("loadRouteTags " + tagsEncoded);
+        let decodedTags = [];
 
         if (tagsEncoded.length > 0) {
-          this.selectedTagNames = this.decodeTagsFromUrl(tagsEncoded);
-        } else {
-          const category = this.$route.params.category ? this.$route.params.category : null;
-          this.selectedTagNames = this.decodeCategoryFromUrl(category);
+          decodedTags = this.decodeTagsFromUrl(tagsEncoded);
+        }
+
+        if (this.selectedTagNames !== decodedTags) {
+          // console.log("loadRouteTags " + this.selectedTagNames + " " + decodedTags);
+          this.selectedTagNames = decodedTags;
         }
       },
       loadRouteSearch: function loadRouteSearch() {
         const search = this.$route.query.search ? this.$route.query.search : '';
+
+        if (this.searchTerm === search) {
+          return;
+        }
+
         // console.log("loadRouteSearch " + search);
 
         if (search.length > 0) {
@@ -121,57 +133,22 @@
       updateScroll: function updateScroll() {
         this.scrollPosition = window.scrollY;
       },
-      metaDataClicked: function metaDataClicked(datasetname) {
-        this.$router.push({
-          name: 'MetadataDetailPage',
-          params: {
-            metadataid: datasetname,
-          },
-        });
-      },
-      additiveChangeRoute: function additiveChangeRoute(search, tags) {
-        const query = {};
-
-        if (search !== undefined) {
-          query.search = search;
-        } else if (this.$route.query.search) {
-          query.search = this.$route.query.search;
-        }
-
-        if (tags !== undefined) {
-          query.tags = tags;
-        } else if (this.$route.query.tags) {
-          query.tags = this.$route.query.tags;
-        }
-        // console.log("additiveChangeRoute search: " + query.search + " tags: " + query.tags);
-
-        this.$router.push({
-          path: '/browse',
-          query,
-        });
-      },
       decodeCategoryFromUrl: function decodeCategoryFromUrl(urlquery) {
         if (urlquery) {
           // TODO: figure out which tags should be auto selected
-          console.log("got category via url: " + urlquery);
+          // console.log("got category via url: " + urlquery);
         }
 
         // return an empty array for the selectedTagNames
         return [];
       },
       catchTagClicked: function catchTagClicked(tagName) {
-        const index = this.allTags.findIndex(obj => obj.name === tagName);
-        const tag = this.allTags[index];
-
-        if (!tag) {
-          return;
-        }
-
         if (!this.isTagSelected(tagName)) {
           this.selectedTagNames.push(tagName);
 
           const tagsEncoded = this.encodeTagForUrl(this.selectedTagNames);
           this.additiveChangeRoute(undefined, tagsEncoded);
+          this.filterContent();
         }
       },
       catchTagCloseClicked: function catchTagCloseClicked(tagId) {
@@ -186,10 +163,12 @@
 
           const tagsEncoded = this.encodeTagForUrl(this.selectedTagNames);
           this.additiveChangeRoute(undefined, tagsEncoded);
+          this.filterContent();
         }
       },
       catchTagCleared: function catchTagCleared() {
         this.selectedTagNames = [];
+        this.filterContent();
       },
       catchSearchClicked: function catchSearchClicked(searchTerm) {
         /* eslint-disable no-param-reassign */
@@ -200,10 +179,12 @@
 
           if (this.searchTerm && this.searchTerm.length > 0) {
             this.isSearchResultContent = true;
-            this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm);
+            this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm, this.selectedTagNames);
 
             this.additiveChangeRoute(this.searchTerm, undefined);
           }
+
+          // this.filterContent();
         }
       },
       catchSearchCleared: function catchSearchCleared() {
@@ -215,17 +196,51 @@
         // if (queryLength > 0 && this.$route.query.search) {
         this.additiveChangeRoute(this.searchTerm, undefined);
         // }
-      },
-      catchCategoryClicked: function catchCategoryClicked(cardTitle) {
-        // sleep(500);
-        // setTimeout(this.$router.push({ name: 'BrowsePage', params: { cardTitle }}), 1000);
 
-        this.$router.push({
-          path: '/browse',
-          query: {
-            search: cardTitle,
-          },
-        });
+        this.$store.commit(`metadata/${CLEAR_SEARCH_METADATA}`);
+      },
+      catchMapFilterChanged: function catchMapFilterChanged(visibleIds) {
+        this.mapFilterVisibleIds = visibleIds;
+      },
+      catchPointClicked: function catchPointClicked(id) {
+        // bring to top
+        // highlight entry
+      },
+      catchPointHovered: function catchPointHovered(id) {
+        // bring to top
+        // highlight entry
+        const domElement = this.$refs[id];
+        if (domElement && domElement.length > 0) {
+          this.hoverId = id;
+        }
+      },
+      catchPointHoverLeave: function catchPointHoverLeave(id) {
+        // bring to top
+        // highlight entry
+        this.hoverId = '';
+      },
+      controlsChanged: function controlsChanged(controlsActive) {
+        // 0-entry: listView, 1-entry: mapActive
+        // console.log('controlsActive ' + controlsActive + ' ' + JSON.stringify(controlsActive));
+        let listActive = false;
+        let mapToggled = false;
+
+        for (let index = 0; index < controlsActive.length; index++) {
+          const el = controlsActive[index];
+
+          if (el === 0) {
+            listActive = true;
+          }
+          if (el === 1) {
+            mapToggled = true;
+          }
+        }
+
+        this.listViewActive = listActive;
+        this.showMapFilter = mapToggled;
+      },
+      toggleMapExpand: function toggleMapExpand() {
+        this.showMapFilter = !this.showMapFilter;
       },
       isTagSelected: function isTagSelected(tagName) {
         if (!tagName || this.selectedTagNames === undefined) {
@@ -234,71 +249,18 @@
 
         return this.selectedTagNames.indexOf(tagName) >= 0;
       },
-      tagsIncludedInSelectedTags: function tagsIncludedInSelectedTags(tags) {
-        const tagNames = [];
+      contentFilterMapIds: function contentFilterMapIds(contentList) {
+        const visibleContent = [];
 
-        for (let i = 0; i < tags.length; i++) {
-          const tagName = tags[i].name;
+        for (let i = 0; i < contentList.length; i++) {
+          const el = contentList[i];
 
-          if (tagName) {
-            tagNames.push(tagName);
+          if (this.mapFilterVisibleIds.includes(el.id)) {
+            visibleContent.push(el);
           }
         }
 
-        if (tagNames.length <= 0) {
-          return false;
-        }
-
-        for (let j = 0; j < this.selectedTagNames.length; j++) {
-          const selectedTagName = this.selectedTagNames[j];
-
-          if (!tagNames.includes(selectedTagName)) {
-            return false;
-          }
-        }
-
-        return true;
-      },
-      contentFilteredByTags: function contentFilteredByTags(contentList) {
-        const filteredContent = [];
-
-        if (contentList.length > 0) {
-          const metaDataKeys = Object.keys(contentList);
-
-          for (let i = 0; i < metaDataKeys.length; i++) {
-            const key = metaDataKeys[i];
-            const value = contentList[key];
-
-            if (value.tags && this.tagsIncludedInSelectedTags(value.tags)) {
-              filteredContent.push(value);
-            }
-          }
-        }
-
-        return filteredContent;
-      },
-      enhanceSearchWithTags: function enhanceSearchWithTags(searchResult) {
-        if (searchResult === undefined || searchResult.length <= 0 || this.allTags === undefined) {
-          return undefined;
-        }
-
-        for (let i = 0; i < searchResult.length; i++) {
-          const el = searchResult[i];
-
-          for (let j = 0; j < el.tags.length; j++) {
-            const element = el.tags[j];
-
-            const index = this.allTags.findIndex(obj => obj.name === element);
-            const tag = this.allTags[index];
-
-            if (tag) {
-              /* eslint-disable no-param-reassign */
-              el.tags[j] = tag;
-            }
-          }
-        }
-
-        return searchResult;
+        return visibleContent;
       },
       dynamicCardBackground: function dynamicCardBackground() {
         const max = Object.keys(this.imagesImports).length;
@@ -312,14 +274,12 @@
 
         return '';
       },
-      updateSearchCount: function updateSearchCount(searchResult) {
-        this.searchCount = searchResult !== undefined ? searchResult.length : 0;
-      },
       hasRestrictedResources: function hasRestrictedResources(metadata) {
         if (!metadata || !metadata.resources || metadata.resources.length <= 0) {
           return false;
         }
 
+        /* eslint-disable consistent-return  */
         metadata.resources.forEach((res) => {
           if (res.restricted !== undefined
             && (res.restricted.allowed_users !== undefined ||
@@ -330,6 +290,9 @@
 
         return false;
       },
+      filterContent: function filterContent() {
+        this.$store.dispatch(`metadata/${FILTER_METADATA}`, this.selectedTagNames);
+      },
     },
     computed: {
       ...mapGetters({
@@ -337,59 +300,59 @@
         metadatasContent: 'metadata/metadatasContent',
         searchedMetadatasContent: 'metadata/searchedMetadatasContent',
         searchingMetadatasContent: 'metadata/searchingMetadatasContent',
+        searchingMetadatasContentOK: 'metadata/searchingMetadatasContentOK',
         loadingMetadataIds: 'metadata/loadingMetadataIds',
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
+        filteredContent: 'metadata/filteredContent',
         // tag Object structure: { tag: tagName, count: tagCount }
         allTags: 'metadata/allTags',
         currentMetadata: 'metadata/currentMetadata',
-        cardBGImages: 'cardBGImages',
+        updatingTags: 'metadata/updatingTags',
       }),
-      loading: function loading() {
-        return this.loadingMetadataIds || this.searchingMetadatasContent ||
-        (this.loadingMetadatasContent && this.metadatasContentSize < this.palceHolderAmount);
-      },
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
       },
       searchMetadatasContentSize: function searchMetadatasContentSize() {
         return this.searchedMetadatasContent !== undefined ? Object.keys(this.searchedMetadatasContent).length : 0;
       },
-      filteredMetadataContent: function filteredMetadataContent() {
-        let contentToFilter;
+      mapFilterHeight: function mapFilterHeight() {
+        const sHeight = document.documentElement.clientHeight;
+        let height = this.maxMapFilterHeight;
 
-        if (this.isSearchResultContent) {
-          // console.log("search content " + this.searchMetadatasContentSize);
-
-          if (this.searchTerm && this.searchTerm.length > 0
-          && this.searchMetadatasContentSize > 0) {
-            contentToFilter = Object.values(this.searchedMetadatasContent);
-            contentToFilter = this.enhanceSearchWithTags(contentToFilter);
-            // console.log("use search content " + contentToFilter.length);
-          }
-        } else {
-          contentToFilter = Object.values(this.metadatasContent);
-          // console.log("use local content " + contentToFilter.length);
+        if (sHeight < this.maxMapFilterHeight) {
+          height = sHeight - 110;
         }
 
-        if (contentToFilter) {
-          contentToFilter = this.enhanceMetadata(contentToFilter, this.cardBGImages);
-
-          if (this.selectedTagNames !== undefined
-          && this.selectedTagNames.length > 0) {
-            contentToFilter = this.contentFilteredByTags(contentToFilter);
-          }
-        }
-
-        this.updateSearchCount(contentToFilter);
-
-        return contentToFilter;
+        return height;
       },
       popularTags: function popularTags() {
+        const popTags = [];
+
         if (this.allTags) {
-          return this.allTags.slice(0, this.popularTagAmount);
+          for (let i = 0; i < this.allTags.length; i++) {
+            const tag = this.allTags[i];
+
+            popTags.push(tag);
+          }
         }
 
-        return [];
+        return popTags;
+      },
+      metadataListStyling: function metadataListStyling() {
+        const json = {
+          xs8: this.mapFilteringEnabled && this.showMapFilter,
+          xs12: this.mapFilteringEnabled && !this.showMapFilter,
+          'mt-2': !this.showMapFilter,
+          // style: this.showMapFilter ? `margin-top: -${this.mapFilterHeight}px;` : '',
+        };
+
+        return json;
+      },
+      mapFilteringEnabled: function mapFilteringEnabled() {
+        return this.$vuetify.breakpoint.lgAndUp;
+      },
+      searchCount: function searchCount() {
+        return this.filteredContent !== undefined ? this.filteredContent.length : 0;
       },
     },
     watch: {
@@ -400,27 +363,37 @@
         this.loadRouteTags();
         this.loadRouteSearch();
 
+        window.scrollTo(0, this.scrollPosition);
         // console.log('watch $route ', this.$route.query.toString() + " to " + to.query + " from " + from.query);
+      },
+      metadatasContent: function watchFilterContent() {
+        this.filterContent();
+      },
+      searchingMetadatasContentOK: function watchSearchFilterContent() {
+        this.filterContent();
       },
     },
     data: () => ({
       PageBGImage: './app_b_browsepage.jpg',
       searchTerm: '',
       searchLabelText: 'Search',
-      searchCount: 0,
-      palceHolderAmount: 6,
+      placeHolderAmount: 6,
       isSearchResultContent: false,
       noResultText: 'Nothing found for these Search criterias',
       suggestionText: 'Try one of these categories',
       selectedTagNames: [],
       popularTagAmount: 10,
-      scrollPosition: null,
+      scrollPosition: 0,
+      showMapFilter: false,
+      maxMapFilterHeight: 750,
+      mapFilterVisibleIds: [],
+      hoverId: '',
+      listViewActive: false,
     }),
     components: {
       NavBarView,
-      NoSearchResultsView,
-      MetadataCard,
-      MetadataCardPlaceholder,
+      FilterMapView,
+      MetadataListView,
     },
 };
 </script>

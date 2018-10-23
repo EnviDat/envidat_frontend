@@ -1,61 +1,33 @@
 <template>
-  <v-card hover raised >
-    <!-- long slim search bar  -->
+  <v-card hover
+          raised >
 
-    <v-layout row
-              align-center
-              hidden-xs-only
-              justify-space-between>
+    <v-layout row 
+              align-center >
 
-      <v-flex sm8 md8 xl10 pl-3>
-        <v-text-field
-          single-line
-          hide-details
-          full-width
-          solo
-          flat
-          prepend-icon="search"
-          :prepend-icon-cb="clicked"
-          v-on:keyup.enter="clicked"
-          v-model="searchText"
-          :label="labelText">          
-        </v-text-field>
-      </v-flex>
-
-      <v-flex sm4 lg3 xl2 
-              v-if="hasButton">
-        <v-btn color="primary"
-                v-bind="{ [`large`]: this.$vuetify.breakpoint.mdAndUp}"
-                @click.native="clicked"> {{ buttonText }}</v-btn>
-      </v-flex>
-
-    </v-layout>
-
-    <!-- small thick search bar  -->
-
-    <v-layout column hidden-sm-and-up>
-
-      <v-flex xs12 mx-1>
+      <v-flex xs8 sm9 pl-2>
         <v-text-field
           hide-details
           full-width  
+          solo
+          flat
           prepend-icon="search"
-          :prepend-icon-cb="clicked"
+          @click:prepend="clicked"
+          v-on:keyup.enter="clicked"
           v-model="searchText"
-          :label="labelText">          
+          :label="labelText">
         </v-text-field>
       </v-flex>
-
-      <v-card-actions v-if="hasButton">
-
-        <v-spacer></v-spacer>
-
-        <v-btn  color="primary"
-                large
-                @click.native="clicked"> {{ buttonText }}</v-btn>
-      </v-card-actions>
-
     </v-layout>
+
+    <v-card-actions v-if="hasButton"
+                    class="ma-0 pa-2"
+                    style="position: absolute; bottom: 0; right: 0;">
+
+      <v-btn  color="primary"
+              small
+              @click.native="clicked"> {{ buttonText }}</v-btn>
+    </v-card-actions>
     
   </v-card>
 </template>
