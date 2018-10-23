@@ -26,6 +26,7 @@ const conversion = require('./conversion');
 export default {
   [SEARCH_METADATA](state) {
     state.searchingMetadatasContent = true;
+    state.searchingMetadatasContentOK = false;
     state.searchedMetadatasContent = {};
   },
   [SEARCH_METADATA_SUCCESS](state, payload, showRestrictedContent = false) {

@@ -21,11 +21,14 @@
 
         </v-flex>
 
-        <v-flex v-if="!loading"
+        <v-flex v-if="!loading && !loadingContent"
                 v-bind="cardGridClass"
                 v-for="(metadata, index) in filteredContent" :key="index">
 
-            <transition name="fadeIn">                    
+            <transition
+              name="fade"
+              mode="out-in"
+            >
             <metadata-card
                         :title="metadata.title"
                         :id="metadata.id"
@@ -47,7 +50,7 @@
 
         </v-flex>
 
-        <v-flex xs12 v-if="!loading && !filteredContent">
+        <v-flex xs12 v-if="!loading && filteredContentSize <= 0">
             <no-search-results-view v-on:clicked="catchCategoryClicked"
                                     :noResultText="noResultText"
                                     :suggestionText="suggestionText" />  
@@ -94,17 +97,21 @@ export default {
         searchedMetadatasContent: 'metadata/searchedMetadatasContent',
         searchingMetadatasContent: 'metadata/searchingMetadatasContent',
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
-        currentMetadata: 'metadata/currentMetadata',
         filteredContent: 'metadata/filteredContent',
         isFilteringContent: 'metadata/isFilteringContent',
         cardBGImages: 'cardBGImages',
       }),
       loading: function loading() {
+        // console.log("loading " + this.isFilteringContent + " " + this.searchingMetadatasContent);
         return this.isFilteringContent || this.searchingMetadatasContent;
         // return this.isFilteringContent || this.contentSize(this.filteredContent) <= 0;
       },
       loadingContent: function loadingContent() {
+        // console.log("loadingContent " + this.loadingMetadatasContent + " " + this.contentSize(this.filteredContent));
         return (this.loadingMetadatasContent && this.contentSize(this.filteredContent) < this.placeHolderAmount);
+      },
+      filteredContentSize: function filteredContentSize() {
+        return this.contentSize(this.filteredContent);
       },
       cardGridClass: function cardGridClass() {
         if (this.mapFilteringEnabled && this.compactLayout) {
@@ -180,5 +187,17 @@ export default {
 
 
 <style scoped>
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition-duration: 0.3s;
+    transition-property: opacity;
+    transition-timing-function: ease;
+  }
+
+  .fade-enter,
+  .fade-leave-active {
+    opacity: 0
+  }
 
 </style>
