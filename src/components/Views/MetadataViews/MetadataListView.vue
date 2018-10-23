@@ -92,6 +92,9 @@ export default {
       filteredContent: function watchEnhanceMetadata() {
         this.enhanceContent();
       },
+      searchingMetadatasContentOK: function watchSearchFilterContent() {
+        this.enhanceContent(true);
+      },
     },
     computed: {
       ...mapGetters({
@@ -99,6 +102,7 @@ export default {
         metadatasContent: 'metadata/metadatasContent',
         searchedMetadatasContent: 'metadata/searchedMetadatasContent',
         searchingMetadatasContent: 'metadata/searchingMetadatasContent',
+        searchingMetadatasContentOK: 'metadata/searchingMetadatasContentOK',
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
         filteredContent: 'metadata/filteredContent',
         isFilteringContent: 'metadata/isFilteringContent',
@@ -140,8 +144,8 @@ export default {
 
     },
     methods: {
-      enhanceContent: function enhanceContent() {
-        if (this.enhanceContentDone) return;
+      enhanceContent: function enhanceContent(force = false) {
+        if (this.enhanceContentDone && !force) return;
 
         if (this.filteredContent && this.filteredContent.length > 0) {
           const enhancedContent = this.enhanceMetadata(this.filteredContent, this.cardBGImages);
