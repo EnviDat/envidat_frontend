@@ -15,7 +15,7 @@
 
  {{ title | truncate(maxTitleLength) }} -->
     <v-card-text >
-      <m-markdown-preview :markdown="fullDescription" :options="{html: true}" />
+      <m-markdown-preview :markdown="fullDescription" :options="{ html: true, xhtmlOut: true, linkify: true, breaks: true }" />
     </v-card-text>
 
     <v-card-actions v-if="maxDescriptionLengthReached"

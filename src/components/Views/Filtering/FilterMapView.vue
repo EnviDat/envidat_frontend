@@ -3,15 +3,26 @@
   <v-card raised
           :height="totalHeight"
   >
-    <div v-if="expanded"
+
+    <v-card-title>
+      <div class="headline mb-0">Cartographic Filtering is under construction</div>
+      <div class="pt-2" style="color: red;" >Filtering is not implemented! Currently the map is just for browsing.</div>
+    </v-card-title>  
+
+    <div v-if="expanded && !errorLoadingLeaflet"
           id="map"
           ref="map"
           v-bind="mapViewHeight" />
-      
+
+    <div v-if="expanded && errorLoadingLeaflet"
+          v-bind="mapViewHeight" >
+          Error loading leaflet
+    </div>
+
     <v-card-actions class="pr-2">
 
 
-        <v-tooltip bottom>
+        <!-- <v-tooltip bottom>
           <v-btn v-if="expanded"
                   slot="activator"
                   class="px-0"
@@ -24,7 +35,7 @@
           </v-btn>
 
           <span>Map filtering is {{ mapFilteringActive ? '' : 'not' }} active</span>
-        </v-tooltip>
+        </v-tooltip> -->
 
       <v-spacer />
 
@@ -78,6 +89,9 @@ export default {
     expanded: Boolean,
   },
   mounted: function mounted() {
+    // if (L){
+    //   L.on('error', this.checkError);
+    // }
     this.setupMap();
   },
   beforeDestroy: function beforeDestroy() {
@@ -117,11 +131,16 @@ export default {
     // },
   },
   methods: {
+    checkError: function checkError(e) {
+      // console.log('got error ' + e);
+      this.errorLoadingLeaflet = true;
+    },
     // expandClicked: function expandClicked(expand) {
     //   this.expanded = expand;
     // },
     catchPointClick: function catchPointClick(e) {
       this.$emit('pointClicked', e.target.id);
+      this.$emit('pointHover', e.target.id);
     },
     catchPointHover: function catchPointHover(e) {
       this.$emit('pointHover', e.target.id);
@@ -149,15 +168,24 @@ export default {
       this.map = this.initLeaflet(this.$refs.map, this.pointArray);
       this.markerCount = 0;
 
-      this.addOpenStreetMapLayer(this.map);
+      if (this.map) {
+        this.map.on('locationerror', this.checkError);
 
-      this.addGeoJSONToMap();
+        this.addOpenStreetMapLayer(this.map);
 
-      this.map.on('moveend', this.reFilter);
+        this.addGeoJSONToMap();
 
-      this.mapIsSetup = true;
+        this.map.on('moveend', this.reFilter);
+
+        this.mapIsSetup = true;
+      }
     },
     initLeaflet: function initLeaflet(mapElement, coords) {
+      // if (!L){
+      //   errorLoadingLeaflet = true;
+      //   return undefined;
+      // }
+
       let viewCoords = [46.943961, 8.199240];
 
       if (coords) {
@@ -320,12 +348,13 @@ export default {
   data: () => ({
     map: null,
     mapIsSetup: false,
-    buttonHeight: 50,
+    buttonHeight: 130,
     updatingMap: true,
     addedObjectsKeys: [],
     mapFilteringActive: false,
     markerCount: 0,
     hoverBadge: false,
+    errorLoadingLeaflet: false,
   }),
   components: {
     IconCountView,

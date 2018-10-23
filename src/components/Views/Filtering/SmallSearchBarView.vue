@@ -1,14 +1,17 @@
 <template>
-  <v-card hover raised >
+  <v-card raised height="40">
 
     <!-- long slim search bar  -->
 
     <v-layout row
               align-center
+              fill-height
               justify-space-between>
 
-      <v-flex xs10 sm8 md9 lg10 py-0 pl-3 >
+      <v-flex xs10 sm8 md9 lg10 py-0 pl-2 fill-height>
+
         <v-text-field
+            class="envidatSmallSearch"
             single-line
             hide-details
             clearable
@@ -19,8 +22,9 @@
             v-on:keyup.enter="clicked"
             v-model="searchText"
             @click:clear="clearClicked"
-            placeholder="Search">
+            :placeholder="placeHolderText">
         </v-text-field>
+
       </v-flex>
 
       <v-flex xs2 sm4 md3 lg2 pa-0
@@ -29,6 +33,7 @@
         <v-tooltip bottom >
           
           <tag-chip slot="activator"
+                  style="font-size: 0.75rem !important;"
                   :name="searchCount.toString()"
                   :selectable="false"
                   :highlighted="searchCount > 0"
@@ -65,6 +70,7 @@
     data: () => ({
       searchText: '',
       lastSearch: '',
+      placeHolderText: 'Search for research topics',
     }),
     updated: function updated() {
       if (!this.searchText && this.lastSearch) {
@@ -113,5 +119,18 @@
   min-height: 0px !important;
 }
 
+/*
+.envidatSmallSearch {
+    height: 40px !important; 
+}
+*/
+
+.envidatSmallSearch > .v-input__control {
+    min-height: 40px !important;
+}
+
+.envidatSmallSearch > .v-input__append-outer {
+  margin: auto !important;
+}
 
 </style>

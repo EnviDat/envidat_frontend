@@ -9,12 +9,15 @@
       >
 
         <v-tooltip bottom style="position: absolute; top 0; right: 0;">
-          <v-btn icon flat color="primary"
+
+          <v-btn icon flat
+                  color="primary"
                   style="font-size: 30px !important;"
-                  @click.native="$router.go(-1)" slot="activator">
+                  @click.native="catchBackClicked" slot="activator">
             <v-icon>close</v-icon>
           </v-btn>        
           <span>Close Metadata</span>
+
         </v-tooltip>
 
         <!--h1 class="py-3" >{{ metadataTitle }} id: {{ $route.params.id }}</h1-->
@@ -75,6 +78,7 @@
           <tag-chip v-if="tags"
                     v-for="tag in slicedTags" :key="tag.name"
                     :name="tag.name"
+                    :selectable="true"
                     v-on:clicked="catchTagClicked($event, tag.name)"
                     class="headerTag" />
 
@@ -133,11 +137,15 @@ export default {
     showTagsExpanded: false,
     dark: false,
     blackTopToBottom: 'rgba(80,80,80, 0.1) 0%, rgba(80,80,80, 0.9) 70%',
-    whiteTopToBottom: 'rgba(255,255,255, 0.3) 0%, rgba(255,255,255, 1) 60%',
+    // whiteTopToBottom: 'rgba(255,255,255, 0.3) 0%, rgba(255,255,255, 1) 60%',
+    whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
   }),
   methods: {
     catchTagClicked: function catchTagClicked(tagId) {
       this.$emit('clickedTag', tagId);
+    },
+    catchBackClicked: function catchBackClicked() {
+      this.$emit('clickedBack');
     },
     iconFlip: function iconFlip(icon) {
       const iconflip = this.dark ? `${icon}_w` : icon;
@@ -199,7 +207,7 @@ export default {
   }
 
   .headerTag {
-    opacity: 0.75;
+    opacity: 0.85;
   }
 
 </style>

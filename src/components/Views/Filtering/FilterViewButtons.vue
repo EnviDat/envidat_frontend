@@ -1,5 +1,5 @@
 <template>
-  <v-card raised>
+  <!-- <v-card raised> -->
     <v-layout row style="min-height: 48px;"
               align-center
               justify-end>
@@ -30,7 +30,7 @@
 
         </v-flex>
     </v-layout>
-  </v-card>
+  <!-- </v-card> -->
 </template>
 
 <script>

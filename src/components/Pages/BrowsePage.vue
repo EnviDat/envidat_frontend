@@ -17,7 +17,7 @@
                       v-on:clickedSearch="catchSearchClicked"
                       v-on:clearedSearch="catchSearchCleared"
                       :allTags="allTags" 
-                      :selectedTagNames.sync="selectedTagNames"
+                      :selectedTagNames="selectedTagNames"
                       :popularTags="popularTags"
                       v-on:clickedTag="catchTagClicked"
                       v-on:clickedTagClose="catchTagCloseClicked"
@@ -28,7 +28,8 @@
                       v-on:clickedMapExpand="toggleMapExpand"
                       v-on:mapFilterChanged="catchMapFilterChanged"
                       v-on:pointClicked="catchPointClicked"
-                      :showPlaceholder="loadingAllTags"
+                      :showPlaceholder="updatingTags"
+                      v-on:controlsChanged="controlsChanged"
                       />
 
       </v-flex>
@@ -36,62 +37,21 @@
       <v-flex px-3 py-2 style="z-index: 1;"
               v-bind="metadataListStyling"
        >
-        <v-container fluid grid-list-lg pa-0
-                       >
 
-          <v-layout row wrap>
-
-            <v-flex v-if="loading || loadingContent"
-                    v-bind="cardGridClass"
-                    v-for="(n, index) in palceHolderAmount" :key="index">
-
-              <metadata-card-placeholder :dark="false" />
-    
-            </v-flex>
-
-            <v-flex v-if="!loading"
-                    v-bind="cardGridClass"
-                    v-for="(metadata, index) in filteredMetadataContent" :key="index">
-
-              <transition name="fadeIn">                    
-              <metadata-card
-                            :title="metadata.title"
-                            :id="metadata.id"
-                            :name="metadata.name"
-                            :ref="metadata.id"
-                            :subtitle="metadata.notes"
-                            :tags="metadata.tags"
-                            :titleImg="metadata.titleImg"
-                            :restricted="hasRestrictedResources(metadata)"
-                            :resourceCount="metadata.num_resources"
-                            :resources="metadata.resources"
-                            :dark="false"
+       <metadata-list-view :listView="listViewActive"
                             :compactLayout="showMapFilter"
-                            :class="{ ['elevation-10'] : hoverId === metadata.id }"
-                            v-on:clickedEvent="metaDataClicked"
-                            v-on:clickedTag="catchTagClicked">
-              </metadata-card>
-              </transition>
-    
-            </v-flex>
-
-            <v-flex xs12 v-if="!loading && !filteredMetadataContent">
-              <no-search-results-view v-on:clicked="catchCategoryClicked"
-                                      :noResultText="noResultText"
-                                      :suggestionText="suggestionText" />  
-            </v-flex>
-
-
-          </v-layout>
-
-        </v-container>
+                            :hoverId="hoverId"
+                            :mapFilteringEnabled="mapFilteringEnabled"
+                            :placeHolderAmount="placeHolderAmount"
+                            v-on:clickedTag="catchTagClicked"
+       />
 
       </v-flex>
 
       <v-flex xs4 py-3 pr-3
               v-if="mapFilteringEnabled && showMapFilter" >
 
-        <filter-map-view style="position: -webkit-sticky; position: sticky; top: 100px;"
+        <filter-map-view style="position: -webkit-sticky; position: sticky; top: 151px;"
                           :totalHeight="mapFilterHeight"
                           :expanded="showMapFilter"
                           v-on:clickedMapExpand="toggleMapExpand"
@@ -113,11 +73,13 @@
   import { mapGetters } from 'vuex';
   import NavBarView from '../Views/NavbarView';
   import FilterMapView from '../Views/Filtering/FilterMapView';
-  import MetadataCard from '../Views/Cards/MetadataCard';
-  import MetadataCardPlaceholder from '../Views/Cards/MetadataCardPlaceholder';
-  import NoSearchResultsView from '../Views/NoSearchResultsView';
-  import { SEARCH_METADATA } from '../../store/metadataMutationsConsts';
-  import { CHANGE_APP_BG } from '../../store/mutationsConsts';
+  import MetadataListView from '../Views/MetadataViews/MetadataListView';
+  import {
+    SEARCH_METADATA,
+    CLEAR_SEARCH_METADATA,
+    FILTER_METADATA,
+  } from '../../store/metadataMutationsConsts';
+  import { SET_APP_BACKGROUND } from '../../store/mutationsConsts';
 
   // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
@@ -125,7 +87,7 @@
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
       next((vm) => {
         // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
-        vm.$store.commit(CHANGE_APP_BG, vm.PageBGImage);
+        vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
     },
     mounted: function mounted() {
@@ -142,17 +104,24 @@
     methods: {
       loadRouteTags: function loadRouteTags() {
         const tagsEncoded = this.$route.query.tags ? this.$route.query.tags : '';
-        // console.log("loadRouteTags " + tagsEncoded);
+        let decodedTags = [];
 
         if (tagsEncoded.length > 0) {
-          this.selectedTagNames = this.decodeTagsFromUrl(tagsEncoded);
-        } else {
-          const category = this.$route.params.category ? this.$route.params.category : null;
-          this.selectedTagNames = this.decodeCategoryFromUrl(category);
+          decodedTags = this.decodeTagsFromUrl(tagsEncoded);
+        }
+
+        if (this.selectedTagNames !== decodedTags) {
+          // console.log("loadRouteTags " + this.selectedTagNames + " " + decodedTags);
+          this.selectedTagNames = decodedTags;
         }
       },
       loadRouteSearch: function loadRouteSearch() {
         const search = this.$route.query.search ? this.$route.query.search : '';
+
+        if (this.searchTerm === search) {
+          return;
+        }
+
         // console.log("loadRouteSearch " + search);
 
         if (search.length > 0) {
@@ -164,35 +133,6 @@
       updateScroll: function updateScroll() {
         this.scrollPosition = window.scrollY;
       },
-      metaDataClicked: function metaDataClicked(datasetname) {
-        this.$router.push({
-          name: 'MetadataDetailPage',
-          params: {
-            metadataid: datasetname,
-          },
-        });
-      },
-      additiveChangeRoute: function additiveChangeRoute(search, tags) {
-        const query = {};
-
-        if (search !== undefined) {
-          query.search = search;
-        } else if (this.$route.query.search) {
-          query.search = this.$route.query.search;
-        }
-
-        if (tags !== undefined) {
-          query.tags = tags;
-        } else if (this.$route.query.tags) {
-          query.tags = this.$route.query.tags;
-        }
-        // console.log("additiveChangeRoute search: " + query.search + " tags: " + query.tags);
-
-        this.$router.push({
-          path: '/browse',
-          query,
-        });
-      },
       decodeCategoryFromUrl: function decodeCategoryFromUrl(urlquery) {
         if (urlquery) {
           // TODO: figure out which tags should be auto selected
@@ -203,18 +143,12 @@
         return [];
       },
       catchTagClicked: function catchTagClicked(tagName) {
-        const index = this.allTags.findIndex(obj => obj.name === tagName);
-        const tag = this.allTags[index];
-
-        if (!tag) {
-          return;
-        }
-
         if (!this.isTagSelected(tagName)) {
           this.selectedTagNames.push(tagName);
 
           const tagsEncoded = this.encodeTagForUrl(this.selectedTagNames);
           this.additiveChangeRoute(undefined, tagsEncoded);
+          this.filterContent();
         }
       },
       catchTagCloseClicked: function catchTagCloseClicked(tagId) {
@@ -229,10 +163,12 @@
 
           const tagsEncoded = this.encodeTagForUrl(this.selectedTagNames);
           this.additiveChangeRoute(undefined, tagsEncoded);
+          this.filterContent();
         }
       },
       catchTagCleared: function catchTagCleared() {
         this.selectedTagNames = [];
+        this.filterContent();
       },
       catchSearchClicked: function catchSearchClicked(searchTerm) {
         /* eslint-disable no-param-reassign */
@@ -242,30 +178,24 @@
           this.searchTerm = searchTerm;
 
           if (this.searchTerm && this.searchTerm.length > 0) {
-            this.isSearchResultContent = true;
-            this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm);
+            this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm, this.selectedTagNames);
 
             this.additiveChangeRoute(this.searchTerm, undefined);
           }
+
+          // this.filterContent();
         }
       },
       catchSearchCleared: function catchSearchCleared() {
         this.searchTerm = '';
-        this.isSearchResultContent = false;
 
         // const queryLength = Object.keys(this.$route.query).length;
 
         // if (queryLength > 0 && this.$route.query.search) {
         this.additiveChangeRoute(this.searchTerm, undefined);
         // }
-      },
-      catchCategoryClicked: function catchCategoryClicked(cardTitle) {
-        this.$router.push({
-          path: '/browse',
-          query: {
-            search: cardTitle,
-          },
-        });
+
+        this.$store.commit(`metadata/${CLEAR_SEARCH_METADATA}`);
       },
       catchMapFilterChanged: function catchMapFilterChanged(visibleIds) {
         this.mapFilterVisibleIds = visibleIds;
@@ -287,8 +217,25 @@
         // highlight entry
         this.hoverId = '';
       },
-      getMetaCard: function getMetaCard() {
+      controlsChanged: function controlsChanged(controlsActive) {
+        // 0-entry: listView, 1-entry: mapActive
+        // console.log('controlsActive ' + controlsActive + ' ' + JSON.stringify(controlsActive));
+        let listActive = false;
+        let mapToggled = false;
 
+        for (let index = 0; index < controlsActive.length; index++) {
+          const el = controlsActive[index];
+
+          if (el === 0) {
+            listActive = true;
+          }
+          if (el === 1) {
+            mapToggled = true;
+          }
+        }
+
+        this.listViewActive = listActive;
+        this.showMapFilter = mapToggled;
       },
       toggleMapExpand: function toggleMapExpand() {
         this.showMapFilter = !this.showMapFilter;
@@ -299,106 +246,6 @@
         }
 
         return this.selectedTagNames.indexOf(tagName) >= 0;
-      },
-      tagsIncludedInSelectedTags: function tagsIncludedInSelectedTags(tags) {
-        const tagNames = [];
-
-        for (let i = 0; i < tags.length; i++) {
-          const tagName = tags[i].name;
-
-          if (tagName) {
-            tagNames.push(tagName);
-          }
-        }
-
-        if (tagNames.length <= 0) {
-          return false;
-        }
-
-        for (let j = 0; j < tagNames.length; j++) {
-          const element = tagNames[j];
-
-          for (let k = 0; k < this.selectedTagNames.length; k++) {
-            const selectedTag = this.selectedTagNames[k];
-
-            if (element.includes(selectedTag)) {
-              return true;
-            }
-          }
-        }
-
-        return false;
-
-        /*
-        for (let j = 0; j < this.selectedTagNames.length; j++) {
-          const selectedTagName = this.selectedTagNames[j];
-
-          if (!tagNames.includes(selectedTagName)) {
-            return false;
-          }
-        }
-
-        return true;
-        */
-      },
-      contentFilterAccessibility: function contentFilterAccessibility(contentList) {
-        const accessibleContent = [];
-
-        for (let i = 0; i < contentList.length; i++) {
-          const value = contentList[i];
-
-          if (value.capacity && value.capacity === 'public') {
-            // unpublished entries have 'private'
-            accessibleContent.push(value);
-          } else if (value.private && value.private === false) {
-            accessibleContent.push(value);
-          } else {
-            accessibleContent.push(value);
-          }
-        }
-
-        return accessibleContent;
-      },
-      contentFilteredByTags: function contentFilteredByTags(contentList) {
-        const filteredContent = [];
-
-        if (contentList.length > 0) {
-          const metaDataKeys = Object.keys(contentList);
-
-          for (let i = 0; i < metaDataKeys.length; i++) {
-            const key = metaDataKeys[i];
-            const value = contentList[key];
-
-            if (value.tags && this.tagsIncludedInSelectedTags(value.tags)) {
-              filteredContent.push(value);
-            }
-          }
-        }
-
-        return filteredContent;
-      },
-      enhanceSearchWithTags: function enhanceSearchWithTags(searchResult) {
-        if (searchResult === undefined || searchResult.length <= 0 || this.allTags === undefined) {
-          return undefined;
-        }
-
-        for (let i = 0; i < searchResult.length; i++) {
-          const el = searchResult[i];
-
-          for (let j = 0; j < el.tags.length; j++) {
-            const element = el.tags[j];
-
-            const index = this.allTags.findIndex(obj => obj.name === element);
-            const tag = this.allTags[index];
-
-            if (tag) {
-              /* eslint-disable no-param-reassign */
-              el.tags[j] = tag;
-            }
-          }
-        }
-
-        return searchResult;
       },
       contentFilterMapIds: function contentFilterMapIds(contentList) {
         const visibleContent = [];
@@ -425,9 +272,6 @@
 
         return '';
       },
-      updateSearchCount: function updateSearchCount(searchResult) {
-        this.searchCount = searchResult !== undefined ? searchResult.length : 0;
-      },
       hasRestrictedResources: function hasRestrictedResources(metadata) {
         if (!metadata || !metadata.resources || metadata.resources.length <= 0) {
           return false;
@@ -444,6 +288,9 @@
 
         return false;
       },
+      filterContent: function filterContent() {
+        this.$store.dispatch(`metadata/${FILTER_METADATA}`, this.selectedTagNames);
+      },
     },
     computed: {
       ...mapGetters({
@@ -451,20 +298,15 @@
         metadatasContent: 'metadata/metadatasContent',
         searchedMetadatasContent: 'metadata/searchedMetadatasContent',
         searchingMetadatasContent: 'metadata/searchingMetadatasContent',
+        searchingMetadatasContentOK: 'metadata/searchingMetadatasContentOK',
         loadingMetadataIds: 'metadata/loadingMetadataIds',
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
+        filteredContent: 'metadata/filteredContent',
         // tag Object structure: { tag: tagName, count: tagCount }
         allTags: 'metadata/allTags',
-        loadingAllTags: 'metadata/loadingAllTags',
         currentMetadata: 'metadata/currentMetadata',
-        cardBGImages: 'cardBGImages',
+        updatingTags: 'metadata/updatingTags',
       }),
-      loading: function loading() {
-        return this.loadingMetadataIds || this.searchingMetadatasContent;
-      },
-      loadingContent: function loadingContent() {
-        return (this.loadingMetadatasContent && this.metadatasContentSize < this.palceHolderAmount);
-      },
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
       },
@@ -481,42 +323,6 @@
 
         return height;
       },
-      filteredMetadataContent: function filteredMetadataContent() {
-        let contentToFilter;
-
-        if (this.isSearchResultContent) {
-          // console.log("search content " + this.searchMetadatasContentSize);
-
-          if (this.searchTerm && this.searchTerm.length > 0
-          && this.searchMetadatasContentSize > 0) {
-            contentToFilter = Object.values(this.searchedMetadatasContent);
-            contentToFilter = this.enhanceSearchWithTags(contentToFilter);
-            // console.log("use search content " + contentToFilter.length);
-          }
-        } else {
-          contentToFilter = Object.values(this.metadatasContent);
-          // console.log("use local content " + contentToFilter.length);
-        }
-
-        if (contentToFilter && contentToFilter.length > 0) {
-          contentToFilter = this.contentFilterAccessibility(contentToFilter);
-
-          contentToFilter = this.enhanceMetadata(contentToFilter, this.cardBGImages);
-
-          if (this.selectedTagNames !== undefined
-          && this.selectedTagNames.length > 0) {
-            contentToFilter = this.contentFilteredByTags(contentToFilter);
-          }
-        }
-
-        if (this.mapFilterVisibleIds.length > 0) {
-          contentToFilter = this.contentFilterMapIds(contentToFilter);
-        }
-
-        this.updateSearchCount(contentToFilter);
-
-        return contentToFilter;
-      },
       popularTags: function popularTags() {
         const popTags = [];
 
@@ -525,46 +331,10 @@
             const tag = this.allTags[i];
 
             popTags.push(tag);
-            /*
-            const words = tag.name.split(' ').length;
-            // const dashs = tag.name.split('-').length;
-
-            if (words < 2) {
-              // only use single word tags
-              popTags.push(tag);
-            }
-
-            if (popTags.length >= this.popularTagAmount) {
-              break;
-            }
-            */
           }
-
-          // return this.allTags.slice(0, this.popularTagAmount);
         }
 
         return popTags;
-      },
-      cardGridClass: function cardGridClass() {
-        if (this.mapFilteringEnabled && this.showMapFilter) {
-          const twoThridsSize = {
-            xs12: true,
-            sm8: true,
-            md6: true,
-            xl4: true,
-          };
-
-          return twoThridsSize;
-        }
-
-        const fullSize = {
-          xs12: true,
-          sm6: true,
-          md4: true,
-          xl3: true,
-        };
-
-        return fullSize;
       },
       metadataListStyling: function metadataListStyling() {
         const json = {
@@ -579,6 +349,9 @@
       mapFilteringEnabled: function mapFilteringEnabled() {
         return this.$vuetify.breakpoint.lgAndUp;
       },
+      searchCount: function searchCount() {
+        return this.filteredContent !== undefined ? this.filteredContent.length : 0;
+      },
     },
     watch: {
       /* eslint-disable no-unused-vars */
@@ -591,30 +364,33 @@
         window.scrollTo(0, this.scrollPosition);
         // console.log('watch $route ', this.$route.query.toString() + " to " + to.query + " from " + from.query);
       },
+      metadatasContent: function watchFilterContent() {
+        this.filterContent();
+      },
+      searchingMetadatasContentOK: function watchSearchFilterContent() {
+        this.filterContent();
+      },
     },
     data: () => ({
       PageBGImage: './app_b_browsepage.jpg',
       searchTerm: '',
       searchLabelText: 'Search',
-      searchCount: 0,
-      palceHolderAmount: 6,
-      isSearchResultContent: false,
+      placeHolderAmount: 6,
       noResultText: 'Nothing found for these Search criterias',
       suggestionText: 'Try one of these categories',
       selectedTagNames: [],
       popularTagAmount: 10,
       scrollPosition: 0,
-      showMapFilter: true,
+      showMapFilter: false,
       maxMapFilterHeight: 750,
       mapFilterVisibleIds: [],
       hoverId: '',
+      listViewActive: false,
     }),
     components: {
       NavBarView,
       FilterMapView,
-      NoSearchResultsView,
-      MetadataCard,
-      MetadataCardPlaceholder,
+      MetadataListView,
     },
 };
 </script>

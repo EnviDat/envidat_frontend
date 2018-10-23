@@ -1,59 +1,206 @@
 <template>
-  <v-card raised >
-    <v-layout style="min-height: 48px;"
+
+
+  <v-card raised
+  >
+
+        <v-layout column
+                  fill-height
+                  py-1
+        >
+
+          <v-flex xs12 px-2 py-2
+          >
+            <v-layout row
+                      fill-height
+                      v-bind="{
+                        ['align-center']: this.$vuetify.breakpoint.smAndUp,
+                        ['align-content-center']: this.$vuetify.breakpoint.smAndUp,
+                      }"
+            >
+
+                <v-flex pl-2
+                        class="metadataInfoIcon" 
+                >
+                  <icon-label-view :icon="getIcon('tags')"
+                                    iconTooltip="Possible Keywords"
+                  />
+                </v-flex>
+
+                <v-flex xs12
+                        px-2 
+                >
+
+                  <tag-chip v-if="showPopularTags && tag.enabled"
+                            v-for="tag in showPopularTags"
+                            :key="tag.name" 
+                            :name="tag.name"
+                            :selectable="tag.enabled"
+                            :highlighted="false"
+                            :closeable="false"
+                            v-on:clicked="catchTagClicked($event, tag.name)"
+                            class="filterTag" />
+
+                </v-flex>
+
+
+            </v-layout>
+
+          </v-flex>
+
+
+          <v-flex xs12 px-2 py-2
+          >
+
+            <v-layout row
+                      fill-height
+                      v-bind="{
+                        ['align-center']: this.$vuetify.breakpoint.smAndUp,
+                        ['align-content-center']: this.$vuetify.breakpoint.smAndUp,
+                      }"
+            >
+
+                <v-flex pl-2
+                        class="metadataInfoIcon" 
+                >
+                  <icon-label-view :icon="getIcon('tag')"
+                                    iconTooltip="Active Keyword filter"
+                  />
+                </v-flex>
+
+                <v-flex xs12
+                        px-2
+                >
+
+                  <tag-chip v-if="selectedTags.length > 0"
+                            v-for="tag in selectedTags" :key="tag.name" 
+                            :name="tag.name"
+                            :selectable="true"
+                            :highlighted="true"
+                            :closeable="true"
+                            v-on:clickedClose="catchTagCloseClicked($event, tag.name)"
+                            v-on:clicked="catchTagCloseClicked($event, tag.name)"
+                            class="filterTag" />
+
+                </v-flex>
+
+                <!-- <v-flex  >
+
+                  <v-btn icon
+                          @click="clearTags">
+                    <img class="envidatIcon" :src="getIcon('tagRemove')" />
+                  </v-btn>
+
+                </v-flex> -->
+
+            </v-layout>
+
+          </v-flex>
+
+        </v-layout>
+
+
+
+
+    <!-- <v-layout 
+              row
+              fill-height
               v-bind="{
-                ['row']: this.$vuetify.breakpoint.smAndUp,
                 ['align-center']: this.$vuetify.breakpoint.smAndUp,
                 ['align-content-center']: this.$vuetify.breakpoint.smAndUp,
-                ['column']: this.$vuetify.breakpoint.xsOnly,
               }"
       >
 
-      <v-flex xs12 px-2 py-2 >
+      <v-flex pl-2 py-2 >
 
-        <tag-chip v-if="selectedTags.length > 0"
-                  v-for="tag in selectedTags" :key="tag.name" 
-                  :name="tag.name"
-                  :selectable="false"
-                  :highlighted="true"
-                  :closeable="true"
-                  v-on:clickedClose="catchTagCloseClicked($event, tag.name)"
-                  class="filterTag" />
+        <v-layout column
+                  fill-height
+        >
 
-        <tag-chip v-if="showPopularTags"
-                  v-for="tag in showPopularTags" :key="tag.name" 
-                  :name="tag.name"
-                  :selectable="false"
-                  :highlighted="false"
-                  :closeable="false"
-                  v-on:clicked="catchTagClicked($event, tag.name)"
-                  class="filterTag" />
+          <v-flex pl-2 py-2 class="metadataInfoIcon" 
+                  style="min-height: 42px;"
+          >
+            <icon-label-view :icon="getIcon('tags')"
+                              iconTooltip="Possible Keywords"
+            />
+          </v-flex>
 
+          <v-flex pl-2 py-2 class="metadataInfoIcon"
+                  style="min-height: 42px;"
+          >
+            <icon-label-view :icon="getIcon('tag')"
+                              iconTooltip="Active Keyword filter"
+            />
+          </v-flex>
 
-        <tag-chip v-if="maxPopularTagNumber >= showPopularTags.length"
-          class="filterTag" :name="'...'" />
+        </v-layout>
 
       </v-flex>
 
-      <v-flex v-if="showPlaceholder && selectedTags.length <= 0"
-              xs12 px-2 py-2 >
+      <v-flex xs12 px-2 py-2 >
 
-        <tag-chip-placeholder
-                  v-for="n in 5" :key="n" 
-                  :selectable="false"
-                  :highlighted="false"
-                  :closeable="false"
-                  class="filterTag" />
+        <v-layout column
+                  fill-height
+        >
+
+
+          <v-flex xs12 px-2 py-2
+                  style="min-height: 42px;"
+          >
+
+            <tag-chip v-if="showPopularTags && tag.enabled"
+                      v-for="tag in showPopularTags"
+                      :key="tag.name" 
+                      :name="tag.name"
+                      :selectable="tag.enabled"
+                      :highlighted="false"
+                      :closeable="false"
+                      v-on:clicked="catchTagClicked($event, tag.name)"
+                      class="filterTag" />
+
+          </v-flex>
+
+          <v-flex xs12 px-2 py-2 
+                  style="min-height: 42px;"
+          >
+
+            <tag-chip v-if="selectedTags.length > 0"
+                      v-for="tag in selectedTags" :key="tag.name" 
+                      :name="tag.name"
+                      :selectable="true"
+                      :highlighted="true"
+                      :closeable="true"
+                      v-on:clickedClose="catchTagCloseClicked($event, tag.name)"
+                      v-on:clicked="catchTagCloseClicked($event, tag.name)"
+                      class="filterTag" />
+
+          </v-flex>
+
+          <v-flex v-if="showPlaceholder && selectedTags.length <= 0"
+                  xs9 px-2 py-2 >
+
+            <tag-chip-placeholder
+                      v-for="n in 5" :key="n" 
+                      :selectable="false"
+                      :highlighted="false"
+                      :closeable="false"
+                      class="filterTag" />
+
+          </v-flex>
+
+        </v-layout>
 
       </v-flex>
       
-    </v-layout>
+    </v-layout> -->
   </v-card>
 </template>
 
 <script>
+import IconLabelView from '../IconLabelView';
 import TagChip from '../Cards/TagChip';
 import TagChipPlaceholder from '../Cards/TagChipPlaceholder';
+import FilterViewButtons from './FilterViewButtons';
 
 export default {
   props: {
@@ -67,6 +214,7 @@ export default {
     mapExpanded: Boolean,
     mapExpandButtonText: String,
     mapExpandedButtonText: String,
+    isHighlighted: Boolean,
   },
   computed: {
     selectedTags: function selectedTags() {
@@ -75,16 +223,10 @@ export default {
       const selecteds = [];
 
       if (this.selectedTagNames !== undefined && this.selectedTagNames.length > 0) {
-        for (let i = 0; i < this.allTags.length; i++) {
-          const element = this.allTags[i];
+        for (let i = 0; i < this.selectedTagNames.length; i++) {
+          const element = this.selectedTagNames[i];
 
-          if (this.isTagSelected(element.name)) {
-            selecteds.push(element);
-          }
-
-          if (selecteds.length >= this.selectedTagNames.length) {
-            break;
-          }
+          selecteds.push({ name: element, enabled: true });
         }
       }
 
@@ -95,9 +237,7 @@ export default {
       const popTags = [];
 
       this.popularTags.forEach((element) => {
-        if (this.isPopluarTag(element.name)
-         && !this.isTagSelected(element.name)
-         && this.isCleanTag(element.name)) {
+        if (element.enabled && !this.isTagSelected(element.name)) {
           popTags.push(element);
         }
       });
@@ -116,6 +256,8 @@ export default {
         maxTextLength = this.smTextLength;
       } else if (this.$vuetify.breakpoint.mdAndDown) {
         maxTextLength = this.mdTextLength;
+      } else if (this.$vuetify.breakpoint.lgAndDown) {
+        maxTextLength = this.mdTextLength;
       }
 
       const maxNumber = this.getTagMaxAmout(this.popularTags, maxTextLength);
@@ -128,6 +270,9 @@ export default {
     },
   },
   methods: {
+    clearTags: function clearTags() {
+      this.$emit('clickedClear');
+    },
     isCleanTag: function isCleanTag(tagName) {
       let maxWordsPerTag = 3;
 
@@ -210,11 +355,13 @@ export default {
     maxPopularTagsTextLength: 250,
     xsTextLength: 25,
     smTextLength: 50,
-    mdTextLength: 100,
+    mdTextLength: 65,
   }),
   components: {
+    IconLabelView,
     TagChip,
     TagChipPlaceholder,
+    FilterViewButtons,
   },
 };
 </script>
@@ -226,9 +373,6 @@ export default {
     font-weight: 400;
     opacity: 0.85;
   }
-
-
-
 
 </style>
 

@@ -65,7 +65,7 @@
   import LoginCard from '../Views/Cards/LoginCard';
   import TitleView from '../Views/TitleView';
   import SearchBarView from '../Views/SearchBarView';
-  import { CHANGE_APP_BG } from '../../store/mutationsConsts';
+  import { SET_APP_BACKGROUND } from '../../store/mutationsConsts';
 
   // Login & Register form and animation
   // https://codepen.io/yusufbkr/pen/RPBQqg
@@ -80,7 +80,7 @@
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
       next((vm) => {
         // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
-        vm.$store.commit(CHANGE_APP_BG, vm.PageBGImage);
+        vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
     },
     computed: {

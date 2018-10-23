@@ -7,8 +7,8 @@
               <v-flex pa-0>
                 <v-badge v-bind="{ left: !hoverBadge }"
                         overlap
-                        :class="{ envidat_badgeBigNumber : count > 9,
-                                  envidat_badge: count <= 9 }"
+                        :class="{ envidatBadgeBigNumber : count > 9,
+                                  envidatBadge: count <= 9 }"
                         >
                   <span slot="badge">{{ count }}</span>
                 </v-badge>              

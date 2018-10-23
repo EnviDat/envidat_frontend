@@ -1,28 +1,21 @@
 import axios from 'axios';
 
 import {
-  LOAD_ALL_METADATA,
-  LOAD_ALL_METADATA_SUCCESS,
-  LOAD_ALL_METADATA_ERROR,
-  LOAD_METADATA_IDS,
-  LOAD_METADATA_IDS_SUCCESS,
-  LOAD_METADATA_IDS_ERROR,
-  LOAD_METADATAS_CONTENT,
-  LOAD_METADATAS_CONTENT_SUCCESS,
-  LOAD_METADATAS_CONTENT_ERROR,
   LOAD_METADATA_CONTENT_BY_ID,
   LOAD_METADATA_CONTENT_BY_ID_SUCCESS,
   LOAD_METADATA_CONTENT_BY_ID_ERROR,
   SEARCH_METADATA,
   SEARCH_METADATA_SUCCESS,
   SEARCH_METADATA_ERROR,
-  ADD_METADATA,
-  LOAD_ALL_TAGS,
-  LOAD_ALL_TAGS_SUCCESS,
-  LOAD_ALL_TAGS_ERROR,
   BULK_LOAD_METADATAS_CONTENT,
   BULK_LOAD_METADATAS_CONTENT_SUCCESS,
   BULK_LOAD_METADATAS_CONTENT_ERROR,
+  UPDATE_TAGS,
+  UPDATE_TAGS_ERROR,
+  UPDATE_TAGS_SUCCESS,
+  FILTER_METADATA,
+  FILTER_METADATA_SUCESS,
+  FILTER_METADATA_ERROR,
 } from '../metadataMutationsConsts';
 
 /* eslint-disable no-unused-vars  */
@@ -44,56 +37,74 @@ function urlRewrite(url, baseUrl, proxyUrl) {
   return url;
 }
 
-function loadMetadataIdsPromise() {
-  return axios.get(urlRewrite('package_list', API_BASE, ENVIDAT_PROXY));
-}
-
-function loadMetadataContentPromises(commit, metadataIds) {
-  const calls = [];
-
-  for (let index = 0; index < metadataIds.length; index += 1) {
-    const packageId = metadataIds[index];
-
-    // console.log(`adding call to ${packageId}`);
-    // calls.push(axios.get(`${API_BASE}package_show?id=${packageId}`));
-
-    /* eslint-disable no-loop-func */
-
-    const url = urlRewrite(`package_show?id=${packageId}`, API_BASE, ENVIDAT_PROXY);
-
-    calls.push(axios.get(url).then((response) => {
-      commit(ADD_METADATA, response.data.result);
-    }).catch((reason) => {
-      commit(LOAD_METADATAS_CONTENT_ERROR, reason);
-    }));
+function enhanceSearchWithTags(allTags, searchResult) {
+  if (searchResult === undefined || searchResult.length <= 0 || allTags === undefined) {
+    return undefined;
   }
 
-  return calls;
-}
+  for (let i = 0; i < searchResult.length; i++) {
+    const el = searchResult[i];
 
-export default {
-  async [LOAD_ALL_METADATA]({ commit }) {
-    commit(LOAD_ALL_METADATA);
+    for (let j = 0; j < el.tags.length; j++) {
+      const element = el.tags[j];
 
-    let metadataIds = this.getters['metadata/metadataIds'];
+      const index = allTags.findIndex(obj => obj.name === element);
+      const tag = allTags[index];
 
-    if (metadataIds === undefined || metadataIds.length <= 0) {
-      const response = await loadMetadataIdsPromise();
-
-      if (response.data.result !== undefined) {
-        commit(LOAD_METADATA_IDS_SUCCESS, response.data.result);
-        metadataIds = this.getters['metadata/metadataIds'];
+      if (tag) {
+        /* eslint-disable no-param-reassign */
+        el.tags[j] = tag;
       }
     }
+  }
 
-    const calls = loadMetadataContentPromises(commit, metadataIds);
+  return searchResult;
+}
 
-    axios.all(calls).then((response) => {
-      commit(LOAD_ALL_METADATA_SUCCESS);
-    }).catch((reason) => {
-      commit(LOAD_ALL_METADATA_ERROR, reason);
-    });
-  },
+function contentSize(content) {
+  return content !== undefined ? Object.keys(content).length : 0;
+}
+
+function contentFilterAccessibility(value) {
+  if (value.capacity && value.capacity !== 'public') {
+    // unpublished entries have 'private'
+    return false;
+  } else if (value.private && value.private === true) {
+    return false;
+  }
+
+  return true;
+}
+
+function tagsIncludedInSelectedTags(tags, selectedTagNames) {
+  let selectedTagFound = 0;
+
+  for (let j = 0; j < selectedTagNames.length; j++) {
+    const el = selectedTagNames[j];
+
+    for (let k = 0; k < tags.length; k++) {
+      const tag = tags[k];
+
+      if (tag.name.includes(el)) {
+        selectedTagFound++;
+        break;
+      }
+    }
+  }
+
+  return selectedTagFound === selectedTagNames.length;
+}
+
+function contentFilteredByTags(value, selectedTagNames) {
+  if (value.tags && tagsIncludedInSelectedTags(value.tags, selectedTagNames)) {
+    return true;
+  }
+
+  return false;
+}
+
+
+export default {
   async [SEARCH_METADATA]({ commit }, searchTerm) {
     commit(SEARCH_METADATA);
 
@@ -120,52 +131,6 @@ export default {
         commit(SEARCH_METADATA_ERROR, reason);
       });
   },
-  async [LOAD_METADATA_IDS]({ commit }) {
-    commit(LOAD_METADATA_IDS);
-
-    // commit(LOAD_METADATA_IDS_SUCCESS, packageListJSON.result);
-    // return;
-    // /* eslint-disable no-unreachable  */
-
-    loadMetadataIdsPromise().then((response) => {
-      commit(LOAD_METADATA_IDS_SUCCESS, response.data.result);
-    }).catch((reason) => {
-      commit(LOAD_METADATA_IDS_ERROR, reason);
-    });
-  },
-  async [LOAD_METADATAS_CONTENT]({ commit }, metadataIds) {
-    commit(LOAD_METADATAS_CONTENT);
-
-    // for (let index = 0; index < metadataIds.length; index += 1) {
-    //   dataset.result.id += index;
-    //   commit(ADD_METADATA, dataset.result);
-    // }
-
-    // commit(LOAD_METADATAS_CONTENT_SUCCESS);
-    // return;
-    // /* eslint-disable no-unreachable  */
-
-    if (metadataIds === undefined || metadataIds.length <= 0) {
-      loadMetadataIdsPromise().then((response) => {
-        commit(LOAD_METADATA_IDS_SUCCESS, response.data.result);
-
-        /* eslint-disable no-param-reassign  */
-        metadataIds = response.data.result;
-        // console.log(`reload ids ${metadataIds}`);
-      }).catch((reason) => {
-        commit(LOAD_METADATA_IDS_ERROR, reason);
-      });
-    }
-
-    const calls = loadMetadataContentPromises(commit, metadataIds);
-
-    axios.all(calls).then(() => {
-      commit(LOAD_METADATAS_CONTENT_SUCCESS);
-    }).catch((reason) => {
-      commit(LOAD_METADATAS_CONTENT_ERROR, reason);
-    });
-  },
-
   async [LOAD_METADATA_CONTENT_BY_ID]({ commit }, metadataId) {
     commit(LOAD_METADATA_CONTENT_BY_ID);
 
@@ -177,22 +142,9 @@ export default {
       commit(LOAD_METADATA_CONTENT_BY_ID_ERROR, reason);
     });
   },
-
-  async [LOAD_ALL_TAGS]({ commit }) {
-    commit(LOAD_ALL_TAGS);
-
-    const url = urlRewrite('select&q=*:*&wt=json&facet=true&facet.field=tags&facet.limit=1000&rows=0', SOLR_API_BASE, SOLR_PROXY);
-
-    axios.get(url)
-      .then((response) => {
-        commit(LOAD_ALL_TAGS_SUCCESS, response.data.facet_counts.facet_fields.tags);
-      })
-      .catch((reason) => {
-        commit(LOAD_ALL_TAGS_ERROR, reason);
-      });
-  },
-  async [BULK_LOAD_METADATAS_CONTENT]({ commit, showRestrictedContent = false }) {
+  async [BULK_LOAD_METADATAS_CONTENT]({ dispatch, commit, showRestrictedContent = false }) {
     commit(BULK_LOAD_METADATAS_CONTENT);
+    // console.log(BULK_LOAD_METADATAS_CONTENT);
 
     // const url = urlRewrite('package_search', API_BASE, ENVIDAT_PROXY);
     // const url = urlRewrite('select?q=title:*&wt=json&rows=1000', SOLR_API_BASE, SOLR_PROXY);
@@ -201,10 +153,102 @@ export default {
     axios.get(url)
       .then((response) => {
         commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, response.data.response.docs, showRestrictedContent);
+
+        // for the case when loaded up on landingpage
+        dispatch(FILTER_METADATA, []);
       })
       .catch((reason) => {
         commit(BULK_LOAD_METADATAS_CONTENT_ERROR, reason);
       });
+  },
+  [UPDATE_TAGS]({ commit }) {
+    if (this.getters['metadata/updatingTags']) {
+      return;
+    }
+
+    const filteredContent = this.getters['metadata/filteredContent'];
+    const allTags = this.getters['metadata/allTags'];
+
+    if (!filteredContent || !allTags) {
+      return;
+    }
+
+    commit(UPDATE_TAGS);
+
+    try {
+      const updatedTags = [];
+
+      for (let i = 0; i < allTags.length; i++) {
+        const tag = allTags[i];
+        let found = false;
+
+        for (let j = 0; j < filteredContent.length; j++) {
+          const el = filteredContent[j];
+
+          if (el.tags && el.tags.length > 0) {
+            const index = el.tags.findIndex(obj => obj.name.includes(tag.name));
+
+            if (index >= 0) {
+              found = true;
+              break;
+            }
+          }
+        }
+
+        updatedTags.push({ name: tag.name, enabled: found });
+      }
+
+      commit(UPDATE_TAGS_SUCCESS, updatedTags);
+    } catch (error) {
+      commit(UPDATE_TAGS_ERROR, error);
+    }
+  },
+  [FILTER_METADATA]({ dispatch, commit }, selectedTagNames) {
+    let contentToFilter = [];
+    // console.log("filteredMetadataContent");
+
+    const isSearchResultContent = this.getters['metadata/searchingMetadatasContentOK'];
+
+    try {
+      if (isSearchResultContent) {
+        const searchContent = this.getters['metadata/searchedMetadatasContent'];
+        const searchContentSize = contentSize(searchContent);
+
+        if (searchContentSize > 0) {
+          const allTags = this.getters['metadata/allTags'];
+
+          contentToFilter = Object.values(searchContent);
+          contentToFilter = enhanceSearchWithTags(allTags, contentToFilter);
+        }
+      } else {
+        const metadatasContent = this.getters['metadata/metadatasContent'];
+        contentToFilter = Object.values(metadatasContent);
+      }
+
+      const filteredContent = [];
+      let keep = false;
+
+      for (let i = 0; i < contentToFilter.length; i++) {
+        const entry = contentToFilter[i];
+        keep = contentFilterAccessibility(entry);
+
+        if (keep) {
+          keep = contentFilteredByTags(entry, selectedTagNames);
+        }
+
+        if (keep) {
+          filteredContent.push(entry);
+        }
+      }
+
+      contentToFilter = filteredContent;
+
+      commit(FILTER_METADATA_SUCESS, contentToFilter);
+
+      dispatch(UPDATE_TAGS);
+    } catch (error) {
+      commit(FILTER_METADATA_ERROR, error);
+    }
   },
 
 };

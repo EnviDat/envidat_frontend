@@ -26,6 +26,7 @@
 
           <metadata-header v-bind="header"
                             v-on:clickedTag="catchTagClicked"
+                            v-on:clickedBack="catchBackClicked"                           
                             :showPlaceholder="showPlaceholder" />
 
         </v-flex>
@@ -92,7 +93,9 @@
                 elevation-5
                 style="z-index: 1;">
 
-          <metadata-header v-bind="header" :maxTags="10"
+          <metadata-header v-bind="header"
+                            v-on:clickedTag="catchTagClicked"
+                            v-on:clickedBack="catchBackClicked"
                             :showPlaceholder="showPlaceholder" />
 
         </v-flex>
@@ -153,7 +156,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import { CHANGE_APP_BG } from '../../store/mutationsConsts';
+  import { SET_APP_BACKGROUND } from '../../store/mutationsConsts';
   import {
     LOAD_METADATA_CONTENT_BY_ID,
     CLEAN_CURRENT_METADATA,
@@ -165,7 +168,7 @@
   import MetadataLocation from '../Views/MetadataViews/MetadataLocation';
   import MetadataDetails from '../Views/MetadataViews/MetadataDetails';
   import MetadataCitation from '../Views/MetadataViews/MetadataCitation';
-  import NotFoundView from '../Views/NotFoundView';
+  import NotFoundView from '../Views/Errors/NotFoundView';
   // import { LOAD_METADATAS_CONTENT } from '../../store/metadataMutationsConsts';
 
   // Might want to check https://css-tricks.com/use-cases-fixed-backgrounds-css/
@@ -175,9 +178,15 @@
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
       next((vm) => {
         // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
-        vm.$store.commit(CHANGE_APP_BG, vm.PageBGImage);
+        vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
     },
+    // beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    //   // console.log("beforeRouteLeave to: " + to + " from: " + from + " next: " + next);
+    //   // called when the route that renders this component is about to
+    //   // be navigated away from.
+    //   // has access to `this` component instance.
+    // },
     created: function created() {
       // console.log('created ' + this.metadataId + ' loading ' + this.currentMetadataContent.title + ' ' + this.metadatasContentSize);
     },
@@ -186,6 +195,9 @@
       if (!this.loadingMetadatasContent && this.currentMetadataContent.title === undefined) {
         // in case of directly entring the page load the content directly via Id
         this.$store.dispatch(`metadata/${LOAD_METADATA_CONTENT_BY_ID}`, this.metadataId);
+        // console.log('mounted dispached content by id');
+      } else {
+        this.createMetadataContent();
       }
     },
     beforeDestroy: function beforeDestroy() {
@@ -198,8 +210,6 @@
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
         loadingCurrentMetadataContent: 'metadata/loadingCurrentMetadataContent',
         currentMetadataContent: 'metadata/currentMetadataContent',
-        allTags: 'metadata/allTags',
-        loadingAllTags: 'metadata/loadingAllTags',
         iconImages: 'iconImages',
         cardBGImages: 'cardBGImages',
       }),
@@ -215,7 +225,7 @@
         //  && this.metadataIds.includes(this.metadataId));
       },
       showPlaceholder: function showPlaceholder() {
-        return this.loadingCurrentMetadataContent;
+        return this.loadingMetadatasContent || this.loadingCurrentMetadataContent;
       },
       leftOrFullWidth: function leftOrFullWidth() {
         return this.twoColumnLayout ? this.halfWidthLeft : this.fullWidthPadding;
@@ -309,18 +319,25 @@
           query,
         });
       },
+      catchBackClicked: function catchBackClicked() {
+        // console.log(this.$router);
+        this.$router.go(-1);
+      },
       createMetadataContent: function createMetadataContent() {
         let currentContent = this.currentMetadataContent;
 
-        if (!currentContent && this.loadingMetadatasContent
-          && this.metadatasContentSize > 0 && this.metadataId) {
-          // in case all the metadataContents are already loaded take it from there
-          currentContent = this.metadatasContent[this.metadataId];
-        }
+        // console.log('createMetadataContent title? ' + currentContent.title + ' ' + this.loadingMetadatasContent);
 
-        currentContent = this.enhanceMetadata(currentContent, this.cardBGImages);
+        // if (!currentContent.title === undefined
+        // && this.metadatasContentSize > 0 && this.metadataId) {
+        //   // console.log('createMetadataContent ' + this.metadataId + ' loading ' + this.currentMetadataContent.title + ' ' + this.metadatasContentSize);
+        //   currentContent = this.metadatasContent[this.metadataId];
+        //   // console.log('createMetadataContent ' + this.metadataId + ' currentContent ' + currentContent);
+        // }
 
-        if (currentContent) {
+        currentContent = this.enhanceMetadataEntry(currentContent, this.cardBGImages);
+
+        if (currentContent && currentContent.title !== undefined) {
           // console.log("create content " + currentContent.spatial + " " + this.header);
           this.header = this.createHeader(currentContent);
           this.body = this.createBody(currentContent);
@@ -497,6 +514,14 @@
     watch: {
       currentMetadataContent: function updateContent() {
         this.createMetadataContent();
+      },
+      metadatasContent: function updateContent() {
+        // in case all the metadataContents are already loaded take it from there
+        // if EnviDat is called via MetadataDetailPage URL directly
+
+        if (!this.loadingCurrentMetadataContent) {
+          this.$store.dispatch(`metadata/${LOAD_METADATA_CONTENT_BY_ID}`, this.metadataId);
+        }
       },
     },
     data: () => ({

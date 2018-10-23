@@ -53,6 +53,7 @@
     mounted: function mounted() {
       // this.map = L.map('map').setView([51.505, -0.09], 13);
 
+      this.setupMap();
     },
     beforeDestroy: function beforeDestroy() {
       if (this.map) {
