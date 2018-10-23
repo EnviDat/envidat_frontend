@@ -13,6 +13,9 @@ import {
   UPDATE_TAGS,
   UPDATE_TAGS_ERROR,
   UPDATE_TAGS_SUCCESS,
+  FILTER_METADATA,
+  FILTER_METADATA_SUCESS,
+  FILTER_METADATA_ERROR,
 } from '../metadataMutationsConsts';
 
 /* eslint-disable no-unused-vars  */
@@ -32,6 +35,72 @@ function urlRewrite(url, baseUrl, proxyUrl) {
 
   // console.log("from " + from + " to " + url);
   return url;
+}
+
+function enhanceSearchWithTags(allTags, searchResult) {
+  if (searchResult === undefined || searchResult.length <= 0 || allTags === undefined) {
+    return undefined;
+  }
+
+  for (let i = 0; i < searchResult.length; i++) {
+    const el = searchResult[i];
+
+    for (let j = 0; j < el.tags.length; j++) {
+      const element = el.tags[j];
+
+      const index = allTags.findIndex(obj => obj.name === element);
+      const tag = allTags[index];
+
+      if (tag) {
+        /* eslint-disable no-param-reassign */
+        el.tags[j] = tag;
+      }
+    }
+  }
+
+  return searchResult;
+}
+
+function contentSize(content) {
+  return content !== undefined ? Object.keys(content).length : 0;
+}
+
+function contentFilterAccessibility(value) {
+  if (value.capacity && value.capacity !== 'public') {
+    // unpublished entries have 'private'
+    return false;
+  } else if (value.private && value.private === true) {
+    return false;
+  }
+
+  return true;
+}
+
+function tagsIncludedInSelectedTags(tags, selectedTagNames) {
+  let selectedTagFound = 0;
+
+  for (let j = 0; j < selectedTagNames.length; j++) {
+    const el = selectedTagNames[j];
+
+    for (let k = 0; k < tags.length; k++) {
+      const tag = tags[k];
+
+      if (tag.name.includes(el)) {
+        selectedTagFound++;
+        break;
+      }
+    }
+  }
+
+  return selectedTagFound === selectedTagNames.length;
+}
+
+function contentFilteredByTags(value, selectedTagNames) {
+  if (value.tags && tagsIncludedInSelectedTags(value.tags, selectedTagNames)) {
+    return true;
+  }
+
+  return false;
 }
 
 
@@ -128,6 +197,53 @@ export default {
       commit(UPDATE_TAGS_SUCCESS, updatedTags);
     } catch (error) {
       commit(UPDATE_TAGS_ERROR, error);
+    }
+  },
+  [FILTER_METADATA]({ dispatch, commit }, selectedTagNames) {
+    let contentToFilter = [];
+    // console.log("filteredMetadataContent");
+
+    const isSearchResultContent = this.getters['metadata/searchingMetadatasContentOK'];
+
+    try {
+      if (isSearchResultContent) {
+        const searchContent = this.getters['metadata/searchedMetadatasContent'];
+        const searchContentSize = contentSize(searchContent);
+
+        if (searchContentSize > 0) {
+          const allTags = this.getters['metadata/allTags'];
+
+          contentToFilter = Object.values(searchContent);
+          contentToFilter = enhanceSearchWithTags(allTags, contentToFilter);
+        }
+      } else {
+        const metadatasContent = this.getters['metadata/metadatasContent'];
+        contentToFilter = Object.values(metadatasContent);
+      }
+
+      const filteredContent = [];
+      let keep = false;
+
+      for (let i = 0; i < contentToFilter.length; i++) {
+        const entry = contentToFilter[i];
+        keep = contentFilterAccessibility(entry);
+
+        if (keep) {
+          keep = contentFilteredByTags(entry, selectedTagNames);
+        }
+
+        if (keep) {
+          filteredContent.push(entry);
+        }
+      }
+
+      contentToFilter = filteredContent;
+
+      commit(FILTER_METADATA_SUCESS, contentToFilter);
+
+      dispatch(UPDATE_TAGS);
+    } catch (error) {
+      commit(FILTER_METADATA_ERROR, error);
     }
   },
 

@@ -15,7 +15,7 @@
 
         <v-flex v-if="loading || loadingContent"
                 v-bind="cardGridClass"
-                v-for="(n, index) in palceHolderAmount" :key="index">
+                v-for="(n, index) in placeHolderAmount" :key="index">
 
             <metadata-card-placeholder :dark="false" />
 
@@ -23,7 +23,7 @@
 
         <v-flex v-if="!loading"
                 v-bind="cardGridClass"
-                v-for="(metadata, index) in filteredMetadataContent" :key="index">
+                v-for="(metadata, index) in filteredContent" :key="index">
 
             <transition name="fadeIn">                    
             <metadata-card
@@ -47,7 +47,7 @@
 
         </v-flex>
 
-        <v-flex xs12 v-if="!loading && !filteredMetadataContent">
+        <v-flex xs12 v-if="!loading && !filteredContent">
             <no-search-results-view v-on:clicked="catchCategoryClicked"
                                     :noResultText="noResultText"
                                     :suggestionText="suggestionText" />  
@@ -70,32 +70,41 @@
 
 export default {
     props: {
-      filteredMetadataContent: Array,
       listView: Boolean,
       compactLayout: Boolean,
       mapFilteringEnabled: Boolean,
       hoverId: String,
-      palceHolderAmount: Number,
+      placeHolderAmount: Number,
     },
     data: () => ({
       noResultText: 'Nothing found for these Search criterias',
       suggestionText: 'Try one of these categories',
     }),
+    watch: {
+      filteredContent: function watchEnhanceMetadata() {
+        if (this.filteredContent && this.filteredContent.length > 0) {
+          this.enhanceMetadata(this.filteredContent, this.cardBGImages);
+        }
+      },
+    },
     computed: {
       ...mapGetters({
         metadataIds: 'metadata/metadataIds',
         metadatasContent: 'metadata/metadatasContent',
         searchedMetadatasContent: 'metadata/searchedMetadatasContent',
         searchingMetadatasContent: 'metadata/searchingMetadatasContent',
-        loadingMetadataIds: 'metadata/loadingMetadataIds',
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
         currentMetadata: 'metadata/currentMetadata',
+        filteredContent: 'metadata/filteredContent',
+        isFilteringContent: 'metadata/isFilteringContent',
+        cardBGImages: 'cardBGImages',
       }),
       loading: function loading() {
-        return this.loadingMetadataIds || this.searchingMetadatasContent;
+        return this.isFilteringContent || this.searchingMetadatasContent;
+        // return this.isFilteringContent || this.contentSize(this.filteredContent) <= 0;
       },
       loadingContent: function loadingContent() {
-        return (this.loadingMetadatasContent && this.metadatasContentSize < this.palceHolderAmount);
+        return (this.loadingMetadatasContent && this.contentSize(this.filteredContent) < this.placeHolderAmount);
       },
       cardGridClass: function cardGridClass() {
         if (this.mapFilteringEnabled && this.compactLayout) {
@@ -121,6 +130,9 @@ export default {
 
     },
     methods: {
+      contentSize: function contentSize(content) {
+        return content !== undefined ? Object.keys(content).length : 0;
+      },
       catchTagClicked: function catchTagClicked(tagName) {
         this.$emit('clickedTag', tagName);
       },

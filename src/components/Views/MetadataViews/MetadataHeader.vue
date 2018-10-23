@@ -13,7 +13,7 @@
           <v-btn icon flat
                   color="primary"
                   style="font-size: 30px !important;"
-                  @click.native="$router.go(-1)" slot="activator">
+                  @click.native="catchBackClicked" slot="activator">
             <v-icon>close</v-icon>
           </v-btn>        
           <span>Close Metadata</span>
@@ -143,6 +143,9 @@ export default {
   methods: {
     catchTagClicked: function catchTagClicked(tagId) {
       this.$emit('clickedTag', tagId);
+    },
+    catchBackClicked: function catchBackClicked() {
+      this.$emit('clickedBack');
     },
     iconFlip: function iconFlip(icon) {
       const iconflip = this.dark ? `${icon}_w` : icon;

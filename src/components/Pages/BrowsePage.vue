@@ -28,7 +28,7 @@
                       v-on:clickedMapExpand="toggleMapExpand"
                       v-on:mapFilterChanged="catchMapFilterChanged"
                       v-on:pointClicked="catchPointClicked"
-                      :showPlaceholder="loadingAllTags"
+                      :showPlaceholder="updatingTags"
                       v-on:controlsChanged="controlsChanged"
                       />
 
@@ -38,8 +38,7 @@
               v-bind="metadataListStyling"
        >
 
-       <metadata-list-view :filteredMetadataContent="filteredMetadataContent"
-                            :listView="listViewActive"
+       <metadata-list-view :listView="listViewActive"
                             :compactLayout="showMapFilter"
                             :hoverId="hoverId"
                             :mapFilteringEnabled="mapFilteringEnabled"
@@ -77,8 +76,8 @@
   import MetadataListView from '../Views/MetadataViews/MetadataListView';
   import {
     SEARCH_METADATA,
-    UPDATE_TAGS,
-    SET_FILTERED_CONTENT,
+    CLEAR_SEARCH_METADATA,
+    FILTER_METADATA,
   } from '../../store/metadataMutationsConsts';
   import { SET_APP_BACKGROUND } from '../../store/mutationsConsts';
 
@@ -149,6 +148,7 @@
 
           const tagsEncoded = this.encodeTagForUrl(this.selectedTagNames);
           this.additiveChangeRoute(undefined, tagsEncoded);
+          this.filterContent();
         }
       },
       catchTagCloseClicked: function catchTagCloseClicked(tagId) {
@@ -163,10 +163,12 @@
 
           const tagsEncoded = this.encodeTagForUrl(this.selectedTagNames);
           this.additiveChangeRoute(undefined, tagsEncoded);
+          this.filterContent();
         }
       },
       catchTagCleared: function catchTagCleared() {
         this.selectedTagNames = [];
+        this.filterContent();
       },
       catchSearchClicked: function catchSearchClicked(searchTerm) {
         /* eslint-disable no-param-reassign */
@@ -177,10 +179,12 @@
 
           if (this.searchTerm && this.searchTerm.length > 0) {
             this.isSearchResultContent = true;
-            this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm);
+            this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm, this.selectedTagNames);
 
             this.additiveChangeRoute(this.searchTerm, undefined);
           }
+
+          // this.filterContent();
         }
       },
       catchSearchCleared: function catchSearchCleared() {
@@ -192,6 +196,8 @@
         // if (queryLength > 0 && this.$route.query.search) {
         this.additiveChangeRoute(this.searchTerm, undefined);
         // }
+
+        this.$store.commit(`metadata/${CLEAR_SEARCH_METADATA}`);
       },
       catchMapFilterChanged: function catchMapFilterChanged(visibleIds) {
         this.mapFilterVisibleIds = visibleIds;
@@ -243,96 +249,6 @@
 
         return this.selectedTagNames.indexOf(tagName) >= 0;
       },
-      tagsIncludedInSelectedTags: function tagsIncludedInSelectedTags(tags) {
-
-        let selectedTagFound = 0;
-
-        for (let j = 0; j < this.selectedTagNames.length; j++) {
-          const el = this.selectedTagNames[j];
-
-          for (let k = 0; k < tags.length; k++) {
-            const tag = tags[k];
-
-            if (tag.name.includes(el)) {
-              selectedTagFound++;
-              break;
-            }
-          }
-        }
-
-        return selectedTagFound === this.selectedTagNames.length;
-
-        /*
-        for (let j = 0; j < this.selectedTagNames.length; j++) {
-          const selectedTagName = this.selectedTagNames[j];
-
-          if (!tagNames.includes(selectedTagName)) {
-            return false;
-          }
-        }
-
-        return true;
-        */
-      },
-      contentFilterAccessibility: function contentFilterAccessibility(contentList) {
-        const accessibleContent = [];
-
-        for (let i = 0; i < contentList.length; i++) {
-          const value = contentList[i];
-
-          if (value.capacity && value.capacity === 'public') {
-            // unpublished entries have 'private'
-            accessibleContent.push(value);
-          } else if (value.private && value.private === false) {
-            accessibleContent.push(value);
-          } else {
-            accessibleContent.push(value);
-          }
-        }
-
-        return accessibleContent;
-      },
-      contentFilteredByTags: function contentFilteredByTags(contentList) {
-        const filteredContent = [];
-
-        if (contentList.length > 0) {
-          const metaDataKeys = Object.keys(contentList);
-
-          for (let i = 0; i < metaDataKeys.length; i++) {
-            const key = metaDataKeys[i];
-            const value = contentList[key];
-
-            if (value.tags && this.tagsIncludedInSelectedTags(value.tags)) {
-              filteredContent.push(value);
-            }
-          }
-        }
-
-        return filteredContent;
-      },
-      enhanceSearchWithTags: function enhanceSearchWithTags(searchResult) {
-        if (searchResult === undefined || searchResult.length <= 0 || this.allTags === undefined) {
-          return undefined;
-        }
-
-        for (let i = 0; i < searchResult.length; i++) {
-          const el = searchResult[i];
-
-          for (let j = 0; j < el.tags.length; j++) {
-            const element = el.tags[j];
-
-            const index = this.allTags.findIndex(obj => obj.name === element);
-            const tag = this.allTags[index];
-
-            if (tag) {
-              /* eslint-disable no-param-reassign */
-              el.tags[j] = tag;
-            }
-          }
-        }
-
-        return searchResult;
-      },
       contentFilterMapIds: function contentFilterMapIds(contentList) {
         const visibleContent = [];
 
@@ -358,9 +274,6 @@
 
         return '';
       },
-      updateSearchCount: function updateSearchCount(searchResult) {
-        this.searchCount = searchResult !== undefined ? searchResult.length : 0;
-      },
       hasRestrictedResources: function hasRestrictedResources(metadata) {
         if (!metadata || !metadata.resources || metadata.resources.length <= 0) {
           return false;
@@ -377,6 +290,9 @@
 
         return false;
       },
+      filterContent: function filterContent() {
+        this.$store.dispatch(`metadata/${FILTER_METADATA}`, this.selectedTagNames);
+      },
     },
     computed: {
       ...mapGetters({
@@ -384,13 +300,14 @@
         metadatasContent: 'metadata/metadatasContent',
         searchedMetadatasContent: 'metadata/searchedMetadatasContent',
         searchingMetadatasContent: 'metadata/searchingMetadatasContent',
+        searchingMetadatasContentOK: 'metadata/searchingMetadatasContentOK',
         loadingMetadataIds: 'metadata/loadingMetadataIds',
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
+        filteredContent: 'metadata/filteredContent',
         // tag Object structure: { tag: tagName, count: tagCount }
         allTags: 'metadata/allTags',
-        loadingAllTags: 'metadata/loadingAllTags',
         currentMetadata: 'metadata/currentMetadata',
-        cardBGImages: 'cardBGImages',
+        updatingTags: 'metadata/updatingTags',
       }),
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
@@ -434,42 +351,8 @@
       mapFilteringEnabled: function mapFilteringEnabled() {
         return this.$vuetify.breakpoint.lgAndUp;
       },
-      filteredMetadataContent: function filteredMetadataContent() {
-        let contentToFilter;
-        // console.log("filteredMetadataContent");
-
-        if (this.isSearchResultContent) {
-          if (this.searchTerm && this.searchTerm.length > 0
-          && this.searchMetadatasContentSize > 0) {
-            contentToFilter = Object.values(this.searchedMetadatasContent);
-            contentToFilter = this.enhanceSearchWithTags(contentToFilter);
-          }
-        } else {
-          contentToFilter = Object.values(this.metadatasContent);
-        }
-
-        if (contentToFilter && contentToFilter.length > 0) {
-          contentToFilter = this.contentFilterAccessibility(contentToFilter);
-
-          contentToFilter = this.enhanceMetadata(contentToFilter, this.cardBGImages);
-
-          if (this.selectedTagNames !== undefined
-          && this.selectedTagNames.length > 0) {
-            contentToFilter = this.contentFilteredByTags(contentToFilter);
-          }
-        }
-
-        if (this.mapFilterVisibleIds.length > 0) {
-          contentToFilter = this.contentFilterMapIds(contentToFilter);
-        }
-
-        this.$store.commit(`metadata/${SET_FILTERED_CONTENT}`, contentToFilter);
-
-        this.$store.dispatch(`metadata/${UPDATE_TAGS}`);
-
-        this.updateSearchCount(contentToFilter);
-
-        return contentToFilter;
+      searchCount: function searchCount() {
+        return this.filteredContent !== undefined ? this.filteredContent.length : 0;
       },
     },
     watch: {
@@ -477,18 +360,23 @@
       $route: function watchRouteChanges(to, from) {
         // react on changes of the route (browser back / forward click)
 
-        // this.loadRouteTags();
-        // this.loadRouteSearch();
+        this.loadRouteTags();
+        this.loadRouteSearch();
 
         window.scrollTo(0, this.scrollPosition);
         // console.log('watch $route ', this.$route.query.toString() + " to " + to.query + " from " + from.query);
+      },
+      metadatasContent: function watchFilterContent() {
+        this.filterContent();
+      },
+      searchingMetadatasContentOK: function watchSearchFilterContent() {
+        this.filterContent();
       },
     },
     data: () => ({
       PageBGImage: './app_b_browsepage.jpg',
       searchTerm: '',
       searchLabelText: 'Search',
-      searchCount: 0,
       placeHolderAmount: 6,
       isSearchResultContent: false,
       noResultText: 'Nothing found for these Search criterias',

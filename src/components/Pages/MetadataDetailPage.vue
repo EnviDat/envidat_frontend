@@ -26,6 +26,7 @@
 
           <metadata-header v-bind="header"
                             v-on:clickedTag="catchTagClicked"
+                            v-on:clickedBack="catchBackClicked"                           
                             :showPlaceholder="showPlaceholder" />
 
         </v-flex>
@@ -92,7 +93,9 @@
                 elevation-5
                 style="z-index: 1;">
 
-          <metadata-header v-bind="header" :maxTags="10"
+          <metadata-header v-bind="header"
+                            v-on:clickedTag="catchTagClicked"
+                            v-on:clickedBack="catchBackClicked"
                             :showPlaceholder="showPlaceholder" />
 
         </v-flex>
@@ -177,6 +180,12 @@
         // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
         vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
+    },
+    beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+      // console.log("beforeRouteLeave to: " + to + " from: " + from + " next: " + next);
+      // called when the route that renders this component is about to
+      // be navigated away from.
+      // has access to `this` component instance.
     },
     created: function created() {
       // console.log('created ' + this.metadataId + ' loading ' + this.currentMetadataContent.title + ' ' + this.metadatasContentSize);
@@ -310,6 +319,10 @@
           query,
         });
       },
+      catchBackClicked: function catchBackClicked() {
+        // console.log(this.$router);
+        this.$router.go(-1);
+      },
       createMetadataContent: function createMetadataContent() {
         let currentContent = this.currentMetadataContent;
 
@@ -322,7 +335,7 @@
         //   // console.log('createMetadataContent ' + this.metadataId + ' currentContent ' + currentContent);
         // }
 
-        currentContent = this.enhanceMetadata(currentContent, this.cardBGImages);
+        currentContent = this.enhanceMetadataEntry(currentContent, this.cardBGImages);
 
         if (currentContent && currentContent.title !== undefined) {
           // console.log("create content " + currentContent.spatial + " " + this.header);
