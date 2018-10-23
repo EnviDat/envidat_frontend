@@ -1,40 +1,44 @@
 <template>
-  <v-card hover raised >
+  <v-card raised height="40">
 
     <!-- long slim search bar  -->
 
     <v-layout row
               align-center
+              fill-height
               justify-space-between>
 
-      <v-flex xs10 sm8 md9 lg10 py-0 pl-3 >
+      <v-flex xs10 sm8 md9 lg10 py-0 pl-2 fill-height>
+
         <v-text-field
+            class="envidatSmallSearch"
             single-line
             hide-details
             clearable
             solo
             flat
             append-outer-icon="search"
-            :append-outer-icon-cb="clicked"
+            @click:append-outer="clicked"
             v-on:keyup.enter="clicked"
             v-model="searchText"
             @click:clear="clearClicked"
-            placeholder="Search">
+            :placeholder="placeHolderText">
         </v-text-field>
+
       </v-flex>
 
       <v-flex xs2 sm4 md3 lg2 pa-0
               style="text-align: center;">
 
         <v-tooltip bottom >
-          <v-chip slot="activator"
-                  small disabled 
-                  class="envidat_chip"
-                  v-bind="{ ['color']: searchCount > 0 ? 'primary' : ''}"
-                  :class="{ ['white--text']: searchCount > 0 ? true : false }"
-          >
-            {{ searchCount }}
-          </v-chip>
+          
+          <tag-chip slot="activator"
+                  style="font-size: 0.75rem !important;"
+                  :name="searchCount.toString()"
+                  :selectable="false"
+                  :highlighted="searchCount > 0"
+                  :closeable="false"  />
+
           <span>{{ searchCount }} metadata entries found</span>
         </v-tooltip>
       </v-flex>
@@ -52,6 +56,8 @@
 </template>
 
 <script>
+  import TagChip from '../Cards/TagChip';
+
   export default {
     props: {
       labelText: String,
@@ -64,7 +70,14 @@
     data: () => ({
       searchText: '',
       lastSearch: '',
+      placeHolderText: 'Search for research topics',
     }),
+    updated: function updated() {
+      if (!this.searchText && this.lastSearch) {
+        this.$emit('searchCleared');
+        this.lastSearch = '';
+      }
+    },
     watch: {
       searchTerm: function searchTerm(val) {
         // watcher to overtake the property value to the v-model value
@@ -89,11 +102,8 @@
         }
       },
     },
-    updated: function updated() {
-      if (!this.searchText && this.lastSearch) {
-        this.$emit('searchCleared');
-        this.lastSearch = '';
-      }
+    components: {
+      TagChip,
     },
   };
 </script>
@@ -109,5 +119,18 @@
   min-height: 0px !important;
 }
 
+/*
+.envidatSmallSearch {
+    height: 40px !important; 
+}
+*/
+
+.envidatSmallSearch > .v-input__control {
+    min-height: 40px !important;
+}
+
+.envidatSmallSearch > .v-input__append-outer {
+  margin: auto !important;
+}
 
 </style>

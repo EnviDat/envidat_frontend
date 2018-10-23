@@ -2,11 +2,11 @@
 
     <v-chip
         small
-        class="envidat_chip"
+        class="envidatChip"
         :class="highlightedClass"
         v-bind="{['close'] : closeable,
-                 [`color`]: highlighted ? 'primary' : '',
-                 ['disabled'] : selectable,
+                 ['color']: highlighted ? 'primary' : '',
+                 ['disabled'] : !selectable,
                  }"
         @click.stop="clicked"
         @input="clickedClose">
@@ -34,6 +34,10 @@
     },
     methods: {
       clicked: function clicked() {
+        if (!this.selectable) {
+          return;
+        }
+
         this.$emit('clicked', this.name);
       },
       clickedClose: function clickedClose() {
@@ -44,12 +48,4 @@
 </script>
 
 <style scoped>
-  .envidat_chip{
-    height: 1.5rem;
-    font-size: 0.75rem;
-  }
-
-  .envidat_chip span {
-    cursor: pointer !important;
-  }
 </style>

@@ -13,11 +13,6 @@
 <script>
   export default {
     props: {
-      name: String,
-      closeable: Boolean,
-      selectable: Boolean,
-      highlighted: Boolean,
-      count: Number,
     },
     computed: {
     },

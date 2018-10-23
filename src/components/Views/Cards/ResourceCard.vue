@@ -1,15 +1,15 @@
 <template>
-  <v-card
-  color="primary"
-  class="metadataResourceCard white--text"
-  style="height: 100%;"
+  <v-card color="primary"
+          class="metadataResourceCard white--text"
+          style="height: 100%;"
   >
 
     <v-card-title>
       <div class="headline">{{ name }}</div>
     </v-card-title>
 
-    <v-card-text class="pt-0">
+    <v-card-text class="pt-0 pb-3">
+
       <v-container grid-list-xs pa-0>
         <v-layout row wrap>
 
@@ -18,11 +18,13 @@
           >
 
             <v-layout column>
-              <v-flex xs11 v-if="showFullDescription">
+              <v-flex xs11 v-if="showFullDescription"
+                            class="resourceCardText">
                 {{ description }}
               </v-flex>
 
-              <v-flex xs11 v-if="!showFullDescription">
+              <v-flex xs11 v-if="!showFullDescription"
+                            class="resourceCardText">
                 {{ description | truncate(maxDescriptionLength) }}
               </v-flex>
 
@@ -83,7 +85,7 @@
       <v-tooltip bottom >
         <v-btn fab small
                 color="accent" slot="activator" :href="url" 
-                v-bind="{['target'] : isLink ? '_blank' : '' }">
+                v-bind="{['target'] : '_blank' }">
 
           <div v-if="isFile"
                 class="iconCentering">
@@ -105,7 +107,7 @@
 
 
 <script>
-import defaultTexture from '../../../assets/cards/forest/c_b_forest_texture_bark2_small.jpg';
+import defaultTexture from '../../../assets/cards/c_b_forest_texture_bark2_small.jpg';
 import IconLabelView from '../IconLabelView';
 
 export default {
@@ -125,7 +127,7 @@ export default {
   },
   data: () => ({
     defaultTexture,
-    maxDescriptionLength: 275,
+    maxDescriptionLength: 175,
     showFullDescription: false,
   }),
   computed: {
@@ -150,10 +152,10 @@ export default {
       return this.formatDate(this.lastModified);
     },
     isLink: function isLink() {
-      return this.format && this.format.toLowerCase() === 'link';
+      return this.format && (this.format.toLowerCase() === 'link' || this.format.toLowerCase() === 'url');
     },
     isFile: function isFile() {
-      return !this.format || this.format.toLowerCase() !== 'link';
+      return !this.format || !(this.format.toLowerCase() === 'link' || this.format.toLowerCase() === 'url');
     },
     maxDescriptionLengthReached: function maxDescriptionLengthReached() {
       return this.description && this.description.length > this.maxDescriptionLength;
@@ -192,8 +194,5 @@ export default {
     color: rgba(255,255,255,.9) !important;
   }
 
-  .card_tag {
-    /* opacity: 0.7; */
-  }
 
 </style>

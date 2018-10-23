@@ -4,6 +4,7 @@
     
     <v-card-title class="metadata_title title" >Description</v-card-title>
 
+<!--
     <v-card-text v-if="fullDescription" >{{ fullDescription }}</v-card-text>
 
     <v-card-text v-if="!fullDescription && showPlaceholder" >
@@ -12,13 +13,20 @@
       </div>
     </v-card-text>
 
-<!-- {{ title | truncate(maxTitleLength) }} -->
-    <v-card-actions>
+ {{ title | truncate(maxTitleLength) }} -->
+    <v-card-text >
+      <m-markdown-preview :markdown="fullDescription" :options="{html: true}" />
+    </v-card-text>
+
+    <v-card-actions v-if="maxDescriptionLengthReached"
+                    style="position: absolute; bottom: 0; right: 0;" >
+
       <v-spacer></v-spacer>
-      <v-btn icon 
+
+      <v-btn icon
               @click.native="readMore()">
         <v-icon color="accent" 
-                :style="this.showFullDescription ? 'transform: rotate(-180deg);' : 'transform: rotate(0deg);'"
+                :style="this.showFullDescription ? 'transform: rotate(-180deg); font-size: 30px !important;' : 'transform: rotate(0deg); font-size: 30px !important;'"
         >expand_more</v-icon>
       </v-btn>        
     </v-card-actions>
@@ -27,6 +35,8 @@
 </template>
 
 <script>
+  import MMarkdownPreview from 'm-markdown-preview';
+
   export default {
     props: {
       id: String,
@@ -34,22 +44,29 @@
       doi: String,
       description: String,
       isOnTop: Boolean,
-      showPlaceholder: Boolean
+      showPlaceholder: Boolean,
     },
     mounted: function mounted() {
     },
     computed: {
       fullDescription: function fullDescription() {
         if (this.description !== undefined) {
-          return this.showFullDescription ? this.description : `${this.description.substring(0, this.maxTextLength)}...`;
+          if (this.maxDescriptionLengthReached) {
+            return this.showFullDescription ? this.description.trim() : `${this.description.trim().substring(0, this.maxTextLength)}...`;
+          }
+
+          return this.description.trim();
         }
 
         return '';
       },
+      maxDescriptionLengthReached: function maxDescriptionLengthReached() {
+        return this.description && this.description.length > this.maxTextLength;
+      },
     },
     data: () => ({
       showFullDescription: false,
-      maxTextLength: 750,
+      maxTextLength: 1000,
     }),
     methods: {
       readMore: function readMore() {
@@ -57,6 +74,7 @@
       },
     },
     components: {
+      MMarkdownPreview,
     },
   };
 </script>

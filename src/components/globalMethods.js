@@ -1,3 +1,4 @@
+import seedrandom from 'seedrandom';
 
 export default {
   methods: {
@@ -37,6 +38,27 @@ export default {
 
       // return an empty array for the selectedTagIds
       return [];
+    },
+    additiveChangeRoute: function additiveChangeRoute(search, tags) {
+      const query = {};
+
+      if (search !== undefined) {
+        query.search = search;
+      } else if (this.$route.query.search) {
+        query.search = this.$route.query.search;
+      }
+
+      if (tags !== undefined) {
+        query.tags = tags;
+      } else if (this.$route.query.tags) {
+        query.tags = this.$route.query.tags;
+      }
+      // console.log("additiveChangeRoute search: " + query.search + " tags: " + query.tags);
+
+      this.$router.push({
+        path: '/browse',
+        query,
+      });
     },
     formatDate: function formatDate(date) {
       // expecting a format like 2017-08-15T15:25:45.175790
@@ -100,6 +122,143 @@ export default {
 
       return imports;
       */
+    },
+    randomInt: function randomInt(min, max, seed) {
+      if (!seed) {
+        seed = 'For the Horde!';
+      }
+
+      const rng = seedrandom(seed);
+      const r = Math.floor(rng() * 10);
+
+      if (r > max) {
+        return max;
+      }
+      if (r < min) {
+        return min;
+      }
+
+      return r;
+      // return Math.floor(this.rNG() * (max - (min + 1))) + min;
+      // return Math.floor(Math.random() * (max - (min + 1))) + min;
+    },
+    enhanceMetadataEntry: function enhanceMetadataEntry(entry, cardBGImages) {
+      if (!entry.titleImg) {
+        this.enhanceTitleImg(entry, cardBGImages);
+      }
+
+      return entry;
+    },
+    enhanceMetadata: function enhanceMetadata(metadatas, cardBGImages) {
+      if (metadatas === undefined && metadatas.length <= 0) {
+        return undefined;
+      }
+
+      // console.log("enhanceMetadata " + Array.isArray(metadatas) + " " + cardBGImages );
+
+      if (Array.isArray(metadatas)) {
+        for (let i = 0; i < metadatas.length; i++) {
+          const el = metadatas[i];
+
+          if (!el.titleImg) {
+            this.enhanceTitleImg(el, cardBGImages);
+          }
+        }
+      }
+
+      return metadatas;
+    },
+    enhanceTitleImg: function enhanceTitleImg(metadata, cardBGImages) {
+      /* eslint-disable no-param-reassign */
+      const category = this.getTagCategory(metadata.tags);
+      const categoryImgs = cardBGImages[category];
+      const max = Object.keys(categoryImgs).length - 1;
+      const randomIndex = this.randomInt(0, max, metadata.title);
+      const cardImg = randomIndex >= 0 ? Object.values(categoryImgs)[randomIndex] : 0;
+
+      // console.log("loaded " + randomIndex + " category " + category + " img " + cardImg);
+      metadata.titleImg = cardImg;
+    },
+    getTagCategory: function getTagCategory(tags) {
+      let category = 'landscape';
+
+      if (tags) {
+        for (let i = 0; i < tags.length; i++) {
+          const element = tags[i];
+          if (element.name) {
+            if (element.name.includes('HAZARD')) {
+              category = 'hazard'; break;
+            }
+            if (element.name.includes('DIVERSITY')) {
+              category = 'diversity'; break;
+            }
+            if (element.name.includes('FOREST')) {
+              category = 'forest'; break;
+            }
+            if (element.name.includes('SNOW')) {
+              category = 'snow'; break;
+            }
+            if (element.name.includes('LANDSCAPE')) {
+              category = 'landscape'; break;
+            }
+          }
+        }
+      }
+
+      return category;
+    },
+    createLocation: function createLocation(dataset) {
+      const location = {};
+      location.id = dataset.id;
+      location.name = dataset.name;
+      location.title = dataset.title;
+
+      if (dataset && dataset.spatial) {
+        location.geoJSON = dataset.spatial;
+
+        // parseJSON because the geoJOSN from CKAN might be invalid!
+        const spatialJSON = JSON.parse(dataset.spatial);
+        // console.log("createLocation spatial " + spatialJSON.coordinates);
+
+        if (spatialJSON) {
+          location.isPolygon = spatialJSON.type === 'Polygon';
+          location.isPoint = spatialJSON.type === 'Point';
+          location.isMultiPoint = spatialJSON.type === 'MultiPoint';
+
+          // Swap lngLat to latLng because the geoJOSN from CKAN might be invalid!
+
+          if (location.isPoint) {
+            // swap coords for the leaflet map
+            location.pointArray = [spatialJSON.coordinates[1], spatialJSON.coordinates[0]];
+          } else if (location.isPolygon) {
+            location.pointArray = [];
+
+            for (let i = 0; i < spatialJSON.coordinates.length; i++) {
+              const pointElement = spatialJSON.coordinates[i];
+              const pointObject = [];
+
+              for (let j = 0; j < pointElement.length; j++) {
+                const coord = pointElement[j];
+                pointObject.push([coord[1], coord[0]]);
+              }
+
+              location.pointArray.push(pointObject);
+            }
+          } else if (location.isMultiPoint) {
+            location.pointArray = [];
+
+            for (let i = 0; i < spatialJSON.coordinates.length; i++) {
+              const pointElement = spatialJSON.coordinates[i];
+              const pointObject = [pointElement[1], pointElement[0]];
+              location.pointArray.push(pointObject);
+            }
+          }
+        }
+      }
+
+      // console.log("createLocation " + location.pointArray + " " + location.geoJSON);
+
+      return location;
     },
     /* eslint-disable */
     // for details: https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript

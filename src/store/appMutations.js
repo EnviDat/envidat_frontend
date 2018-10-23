@@ -1,11 +1,11 @@
 import {
-  CHANGE_APP_BG,
+  SET_APP_BACKGROUND,
   ADD_CARD_IMAGES,
   ADD_ICON_IMAGE,
 } from './mutationsConsts';
 
 export default {
-  [CHANGE_APP_BG](state, bgImg) {
+  [SET_APP_BACKGROUND](state, bgImg) {
     state.appBGImage = bgImg;
   },
   [ADD_CARD_IMAGES](state, payload) {

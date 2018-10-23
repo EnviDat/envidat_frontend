@@ -1,37 +1,38 @@
 <template>
 
   <v-card 
-    px-2 py-2
     ripple
     hover
     @click.native="cardClick"
     style="height: 100%;"
     >
 
-    <v-card-media
+    <v-img
         background-color="primary"
-        v-bind="{['style'] : dynamicCardBackground }"
-        height="150px"
+        :style="!compactLayout ? dynamicCardBackground : ''"        
+        :height="compactLayout? '85px' : '125px'"
       >
       
-      <v-container grid-list-xs fill-height px-3 pt-3 pb-0>
+      <v-container grid-list-xs fluid fill-height
+                    px-3 pt-3 pb-0>
+
         <v-layout column>
           <v-flex xs12 py-0>
             <v-layout row >
 
               <v-flex xs12 v-if="!maxTitleLengthReached">
                 <div class="headline mb-0"
-                :class="{['black_title'] : dark ? false : true,
-                          ['white_title'] : dark ? true : false }"
-                >{{ title | truncate(maxTitleLength) }}</div>
+                    :class="titleClass"
+                >
+                  {{ truncatedTitle }}</div>
               </v-flex>
 
               <v-flex xs12 v-if="maxTitleLengthReached">
                 <v-tooltip bottom>
                   <div slot="activator" class="headline mb-0"
-                    :class="{['black_title'] : dark ? false : true,
-                              ['white_title'] : dark ? true : false }"
-                    >{{ title | truncate(maxTitleLength) }}</div>
+                      :class="titleClass"
+                  >
+                    {{ truncatedTitle }}</div>
                   <span>{{ title }}</span>
                 </v-tooltip>
               </v-flex>
@@ -44,11 +45,12 @@
                 <tag-chip py-0
                           v-if="tags" v-for="tag in tags.slice (0, maxTagNumber)" :key="tag.name"
                           :name="tag.name"
+                          :selectable="true"
                           v-on:clicked="catchTagClicked($event, tag.name)"
-                          class="card_tag" />
+                />
               
                 <tag-chip py-0
-                          v-if="maxTagsReached" class="card_tag" :name="'...'" />
+                          v-if="maxTagsReached" name="..." />
               
             </v-layout>
           </v-flex>
@@ -56,24 +58,23 @@
       </v-container>
 
 
-    </v-card-media>
+    </v-img>
 
-    <v-card-text >
-      {{ subtitle | truncate(maxSubtitleLength) }}
+    <v-card-text :class="{['cardText'] : true,
+                          ['compactText'] : compactLayout,
+                          ['py-2'] : compactLayout,
+                          ['pr-5'] : compactLayout,
+                          ['pb-4'] : !compactLayout,
+                        }"
+    >
+      <!-- TODO: need to strip the markdown characters from the desc -->
+      {{ truncatedSubtitle }}
     </v-card-text>
 
 
-    <!-- <v-card-actions style="position: absolute; bottom: 0; right: 0;"> -->
     <v-card-actions class="ma-0 pa-2"
-                    style="position: absolute; bottom: 0; right: 0;">
+                    style="position: absolute; bottom: 5px; right: 5px;">
       
-      <!-- <v-tooltip bottom>
-        <v-btn icon slot="activator">
-          <v-icon color="primary">cloud_download</v-icon>
-        </v-btn>
-        <span>Download data</span>
-      </v-tooltip> -->
-
       <v-spacer></v-spacer>
 
       <v-tooltip bottom v-if="isRestricted">
@@ -92,29 +93,10 @@
 
       </v-tooltip>
 
-      <!-- <v-btn v-if="favourit" icon>
-        <v-icon color="accent">star</v-icon>
-      </v-btn>
-      <v-btn v-if="!favourit" icon>
-        <v-icon>star</v-icon>
-      </v-btn> -->
-
-      <v-tooltip bottom>
-          <div slot="activator" class="metadataInfoIcon">
-            <v-layout row @mouseover="hoverBadge = true" @mouseleave="hoverBadge = false">
-              <v-flex pa-0>
-                <v-badge v-bind="{ left: !hoverBadge }" overlap>
-                  <span slot="badge">{{ resourceAmount }}</span>
-                </v-badge>              
-              </v-flex>
-              <v-flex pa-0 >
-                <img class="envidatIcon" :src="getIcon('file')" />                
-              </v-flex>
-            </v-layout>
-          </div>
-
-          <span>Metadata with {{ resourceAmount }} resources</span>
-      </v-tooltip>
+      <icon-count-view :count="resourceAmount"
+                        iconString="file"
+                        :tooltip="`Metadata with ${resourceAmount} resources`">
+      </icon-count-view>
 
     </v-card-actions>
 
@@ -125,6 +107,7 @@
 
 <script>
 import TagChip from './TagChip';
+import IconCountView from '../IconCountView';
 
 // checkout possible transition animation
 // https://codepen.io/balapa/pen/embYYB
@@ -148,6 +131,7 @@ export default {
     id: String,
     title: String,
     subtitle: String,
+    name: String,
     type: Number,
     restricted: Boolean,
     favourit: Boolean,
@@ -156,15 +140,21 @@ export default {
     dark: Boolean,
     resourceCount: Number,
     resources: Array,
+    compactLayout: Boolean,
   },
   components: {
     TagChip,
+    IconCountView,
   },
   created: function created() {
   },
   methods: {
     cardClick: function cardClick() {
-      this.$emit('clickedEvent', this.id);
+      let detailParam = this.name;
+      if (!detailParam) {
+        detailParam = this.id; // fallback id in url isn't too nice
+      }
+      this.$emit('clickedEvent', detailParam);
     },
     favouritClicked: function favouritClicked() {
       this.$emit('clickedFavourit', this.id);
@@ -172,16 +162,15 @@ export default {
     catchTagClicked: function catchTagClicked(tagId) {
       this.$emit('clickedTag', tagId);
     },
-    badgeOnMouseover: function badgeOnMouseover() {
-      this.hoverBadge = !this.hoverBadge;
-    },
   },
   computed: {
     dynamicCardBackground: function dynamicCardBackground() {
       const gradient = this.dark ? this.blackTopToBottom : this.whiteTopToBottom;
 
       if (this.titleImg) {
-        return `background-image: linear-gradient(0deg, ${gradient}), url(${this.titleImg}); background-position: center, center;`;
+        return `background-image: linear-gradient(0deg, ${gradient}), url(${this.titleImg});
+                background-position: center, center;
+                background-size: cover; background-repeat: initial; `;
       }
 
       return '';
@@ -190,6 +179,9 @@ export default {
       return this.tags !== undefined && this.tags.length > this.maxTagNumber;
     },
     maxTagNumber: function maxTagNumber() {
+      // if (this.compactLayout) {
+      //   return 10;
+      // }
       let textLength = 0;
       let numberOfTags = 0;
 
@@ -198,7 +190,8 @@ export default {
           if (this.tags[i].name !== undefined) {
             textLength += this.tags[i].name.length + 1;
 
-            if (textLength >= this.maxTagTextlength) {
+            if ((this.compactLayout && textLength >= this.maxCompactTagtextLength)
+            || (!this.compactLayout && textLength >= this.maxTagtextLength)) {
               break;
             }
 
@@ -210,7 +203,34 @@ export default {
       return numberOfTags;
     },
     maxTitleLengthReached: function maxTitleLengthReached() {
-      return this.title && this.title.length > this.maxTitleLength;
+      return (!this.compactLayout && this.title.length > this.maxTitleLength)
+          || (this.compactLayout && this.title.length > this.compactTitleLength);
+    },
+    truncatedTitle: function truncatedTitle() {
+      let maxLength = this.maxTitleLength;
+
+      if (this.compactLayout) {
+        maxLength = this.compactTitleLength;
+      }
+
+      if (this.title !== undefined && this.maxTitleLengthReached) {
+        return `${this.title.substring(0, maxLength)}...`;
+      }
+
+      return this.title;
+    },
+    truncatedSubtitle: function truncatedSubtitle() {
+      let maxLength = this.maxSubtitleLength;
+
+      if (this.compactLayout) {
+        maxLength = this.compactSubtitleLength;
+      }
+
+      if (this.subtitle !== undefined) {
+        return `${this.subtitle.substring(0, maxLength)}...`;
+      }
+
+      return '';
     },
     isRestricted: function isRestricted() {
       return this.restricted;
@@ -238,16 +258,28 @@ export default {
 
       return 0;
     },
+    titleClass: function titleClass() {
+      return {
+        black_title: !this.dark,
+        white_title: this.dark,
+        // compactTitle: this.$vuetify.breakpoint.smAndDown || this.compactLayout,
+        compactTitle: true,
+      };
+    },
   },
   data: () => ({
     show: false,
     showDataText: 'SHOW DATA',
-    maxTitleLength: 70,
-    maxSubtitleLength: 180,
+    maxTitleLength: 80,
+    compactTitleLength: 100,
+    maxSubtitleLength: 280,
+    compactSubtitleLength: 320,
     // maxTags: 3,
-    maxTagTextlength: 40,
+    maxTagtextLength: 40,
+    maxCompactTagtextLength: 170,
     blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
-    whiteTopToBottom: 'rgba(255,255,255, 0.25) 0%, rgba(255,255,255, 0.95) 60%',
+    // whiteTopToBottom: 'rgba(255,255,255, 0.3) 0%, rgba(255,255,255, 1) 60%',
+    whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
     imageDefaults: {
       snow: 'c_b_snow_icy2',
       landscape: 'c_b_landscape_lake2', // or c_b_landscape_view ! c_b_landscape_long_lake
@@ -280,9 +312,19 @@ export default {
   .white_title{
     color: rgba(255,255,255,.9) !important;
   }
+  
+  .compactTitle {
+    font-size: 20px !important;
+    line-height: 1.1em !important;
+  }
 
-  .card_tag {
-    /* opacity: 0.7; */
+  .compactText {
+    font-size: 12px !important;
+    line-height: 1.3em !important;
+  }
+
+  .cardText {
+    line-height: 1.3em !important;
   }
 
 

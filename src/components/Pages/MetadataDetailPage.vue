@@ -4,17 +4,29 @@
               v-bind="{ [`pa-0`]: this.$vuetify.breakpoint.smAndDown,
                         [`pa-2`]: this.$vuetify.breakpoint.mdAndUp }"
   >
+
     <div v-if="currentMetadataContent">
       
       <v-layout row wrap v-if="twoColumnLayout">
+
+        <v-flex xs12 
+              md8 offset-md2
+              lg10 offset-lg1
+              class="envidatNavbar" >
+
+          <nav-bar-view />
+
+        </v-flex>
+
         <v-flex xs12
                 md8 offset-md2
                 lg10 offset-lg1
                 elevation-5
                 style="z-index: 1;">
 
-          <metadata-header v-bind="header" :maxTags="10"
+          <metadata-header v-bind="header"
                             v-on:clickedTag="catchTagClicked"
+                            v-on:clickedBack="catchBackClicked"                           
                             :showPlaceholder="showPlaceholder" />
 
         </v-flex>
@@ -81,7 +93,9 @@
                 elevation-5
                 style="z-index: 1;">
 
-          <metadata-header v-bind="header" :maxTags="10"
+          <metadata-header v-bind="header"
+                            v-on:clickedTag="catchTagClicked"
+                            v-on:clickedBack="catchBackClicked"
                             :showPlaceholder="showPlaceholder" />
 
         </v-flex>
@@ -142,11 +156,12 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import { CHANGE_APP_BG } from '../../store/mutationsConsts';
+  import { SET_APP_BACKGROUND } from '../../store/mutationsConsts';
   import {
     LOAD_METADATA_CONTENT_BY_ID,
     CLEAN_CURRENT_METADATA,
   } from '../../store/metadataMutationsConsts';
+  import NavBarView from '../Views/NavbarView';
   import MetadataHeader from '../Views/MetadataViews/MetadataHeader';
   import MetadataBody from '../Views/MetadataViews/MetadataBody';
   import MetadataResources from '../Views/MetadataViews/MetadataResources';
@@ -163,8 +178,14 @@
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
       next((vm) => {
         // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
-        vm.$store.commit(CHANGE_APP_BG, vm.PageBGImage);
+        vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
+    },
+    beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+      // console.log("beforeRouteLeave to: " + to + " from: " + from + " next: " + next);
+      // called when the route that renders this component is about to
+      // be navigated away from.
+      // has access to `this` component instance.
     },
     created: function created() {
       // console.log('created ' + this.metadataId + ' loading ' + this.currentMetadataContent.title + ' ' + this.metadatasContentSize);
@@ -174,6 +195,9 @@
       if (!this.loadingMetadatasContent && this.currentMetadataContent.title === undefined) {
         // in case of directly entring the page load the content directly via Id
         this.$store.dispatch(`metadata/${LOAD_METADATA_CONTENT_BY_ID}`, this.metadataId);
+        // console.log('mounted dispached content by id');
+      } else {
+        this.createMetadataContent();
       }
     },
     beforeDestroy: function beforeDestroy() {
@@ -186,9 +210,8 @@
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
         loadingCurrentMetadataContent: 'metadata/loadingCurrentMetadataContent',
         currentMetadataContent: 'metadata/currentMetadataContent',
-        allTags: 'metadata/allTags',
-        loadingAllTags: 'metadata/loadingAllTags',
         iconImages: 'iconImages',
+        cardBGImages: 'cardBGImages',
       }),
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
@@ -202,8 +225,7 @@
         //  && this.metadataIds.includes(this.metadataId));
       },
       showPlaceholder: function showPlaceholder() {
-        return true; // testing;
-        // return this.loadingCurrentMetadataContent;
+        return this.loadingMetadatasContent || this.loadingCurrentMetadataContent;
       },
       leftOrFullWidth: function leftOrFullWidth() {
         return this.twoColumnLayout ? this.halfWidthLeft : this.fullWidthPadding;
@@ -297,21 +319,31 @@
           query,
         });
       },
+      catchBackClicked: function catchBackClicked() {
+        // console.log(this.$router);
+        this.$router.go(-1);
+      },
       createMetadataContent: function createMetadataContent() {
         let currentContent = this.currentMetadataContent;
 
-        if (!currentContent && this.loadingMetadatasContent
-          && this.metadatasContentSize > 0 && this.metadataId) {
-          // in case all the metadataContents are already loaded take it from there
-          currentContent = this.metadatasContent[this.metadataId];
-        }
+        // console.log('createMetadataContent title? ' + currentContent.title + ' ' + this.loadingMetadatasContent);
 
-        if (currentContent) {
+        // if (!currentContent.title === undefined
+        // && this.metadatasContentSize > 0 && this.metadataId) {
+        //   // console.log('createMetadataContent ' + this.metadataId + ' loading ' + this.currentMetadataContent.title + ' ' + this.metadatasContentSize);
+        //   currentContent = this.metadatasContent[this.metadataId];
+        //   // console.log('createMetadataContent ' + this.metadataId + ' currentContent ' + currentContent);
+        // }
+
+        currentContent = this.enhanceMetadataEntry(currentContent, this.cardBGImages);
+
+        if (currentContent && currentContent.title !== undefined) {
           // console.log("create content " + currentContent.spatial + " " + this.header);
           this.header = this.createHeader(currentContent);
           this.body = this.createBody(currentContent);
           this.citation = this.createCitation(currentContent);
           this.resources = this.createResources(currentContent);
+          // createLocation is a globalMethod
           this.location = this.createLocation(currentContent);
           this.details = this.createDetails(currentContent);
         }
@@ -337,6 +369,8 @@
           contactEmail,
           license: license.title,
           tags: dataset.tags,
+          titleImg: dataset.titleImg,
+          maxTags: 12,
         };
       },
       createBody: function createBody(dataset) {
@@ -383,21 +417,24 @@
           text = `${authors.trim()} (${publication.publication_year}). ${publication.publisher},`;
         }
 
-        if (dataset.doi !== undefined) {
+        if (dataset.doi) {
           text += ` doi: ${dataset.doi}`;
         }
 
         return {
           id: dataset.id,
-          title: dataset.title,
-          authors: dataset.author,
-          publication: dataset.publication,
+          // title: dataset.title,
+          // authors: dataset.author,
+          // publication: dataset.publication,
           citationText: text,
           // TODO how to get to the links?
           // https://www.envidat.ch/dataset/datasets-for-testing-the-repository-and-storage
           // add /export/datacite.xml or /export/iso19139.xml to the base url www.envidat.ch/dataset/[title]
-          citationXmlLink: 'https://www.envidat.ch/dataset/number-of-natural-hazard-fatalities-per-year-in-switzerland-since-1946/export/datacite.xml',
-          ciationIsoXmlLink: 'https://www.envidat.ch/dataset/number-of-natural-hazard-fatalities-per-year-in-switzerland-since-1946/export/iso19139.xml',
+          // citationXmlLink: 'https://www.envidat.ch/dataset/number-of-natural-hazard-fatalities-per-year-in-switzerland-since-1946/export/datacite.xml',
+          // ciationIsoXmlLink: 'https://www.envidat.ch/dataset/number-of-natural-hazard-fatalities-per-year-in-switzerland-since-1946/export/iso19139.xml',
+          citationXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/datacite.xml`,
+          ciationIsoXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/iso19139.xml`,
+          ciationGCMDXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/gcmd_diff.xml`,
         };
       },
       createResources: function createResources(dataset) {
@@ -439,55 +476,6 @@
           resources,
         };
       },
-      createLocation: function createLocation(dataset) {
-        const location = {};
-        if (dataset && dataset.spatial) {
-          location.geoJSON = dataset.spatial;
-
-          // parseJSON because the geoJOSN from CKAN might be invalid!
-          const spatialJSON = JSON.parse(dataset.spatial);
-          // console.log("createLocation spatial " + spatialJSON.coordinates);
-
-          if (spatialJSON) {
-            location.isPolygon = spatialJSON.type === 'Polygon';
-            location.isPoint = spatialJSON.type === 'Point';
-            location.isMultiPoint = spatialJSON.type === 'MultiPoint';
-
-            // Swap lngLat to latLng because the geoJOSN from CKAN might be invalid!
-
-            if (location.isPoint) {
-              // swap coords for the leaflet map
-              location.pointArray = [spatialJSON.coordinates[1], spatialJSON.coordinates[0]];
-            } else if (location.isPolygon) {
-              location.pointArray = [];
-
-              for (let i = 0; i < spatialJSON.coordinates.length; i++) {
-                const pointElement = spatialJSON.coordinates[i];
-                const pointObject = [];
-
-                for (let j = 0; j < pointElement.length; j++) {
-                  const coord = pointElement[j];
-                  pointObject.push([coord[1], coord[0]]);
-                }
-
-                location.pointArray.push(pointObject);
-              }
-            } else if (location.isMultiPoint) {
-              location.pointArray = [];
-
-              for (let i = 0; i < spatialJSON.coordinates.length; i++) {
-                const pointElement = spatialJSON.coordinates[i];
-                const pointObject = [pointElement[1], pointElement[0]];
-                location.pointArray.push(pointObject);
-              }
-            }
-          }
-        }
-
-        // console.log("createLocation " + location.pointArray + " " + location.geoJSON);
-
-        return location;
-      },
       createDetails: function createDetails(dataset) {
         const details = [];
 
@@ -519,10 +507,21 @@
 
         return license;
       },
+      OnScroll: function OnScroll(scrollPos) {
+        this.savedPosition = scrollPos;
+      },
     },
     watch: {
       currentMetadataContent: function updateContent() {
         this.createMetadataContent();
+      },
+      metadatasContent: function updateContent() {
+        // in case all the metadataContents are already loaded take it from there
+        // if EnviDat is called via MetadataDetailPage URL directly
+
+        if (!this.loadingCurrentMetadataContent) {
+          this.$store.dispatch(`metadata/${LOAD_METADATA_CONTENT_BY_ID}`, this.metadataId);
+        }
       },
     },
     data: () => ({
@@ -537,6 +536,7 @@
       notFoundBackPath: 'browse',
     }),
     components: {
+      NavBarView,
       MetadataHeader,
       MetadataBody,
       MetadataResources,
@@ -550,13 +550,21 @@
 
 <style>
 
-  .metadata_title{
+  .metadata_title {
     font-family: 'Libre Baskerville', serif !important;
     font-weight: 700 !important;
   }
 
-  .metadataResourceCard{
-    min-height: 200px !important;
+  .metadataResourceCard {
+    min-height: 100px !important;
+  }
+
+  .metadataResourceCard .headline {
+    font-size: 20px !important;
+  }
+
+  .resourceCardText {
+    font-size: 12px;
   }
 
 </style>
