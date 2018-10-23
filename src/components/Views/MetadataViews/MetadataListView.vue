@@ -68,6 +68,7 @@
   import MetadataCard from '../Cards/MetadataCard';
   import MetadataCardPlaceholder from '../Cards/MetadataCardPlaceholder';
   import NoSearchResultsView from '../NoSearchResultsView';
+  import { FILTER_METADATA_SUCESS } from '../../../store/metadataMutationsConsts';
 
   // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
@@ -80,14 +81,16 @@ export default {
       placeHolderAmount: Number,
     },
     data: () => ({
+      enhanceContentDone: false,
       noResultText: 'Nothing found for these Search criterias',
       suggestionText: 'Try one of these categories',
     }),
+    beforeMount: function beforeMount() {
+      this.enhanceContent();
+    },
     watch: {
       filteredContent: function watchEnhanceMetadata() {
-        if (this.filteredContent && this.filteredContent.length > 0) {
-          this.enhanceMetadata(this.filteredContent, this.cardBGImages);
-        }
+        this.enhanceContent();
       },
     },
     computed: {
@@ -137,6 +140,17 @@ export default {
 
     },
     methods: {
+      enhanceContent: function enhanceContent() {
+        if (this.enhanceContentDone) return;
+
+        if (this.filteredContent && this.filteredContent.length > 0) {
+          const enhancedContent = this.enhanceMetadata(this.filteredContent, this.cardBGImages);
+          if (enhancedContent && enhancedContent.length > 0) {
+            this.$store.commit(`metadata/${FILTER_METADATA_SUCESS}`, enhancedContent);
+            this.enhanceContentDone = true;
+          }
+        }
+      },
       contentSize: function contentSize(content) {
         return content !== undefined ? Object.keys(content).length : 0;
       },
