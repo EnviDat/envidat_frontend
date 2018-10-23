@@ -261,54 +261,24 @@
         }
 
         return selectedTagFound === this.selectedTagNames.length;
+      },
+      contentFilterAccessibility: function contentFilterAccessibility(value) {
 
-        /*
-        for (let j = 0; j < this.selectedTagNames.length; j++) {
-          const selectedTagName = this.selectedTagNames[j];
-
-          if (!tagNames.includes(selectedTagName)) {
-            return false;
-          }
+        if (value.capacity && value.capacity !== 'public') {
+          // unpublished entries have 'private'
+          return false;
+        } else if (value.private && value.private === true) {
+          return false;
         }
 
         return true;
-        */
       },
-      contentFilterAccessibility: function contentFilterAccessibility(contentList) {
-        const accessibleContent = [];
-
-        for (let i = 0; i < contentList.length; i++) {
-          const value = contentList[i];
-
-          if (value.capacity && value.capacity === 'public') {
-            // unpublished entries have 'private'
-            accessibleContent.push(value);
-          } else if (value.private && value.private === false) {
-            accessibleContent.push(value);
-          } else {
-            accessibleContent.push(value);
-          }
+      contentFilteredByTags: function contentFilteredByTags(value) {
+        if (value.tags && this.tagsIncludedInSelectedTags(value.tags)) {
+          return true;
         }
 
-        return accessibleContent;
-      },
-      contentFilteredByTags: function contentFilteredByTags(contentList) {
-        const filteredContent = [];
-
-        if (contentList.length > 0) {
-          const metaDataKeys = Object.keys(contentList);
-
-          for (let i = 0; i < metaDataKeys.length; i++) {
-            const key = metaDataKeys[i];
-            const value = contentList[key];
-
-            if (value.tags && this.tagsIncludedInSelectedTags(value.tags)) {
-              filteredContent.push(value);
-            }
-          }
-        }
-
-        return filteredContent;
+        return false;
       },
       enhanceSearchWithTags: function enhanceSearchWithTags(searchResult) {
         if (searchResult === undefined || searchResult.length <= 0 || this.allTags === undefined) {
@@ -448,6 +418,28 @@
           contentToFilter = Object.values(this.metadatasContent);
         }
 
+        const filteredContent = [];
+        let keep = false;
+
+        for (let i = 0; i < contentToFilter.length; i++) {
+          let entry = contentToFilter[i];
+          keep = this.contentFilterAccessibility(entry);
+
+          if (keep) {
+            entry = this.enhanceMetadataEntry(entry, this.cardBGImages);
+
+            keep = this.contentFilteredByTags(entry);
+          }
+
+
+          if (keep) {
+            filteredContent.push(entry);
+          }
+        }
+
+        contentToFilter = filteredContent;
+
+/*
         if (contentToFilter && contentToFilter.length > 0) {
           contentToFilter = this.contentFilterAccessibility(contentToFilter);
 
@@ -458,10 +450,10 @@
             contentToFilter = this.contentFilteredByTags(contentToFilter);
           }
         }
-
-        if (this.mapFilterVisibleIds.length > 0) {
-          contentToFilter = this.contentFilterMapIds(contentToFilter);
-        }
+*/
+        // if (this.mapFilterVisibleIds.length > 0) {
+        //   contentToFilter = this.contentFilterMapIds(contentToFilter);
+        // }
 
         this.$store.commit(`metadata/${SET_FILTERED_CONTENT}`, contentToFilter);
 

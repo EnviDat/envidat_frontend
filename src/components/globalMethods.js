@@ -142,6 +142,13 @@ export default {
       // return Math.floor(this.rNG() * (max - (min + 1))) + min;
       // return Math.floor(Math.random() * (max - (min + 1))) + min;
     },
+    enhanceMetadataEntry: function enhanceMetadataEntry(entry, cardBGImages) {
+      if (!entry.titleImg) {
+        this.enhanceTitleImg(entry, cardBGImages);
+      }
+
+      return entry;
+    },
     enhanceMetadata: function enhanceMetadata(metadatas, cardBGImages) {
       if (metadatas === undefined && metadatas.length <= 0) {
         return undefined;

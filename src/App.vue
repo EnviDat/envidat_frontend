@@ -89,8 +89,6 @@
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
         loadingCurrentMetadataContent: 'metadata/loadingCurrentMetadataContent',
         currentMetadataContent: 'metadata/currentMetadataContent',
-        allTags: 'metadata/allTags',
-        loadingAllTags: 'metadata/loadingAllTags',
         popularTags: 'metadata/popularTags',
         loadingPopularTags: 'metadata/loadingPopularTags',
         appBGImage: 'appBGImage',
