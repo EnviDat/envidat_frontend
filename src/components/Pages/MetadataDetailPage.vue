@@ -181,12 +181,12 @@
         vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
     },
-    beforeRouteLeave: function beforeRouteLeave(to, from, next) {
-      // console.log("beforeRouteLeave to: " + to + " from: " + from + " next: " + next);
-      // called when the route that renders this component is about to
-      // be navigated away from.
-      // has access to `this` component instance.
-    },
+    // beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    //   // console.log("beforeRouteLeave to: " + to + " from: " + from + " next: " + next);
+    //   // called when the route that renders this component is about to
+    //   // be navigated away from.
+    //   // has access to `this` component instance.
+    // },
     created: function created() {
       // console.log('created ' + this.metadataId + ' loading ' + this.currentMetadataContent.title + ' ' + this.metadatasContentSize);
     },
