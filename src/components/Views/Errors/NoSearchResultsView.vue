@@ -1,30 +1,26 @@
 <template>
   <v-layout column>
     <v-flex xs12 py-5 style="font-weight: 700;">
-      <h2>{{ noResultText }}</h2>
+      {{ noResultText }}
     </v-flex>
 
     <v-flex xs12 >
-      <h3>{{ suggestionText }}</h3>
+      {{ suggestionText }}
     </v-flex>
 
     <v-flex xs12 pt-2>
-      <v-container grid-list-xs
-                    fluid
-                    pa-0>
-        <v-layout row wrap>
-          <v-flex py-3 xs3
-            v-for="card in categorycards" :key="card.title">
+      <v-layout row wrap>
+        <v-flex py-2 xs3
+          v-for="card in categorycards" :key="card.title">
 
-            <category-card :title="card.title"
-                            :type="card.type"
-                            v-on:clicked="catchCategoryClicked">
-            </category-card>
+          <category-card :title="card.title"
+                          :type="card.type"
+                          v-on:clicked="catchCategoryClicked">
+          </category-card>
 
-          </v-flex>
+        </v-flex>
 
-        </v-layout>
-      </v-container>
+      </v-layout>
     </v-flex>
 
   </v-layout>    
@@ -33,7 +29,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import CategoryCard from './Cards/CategoryCard';
+  import CategoryCard from '../Cards/CategoryCard';
 
   export default {
     props: {

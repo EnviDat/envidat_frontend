@@ -9,7 +9,7 @@
                   :buttonCallback="catchBrowseClicked" >
       </title-view>
 
-      <v-flex mt-5 offset-sm6>
+      <v-flex mt-5 offset-md6>
         <search-bar-view
                       :labelText="labelText"
                       :buttonText="buttonlText"
@@ -31,7 +31,7 @@
         </data-producer-card>
       </v-flex> -->
 
-      <v-flex mt-5 offset-sm6>
+      <v-flex mt-5 offset-md6>
     
         <v-container fluid grid-list-md pa-0>
           <v-layout row wrap>
@@ -46,10 +46,6 @@
     
             </v-flex>
 
-            <v-flex xs6 py-2>
-              <login-card title="Login"
-                          v-on:clicked="catchLoginclick" />
-            </v-flex>
           </v-layout>
         </v-container>
     
@@ -62,7 +58,6 @@
 <script>
   import { mapGetters } from 'vuex';
   import CategoryCard from '../Views/Cards/CategoryCard';
-  import LoginCard from '../Views/Cards/LoginCard';
   import TitleView from '../Views/TitleView';
   import SearchBarView from '../Views/SearchBarView';
   import { SET_APP_BACKGROUND } from '../../store/mutationsConsts';
@@ -93,6 +88,11 @@
         // sleep(500);
         // setTimeout(this.$router.push({ name: 'BrowsePage', params: { cardTitle }}), 1000);
 
+        if (cardTitle.includes('login')) {
+          this.catchLoginclick();
+          return;
+        }
+
         this.$router.push({
           path: '/browse',
           query: {
@@ -122,7 +122,8 @@
         this.redirectToDashboard();
       },
       redirectToDashboard: function redirectToDashboard() {
-        window.location.href = 'https://www.envidat.ch/user/reset';
+        window.open('https://www.envidat.ch/user/reset', '_blank');
+        // window.location.href = 'https://www.envidat.ch/user/reset';
         // this.$router.push('https://www.envidat.ch/user/reset');
       },
     },
@@ -138,7 +139,7 @@
       sloganButtonText: 'BROWSE DATA',
       loginInfos: {
         titleText: 'Do you create data?',
-        loginText: 'LOGIN',
+        loginText: 'Creator Login',
         signupText: 'SIGN UP',
         loggedIn: false,
         loggedinText: 'ENTER DASHBOARD',
@@ -148,7 +149,6 @@
       TitleView,
       SearchBarView,
       CategoryCard,
-      LoginCard,
     },
   };
 </script>

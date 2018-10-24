@@ -1,14 +1,16 @@
 <template>
   <v-app v-bind:style="dynamicBackground">
 
-    <!--v-btn fab top left color="success" @click="testStore" >Test</v-btn>
-
-    <v-icon v-if="loading" color="warning">autorenew</v-icon-->
-
     <v-content>
-      <!-- <transition :name="transitionName"> -->
+      <transition
+        name="fade"
+        mode="out-in"
+        @beforeLeave="beforeLeave"
+        @enter="enter"
+        @afterEnter="afterEnter"
+      >
         <router-view />
-      <!-- </transition> -->
+      </transition>
     </v-content>
         
   </v-app>
@@ -17,11 +19,7 @@
 <script>
   import { mapGetters } from 'vuex';
   import '../node_modules/skeleton-placeholder/dist/bone.min.css';
-  import {
-    LOAD_ALL_TAGS,
-    LOAD_METADATA_CONTENT_BY_ID,
-    BULK_LOAD_METADATAS_CONTENT,
-  } from './store/metadataMutationsConsts';
+  import { BULK_LOAD_METADATAS_CONTENT } from './store/metadataMutationsConsts';
   import {
     ADD_CARD_IMAGES,
     ADD_ICON_IMAGE,
@@ -29,38 +27,44 @@
 
   export default {
     created: function created() {
-      const metadataId = this.$route.params.metadataid;
-
-      if (metadataId && !this.loadingCurrentMetadataContent) {
-        this.$store.dispatch(`metadata/${LOAD_METADATA_CONTENT_BY_ID}`, metadataId);
-      } else {
-        this.loadAllMetadata();
-      }
-      this.loadAllTags();
+      this.loadAllMetadata();
 
       const bgImgs = require.context('./assets/', false, /\.jpg$/);
       this.appBGImages = this.importImages(bgImgs, 'app_b');
 
       this.importCardBackgrounds();
       this.importIcons();
-
-      // const values = Object.values(this.imagesImports);
-      // values.forEach(element => {
-      //   console.log("value " + element);
-      // });
     },
     methods: {
+      beforeLeave(element) {
+        const style = getComputedStyle(element);
+        this.prevHeight = style.height;
+      },
+      enter(element) {
+        const { height } = getComputedStyle(element);
+
+        element.style.height = this.prevHeight;
+
+        setTimeout(() => {
+          element.style.height = height;
+        });
+      },
+      afterEnter(element) {
+        element.style.height = 'auto';
+      },
       loadAllMetadata: function loadAllMetadata() {
         if (!this.loadingMetadatasContent && this.metadatasContentSize <= 0) {
           this.$store.dispatch(`metadata/${BULK_LOAD_METADATAS_CONTENT}`);
         }
       },
-      loadAllTags: function loadAllTags() {
-        if (!this.loadingAllTags && this.allTags && this.allTags.length <= 0) {
-          this.$store.dispatch(`metadata/${LOAD_ALL_TAGS}`);
-        }
-      },
       importCardBackgrounds: function importCardBackgrounds() {
+        const imgs = this.$store.getters.cardBGImages;
+
+        if (imgs && Object.keys(imgs).length > 0) {
+          // already loaded in localStorage
+          return;
+        }
+
         let imgPaths = require.context('./assets/cards/landscape/', false, /\.jpg$/);
         let images = this.importImages(imgPaths);
         this.$store.commit(ADD_CARD_IMAGES, { key: 'landscape', value: images });
@@ -82,6 +86,13 @@
         this.$store.commit(ADD_CARD_IMAGES, { key: 'hazard', value: images });
       },
       importIcons: function importIcons() {
+        const imgs = this.$store.getters.iconImages;
+
+        if (imgs && Object.keys(imgs).length > 0) {
+          // already loaded in localStorage
+          return;
+        }
+
         const imgPaths = require.context('./assets/icons/', false, /\.png$/);
         const images = this.importImages(imgPaths);
 
@@ -100,8 +111,6 @@
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
         loadingCurrentMetadataContent: 'metadata/loadingCurrentMetadataContent',
         currentMetadataContent: 'metadata/currentMetadataContent',
-        allTags: 'metadata/allTags',
-        loadingAllTags: 'metadata/loadingAllTags',
         popularTags: 'metadata/popularTags',
         loadingPopularTags: 'metadata/loadingPopularTags',
         appBGImage: 'appBGImage',
@@ -138,7 +147,7 @@
     },
     data: () => ({
       appBGImages: {},
-      transitionName: 'fadeOut',
+      prevHeight: 0,
     }),
     props: {
       source: String,
@@ -271,29 +280,18 @@
     font-size: 0.9em !important;
   }
 
-  .fadeOut-enter-active, .fadeOut-leave-active {
-    transition: all .3s;
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition-duration: 0.3s;
+    transition-property: height, opacity;
+    transition-timing-function: ease;
+    /* overflow: hidden; */
   }
 
-  .fadeOut-leave {
-    opacity: 1;
-  }  
-
-  .fadeOut-leave-to {
-    opacity: 0;
-  }  
-
-  .fadeIn-enter-active, .fadeIn-leave-active {
-    transition: all .3s;
-  }
-
-  .fadeIn-enter {
+  .fade-enter,
+  .fade-leave-active {
     opacity: 0
-  }  
-
-  .fadeIn-enter-to {
-    opacity: 1;
-  }  
-
+  }
 
 </style>

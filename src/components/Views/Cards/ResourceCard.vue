@@ -85,7 +85,7 @@
       <v-tooltip bottom >
         <v-btn fab small
                 color="accent" slot="activator" :href="url" 
-                v-bind="{['target'] : isLink ? '_blank' : '' }">
+                v-bind="{['target'] : '_blank' }">
 
           <div v-if="isFile"
                 class="iconCentering">
@@ -194,8 +194,5 @@ export default {
     color: rgba(255,255,255,.9) !important;
   }
 
-  .card_tag {
-    /* opacity: 0.7; */
-  }
 
 </style>
