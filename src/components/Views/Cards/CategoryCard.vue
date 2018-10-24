@@ -35,6 +35,7 @@
   import landImg from '@/assets/cards/c_b_landscape_view_small.jpg';
   import hazardImg from '@/assets/cards/c_b_hazard_cloud_small.jpg';
   import diversityImg from '@/assets/cards/b_c_diversity_meadow_small.jpg';
+  import dataCreatorImg from '../../../assets/cards/data_creator_small.jpg';
 
   // un blurry zooming
   // https://stackoverflow.com/questions/36143337/how-to-prevent-blur-from-css-transform
@@ -71,6 +72,10 @@
           return diversityImg;
         }
 
+        if (this.type === 'login') {
+          return dataCreatorImg;
+        }
+
         return defaultImg;
       },
     },
@@ -81,6 +86,7 @@
       landImg,
       hazardImg,
       diversityImg,
+      dataCreatorImg,
     }),
   };
 </script>

@@ -2,7 +2,7 @@
   
     <v-layout>
 
-      <v-flex xs12 sm6 offset-sm6>
+      <v-flex xs12 md6 offset-md6>
 
         <v-layout column>
           <v-flex xs12 >

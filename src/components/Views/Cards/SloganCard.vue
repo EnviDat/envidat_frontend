@@ -8,12 +8,12 @@
         height="150px" -->
       
       <v-container grid-list-md pa-0>
-        <v-layout row align-center>
+        <v-layout row >
 
           <v-flex xs5 py-0>
             <v-img
                 :src="fingertipsImg"
-                height="200px"
+                :style="{ 'max-height': '200px', 'min-height': '100%' }"
             />
           </v-flex>
 
@@ -38,7 +38,7 @@
               v-html="slogan">
             </div>
 
-            <div class="pt-3">{{ subSlogan }}</div>
+            <div class="pt-3 pb-5">{{ subSlogan }}</div>
           </v-flex>
 
         </v-layout>
