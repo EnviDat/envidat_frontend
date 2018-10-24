@@ -138,14 +138,18 @@ export default {
     // expandClicked: function expandClicked(expand) {
     //   this.expanded = expand;
     // },
-    catchPointClick: function catchPointClick(e) {
-      this.$emit('pointClicked', e.target.id);
-      this.$emit('pointHover', e.target.id);
+    catchPointClick: function catchPointClick(e) {      
+      // e.target.bindPopup(`<h3>${e.target.id}</h3>`).openPopup();
+
+      // this.$emit('pointClicked', e.target.id);
+      // this.$emit('pointHover', e.target.id);
     },
     catchPointHover: function catchPointHover(e) {
+      e.target.bindPopup(`<p>${e.target.id}</p>`).openPopup();
       this.$emit('pointHover', e.target.id);
     },
     catchPointHoverLeave: function catchPointHoverLeave(e) {
+      e.target.closePopup();
       this.$emit('pointHoverLeave', e.target.id);
     },
     toggleMapExpand: function toggleMapExpand() {
@@ -169,13 +173,13 @@ export default {
       this.markerCount = 0;
 
       if (this.map) {
-        this.map.on('locationerror', this.checkError);
+        this.map.on({ locationerror: this.checkError });
 
         this.addOpenStreetMapLayer(this.map);
 
         this.addGeoJSONToMap();
 
-        this.map.on('moveend', this.reFilter);
+        this.map.on({ moveend: this.reFilter });
 
         this.mapIsSetup = true;
       }
@@ -203,7 +207,6 @@ export default {
       const map = L.map(mapElement, {
         scrollWheelZoom: false,
         center: viewCoords,
-        riseOnHover: true,
         zoom: 8,
       });
 
@@ -248,13 +251,13 @@ export default {
           this.markerCount++;
         }
 
-        // if (location.isPolygon) {
-        //   this.addPolygon(this.map, location.pointArray, location.id);
-        // }
+        if (location.isPolygon) {
+          this.addPolygon(this.map, location.pointArray, location.title);
+        }
 
-        // if (location.isMultiPoint) {
-        //   this.addMultiPoint(this.map, location.pointArray, location.id);
-        // }
+        if (location.isMultiPoint) {
+          this.addMultiPoint(this.map, location.pointArray, location.title);
+        }
       }
     },
     addPoint: function addPoint(map, coords, id) {
@@ -266,20 +269,29 @@ export default {
       }).addTo(map);
 
       point.id = id;
-      point.on('click', this.catchPointClick);
-      point.on('mouseover', this.catchPointHover);
-      point.on('mouseout ', this.catchPointHoverLeave);
+      point.on({ click: this.catchPointClick });
+      point.on({ mouseover: this.catchPointHover });
+      point.on({ mouseout: this.catchPointHoverLeave });
 
       return point;
     },
     addPolygon: function addPolygon(map, coords, id) {
-      // create a red polygon from an array of LatLng points
+      // create a polygon from an array of LatLng points
       // var latlngs = [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]];
       const polygon = L.polygon(coords, {
         color: this.$vuetify.theme.secondary,
-        opacity: 0.1,
-        fillOpacity: 0.1,
-      }).addTo(map);
+        opacity: 0.5,
+        fillOpacity: 0,
+      });
+
+      // if (!map.getBounds().contains(polygon.getBounds())) {
+      //   return null;
+      // }
+
+      polygon.addTo(map);
+      polygon.on({ click: this.catchPointClick });
+      // polygon.on({ mouseover: this.catchPointHover });
+      // polygon.on({ mouseout: this.catchPointHoverLeave });
 
       // zoom the map to the polygon
       // map.fitBounds(polygon.getBounds());

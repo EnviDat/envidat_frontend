@@ -44,6 +44,7 @@
 
   export default {
     props: {
+      title: String,
       isPolygon: Boolean,
       isPoint: Boolean,
       isMultiPoint: Boolean,
@@ -114,7 +115,7 @@
           }
         }
 
-        this.map.on('click', this.onMapClick);
+        this.map.on({ click: this.onMapClick });
 
         this.mapIsSetup = true;
       },
@@ -153,12 +154,22 @@
       },
       addPoint: function addPoint(map, coords) {
         const point = L.marker(coords).addTo(map);
+
+        point.id = this.title;
+        point.on({ mouseover: this.catchHover });
+        point.on({ mouseout: this.catchHoverLeave });
+
         return point;
       },
       addPolygon: function addPolygon(map, coords) {
         // create a red polygon from an array of LatLng points
         // var latlngs = [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]];
         const polygon = L.polygon(coords, { color: 'red' }).addTo(map);
+
+        polygon.id = this.title;
+        polygon.on({ mouseover: this.catchHover });
+        polygon.on({ mouseout: this.catchHoverLeave });
+
         // zoom the map to the polygon
         map.fitBounds(polygon.getBounds());
 
@@ -171,6 +182,12 @@
         }
 
         map.fitBounds(coords);
+      },
+      catchHover: function catchHover(e) {
+        e.target.bindPopup(`<p>${e.target.id}</p>`).openPopup();
+      },
+      catchHoverLeave: function catchHoverLeave(e) {
+        e.target.closePopup();
       },
     },
     watch: {
