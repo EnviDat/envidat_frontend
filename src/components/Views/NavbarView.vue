@@ -20,8 +20,10 @@
                       ['envidatNavbarTitleSmall']: this.$vuetify.breakpoint.xsOnly,
                     }" 
                 >
-                    {{ logoText }}
+                  {{ logoText }} 
                 </div>
+
+
               </v-flex>
 
               <v-flex sm5 md8 lg8>
@@ -160,6 +162,9 @@
                           v-on:pointClicked="catchPointClicked" />
 
       </v-flex> -->
+      <div style="position: absolute; right: -10px; top: 2px; font-size: 8px !important;" >
+        {{ appVersion }}
+      </div>
 
     </v-layout>
 
@@ -247,6 +252,7 @@
       clearButtonText: 'Clear Tags',
       mapExpandButtonText: 'Show Map',
       mapExpandedButtonText: 'Hide Map',
+      appVersion: process.env.VERSION,
     }),
     components: {
       FilterView,

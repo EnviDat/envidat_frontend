@@ -4,6 +4,7 @@ const prodEnv = require('./prod.env')
 
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
+  VERSION: JSON.stringify(require('../package.json').version),
   ENVIDAT_PROXY: '""',
   SOLR_PROXY: '""',
 })
