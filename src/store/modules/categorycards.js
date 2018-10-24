@@ -1,5 +1,8 @@
 export default [
   {
+    title: 'Creator Login', type: 'login',
+  },
+  {
     title: 'Forest', type: 'forest',
   },
   {
