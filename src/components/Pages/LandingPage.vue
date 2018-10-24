@@ -122,7 +122,8 @@
         this.redirectToDashboard();
       },
       redirectToDashboard: function redirectToDashboard() {
-        window.location.href = 'https://www.envidat.ch/user/reset';
+        window.open('https://www.envidat.ch/user/reset', '_blank');
+        // window.location.href = 'https://www.envidat.ch/user/reset';
         // this.$router.push('https://www.envidat.ch/user/reset');
       },
     },
