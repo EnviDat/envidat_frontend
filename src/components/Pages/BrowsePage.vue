@@ -294,7 +294,6 @@
     },
     computed: {
       ...mapGetters({
-        metadataIds: 'metadata/metadataIds',
         metadatasContent: 'metadata/metadatasContent',
         searchedMetadatasContent: 'metadata/searchedMetadatasContent',
         searchingMetadatasContent: 'metadata/searchingMetadatasContent',
