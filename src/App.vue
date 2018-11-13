@@ -131,16 +131,15 @@
           bgStyle += `background-position: center top !important;
                       background-repeat: no-repeat !important;
                       background-size: cover !important; `;
+
+          if (bgImg.includes('browsepage')) {
+            // bgStyle = `background-image: url(${bgImg}) !important;`;
+            bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
+
+            bgStyle += `background-position: center top !important;
+                        background-repeat: repeat !important; `;
+          }
         }
-
-        if (bgImg.includes('browsepage')) {
-          // bgStyle = `background-image: url(${bgImg}) !important;`;
-          bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
-
-          bgStyle += `background-position: center top !important;
-                      background-repeat: repeat !important; `;
-        }
-
 
         return bgStyle;
       },
