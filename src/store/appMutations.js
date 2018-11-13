@@ -1,5 +1,6 @@
 import {
   SET_APP_BACKGROUND,
+  SET_CURRENT_PAGE,
   ADD_CARD_IMAGES,
   ADD_ICON_IMAGE,
 } from './mutationsConsts';
@@ -7,6 +8,9 @@ import {
 export default {
   [SET_APP_BACKGROUND](state, bgImg) {
     state.appBGImage = bgImg;
+  },
+  [SET_CURRENT_PAGE](state, page) {
+    state.currentPage = page;
   },
   [ADD_CARD_IMAGES](state, payload) {
     /* eslint-disable no-underscore-dangle */
