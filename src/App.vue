@@ -2,17 +2,41 @@
   <v-app v-bind:style="dynamicBackground">
 
     <v-content>
-      <transition
-        name="fade"
-        mode="out-in"
-        @beforeLeave="beforeLeave"
-        @enter="enter"
-        @afterEnter="afterEnter"
+      <v-container fluid
+                    py-1
+                    v-bind="{ [`px-0`]: this.$vuetify.breakpoint.smAndDown,
+                              [`px-2`]: this.$vuetify.breakpoint.mdAndUp }"
       >
-        <router-view />
-      </transition>
+
+        <v-layout column>
+
+          <v-flex xs12
+                  mx-3
+                  class="envidatNavbar"
+                  v-if="" >
+
+            <nav-bar-view />
+          </v-flex>
+
+
+          <v-flex xs12 >
+          
+            <transition
+              name="fade"
+              mode="out-in"
+              @beforeLeave="beforeLeave"
+              @enter="enter"
+              @afterEnter="afterEnter"
+            >
+              <router-view />
+            </transition>
+          </v-flex>
+
+        </v-layout>
+          
+      </v-container>
     </v-content>
-        
+
   </v-app>
 </template>
 
@@ -24,6 +48,7 @@
     ADD_CARD_IMAGES,
     ADD_ICON_IMAGE,
   } from './store/mutationsConsts';
+  import NavBarView from './components/Views/NavbarView';
 
   export default {
     created: function created() {
@@ -149,6 +174,9 @@
       appBGImages: {},
       prevHeight: 0,
     }),
+    components: {
+      NavBarView,
+    },
     props: {
       source: String,
     },

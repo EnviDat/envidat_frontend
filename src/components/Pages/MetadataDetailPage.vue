@@ -1,22 +1,21 @@
 <template>
   <v-container fluid
               tag="article"
-              v-bind="{ [`pa-0`]: this.$vuetify.breakpoint.smAndDown,
-                        [`pa-2`]: this.$vuetify.breakpoint.mdAndUp }"
+              py-2
   >
+              <!-- v-bind="{ [`pa-0`]: this.$vuetify.breakpoint.smAndDown,
+                        [`pa-2`]: this.$vuetify.breakpoint.mdAndUp }" -->
 
     <div v-if="currentMetadataContent">
       
       <v-layout row wrap v-if="twoColumnLayout">
 
-        <v-flex xs12 
-              md8 offset-md2
-              lg10 offset-lg1
-              class="envidatNavbar" >
+        <!-- <v-flex xs12
+                mx-3
+                class="envidatNavbar" >
 
           <nav-bar-view />
-
-        </v-flex>
+        </v-flex> -->
 
         <v-flex xs12
                 md8 offset-md2
@@ -88,6 +87,14 @@
       </v-layout>
 
       <v-layout row wrap v-if="!twoColumnLayout">
+
+        <v-flex xs12
+                mx-3
+                class="envidatNavbar" >
+
+          <nav-bar-view />
+        </v-flex>
+
         <v-flex xs12
                 md10 offset-md1
                 elevation-5
