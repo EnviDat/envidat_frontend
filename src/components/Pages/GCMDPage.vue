@@ -1,7 +1,9 @@
 <template>
   <v-container fluid >  
     <v-layout column >
-  
+
+      <h1>EnviDat Global Change Master Diretory exchange platform</h1>
+
       <v-flex py-2 xs6
         v-for="metadata in metadatasContent" :key="metadata.id">
 
@@ -37,6 +39,7 @@
       },
     },
     data: () => ({
+      PageBGImage: './app_b_browsepage.jpg',
     }),
     components: {
     },
