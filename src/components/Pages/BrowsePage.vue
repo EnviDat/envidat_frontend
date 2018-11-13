@@ -1,15 +1,15 @@
 <template>
-  <v-container grid-list-xs fluid py-1
-                v-bind="{ 'pa-0': $vuetify.breakpoint.xsOnly }"
-                @scroll="updateScroll"
+  <v-container grid-list-xs fluid pa-0
   >
+                <!-- v-bind="{ 'pa-0': $vuetify.breakpoint.xsOnly }"
+                @scroll="updateScroll" -->
 
     <v-layout row wrap>
 
-      <v-flex xs12 px-3 
+      <v-flex xs12 mx-3 
               class="envidatNavbar" >
 
-        <nav-bar-view :showFiltering="true"
+        <filter-bar-view :showFiltering="true"
                       :searchViewLabelText="searchLabelText"
                       :searchTerm="searchTerm"
                       :searchCount="searchCount"
@@ -59,7 +59,7 @@
                           v-on:pointClicked="catchPointClicked"
                           v-on:pointHover="catchPointHovered"
                           v-on:pointHoverLeave="catchPointHoverLeave"
-                           />
+          />
 
       </v-flex>
 
@@ -71,7 +71,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import NavBarView from '../Views/NavbarView';
+  import FilterBarView from '../Views/Filtering/FilterBarView';
   import FilterMapView from '../Views/Filtering/FilterMapView';
   import MetadataListView from '../Views/MetadataViews/MetadataListView';
   import {
@@ -387,7 +387,7 @@
       listViewActive: false,
     }),
     components: {
-      NavBarView,
+      FilterBarView,
       FilterMapView,
       MetadataListView,
     },
