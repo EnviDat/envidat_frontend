@@ -10,13 +10,6 @@
       
       <v-layout row wrap v-if="twoColumnLayout">
 
-        <!-- <v-flex xs12
-                mx-3
-                class="envidatNavbar" >
-
-          <nav-bar-view />
-        </v-flex> -->
-
         <v-flex xs12
                 md8 offset-md2
                 lg10 offset-lg1
@@ -87,13 +80,6 @@
       </v-layout>
 
       <v-layout row wrap v-if="!twoColumnLayout">
-
-        <v-flex xs12
-                mx-3
-                class="envidatNavbar" >
-
-          <nav-bar-view />
-        </v-flex>
 
         <v-flex xs12
                 md10 offset-md1
@@ -168,7 +154,6 @@
     LOAD_METADATA_CONTENT_BY_ID,
     CLEAN_CURRENT_METADATA,
   } from '../../store/metadataMutationsConsts';
-  import NavBarView from '../Views/NavbarView';
   import MetadataHeader from '../Views/MetadataViews/MetadataHeader';
   import MetadataBody from '../Views/MetadataViews/MetadataBody';
   import MetadataResources from '../Views/MetadataViews/MetadataResources';
@@ -543,7 +528,6 @@
       notFoundBackPath: 'browse',
     }),
     components: {
-      NavBarView,
       MetadataHeader,
       MetadataBody,
       MetadataResources,
