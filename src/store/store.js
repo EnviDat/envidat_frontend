@@ -11,7 +11,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   strict: true,
   state: {
-    showLoader: false,
+    currentPage: 'none',
     organizations: [],
     projects: [],
     // use a './' before the img for the img name for the local path
@@ -20,6 +20,7 @@ export default new Vuex.Store({
     iconImages: {},
   },
   getters: {
+    currentPage: state => state.currentPage,
     appBGImage: state => state.appBGImage,
     cardBGImages: state => state.cardBGImages,
     iconImages: state => state.iconImages,

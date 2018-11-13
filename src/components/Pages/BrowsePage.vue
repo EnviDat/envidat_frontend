@@ -79,14 +79,18 @@
     CLEAR_SEARCH_METADATA,
     FILTER_METADATA,
   } from '../../store/metadataMutationsConsts';
-  import { SET_APP_BACKGROUND } from '../../store/mutationsConsts';
+  import {
+    SET_APP_BACKGROUND,
+    SET_CURRENT_PAGE,
+  } from '../../store/mutationsConsts';
 
   // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
   export default {
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
       next((vm) => {
-        // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
+        // console.log("browse beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
+        vm.$store.commit(SET_CURRENT_PAGE, 'browsePage');
         vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
     },
