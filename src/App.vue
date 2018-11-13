@@ -13,7 +13,7 @@
           <v-flex xs12
                   mx-3
                   class="envidatNavbar"
-                  v-if="" >
+                  v-if="currentPage != 'landingPage'" >
 
             <nav-bar-view />
           </v-flex>
@@ -60,6 +60,11 @@
       this.importCardBackgrounds();
       this.importIcons();
     },
+    // beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+    //   next((vm) => {
+    //     console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
+    //   });
+    // },
     methods: {
       beforeLeave(element) {
         const style = getComputedStyle(element);
@@ -138,6 +143,7 @@
         currentMetadataContent: 'metadata/currentMetadataContent',
         popularTags: 'metadata/popularTags',
         loadingPopularTags: 'metadata/loadingPopularTags',
+        currentPage: 'currentPage',
         appBGImage: 'appBGImage',
       }),
       metadatasContentSize: function metadatasContentSize() {
