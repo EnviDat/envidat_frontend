@@ -2,17 +2,41 @@
   <v-app v-bind:style="dynamicBackground">
 
     <v-content>
-      <transition
-        name="fade"
-        mode="out-in"
-        @beforeLeave="beforeLeave"
-        @enter="enter"
-        @afterEnter="afterEnter"
+      <v-container fluid
+                    py-1
+                    v-bind="{ [`px-0`]: this.$vuetify.breakpoint.smAndDown,
+                              [`px-2`]: this.$vuetify.breakpoint.mdAndUp }"
       >
-        <router-view />
-      </transition>
+
+        <v-layout column>
+
+          <v-flex xs12
+                  mx-3
+                  class="envidatNavbar"
+                  v-if="" >
+
+            <nav-bar-view />
+          </v-flex>
+
+
+          <v-flex xs12 >
+          
+            <transition
+              name="fade"
+              mode="out-in"
+              @beforeLeave="beforeLeave"
+              @enter="enter"
+              @afterEnter="afterEnter"
+            >
+              <router-view />
+            </transition>
+          </v-flex>
+
+        </v-layout>
+          
+      </v-container>
     </v-content>
-        
+
   </v-app>
 </template>
 
@@ -24,6 +48,7 @@
     ADD_CARD_IMAGES,
     ADD_ICON_IMAGE,
   } from './store/mutationsConsts';
+  import NavBarView from './components/Views/NavbarView';
 
   export default {
     created: function created() {
@@ -131,16 +156,15 @@
           bgStyle += `background-position: center top !important;
                       background-repeat: no-repeat !important;
                       background-size: cover !important; `;
+
+          if (bgImg.includes('browsepage')) {
+            // bgStyle = `background-image: url(${bgImg}) !important;`;
+            bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
+
+            bgStyle += `background-position: center top !important;
+                        background-repeat: repeat !important; `;
+          }
         }
-
-        if (bgImg.includes('browsepage')) {
-          // bgStyle = `background-image: url(${bgImg}) !important;`;
-          bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
-
-          bgStyle += `background-position: center top !important;
-                      background-repeat: repeat !important; `;
-        }
-
 
         return bgStyle;
       },
@@ -149,6 +173,9 @@
       appBGImages: {},
       prevHeight: 0,
     }),
+    components: {
+      NavBarView,
+    },
     props: {
       source: String,
     },
