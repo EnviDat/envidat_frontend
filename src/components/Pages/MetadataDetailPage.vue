@@ -366,7 +366,7 @@
           license: license.title,
           tags: dataset.tags,
           titleImg: dataset.titleImg,
-          maxTags: 12,
+          maxTags: this.$vuetify.breakpoint.smAndDown ? 5 : 12,
         };
       },
       createBody: function createBody(dataset) {

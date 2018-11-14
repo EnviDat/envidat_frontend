@@ -201,25 +201,6 @@
 
 <style>
 
-  .envidatChip{
-    height: 1.5rem;
-    font-size: 0.65rem;
-    margin: 1px 2px;
-    opacity: 0.85;
-  }
-
-  .envidatChip span {
-    cursor: pointer !important;
-  }
-
-  .filterTag {
-    opacity: 0.7;
-  }
-
-  .chip__content span {
-    cursor: pointer !important;
-  }
-
   .envidatLogoText {
     display: inline;
     vertical-align: middle;

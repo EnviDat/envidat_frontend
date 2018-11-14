@@ -32,13 +32,13 @@
 
       <v-flex v-if="label"
               xs4 
-              v-bind:style="this.bold ? 'font-weight: 700 !important;': ''"
+              :style="textStyle"
       >
         {{ label }}
       </v-flex>
 
       <v-flex v-if="text"
-              v-bind:style="this.bold ? 'font-weight: 700 !important;': ''"
+              :style="textStyle"
       >
         {{ text }}
       </v-flex>
@@ -63,6 +63,7 @@
       alignLeft: Boolean,
       bold: Boolean,
       usePlaceholder: Boolean,
+      wordBreak: Boolean,
     },
     computed: {
       alignClass: function alignClass() {
@@ -75,6 +76,23 @@
           'py-0': true,
         };
       },
+      textStyle: function textStyle() {
+        let style = '';
+
+        if (this.bold) {
+          style = 'font-weight: 700 !important;';
+        }
+
+        if (this.wordBreak) {
+          style += 'word-break: break-all;';
+        }
+
+        if (this.$vuetify.breakpoint.smAndDown) {
+          style += 'font-size: 0.85rem;';
+        }
+
+        return style;
+      },
     },
   };
 </script>
@@ -84,4 +102,5 @@
     position: relative;
     top: 2px;
   }
+
 </style>

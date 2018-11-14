@@ -172,6 +172,8 @@
           }
         }
 
+        bgStyle += 'font-size: 12px; ';
+
         return bgStyle;
       },
     },
@@ -207,7 +209,7 @@
     position: -webkit-sticky;
     position: sticky;
     top: 3px;
-    z-index: 2;
+    z-index: 1000;
   }
 
   /*** General Card styles ***/
@@ -313,6 +315,30 @@
     font-size: 0.9em !important;
   }
 
+  .envidatChip {
+    height: 1.5rem;
+    font-size: 0.65rem;
+    margin: 1px 2px;
+    opacity: 0.85;
+  }
+
+  .smallChip {
+    height: 1.25rem;
+    font-size: 0.55rem;
+  }
+
+  .envidatChip span {
+    cursor: pointer !important;
+  }
+
+  .filterTag {
+    opacity: 0.7;
+  }
+
+  .chip__content span {
+    cursor: pointer !important;
+  }
+
 
   .fade-enter-active,
   .fade-leave-active {
@@ -325,6 +351,6 @@
   .fade-enter,
   .fade-leave-active {
     opacity: 0
-  }
+  }  
 
 </style>

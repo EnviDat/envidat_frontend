@@ -3,7 +3,9 @@
     <v-chip
         small
         class="envidatChip"
-        :class="highlightedClass"
+        :class="{ 'white--text': highlighted ? true : false,
+                  'smallChip': $vuetify.breakpoint.smAndDown ? true : false,
+                }"
         v-bind="{['close'] : closeable,
                  ['color']: highlighted ? 'primary' : '',
                  ['disabled'] : !selectable,
@@ -25,12 +27,6 @@
       count: Number,
     },
     computed: {
-      highlightedClass: function highlightedClass() {
-        return {
-          'white--text': this.highlighted,
-          // fontSize: this.name.length > 10 ? '10pt' : 'inherit',
-        };
-      },
     },
     methods: {
       clicked: function clicked() {

@@ -45,21 +45,26 @@
             <icon-label-view  :text="contactName"
                               :icon="getIcon(this.iconFlip('contact2'))"
                               iconTooltip="Main contact"
-                              :alignLeft="true" />
+                              :alignLeft="true"
+                               />
           </v-flex>
 
           <v-flex xs6 py-1 class="headerInfo">
             <icon-label-view  :text="doi"
                               :icon="getIcon(iconFlip('doi'))"
                               iconTooltip="Data Object Identifier"
-                              :alignLeft="true" />
+                              :alignLeft="true"
+                              :wordBreak="true"
+                               />
           </v-flex>
 
           <v-flex xs6 py-1 class="headerInfo">
             <icon-label-view  :text="contactEmail"
                               :icon="getIcon(iconFlip('mail'))"
                               iconTooltip="Email adress of the main contact"
-                              :alignLeft="true" />
+                              :alignLeft="true"
+                              :wordBreak="true"
+                               />
           </v-flex>
 
           <v-flex xs6 py-1 class="headerInfo">

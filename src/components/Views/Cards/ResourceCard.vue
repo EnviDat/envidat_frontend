@@ -13,7 +13,7 @@
       <v-container grid-list-xs pa-0>
         <v-layout row wrap>
 
-          <v-flex v-bind="{ [`xs8`]: !this.twoColumnLayout , 
+          <v-flex v-bind="{ [`xs6`]: !this.twoColumnLayout , 
                             [`xs12`]: this.twoColumnLayout  }"
           >
 
@@ -31,7 +31,7 @@
             </v-layout>
           </v-flex>
     
-          <v-flex v-bind="{ [`xs4`]: !this.twoColumnLayout , 
+          <v-flex v-bind="{ [`xs6`]: !this.twoColumnLayout , 
                             [`xs12`]: this.twoColumnLayout,
                             [`pt-3`]: this.twoColumnLayout  }"
           >
