@@ -39,7 +39,7 @@
 
             <v-flex xs10 sm9 
               v-bind="{
-                ['py-2']: this.$vuetify.breakpoint.xsOnly,
+                ['py-1']: this.$vuetify.breakpoint.xsOnly,
               }"
             >
               

@@ -2,7 +2,7 @@
   
     <v-layout column >
 
-      <v-flex xs12 py-1>
+      <v-flex xs12>
 
         <v-card raised >
 

@@ -8,7 +8,10 @@
       <h3>{{ suggestionText }}</h3>
     </v-flex>
 
-    <v-flex xs12 pt-2>
+    <v-flex xs12
+            mx-1
+            pt-2
+    >
       <v-container fluid grid-list-md pa-0>
         <v-layout row wrap>
 

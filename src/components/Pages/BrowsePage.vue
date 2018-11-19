@@ -6,8 +6,9 @@
 
     <v-layout row wrap>
 
-      <v-flex xs12 mx-3 
-              class="envidatNavbar" >
+      <v-flex xs12
+              :class="{ 'stickyFilterBar': this.$vuetify.breakpoint.smAndUp }"
+      >
 
         <filter-bar-view :showFiltering="true"
                       :searchViewLabelText="searchLabelText"
@@ -34,8 +35,11 @@
 
       </v-flex>
 
-      <v-flex px-3 py-2 style="z-index: 1;"
-              v-bind="metadataListStyling"
+      <v-flex py-2
+              style="z-index: 1;"
+              v-bind="{ [`mx-0`]: this.$vuetify.breakpoint.smAndDown,
+                        [`mx-3`]: this.$vuetify.breakpoint.mdAndUp,
+                        metadataListStyling }"
        >
 
        <metadata-list-view :listView="listViewActive"
@@ -400,5 +404,12 @@
 
 
 <style scoped>
+
+.stickyFilterBar {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 50px;
+  z-index: 1000;
+}
 
 </style>

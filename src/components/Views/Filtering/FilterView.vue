@@ -8,8 +8,9 @@
               py-1
     >
 
-      <v-flex xs12 hidden-sm-and-up px-2 py-2
-                v-if="!expanded">
+      <v-flex xs12 hidden-sm-and-up
+              px-2 py-2
+              v-if="!expanded">
         <div class="mx-3">Filter for Keywords</div>
       </v-flex>
 
@@ -56,7 +57,7 @@
 
 
       <v-flex xs12 px-2 py-2
-              v-if="expanded">
+              v-if="expanded || $vuetify.breakpoint.smAndUp">
 
         <v-layout row
                   fill-height
@@ -104,7 +105,8 @@
 
     </v-layout>
 
-    <v-card-actions class="ma-0 pa-2"
+    <v-card-actions hidden-sm-and-up
+                    class="ma-0 pa-2"
                     style="position: absolute; bottom: 5px; right: 5px;">
         <v-spacer />
 

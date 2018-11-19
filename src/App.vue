@@ -1,17 +1,19 @@
 <template>
-  <v-app v-bind:style="dynamicBackground">
+  <v-app class="application" :style="dynamicBackground">
 
     <v-content>
       <v-container fluid
                     py-1
-                    v-bind="{ [`px-0`]: this.$vuetify.breakpoint.smAndDown,
+                    v-bind="{ [`px-1`]: this.$vuetify.breakpoint.smAndDown,
                               [`px-2`]: this.$vuetify.breakpoint.mdAndUp }"
       >
 
         <v-layout column>
 
           <v-flex xs12
-                  mx-3
+                  my-1
+                  v-bind="{ [`mx-0`]: this.$vuetify.breakpoint.smAndDown,
+                            [`mx-3`]: this.$vuetify.breakpoint.mdAndUp }"
                   class="envidatNavbar"
                   v-if="currentPage != 'landingPage'" >
 
@@ -19,8 +21,10 @@
           </v-flex>
 
 
-          <v-flex xs12 >
-          
+          <v-flex xs12 
+                  v-bind="{ [`mx-0`]: this.$vuetify.breakpoint.smAndDown,
+                            [`mx-3`]: this.$vuetify.breakpoint.mdAndUp }"
+          >
             <transition
               name="fade"
               mode="out-in"
@@ -172,8 +176,6 @@
           }
         }
 
-        bgStyle += 'font-size: 12px; ';
-
         return bgStyle;
       },
     },
@@ -199,16 +201,13 @@
 /* overwrite the applications background https://css-tricks.com/use-cases-fixed-backgrounds-css/ */
   .application {
     font-family: 'Raleway', sans-serif !important;
-    /* background-position: center top !important;
-    background-size: cover !important;
-    background-repeat: no-repeat !important;
-    background-attachment: fixed !important; */
+    font-size: 12px;
   }  
 
   .envidatNavbar {
     position: -webkit-sticky;
     position: sticky;
-    top: 3px;
+    top: 8px;
     z-index: 1000;
   }
 

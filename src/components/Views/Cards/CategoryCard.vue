@@ -13,7 +13,7 @@
           </v-card-media>
         </v-flex>
 
-        <v-flex xs7 px-1 mt-1>
+        <v-flex xs7 mx-1 mt-1>
             <div class="headline"
                 :class="{ 'compactTitle' : this.$vuetify.breakpoint.mdAndDown }"
             >
