@@ -8,7 +8,9 @@
         height="150px" -->
       
       <v-container grid-list-md pa-0>
-        <v-layout row >
+        <v-layout v-bind="{ 'row' : $vuetify.breakpoint.xsOnly ? false : true,
+                            'column' : $vuetify.breakpoint.xsOnly ? true : false,
+                          }" >
 
           <v-flex xs5 py-0>
             <v-img
@@ -34,11 +36,15 @@
               v-html="slogan">
             </div>
 
-            <div class="hidden-sm-and-up envidatSlogan headline"
+            <div class="hidden-sm-and-up envidatSlogan headline px-2"
               v-html="slogan">
             </div>
 
-            <div class="pt-3 pb-5">{{ subSlogan }}</div>
+            <div class="pt-3 pb-5"
+                  :class="{ 'px-2' : $vuetify.breakpoint.xsOnly ? true : false, }"
+            >
+            {{ subSlogan }}
+            </div>
           </v-flex>
 
         </v-layout>
@@ -83,6 +89,9 @@ export default {
   methods: {
   },
   computed: {
+    // responsiveLayout: function responsiveLayout() {
+    //   return 
+    // },
   },
   data: () => ({
     fingertipsImg,

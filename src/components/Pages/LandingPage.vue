@@ -36,7 +36,7 @@
         <v-container fluid grid-list-md pa-0>
           <v-layout row wrap>
     
-            <v-flex py-2 xs6
+            <v-flex my-1 xs6
               v-for="card in categorycards" :key="card.title">
     
               <category-card :title="card.title"

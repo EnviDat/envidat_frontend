@@ -63,7 +63,105 @@
 
       </v-flex>
 
-      <div style="position: absolute; right: 5px; top: 26px; font-size: 7px !important;" >
+
+      <v-flex xs12 v-if="showFiltering">
+
+        <v-container fluid grid-list-md pa-0>
+
+          <v-layout 
+            v-bind="{
+              ['row']: this.$vuetify.breakpoint.smAndUp,
+              ['column']: this.$vuetify.breakpoint.xsOnly,
+            }" >
+
+            <v-flex xs12 sm3>
+
+              <v-layout column>
+
+                <v-flex pt-0 fill-height>
+                  <control-panel-view v-on:controlsChanged="catchControlsChanged"
+                  />
+
+                </v-flex>
+
+                <v-flex py-1>
+                  <small-search-bar-view
+                                  :searchTerm="searchTerm"
+                                  :searchCount="searchCount"
+                                  :labelText="searchViewLabelText"
+                                  :hasButton="searchViewHasButton"
+                                  v-on:clicked="catchSearchClicked"
+                                  v-on:searchCleared="catchSearchCleared">
+                  </small-search-bar-view>
+                </v-flex>
+
+
+              </v-layout>
+            </v-flex>
+
+            <v-flex xs10 sm9 
+              v-bind="{
+                ['py-2']: this.$vuetify.breakpoint.xsOnly,
+              }"
+            >
+              
+              <!-- <filter-expanded-view v-if="expanded"
+                            :allTags="allTags" 
+                            :selectedTagNames="selectedTagNames"
+                            :popularTags="popularTags"
+                            :expanded="expanded"
+                            :expandButtonText="expandButtonText"
+                            :expandedButtonText="expandedButtonText"
+                            :mapExpanded="showMapFilter"
+                            :mapExpandButtonText="mapExpandButtonText"
+                            :mapExpandedButtonText="mapExpandedButtonText"
+                            v-on:clickedMapExpand="catchMapExpandClicked"
+                            :clearButtonText="clearButtonText"
+                            :minTagCountToBeVisible="5"
+                            v-on:clickedTag="catchTagClicked"
+                            v-on:clickedTagClose="catchTagCloseClicked"
+                            v-on:clickedExpand="catchExpandClicked"
+                            v-on:clickedClear="catchTagCleared"
+                            >
+              </filter-expanded-view> -->
+
+              <small-filter-view 
+                            :allTags="allTags" 
+                            :selectedTagNames="selectedTagNames"
+                            :popularTags="popularTags"
+                            :expanded="expanded"
+                            :expandButtonText="expandButtonText"
+                            :expandedButtonText="expandedButtonText"
+                            v-on:clickedExpand="catchExpandClicked"
+                            v-on:clickedTag="catchTagClicked"
+                            v-on:clickedTagClose="catchTagCloseClicked"
+                            :mapExpanded="showMapFilter"
+                            :mapExpandButtonText="mapExpandButtonText"
+                            :mapExpandedButtonText="mapExpandedButtonText"
+                            v-on:clickedMapExpand="catchMapExpandClicked"
+                            :showPlaceholder="showPlaceholder"
+                            v-on:clickedClear="catchTagCleared"
+              />
+
+            </v-flex>
+
+          </v-layout>
+
+        </v-container>
+
+      </v-flex>
+
+      <!-- <v-flex xs4 offset-xs8 py-1 style="pointer-events: none;"
+              v-if="mapFilteringEnabled && showMapFilter" >
+
+        <filter-map-view :totalHeight="mapFilterHeight"
+                          :expanded="showMapFilter"
+                          v-on:toggleMapFilterExpand="catchMapExpandClicked"
+                          v-on:viewChanged="catchViewChanged"
+                          v-on:pointClicked="catchPointClicked" />
+
+      </v-flex> -->
+      <div style="position: absolute; right: -10px; top: 2px; font-size: 8px !important;" >
         {{ appVersion }}
       </div>
 
@@ -72,6 +170,13 @@
 </template>
 
 <script>
+  import FilterView from './Filtering/FilterView';
+  import SmallFilterView from './Filtering/SmallFilterView';
+  import FilterMapView from './Filtering/FilterMapView';
+  import SmallSearchBarView from './Filtering/SmallSearchBarView';
+  import ControlPanelView from './Filtering/ControlPanelView';
+  import FilterExpandedView from './Filtering/FilterExpandedView';
+  import FilterViewButtons from './Filtering/FilterViewButtons';
   import Logo from '../../assets/logo/EnviDat_logo_32.png';
 
   export default {
@@ -91,6 +196,13 @@
       appVersion: process.env.VERSION,
     }),
     components: {
+      FilterView,
+      SmallFilterView,
+      SmallSearchBarView,
+      ControlPanelView,
+      FilterExpandedView,
+      FilterViewButtons,
+      FilterMapView,
     },
   };
 </script>

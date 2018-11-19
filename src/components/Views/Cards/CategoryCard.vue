@@ -6,14 +6,14 @@
     <v-container grid-list-md pa-0>
       <v-layout row align-center>
 
-        <v-flex xs5 py-0>
+        <v-flex xs5 px-1 py-0>
           <v-card-media class="imagezoom"
-                        height="100px">
+                        :height=" $vuetify.breakpoint.xsOnly ? '75px' : '100px' ">
             <img :src="imageSrc" />                        
           </v-card-media>
         </v-flex>
 
-        <v-flex xs7 mt-1>
+        <v-flex xs7 px-1 mt-1>
             <div class="headline"
                 :class="{ 'compactTitle' : this.$vuetify.breakpoint.mdAndDown }"
             >
