@@ -60,6 +60,7 @@ import { mapGetters } from 'vuex';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import IconCountView from '../IconCountView';
+import metaDataFactory from '../../metaDataFactory';
 
 // HACK start
 /* eslint-disable import/first */
@@ -342,7 +343,7 @@ export default {
         if (!this.addedObjectsKeys.includes(key)) {
           const dataset = this.metadatasContent[key];
 
-          const location = this.createLocation(dataset);
+          const location = metaDataFactory.createLocation(dataset);
 
           // console.log("adding " + key + " " + JSON.stringify(location.spatial));
           this.addGeoData(location);
