@@ -9,7 +9,7 @@
     </v-card-text>
 
     <v-card-text v-if="showPlaceholder && !citationText" >
-      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-pulse" >
+      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
         <div class='bone bone-type-multiline bone-style-paragraph' ></div>
       </div>
     </v-card-text>
@@ -50,7 +50,7 @@
 
     <v-card-actions v-if="showPlaceholder && !citationText">
       <v-spacer></v-spacer>          
-      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-pulse" >
+      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
         <div style="width: 128px; height: 32px;" class='px-1 bone bone-type-image bone-style-rectangle' ></div>
         <div style="width: 128px; height: 32px;" class='px-1 bone bone-type-image bone-style-rectangle' ></div>
         <div style="width: 128px; height: 32px;" class='px-1 bone bone-type-image bone-style-rectangle' ></div>

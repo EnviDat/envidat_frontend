@@ -8,7 +8,7 @@
     <v-card-text v-if="fullDescription" >{{ fullDescription }}</v-card-text>
 
     <v-card-text v-if="!fullDescription && showPlaceholder" >
-      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-pulse" >
+      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
         <div class='bone bone-type-multiline bone-style-paragraph' ></div>
       </div>
     </v-card-text>

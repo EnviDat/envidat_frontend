@@ -44,7 +44,7 @@
       </v-flex>
 
       <v-flex v-if="!text && usePlaceholder" >
-        <div class="pr-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-pulse" >
+        <div class="pr-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
           <div class='bone bone-type-text bone-style-steps' ></div>
         </div>
       </v-flex>

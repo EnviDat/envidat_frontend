@@ -31,7 +31,7 @@
         </div>
         
         <div v-if="!metadataTitle && showPlaceholder"
-          class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-pulse" >
+          class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-shimmer" >
           <div class='bone bone-type-multiline bone-style-steps' ></div>
         </div>
 
