@@ -31,30 +31,33 @@
               </v-flex>
 
               <v-flex xs3 sm2 md1 >
-                <v-btn class="ma-0"
-                        flat
-                        small
-                        :href="aboutUrl"
-                        :class="{
-                          ['envidatNavbarLinksSmall']: this.$vuetify.breakpoint.xsOnly,
-                        }" 
-                        target="_blank" >
-                  {{ aboutText }}
-                </v-btn>
+
+                <rectangle-button marginClass="ma-0"
+                                  :class="{
+                                    ['envidatNavbarLinksSmall']: this.$vuetify.breakpoint.xsOnly,
+                                  }" 
+                                  :isFlat="true"
+                                  :buttonText="loginText"
+                                  :toolTipText="loginToolTip"
+                                  :isSmall="true"
+                                  :url="loginUrl"
+                />
+
               </v-flex>
 
               <v-flex xs4 sm2 md2 lg1>
-                <v-btn class="ma-0"
-                        flat
-                        color="primary"
-                        small
-                        :href="loginUrl"
-                        :class="{
-                          ['envidatNavbarLinksSmall']: this.$vuetify.breakpoint.xsOnly,
-                        }" 
-                        target="_blank" >
-                  {{ loginText }}
-                </v-btn>
+
+                <rectangle-button marginClass="ma-0"
+                                  :class="{
+                                    ['envidatNavbarLinksSmall']: this.$vuetify.breakpoint.xsOnly,
+                                  }" 
+                                  :isFlat="true"
+                                  :buttonText="aboutText"
+                                  :toolTipText="aboutToolTip"
+                                  :isSmall="true"
+                                  :url="aboutUrl"
+                />
+
               </v-flex>
             
             </v-layout>
@@ -72,27 +75,31 @@
 </template>
 
 <script>
-  import Logo from '../../assets/logo/EnviDat_logo_32.png';
+import Logo from '../../assets/logo/EnviDat_logo_32.png';
+import RectangleButton from '../Elements/RectangleButton';
 
-  export default {
-    props: {
-    },
-    computed: {
-    },
-    methods: {
-    },
-    data: () => ({
-      Logo,
-      logoText: 'EnviDat',
-      aboutText: 'About',
-      aboutUrl: 'https://www.envidat.ch/about',
-      loginText: 'Creator Login',
-      loginUrl: 'https://www.envidat.ch/user/reset',
-      appVersion: process.env.VERSION,
-    }),
-    components: {
-    },
-  };
+export default {
+  props: {
+  },
+  computed: {
+  },
+  methods: {
+  },
+  data: () => ({
+    Logo,
+    logoText: 'EnviDat',
+    aboutText: 'About',
+    aboutToolTip: 'What is the EnviDat Portal?',
+    aboutUrl: 'https://www.envidat.ch/about',
+    loginText: 'Creator Login',
+    loginToolTip: 'Login to add and manage datasets',
+    loginUrl: 'https://www.envidat.ch/user/reset',
+    appVersion: process.env.VERSION,
+  }),
+  components: {
+    RectangleButton,
+  },
+};
 </script>
 
 <style>

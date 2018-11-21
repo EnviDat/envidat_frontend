@@ -8,17 +8,12 @@
               v-bind="{['style'] : dynamicCardBackground }"
       >
 
-        <v-tooltip bottom style="position: absolute; top 0; right: 0;">
+        <icon-button style="position: absolute; top 0px; right: 0px;"
+                      materialIconName="close"
+                      :outlined="true"
+                      toolTipText ="Close Metadata"
+                      v-on:clicked="catchBackClicked" />
 
-          <v-btn icon flat
-                  color="primary"
-                  style="font-size: 30px !important;"
-                  @click.native="catchBackClicked" slot="activator">
-            <v-icon>close</v-icon>
-          </v-btn>        
-          <span>Close Metadata</span>
-
-        </v-tooltip>
 
         <!--h1 class="py-3" >{{ metadataTitle }} id: {{ $route.params.id }}</h1-->
         <div v-if="metadataTitle"
@@ -99,19 +94,17 @@
         </v-layout>
           
         <v-card-actions v-if="maxTagsReached"
-                        class="ma-0 pa-2"
-                        style="position: absolute; bottom: 5px; right: 5px;" >
-          <v-spacer></v-spacer>
+                        style="position: absolute; bottom: 0px; right: 0px;" >
 
-          <v-tooltip bottom>
-            <v-btn fab outline small color="primary"
-                    @click.native="showTagsExpanded = !showTagsExpanded" slot="activator">
-              <v-icon  color="accent"
-                      :style="this.showTagsExpanded ? 'transform: rotate(-180deg); font-size: 30px !important;' : 'transform: rotate(0deg); font-size: 30px !important;'"
-              >expand_more</v-icon>
-            </v-btn>        
-            <span>{{ this.showTagsExpanded ? 'Hide all tags' : 'Show all tags' }}</span>
-          </v-tooltip>
+          <icon-button materialIconName="expand_more"
+                        :outlined="true"
+                        color="primary"
+                        iconColor="accent"
+                        :isToggled="showTagsExpanded"
+                        :rotateOnClick="true"
+                        :toolTipText="showTagsExpanded ? 'Hide all tags' : 'Show all tags'"
+                        v-on:clicked="showTagsExpanded = !showTagsExpanded" />
+
         </v-card-actions>
 
       </v-card>
@@ -125,6 +118,7 @@
 import TagChip from '../Cards/TagChip';
 import TagChipPlaceholder from '../Cards/TagChipPlaceholder';
 import IconLabelView from '../IconLabelView';
+import IconButton from '../../Elements/IconButton';
 
 export default {
   props: {
@@ -188,6 +182,7 @@ export default {
     TagChip,
     TagChipPlaceholder,
     IconLabelView,
+    IconButton,
   },
 };
 </script>

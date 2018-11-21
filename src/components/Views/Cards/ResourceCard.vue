@@ -70,36 +70,27 @@
 
     <v-card-actions class="ma-0 pa-2"
                     style="position: absolute; bottom: 0; right: 0;">
+
       <v-spacer></v-spacer>
 
-        <v-btn v-if="maxDescriptionLengthReached"
-                icon class="mr-2"
-                @click.native=" showFullDescription = !showFullDescription">
-          <v-icon color="accent" 
-                  :style="this.showFullDescription ? 'transform: rotate(-180deg);' : 'transform: rotate(0deg);'"
-          >expand_more</v-icon>
 
-        </v-btn>
+      <icon-button v-if="maxDescriptionLengthReached"
+                    class="mr-2"
+                    materialIconName="expand_more"
+                    iconColor="accent"
+                    :isToggled="showFullDescription"
+                    :rotateOnClick="true"
+                    :toolTipText="showFullDescription ? 'Hide full description' : 'Show full description'"
+                    v-on:clicked="showFullDescription = !showFullDescription" />
 
 
-      <v-tooltip bottom >
-        <v-btn fab small
-                color="accent" slot="activator" :href="url" 
-                v-bind="{['target'] : '_blank' }">
+      <icon-button :customIcon=" isFile ? getIcon('download') : getIcon('link')"
+                  color="accent"
+                  :isElevated="true"
+                  :toolTipText="isFile ? 'Download file' : 'Open link'"
+                  :url="url" />
 
-          <div v-if="isFile"
-                class="iconCentering">
-            <img class="envidatIcon" :src="getIcon('download')" />          
-          </div>
-          <div v-if="isLink"
-                class="iconCentering">
-            <img class="envidatIcon" :src="getIcon('link')" />          
-          </div>
-        </v-btn>
 
-        <span v-if="isFile">Download file</span>
-        <span v-if="isLink">Open link</span>
-      </v-tooltip>
     </v-card-actions>
 
   </v-card>
@@ -108,6 +99,7 @@
 
 <script>
 import defaultTexture from '../../../assets/cards/c_b_forest_texture_bark2_small.jpg';
+import IconButton from '../../Elements/IconButton';
 import IconLabelView from '../IconLabelView';
 
 export default {
@@ -178,6 +170,7 @@ export default {
   },
   components: {
     IconLabelView,
+    IconButton,
   },
 };
 </script>
