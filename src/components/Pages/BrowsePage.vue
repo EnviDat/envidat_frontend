@@ -52,21 +52,6 @@
 
       </v-flex>
 
-      <v-flex xs4 py-3 pr-3
-              v-if="mapFilteringEnabled && showMapFilter" >
-
-        <filter-map-view style="position: -webkit-sticky; position: sticky; top: 151px;"
-                          :totalHeight="mapFilterHeight"
-                          :expanded="showMapFilter"
-                          v-on:clickedMapExpand="toggleMapExpand"
-                          v-on:viewChanged="catchMapFilterChanged"
-                          v-on:pointClicked="catchPointClicked"
-                          v-on:pointHover="catchPointHovered"
-                          v-on:pointHoverLeave="catchPointHoverLeave"
-          />
-
-      </v-flex>
-
     </v-layout>
 
   </v-container>

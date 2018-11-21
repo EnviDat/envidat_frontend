@@ -17,20 +17,22 @@
               <v-layout column>
 
                 <v-flex pt-0 fill-height>
-                  <control-panel-view v-on:controlsChanged="catchControlsChanged"
+                  <control-panel-view :compactLayout="$vuetify.breakpoint.smAndDown"
+                                      v-on:controlsChanged="catchControlsChanged"
                   />
 
                 </v-flex>
 
                 <v-flex py-1>
                   <small-search-bar-view
+                                  :compactLayout="$vuetify.breakpoint.smAndDown"                  
                                   :searchTerm="searchTerm"
                                   :searchCount="searchCount"
                                   :labelText="searchViewLabelText"
                                   :hasButton="searchViewHasButton"
                                   v-on:clicked="catchSearchClicked"
-                                  v-on:searchCleared="catchSearchCleared">
-                  </small-search-bar-view>
+                                  v-on:searchCleared="catchSearchCleared"
+                  />
                 </v-flex>
 
 
@@ -43,28 +45,7 @@
               }"
             >
               
-              <filter-expanded-view v-if="expanded"
-                            :allTags="allTags" 
-                            :selectedTagNames="selectedTagNames"
-                            :popularTags="popularTags"
-                            :expanded="expanded"
-                            :expandButtonText="expandButtonText"
-                            :expandedButtonText="expandedButtonText"
-                            :mapExpanded="showMapFilter"
-                            :mapExpandButtonText="mapExpandButtonText"
-                            :mapExpandedButtonText="mapExpandedButtonText"
-                            v-on:clickedMapExpand="catchMapExpandClicked"
-                            :clearButtonText="clearButtonText"
-                            :minTagCountToBeVisible="5"
-                            v-on:clickedTag="catchTagClicked"
-                            v-on:clickedTagClose="catchTagCloseClicked"
-                            v-on:clickedExpand="catchExpandClicked"
-                            v-on:clickedClear="catchTagCleared"
-                            >
-              </filter-expanded-view>
-
-              <filter-view v-if="!expanded"
-                            :allTags="allTags" 
+              <filter-view :allTags="allTags" 
                             :selectedTagNames="selectedTagNames"
                             :popularTags="popularTags"
                             :expanded="expanded"
@@ -79,8 +60,7 @@
                             v-on:clickedMapExpand="catchMapExpandClicked"
                             :showPlaceholder="showPlaceholder"
                             v-on:clickedClear="catchTagCleared"
-                >
-              </filter-view>
+              />
 
             </v-flex>
 
@@ -90,7 +70,7 @@
 
       </v-flex>
 
-      <!-- <v-flex xs4 offset-xs8 py-1 style="pointer-events: none;"
+      <v-flex xs4 offset-xs8 py-1 style="pointer-events: none;"
               v-if="mapFilteringEnabled && showMapFilter" >
 
         <filter-map-view :totalHeight="mapFilterHeight"
@@ -99,19 +79,17 @@
                           v-on:viewChanged="catchViewChanged"
                           v-on:pointClicked="catchPointClicked" />
 
-      </v-flex> -->
+      </v-flex>
 
     </v-layout>
 
 </template>
 
 <script>
-  import FilterView from './FilterView';
+  import FilterKeywordsView from './FilterKeywordsView';
   import FilterMapView from './FilterMapView';
   import SmallSearchBarView from './SmallSearchBarView';
   import ControlPanelView from './ControlPanelView';
-  import FilterExpandedView from './FilterExpandedView';
-  import FilterViewButtons from './FilterViewButtons';
   import Logo from '../../../assets/logo/EnviDat_logo_32.png';
 
   export default {
@@ -189,31 +167,14 @@
       mapExpandedButtonText: 'Hide Map',
     }),
     components: {
-      FilterView,
+      FilterKeywordsView,
       SmallSearchBarView,
       ControlPanelView,
-      FilterExpandedView,
-      FilterViewButtons,
       FilterMapView,
     },
   };
 </script>
 
 <style>
-
-  .envidatLogoText {
-    display: inline;
-    vertical-align: middle;
-    position: relative;
-    bottom: -2px;
-  }
-
-  .envidatNavbarLinksSmall {
-    font-size: 10px !important;
-  }
-
-  .envidatNavbarTitleSmall {
-    font-size: 18px !important;
-  }
 
 </style>

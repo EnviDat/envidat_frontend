@@ -3,18 +3,22 @@
 
     <v-content>
       <v-container fluid
-                    py-1
                     v-bind="{ [`px-1`]: this.$vuetify.breakpoint.smAndDown,
-                              [`px-2`]: this.$vuetify.breakpoint.mdAndUp }"
+                              [`px-2`]: this.$vuetify.breakpoint.mdAndUp,
+                              [`py-1`]: this.$vuetify.breakpoint.mdAndUp,
+                              [`py-0`]: this.$vuetify.breakpoint.smAndDown }"
       >
 
         <v-layout column>
 
           <v-flex xs12
-                  my-1
                   v-bind="{ [`mx-0`]: this.$vuetify.breakpoint.smAndDown,
-                            [`mx-3`]: this.$vuetify.breakpoint.mdAndUp }"
+                            [`mx-3`]: this.$vuetify.breakpoint.mdAndUp,
+                            [`mb-1`]: this.$vuetify.breakpoint.smAndDown,
+                            [`my-1`]: this.$vuetify.breakpoint.mdAndUp,
+                          }"
                   class="envidatNavbar"
+                  :class="{ 'small': this.$vuetify.breakpoint.smAndDown }"
                   v-if="currentPage != 'landingPage'" >
 
             <nav-bar-view />
@@ -210,6 +214,11 @@
     top: 8px;
     z-index: 1000;
   }
+
+  .envidatNavbar.small {
+    top: 0px;
+  }
+
 
   /*** General Card styles ***/
 

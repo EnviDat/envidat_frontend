@@ -1,6 +1,7 @@
 <template>
-  <v-card raised height="40">
-
+  <v-card raised
+          :height="compactLayout ? 32 : 40"
+  >
     <!-- long slim search bar  -->
 
     <v-layout row
@@ -12,6 +13,7 @@
 
         <v-text-field
             class="envidatSmallSearch"
+            :class="compactLayout ? 'small' : ''"
             single-line
             hide-details
             clearable
@@ -66,6 +68,7 @@
       hasButton: Boolean,
       buttonText: String,
       resultCount: String,
+      compactLayout: Boolean,
     },
     data: () => ({
       searchText: '',
@@ -119,14 +122,12 @@
   min-height: 0px !important;
 }
 
-/*
-.envidatSmallSearch {
-    height: 40px !important; 
-}
-*/
-
 .envidatSmallSearch > .v-input__control {
     min-height: 40px !important;
+}
+
+.envidatSmallSearch.small > .v-input__control {
+    min-height: 32px !important;
 }
 
 .envidatSmallSearch > .v-input__append-outer {

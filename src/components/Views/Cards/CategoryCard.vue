@@ -8,7 +8,7 @@
 
         <v-flex xs5 px-1 py-0>
           <v-card-media class="imagezoom"
-                        :height=" $vuetify.breakpoint.xsOnly ? '75px' : '100px' ">
+                        :height=" $vuetify.breakpoint.xsOnly ? '65px' : '100px' ">
             <img :src="imageSrc" />                        
           </v-card-media>
         </v-flex>

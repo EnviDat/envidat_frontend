@@ -1,9 +1,11 @@
 <template>
-  <v-card raised height="40">
-
+  <v-card raised
+          :height="compactLayout ? 32 : 40"
+  >
     <v-card-actions class="fill-height ma-0 py-0 px-1" >
 
       <v-text-field class="fill-height envidatControlInfos"
+                    :class="{'small' : compactLayout }"
                     label="Controls" 
                     flat
                     single-line
@@ -19,11 +21,13 @@
         <v-btn-toggle v-model="controlsActive"
                       multiple>
 
-          <v-btn flat>
+          <v-btn flat
+                :style="compactLayout ? 'height: 32px !important' : ''">
             <img class="envidatIcon" :src="getIcon('listView')" />
           </v-btn>
           
-          <v-btn flat>
+          <v-btn flat
+                :style="compactLayout ? 'height: 32px !important' : ''">
             <img class="envidatIcon" :src="getIcon('map')" />
           </v-btn>
 
@@ -40,7 +44,7 @@ import IconLabelView from '../IconLabelView';
 
 export default {
   props: {
-    // controlsActive: Array,
+    compactLayout: Boolean,
   },
   data: () => ({
     mapFilterActivateText: 'Activate Mapfiltering',
@@ -68,8 +72,15 @@ export default {
 
 <style>
 
+.envidatControlInfos.small > div > div > div.v-label {
+  font-size: 12px !important;
+}
+
+.envidatControlInfos.small > .v-input__control {
+  min-height: 32px !important;
+}
 .envidatControlInfos > .v-input__control {
-    min-height: 40px !important;
+  min-height: 40px !important;
 }
 
 .envidatControlInfos > .v-input__slot {

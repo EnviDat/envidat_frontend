@@ -35,6 +35,7 @@
             </v-flex>
 
             <v-flex xs12
+                    py-0
                     px-2 
             >
 
@@ -75,6 +76,7 @@
             </v-flex>
 
             <v-flex xs12
+                    py-0
                     px-2
             >
 
@@ -105,12 +107,13 @@
 
     </v-layout>
 
-    <v-card-actions hidden-sm-and-up
+    <v-card-actions v-if="$vuetify.breakpoint.smAndDown"
                     class="ma-0 pa-2"
                     style="position: absolute; bottom: 5px; right: 5px;">
         <v-spacer />
 
         <v-icon color="accent" 
+                @click="catchExpandClicked"
                 :style="expanded ? 'transform: rotate(-180deg);' : 'transform: rotate(0deg);'"
         >expand_more</v-icon>
 
