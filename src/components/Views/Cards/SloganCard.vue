@@ -41,9 +41,9 @@
             </div>
 
             <div class="pt-3 pb-5"
-                  :class="{ 'px-2' : $vuetify.breakpoint.xsOnly ? true : false, }"
+                :style="$vuetify.breakpoint.mdAndUp ? 'font-size: 14px !important;' : '' "
             >
-            {{ subSlogan }}
+              {{ subSlogan }}
             </div>
           </v-flex>
 
@@ -51,21 +51,15 @@
       </v-container>
 
 
-    <!-- <v-card-title primary-title>
-      <div>{{ subSlogan }}</div>
-    </v-card-title> -->
-
     <v-card-actions class="ma-0 pa-2"
                     style="position: absolute; bottom: 0; right: 0;">
-    <!-- <v-card-actions > -->
-      <!-- <v-spacer></v-spacer> -->
 
-      <v-btn @click.native="buttonCallback"
-              color="primary"
-              small
-      >
-        {{ buttonText }}
-      </v-btn>
+      <rectangle-button 
+                    :buttonText="buttonText"
+                    :isSmall="true"
+                    v-on:clicked="buttonCallback"
+      />
+
     </v-card-actions>
   </v-card>
 
@@ -74,6 +68,7 @@
 
 <script>
 import fingertipsImg from '../../../assets/cards/fingertips_small.jpg';
+import RectangleButton from '../../Elements/RectangleButton';
 
 export default {
   props: {
@@ -83,6 +78,7 @@ export default {
     buttonCallback: Function,
   },
   components: {
+    RectangleButton,
   },
   created: function created() {
   },

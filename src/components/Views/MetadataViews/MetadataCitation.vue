@@ -9,7 +9,7 @@
     </v-card-text>
 
     <v-card-text v-if="showPlaceholder && !citationText" >
-      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-pulse" >
+      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
         <div class='bone bone-type-multiline bone-style-paragraph' ></div>
       </div>
     </v-card-text>
@@ -18,39 +18,42 @@
       
       <v-layout row wrap justify-end>
         
-          <v-btn v-if="citationXmlLink"
-                  class="mt-1"
-                  color="primary"
-                  :small="$vuetify.breakpoint.xsOnly"
-                  :href="citationXmlLink"
-          >
-            DataCite<v-icon right>assignment</v-icon>
-          </v-btn>
+          <rectangle-button v-if="citationXmlLink"
+                        class="ml-2"
+                        buttonText="DataCite"
+                        materialIconName="assignment"
+                        :isSmall="$vuetify.breakpoint.xsOnly"
+                        iconColor="white"
+                        toolTipText="Download XML citation"
+                        :url="citationXmlLink"
+          />
 
-          <v-btn v-if="ciationIsoXmlLink"
-                  class="mt-1"
-                  color="primary"
-                  :small="$vuetify.breakpoint.xsOnly"
-                  :href="ciationIsoXmlLink"
-          >
-            ISO 19139<v-icon right>assignment</v-icon>
-          </v-btn>
+          <rectangle-button v-if="ciationIsoXmlLink"
+                        class="ml-2"
+                        buttonText="ISO 19139"
+                        toolTipText="Download ISO XML citation"
+                        materialIconName="assignment"
+                        :isSmall="$vuetify.breakpoint.xsOnly"
+                        iconColor="white"
+                        :url="ciationIsoXmlLink"
+          />
 
-          <v-btn v-if="ciationGCMDXmlLink"
-                  class="mt-1"
-                  color="primary"
-                  :small="$vuetify.breakpoint.xsOnly"
-                  :href="ciationGCMDXmlLink"
-          >
-            GCMD DIF<v-icon right>assignment</v-icon>
-          </v-btn>
+          <rectangle-button v-if="ciationGCMDXmlLink"
+                        class="ml-2"
+                        buttonText="GCMD DIF"
+                        toolTipText="Download GCMD XML citation"
+                        materialIconName="assignment"
+                        :isSmall="$vuetify.breakpoint.xsOnly"
+                        iconColor="white"
+                        :url="ciationGCMDXmlLink"
+          />
 
       </v-layout>
     </v-card-actions>
 
     <v-card-actions v-if="showPlaceholder && !citationText">
       <v-spacer></v-spacer>          
-      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-pulse" >
+      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
         <div style="width: 128px; height: 32px;" class='px-1 bone bone-type-image bone-style-rectangle' ></div>
         <div style="width: 128px; height: 32px;" class='px-1 bone bone-type-image bone-style-rectangle' ></div>
         <div style="width: 128px; height: 32px;" class='px-1 bone bone-type-image bone-style-rectangle' ></div>
@@ -62,25 +65,28 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      id: String,
-      citationText: String,
-      citationXmlLink: String,
-      ciationIsoXmlLink: String,
-      ciationGCMDXmlLink: String,
-      fixedHeight: Boolean,
-      showPlaceholder: Boolean,
-    },
-    mounted: function mounted() {
-    },
-    data: () => ({
-    }),
-    methods: {
-    },
-    components: {
-    },
-  };
+import RectangleButton from '../../Elements/RectangleButton';
+
+export default {
+  props: {
+    id: String,
+    citationText: String,
+    citationXmlLink: String,
+    ciationIsoXmlLink: String,
+    ciationGCMDXmlLink: String,
+    fixedHeight: Boolean,
+    showPlaceholder: Boolean,
+  },
+  mounted: function mounted() {
+  },
+  data: () => ({
+  }),
+  methods: {
+  },
+  components: {
+    RectangleButton,
+  },
+};
 
 </script>
 

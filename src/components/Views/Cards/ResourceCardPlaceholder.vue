@@ -6,7 +6,7 @@
   >
 
     <v-card-title >
-      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-pulse" 
+      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" 
             style="width: 100%;">
         <div class='bone bone-type-heading' ></div>
       </div>
@@ -22,7 +22,7 @@
 
             <v-layout column>
               <v-flex xs11>
-                <div class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-pulse" >
+                <div class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-shimmer" >
                   <div class='bone bone-type-multiline bone-style-paragraph' ></div>
                 </div>
               </v-flex>
@@ -36,7 +36,7 @@
           >
             <v-layout column>
               <v-flex px-0>
-                <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-pulse" >
+                <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
                   <div class='bone bone-type-multiline ' ></div>
                 </div>
               </v-flex>
@@ -52,7 +52,7 @@
       <v-spacer></v-spacer>
 
         <div color="accent" 
-              class="skeleton skeleton-size-big skeleton-color-yellow skeleton-animation-pulse" >
+              class="skeleton skeleton-size-big skeleton-color-yellow skeleton-animation-shimmer" >
           <div style="width: 32px; height: 32px;" class='bone bone-type-image bone-style-round' ></div>
         </div>
     </v-card-actions>

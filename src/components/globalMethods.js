@@ -207,59 +207,6 @@ export default {
 
       return category;
     },
-    createLocation: function createLocation(dataset) {
-      const location = {};
-      location.id = dataset.id;
-      location.name = dataset.name;
-      location.title = dataset.title;
-
-      if (dataset && dataset.spatial) {
-        location.geoJSON = dataset.spatial;
-
-        // parseJSON because the geoJOSN from CKAN might be invalid!
-        const spatialJSON = JSON.parse(dataset.spatial);
-        // console.log("createLocation spatial " + spatialJSON.coordinates);
-
-        if (spatialJSON) {
-          location.isPolygon = spatialJSON.type === 'Polygon';
-          location.isPoint = spatialJSON.type === 'Point';
-          location.isMultiPoint = spatialJSON.type === 'MultiPoint';
-
-          // Swap lngLat to latLng because the geoJOSN from CKAN might be invalid!
-
-          if (location.isPoint) {
-            // swap coords for the leaflet map
-            location.pointArray = [spatialJSON.coordinates[1], spatialJSON.coordinates[0]];
-          } else if (location.isPolygon) {
-            location.pointArray = [];
-
-            for (let i = 0; i < spatialJSON.coordinates.length; i++) {
-              const pointElement = spatialJSON.coordinates[i];
-              const pointObject = [];
-
-              for (let j = 0; j < pointElement.length; j++) {
-                const coord = pointElement[j];
-                pointObject.push([coord[1], coord[0]]);
-              }
-
-              location.pointArray.push(pointObject);
-            }
-          } else if (location.isMultiPoint) {
-            location.pointArray = [];
-
-            for (let i = 0; i < spatialJSON.coordinates.length; i++) {
-              const pointElement = spatialJSON.coordinates[i];
-              const pointObject = [pointElement[1], pointElement[0]];
-              location.pointArray.push(pointObject);
-            }
-          }
-        }
-      }
-
-      // console.log("createLocation " + location.pointArray + " " + location.geoJSON);
-
-      return location;
-    },
     /* eslint-disable */
     // for details: https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
     formatBytes: function formatBytes(a,b){if(0==a)return"0 Bytes";var c=1024,d=b||2,e=["Bytes","KB","MB","GB","TB","PB","EB","ZB","YB"],f=Math.floor(Math.log(a)/Math.log(c));return parseFloat((a/Math.pow(c,f)).toFixed(d))+" "+e[f]},

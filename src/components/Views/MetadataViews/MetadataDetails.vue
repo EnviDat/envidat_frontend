@@ -28,12 +28,12 @@
               && !val.text" >
             <v-layout row>
               <div style="width: 20%;"
-                    class="flex pr-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-pulse" >
+                    class="flex pr-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
                 <div class='bone bone-type-text ' ></div>
               </div>
 
               <div style="width: 80%;"
-                    class="flex pl-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-pulse" >
+                    class="flex pl-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
                 <div class='bone bone-type-text ' ></div>
               </div>
             </v-layout>
