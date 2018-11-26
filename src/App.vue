@@ -231,7 +231,7 @@
     text-overflow: ellipsis;    
     max-height: 2.15em;
     */
-    line-height: 1.2em !important;
+    line-height: 1.1em !important;
   }
 
 

@@ -9,8 +9,8 @@
 
     <v-img
         background-color="primary"
-        :style="!compactLayout ? dynamicCardBackground : ''"        
-        :height="compactLayout? '85px' : '125px'"
+        :style="!compactLayout ? dynamicCardBackground : ''"
+        :height="compactLayout? '70px' : $vuetify.breakpoint.smAndDown ? '100px' : '125px'"
       >
       
       <v-container grid-list-xs fluid fill-height
@@ -40,7 +40,7 @@
             </v-layout>
           </v-flex>
   
-          <v-flex xs12 py-0>
+          <v-flex xs12 py-0 mx-1>
             <v-layout row fill-height align-end >
                 <tag-chip py-0
                           v-if="tags" v-for="tag in tags.slice (0, maxTagNumber)" :key="tag.name"
@@ -60,8 +60,8 @@
 
     </v-img>
 
-    <v-card-text :class="{['cardText'] : true,
-                          ['compactText'] : compactLayout,
+    <v-card-text :class="{['cardText'] : $vuetify.breakpoint.smAndUp,
+                          ['compactText'] : compactLayout || $vuetify.breakpoint.xsOnly,
                           ['py-2'] : compactLayout,
                           ['pr-5'] : compactLayout,
                           ['pb-4'] : !compactLayout,
@@ -262,8 +262,8 @@ export default {
       return {
         black_title: !this.dark,
         white_title: this.dark,
-        // compactTitle: this.$vuetify.breakpoint.smAndDown || this.compactLayout,
-        compactTitle: true,
+        compactTitle: this.$vuetify.breakpoint.xsOnly || this.compactLayout,
+        // compactTitle: true,
       };
     },
   },
@@ -314,17 +314,17 @@ export default {
   }
   
   .compactTitle {
-    font-size: 20px !important;
-    line-height: 1.1em !important;
+    font-size: 18px !important;
+    line-height: 1em !important;
   }
 
   .compactText {
-    font-size: 12px !important;
-    line-height: 1.3em !important;
+    line-height: 1.2em !important;
   }
 
   .cardText {
-    line-height: 1.3em !important;
+    font-size: 14px !important;
+    line-height: 1.2em !important;
   }
 
 

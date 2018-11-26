@@ -16,7 +16,8 @@
 
               <v-layout column>
 
-                <v-flex pt-0 fill-height>
+                <v-flex hidden-sm-and-down
+                        pt-0 fill-height>
                   <control-panel-view :compactLayout="$vuetify.breakpoint.smAndDown"
                                       v-on:controlsChanged="catchControlsChanged"
                   />
