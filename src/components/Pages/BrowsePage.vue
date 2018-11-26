@@ -37,8 +37,8 @@
 
       <v-flex py-2
               style="z-index: 1;"
-              v-bind="{ [`mx-0`]: this.$vuetify.breakpoint.smAndDown,
-                        [`mx-3`]: this.$vuetify.breakpoint.mdAndUp,
+              v-bind="{ [`mx-1`]: this.$vuetify.breakpoint.smAndDown,
+                        [`mx-0`]: this.$vuetify.breakpoint.mdAndUp,
                         metadataListStyling }"
        >
 

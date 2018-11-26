@@ -10,7 +10,7 @@
                  ['color']: highlighted ? 'primary' : '',
                  ['disabled'] : !selectable,
                  }"
-        :style="{'max-height' : $vuetify.breakpoint.xsOnly ? '15px' : '100%' }"
+        :style="{'height' : $vuetify.breakpoint.xsOnly ? '15px' : '20px' }"
         @click.stop="clicked"
         @input="clickedClose">
         {{ name }}

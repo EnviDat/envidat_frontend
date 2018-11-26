@@ -1,11 +1,10 @@
 <template>
-
   <v-card raised
+          :style="!expanded && compactLayout ? 'height: 32px;' : '',
+                  !compactLayout ? 'height: 85px;' : ''"
   >
 
     <v-layout column
-              fill-height
-              py-1
     >
 
       <v-flex xs12 hidden-sm-and-up
@@ -15,7 +14,7 @@
       </v-flex>
 
 
-      <v-flex xs12 px-2 py-2
+      <v-flex xs12 px-2 mt-2
                 v-if="expanded || $vuetify.breakpoint.smAndUp">
 
         <v-layout row
@@ -57,7 +56,7 @@
       </v-flex>
 
 
-      <v-flex xs12 px-2 py-2
+      <v-flex xs12 px-2 mt-2
               v-if="expanded || $vuetify.breakpoint.smAndUp">
 
         <v-layout row
@@ -143,6 +142,7 @@ export default {
     mapExpandButtonText: String,
     mapExpandedButtonText: String,
     isHighlighted: Boolean,
+    compactLayout: Boolean,
   },
   computed: {
     selectedTags: function selectedTags() {

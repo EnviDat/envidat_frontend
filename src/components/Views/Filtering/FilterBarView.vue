@@ -45,7 +45,9 @@
               }"
             >
               
-              <filter-view :allTags="allTags" 
+              <filter-keywords-view
+                            :compactLayout="$vuetify.breakpoint.smAndDown"                  
+                            :allTags="allTags" 
                             :selectedTagNames="selectedTagNames"
                             :popularTags="popularTags"
                             :expanded="expanded"
