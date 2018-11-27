@@ -1,5 +1,6 @@
 <template>
-  <v-container fluid >  
+  <v-container fluid
+                :class="$vuetify.breakpoint.smAndDown ? 'pa-1' : 'pa-2'">  
     <v-layout column >
   
       <title-view :title="envidatTitle"

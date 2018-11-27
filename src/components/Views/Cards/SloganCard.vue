@@ -36,11 +36,13 @@
               v-html="slogan">
             </div>
 
-            <div class="hidden-sm-and-up envidatSlogan headline px-2"
+            <div class="hidden-sm-and-up envidatSlogan headline x"
+                  style="text-align: center;"
               v-html="slogan">
             </div>
 
             <div class="pt-3 pb-5"
+                :class="{'px-2': $vuetify.breakpoint.smAndDown }"
                 :style="$vuetify.breakpoint.mdAndUp ? 'font-size: 14px !important;' : '' "
             >
               {{ subSlogan }}
