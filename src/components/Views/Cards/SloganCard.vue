@@ -32,7 +32,7 @@
               v-html="slogan">
             </div>
 
-            <div class="hidden-xs-only hidden-md-and-up envidatSlogan headline"
+            <div class="hidden-xs-only hidden-md-and-up envidatSlogan headline px-2"
               v-html="slogan">
             </div>
 

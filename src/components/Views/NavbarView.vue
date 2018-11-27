@@ -30,7 +30,7 @@
                 <!-- spacer -->
               </v-flex>
 
-              <v-flex xs3 sm2 md1 >
+              <v-flex xs4 sm3 md2 >
 
                 <rectangle-button marginClass="ma-0"
                                   :class="{
@@ -45,7 +45,7 @@
 
               </v-flex>
 
-              <v-flex xs4 sm2 md2 lg1>
+              <v-flex xs3 sm3 md1 lg1>
 
                 <rectangle-button marginClass="ma-0"
                                   :class="{
@@ -107,7 +107,7 @@ export default {
     bottom: -2px;
   }
 
-  .envidatNavbarLinksSmall {
+  .envidatNavbarLinksSmall > span > .v-btn--small {
     font-size: 10px !important;
   }
 
