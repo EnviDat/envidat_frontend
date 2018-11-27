@@ -40,9 +40,17 @@
             </transition>
           </v-flex>
 
+          <v-flex xs12 
+                  style="position: absolute; right: 5px; bottom: 2px; font-size: 5px !important;"
+          >
+            Verison: {{ appVersion }}
+          </v-flex>
+
         </v-layout>
           
       </v-container>
+
+
     </v-content>
 
   </v-app>
@@ -186,6 +194,7 @@
     data: () => ({
       appBGImages: {},
       prevHeight: 0,
+      appVersion: process.env.VERSION,
     }),
     components: {
       NavBarView,

@@ -66,11 +66,6 @@
 
       </v-flex>
 
-
-      <div style="position: absolute; right: -10px; top: 2px; font-size: 8px !important;" >
-        {{ appVersion }}
-      </div>
-
     </v-layout>
 
 </template>
@@ -95,7 +90,6 @@ export default {
     loginText: 'Creator Login',
     loginToolTip: 'Login to add and manage datasets',
     loginUrl: 'https://www.envidat.ch/user/reset',
-    appVersion: process.env.VERSION,
   }),
   components: {
     RectangleButton,
