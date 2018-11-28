@@ -10,7 +10,7 @@
     <v-img
         background-color="primary"
         :style="!flatLayout ? dynamicCardBackground : ''"
-        :height="flatLayout? '70px' : $vuetify.breakpoint.smAndDown ? '100px' : '125px'"
+        :height="flatLayout? '65px' : $vuetify.breakpoint.smAndDown ? '100px' : '125px'"
       >
       
       <v-container grid-list-xs fluid fill-height
@@ -278,7 +278,6 @@ export default {
     maxTagtextLength: 40,
     maxCompactTagtextLength: 170,
     blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
-    // whiteTopToBottom: 'rgba(255,255,255, 0.3) 0%, rgba(255,255,255, 1) 60%',
     whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
     imageDefaults: {
       snow: 'c_b_snow_icy2',

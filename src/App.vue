@@ -338,14 +338,14 @@
   }
 
   .envidatChip {
-    height: 1.5rem;
-    font-size: 0.65rem;
+    height: 1.3rem;
+    font-size: 0.5rem;
     margin: 1px 2px;
     opacity: 0.85;
   }
 
   .smallChip {
-    height: 1.25rem;
+    height: 1.2rem;
     font-size: 0.55rem;
   }
 

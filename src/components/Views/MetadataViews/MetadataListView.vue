@@ -44,8 +44,8 @@
                         :flatLayout="listView"
                         :class="{ ['elevation-10'] : hoverId === metadata.id }"
                         v-on:clickedEvent="metaDataClicked"
-                        v-on:clickedTag="catchTagClicked">
-            </metadata-card>
+                        v-on:clickedTag="catchTagClicked"
+            />
             </transition>
 
         </v-flex>
