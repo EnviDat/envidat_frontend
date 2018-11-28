@@ -34,7 +34,7 @@
 
                 <rectangle-button marginClass="ma-0"
                                   :class="{
-                                    ['envidatNavbarLinksSmall']: this.$vuetify.breakpoint.xsOnly,
+                                    ['envidatNavbarLinksSmall']: this.$vuetify.breakpoint.smAndDown,
                                   }" 
                                   :isFlat="true"
                                   :buttonText="loginText"
@@ -49,7 +49,7 @@
 
                 <rectangle-button marginClass="ma-0"
                                   :class="{
-                                    ['envidatNavbarLinksSmall']: this.$vuetify.breakpoint.xsOnly,
+                                    ['envidatNavbarLinksSmall']: this.$vuetify.breakpoint.smAndDown,
                                   }" 
                                   :isFlat="true"
                                   :buttonText="aboutText"

@@ -7,7 +7,8 @@
     <v-layout row wrap>
 
       <v-flex xs12
-              :class="{ 'stickyFilterBar': this.$vuetify.breakpoint.smAndUp }"
+              :class="{ 'stickyFilterBar': $vuetify.breakpoint.smAndUp }"
+              :style="$vuetify.breakpoint.sm ? 'top: 42px !important;' : ''"
       >
 
         <filter-bar-view :showFiltering="true"

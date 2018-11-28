@@ -41,7 +41,7 @@
                         :resourceCount="metadata.num_resources"
                         :resources="metadata.resources"
                         :dark="false"
-                        :compactLayout="listView"
+                        :flatLayout="listView"
                         :class="{ ['elevation-10'] : hoverId === metadata.id }"
                         v-on:clickedEvent="metaDataClicked"
                         v-on:clickedTag="catchTagClicked">
