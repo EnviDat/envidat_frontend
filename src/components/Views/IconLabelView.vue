@@ -2,21 +2,15 @@
   
     <v-layout row align-center>
 
-      <!-- <v-flex v-if="icon && iconTooltip"
-        xs2 >
-        <v-tooltip bottom>
-          <img slot="activator" class="envidatIcon" :src="icon" />          
-          <span>{{ iconTooltip }}</span>
-        </v-tooltip>
-      </v-flex> -->
-
       <div v-if="icon && iconTooltip"
         :class="alignClass"
         style="position: relative: top: 2px;"
         >
         <v-tooltip bottom>
           <div slot="activator" class="iconCentering">
-            <img class="envidatIcon" :src="icon" />          
+            <img class="envidatIcon"
+                :class="compactLayout ? 'small' : ''"
+                :src="icon" />          
           </div>
           <span>{{ iconTooltip }}</span>
         </v-tooltip>
@@ -26,7 +20,9 @@
         xs2 pr-2
         >
         <div class="iconCentering">
-          <img class="envidatIcon" :src="icon" />          
+          <img class="envidatIcon"
+              :class="compactLayout ? 'small' : ''"
+              :src="icon" />          
         </div>
       </v-flex>
 
@@ -64,6 +60,7 @@
       bold: Boolean,
       usePlaceholder: Boolean,
       wordBreak: Boolean,
+      compactLayout: Boolean,
     },
     computed: {
       alignClass: function alignClass() {

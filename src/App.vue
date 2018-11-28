@@ -311,6 +311,11 @@
     width: 24px !important;
   }
 
+  .envidatIcon.small {
+    height: 20px !important;
+    width: 20px !important;
+  }
+
   .envidatTitle {
     font-family: 'Libre Baskerville', serif !important;
     letter-spacing: 0em !important;

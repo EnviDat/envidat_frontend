@@ -72,7 +72,7 @@ export default {
 
 <style>
 
-.envidatControlInfos.small > div > div > div.v-label {
+.envidatControlInfos.small > .v-input__control > .v-input__slot > .v-text-field__slot > .v-label {
   font-size: 12px !important;
 }
 

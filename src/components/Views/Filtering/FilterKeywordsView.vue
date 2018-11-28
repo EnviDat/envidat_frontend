@@ -29,6 +29,7 @@
                     class="metadataInfoIcon" 
             >
               <icon-label-view :icon="getIcon('tags')"
+                                :compactLayout="compactLayout"
                                 iconTooltip="Possible Keywords"
               />
             </v-flex>
@@ -70,6 +71,7 @@
             <v-flex pl-2 class="metadataInfoIcon" 
             >
               <icon-label-view :icon="getIcon('tag')"
+                                :compactLayout="compactLayout"
                                 iconTooltip="Active Keyword filter"
               />
             </v-flex>
@@ -90,15 +92,6 @@
                         class="filterTag" />
 
             </v-flex>
-
-            <!-- <v-flex  >
-
-              <v-btn icon
-                      @click="clearTags">
-                <img class="envidatIcon" :src="getIcon('tagRemove')" />
-              </v-btn>
-
-            </v-flex> -->
 
         </v-layout>
 

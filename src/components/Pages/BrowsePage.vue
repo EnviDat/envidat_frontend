@@ -368,7 +368,6 @@
       searchTerm: '',
       searchLabelText: 'Search',
       placeHolderAmount: 6,
-      noResultText: 'Nothing found for these Search criterias',
       suggestionText: 'Try one of these categories',
       selectedTagNames: [],
       popularTagAmount: 10,

@@ -123,11 +123,12 @@
 }
 
 .envidatSmallSearch > .v-input__control {
-    min-height: 40px !important;
+  min-height: 40px !important;
 }
 
 .envidatSmallSearch.small > .v-input__control {
-    min-height: 32px !important;
+  min-height: 32px !important;
+  font-size: 12px !important;
 }
 
 .envidatSmallSearch > .v-input__append-outer {

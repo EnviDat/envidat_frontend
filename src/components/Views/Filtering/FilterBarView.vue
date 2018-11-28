@@ -12,7 +12,7 @@
               ['column']: this.$vuetify.breakpoint.xsOnly,
             }" >
 
-            <v-flex xs12 sm3>
+            <v-flex xs12 sm4 md3>
 
               <v-layout column>
 
@@ -40,7 +40,7 @@
               </v-layout>
             </v-flex>
 
-            <v-flex xs10 sm9 
+            <v-flex xs10 sm8 md9 
               v-bind="{
                 ['py-1']: this.$vuetify.breakpoint.xsOnly,
               }"

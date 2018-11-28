@@ -82,7 +82,7 @@ export default {
     },
     data: () => ({
       enhanceContentDone: false,
-      noResultText: 'Nothing found for these Search criterias',
+      noResultText: 'Nothing found for these search criterias',
       suggestionText: 'Try one of these categories',
     }),
     beforeMount: function beforeMount() {
