@@ -46,6 +46,9 @@ export default {
   props: {
     compactLayout: Boolean,
   },
+  mounted: function mounted() {
+    this.controlsActive = this.$store.getters.controls;
+  },
   data: () => ({
     mapFilterActivateText: 'Activate Mapfiltering',
     mapFilterDeactivateText: 'Deactivate Mapfiltering',

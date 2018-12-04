@@ -72,6 +72,7 @@
   import {
     SET_APP_BACKGROUND,
     SET_CURRENT_PAGE,
+    SET_CONTROLS,
   } from '../../store/mutationsConsts';
 
   // check filtering in detail https://www.npmjs.com/package/vue2-filters
@@ -230,6 +231,8 @@
 
         this.listViewActive = listActive;
         this.showMapFilter = mapToggled;
+        
+        this.$store.commit(SET_CONTROLS, controlsActive);
       },
       toggleMapExpand: function toggleMapExpand() {
         this.showMapFilter = !this.showMapFilter;
