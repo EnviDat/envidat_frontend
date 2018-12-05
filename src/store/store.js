@@ -5,6 +5,7 @@ import createPersist from 'vuex-localstorage';
 /* eslint-disable no-unused-vars */
 import { metadata } from './modules/metadata';
 import mutations from './appMutations';
+import aboutText from './data/about';
 
 Vue.use(Vuex);
 
@@ -18,12 +19,14 @@ export default new Vuex.Store({
     appBGImage: './app_b_landingpage.jpg',
     cardBGImages: {},
     iconImages: {},
+    aboutText,
   },
   getters: {
     currentPage: state => state.currentPage,
     appBGImage: state => state.appBGImage,
     cardBGImages: state => state.cardBGImages,
     iconImages: state => state.iconImages,
+    aboutText: state => state.aboutText,
   },
   mutations,
   modules: {
