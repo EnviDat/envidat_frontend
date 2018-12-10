@@ -6,7 +6,7 @@
     <v-container grid-list-md pa-0>
       <v-layout row align-center>
 
-        <v-flex xs5 px-1 py-0>
+        <v-flex xs5 py-0>
           <v-card-media class="imagezoom"
                         :height=" $vuetify.breakpoint.smAndDown ? '65px' : '100px' ">
             <img :src="imageSrc" />                        

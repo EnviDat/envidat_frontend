@@ -273,7 +273,7 @@ export default {
     maxTitleLength: 80,
     compactTitleLength: 100,
     maxSubtitleLength: 280,
-    compactSubtitleLength: 320,
+    compactSubtitleLength: 140,
     // maxTags: 3,
     maxTagtextLength: 40,
     maxCompactTagtextLength: 170,
