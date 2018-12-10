@@ -19,24 +19,7 @@
           Error loading leaflet
     </div>
 
-    <v-card-actions class="pr-2">
-
-
-        <!-- <v-tooltip bottom>
-          <v-btn v-if="expanded"
-                  slot="activator"
-                  class="px-0"
-                  color="accent"
-                  style="min-width: 40px !important;"
-                  @click.native="toggleActive"
-                  :outline="!mapFilteringActive"
-          >
-            <img class="envidatIcon" :src="getIcon('mapMarker')" />                
-          </v-btn>
-
-          <span>Map filtering is {{ mapFilteringActive ? '' : 'not' }} active</span>
-        </v-tooltip> -->
-
+    <!-- <v-card-actions class="pr-2">
       <v-spacer />
 
       <div class="pr-3">
@@ -49,7 +32,7 @@
                         :tooltip="`${markerCount} makers pinned on the map`">
       </icon-count-view>
 
-    </v-card-actions>
+    </v-card-actions> -->
 
   </v-card>
 
@@ -361,7 +344,7 @@ export default {
   data: () => ({
     map: null,
     mapIsSetup: false,
-    buttonHeight: 125,
+    buttonHeight: 84,
     updatingMap: true,
     addedObjectsKeys: [],
     mapFilteringActive: false,
