@@ -8,13 +8,7 @@
       {{ citationText }}
     </v-card-text>
 
-    <v-card-text v-if="showPlaceholder && !citationText" >
-      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
-        <div class='bone bone-type-multiline bone-style-paragraph' ></div>
-      </div>
-    </v-card-text>
-
-    <v-card-actions v-if="!showPlaceholder">
+    <v-card-actions v-if="!showPlaceholder && citationText">
       
       <v-layout row wrap justify-end>
         
@@ -51,6 +45,17 @@
       </v-layout>
     </v-card-actions>
 
+    <v-card-text v-if="showPlaceholder && !citationText" >
+      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
+        <div class='bone bone-type-multiline bone-style-paragraph' ></div>
+      </div>
+    </v-card-text>
+
+    <v-card-text v-if="!showPlaceholder && !citationText"
+                  style="color: red;" >
+      {{ emptyText }}
+    </v-card-text>
+
     <v-card-actions v-if="showPlaceholder && !citationText">
       <v-spacer></v-spacer>          
       <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
@@ -80,6 +85,7 @@ export default {
   mounted: function mounted() {
   },
   data: () => ({
+    emptyText: 'No citation found for this dataset',
   }),
   methods: {
   },

@@ -3,7 +3,8 @@
     
     <v-card-title class="title metadata_title" >Data and resources</v-card-title>
 
-    <v-container fluid grid-list-xs grid-list-md pa-3>
+    <v-container v-if="resources && resources.length > 0"
+                fluid grid-list-xs grid-list-md pa-3>
       <v-layout row wrap>
 
         <v-flex v-if="showPlaceholder"
@@ -24,6 +25,11 @@
 
       </v-layout>
     </v-container>
+
+    <v-card-text v-if="!showPlaceholder && (!resources || resources.length <= 0)"
+                  style="color: red;" >
+      {{ emptyText }}
+    </v-card-text>
 
 
     <!--v-card-actions>
@@ -53,6 +59,7 @@
     },
     data: () => ({
       showAllResources: false,
+      emptyText: 'No resources found for this dataset',
     }),
     computed: {
     },

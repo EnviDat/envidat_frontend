@@ -1,7 +1,7 @@
 <template>
   <v-container fluid
               tag="article"
-              py-2
+              pa-0
   >
               <!-- v-bind="{ [`pa-0`]: this.$vuetify.breakpoint.smAndDown,
                         [`pa-2`]: this.$vuetify.breakpoint.mdAndUp }" -->
@@ -41,13 +41,11 @@
             </v-flex>
 
             <v-flex mb-2>
-              <metadata-location v-if="location"
-                                  v-bind="location" />
+              <metadata-location v-bind="location" />
             </v-flex>
 
             <v-flex mb-2 v-if="showDetailsOnTheLeft">
-              <metadata-details v-if="details"
-                              :details="details"
+              <metadata-details :details="details"
                               :showPlaceholder="showPlaceholder" />
             </v-flex>
 
@@ -69,8 +67,7 @@
             </v-flex>
 
             <v-flex xs12 mb-2 v-if="!showDetailsOnTheLeft">
-              <metadata-details v-if="details"
-                                :details="details"
+              <metadata-details :details="details"
                                 :showPlaceholder="showPlaceholder" />
             </v-flex>
 
@@ -124,14 +121,14 @@
                 mb-2
                 v-bind="fullWidthPadding"
                 >
-          <metadata-location v-if="location" v-bind="location" />
+          <metadata-location v-bind="location" />
         </v-flex>
 
         <v-flex xs12
                 mb-2
                 v-bind="fullWidthPadding"
                 >
-          <metadata-details v-if="details" :details="details"
+          <metadata-details :details="details"
                               :showPlaceholder="showPlaceholder" />
         </v-flex>
 

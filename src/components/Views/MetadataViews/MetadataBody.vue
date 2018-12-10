@@ -4,18 +4,19 @@
     
     <v-card-title class="metadata_title title" >Description</v-card-title>
 
-<!--
-    <v-card-text v-if="fullDescription" >{{ fullDescription }}</v-card-text>
+    <v-card-text v-if="fullDescription" >
+      <m-markdown-preview :markdown="fullDescription" :options="{ html: true, xhtmlOut: true, linkify: true, breaks: true }" />
+    </v-card-text>
 
-    <v-card-text v-if="!fullDescription && showPlaceholder" >
+    <div v-if="showPlaceholder && !fullDescription">
       <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
         <div class='bone bone-type-multiline bone-style-paragraph' ></div>
       </div>
-    </v-card-text>
+    </div>
 
- {{ title | truncate(maxTitleLength) }} -->
-    <v-card-text >
-      <m-markdown-preview :markdown="fullDescription" :options="{ html: true, xhtmlOut: true, linkify: true, breaks: true }" />
+    <v-card-text v-if="!showPlaceholder && !fullDescription"
+                  style="color: red;" >
+      {{ emptyText }}
     </v-card-text>
 
     <v-card-actions v-if="maxDescriptionLengthReached"
@@ -67,6 +68,7 @@
     data: () => ({
       showFullDescription: false,
       maxTextLength: 1000,
+      emptyText: 'No description found for this dataset',
     }),
     methods: {
       readMore: function readMore() {

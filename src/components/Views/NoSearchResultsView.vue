@@ -15,7 +15,7 @@
       <v-container fluid grid-list-md pa-0>
         <v-layout row wrap>
 
-          <v-flex my-2
+          <v-flex my-2 px-1
               v-bind="{ 'xs3' : $vuetify.breakpoint.xsOnly ? false : true,
                         'xs6' : $vuetify.breakpoint.xsOnly ? true : false,
                       }"                  

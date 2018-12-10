@@ -2,7 +2,12 @@
   <v-card >
     <v-card-title class="title metadata_title" >Further Information</v-card-title>
 
-    <v-card-text >
+    <v-card-text v-if="!showPlaceholder && (!details || details.length <= 0)"
+                  style="color: red;" >
+      {{ emptyText }}
+    </v-card-text>
+
+    <v-card-text v-if="details && details.length > 0">
 
       <v-form>
 
@@ -54,8 +59,6 @@
 </template>
 
 <script>
-  /* eslint-disable no-alert */
-  /* eslint-disable no-console */
   export default {
     props: {
       details: Array,
@@ -65,6 +68,7 @@
       maxSingleTextLengthLg: 80,
       maxSingleTextLengthMd: 80,
       maxSingleTextLengthXs: 70,
+      emptyText: 'No details found for this dataset',
     }),
     methods: {
       clicking: function clicking() {

@@ -10,6 +10,7 @@
 
         <icon-button style="position: absolute; top 0px; right: 0px;"
                       materialIconName="close"
+                      :iconColor=" (showPlaceholder || !metadataTitle) ? 'white' : 'primary'"
                       :outlined="true"
                       toolTipText ="Close Metadata"
                       v-on:clicked="catchBackClicked" />

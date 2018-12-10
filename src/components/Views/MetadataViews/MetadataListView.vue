@@ -124,7 +124,7 @@ export default {
         if (this.mapFilteringEnabled && this.compactLayout) {
           const twoThridsSize = {
             xs12: true,
-            sm8: true,
+            sm12: true,
             md6: true,
             xl4: true,
           };
