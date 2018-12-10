@@ -339,7 +339,7 @@
 
   .envidatChip {
     height: 1.3rem;
-    font-size: 0.5rem;
+    font-size: 0.55rem;
     margin: 1px 2px;
     opacity: 0.85;
   }
