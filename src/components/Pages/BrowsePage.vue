@@ -1,5 +1,8 @@
 <template>
-  <v-container grid-list-xs fluid pa-0
+  <v-container grid-list-xs
+                fluid
+                tag="article"
+                pa-0
   >
                 <!-- v-bind="{ 'pa-0': $vuetify.breakpoint.xsOnly }"
                 @scroll="updateScroll" -->
@@ -38,8 +41,11 @@
 
       <v-flex py-2
               style="z-index: 1;"
-              v-bind="{ [`px-1`]: this.$vuetify.breakpoint.smAndDown,
-                        [`mx-0`]: this.$vuetify.breakpoint.mdAndUp,
+              v-bind="{ ['mx-0']: $vuetify.breakpoint.mdAndUp,
+                        ['xs8']: showMapFilter & $vuetify.breakpoint.mdAndUp,
+                        ['xs6']: showMapFilter & $vuetify.breakpoint.sm,
+                        ['pr-3']: showMapFilter & $vuetify.breakpoint.sm,
+                        ['xs12']: !showMapFilter,
                         metadataListStyling }"
        >
 
@@ -50,6 +56,22 @@
                             :placeHolderAmount="placeHolderAmount"
                             v-on:clickedTag="catchTagClicked"
        />
+
+      </v-flex>
+
+      <v-flex v-if="mapFilteringEnabled && showMapFilter"
+              py-3
+              v-bind="{ ['px-3']: showMapFilter & $vuetify.breakpoint.mdAndUp,
+                        ['xs4']: showMapFilter & $vuetify.breakpoint.mdAndUp,
+                        ['xs6']: showMapFilter & $vuetify.breakpoint.sm,
+                        ['pl-2']: showMapFilter & $vuetify.breakpoint.sm,
+                      }"
+              style="pointer-events: none; position: fixed; top: 135px; right: 10px;"
+      >
+
+        <filter-map-view :totalHeight="mapFilterHeight"
+                          :expanded="showMapFilter"
+                          v-on:pointClicked="catchPointClicked" />
 
       </v-flex>
 
@@ -311,11 +333,14 @@
       },
       mapFilterHeight: function mapFilterHeight() {
         const sHeight = document.documentElement.clientHeight;
+
         let height = this.maxMapFilterHeight;
 
         if (sHeight < this.maxMapFilterHeight) {
-          height = sHeight - 110;
+          height = sHeight - 175;
         }
+
+        // console.log('sHeight ' + sHeight + ' height ' + height + ' ' + this.maxMapFilterHeight);
 
         return height;
       },
@@ -343,7 +368,7 @@
         return json;
       },
       mapFilteringEnabled: function mapFilteringEnabled() {
-        return this.$vuetify.breakpoint.lgAndUp;
+        return this.$vuetify.breakpoint.smAndUp;
       },
       searchCount: function searchCount() {
         return this.filteredContent !== undefined ? this.filteredContent.length : 0;

@@ -5,9 +5,9 @@
   >
 
     <v-card-title>
-      <div class="headline mb-0">Cartographic Filtering is under construction</div>
-      <div class="pt-2" style="color: red;" >Filtering is not implemented! Currently the map is just for browsing.</div>
-    </v-card-title>  
+      <div class="headline mb-0">Cartographic Filtering</div>
+      <div class="pt-2" style="color: red;" >Underconstruction: At the moment the map is only for browsing.</div>
+    </v-card-title>
 
     <div v-if="expanded && !errorLoadingLeaflet"
           id="map"
@@ -361,7 +361,7 @@ export default {
   data: () => ({
     map: null,
     mapIsSetup: false,
-    buttonHeight: 130,
+    buttonHeight: 125,
     updatingMap: true,
     addedObjectsKeys: [],
     mapFilteringActive: false,

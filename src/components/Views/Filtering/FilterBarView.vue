@@ -73,7 +73,7 @@
 
       </v-flex>
 
-      <v-flex xs4 offset-xs8 py-1 style="pointer-events: none;"
+      <!-- <v-flex xs4 offset-xs8 py-1 style="pointer-events: none;"
               v-if="mapFilteringEnabled && showMapFilter" >
 
         <filter-map-view :totalHeight="mapFilterHeight"
@@ -82,7 +82,7 @@
                           v-on:viewChanged="catchViewChanged"
                           v-on:pointClicked="catchPointClicked" />
 
-      </v-flex>
+      </v-flex> -->
 
     </v-layout>
 
