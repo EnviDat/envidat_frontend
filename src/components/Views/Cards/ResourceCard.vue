@@ -8,7 +8,11 @@
       <div class="headline">{{ name }}</div>
     </v-card-title>
 
-    <v-card-text class="pt-0 pb-4">
+    <v-card-text class="pt-0"
+    :class="{
+        'pb-3': $vuetify.breakpoint.mdAndUp,
+        'pb-5': $vuetify.breakpoint.smAndDown,
+      }">
 
       <v-container grid-list-xs pa-0>
         <v-layout v-bind="{ ['row']: $vuetify.breakpoint.smAndUp,
@@ -19,7 +23,7 @@
 
           <v-flex v-bind="{ [`xs6`]: !this.twoColumnLayout , 
                             [`xs12`]: this.twoColumnLayout  }"
-                            order-xs2 order-sm1
+                            order-xs3 order-sm1
           >
 
             <v-layout column>
@@ -36,10 +40,14 @@
             </v-layout>
           </v-flex>
     
+          <v-flex order-xs2 hidden-sm-and-up>
+            <v-divider :dark="dark" class="my-1" ></v-divider>
+          </v-flex>
+
           <v-flex v-bind="{ [`xs6`]: !this.twoColumnLayout , 
                             [`xs12`]: this.twoColumnLayout,
                             [`pt-3`]: this.twoColumnLayout  }"
-                            order-xs1 order-sm2
+                            order-xs1 order-sm3
           >
             <v-layout column>
               <v-flex px-0 v-if="doi">
@@ -84,6 +92,7 @@
                     class="mr-2"
                     materialIconName="expand_more"
                     iconColor="accent"
+                    color="transparent"
                     :isToggled="showFullDescription"
                     :rotateOnClick="true"
                     :toolTipText="showFullDescription ? 'Hide full description' : 'Show full description'"
