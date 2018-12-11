@@ -99,15 +99,17 @@
 
     </v-layout>
 
-    <v-card-actions v-if="$vuetify.breakpoint.smAndDown"
-                    class="ma-0 pa-2"
-                    style="position: absolute; bottom: 5px; right: 5px;">
-        <v-spacer />
+    <v-card-actions v-if="$vuetify.breakpoint.xsOnly"
+                    class="ma-0 pa-1"
+                    style="position: absolute; bottom: 0px; right: 0px;">
+      <v-spacer />
 
+      <v-btn icon small
+              @click="catchExpandClicked">
         <v-icon color="accent" 
-                @click="catchExpandClicked"
                 :style="expanded ? 'transform: rotate(-180deg);' : 'transform: rotate(0deg);'"
         >expand_more</v-icon>
+      </v-btn>        
 
     </v-card-actions>
 
