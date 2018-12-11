@@ -8,13 +8,18 @@
       <div class="headline">{{ name }}</div>
     </v-card-title>
 
-    <v-card-text class="pt-0 pb-3">
+    <v-card-text class="pt-0 pb-4">
 
       <v-container grid-list-xs pa-0>
-        <v-layout row wrap>
+        <v-layout v-bind="{ ['row']: $vuetify.breakpoint.smAndUp,
+                            ['wrap']: $vuetify.breakpoint.smAndUp,
+                            ['column']: $vuetify.breakpoint.xsOnly,
+                          }"
+        >
 
           <v-flex v-bind="{ [`xs6`]: !this.twoColumnLayout , 
                             [`xs12`]: this.twoColumnLayout  }"
+                            order-xs2 order-sm1
           >
 
             <v-layout column>
@@ -34,6 +39,7 @@
           <v-flex v-bind="{ [`xs6`]: !this.twoColumnLayout , 
                             [`xs12`]: this.twoColumnLayout,
                             [`pt-3`]: this.twoColumnLayout  }"
+                            order-xs1 order-sm2
           >
             <v-layout column>
               <v-flex px-0 v-if="doi">

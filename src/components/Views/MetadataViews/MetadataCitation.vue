@@ -10,39 +10,50 @@
 
     <v-card-actions v-if="!showPlaceholder && citationText">
       
-      <v-layout row wrap justify-end>
+      <v-container fluid grid-list-md pa-0>
+
+        <v-layout justify-end row wrap>
+
+          <v-flex xs6 sm3>
         
-          <rectangle-button v-if="citationXmlLink"
-                        class="ml-2"
-                        buttonText="DataCite"
-                        materialIconName="assignment"
-                        :isSmall="$vuetify.breakpoint.xsOnly"
-                        iconColor="white"
-                        toolTipText="Download XML citation"
-                        :url="citationXmlLink"
-          />
+            <rectangle-button v-if="citationXmlLink"
+                          class="ml-2"
+                          buttonText="DataCite"
+                          materialIconName="assignment"
+                          :isSmall="$vuetify.breakpoint.xsOnly"
+                          iconColor="white"
+                          toolTipText="Download XML citation"
+                          :url="citationXmlLink"
+            />
+          </v-flex>
 
-          <rectangle-button v-if="ciationIsoXmlLink"
-                        class="ml-2"
-                        buttonText="ISO 19139"
-                        toolTipText="Download ISO XML citation"
-                        materialIconName="assignment"
-                        :isSmall="$vuetify.breakpoint.xsOnly"
-                        iconColor="white"
-                        :url="ciationIsoXmlLink"
-          />
+          <v-flex xs6 sm3>
+            <rectangle-button v-if="ciationIsoXmlLink"
+                          class="ml-2"
+                          buttonText="ISO 19139"
+                          toolTipText="Download ISO XML citation"
+                          materialIconName="assignment"
+                          :isSmall="$vuetify.breakpoint.xsOnly"
+                          iconColor="white"
+                          :url="ciationIsoXmlLink"
+            />
+          </v-flex>
 
-          <rectangle-button v-if="ciationGCMDXmlLink"
-                        class="ml-2"
-                        buttonText="GCMD DIF"
-                        toolTipText="Download GCMD XML citation"
-                        materialIconName="assignment"
-                        :isSmall="$vuetify.breakpoint.xsOnly"
-                        iconColor="white"
-                        :url="ciationGCMDXmlLink"
-          />
+          <v-flex xs6 sm3>
+            <rectangle-button v-if="ciationGCMDXmlLink"
+                          class="ml-2"
+                          buttonText="GCMD DIF"
+                          toolTipText="Download GCMD XML citation"
+                          materialIconName="assignment"
+                          :isSmall="$vuetify.breakpoint.xsOnly"
+                          iconColor="white"
+                          :url="ciationGCMDXmlLink"
+            />
+          </v-flex>
 
-      </v-layout>
+        </v-layout>
+      </v-container>
+
     </v-card-actions>
 
     <v-card-text v-if="showPlaceholder && !citationText" >

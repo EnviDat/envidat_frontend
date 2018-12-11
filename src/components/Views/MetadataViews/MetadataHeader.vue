@@ -2,13 +2,16 @@
     <v-flex >
 
       <v-card elevation-5
-              class="px-4 py-2"
+              :class="{
+                  'pa-4': $vuetify.breakpoint.smAndUp,
+                  'pa-3': $vuetify.breakpoint.xsOnly,
+                }"
               :dark="dark"
               color="primary"
               v-bind="{['style'] : dynamicCardBackground }"
       >
 
-        <icon-button style="position: absolute; top 0px; right: 0px;"
+        <icon-button style="position: absolute; top: 0px; right: 0px;"
                       materialIconName="close"
                       :iconColor=" (showPlaceholder || !metadataTitle) ? 'white' : 'primary'"
                       :outlined="true"
@@ -37,7 +40,7 @@
         <v-divider :dark="dark" class="my-2" ></v-divider>
 
         <v-layout row wrap>
-          <v-flex xs6 py-1 class="headerInfo">
+          <v-flex xs12 sm6 py-1 class="headerInfo">
             <icon-label-view  :text="contactName"
                               :icon="getIcon(this.iconFlip('contact2'))"
                               iconTooltip="Main contact"
@@ -45,7 +48,7 @@
                                />
           </v-flex>
 
-          <v-flex xs6 py-1 class="headerInfo">
+          <v-flex xs12 sm6 py-1 class="headerInfo">
             <icon-label-view  :text="doi"
                               :icon="getIcon(iconFlip('doi'))"
                               iconTooltip="Data Object Identifier"
@@ -54,7 +57,7 @@
                                />
           </v-flex>
 
-          <v-flex xs6 py-1 class="headerInfo">
+          <v-flex xs12 sm6 py-1 class="headerInfo">
             <icon-label-view  :text="contactEmail"
                               :icon="getIcon(iconFlip('mail'))"
                               iconTooltip="Email adress of the main contact"
@@ -63,7 +66,7 @@
                                />
           </v-flex>
 
-          <v-flex xs6 py-1 class="headerInfo">
+          <v-flex xs12 sm6 py-1 class="headerInfo">
             <icon-label-view :text="license"
                               :icon="getIcon(iconFlip('license'))"
                               iconTooltip="License for Datafiles"
