@@ -26,7 +26,7 @@
             </v-card-media>
           </v-flex> -->
 
-          <v-flex xs7>
+          <v-flex xs7 pa-2>
 
             <div class="hidden-sm-and-down envidatSlogan display-1"
               v-html="slogan">

@@ -313,7 +313,7 @@ export default {
   }
   
   .compactTitle {
-    font-size: 18px !important;
+    font-size: 17px !important;
     line-height: 1em !important;
   }
 
