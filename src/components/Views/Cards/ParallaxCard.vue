@@ -9,12 +9,12 @@
 
         <v-flex >
 
-          <parallax-title :dark="dark"
-                          :blur="blur"
-                          :img="img"
-                          :height="height"
-                          :title="title"
-                          :subTitle="subTitle"/>
+          <parallax-title-img :dark="dark"
+                              :blur="blur"
+                              :img="img"
+                              :height="height"
+                              :title="title"
+                              :subTitle="subTitle"/>
 
         </v-flex>
 
@@ -31,12 +31,12 @@
 
         <v-flex xs12 sm6 md4 >
 
-          <parallax-title :dark="dark"
-                          :blur="blur"
-                          :img="img"
-                          :height="height"
-                          :title="title"
-                          :subTitle="subTitle"/>
+          <parallax-title-img :dark="dark"
+                              :blur="blur"
+                              :img="img"
+                              :height="height"
+                              :title="title"
+                              :subTitle="subTitle"/>
 
         </v-flex>
 
@@ -63,12 +63,12 @@
 
         <v-flex xs12 sm6 md4 >
 
-          <parallax-title :dark="dark"
-                          :blur="blur"
-                          :img="img"
-                          :height="height"
-                          :title="title"
-                          :subTitle="subTitle"/>
+          <parallax-title-img :dark="dark"
+                              :blur="blur"
+                              :img="img"
+                              :height="height"
+                              :title="title"
+                              :subTitle="subTitle"/>
 
         </v-flex>
 
@@ -81,7 +81,7 @@
 </template>
 
 <script>
-  import ParallaxTitle from '../ParallaxTitle';
+  import ParallaxTitleImg from '../ParallaxTitleImg';
 
   export default {
     props: {
@@ -102,7 +102,7 @@
       },
     },
     components: {
-      ParallaxTitle,
+      ParallaxTitleImg,
     },
   };
 </script>
