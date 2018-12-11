@@ -8,13 +8,22 @@
       <div class="headline">{{ name }}</div>
     </v-card-title>
 
-    <v-card-text class="pt-0 pb-3">
+    <v-card-text class="pt-0"
+    :class="{
+        'pb-3': $vuetify.breakpoint.mdAndUp,
+        'pb-5': $vuetify.breakpoint.smAndDown,
+      }">
 
       <v-container grid-list-xs pa-0>
-        <v-layout row wrap>
+        <v-layout v-bind="{ ['row']: $vuetify.breakpoint.smAndUp,
+                            ['wrap']: $vuetify.breakpoint.smAndUp,
+                            ['column']: $vuetify.breakpoint.xsOnly,
+                          }"
+        >
 
-          <v-flex v-bind="{ [`xs8`]: !this.twoColumnLayout , 
+          <v-flex v-bind="{ [`xs6`]: !this.twoColumnLayout , 
                             [`xs12`]: this.twoColumnLayout  }"
+                            order-xs3 order-sm1
           >
 
             <v-layout column>
@@ -31,9 +40,14 @@
             </v-layout>
           </v-flex>
     
-          <v-flex v-bind="{ [`xs4`]: !this.twoColumnLayout , 
+          <v-flex order-xs2 hidden-sm-and-up>
+            <v-divider :dark="dark" class="my-1" ></v-divider>
+          </v-flex>
+
+          <v-flex v-bind="{ [`xs6`]: !this.twoColumnLayout , 
                             [`xs12`]: this.twoColumnLayout,
                             [`pt-3`]: this.twoColumnLayout  }"
+                            order-xs1 order-sm3
           >
             <v-layout column>
               <v-flex px-0 v-if="doi">
@@ -70,36 +84,28 @@
 
     <v-card-actions class="ma-0 pa-2"
                     style="position: absolute; bottom: 0; right: 0;">
+
       <v-spacer></v-spacer>
 
-        <v-btn v-if="maxDescriptionLengthReached"
-                icon class="mr-2"
-                @click.native=" showFullDescription = !showFullDescription">
-          <v-icon color="accent" 
-                  :style="this.showFullDescription ? 'transform: rotate(-180deg);' : 'transform: rotate(0deg);'"
-          >expand_more</v-icon>
 
-        </v-btn>
+      <icon-button v-if="maxDescriptionLengthReached"
+                    class="mr-2"
+                    materialIconName="expand_more"
+                    iconColor="accent"
+                    color="transparent"
+                    :isToggled="showFullDescription"
+                    :rotateOnClick="true"
+                    :toolTipText="showFullDescription ? 'Hide full description' : 'Show full description'"
+                    v-on:clicked="showFullDescription = !showFullDescription" />
 
 
-      <v-tooltip bottom >
-        <v-btn fab small
-                color="accent" slot="activator" :href="url" 
-                v-bind="{['target'] : '_blank' }">
+      <icon-button :customIcon=" isFile ? getIcon('download') : getIcon('link')"
+                  color="accent"
+                  :isElevated="true"
+                  :toolTipText="isFile ? 'Download file' : 'Open link'"
+                  :url="url" />
 
-          <div v-if="isFile"
-                class="iconCentering">
-            <img class="envidatIcon" :src="getIcon('download')" />          
-          </div>
-          <div v-if="isLink"
-                class="iconCentering">
-            <img class="envidatIcon" :src="getIcon('link')" />          
-          </div>
-        </v-btn>
 
-        <span v-if="isFile">Download file</span>
-        <span v-if="isLink">Open link</span>
-      </v-tooltip>
     </v-card-actions>
 
   </v-card>
@@ -108,6 +114,7 @@
 
 <script>
 import defaultTexture from '../../../assets/cards/c_b_forest_texture_bark2_small.jpg';
+import IconButton from '../../Elements/IconButton';
 import IconLabelView from '../IconLabelView';
 
 export default {
@@ -178,6 +185,7 @@ export default {
   },
   components: {
     IconLabelView,
+    IconButton,
   },
 };
 </script>

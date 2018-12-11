@@ -12,58 +12,42 @@
               ['column']: this.$vuetify.breakpoint.xsOnly,
             }" >
 
-            <v-flex xs12 sm3>
+            <v-flex xs12 sm4 md3>
 
               <v-layout column>
 
-                <v-flex pt-0 fill-height>
-                  <control-panel-view v-on:controlsChanged="catchControlsChanged"
+                <v-flex hidden-xs-only
+                        pt-0 fill-height>
+                  <control-panel-view :compactLayout="$vuetify.breakpoint.smAndDown"
+                                      v-on:controlsChanged="catchControlsChanged"
                   />
 
                 </v-flex>
 
                 <v-flex py-1>
                   <small-search-bar-view
+                                  :compactLayout="$vuetify.breakpoint.smAndDown"                  
                                   :searchTerm="searchTerm"
                                   :searchCount="searchCount"
                                   :labelText="searchViewLabelText"
                                   :hasButton="searchViewHasButton"
                                   v-on:clicked="catchSearchClicked"
-                                  v-on:searchCleared="catchSearchCleared">
-                  </small-search-bar-view>
+                                  v-on:searchCleared="catchSearchCleared"
+                  />
                 </v-flex>
 
 
               </v-layout>
             </v-flex>
 
-            <v-flex xs10 sm9 
+            <v-flex xs10 sm8 md9 
               v-bind="{
-                ['py-2']: this.$vuetify.breakpoint.xsOnly,
+                ['py-1']: this.$vuetify.breakpoint.xsOnly,
               }"
             >
               
-              <filter-expanded-view v-if="expanded"
-                            :allTags="allTags" 
-                            :selectedTagNames="selectedTagNames"
-                            :popularTags="popularTags"
-                            :expanded="expanded"
-                            :expandButtonText="expandButtonText"
-                            :expandedButtonText="expandedButtonText"
-                            :mapExpanded="showMapFilter"
-                            :mapExpandButtonText="mapExpandButtonText"
-                            :mapExpandedButtonText="mapExpandedButtonText"
-                            v-on:clickedMapExpand="catchMapExpandClicked"
-                            :clearButtonText="clearButtonText"
-                            :minTagCountToBeVisible="5"
-                            v-on:clickedTag="catchTagClicked"
-                            v-on:clickedTagClose="catchTagCloseClicked"
-                            v-on:clickedExpand="catchExpandClicked"
-                            v-on:clickedClear="catchTagCleared"
-                            >
-              </filter-expanded-view>
-
-              <filter-view v-if="!expanded"
+              <filter-keywords-view
+                            :compactLayout="$vuetify.breakpoint.smAndDown"                  
                             :allTags="allTags" 
                             :selectedTagNames="selectedTagNames"
                             :popularTags="popularTags"
@@ -79,8 +63,7 @@
                             v-on:clickedMapExpand="catchMapExpandClicked"
                             :showPlaceholder="showPlaceholder"
                             v-on:clickedClear="catchTagCleared"
-                >
-              </filter-view>
+              />
 
             </v-flex>
 
@@ -106,12 +89,10 @@
 </template>
 
 <script>
-  import FilterView from './FilterView';
+  import FilterKeywordsView from './FilterKeywordsView';
   import FilterMapView from './FilterMapView';
   import SmallSearchBarView from './SmallSearchBarView';
   import ControlPanelView from './ControlPanelView';
-  import FilterExpandedView from './FilterExpandedView';
-  import FilterViewButtons from './FilterViewButtons';
   import Logo from '../../../assets/logo/EnviDat_logo_32.png';
 
   export default {
@@ -189,50 +170,14 @@
       mapExpandedButtonText: 'Hide Map',
     }),
     components: {
-      FilterView,
+      FilterKeywordsView,
       SmallSearchBarView,
       ControlPanelView,
-      FilterExpandedView,
-      FilterViewButtons,
       FilterMapView,
     },
   };
 </script>
 
 <style>
-
-  .envidatChip{
-    height: 1.5rem;
-    font-size: 0.65rem;
-    margin: 1px 2px;
-    opacity: 0.85;
-  }
-
-  .envidatChip span {
-    cursor: pointer !important;
-  }
-
-  .filterTag {
-    opacity: 0.7;
-  }
-
-  .chip__content span {
-    cursor: pointer !important;
-  }
-
-  .envidatLogoText {
-    display: inline;
-    vertical-align: middle;
-    position: relative;
-    bottom: -2px;
-  }
-
-  .envidatNavbarLinksSmall {
-    font-size: 10px !important;
-  }
-
-  .envidatNavbarTitleSmall {
-    font-size: 18px !important;
-  }
 
 </style>

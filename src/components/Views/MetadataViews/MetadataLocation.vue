@@ -2,7 +2,12 @@
   <v-card  >
     <v-card-title class="title metadata_title" >Location</v-card-title>
 
-    <v-card-text >
+    <v-card-text v-if="isEmpty"
+                  style="color: red;" >
+      {{ emptyText }}
+    </v-card-text>
+
+    <v-card-text v-if="!isEmpty">
       <div id="mapcontainer"
                   ref="mapcontainer">
         <div id="map"
@@ -64,6 +69,9 @@
     updated: function updated() {
     },
     computed: {
+      isEmpty: function isEmpty() {
+        return !this.pointArray || !this.geoJSON;
+      },
       mapSize: function mapSize() {
         let width = this.largeSize;
         let height = this.mediumSize;
@@ -209,6 +217,7 @@
       fullWidthSize: 875,
       map: null,
       mapIsSetup: false,
+      emptyText: 'No location found for this dataset',
     }),
     components: {
     },

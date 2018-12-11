@@ -18,12 +18,14 @@ export default new Vuex.Store({
     appBGImage: './app_b_landingpage.jpg',
     cardBGImages: {},
     iconImages: {},
+    controls: [],
   },
   getters: {
     currentPage: state => state.currentPage,
     appBGImage: state => state.appBGImage,
     cardBGImages: state => state.cardBGImages,
     iconImages: state => state.iconImages,
+    controls: state => state.controls,
   },
   mutations,
   modules: {

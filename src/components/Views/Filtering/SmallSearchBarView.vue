@@ -1,6 +1,7 @@
 <template>
-  <v-card raised height="40">
-
+  <v-card raised
+          :height="compactLayout ? 32 : 40"
+  >
     <!-- long slim search bar  -->
 
     <v-layout row
@@ -12,6 +13,7 @@
 
         <v-text-field
             class="envidatSmallSearch"
+            :class="compactLayout ? 'small' : ''"
             single-line
             hide-details
             clearable
@@ -33,7 +35,7 @@
         <v-tooltip bottom >
           
           <tag-chip slot="activator"
-                  style="font-size: 0.75rem !important;"
+                  :style="$vuetify.breakpoint.xsOnly ? 'font-size: 0.65rem !important;' : 'font-size: 0.8rem !important;'"
                   :name="searchCount.toString()"
                   :selectable="false"
                   :highlighted="searchCount > 0"
@@ -66,6 +68,7 @@
       hasButton: Boolean,
       buttonText: String,
       resultCount: String,
+      compactLayout: Boolean,
     },
     data: () => ({
       searchText: '',
@@ -119,14 +122,13 @@
   min-height: 0px !important;
 }
 
-/*
-.envidatSmallSearch {
-    height: 40px !important; 
-}
-*/
-
 .envidatSmallSearch > .v-input__control {
-    min-height: 40px !important;
+  min-height: 40px !important;
+}
+
+.envidatSmallSearch.small > .v-input__control {
+  min-height: 32px !important;
+  font-size: 12px !important;
 }
 
 .envidatSmallSearch > .v-input__append-outer {

@@ -5,9 +5,9 @@
   >
 
     <v-card-title>
-      <div class="headline mb-0">Cartographic Filtering is under construction</div>
-      <div class="pt-2" style="color: red;" >Filtering is not implemented! Currently the map is just for browsing.</div>
-    </v-card-title>  
+      <div class="headline mb-0">Cartographic Filtering</div>
+      <div class="pt-2" style="color: red;" >Underconstruction: At the moment the map is only for browsing.</div>
+    </v-card-title>
 
     <div v-if="expanded && !errorLoadingLeaflet"
           id="map"
@@ -19,24 +19,7 @@
           Error loading leaflet
     </div>
 
-    <v-card-actions class="pr-2">
-
-
-        <!-- <v-tooltip bottom>
-          <v-btn v-if="expanded"
-                  slot="activator"
-                  class="px-0"
-                  color="accent"
-                  style="min-width: 40px !important;"
-                  @click.native="toggleActive"
-                  :outline="!mapFilteringActive"
-          >
-            <img class="envidatIcon" :src="getIcon('mapMarker')" />                
-          </v-btn>
-
-          <span>Map filtering is {{ mapFilteringActive ? '' : 'not' }} active</span>
-        </v-tooltip> -->
-
+    <!-- <v-card-actions class="pr-2">
       <v-spacer />
 
       <div class="pr-3">
@@ -49,7 +32,7 @@
                         :tooltip="`${markerCount} makers pinned on the map`">
       </icon-count-view>
 
-    </v-card-actions>
+    </v-card-actions> -->
 
   </v-card>
 
@@ -60,6 +43,7 @@ import { mapGetters } from 'vuex';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import IconCountView from '../IconCountView';
+import metaDataFactory from '../../metaDataFactory';
 
 // HACK start
 /* eslint-disable import/first */
@@ -342,7 +326,7 @@ export default {
         if (!this.addedObjectsKeys.includes(key)) {
           const dataset = this.metadatasContent[key];
 
-          const location = this.createLocation(dataset);
+          const location = metaDataFactory.createLocation(dataset);
 
           // console.log("adding " + key + " " + JSON.stringify(location.spatial));
           this.addGeoData(location);
@@ -360,7 +344,7 @@ export default {
   data: () => ({
     map: null,
     mapIsSetup: false,
-    buttonHeight: 130,
+    buttonHeight: 84,
     updatingMap: true,
     addedObjectsKeys: [],
     mapFilteringActive: false,

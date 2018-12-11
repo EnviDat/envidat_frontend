@@ -2,7 +2,12 @@
   <v-card >
     <v-card-title class="title metadata_title" >Further Information</v-card-title>
 
-    <v-card-text >
+    <v-card-text v-if="!showPlaceholder && (!details || details.length <= 0)"
+                  style="color: red;" >
+      {{ emptyText }}
+    </v-card-text>
+
+    <v-card-text v-if="details && details.length > 0">
 
       <v-form>
 
@@ -28,12 +33,12 @@
               && !val.text" >
             <v-layout row>
               <div style="width: 20%;"
-                    class="flex pr-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-pulse" >
+                    class="flex pr-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
                 <div class='bone bone-type-text ' ></div>
               </div>
 
               <div style="width: 80%;"
-                    class="flex pl-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-pulse" >
+                    class="flex pl-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
                 <div class='bone bone-type-text ' ></div>
               </div>
             </v-layout>
@@ -54,8 +59,6 @@
 </template>
 
 <script>
-  /* eslint-disable no-alert */
-  /* eslint-disable no-console */
   export default {
     props: {
       details: Array,
@@ -65,6 +68,7 @@
       maxSingleTextLengthLg: 80,
       maxSingleTextLengthMd: 80,
       maxSingleTextLengthXs: 70,
+      emptyText: 'No details found for this dataset',
     }),
     methods: {
       clicking: function clicking() {
