@@ -35,7 +35,7 @@
         <v-tooltip bottom >
           
           <tag-chip slot="activator"
-                  style="font-size: 0.75rem !important;"
+                  :style="$vuetify.breakpoint.xsOnly ? 'font-size: 0.65rem !important;' : 'font-size: 0.8rem !important;'"
                   :name="searchCount.toString()"
                   :selectable="false"
                   :highlighted="searchCount > 0"
