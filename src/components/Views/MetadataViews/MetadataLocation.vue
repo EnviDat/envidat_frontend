@@ -7,14 +7,16 @@
       {{ emptyText }}
     </v-card-text>
 
-    <v-card-text v-if="!isEmpty">
+    <v-card-text>
       <div id="mapcontainer"
-                  ref="mapcontainer">
+            ref="mapcontainer">
+
         <div id="map"
               ref="map" 
               v-bind="mapSize"
         >
         </div>
+
       </div>
     </v-card-text>
     
@@ -70,7 +72,7 @@
     },
     computed: {
       isEmpty: function isEmpty() {
-        return !this.pointArray || !this.geoJSON;
+        return !this.pointArray && !this.geoJSON;
       },
       mapSize: function mapSize() {
         let width = this.largeSize;
@@ -100,6 +102,10 @@
           return;
         }
 
+        if (this.isEmpty) {
+          return;
+        }
+
         // console.log("pointArray " + this.pointArray + " " + this.geoJSON);
 
         this.map = this.initLeaflet(this.$refs.map, this.pointArray);
@@ -122,6 +128,7 @@
             this.addMultiPoint(this.map, this.pointArray);
           }
         }
+
 
         this.map.on({ click: this.onMapClick });
 
@@ -147,6 +154,10 @@
         return map;
       },
       parseGeoJSON: function parseGeoJSON(geoJsonString) {
+        if (!geoJsonString) {
+          return undefined;
+        }
+
         try {
           return L.geoJSON(geoJsonString);
         } catch (error) {
