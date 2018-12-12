@@ -339,7 +339,7 @@
 
   .envidatChip {
     height: 1.3rem;
-    font-size: 0.55rem;
+    font-size: 0.65rem;
     margin: 1px 2px;
     opacity: 0.85;
   }
@@ -347,6 +347,9 @@
   .smallChip {
     height: 1.2rem;
     font-size: 0.55rem;
+  }
+  .smallChip > .v-chip__content > .v-chip__close > .v-icon {    
+    font-size: 15px !important;
   }
 
   .envidatChip span {

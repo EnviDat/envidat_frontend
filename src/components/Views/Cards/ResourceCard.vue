@@ -131,6 +131,7 @@ export default {
     format: String,
     twoColumnLayout: Boolean,
     height: String,
+    dark: Boolean,
   },
   data: () => ({
     defaultTexture,

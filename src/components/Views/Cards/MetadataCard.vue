@@ -10,7 +10,7 @@
     <v-img
         background-color="primary"
         :style="!flatLayout ? dynamicCardBackground : ''"
-        :height="flatLayout? '65px' : $vuetify.breakpoint.smAndDown ? '100px' : '125px'"
+        :height="flatLayout ? '65px' : $vuetify.breakpoint.smAndDown ? '100px' : '125px'"
       >
       
       <v-container grid-list-xs fluid fill-height
@@ -312,9 +312,13 @@ export default {
     color: rgba(255,255,255,.9) !important;
   }
   
+  .headline {
+    font-size: 22px !important;
+  }
+
   .compactTitle {
     font-size: 17px !important;
-    line-height: 1em !important;
+    /* line-height: 1em !important; */
   }
 
   .compactText {
