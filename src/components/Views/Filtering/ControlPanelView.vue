@@ -1,6 +1,6 @@
 <template>
   <v-card raised
-          :height="compactLayout ? 32 : 40"
+          :height="compactLayout ? $vuetify.breakpoint.sm ? 38 : 32 : 40"
   >
     <v-card-actions class="fill-height ma-0 py-0 px-1" >
 

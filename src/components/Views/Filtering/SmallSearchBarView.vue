@@ -1,8 +1,7 @@
 <template>
   <v-card raised
-          :height="compactLayout ? 32 : 40"
+          :height="compactLayout ? $vuetify.breakpoint.sm ? 38 : 32 : 40"
   >
-    <!-- long slim search bar  -->
 
     <v-layout row
               align-center
