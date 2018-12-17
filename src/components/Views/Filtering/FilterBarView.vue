@@ -17,7 +17,7 @@
               <v-layout column>
 
                 <v-flex hidden-xs-only
-                        pt-0 fill-height>
+                        pt-0 fill-height >
                   <control-panel-view :compactLayout="$vuetify.breakpoint.smAndDown"
                                       v-on:controlsChanged="catchControlsChanged"
                   />
@@ -33,6 +33,7 @@
                                   :hasButton="searchViewHasButton"
                                   v-on:clicked="catchSearchClicked"
                                   v-on:searchCleared="catchSearchCleared"
+                                  style="align-items: center;"
                   />
                 </v-flex>
 

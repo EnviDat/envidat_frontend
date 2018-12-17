@@ -5,13 +5,13 @@
 
     <v-layout row
               align-center
-              fill-height
-              justify-space-between>
+              fill-height>
 
-      <v-flex xs10 sm8 md9 lg10 py-0 pl-2 fill-height>
+      <v-flex xs10 sm9 lg10 py-0 pl-2 >
 
         <v-text-field
             class="envidatSmallSearch"
+            style="align-items: center;" 
             :class="compactLayout ? 'small' : ''"
             single-line
             hide-details
@@ -28,7 +28,7 @@
 
       </v-flex>
 
-      <v-flex xs2 sm4 md3 lg2 pa-0
+      <v-flex xs2 sm3 lg2 pa-0
               style="text-align: center;">
 
         <v-tooltip bottom >
@@ -72,7 +72,7 @@
     data: () => ({
       searchText: '',
       lastSearch: '',
-      placeHolderText: 'Search for research topics',
+      placeHolderText: 'Enter research topic',
     }),
     updated: function updated() {
       if (!this.searchText && this.lastSearch) {

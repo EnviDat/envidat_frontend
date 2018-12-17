@@ -5,6 +5,7 @@
     <v-card-actions class="fill-height ma-0 py-0 px-1" >
 
       <v-text-field class="fill-height envidatControlInfos"
+                    style="align-items: center;" 
                     :class="{'small' : compactLayout }"
                     label="Controls" 
                     flat
@@ -12,6 +13,7 @@
                     readonly
                     solo
                     disabled
+                    hide-details
       />
 
       <!-- <div class="pl-2">Controls</div> -->
