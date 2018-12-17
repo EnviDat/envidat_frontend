@@ -40,7 +40,8 @@
         <v-divider :dark="dark" class="my-2" ></v-divider>
 
         <v-layout row wrap>
-          <v-flex xs12 sm6 py-1 class="headerInfo">
+          <v-flex xs12 sm6 md6 lg3
+                  py-1 class="headerInfo">
             <icon-label-view  :text="contactName"
                               :icon="getIcon(this.iconFlip('contact2'))"
                               iconTooltip="Main contact"
@@ -48,7 +49,8 @@
                                />
           </v-flex>
 
-          <v-flex xs12 sm6 py-1 class="headerInfo">
+          <v-flex xs12 sm6 md6 lg3
+                  py-1 class="headerInfo">
             <icon-label-view  :text="doi"
                               :icon="getIcon(iconFlip('doi'))"
                               iconTooltip="Data Object Identifier"
@@ -57,7 +59,8 @@
                                />
           </v-flex>
 
-          <v-flex xs12 sm6 py-1 class="headerInfo">
+          <v-flex xs12 sm6 md6 lg3
+                  py-1 class="headerInfo">
             <icon-label-view  :text="contactEmail"
                               :icon="getIcon(iconFlip('mail'))"
                               iconTooltip="Email adress of the main contact"
@@ -66,7 +69,8 @@
                                />
           </v-flex>
 
-          <v-flex xs12 sm6 py-1 class="headerInfo">
+          <v-flex xs12 sm6 md6 lg3
+                  py-1 class="headerInfo">
             <icon-label-view :text="license"
                               :icon="getIcon(iconFlip('license'))"
                               iconTooltip="License for Datafiles"

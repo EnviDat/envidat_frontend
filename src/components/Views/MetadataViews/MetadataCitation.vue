@@ -14,7 +14,8 @@
 
         <v-layout justify-end row wrap>
 
-          <v-flex xs6 sm3>
+          <!-- use xs5 to ensure on xs screens it will be in two rows -->
+          <v-flex xs5 sm3 lg4 xl3>
         
             <rectangle-button v-if="citationXmlLink"
                           class="ml-2"
@@ -27,7 +28,8 @@
             />
           </v-flex>
 
-          <v-flex xs6 sm3>
+          <!-- use xs5 to ensure on xs screens it will be in two rows -->
+          <v-flex xs5 sm3 lg4 xl3>
             <rectangle-button v-if="ciationIsoXmlLink"
                           class="ml-2"
                           buttonText="ISO 19139"
@@ -39,7 +41,8 @@
             />
           </v-flex>
 
-          <v-flex xs6 sm3>
+          <!-- use xs5 to ensure on xs screens it will be in two rows -->
+          <v-flex xs5 sm3 lg4 xl3>
             <rectangle-button v-if="ciationGCMDXmlLink"
                           class="ml-2"
                           buttonText="GCMD DIF"
