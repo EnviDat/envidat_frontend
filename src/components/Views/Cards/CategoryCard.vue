@@ -31,7 +31,7 @@
 <script>
   import defaultImg from '@/assets/cards/default.png';
   import snowImg from '@/assets/cards/c_b_snow_icy2_small.jpg';
-  import woodImg from '@/assets/cards/c_b_forest_texture_bark2_small.jpg';
+  import woodImg from '@/assets/cards/c_b_forest_topdown3_small.jpg';
   import landImg from '@/assets/cards/c_b_landscape_view_small.jpg';
   import hazardImg from '@/assets/cards/c_b_hazard_cloud_small.jpg';
   import diversityImg from '@/assets/cards/b_c_diversity_meadow_small.jpg';
