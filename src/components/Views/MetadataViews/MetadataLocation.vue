@@ -7,17 +7,18 @@
       {{ emptyText }}
     </v-card-text>
 
-    <v-card-text v-show="!isEmpty">
-      <!-- use v-show here because leaflet need the ref
-            to the mapcontainer to initialize -->
+    <v-card-text >
+      <!-- can't get it to work with the v-show for now
+            because leaflet needs the ref
+            to the mapcontainer to correctly initialize -->
       <div id="mapcontainer"
-            ref="mapcontainer">
+            ref="mapcontainer"
+            >
 
         <div id="map"
               ref="map" 
               v-bind="mapSize"
-        >
-        </div>
+        />
 
       </div>
     </v-card-text>

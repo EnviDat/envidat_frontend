@@ -11,13 +11,13 @@
                           ['row'] : !listView,
                           ['wrap'] : !listView
                         }"
-                >
+      >
 
         <v-flex v-if="loading || loadingContent"
                 v-bind="cardGridClass"
                 v-for="(n, index) in placeHolderAmount" :key="index">
 
-            <metadata-card-placeholder :dark="false" />
+          <metadata-card-placeholder :dark="false" />
 
         </v-flex>
 
@@ -25,10 +25,10 @@
                 v-bind="cardGridClass"
                 v-for="(metadata, index) in filteredContent" :key="index">
 
-            <transition
-              name="fade"
-              mode="out-in"
-            >
+          <!-- <transition
+            name="fade"
+            mode="out-in"
+          > -->
             <metadata-card
                         :title="metadata.title"
                         :id="metadata.id"
@@ -46,7 +46,7 @@
                         v-on:clickedEvent="metaDataClicked"
                         v-on:clickedTag="catchTagClicked"
             />
-            </transition>
+          <!-- </transition> -->
 
         </v-flex>
 
