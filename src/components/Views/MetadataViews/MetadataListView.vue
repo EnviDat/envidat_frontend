@@ -41,11 +41,11 @@
                         :resourceCount="metadata.num_resources"
                         :resources="metadata.resources"
                         :dark="false"
-                        :compactLayout="listView"
+                        :flatLayout="listView"
                         :class="{ ['elevation-10'] : hoverId === metadata.id }"
                         v-on:clickedEvent="metaDataClicked"
-                        v-on:clickedTag="catchTagClicked">
-            </metadata-card>
+                        v-on:clickedTag="catchTagClicked"
+            />
             </transition>
 
         </v-flex>
@@ -82,7 +82,7 @@ export default {
     },
     data: () => ({
       enhanceContentDone: false,
-      noResultText: 'Nothing found for these Search criterias',
+      noResultText: 'Nothing found for these search criterias',
       suggestionText: 'Try one of these categories',
     }),
     beforeMount: function beforeMount() {
@@ -124,7 +124,7 @@ export default {
         if (this.mapFilteringEnabled && this.compactLayout) {
           const twoThridsSize = {
             xs12: true,
-            sm8: true,
+            sm12: true,
             md6: true,
             xl4: true,
           };

@@ -3,7 +3,7 @@
     <v-chip
         small
         class="placeholder_chip" >
-          <div style="width: 50px;" class="skeleton skeleton-size-small skeleton-color-concrete skeleton-animation-pulse">
+          <div style="width: 50px;" class="skeleton skeleton-size-small skeleton-color-concrete skeleton-animation-shimmer">
             <div class='bone bone-type-text bone-style-steps'></div>
           </div>
     </v-chip>

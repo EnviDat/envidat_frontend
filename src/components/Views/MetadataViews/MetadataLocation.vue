@@ -2,14 +2,23 @@
   <v-card  >
     <v-card-title class="title metadata_title" >Location</v-card-title>
 
-    <v-card-text >
+    <v-card-text v-if="isEmpty"
+                  style="color: red;" >
+      {{ emptyText }}
+    </v-card-text>
+
+    <v-card-text v-show="!isEmpty">
+      <!-- use v-show here because leaflet need the ref
+            to the mapcontainer to initialize -->
       <div id="mapcontainer"
-                  ref="mapcontainer">
+            ref="mapcontainer">
+
         <div id="map"
               ref="map" 
               v-bind="mapSize"
         >
         </div>
+
       </div>
     </v-card-text>
     
@@ -64,6 +73,9 @@
     updated: function updated() {
     },
     computed: {
+      isEmpty: function isEmpty() {
+        return !this.pointArray && !this.geoJSON;
+      },
       mapSize: function mapSize() {
         let width = this.largeSize;
         let height = this.mediumSize;
@@ -92,6 +104,10 @@
           return;
         }
 
+        if (this.isEmpty) {
+          return;
+        }
+
         // console.log("pointArray " + this.pointArray + " " + this.geoJSON);
 
         this.map = this.initLeaflet(this.$refs.map, this.pointArray);
@@ -114,6 +130,7 @@
             this.addMultiPoint(this.map, this.pointArray);
           }
         }
+
 
         this.map.on({ click: this.onMapClick });
 
@@ -139,6 +156,10 @@
         return map;
       },
       parseGeoJSON: function parseGeoJSON(geoJsonString) {
+        if (!geoJsonString) {
+          return undefined;
+        }
+
         try {
           return L.geoJSON(geoJsonString);
         } catch (error) {
@@ -209,6 +230,7 @@
       fullWidthSize: 875,
       map: null,
       mapIsSetup: false,
+      emptyText: 'No location found for this dataset',
     }),
     components: {
     },

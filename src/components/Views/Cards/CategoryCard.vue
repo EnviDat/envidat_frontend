@@ -8,14 +8,14 @@
 
         <v-flex xs5 py-0>
           <v-card-media class="imagezoom"
-                        height="100px">
+                        :height=" $vuetify.breakpoint.smAndDown ? '65px' : '100px' ">
             <img :src="imageSrc" />                        
           </v-card-media>
         </v-flex>
 
-        <v-flex xs7 mt-1>
+        <v-flex xs7 mx-1 mt-1>
             <div class="headline"
-                :class="{ 'compactTitle' : this.$vuetify.breakpoint.mdAndDown }"
+                :class="{ 'compactTitle' : this.$vuetify.breakpoint.smAndDown }"
             >
               {{ title }}
             </div>

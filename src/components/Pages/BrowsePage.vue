@@ -1,13 +1,18 @@
 <template>
-  <v-container grid-list-xs fluid pa-0
+  <v-container grid-list-xs
+                fluid
+                tag="article"
+                pa-0
   >
                 <!-- v-bind="{ 'pa-0': $vuetify.breakpoint.xsOnly }"
                 @scroll="updateScroll" -->
 
     <v-layout row wrap>
 
-      <v-flex xs12 mx-3 
-              class="envidatNavbar" >
+      <v-flex xs12
+              :class="{ 'stickyFilterBar': $vuetify.breakpoint.smAndUp }"
+              :style="$vuetify.breakpoint.sm ? 'top: 42px !important;' : ''"
+      >
 
         <filter-bar-view :showFiltering="true"
                       :searchViewLabelText="searchLabelText"
@@ -34,8 +39,14 @@
 
       </v-flex>
 
-      <v-flex px-3 py-2 style="z-index: 1;"
-              v-bind="metadataListStyling"
+      <v-flex py-2
+              style="z-index: 1;"
+              v-bind="{ ['mx-0']: $vuetify.breakpoint.mdAndUp,
+                        ['xs8']: showMapFilter & $vuetify.breakpoint.mdAndUp,
+                        ['xs6']: showMapFilter & $vuetify.breakpoint.sm,
+                        ['pr-3']: showMapFilter & $vuetify.breakpoint.sm,
+                        ['xs12']: !showMapFilter,
+                        metadataListStyling }"
        >
 
        <metadata-list-view :listView="listViewActive"
@@ -48,18 +59,19 @@
 
       </v-flex>
 
-      <v-flex xs4 py-3 pr-3
-              v-if="mapFilteringEnabled && showMapFilter" >
+      <v-flex v-if="mapFilteringEnabled && showMapFilter"
+              py-3
+              v-bind="{ ['px-3']: showMapFilter & $vuetify.breakpoint.mdAndUp,
+                        ['xs4']: showMapFilter & $vuetify.breakpoint.mdAndUp,
+                        ['xs6']: showMapFilter & $vuetify.breakpoint.sm,
+                        ['pl-2']: showMapFilter & $vuetify.breakpoint.sm,
+                      }"
+              style="pointer-events: none; position: fixed; top: 135px; right: 10px;"
+      >
 
-        <filter-map-view style="position: -webkit-sticky; position: sticky; top: 151px;"
-                          :totalHeight="mapFilterHeight"
+        <filter-map-view :totalHeight="mapFilterHeight"
                           :expanded="showMapFilter"
-                          v-on:clickedMapExpand="toggleMapExpand"
-                          v-on:viewChanged="catchMapFilterChanged"
-                          v-on:pointClicked="catchPointClicked"
-                          v-on:pointHover="catchPointHovered"
-                          v-on:pointHoverLeave="catchPointHoverLeave"
-          />
+                          v-on:pointClicked="catchPointClicked" />
 
       </v-flex>
 
@@ -82,6 +94,7 @@
   import {
     SET_APP_BACKGROUND,
     SET_CURRENT_PAGE,
+    SET_CONTROLS,
   } from '../../store/mutationsConsts';
 
   // check filtering in detail https://www.npmjs.com/package/vue2-filters
@@ -240,6 +253,8 @@
 
         this.listViewActive = listActive;
         this.showMapFilter = mapToggled;
+        
+        this.$store.commit(SET_CONTROLS, controlsActive);
       },
       toggleMapExpand: function toggleMapExpand() {
         this.showMapFilter = !this.showMapFilter;
@@ -318,11 +333,14 @@
       },
       mapFilterHeight: function mapFilterHeight() {
         const sHeight = document.documentElement.clientHeight;
+
         let height = this.maxMapFilterHeight;
 
         if (sHeight < this.maxMapFilterHeight) {
-          height = sHeight - 110;
+          height = sHeight - 170;
         }
+
+        // console.log('sHeight ' + sHeight + ' height ' + height + ' ' + this.maxMapFilterHeight);
 
         return height;
       },
@@ -350,7 +368,7 @@
         return json;
       },
       mapFilteringEnabled: function mapFilteringEnabled() {
-        return this.$vuetify.breakpoint.lgAndUp;
+        return this.$vuetify.breakpoint.smAndUp;
       },
       searchCount: function searchCount() {
         return this.filteredContent !== undefined ? this.filteredContent.length : 0;
@@ -379,7 +397,6 @@
       searchTerm: '',
       searchLabelText: 'Search',
       placeHolderAmount: 6,
-      noResultText: 'Nothing found for these Search criterias',
       suggestionText: 'Try one of these categories',
       selectedTagNames: [],
       popularTagAmount: 10,
@@ -400,5 +417,12 @@
 
 
 <style scoped>
+
+.stickyFilterBar {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 50px;
+  z-index: 1000;
+}
 
 </style>
