@@ -39,7 +39,7 @@
     },
     methods: {
       gcdmLink: function gcdmLink(metadata) {
-        return `https://www.envidat.ch/dataset/${metadata.name}/export/gcmd_diff.xml`;
+        return `https://www.envidat.ch/dataset/${metadata.name}/export/gcmd_dif.xml`;
       },
     },
     data: () => ({
