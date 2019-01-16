@@ -9,19 +9,28 @@
 
         <v-flex >
 
-          <parallax-title-img :dark="dark"
+          <parallax-title-img v-if="parallax"
+                              :dark="dark"
                               :blur="blur"
                               :img="img"
                               :height="height"
                               :title="title"
                               :subTitle="subTitle"/>
 
+          <title-img v-else
+                    :dark="dark"
+                    :blur="blur"
+                    :img="img"
+                    :height="height"
+                    :title="title"
+                    :subTitle="subTitle"/>
+
         </v-flex>
 
         <v-flex >
-          <v-card-text :style="textFontSizeStyle">
+          <div :style="textFontSizeStyle">
             {{ text }}
-          </v-card-text>
+          </div>
         </v-flex>
 
       </v-layout>
@@ -31,20 +40,29 @@
 
         <v-flex xs12 sm6 md4 >
 
-          <parallax-title-img :dark="dark"
+          <parallax-title-img v-if="parallax"
+                              :dark="dark"
                               :blur="blur"
                               :img="img"
                               :height="height"
                               :title="title"
                               :subTitle="subTitle"/>
 
+          <title-img v-else
+                    :dark="dark"
+                    :blur="blur"
+                    :img="img"
+                    :height="height"
+                    :title="title"
+                    :subTitle="subTitle"/>
+
         </v-flex>
 
         <v-flex xs12 sm6 md8 >
 
-          <v-card-text :style="textFontSizeStyle">
+          <div :style="textFontSizeStyle">
             {{ text }}
-          </v-card-text>
+          </div>
 
         </v-flex>
 
@@ -55,20 +73,29 @@
 
         <v-flex xs12 sm6 md8 >
 
-          <v-card-text :style="textFontSizeStyle">
+          <div :style="textFontSizeStyle">
             {{ text }}
-          </v-card-text>
+          </div>
 
         </v-flex>
 
         <v-flex xs12 sm6 md4 >
 
-          <parallax-title-img :dark="dark"
+          <parallax-title-img v-if="parallax"
+                              :dark="dark"
                               :blur="blur"
                               :img="img"
                               :height="height"
                               :title="title"
                               :subTitle="subTitle"/>
+
+          <title-img v-else
+                    :dark="dark"
+                    :blur="blur"
+                    :img="img"
+                    :height="height"
+                    :title="title"
+                    :subTitle="subTitle"/>
 
         </v-flex>
 
@@ -82,6 +109,7 @@
 
 <script>
   import ParallaxTitleImg from '../ParallaxTitleImg';
+  import TitleImg from '../TitleImg';
 
   export default {
     props: {
@@ -92,6 +120,7 @@
       text: String,
       img: String,
       dark: Boolean,
+      parallax: Boolean,
       blur: Boolean,
       leftAlign: Boolean,
       rightAlign: Boolean,
@@ -103,6 +132,7 @@
     },
     components: {
       ParallaxTitleImg,
+      TitleImg,
     },
   };
 </script>

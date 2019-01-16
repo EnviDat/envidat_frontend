@@ -4,11 +4,11 @@
 
     <!-- use slot for the content and make a component for only the layouting -->
 
-    <v-parallax :height="height"
-                :src="img"
-                :dark="dark"
-                :class="{ 'blur_parallax' : blur }"
-                :style="blur ? 'opacity: 0.8' : ''"
+    <v-img :height="height"
+            :src="img"
+            :dark="dark"
+            :class="{ 'blur_parallax' : blur }"
+            :style="blur ? 'opacity: 0.8' : ''"
     />
 
     <v-layout align-center

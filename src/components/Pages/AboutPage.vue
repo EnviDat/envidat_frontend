@@ -14,7 +14,8 @@
                         :blur="true"
                         :img="mission"
                         :height="500"
-                        :textFontSize="18"
+                        :textFontSize="16"
+                        :parallax="true"
                         title="EnviDat Mission"
                         subTitle="Super Service Mission"
                         :text="aboutText.platform1 + ' ' + aboutText.platform2"
@@ -22,12 +23,12 @@
 
       </v-flex>
 
-      <v-flex xs12>
+      <v-flex xs12 my-5>
         <parallax-card :dark="true"
                         :blur="true"
                         :leftAlign="true"
                         :img="team"
-                        :height="500"
+                        :height="300"
                         :textFontSize="16"
                         title="EnviDat Team"
                         subTitle="super duper Team"
@@ -36,10 +37,10 @@
 
       </v-flex>
 
-      <v-flex xs12>
+      <v-flex xs12 mb-5>
         <v-layout row wrap>
 
-          <v-flex xs12 md6 >
+          <!-- <v-flex xs12 md8 >
 
             <div class="envidatTitle"
                 :class="{
@@ -51,10 +52,16 @@
               Organigram
             </div>
 
+          </v-flex> -->
+
+          <v-flex xs12 md8 >
+            <div>
+              {{ aboutText.platform2 }}
+            </div>
           </v-flex>
 
-          <v-flex xs12 md6 >
-            <v-img :src="orga" aspect-ratio="0.9"/>
+          <v-flex xs12 md4 >
+            <v-img :src="orga" aspect-ratio="1.116"/>
           </v-flex>
 
         </v-layout>
@@ -81,9 +88,6 @@
   import mission from '../../assets/about/mission_6.jpg';
   import orga from '../../assets/about/EnviDat_organigram.png';
 
-  import banner from '../../assets/about/envidat_programmbanner.jpg';
-  import banner2 from '../../assets/about/envidat_programmbanner_hero.jpg';
-
   export default {
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
       next((vm) => {
@@ -101,8 +105,6 @@
     },
     data: () => ({
       PageBGImage: './app_b_browsepage.jpg',
-      banner,
-      banner2,
       team,
       mission,
       orga,
