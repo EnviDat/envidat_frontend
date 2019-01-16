@@ -1,17 +1,18 @@
 <template>
-  <v-card raised height="40">
-
-    <!-- long slim search bar  -->
+  <v-card raised
+          :height="compactLayout ? $vuetify.breakpoint.sm ? 38 : 32 : 40"
+  >
 
     <v-layout row
               align-center
-              fill-height
-              justify-space-between>
+              fill-height>
 
-      <v-flex xs10 sm8 md9 lg10 py-0 pl-2 fill-height>
+      <v-flex xs10 sm9 lg10 py-0 pl-2 >
 
         <v-text-field
             class="envidatSmallSearch"
+            style="align-items: center;" 
+            :class="compactLayout ? 'small' : ''"
             single-line
             hide-details
             clearable
@@ -27,13 +28,13 @@
 
       </v-flex>
 
-      <v-flex xs2 sm4 md3 lg2 pa-0
+      <v-flex xs2 sm3 lg2 pa-0
               style="text-align: center;">
 
         <v-tooltip bottom >
           
           <tag-chip slot="activator"
-                  style="font-size: 0.75rem !important;"
+                  :style="$vuetify.breakpoint.xsOnly ? 'font-size: 0.65rem !important;' : 'font-size: 0.8rem !important;'"
                   :name="searchCount.toString()"
                   :selectable="false"
                   :highlighted="searchCount > 0"
@@ -66,11 +67,12 @@
       hasButton: Boolean,
       buttonText: String,
       resultCount: String,
+      compactLayout: Boolean,
     },
     data: () => ({
       searchText: '',
       lastSearch: '',
-      placeHolderText: 'Search for research topics',
+      placeHolderText: 'Enter research topic',
     }),
     updated: function updated() {
       if (!this.searchText && this.lastSearch) {
@@ -119,14 +121,13 @@
   min-height: 0px !important;
 }
 
-/*
-.envidatSmallSearch {
-    height: 40px !important; 
-}
-*/
-
 .envidatSmallSearch > .v-input__control {
-    min-height: 40px !important;
+  min-height: 40px !important;
+}
+
+.envidatSmallSearch.small > .v-input__control {
+  min-height: 32px !important;
+  font-size: 12px !important;
 }
 
 .envidatSmallSearch > .v-input__append-outer {

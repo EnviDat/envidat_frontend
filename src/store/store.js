@@ -20,6 +20,7 @@ export default new Vuex.Store({
     cardBGImages: {},
     iconImages: {},
     aboutText,
+    controls: [],
   },
   getters: {
     currentPage: state => state.currentPage,
@@ -27,6 +28,7 @@ export default new Vuex.Store({
     cardBGImages: state => state.cardBGImages,
     iconImages: state => state.iconImages,
     aboutText: state => state.aboutText,
+    controls: state => state.controls,
   },
   mutations,
   modules: {

@@ -11,13 +11,13 @@
                           ['row'] : !listView,
                           ['wrap'] : !listView
                         }"
-                >
+      >
 
         <v-flex v-if="loading || loadingContent"
                 v-bind="cardGridClass"
                 v-for="(n, index) in placeHolderAmount" :key="index">
 
-            <metadata-card-placeholder :dark="false" />
+          <metadata-card-placeholder :dark="false" />
 
         </v-flex>
 
@@ -25,10 +25,10 @@
                 v-bind="cardGridClass"
                 v-for="(metadata, index) in filteredContent" :key="index">
 
-            <transition
-              name="fade"
-              mode="out-in"
-            >
+          <!-- <transition
+            name="fade"
+            mode="out-in"
+          > -->
             <metadata-card
                         :title="metadata.title"
                         :id="metadata.id"
@@ -41,12 +41,12 @@
                         :resourceCount="metadata.num_resources"
                         :resources="metadata.resources"
                         :dark="false"
-                        :compactLayout="listView"
+                        :flatLayout="listView"
                         :class="{ ['elevation-10'] : hoverId === metadata.id }"
                         v-on:clickedEvent="metaDataClicked"
-                        v-on:clickedTag="catchTagClicked">
-            </metadata-card>
-            </transition>
+                        v-on:clickedTag="catchTagClicked"
+            />
+          <!-- </transition> -->
 
         </v-flex>
 
@@ -82,7 +82,7 @@ export default {
     },
     data: () => ({
       enhanceContentDone: false,
-      noResultText: 'Nothing found for these Search criterias',
+      noResultText: 'Nothing found for these search criterias',
       suggestionText: 'Try one of these categories',
     }),
     beforeMount: function beforeMount() {
@@ -124,7 +124,7 @@ export default {
         if (this.mapFilteringEnabled && this.compactLayout) {
           const twoThridsSize = {
             xs12: true,
-            sm8: true,
+            sm12: true,
             md6: true,
             xl4: true,
           };

@@ -9,8 +9,8 @@
 
     <v-img
         background-color="primary"
-        :style="!compactLayout ? dynamicCardBackground : ''"        
-        :height="compactLayout? '85px' : '125px'"
+        :style="!flatLayout ? dynamicCardBackground : ''"
+        :height="flatLayout ? '65px' : $vuetify.breakpoint.smAndDown ? '100px' : '125px'"
       >
       
       <v-container grid-list-xs fluid fill-height
@@ -40,7 +40,7 @@
             </v-layout>
           </v-flex>
   
-          <v-flex xs12 py-0>
+          <v-flex xs12 py-0 mx-1>
             <v-layout row fill-height align-end >
                 <tag-chip py-0
                           v-if="tags" v-for="tag in tags.slice (0, maxTagNumber)" :key="tag.name"
@@ -60,11 +60,11 @@
 
     </v-img>
 
-    <v-card-text :class="{['cardText'] : true,
-                          ['compactText'] : compactLayout,
-                          ['py-2'] : compactLayout,
-                          ['pr-5'] : compactLayout,
-                          ['pb-4'] : !compactLayout,
+    <v-card-text :class="{['cardText'] : $vuetify.breakpoint.mdAndUp,
+                          ['compactText'] : flatLayout || $vuetify.breakpoint.smAndDown,
+                          ['py-2'] : flatLayout,
+                          ['pr-5'] : flatLayout,
+                          ['pb-4'] : !flatLayout,
                         }"
     >
       <!-- TODO: need to strip the markdown characters from the desc -->
@@ -140,7 +140,7 @@ export default {
     dark: Boolean,
     resourceCount: Number,
     resources: Array,
-    compactLayout: Boolean,
+    flatLayout: Boolean,
   },
   components: {
     TagChip,
@@ -179,7 +179,7 @@ export default {
       return this.tags !== undefined && this.tags.length > this.maxTagNumber;
     },
     maxTagNumber: function maxTagNumber() {
-      // if (this.compactLayout) {
+      // if (this.flatLayout) {
       //   return 10;
       // }
       let textLength = 0;
@@ -190,8 +190,8 @@ export default {
           if (this.tags[i].name !== undefined) {
             textLength += this.tags[i].name.length + 1;
 
-            if ((this.compactLayout && textLength >= this.maxCompactTagtextLength)
-            || (!this.compactLayout && textLength >= this.maxTagtextLength)) {
+            if ((this.flatLayout && textLength >= this.maxCompactTagtextLength)
+            || (!this.flatLayout && textLength >= this.maxTagtextLength)) {
               break;
             }
 
@@ -203,13 +203,13 @@ export default {
       return numberOfTags;
     },
     maxTitleLengthReached: function maxTitleLengthReached() {
-      return (!this.compactLayout && this.title.length > this.maxTitleLength)
-          || (this.compactLayout && this.title.length > this.compactTitleLength);
+      return (!this.flatLayout && this.title.length > this.maxTitleLength)
+          || (this.flatLayout && this.title.length > this.compactTitleLength);
     },
     truncatedTitle: function truncatedTitle() {
       let maxLength = this.maxTitleLength;
 
-      if (this.compactLayout) {
+      if (this.flatLayout) {
         maxLength = this.compactTitleLength;
       }
 
@@ -222,7 +222,7 @@ export default {
     truncatedSubtitle: function truncatedSubtitle() {
       let maxLength = this.maxSubtitleLength;
 
-      if (this.compactLayout) {
+      if (this.flatLayout) {
         maxLength = this.compactSubtitleLength;
       }
 
@@ -262,8 +262,8 @@ export default {
       return {
         black_title: !this.dark,
         white_title: this.dark,
-        // compactTitle: this.$vuetify.breakpoint.smAndDown || this.compactLayout,
-        compactTitle: true,
+        compactTitle: this.$vuetify.breakpoint.smAndDown || this.flatLayout,
+        // compactTitle: true,
       };
     },
   },
@@ -273,12 +273,11 @@ export default {
     maxTitleLength: 80,
     compactTitleLength: 100,
     maxSubtitleLength: 280,
-    compactSubtitleLength: 320,
+    compactSubtitleLength: 140,
     // maxTags: 3,
     maxTagtextLength: 40,
     maxCompactTagtextLength: 170,
     blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
-    // whiteTopToBottom: 'rgba(255,255,255, 0.3) 0%, rgba(255,255,255, 1) 60%',
     whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
     imageDefaults: {
       snow: 'c_b_snow_icy2',
@@ -313,18 +312,22 @@ export default {
     color: rgba(255,255,255,.9) !important;
   }
   
+  .headline {
+    font-size: 22px !important;
+  }
+
   .compactTitle {
-    font-size: 20px !important;
-    line-height: 1.1em !important;
+    font-size: 17px !important;
+    /* line-height: 1em !important; */
   }
 
   .compactText {
-    font-size: 12px !important;
-    line-height: 1.3em !important;
+    line-height: 1.2em !important;
   }
 
   .cardText {
-    line-height: 1.3em !important;
+    font-size: 14px !important;
+    line-height: 1.2em !important;
   }
 
 

@@ -2,7 +2,7 @@
   <v-container fluid >  
     <v-layout column >
 
-      <h1>EnviDat Global Change Master Diretory exchange platform</h1>
+      <h1>EnviDat Global Change Master Directory Exchange Platform</h1>
 
       <v-flex py-2 xs6
         v-for="metadata in metadatasContent" :key="metadata.id">
@@ -39,7 +39,7 @@
     },
     methods: {
       gcdmLink: function gcdmLink(metadata) {
-        return `https://www.envidat.ch/dataset/${metadata.name}/export/gcmd_diff.xml`;
+        return `https://www.envidat.ch/dataset/${metadata.name}/export/gcmd_dif.xml`;
       },
     },
     data: () => ({

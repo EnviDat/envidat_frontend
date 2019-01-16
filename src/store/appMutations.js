@@ -3,6 +3,7 @@ import {
   SET_CURRENT_PAGE,
   ADD_CARD_IMAGES,
   ADD_ICON_IMAGE,
+  SET_CONTROLS,
 } from './mutationsConsts';
 
 export default {
@@ -21,5 +22,8 @@ export default {
     /* eslint-disable no-underscore-dangle */
     // state.cardBGImages[payload.key] = payload.value;
     this._vm.$set(state.iconImages, payload.key, payload.value);
+  },
+  [SET_CONTROLS](state, payload) {
+    state.controls = payload;
   },
 };

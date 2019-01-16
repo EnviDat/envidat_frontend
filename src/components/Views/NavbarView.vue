@@ -2,7 +2,7 @@
   
     <v-layout column >
 
-      <v-flex xs12 py-1>
+      <v-flex xs12>
 
         <v-card raised >
 
@@ -30,31 +30,34 @@
                 <!-- spacer -->
               </v-flex>
 
-              <v-flex xs3 sm2 md1 >
-                <v-btn class="ma-0"
-                        flat
-                        small
-                        :href="aboutUrl"
-                        :class="{
-                          ['envidatNavbarLinksSmall']: this.$vuetify.breakpoint.xsOnly,
-                        }" 
-                        target="_blank" >
-                  {{ aboutText }}
-                </v-btn>
+              <v-flex xs4 sm3 md2 >
+
+                <rectangle-button marginClass="ma-0"
+                                  :class="{
+                                    ['envidatNavbarLinksSmall']: this.$vuetify.breakpoint.smAndDown,
+                                  }" 
+                                  :isFlat="true"
+                                  :buttonText="loginText"
+                                  :toolTipText="loginToolTip"
+                                  :isSmall="true"
+                                  :url="loginUrl"
+                />
+
               </v-flex>
 
-              <v-flex xs4 sm2 md2 lg1>
-                <v-btn class="ma-0"
-                        flat
-                        color="primary"
-                        small
-                        :href="loginUrl"
-                        :class="{
-                          ['envidatNavbarLinksSmall']: this.$vuetify.breakpoint.xsOnly,
-                        }" 
-                        target="_blank" >
-                  {{ loginText }}
-                </v-btn>
+              <v-flex xs3 sm3 md1 lg1>
+
+                <rectangle-button marginClass="ma-0"
+                                  :class="{
+                                    ['envidatNavbarLinksSmall']: this.$vuetify.breakpoint.smAndDown,
+                                  }" 
+                                  :isFlat="true"
+                                  :buttonText="aboutText"
+                                  :toolTipText="aboutToolTip"
+                                  :isSmall="true"
+                                  :url="aboutUrl"
+                />
+
               </v-flex>
             
             </v-layout>
@@ -63,58 +66,39 @@
 
       </v-flex>
 
-      <div style="position: absolute; right: 5px; top: 26px; font-size: 7px !important;" >
-        {{ appVersion }}
-      </div>
-
     </v-layout>
 
 </template>
 
 <script>
-  import Logo from '../../assets/logo/EnviDat_logo_32.png';
+import Logo from '../../assets/logo/EnviDat_logo_32.png';
+import RectangleButton from '../Elements/RectangleButton';
 
-  export default {
-    props: {
-    },
-    computed: {
-    },
-    methods: {
-    },
-    data: () => ({
-      Logo,
-      logoText: 'EnviDat',
-      aboutText: 'About',
-      aboutUrl: 'https://www.envidat.ch/about',
-      loginText: 'Creator Login',
-      loginUrl: 'https://www.envidat.ch/user/reset',
-      appVersion: process.env.VERSION,
-    }),
-    components: {
-    },
-  };
+export default {
+  props: {
+  },
+  computed: {
+  },
+  methods: {
+  },
+  data: () => ({
+    Logo,
+    logoText: 'EnviDat',
+    aboutText: 'About',
+    aboutToolTip: 'What is the EnviDat Portal?',
+    aboutUrl: 'https://www.envidat.ch/about',
+    loginText: 'Creator Login',
+    loginToolTip: 'Login to add and manage datasets',
+    loginUrl: 'https://www.envidat.ch/user/reset',
+  }),
+  components: {
+    RectangleButton,
+  },
+};
 </script>
 
 <style>
 
-  .envidatChip{
-    height: 1.5rem;
-    font-size: 0.65rem;
-    margin: 1px 2px;
-    opacity: 0.85;
-  }
-
-  .envidatChip span {
-    cursor: pointer !important;
-  }
-
-  .filterTag {
-    opacity: 0.7;
-  }
-
-  .chip__content span {
-    cursor: pointer !important;
-  }
 
   .envidatLogoText {
     display: inline;
@@ -123,7 +107,7 @@
     bottom: -2px;
   }
 
-  .envidatNavbarLinksSmall {
+  .envidatNavbarLinksSmall > span > .v-btn--small {
     font-size: 10px !important;
   }
 
