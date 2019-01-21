@@ -6,53 +6,34 @@
   >  
     <v-layout column >
 
-      <!-- <v-card> -->
-
-
       <v-flex xs12>
-        <parallax-card :dark="true"
+        <img-and-text-layout :dark="true"
                         :blur="true"
-                        :img="mission"
+                        :img="missionImg"
                         :height="500"
                         :textFontSize="16"
                         :parallax="true"
-                        title="EnviDat Mission"
-                        subTitle="Super Service Mission"
+                        :title="AboutInfo.MainTitle"
+                        :subTitle="AboutInfo.MainSubtitle"
                         :text="aboutText.platform1 + ' ' + aboutText.platform2"
                         />
-
       </v-flex>
 
       <v-flex xs12 my-5>
-        <parallax-card :dark="true"
+        <img-and-text-layout :dark="true"
                         :blur="true"
                         :leftAlign="true"
-                        :img="team"
+                        :img="teamImg"
                         :height="300"
                         :textFontSize="16"
-                        title="EnviDat Team"
-                        subTitle="super duper Team"
+                        :title="AboutInfo.TeamTitle"
+                        :subTitle="AboutInfo.TeamSubtitle"
                         :text="aboutText.platform1 + ' ' + aboutText.platform2"
                         />
-
       </v-flex>
 
       <v-flex xs12 mb-5>
         <v-layout row wrap>
-
-          <!-- <v-flex xs12 md8 >
-
-            <div class="envidatTitle"
-                :class="{
-                  'black--text': true,
-                  'display-3' : $vuetify.breakpoint.mdAndUp, 
-                  'display-1' : $vuetify.breakpoint.smAndDown, 
-                }"
-            >
-              Organigram
-            </div>
-
-          </v-flex> -->
 
           <v-flex xs12 md8 >
             <div>
@@ -68,7 +49,6 @@
 
       </v-flex>
 
-      <!-- </v-card> -->
     </v-layout>
 
 
@@ -82,10 +62,12 @@
     SET_CURRENT_PAGE,
   } from '../../store/mutationsConsts';
 
-  import ParallaxCard from '../Views/Cards/ParallaxCard';
+  import ImgAndTextLayout from '../Layouts/ImgAndTextLayout';
 
-  import team from '../../assets/about/team_1.jpg';
-  import mission from '../../assets/about/mission_6.jpg';
+  import team from '../../assets/about/team.jpg';
+  import teamSmall from '../../assets/about/team_small.jpg';
+  import mission from '../../assets/about/mission.jpg';
+  import missionSmall from '../../assets/about/mission_small.jpg';
   import orga from '../../assets/about/EnviDat_organigram.png';
 
   export default {
@@ -100,24 +82,41 @@
       ...mapGetters({
         aboutText: 'aboutText',
       }),
+      teamImg: function teamImg() {
+        if (this.$vuetify.breakpoint.mdAndUp) {
+          return team;
+        }
+
+        return teamSmall;
+      },
+      missionImg: function teamImg() {
+        if (this.$vuetify.breakpoint.mdAndUp) {
+          return mission;
+        }
+
+        return missionSmall;
+      },
     },
     methods: {
     },
     data: () => ({
       PageBGImage: './app_b_browsepage.jpg',
       team,
+      teamSmall,
       mission,
+      missionSmall,
       orga,
+      AboutInfo: {
+        MainTitle: 'EnviDat Mission',
+        MainSubtitle: 'Services & Tools for environmental researchers',
+        TeamTitle: 'EnviDat Team',
+        TeamSubtitle: 'A diverse team for diverse challenges',
+
+      },
     }),
     components: {
-      ParallaxCard,
+      ImgAndTextLayout,
     },
   };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
-
-
-  
-</style>

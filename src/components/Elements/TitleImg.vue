@@ -4,11 +4,20 @@
 
     <!-- use slot for the content and make a component for only the layouting -->
 
-    <v-parallax :height="height"
+    <v-parallax v-if="parallax"
+                :height="height"
                 :src="img"
                 :dark="dark"
                 :class="{ 'blur_parallax' : blur }"
                 :style="blur ? 'opacity: 0.8' : ''"
+    />
+
+    <v-img v-if="!parallax"
+            :height="height"
+            :src="img"
+            :dark="dark"
+            :class="{ 'blur_parallax' : blur }"
+            :style="blur ? 'opacity: 0.8' : ''"
     />
 
     <v-layout align-center
@@ -53,6 +62,7 @@
 <script>
   export default {
     props: {
+      parallax: Boolean,
       height: Number,
       title: String,
       subTitle: String,
