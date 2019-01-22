@@ -167,6 +167,9 @@
   // Might want to check https://css-tricks.com/use-cases-fixed-backgrounds-css/
   // for animations between the different parts of the Metadata
 
+  // blured background?
+  // https://paper-leaf.com/blog/2016/01/creating-blurred-background-using-only-css/
+
   export default {
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
       next((vm) => {
