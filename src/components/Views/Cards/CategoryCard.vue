@@ -8,14 +8,14 @@
 
         <v-flex xs5 py-0>
           <v-card-media class="imagezoom"
-                        height="100px">
+                        :height=" $vuetify.breakpoint.smAndDown ? '65px' : '100px' ">
             <img :src="imageSrc" />                        
           </v-card-media>
         </v-flex>
 
-        <v-flex xs7 mt-1>
+        <v-flex xs7 mx-1 mt-1>
             <div class="headline"
-                :class="{ 'compactTitle' : this.$vuetify.breakpoint.mdAndDown }"
+                :class="{ 'compactTitle' : this.$vuetify.breakpoint.smAndDown }"
             >
               {{ title }}
             </div>
@@ -31,7 +31,7 @@
 <script>
   import defaultImg from '@/assets/cards/default.png';
   import snowImg from '@/assets/cards/c_b_snow_icy2_small.jpg';
-  import woodImg from '@/assets/cards/c_b_forest_texture_bark2_small.jpg';
+  import woodImg from '@/assets/cards/c_b_forest_topdown3_small.jpg';
   import landImg from '@/assets/cards/c_b_landscape_view_small.jpg';
   import hazardImg from '@/assets/cards/c_b_hazard_cloud_small.jpg';
   import diversityImg from '@/assets/cards/b_c_diversity_meadow_small.jpg';

@@ -1,26 +1,34 @@
 <template>
-  <v-app v-bind:style="dynamicBackground">
+  <v-app class="application" :style="dynamicBackground">
 
     <v-content>
       <v-container fluid
-                    py-1
-                    v-bind="{ [`px-0`]: this.$vuetify.breakpoint.smAndDown,
-                              [`px-2`]: this.$vuetify.breakpoint.mdAndUp }"
+                    v-bind="{ [`px-1`]: this.$vuetify.breakpoint.smAndDown,
+                              [`px-2`]: this.$vuetify.breakpoint.mdAndUp,
+                              [`py-1`]: this.$vuetify.breakpoint.mdAndUp,
+                              [`py-0`]: this.$vuetify.breakpoint.smAndDown }"
       >
 
         <v-layout column>
 
           <v-flex xs12
-                  mx-3
+                  v-bind="{ [`mx-0`]: this.$vuetify.breakpoint.smAndDown,
+                            [`mx-3`]: this.$vuetify.breakpoint.mdAndUp,
+                            [`mb-1`]: this.$vuetify.breakpoint.smAndDown,
+                            [`my-1`]: this.$vuetify.breakpoint.mdAndUp,
+                          }"
                   class="envidatNavbar"
+                  :class="{ 'small': this.$vuetify.breakpoint.smAndDown }"
                   v-if="currentPage != 'landingPage'" >
 
             <nav-bar-view />
           </v-flex>
 
 
-          <v-flex xs12 >
-          
+          <v-flex xs12 
+                  v-bind="{ [`mx-0`]: this.$vuetify.breakpoint.smAndDown,
+                            [`mx-3`]: this.$vuetify.breakpoint.mdAndUp }"
+          >
             <transition
               name="fade"
               mode="out-in"
@@ -32,9 +40,17 @@
             </transition>
           </v-flex>
 
+          <v-flex xs12 
+                  style="position: absolute; right: 5px; bottom: 2px; font-size: 5px !important;"
+          >
+            Verison: {{ appVersion }}
+          </v-flex>
+
         </v-layout>
           
       </v-container>
+
+
     </v-content>
 
   </v-app>
@@ -178,6 +194,7 @@
     data: () => ({
       appBGImages: {},
       prevHeight: 0,
+      appVersion: process.env.VERSION,
     }),
     components: {
       NavBarView,
@@ -197,18 +214,20 @@
 /* overwrite the applications background https://css-tricks.com/use-cases-fixed-backgrounds-css/ */
   .application {
     font-family: 'Raleway', sans-serif !important;
-    /* background-position: center top !important;
-    background-size: cover !important;
-    background-repeat: no-repeat !important;
-    background-attachment: fixed !important; */
+    font-size: 12px;
   }  
 
   .envidatNavbar {
     position: -webkit-sticky;
     position: sticky;
-    top: 3px;
-    z-index: 2;
+    top: 8px;
+    z-index: 1000;
   }
+
+  .envidatNavbar.small {
+    top: 0px;
+  }
+
 
   /*** General Card styles ***/
 
@@ -221,7 +240,7 @@
     text-overflow: ellipsis;    
     max-height: 2.15em;
     */
-    line-height: 1.2em !important;
+    line-height: 1.1em !important;
   }
 
 
@@ -292,6 +311,11 @@
     width: 24px !important;
   }
 
+  .envidatIcon.small {
+    height: 20px !important;
+    width: 20px !important;
+  }
+
   .envidatTitle {
     font-family: 'Libre Baskerville', serif !important;
     letter-spacing: 0em !important;
@@ -313,6 +337,33 @@
     font-size: 0.9em !important;
   }
 
+  .envidatChip {
+    height: 1.3rem;
+    font-size: 0.65rem;
+    margin: 1px 2px;
+    opacity: 0.85;
+  }
+
+  .smallChip {
+    height: 1.2rem;
+    font-size: 0.55rem;
+  }
+  .smallChip > .v-chip__content > .v-chip__close > .v-icon {    
+    font-size: 15px !important;
+  }
+
+  .envidatChip span {
+    cursor: pointer !important;
+  }
+
+  .filterTag {
+    opacity: 0.7;
+  }
+
+  .chip__content span {
+    cursor: pointer !important;
+  }
+
 
   .fade-enter-active,
   .fade-leave-active {
@@ -325,6 +376,6 @@
   .fade-enter,
   .fade-leave-active {
     opacity: 0
-  }
+  }  
 
 </style>

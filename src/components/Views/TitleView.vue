@@ -15,14 +15,16 @@
                       :src="lgLogo" :alt="alternativeText" >
               </v-flex>
 
-              <v-flex xs4
-                      hidden-sm-and-down hidden-lg-and-up >
+              <v-flex hidden-sm-and-down hidden-lg-and-up
+                      xs3
+              >
                 <img 
                       :src="mdLogo" :alt="alternativeText" >
               </v-flex>
 
-              <v-flex xs4
-                      hidden-xs-only hidden-md-and-up >
+              <v-flex hidden-xs-only hidden-md-and-up
+                      xs1
+              >
                 <img 
                       :src="smLogo" :alt="alternativeText" >
               </v-flex>

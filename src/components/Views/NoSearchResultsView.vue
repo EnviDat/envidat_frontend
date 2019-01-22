@@ -8,13 +8,18 @@
       <h3>{{ suggestionText }}</h3>
     </v-flex>
 
-    <v-flex xs12 pt-2>
-      <v-container grid-list-xs
-                    fluid
-                    pa-0>
+    <v-flex xs12
+            mx-1
+            pt-2
+    >
+      <v-container fluid grid-list-md pa-0>
         <v-layout row wrap>
-          <v-flex py-3 xs3
-            v-for="card in categorycards" :key="card.title">
+
+          <v-flex my-2 px-1
+              v-bind="{ 'xs3' : $vuetify.breakpoint.xsOnly ? false : true,
+                        'xs6' : $vuetify.breakpoint.xsOnly ? true : false,
+                      }"                  
+              v-for="card in categorycards" :key="card.title">
 
             <category-card :title="card.title"
                             :type="card.type"
