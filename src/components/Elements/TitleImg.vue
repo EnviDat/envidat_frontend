@@ -39,7 +39,9 @@
             'display-1' : $vuetify.breakpoint.smAndDown, 
           }"
       >
-        {{ title }}
+        <span :style="'background-color: ' + textBackgroundColor + ' ;'">
+          {{ title }}
+        </span>
       </div>
 
       <div class="envidatTitle"
@@ -50,7 +52,9 @@
             'subheading' : $vuetify.breakpoint.smAndDown, 
           }"
       >
-        {{ subTitle }}
+        <span :style="'background-color: ' + textBackgroundColor + ' ;'">
+          {{ subTitle }}
+        </span>
       </div>
 
     </v-layout>
@@ -69,6 +73,7 @@
       img: String,
       dark: Boolean,
       blur: Boolean,
+      textBackgroundColor: String,
     },
   };
 </script>

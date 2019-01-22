@@ -7,7 +7,7 @@
                 :outline="outlined"
                 :color="color ? color : 'primary'"
                 :href="url"
-                @click.native="clicked" slot="activator"
+                @click.stop="clicked" slot="activator"
                  v-bind="{['target'] : '_blank' }">
 
             <div v-if="customIcon" class="iconCentering">

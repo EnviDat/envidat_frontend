@@ -12,12 +12,14 @@
                   :img="img"
                   :height="height"
                   :title="title"
-                  :subTitle="subTitle"/>
+                  :subTitle="subTitle"
+                  :textBackgroundColor="textBackgroundColor" />
+                  
       </v-flex>
 
-      <v-flex >
+      <v-flex mt-2>
         <div :style="textFontSizeStyle">
-          {{ text }}
+          <m-markdown-preview :markdown="text" :options="{ html: true, xhtmlOut: true, linkify: true, breaks: true }" />
         </div>
       </v-flex>
 
@@ -33,13 +35,29 @@
                   :img="img"
                   :height="height"
                   :title="title"
-                  :subTitle="subTitle"/>
+                  :subTitle="subTitle" 
+                  :textBackgroundColor="textBackgroundColor" />
       </v-flex>
 
-      <v-flex xs12 sm6 md8 >
+      <v-flex v-if="img2" xs12 sm4 mt-2>
         <div :style="textFontSizeStyle">
-          {{ text }}
+          <m-markdown-preview :markdown="text" :options="{ html: true, xhtmlOut: true, linkify: true, breaks: true }" />
         </div>
+      </v-flex>
+
+      <v-flex v-if="!img2" xs12 sm6 md8 mt-2>
+        <div :style="textFontSizeStyle">
+          <m-markdown-preview :markdown="text" :options="{ html: true, xhtmlOut: true, linkify: true, breaks: true }" />
+        </div>
+      </v-flex>
+
+      <v-flex v-if="img2" xs12 sm6 md4 >
+        <title-img :parallax="parallax"
+                  :dark="dark"
+                  :blur="blur2"
+                  :img="img2"
+                  :height="height"
+                  />
       </v-flex>
 
     </v-layout>
@@ -47,9 +65,9 @@
     <v-layout v-if="rightAlign"
               row wrap>
 
-      <v-flex xs12 sm6 md8 >
+      <v-flex xs12 sm6 md8 mt-2>
         <div :style="textFontSizeStyle">
-          {{ text }}
+          <m-markdown-preview :markdown="text" :options="{ html: true, xhtmlOut: true, linkify: true, breaks: true }" />
         </div>
       </v-flex>
 
@@ -60,7 +78,9 @@
                   :img="img"
                   :height="height"
                   :title="title"
-                  :subTitle="subTitle"/>
+                  :subTitle="subTitle"
+                  :textBackgroundColor="textBackgroundColor" />
+                  
       </v-flex>
 
     </v-layout>
@@ -70,19 +90,23 @@
 </template>
 
 <script>
+  import MMarkdownPreview from 'm-markdown-preview';
   import TitleImg from '../Elements/TitleImg';
 
   export default {
     props: {
       height: Number,
       textFontSize: Number,
+      textBackgroundColor: String,
       title: String,
       subTitle: String,
       text: String,
       img: String,
+      img2: String,
       dark: Boolean,
       parallax: Boolean,
       blur: Boolean,
+      blur2: Boolean,
       leftAlign: Boolean,
       rightAlign: Boolean,
     },
@@ -93,6 +117,7 @@
     },
     components: {
       TitleImg,
+      MMarkdownPreview,
     },
   };
 </script>
