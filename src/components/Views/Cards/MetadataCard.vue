@@ -327,6 +327,7 @@ export default {
 
   .cardText {
     font-size: 14px !important;
+    opacity: 0.75;
     line-height: 1.2em !important;
   }
 
