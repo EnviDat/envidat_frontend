@@ -6,7 +6,6 @@ import MetadataDetailPage from '@/components/Pages/MetadataDetailPage';
 import ResourceDetailPage from '@/components/Pages/ResourceDetailPage';
 import GCMDPage from '@/components/Pages/GCMDPage';
 import AboutPage from '@/components/Pages/AboutPage';
-import AboutPage2 from '@/components/Pages/AboutPage2';
 
 Vue.use(Router);
 
@@ -46,11 +45,6 @@ export default new Router({
       path: '/about/',
       name: 'AboutPage',
       component: AboutPage,
-    },
-    {
-      path: '/about2/',
-      name: 'AboutPage2',
-      component: AboutPage2,
     },
   ],
   scrollBehavior(to, from, savedPosition) {
