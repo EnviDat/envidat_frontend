@@ -114,6 +114,7 @@
 
       this.loadRouteTags();
       this.loadRouteSearch();
+      this.filterContent();
     },
     destroy: function destroy() {
       // window.removeEventListener('scroll', this.updateScroll);
@@ -253,7 +254,7 @@
 
         this.listViewActive = listActive;
         this.showMapFilter = mapToggled;
-        
+
         this.$store.commit(SET_CONTROLS, controlsActive);
       },
       toggleMapExpand: function toggleMapExpand() {
@@ -381,6 +382,7 @@
 
         this.loadRouteTags();
         this.loadRouteSearch();
+        this.filterContent();
 
         window.scrollTo(0, this.scrollPosition);
         // console.log('watch $route ', this.$route.query.toString() + " to " + to.query + " from " + from.query);
