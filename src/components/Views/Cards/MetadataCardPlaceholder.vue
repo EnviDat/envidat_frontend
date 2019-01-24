@@ -72,6 +72,7 @@ export default {
     tags: Array,
     titleImg: String,
     dark: Boolean,
+    flatLayout: Boolean,
   },
   components: {
     TagChipPlaceholder,

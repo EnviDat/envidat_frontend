@@ -136,16 +136,10 @@
       loadRouteSearch: function loadRouteSearch() {
         const search = this.$route.query.search ? this.$route.query.search : '';
 
-        if (this.searchTerm === search) {
-          return;
-        }
-
-        // console.log("loadRouteSearch " + search);
-
-        if (search.length > 0) {
-          this.catchSearchClicked(search);
-        } else {
+        if (!search || search.length <= 0) {
           this.catchSearchCleared();
+        } else {
+          this.catchSearchClicked(search);
         }
       },
       updateScroll: function updateScroll() {
@@ -200,8 +194,6 @@
 
             this.additiveChangeRoute(this.searchTerm, undefined);
           }
-
-          // this.filterContent();
         }
       },
       catchSearchCleared: function catchSearchCleared() {
