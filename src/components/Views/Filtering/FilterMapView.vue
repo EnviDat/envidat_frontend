@@ -125,11 +125,11 @@ export default {
     catchPointClick: function catchPointClick(e) {      
       // e.target.bindPopup(`<h3>${e.target.id}</h3>`).openPopup();
 
-      // this.$emit('pointClicked', e.target.id);
+      this.$emit('pointClicked', e.target.id);
       // this.$emit('pointHover', e.target.id);
     },
     catchPointHover: function catchPointHover(e) {
-      e.target.bindPopup(`<p>${e.target.id}</p>`).openPopup();
+      e.target.bindPopup(`<p>${e.target.title}</p>`).openPopup();
       this.$emit('pointHover', e.target.id);
     },
     catchPointHoverLeave: function catchPointHoverLeave(e) {
@@ -231,20 +231,20 @@ export default {
         L.geoJSON(location.geoJSON).addTo(this.map);
       } else if (location.pointArray) {
         if (location.isPoint) {
-          this.addPoint(this.map, location.pointArray, location.title);
+          this.addPoint(this.map, location.pointArray, location.id, location.title);
           this.markerCount++;
         }
 
         if (location.isPolygon) {
-          this.addPolygon(this.map, location.pointArray, location.title);
+          this.addPolygon(this.map, location.pointArray, location.id, location.title);
         }
 
         if (location.isMultiPoint) {
-          this.addMultiPoint(this.map, location.pointArray, location.title);
+          this.addMultiPoint(this.map, location.pointArray, location.id, location.title);
         }
       }
     },
-    addPoint: function addPoint(map, coords, id) {
+    addPoint: function addPoint(map, coords, id, title) {
       const point = L.marker(coords, {
         color: this.$vuetify.theme.primary,
         opacity: 0.65,
@@ -253,13 +253,14 @@ export default {
       }).addTo(map);
 
       point.id = id;
+      point.title = title;
       point.on({ click: this.catchPointClick });
       point.on({ mouseover: this.catchPointHover });
       point.on({ mouseout: this.catchPointHoverLeave });
 
       return point;
     },
-    addPolygon: function addPolygon(map, coords, id) {
+    addPolygon: function addPolygon(map, coords, id, title) {
       // create a polygon from an array of LatLng points
       // var latlngs = [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]];
       const polygon = L.polygon(coords, {
@@ -280,13 +281,14 @@ export default {
       // zoom the map to the polygon
       // map.fitBounds(polygon.getBounds());
       polygon.id = id;
+      polygon.title = title;
 
       return polygon;
     },
-    addMultiPoint: function addMultiPoint(map, coords, id) {
+    addMultiPoint: function addMultiPoint(map, coords, id, title) {
       for (let i = 0; i < coords.length; i++) {
         const pointCoord = coords[i];
-        this.addPoint(map, pointCoord, id);
+        this.addPoint(map, pointCoord, id, title);
       }
 
       // map.fitBounds(coords);

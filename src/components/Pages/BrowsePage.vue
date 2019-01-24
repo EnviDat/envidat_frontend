@@ -32,7 +32,6 @@
                       :mapFilterHeight="mapFilterHeight"
                       v-on:clickedMapExpand="toggleMapExpand"
                       v-on:mapFilterChanged="catchMapFilterChanged"
-                      v-on:pointClicked="catchPointClicked"
                       :showPlaceholder="updatingTags"
                       v-on:controlsChanged="controlsChanged"
                       />
@@ -71,7 +70,9 @@
 
         <filter-map-view :totalHeight="mapFilterHeight"
                           :expanded="showMapFilter"
-                          v-on:pointClicked="catchPointClicked" />
+                          v-on:pointClicked="catchPointClicked"
+                          v-on:pointHover="catchPointHovered"
+                          v-on:pointHoverLeave="catchPointHoverLeave"  />
 
       </v-flex>
 
@@ -90,6 +91,7 @@
     SEARCH_METADATA,
     CLEAR_SEARCH_METADATA,
     FILTER_METADATA,
+    PIN_METADATA,
   } from '../../store/metadataMutationsConsts';
   import {
     SET_APP_BACKGROUND,
@@ -221,12 +223,14 @@
       catchPointClicked: function catchPointClicked(id) {
         // bring to top
         // highlight entry
+
+        this.$store.commit(`metadata/${PIN_METADATA}`, id);
       },
       catchPointHovered: function catchPointHovered(id) {
         // bring to top
         // highlight entry
-        const domElement = this.$refs[id];
-        if (domElement && domElement.length > 0) {
+        const domElement = this.metadatasContent[id];
+        if (domElement) {
           this.hoverId = id;
         }
       },
@@ -321,6 +325,7 @@
         loadingMetadataIds: 'metadata/loadingMetadataIds',
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
         filteredContent: 'metadata/filteredContent',
+        pinnedIds: 'metadata/pinnedIds',
         // tag Object structure: { tag: tagName, count: tagCount }
         allTags: 'metadata/allTags',
         currentMetadata: 'metadata/currentMetadata',

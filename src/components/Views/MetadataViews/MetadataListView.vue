@@ -21,15 +21,38 @@
 
         </v-flex>
 
-        <v-flex v-if="!loading && !loadingContent"
-                v-bind="cardGridClass"
-                v-for="(metadata, index) in filteredContent" :key="index">
+        <v-flex v-if="!loading && !loadingContent && pinnedIds.length > 0" 
+                v-for="(pinnedId, index) in pinnedIds" :key="index"
+                v-bind="cardGridClass" >
 
-          <!-- <transition
-            name="fade"
-            mode="out-in"
-          > -->
+        <!-- Map hovering highlight element -->
+
             <metadata-card
+                        class="highlight"
+                        :title="metadatasContent[pinnedId].title"
+                        :id="metadatasContent[pinnedId].id"
+                        :name="metadatasContent[pinnedId].name"
+                        :ref="metadatasContent[pinnedId].id"
+                        :subtitle="metadatasContent[pinnedId].notes"
+                        :tags="metadatasContent[pinnedId].tags"
+                        :titleImg="metadatasContent[pinnedId].titleImg"
+                        :restricted="hasRestrictedResources(metadatasContent[pinnedId])"
+                        :resourceCount="metadatasContent[pinnedId].num_resources"
+                        :resources="metadatasContent[pinnedId].resources"
+                        :dark="false"
+                        :flatLayout="listView"
+                        v-on:clickedEvent="metaDataClicked"
+                        v-on:clickedTag="catchTagClicked"
+            />
+
+        </v-flex>
+
+        <v-flex v-if="!loading && !loadingContent && metadata.id !== hoverId"
+                v-bind="cardGridClass"
+                v-for="(metadata, index) in filteredContent" :key="index"
+                >
+
+            <metadata-card 
                         :title="metadata.title"
                         :id="metadata.id"
                         :name="metadata.name"
@@ -42,15 +65,13 @@
                         :resources="metadata.resources"
                         :dark="false"
                         :flatLayout="listView"
-                        :class="{ ['elevation-10'] : hoverId === metadata.id }"
                         v-on:clickedEvent="metaDataClicked"
                         v-on:clickedTag="catchTagClicked"
             />
-          <!-- </transition> -->
 
         </v-flex>
 
-        <v-flex xs12 v-if="!loading && filteredContentSize <= 0">
+        <v-flex xs12 v-if="!loading && !loadingContent && filteredContentSize <= 0">
             <no-search-results-view v-on:clicked="catchCategoryClicked"
                                     :noResultText="noResultText"
                                     :suggestionText="suggestionText" />  
@@ -106,6 +127,7 @@ export default {
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
         filteredContent: 'metadata/filteredContent',
         isFilteringContent: 'metadata/isFilteringContent',
+        pinnedIds: 'metadata/pinnedIds',
         cardBGImages: 'cardBGImages',
       }),
       loading: function loading() {
@@ -216,6 +238,10 @@ export default {
   .fade-enter,
   .fade-leave-active {
     opacity: 0
+  }
+
+  .highlight {
+    box-shadow: #4DB6AC 0px 0px 5px 5px;
   }
 
 </style>
