@@ -180,7 +180,9 @@
     },
     mounted: function mounted() {
       // console.log('mounted ' + this.metadataId + ' loading ' + this.currentMetadataContent.title + ' ' + this.metadatasContentSize);
-      if (!this.loadingMetadatasContent && this.currentMetadataContent.title === undefined) {
+      if (!this.loadingMetadatasContent
+      && (this.currentMetadataContent.title === undefined
+          || !this.isCurrentIdOrName(this.metadataId))) {
         // in case of directly entring the page load the content directly via Id
         this.$store.dispatch(`metadata/${LOAD_METADATA_CONTENT_BY_ID}`, this.metadataId);
       } else {
@@ -301,6 +303,9 @@
           this.location = metaDataFactory.createLocation(currentContent);
           this.details = metaDataFactory.createDetails(currentContent);
         }
+      },
+      isCurrentIdOrName: function isCurrentIdOrName(idOrName) {
+        return this.currentMetadataContent.id === idOrName || this.currentMetadataContent.name === idOrName;
       },
       catchTagClicked: function catchTagClicked(tagName) {
         const tagNames = [];
