@@ -179,15 +179,7 @@
       });
     },
     mounted: function mounted() {
-      // console.log('mounted ' + this.metadataId + ' loading ' + this.currentMetadataContent.title + ' ' + this.metadatasContentSize);
-      if (!this.loadingMetadatasContent
-      && (this.currentMetadataContent.title === undefined
-          || !this.isCurrentIdOrName(this.metadataId))) {
-        // in case of directly entring the page load the content directly via Id
-        this.$store.dispatch(`metadata/${LOAD_METADATA_CONTENT_BY_ID}`, this.metadataId);
-      } else {
-        this.createMetadataContent();
-      }
+      this.loadMetaDataContent();
     },
     beforeDestroy: function beforeDestroy() {
       // clean current metadata to make be empty for the next to load up
@@ -327,8 +319,24 @@
       OnScroll: function OnScroll(scrollPos) {
         this.savedPosition = scrollPos;
       },
+      loadMetaDataContent: function loadMetaDataContent() {
+        if (!this.loadingMetadatasContent
+        && (this.currentMetadataContent.title === undefined
+            || !this.isCurrentIdOrName(this.metadataId))) {
+          // in case of directly entring the page load the content directly via Id
+          this.$store.dispatch(`metadata/${LOAD_METADATA_CONTENT_BY_ID}`, this.metadataId);
+        } else {
+          this.createMetadataContent();
+        }
+      },
     },
     watch: {
+      /* eslint-disable no-unused-vars */
+      $route: function watchRouteChanges(to, from) {
+        // react on changes of the route (browser back / forward click)
+
+        this.loadMetaDataContent();
+      },
       currentMetadataContent: function updateContent() {
         this.createMetadataContent();
       },
