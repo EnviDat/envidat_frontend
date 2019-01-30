@@ -15,6 +15,6 @@ export default [
     title: 'Natural disasters', type: 'hazard',
   },
   {
-    title: 'Biodiversity', type: 'diversity',
+    title: 'Diversity', type: 'diversity',
   },
 ];
