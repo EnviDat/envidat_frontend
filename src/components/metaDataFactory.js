@@ -78,7 +78,7 @@ module.exports = {
       citationText: text,
       citationXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/datacite.xml`,
       ciationIsoXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/iso19139.xml`,
-      ciationGCMDXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/gcmd_diff.xml`,
+      ciationGCMDXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/gcmd_dif.xml`,
     };
   },
   createResources: function createResources(dataset) {
