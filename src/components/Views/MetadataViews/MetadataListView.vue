@@ -22,7 +22,7 @@
         </v-flex>
 
         <v-flex v-if="!loading && !loadingContent && pinnedIds.length > 0" 
-                v-for="(pinnedId, index) in pinnedIds" :key="index"
+                v-for="(pinnedId, index) in pinnedIds" :key="'pinned_' + index"
                 v-bind="cardGridClass" >
 
         <!-- Map hovering highlight element -->
@@ -47,9 +47,9 @@
 
         </v-flex>
 
-        <v-flex v-if="!loading && !loadingContent && metadata.id !== hoverId"
+        <v-flex v-if="!loading && !loadingContent && !isPinned(metadata.id)"
                 v-bind="cardGridClass"
-                v-for="(metadata, index) in filteredContent" :key="index"
+                v-for="(metadata, index) in filteredContent" :key="'filtered_' + index"
                 >
 
             <metadata-card 
@@ -98,7 +98,6 @@ export default {
       listView: Boolean,
       compactLayout: Boolean,
       mapFilteringEnabled: Boolean,
-      hoverId: String,
       placeHolderAmount: Number,
     },
     data: () => ({
@@ -214,6 +213,9 @@ export default {
         });
 
         return false;
+      },
+      isPinned: function isPinned(id) {
+        return this.pinnedIds.includes(id);
       },
     },
     components: {
