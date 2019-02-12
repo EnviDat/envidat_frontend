@@ -20,6 +20,7 @@ import {
   FILTER_METADATA_SUCESS,
   FILTER_METADATA_ERROR,
   PIN_METADATA,
+  CLEAR_PINNED_METADATA,
 } from '../metadataMutationsConsts';
 
 const conversion = require('./conversion');
@@ -145,9 +146,12 @@ export default {
   },
   [PIN_METADATA](state, payload) {
     if (state.pinnedIds.includes(payload)) {
-      state.pinnedIds.remove(payload);
+      state.pinnedIds = state.pinnedIds.filter(el => el !== payload);
     } else {
       state.pinnedIds.push(payload);
     }
+  },
+  [CLEAR_PINNED_METADATA](state) {
+    state.pinnedIds = [];
   },
 };
