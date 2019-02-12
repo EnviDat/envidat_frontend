@@ -6,6 +6,7 @@
                 :outline="isOutlined"
                 :flat="isFlat"
                 :color="color ? color : 'primary'"
+                :disabled="disabled"
                 :href="url"
                 @click.native="clicked" slot="activator"
                 v-bind="{['target'] : '_blank' }"
@@ -45,6 +46,7 @@ export default {
     isSmall: Boolean,
     url: String,
     marginClass: String,
+    disabled: Boolean,
   },
   methods: {
     clicked: function clicked() {
