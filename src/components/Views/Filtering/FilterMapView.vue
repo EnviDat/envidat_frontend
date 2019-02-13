@@ -96,7 +96,7 @@ export default {
       filteredContent: 'metadata/filteredContent',
       metadataIds: 'metadata/metadataIds',
       pinnedIds: 'metadata/pinnedIds',
-      // metadatasContent: 'metadata/metadatasContent',
+      metadatasContent: 'metadata/metadatasContent',
       searchedMetadatasContent: 'metadata/searchedMetadatasContent',
       searchingMetadatasContent: 'metadata/searchingMetadatasContent',
       loadingMetadataIds: 'metadata/loadingMetadataIds',
@@ -268,9 +268,16 @@ export default {
       const pins = [];
       const multiPins = [];
       const polys = [];
+      const pinnedContent = [];
 
-      for (let i = 0; i < this.filteredContent.length; i++) {
-        const dataset = this.filteredContent[i];
+      this.pinnedIds.forEach((pinId) => {
+        pinnedContent.push(this.metadatasContent[pinId]);
+      });
+
+      const pinnedAndFilteredContent = [...pinnedContent, ...this.filteredContent];
+
+      for (let i = 0; i < pinnedAndFilteredContent.length; i++) {
+        const dataset = pinnedAndFilteredContent[i];
 
         const location = metaDataFactory.createLocation(dataset);
         const selected = this.pinnedIds.includes(location.id);

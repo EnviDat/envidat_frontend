@@ -28,7 +28,7 @@
                       v-on:clickedTagClose="catchTagCloseClicked"
                       v-on:clickedClear="catchTagCleared"
                       :showMapFilter="showMapFilter"
-                      :mapFilteringEnabled="mapFilteringEnabled"
+                      :mapFilteringPossible="mapFilteringPossible"
                       :mapFilterHeight="mapFilterHeight"
                       v-on:clickedMapExpand="toggleMapExpand"
                       v-on:mapFilterChanged="catchMapFilterChanged"
@@ -49,15 +49,15 @@
        >
 
        <metadata-list-view :listView="listViewActive"
-                            :compactLayout="showMapFilter"
-                            :mapFilteringEnabled="mapFilteringEnabled"
+                            :showMapFilter="showMapFilter"
+                            :mapFilteringPossible="mapFilteringPossible"
                             :placeHolderAmount="placeHolderAmount"
                             v-on:clickedTag="catchTagClicked"
        />
 
       </v-flex>
 
-      <v-flex v-if="mapFilteringEnabled && showMapFilter"
+      <v-flex v-if="mapFilteringPossible && showMapFilter"
               py-3
               v-bind="{ ['pr-3']: showMapFilter & $vuetify.breakpoint.mdAndUp,
                         ['xs4']: showMapFilter & $vuetify.breakpoint.mdAndUp,
@@ -373,15 +373,15 @@
       },
       metadataListStyling: function metadataListStyling() {
         const json = {
-          xs8: this.mapFilteringEnabled && this.showMapFilter,
-          xs12: this.mapFilteringEnabled && !this.showMapFilter,
+          xs8: this.mapFilteringPossible && this.showMapFilter,
+          xs12: this.mapFilteringPossible && !this.showMapFilter,
           'mt-2': !this.showMapFilter,
           // style: this.showMapFilter ? `margin-top: -${this.mapFilterHeight}px;` : '',
         };
 
         return json;
       },
-      mapFilteringEnabled: function mapFilteringEnabled() {
+      mapFilteringPossible: function mapFilteringPossible() {
         return this.$vuetify.breakpoint.smAndUp;
       },
       searchCount: function searchCount() {

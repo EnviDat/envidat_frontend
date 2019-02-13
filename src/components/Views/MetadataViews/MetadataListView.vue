@@ -21,7 +21,7 @@
 
         </v-flex>
 
-        <v-flex v-if="!loading && !loadingContent && pinnedIds.length > 0" 
+        <v-flex v-if="showPinnedElements" 
                 v-for="(pinnedId, index) in pinnedIds" :key="'pinned_' + index"
                 v-bind="cardGridClass" >
 
@@ -96,8 +96,8 @@
 export default {
     props: {
       listView: Boolean,
-      compactLayout: Boolean,
-      mapFilteringEnabled: Boolean,
+      showMapFilter: Boolean,
+      mapFilteringPossible: Boolean,
       placeHolderAmount: Number,
     },
     data: () => ({
@@ -129,6 +129,9 @@ export default {
         pinnedIds: 'metadata/pinnedIds',
         cardBGImages: 'cardBGImages',
       }),
+      showPinnedElements: function showPinnedElements() {
+        return !this.loading && !this.loadingContent && this.showMapFilter && this.pinnedIds.length > 0;
+      },
       loading: function loading() {
         // console.log("loading " + this.isFilteringContent + " " + this.searchingMetadatasContent);
         return this.isFilteringContent || this.searchingMetadatasContent;
@@ -142,7 +145,7 @@ export default {
         return this.contentSize(this.filteredContent);
       },
       cardGridClass: function cardGridClass() {
-        if (this.mapFilteringEnabled && this.compactLayout) {
+        if (this.mapFilteringPossible && this.showMapFilter) {
           const twoThridsSize = {
             xs12: true,
             sm12: true,
