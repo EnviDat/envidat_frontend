@@ -7,28 +7,28 @@
                   pa-0
     >
 
-      <v-layout :class="{ ['column'] : listView,
-                          ['row'] : !listView,
-                          ['wrap'] : !listView
-                        }"
+      <transition-group
+        name="itemfade"
+        class="layout"
+        :class="{ ['column'] : listView,
+                      ['row'] : !listView,
+                      ['wrap'] : !listView
+                    }"
       >
 
         <v-flex v-if="loading || loadingContent"
                 v-bind="cardGridClass"
-                v-for="(n, index) in placeHolderAmount" :key="index">
+                v-for="(n, index) in placeHolderAmount" :key="'card_' + index">
 
           <metadata-card-placeholder :dark="false" />
 
         </v-flex>
 
+
         <v-flex v-if="!loading && !loadingContent"
                 v-bind="cardGridClass"
-                v-for="(metadata, index) in filteredContent" :key="index">
+                v-for="(metadata, index) in filteredContent" :key="'card_' + index">
 
-          <!-- <transition
-            name="fade"
-            mode="out-in"
-          > -->
             <metadata-card
                         :title="metadata.title"
                         :id="metadata.id"
@@ -46,7 +46,6 @@
                         v-on:clickedEvent="metaDataClicked"
                         v-on:clickedTag="catchTagClicked"
             />
-          <!-- </transition> -->
 
         </v-flex>
 
@@ -56,8 +55,7 @@
                                     :suggestionText="suggestionText" />  
         </v-flex>
 
-      </v-layout>
-
+      </transition-group>
 
     </v-container>
   
@@ -206,16 +204,15 @@ export default {
 
 <style scoped>
 
-  .fade-enter-active,
-  .fade-leave-active {
-    transition-duration: 0.3s;
-    transition-property: opacity;
+  .itemfade-enter-active,
+  .itemfade-leave-active {
+    transition-duration: 0.1s;
     transition-timing-function: ease;
   }
 
-  .fade-enter,
-  .fade-leave-active {
+  .itemfade-enter,
+  .itemfade-leave-active {
     opacity: 0
-  }
+  }  
 
 </style>
