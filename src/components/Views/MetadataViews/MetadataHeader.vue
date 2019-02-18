@@ -43,7 +43,7 @@
           <v-flex xs12 sm6 md6 lg3
                   py-1 class="headerInfo">
             <icon-label-view  :text="contactName"
-                              :icon="getIcon(this.iconFlip('contact2'))"
+                              :icon="contactIcon"
                               iconTooltip="Main contact"
                               :alignLeft="true"
                                />
@@ -52,7 +52,7 @@
           <v-flex xs12 sm6 md6 lg3
                   py-1 class="headerInfo">
             <icon-label-view  :text="doi"
-                              :icon="getIcon(iconFlip('doi'))"
+                              :icon="doiIcon"
                               iconTooltip="Data Object Identifier"
                               :alignLeft="true"
                               :wordBreak="true"
@@ -62,7 +62,7 @@
           <v-flex xs12 sm6 md6 lg3
                   py-1 class="headerInfo">
             <icon-label-view  :text="contactEmail"
-                              :icon="getIcon(iconFlip('mail'))"
+                              :icon="mailIcon"
                               iconTooltip="Email adress of the main contact"
                               :alignLeft="true"
                               :wordBreak="true"
@@ -72,7 +72,7 @@
           <v-flex xs12 sm6 md6 lg3
                   py-1 class="headerInfo">
             <icon-label-view :text="license"
-                              :icon="getIcon(iconFlip('license'))"
+                              :icon="licenseIcon"
                               iconTooltip="License for Datafiles"
                               :alignLeft="true"
                                />
@@ -139,6 +139,10 @@ export default {
     tags: Array,
     maxTags: Number,
     showPlaceholder: Boolean,
+    doiIcon: String,
+    contactIcon: String,
+    mailIcon: String,
+    licenseIcon: String,
   },
   data: () => ({
     showTagsExpanded: false,

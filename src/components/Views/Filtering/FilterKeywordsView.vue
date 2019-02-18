@@ -28,7 +28,7 @@
             <v-flex pl-2
                     class="metadataInfoIcon" 
             >
-              <icon-label-view :icon="getIcon('tags')"
+              <icon-label-view :icon="tagsIcon"
                                 :compactLayout="compactLayout"
                                 iconTooltip="Possible Keywords"
               />
@@ -70,7 +70,7 @@
 
             <v-flex pl-2 class="metadataInfoIcon" 
             >
-              <icon-label-view :icon="getIcon('tag')"
+              <icon-label-view :icon="tagIcon"
                                 :compactLayout="compactLayout"
                                 iconTooltip="Active Keyword filter"
               />
@@ -138,6 +138,10 @@ export default {
     mapExpandedButtonText: String,
     isHighlighted: Boolean,
     compactLayout: Boolean,
+  },
+  beforeMount: function beforeMount() {
+    this.tagIcon = this.getIcon('tag');
+    this.tagsIcon = this.getIcon('tags');
   },
   computed: {
     selectedTags: function selectedTags() {
@@ -279,6 +283,8 @@ export default {
     xsTextLength: 25,
     smTextLength: 50,
     mdTextLength: 65,
+    tagIcon: null,
+    tagsIcon: null,
   }),
   components: {
     IconLabelView,

@@ -41,6 +41,9 @@
                         :resources="metadatasContent[pinnedId].resources"
                         :dark="false"
                         :flatLayout="listView"
+                        :fileIconString="fileIconString"
+                        :lockedIconString="lockedIconString"
+                        :unlockedIconString="unlockedIconString"
                         v-on:clickedEvent="metaDataClicked"
                         v-on:clickedTag="catchTagClicked"
             />
@@ -65,6 +68,9 @@
                         :resources="metadata.resources"
                         :dark="false"
                         :flatLayout="listView"
+                        :fileIconString="fileIconString"
+                        :lockedIconString="lockedIconString"
+                        :unlockedIconString="unlockedIconString"
                         v-on:clickedEvent="metaDataClicked"
                         v-on:clickedTag="catchTagClicked"
             />
@@ -104,9 +110,15 @@ export default {
       enhanceContentDone: false,
       noResultText: 'Nothing found for these search criterias',
       suggestionText: 'Try one of these categories',
+      fileIconString: null,
+      lockedIconString: null,
+      unlockedIconString: null,
     }),
     beforeMount: function beforeMount() {
       this.enhanceContent();
+      this.fileIconString = this.getIcon('file');
+      this.lockedIconString = this.getIcon('lock2Closed');
+      this.unlockedIconString = this.getIcon('lock2Open');
     },
     watch: {
       filteredContent: function watchEnhanceMetadata() {
