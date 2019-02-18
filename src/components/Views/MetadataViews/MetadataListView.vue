@@ -25,10 +25,10 @@
                 v-for="(pinnedId, index) in pinnedIds" :key="'pinned_' + index"
                 v-bind="cardGridClass" >
 
-        <!-- Map hovering highlight element -->
+        <!-- Map hovering highlighted element -->
 
             <metadata-card
-                        class="highlight"
+                        class="highlighted"
                         :title="metadatasContent[pinnedId].title"
                         :id="metadatasContent[pinnedId].id"
                         :name="metadatasContent[pinnedId].name"
@@ -257,7 +257,7 @@ export default {
     opacity: 0
   }
 
-  .highlight {
+  .highlighted {
     box-shadow: #4DB6AC 0px 0px 5px 5px;
   }
 
