@@ -4,9 +4,10 @@
         <v-btn :icon="!isElevated"
                 :fab="isElevated"
                 :small="isElevated"
-                :outline="outlined"
-                :color="color ? color : 'primary'"
+                :outline="outlined && !isToggled"
+                :color="color ? color : disabled ? '' : 'primary'"
                 :href="url"
+                :disabled="disabled"
                 @click.stop="clicked" slot="activator"
                  v-bind="{['target'] : '_blank' }">
 
@@ -41,6 +42,7 @@ export default {
     rotateOnClick: Boolean,
     url: String,
     isElevated: Boolean,
+    disabled: Boolean,
   },
   methods: {
     clicked: function clicked() {
