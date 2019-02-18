@@ -1,34 +1,33 @@
 <template>
     <v-tooltip bottom >
 
-        <v-btn :small="isSmall"
-                :class="marginClass"
-                :outline="isOutlined"
-                :flat="isFlat"
-                :color="color ? color : 'primary'"
-                :disabled="disabled"
-                :href="url"
-                @click.native="clicked" slot="activator"
-                v-bind="{['target'] : '_blank' }"
+      <v-btn :small="isSmall"
+              :class="marginClass"
+              :outline="isOutlined"
+              :flat="isFlat"
+              :color="color ? color : 'primary'"
+              :disabled="disabled"
+              :href="url"
+              @click.native="clicked" slot="activator"
+              v-bind="{['target'] : '_blank' }"
+      >
+        <div v-if="customIcon" class="iconCentering">
+          <img class="envidatIcon" :src="customIcon" />
+        </div>
+
+        <v-icon v-if="materialIconName"
+                :color="iconColor ? iconColor : 'primary'"
         >
+          {{ materialIconName }}
+        </v-icon>
 
-            {{ buttonText }}
+        {{ buttonText }}
 
-            <div v-if="customIcon" class="iconCentering">
-                <img class="envidatIcon" :src="customIcon" />
-            </div>
+      </v-btn>
+      
+      <span>{{ toolTipText }}</span>
 
-            <v-icon v-if="materialIconName"
-                    right
-                    :color="iconColor ? iconColor : 'primary'"
-            >
-                {{ materialIconName }}
-            </v-icon>
-        </v-btn>
-        
-        <span>{{ toolTipText }}</span>
-
-    </v-tooltip>
+  </v-tooltip>
 </template>
 
 <script>
