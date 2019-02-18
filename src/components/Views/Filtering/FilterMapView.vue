@@ -37,7 +37,7 @@
 
           <icon-button class="px-1"
                         :customIcon="pinIcon"
-                        color="primary"
+                        color="secondary"
                         :outlined="true"
                         :isToggled="pinEnabled"
                         :toolTipText="pinEnabled ? 'Hide single markers' : 'Show single markers'"
@@ -45,7 +45,7 @@
 
           <icon-button class="px-1"
                         :customIcon="multiPinIcon"
-                        color="primary"
+                        color="secondary"
                         :outlined="true"
                         :isToggled="multiPinEnabled"
                         :toolTipText="multiPinEnabled ? 'Hide multi markers' : 'Show multi markers'"
@@ -64,15 +64,15 @@
                         :toolTipText="polygonEnabled ? 'Hide polygons' : 'Show polygons'"
                         v-on:clicked="polygonEnabled = !polygonEnabled; updateMap()" -->
 
-      <rectangle-button 
-                    :buttonText="clearButtonText"
-                    toolTipText="Clear all pinned Metadata"
-                    :isSmall="true"
-                    :isFlat="true"
-                    iconColor="red"
-                    :disabled="this.pinnedIds.length <= 0"
-                    materialIconName="close"
-                    v-on:clicked="catchClearButtonClicked"
+      <rectangle-button class="pl-2"
+                        :buttonText="clearButtonText"
+                        toolTipText="Clear all pinned Metadata"
+                        :isSmall="true"
+                        :isFlat="true"
+                        iconColor="red"
+                        :disabled="this.pinnedIds.length <= 0"
+                        materialIconName="close"
+                        v-on:clicked="catchClearButtonClicked"
       />
 
 
@@ -508,6 +508,7 @@ export default {
     mapIsSetup: false,
     setupCenterCoords: [46.943961, 8.199240],
     initialBounds: null,
+    //Todo: sometimes the height isn't loaded correctly... 
     buttonHeight: 130,
     updatingMap: true,
     addedObjectsKeys: [],
@@ -526,7 +527,7 @@ export default {
     multiPinIcon: null,
     polygonIcon: null,
     eyeIcon: null,
-    clearButtonText: 'Clear filtered Pins',
+    clearButtonText: 'Clear Pins',
     filterText: 'Pinned: ',
     marker,
     marker2x,
