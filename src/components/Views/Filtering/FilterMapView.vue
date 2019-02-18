@@ -8,6 +8,10 @@
     <v-card-title>
       <div class="headline mb-0">Cartographic Filtering</div>
     </v-card-title>
+    
+    <div class="mb-1" :style="`background-color: ${this.$vuetify.theme.highlight};`">
+      <p class="px-3 py-0 my-0 body-2" >Select the markers to pin them to the top of the list</p>
+    </div>
 
     <div v-if="expanded && !errorLoadingLeaflet"
           id="map"
@@ -23,6 +27,42 @@
       <div :style="`color:${this.pinnedIds.length > 0 ? this.$vuetify.theme.primary : 'rgba(0,0,0,.47)'};`" >{{ this.filterText + this.pinnedIds.length }}</div>
 
       <v-spacer />
+
+          <icon-button class="px-1"
+                        :customIcon="eyeIcon"
+                        color="highlight"
+                        :outlined="true"
+                        toolTipText="Focus on all elements on the map"
+                        v-on:clicked="focusOnLayers()" />
+
+          <icon-button class="px-1"
+                        :customIcon="pinIcon"
+                        color="primary"
+                        :outlined="true"
+                        :isToggled="pinEnabled"
+                        :toolTipText="pinEnabled ? 'Hide single markers' : 'Show single markers'"
+                        v-on:clicked="pinEnabled = !pinEnabled; updateMap()" />
+
+          <icon-button class="px-1"
+                        :customIcon="multiPinIcon"
+                        color="primary"
+                        :outlined="true"
+                        :isToggled="multiPinEnabled"
+                        :toolTipText="multiPinEnabled ? 'Hide multi markers' : 'Show multi markers'"
+                        v-on:clicked="multiPinEnabled = !multiPinEnabled; updateMap()" />
+
+          <icon-button class="px-1"
+                        :customIcon="polygonIcon"
+                        :disabled="true"
+                        toolTipText="Polygon filtering is in development"
+                        />
+
+                        <!-- 
+                        color="grey"
+                        :isToggled="polygonEnabled"
+                        :outlined="true"
+                        :toolTipText="polygonEnabled ? 'Hide polygons' : 'Show polygons'"
+                        v-on:clicked="polygonEnabled = !polygonEnabled; updateMap()" -->
 
       <rectangle-button 
                     :buttonText="clearButtonText"
@@ -49,6 +89,7 @@ import 'leaflet/dist/leaflet.css';
 import IconCountView from '../IconCountView';
 import metaDataFactory from '../../metaDataFactory';
 import RectangleButton from '../../Elements/RectangleButton';
+import IconButton from '../../Elements/IconButton';
 
 // HACK start
 /* eslint-disable import/first */
@@ -79,6 +120,12 @@ export default {
     totalHeight: Number,
     totalWidth: Number,
     expanded: Boolean,
+  },
+  beforeMount: function beforeMount() {
+    this.pinIcon = this.getIcon('marker');
+    this.multiPinIcon = this.getIcon('markerMulti');
+    this.polygonIcon = this.getIcon('polygons');
+    this.eyeIcon = this.getIcon('eye');
   },
   mounted: function mounted() {
     // if (L){
@@ -168,8 +215,6 @@ export default {
       //   return undefined;
       // }
 
-      const viewCoords = [46.943961, 8.199240];
-
       // if (coords) {
       //   viewCoords = coords;
 
@@ -184,10 +229,12 @@ export default {
 
       const map = L.map(mapElement, {
         scrollWheelZoom: false,
-        center: viewCoords,
-        zoom: 8,
+        center: this.setupCenterCoords,
+        zoom: 7,
+        zoomSnap: 0.5,
       });
 
+      this.initialBounds = map.getBounds();
 
       return map;
     },
@@ -209,12 +256,21 @@ export default {
       // baseMap.addTo(map);
     },
     getPoint: function getPoint(coords, id, title, selected) {
+      const iconOptions = L.Icon.Default.prototype.options;
+      delete iconOptions._getIconUrl;
+      // use the defaultoptions to ensure that all untouched defaults stay in place
 
-      const icon = L.icon({
-        iconRetinaUrl: selected ? this.selectedMarker2x : this.marker2x,
-        iconUrl: selected ? this.selectedMarker : this.marker,
-        shadowUrl: this.markerShadow,
-      });
+      iconOptions.iconUrl = selected ? this.selectedMarker : this.marker;
+      iconOptions.iconRetinaUrl = selected ? this.selectedMarker2x : this.marker2x;
+      iconOptions.shadowUrl = this.markerShadow;
+
+      // L.Icon.Default.mergeOptions({
+      //   iconRetinaUrl: selected ? this.selectedMarker2x : this.marker2x,
+      //   iconUrl: selected ? this.selectedMarker : this.marker,
+      //   shadowUrl: this.markerShadow,
+      // });
+
+      const icon = L.icon(iconOptions);
 
       const point = L.marker(coords, {
         icon,
@@ -228,13 +284,14 @@ export default {
       point.on({ mouseover: this.catchPointHover });
       point.on({ mouseout: this.catchPointHoverLeave });
 
+
       return point;
     },
-    getPolygon: function getPolygon(coords, id, title) {
+    getPolygon: function getPolygon(coords, id, title, selected) {
       // create a polygon from an array of LatLng points
       // var latlngs = [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]];
       const polygon = L.polygon(coords, {
-        color: this.$vuetify.theme.secondary,
+        color: selected ? this.$vuetify.theme.primary : this.$vuetify.theme.accent,
         opacity: 0.45,
         fillOpacity: 0,
       });
@@ -282,39 +339,50 @@ export default {
         const location = metaDataFactory.createLocation(dataset);
         const selected = this.pinnedIds.includes(location.id);
 
-        if (location.isPoint) {
+        if (this.pinEnabled && location.isPoint) {
           const pin = this.getPoint(location.pointArray, location.id, location.title, selected);
           if (pin) {
+            // pin.addTo(this.map);
             pins.push(pin);
           }
         }
 
-        if (location.isMultiPoint) {
+        if (this.multiPinEnabled && location.isMultiPoint) {
           const multiPin = this.getMultiPoint(location.pointArray, location.id, location.title, selected);
           if (multiPin) {
             multiPins.push(multiPin);
           }
         }
 
-        // if (location.isPolygon) {
-        //   const polygon = this.getPolygon(location.pointArray, location.id, location.title);
-        //   if (polygon) {
-        //     polys.push(polygon);
-        //   }
-        // }
+        if (this.polygonEnabled && location.isPolygon) {
+          const polygon = this.getPolygon(location.pointArray, location.id, location.title, selected);
+          if (polygon) {
+            polys.push(polygon);
+          }
+        }
       }
 
-      if (polys.length > 0) {
-        this.polygonLayerGroup = L.layerGroup(polys);
+      if (this.polygonEnabled && polys.length > 0) {
+        this.polygonLayerGroup = polys;
         // this.polygonLayerGroup.addTo(this.map);
+        this.polygonLayerGroup.forEach((p) => {
+          p.addTo(this.map);
+        });
       }
 
-      if (pins.length > 0) {
-        this.pinLayerGroup = L.layerGroup(pins);
-        this.pinLayerGroup.addTo(this.map);
+      if (this.pinEnabled && pins.length > 0) {
+        this.pinLayerGroup = pins;
+        // this.pinLayerGroup.addTo(this.map);
+        this.pinLayerGroup.forEach((p) => {
+          try {
+            p.addTo(this.map);
+          } catch (error) {
+            console.log('point error: ' + error + ' on point ' + p.title);
+          }
+        });
       }
 
-      if (multiPins.length > 0) {
+      if (this.multiPinEnabled && multiPins.length > 0) {
         const flatMultiPins = [];
         multiPins.forEach((pinCollection) => {
           if (pinCollection) {
@@ -325,8 +393,48 @@ export default {
             });
           }
         });
-        this.multiPinLayerGroup = L.layerGroup(flatMultiPins);
-        this.multiPinLayerGroup.addTo(this.map);
+        this.multiPinLayerGroup = flatMultiPins;
+        // this.multiPinLayerGroup.addTo(this.map);
+
+        this.multiPinLayerGroup.forEach((p) => {
+          try {
+            p.addTo(this.map);
+          } catch (error) {
+            console.log('multipoint error: ' + error + ' on point ' + p.title);
+          }
+        });
+      }
+    },
+    focusOnLayers: function focusOnLayers() {
+      const allLayers = [];
+
+      if (this.pinEnabled) {
+        this.pinLayerGroup.forEach((l) => {
+          allLayers.push(l);
+        });
+      }
+
+      if (this.multiPinEnabled) {
+        this.multiPinLayerGroup.forEach((l) => {
+          allLayers.push(l);
+        });
+      }
+
+      if (this.polygonEnabled) {
+        this.polygonLayerGroup.forEach((l) => {
+          allLayers.push(l);
+        });
+      }
+
+      if (allLayers.length > 0) {
+        const feat = L.featureGroup(allLayers);
+        const featBounds = feat.getBounds();
+
+        // if (featBounds.contains(this.initialBounds)) {
+        //   this.map.fitBounds(this.initialBounds);
+        // } else {
+        this.map.fitBounds(featBounds, { maxZoom: 8 });
+        // }
       }
     },
     clearLayers: function clearLayers(map) {
@@ -335,23 +443,38 @@ export default {
       }
 
       if (this.polygonLayerGroup) {
-        map.removeLayer(this.polygonLayerGroup);
-        this.polygonLayerGroup = null;
+        // this.polygonLayerGroup.clearLayers();
+        this.showMapElements(this.polygonLayerGroup, false);
+        // map.removeLayer(this.polygonLayerGroup);
+        this.polygonLayerGroup = [];
       }
 
       if (this.pinLayerGroup) {
-        map.removeLayer(this.pinLayerGroup);
-        this.pinLayerGroup = null;
+        // this.pinLayerGroup.clearLayers();
+        this.showMapElements(this.pinLayerGroup, false);
+        // map.removeLayer(this.pinLayerGroup);
+        this.pinLayerGroup = [];
       }
 
       if (this.multiPinLayerGroup) {
-        map.removeLayer(this.multiPinLayerGroup);
-        this.multiPinLayerGroup = null;
+        // this.multiPinLayerGroup.clearLayers();
+        this.showMapElements(this.multiPinLayerGroup, false);
+        // map.removeLayer(this.multiPinLayerGroup);
+        this.multiPinLayerGroup = [];
       }
 
       // map.eachLayer((layer) => {
       //   map.removeLayer(layer);
       // });
+    },
+    showMapElements(elements, show) {
+      elements.forEach((el) => {
+        if (show) {
+          el.addTo(this.map);
+        } else {
+          this.map.removeLayer(el);
+        }
+      });
     },
     addControls: function addControls() {
       const baseLayers = {
@@ -366,21 +489,26 @@ export default {
 
       L.control.layers(baseLayers, overlays).addTo(this.map);
     },
+    updateMap: function updateMap() {
+      this.clearLayers(this.map);
+      this.addGeoJSONToMap();
+      // this.focusOnLayers();
+    },
   },
   watch: {
-    pinnedIds: function updateMap() {
-      this.clearLayers(this.map);
-      this.addGeoJSONToMap();
+    pinnedIds: function updateMapPinnedIds() {
+      this.updateMap();
     },
     filteredContent: function updateMetadatasContent() {
-      this.clearLayers(this.map);
-      this.addGeoJSONToMap();
+      this.updateMap();
     },
   },
   data: () => ({
     map: null,
     mapIsSetup: false,
-    buttonHeight: 100,
+    setupCenterCoords: [46.943961, 8.199240],
+    initialBounds: null,
+    buttonHeight: 130,
     updatingMap: true,
     addedObjectsKeys: [],
     mapFilteringActive: false,
@@ -388,9 +516,16 @@ export default {
     hoverBadge: false,
     errorLoadingLeaflet: false,
     mapLayerGroup: null,
+    polygonEnabled: false,
     polygonLayerGroup: null,
+    pinEnabled: true,
     pinLayerGroup: null,
+    multiPinEnabled: true,
     multiPinLayerGroup: null,
+    pinIcon: null,
+    multiPinIcon: null,
+    polygonIcon: null,
+    eyeIcon: null,
     clearButtonText: 'Clear filtered Pins',
     filterText: 'Pinned: ',
     marker,
@@ -402,6 +537,7 @@ export default {
   components: {
     IconCountView,
     RectangleButton,
+    IconButton,
   },
 };
 </script>
