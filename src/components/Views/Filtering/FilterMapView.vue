@@ -9,8 +9,8 @@
       <div class="headline mb-0">Cartographic Filtering</div>
     </v-card-title>
     
-    <div class="mb-1" :style="`background-color: ${this.$vuetify.theme.highlight};`">
-      <p class="px-3 py-0 my-0 body-2" >Select the markers to pin them to the top of the list</p>
+    <div class="mb-2" :style="`background-color: ${this.$vuetify.theme.highlight};`">
+      <p class="px-3 py-0 my-0 body-2" > {{ highlightedText }} </p>
     </div>
 
     <div v-if="expanded && !errorLoadingLeaflet"
@@ -527,6 +527,7 @@ export default {
     multiPinIcon: null,
     polygonIcon: null,
     eyeIcon: null,
+    highlightedText: 'Select markers to pin them to the top of the list',
     clearButtonText: 'Clear Pins',
     filterText: 'Pinned: ',
     marker,
