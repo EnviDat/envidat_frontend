@@ -338,7 +338,7 @@
         let height = this.maxMapFilterHeight;
 
         if (sHeight < this.maxMapFilterHeight) {
-          height = sHeight - 170;
+          height = sHeight - 165;
         }
 
         // console.log('sHeight ' + sHeight + ' height ' + height + ' ' + this.maxMapFilterHeight);
