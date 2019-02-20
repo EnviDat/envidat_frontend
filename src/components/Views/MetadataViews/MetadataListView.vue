@@ -83,17 +83,15 @@ export default {
       noResultText: 'Nothing found for these search criterias',
       suggestionText: 'Try one of these categories',
     }),
-    // beforeMount: function beforeMount() {
-    //   this.enhanceContent();
-    // },
+    beforeMount: function beforeMount() {
+      this.enhanceContent();
+    },
     watch: {
       filteredContent: function watchEnhanceMetadata() {
         this.enhanceContent();
       },
       searchingMetadatasContentOK: function watchSearchFilterContent() {
-        if (this.searchingMetadatasContentOK) {
-          this.enhanceContent(true);
-        }
+        this.enhanceContent(true);
       },
     },
     computed: {

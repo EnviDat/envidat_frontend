@@ -76,6 +76,11 @@
       this.importCardBackgrounds();
       this.importIcons();
     },
+    // beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+    //   next((vm) => {
+    //     console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
+    //   });
+    // },
     methods: {
       beforeLeave(element) {
         const style = getComputedStyle(element);
@@ -362,7 +367,7 @@
 
   .fade-enter-active,
   .fade-leave-active {
-    transition-duration: 0.1s;
+    transition-duration: 0.3s;
     transition-property: height, opacity;
     transition-timing-function: ease;
     /* overflow: hidden; */

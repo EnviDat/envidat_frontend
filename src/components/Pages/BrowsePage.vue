@@ -101,24 +101,23 @@
 
   export default {
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
-      // console.log('beforeRouteEnter ' + new Date());
       next((vm) => {
-        // console.log('beforeRouteEnter next' + new Date());
         // console.log("browse beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
         vm.$store.commit(SET_CURRENT_PAGE, 'browsePage');
         vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
     },
-    // created: function created() {
-      // this.loadRouteTags();
-
-    // },
     mounted: function mounted() {
-      this.checkRouteChanges();
-      // console.log('created ' + new Date());
+      // handle initial loading of this Page
 
-      // this.loadRouteSearch();
-      // this.filterContent();
+      // window.addEventListener('scroll', this.updateScroll);
+
+      this.loadRouteTags();
+      this.loadRouteSearch();
+      this.filterContent();
+    },
+    destroy: function destroy() {
+      // window.removeEventListener('scroll', this.updateScroll);
     },
     methods: {
       loadRouteTags: function loadRouteTags() {
@@ -129,43 +128,19 @@
           decodedTags = this.decodeTagsFromUrl(tagsEncoded);
         }
 
-        if (!this.areArrayIdentical(this.selectedTagNames, decodedTags)
-        ) {
-        // this.selectedTagNames.length != decodedTags.length 
-        // && 
-          //TODO check for not the same content
-          
+        if (this.selectedTagNames !== decodedTags) {
           // console.log("loadRouteTags " + this.selectedTagNames + " " + decodedTags);
           this.selectedTagNames = decodedTags;
-          return true;
         }
-
-        return false;
       },
       loadRouteSearch: function loadRouteSearch() {
         const search = this.$route.query.search ? this.$route.query.search : '';
 
-        if (search === this.searchTerm){
-          return false;
-        }
-
         if (!search || search.length <= 0) {
           this.catchSearchCleared();
         } else {
-          return this.catchSearchClicked(search);
+          this.catchSearchClicked(search);
         }
-
-        return false;
-      },
-      areArrayIdentical: function areArrayIdentical(arr1, arr2) {
-        if(arr1.length !== arr2.length) return false;
-
-        for(var i = arr1.length; i--;) {
-          if(arr1[i] !== arr2[i])
-            return false;
-        }
-
-        return true;        
       },
       updateScroll: function updateScroll() {
         this.scrollPosition = window.scrollY;
@@ -185,7 +160,7 @@
 
           const tagsEncoded = this.encodeTagForUrl(this.selectedTagNames);
           this.additiveChangeRoute(undefined, tagsEncoded);
-          // this.filterContent();
+          this.filterContent();
         }
       },
       catchTagCloseClicked: function catchTagCloseClicked(tagId) {
@@ -200,7 +175,7 @@
 
           const tagsEncoded = this.encodeTagForUrl(this.selectedTagNames);
           this.additiveChangeRoute(undefined, tagsEncoded);
-          // this.filterContent();
+          this.filterContent();
         }
       },
       catchTagCleared: function catchTagCleared() {
@@ -218,11 +193,8 @@
             this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm, this.selectedTagNames);
 
             this.additiveChangeRoute(this.searchTerm, undefined);
-            return true;
           }
         }
-
-        return false;
       },
       catchSearchCleared: function catchSearchCleared() {
         this.searchTerm = '';
@@ -331,13 +303,6 @@
       filterContent: function filterContent() {
         this.$store.dispatch(`metadata/${FILTER_METADATA}`, this.selectedTagNames);
       },
-      checkRouteChanges: function checkRouteChanges() {
-        const tagsChanges = this.loadRouteTags();
-        const searchTriggerd = this.loadRouteSearch();
-        if (tagsChanges || (!tagsChanges && searchTriggerd)) {
-          this.filterContent();
-        }
-      },
     },
     computed: {
       ...mapGetters({
@@ -406,7 +371,10 @@
       /* eslint-disable no-unused-vars */
       $route: function watchRouteChanges(to, from) {
         // react on changes of the route (browser back / forward click)
-        this.checkRouteChanges();
+
+        this.loadRouteTags();
+        this.loadRouteSearch();
+        this.filterContent();
 
         window.scrollTo(0, this.scrollPosition);
         // console.log('watch $route ', this.$route.query.toString() + " to " + to.query + " from " + from.query);
@@ -415,9 +383,7 @@
         this.filterContent();
       },
       searchingMetadatasContentOK: function watchSearchFilterContent() {
-        if (this.searchingMetadatasContentOK) {          
-          this.filterContent();
-        }
+        this.filterContent();
       },
     },
     data: () => ({
