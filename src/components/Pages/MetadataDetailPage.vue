@@ -19,7 +19,12 @@
           <metadata-header v-bind="header"
                             v-on:clickedTag="catchTagClicked"
                             v-on:clickedBack="catchBackClicked"                           
-                            :showPlaceholder="showPlaceholder" />
+                            :showPlaceholder="showPlaceholder"
+                            :doiIcon="doiIcon"
+                            :contactIcon="contactIcon"
+                            :mailIcon="mailIcon"
+                            :licenseIcon="licenseIcon"
+                            />
 
         </v-flex>
 
@@ -63,7 +68,15 @@
               <metadata-resources v-bind="resources"
                                   :isOnTop="true"
                                   :twoColumnLayout="twoColumnLayout"
-                                  :showPlaceholder="showPlaceholder" />
+                                  :showPlaceholder="showPlaceholder"
+                                  :doiIcon="doiIcon"
+                                  :downloadIcon="downloadIcon"
+                                  :linkIcon="linkIcon"
+                                  :fileSizeIcon="fileSizeIcon"
+                                  :dateCreatedIcon="dateCreatedIcon"
+                                  :lastModifiedIcon="lastModifiedIcon"
+                                  />
+
             </v-flex>
 
             <v-flex xs12 mb-2 v-if="!showDetailsOnTheLeft">
@@ -86,7 +99,12 @@
           <metadata-header v-bind="header"
                             v-on:clickedTag="catchTagClicked"
                             v-on:clickedBack="catchBackClicked"
-                            :showPlaceholder="showPlaceholder" />
+                            :showPlaceholder="showPlaceholder"
+                            :doiIcon="doiIcon"
+                            :contactIcon="contactIcon"
+                            :mailIcon="mailIcon"
+                            :licenseIcon="licenseIcon"
+                            />
 
         </v-flex>
 
@@ -113,8 +131,16 @@
                 v-bind="fullWidthPadding"
                 >
 
-          <metadata-resources v-bind="resources" :twoColumnLayout="twoColumnLayout"
-                              :showPlaceholder="showPlaceholder" />
+          <metadata-resources v-bind="resources"
+                              :twoColumnLayout="twoColumnLayout"
+                              :showPlaceholder="showPlaceholder"
+                              :doiIcon="doiIcon"
+                              :downloadIcon="downloadIcon"
+                              :linkIcon="linkIcon"
+                              :fileSizeIcon="fileSizeIcon"
+                              :dateCreatedIcon="dateCreatedIcon"
+                              :lastModifiedIcon="lastModifiedIcon"
+                              />
         </v-flex>
 
         <v-flex xs12
@@ -177,6 +203,17 @@
         vm.$store.commit(SET_CURRENT_PAGE, 'metadataDetailPage');
         vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
+    },
+    beforeMount: function beforeMount() {
+      this.downloadIcon = this.getIcon('download');
+      this.linkIcon = this.getIcon('link');
+      this.doiIcon = this.getIcon('doi');
+      this.fileSizeIcon = this.getIcon('fileSize');
+      this.dateCreatedIcon = this.getIcon('dateCreated');
+      this.lastModifiedIcon = this.getIcon('dateModified');
+      this.contactIcon = this.getIcon('contact2');
+      this.mailIcon = this.getIcon('mail');
+      this.licenseIcon = this.getIcon('license');
     },
     mounted: function mounted() {
       this.loadMetaDataContent();
@@ -359,6 +396,15 @@
       details: null,
       amountOfResourcesToShowDetailsLeft: 4,
       notFoundBackPath: 'browse',
+      downloadIcon: null,
+      linkIcon: null,
+      doiIcon: null,
+      fileSizeIcon: null,
+      dateCreatedIcon: null,
+      lastModifiedIcon: null,
+      contactIcon: null,
+      mailIcon: null,
+      licenseIcon: null,
     }),
     components: {
       MetadataHeader,

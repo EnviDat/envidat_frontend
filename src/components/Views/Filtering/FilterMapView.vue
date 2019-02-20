@@ -2,12 +2,16 @@
 
   <v-card raised
           :height="totalHeight"
+          :width="totalWidth"
   >
 
     <v-card-title>
       <div class="headline mb-0">Cartographic Filtering</div>
-      <div class="pt-2" style="color: red;" >Underconstruction: At the moment the map is only for browsing.</div>
     </v-card-title>
+    
+    <div class="mb-2" :style="`background-color: ${this.$vuetify.theme.highlight};`">
+      <p class="px-3 py-0 my-0 body-2" > {{ highlightedText }} </p>
+    </div>
 
     <div v-if="expanded && !errorLoadingLeaflet"
           id="map"
@@ -19,20 +23,69 @@
           Error loading leaflet
     </div>
 
-    <!-- <v-card-actions class="pr-2">
+    <v-card-actions class="pr-2">
+      <div :style="`color:${this.pinnedIds.length > 0 ? this.$vuetify.theme.primary : 'rgba(0,0,0,.47)'};`" >{{ this.filterText + this.pinnedIds.length }}</div>
+
       <v-spacer />
 
-      <div class="pr-3">
-        <img v-if="loading"
-              class="envidatIcon rotating" :src="getIcon('spinner')" />                
-      </div>
+      <icon-button class="px-2"
+                    :customIcon="eyeIcon"
+                    color="highlight"
+                    :outlined="true"
+                    toolTipText="Focus on all elements on the map"
+                    v-on:clicked="focusOnLayers()" />
 
-      <icon-count-view :count="markerCount"
-                        iconString="marker"
-                        :tooltip="`${markerCount} makers pinned on the map`">
-      </icon-count-view>
+      <icon-button class="px-2"
+                    v-if="hasPins"
+                    :count="pinLayerGroup.length"
+                    :customIcon="pinIcon"
+                    color="secondary"
+                    :outlined="true"
+                    :isToggled="pinEnabled"
+                    :toolTipText="pinEnabled ? 'Hide single markers' : 'Show single markers'"
+                    v-on:clicked="pinEnabled = !pinEnabled; updatePins()" />
 
-    </v-card-actions> -->
+      <icon-button class="px-2"
+                    v-if="hasMultiPins"
+                    :count="multiPinLayerGroup.length"
+                    :customIcon="multiPinIcon"
+                    color="secondary"
+                    :outlined="true"
+                    :isToggled="multiPinEnabled"
+                    :toolTipText="multiPinEnabled ? 'Hide multi markers' : 'Show multi markers'"
+                    v-on:clicked="multiPinEnabled = !multiPinEnabled; updateMultiPins()" />
+
+      <!-- <icon-button class="px-1"
+                    :customIcon="polygonIcon"
+                    :disabled="true"
+                    toolTipText="Polygon filtering is in development"
+                    /> -->
+
+      <icon-button class="px-2"
+                    v-if="hasPolygons"
+                    :count="polygonLayerGroup.length"
+                    :customIcon="polygonIcon"
+                    color="secondary"
+                    :isToggled="polygonEnabled"
+                    :outlined="true"
+                    :toolTipText="polygonEnabled ? 'Hide polygons' : 'Show polygons'"
+                    v-on:clicked="polygonEnabled = !polygonEnabled; updatePolygons()"
+                    />
+
+
+      <rectangle-button class="pl-3"
+                        :buttonText="clearButtonText"
+                        toolTipText="Clear all pinned Metadata"
+                        :isSmall="true"
+                        :isFlat="true"
+                        iconColor="red"
+                        :disabled="this.pinnedIds.length <= 0"
+                        materialIconName="close"
+                        v-on:clicked="catchClearButtonClicked"
+      />
+
+
+    </v-card-actions>
 
   </v-card>
 
@@ -44,6 +97,8 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import IconCountView from '../IconCountView';
 import metaDataFactory from '../../metaDataFactory';
+import RectangleButton from '../../Elements/RectangleButton';
+import IconButton from '../../Elements/IconButton';
 
 // HACK start
 /* eslint-disable import/first */
@@ -52,16 +107,18 @@ import metaDataFactory from '../../metaDataFactory';
 // stupid hack so that leaflet's images work after going through webpack
 import marker from 'leaflet/dist/images/marker-icon.png';
 import marker2x from 'leaflet/dist/images/marker-icon-2x.png';
+import selectedMarker from 'leaflet/dist/images/selected-marker-icon.png';
+import selectedMarker2x from 'leaflet/dist/images/selected-marker-icon-2x.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 /* eslint-disable no-underscore-dangle */
-delete L.Icon.Default.prototype._getIconUrl;
+// delete L.Icon.Default.prototype._getIconUrl;
 
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: marker2x,
-  iconUrl: marker,
-  shadowUrl: markerShadow,
-});
+// L.Icon.Default.mergeOptions({
+//   // iconRetinaUrl: marker2x,
+//   // iconUrl: marker,
+//   shadowUrl: markerShadow,
+// });
 
 // HACK end
 
@@ -70,7 +127,14 @@ export default {
   props: {
     locations: Array,
     totalHeight: Number,
+    totalWidth: Number,
     expanded: Boolean,
+  },
+  beforeMount: function beforeMount() {
+    this.pinIcon = this.getIcon('marker');
+    this.multiPinIcon = this.getIcon('markerMulti');
+    this.polygonIcon = this.getIcon('polygons');
+    this.eyeIcon = this.getIcon('eye');
   },
   mounted: function mounted() {
     // if (L){
@@ -82,13 +146,12 @@ export default {
     if (this.map) {
       this.map.remove();
     }
-
-    this.mapFilteringActive = false;
-    this.reFilter();
   },
   computed: {
     ...mapGetters({
+      filteredContent: 'metadata/filteredContent',
       metadataIds: 'metadata/metadataIds',
+      pinnedIds: 'metadata/pinnedIds',
       metadatasContent: 'metadata/metadatasContent',
       searchedMetadatasContent: 'metadata/searchedMetadatasContent',
       searchingMetadatasContent: 'metadata/searchingMetadatasContent',
@@ -106,45 +169,40 @@ export default {
     mapHeight: function mapHeight() {
       return this.totalHeight - this.buttonHeight;
     },
-    // cardHeight: function cardHeight() {
-    //   if (this.expanded) {
-    //     return this.totalHeight + this.buttonHeight;
-    //   }
-
-    //   return this.buttonHeight;
-    // },
+    hasPins: function hasPins() {
+      return this.pinLayerGroup && this.pinLayerGroup.length > 0;
+    },
+    hasMultiPins: function hasMultiPins() {
+      return this.multiPinLayerGroup && this.multiPinLayerGroup.length > 0;
+    },
+    hasPolygons: function hasPolygons() {
+      return this.polygonLayerGroup && this.polygonLayerGroup.length > 0;
+    },
   },
   methods: {
     checkError: function checkError(e) {
-      // console.log('got error ' + e);
+      console.log(`got leaflet error ${e}`);
       this.errorLoadingLeaflet = true;
     },
     // expandClicked: function expandClicked(expand) {
     //   this.expanded = expand;
     // },
-    catchPointClick: function catchPointClick(e) {      
-      // e.target.bindPopup(`<h3>${e.target.id}</h3>`).openPopup();
-
-      // this.$emit('pointClicked', e.target.id);
-      // this.$emit('pointHover', e.target.id);
+    catchPointClick: function catchPointClick(e) {
+      this.$emit('pointClicked', e.target.id);
     },
     catchPointHover: function catchPointHover(e) {
-      e.target.bindPopup(`<p>${e.target.id}</p>`).openPopup();
+      e.target.bindPopup(`<p>${e.target.title}</p>`).openPopup();
       this.$emit('pointHover', e.target.id);
     },
     catchPointHoverLeave: function catchPointHoverLeave(e) {
       e.target.closePopup();
       this.$emit('pointHoverLeave', e.target.id);
     },
-    toggleMapExpand: function toggleMapExpand() {
-      this.toggleActive();
-
-      return this.$emit('toggleMapFilterExpand');
+    catchClearButtonClicked: function catchClearButtonClicked() {
+      this.$emit('clearButtonClicked');
     },
-    toggleActive: function toggleActive() {
-      this.mapFilteringActive = !this.mapFilteringActive;
-
-      this.reFilter();
+    toggleMapExpand: function toggleMapExpand() {
+      return this.$emit('toggleMapFilterExpand');
     },
     setupMap: function setupMap() {
       if (this.mapIsSetup) {
@@ -157,43 +215,53 @@ export default {
       this.markerCount = 0;
 
       if (this.map) {
-        this.map.on({ locationerror: this.checkError });
+        this.map.on('locationerror', () => {
+          this.checkError();
+        });
 
         this.addOpenStreetMapLayer(this.map);
 
-        this.addGeoJSONToMap();
+        this.updateMap();
 
-        this.map.on({ moveend: this.reFilter });
+        this.map.on('zoomend', () => {
+          // console.log("zooming map");
+          this.updatePolygons();
+        });
+
+        this.map.on('moveend', () => {
+          // console.log("zooming map");
+          this.updatePolygons();
+        });
 
         this.mapIsSetup = true;
       }
     },
-    initLeaflet: function initLeaflet(mapElement, coords) {
+    initLeaflet: function initLeaflet(mapElement) {
       // if (!L){
       //   errorLoadingLeaflet = true;
       //   return undefined;
       // }
 
-      let viewCoords = [46.943961, 8.199240];
+      // if (coords) {
+      //   viewCoords = coords;
 
-      if (coords) {
-        viewCoords = coords;
+      //   if (this.isPolygon) {
+      //     viewCoords = coords[0][0];
+      //   } else if (this.isMultiPoint) {
+      //     viewCoords = coords[0];
+      //   }
 
-        if (this.isPolygon) {
-          viewCoords = coords[0][0];
-        } else if (this.isMultiPoint) {
-          viewCoords = coords[0];
-        }
-
-        // map.setView(viewCoords, 9);
-      }
+      //   // map.setView(viewCoords, 9);
+      // }
 
       const map = L.map(mapElement, {
         scrollWheelZoom: false,
-        center: viewCoords,
-        zoom: 8,
+        center: this.setupCenterCoords,
+        zoom: 7,
+        zoomSnap: 0.5,
       });
 
+      this.initialBounds = map.getBounds();
 
       return map;
     },
@@ -206,65 +274,52 @@ export default {
       }
     },
     addOpenStreetMapLayer: function addOpenStreetMapLayer(map) {
-      L.tileLayer(
+      const baseMap = L.tileLayer(
         'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' },
       ).addTo(map);
+      this.mapLayerGroup = L.layerGroup([baseMap]);
+      this.mapLayerGroup.addTo(map);
+      // baseMap.addTo(map);
     },
-    // addGoogleMapsLayer: function addGoogleMapsLayer(map) {
-    // const styled = L.gridLayer.googleMutant({
-    //   type: 'roadmap',
-    //   styles: [
-    //     { elementType: 'labels', stylers: [{ visibility: 'off' }] },
-    //     { featureType: 'water', stylers: [{ color: '#444444' }] },
-    //   ],
-    // }).addTo(map);
+    getPoint: function getPoint(coords, id, title, selected) {
+      const iconOptions = L.Icon.Default.prototype.options;
+      delete iconOptions._getIconUrl;
+      // use the defaultoptions to ensure that all untouched defaults stay in place
 
-    // const roads = L.gridLayer.googleMutant({
-    //   type: 'roadmap', // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
-    // }).addTo(map);
-    // },
-    addGeoData: function addGeoData(location) {
-      const validGeoJSON = this.parseGeoJSON(location.geoJSON);
+      iconOptions.iconUrl = selected ? this.selectedMarker : this.marker;
+      iconOptions.iconRetinaUrl = selected ? this.selectedMarker2x : this.marker2x;
+      iconOptions.shadowUrl = this.markerShadow;
 
-      if (validGeoJSON) {
-        L.geoJSON(location.geoJSON).addTo(this.map);
-      } else if (location.pointArray) {
-        if (location.isPoint) {
-          this.addPoint(this.map, location.pointArray, location.title);
-          this.markerCount++;
-        }
+      // L.Icon.Default.mergeOptions({
+      //   iconRetinaUrl: selected ? this.selectedMarker2x : this.marker2x,
+      //   iconUrl: selected ? this.selectedMarker : this.marker,
+      //   shadowUrl: this.markerShadow,
+      // });
 
-        if (location.isPolygon) {
-          this.addPolygon(this.map, location.pointArray, location.title);
-        }
+      const icon = L.icon(iconOptions);
 
-        if (location.isMultiPoint) {
-          this.addMultiPoint(this.map, location.pointArray, location.title);
-        }
-      }
-    },
-    addPoint: function addPoint(map, coords, id) {
       const point = L.marker(coords, {
-        color: this.$vuetify.theme.primary,
-        opacity: 0.65,
+        icon,
+        opacity: selected ? 0.8 : 0.65,
         riseOnHover: true,
-        title: id,
-      }).addTo(map);
+      });
 
       point.id = id;
+      point.title = title;
       point.on({ click: this.catchPointClick });
       point.on({ mouseover: this.catchPointHover });
       point.on({ mouseout: this.catchPointHoverLeave });
 
+
       return point;
     },
-    addPolygon: function addPolygon(map, coords, id) {
+    getPolygon: function getPolygon(coords, id, title, selected) {
       // create a polygon from an array of LatLng points
       // var latlngs = [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]];
       const polygon = L.polygon(coords, {
-        color: this.$vuetify.theme.secondary,
-        opacity: 0.5,
+        color: selected ? this.$vuetify.theme.primary : this.$vuetify.theme.accent,
+        opacity: 0.45,
         fillOpacity: 0,
       });
 
@@ -272,7 +327,6 @@ export default {
       //   return null;
       // }
 
-      polygon.addTo(map);
       polygon.on({ click: this.catchPointClick });
       // polygon.on({ mouseover: this.catchPointHover });
       // polygon.on({ mouseout: this.catchPointHoverLeave });
@@ -280,80 +334,250 @@ export default {
       // zoom the map to the polygon
       // map.fitBounds(polygon.getBounds());
       polygon.id = id;
+      polygon.title = title;
 
       return polygon;
     },
-    addMultiPoint: function addMultiPoint(map, coords, id) {
+    getMultiPoint: function getMultiPoint(coords, id, title, selected) {
+      const points = [];
       for (let i = 0; i < coords.length; i++) {
         const pointCoord = coords[i];
-        this.addPoint(map, pointCoord, id);
+        const point = this.getPoint(pointCoord, id, title, selected);
+        points.push(point);
       }
 
-      // map.fitBounds(coords);
+      return points;
     },
-    reFilter: function reFilter() {
-      const visibleMetadataIds = [];
+    createMapElements: function createMapElements(locationDataSet) {
+      const pins = [];
+      const multiPins = [];
+      const polys = [];
 
-      if (this.mapFilteringActive) {
-        const currentBounds = this.map.getBounds();
-        const keys = Object.keys(this.map._layers);
+      for (let i = 0; i < locationDataSet.length; i++) {
+        const dataset = locationDataSet[i];
 
-        for (let i = 0; i < keys.length; i++) {
-          const key = keys[i];
-          const layer = this.map._layers[key];
+        const location = metaDataFactory.createLocation(dataset);
+        const selected = this.pinnedIds.includes(location.id);
 
-          if (layer instanceof L.Marker) {
-            const markerPos = layer.getLatLng();
-
-            // console.log(key + " marker " + markerPos + " in " + currentBounds + " " + contains);
-            if (currentBounds.contains(markerPos) && layer.id) {
-              visibleMetadataIds.push(layer.id);
-            }
+        if (location.isPoint) {
+          const pin = this.getPoint(location.pointArray, location.id, location.title, selected);
+          if (pin) {
+            pins.push(pin);
           }
         }
 
-        // console.log("visible ids " + visibleMetadataIds.length);
+        if (location.isMultiPoint) {
+          const multiPin = this.getMultiPoint(location.pointArray, location.id, location.title, selected);
+          if (multiPin) {
+            multiPins.push(multiPin);
+          }
+        }
+
+        if (location.isPolygon) {
+          const polygon = this.getPolygon(location.pointArray, location.id, location.title, selected);
+          if (polygon) {
+            polys.push(polygon);
+          }
+        }
       }
 
-      this.$emit('viewChanged', visibleMetadataIds);
+      this.polygonLayerGroup = polys;
+      this.pinLayerGroup = pins;
+
+      if (multiPins.length > 0) {
+        const flatMultiPins = [];
+        multiPins.forEach((pinCollection) => {
+          if (pinCollection) {
+            pinCollection.forEach((pin) => {
+              if (pin) {
+                flatMultiPins.push(pin);
+              }
+            });
+          }
+        });
+
+        this.multiPinLayerGroup = flatMultiPins;
+      } else {
+        this.multiPinLayerGroup = [];
+      }
     },
-    addGeoJSONToMap: function addGeoJSONToMap() {
-      const keys = Object.keys(this.metadatasContent);
+    addElementsToMap: function addElementsToMap(elements, enabled, checkBounds) {
+      if (!enabled || !elements || elements.length <= 0) {
+        return;
+      }
 
-      for (let i = 0; i < keys.length; i++) {
-        const key = keys[i];
+      this.showMapElements(elements, true, checkBounds);
+    },
+    focusOnLayers: function focusOnLayers() {
+      const allLayers = [];
 
-        if (!this.addedObjectsKeys.includes(key)) {
-          const dataset = this.metadatasContent[key];
+      if (this.pinEnabled) {
+        this.pinLayerGroup.forEach((l) => {
+          allLayers.push(l);
+        });
+      }
 
-          const location = metaDataFactory.createLocation(dataset);
+      if (this.multiPinEnabled) {
+        this.multiPinLayerGroup.forEach((l) => {
+          allLayers.push(l);
+        });
+      }
 
-          // console.log("adding " + key + " " + JSON.stringify(location.spatial));
-          this.addGeoData(location);
+      if (this.polygonEnabled) {
+        this.polygonLayerGroup.forEach((l) => {
+          allLayers.push(l);
+        });
+      }
 
-          this.addedObjectsKeys.push(key);
+      if (allLayers.length > 0) {
+        const feat = L.featureGroup(allLayers);
+        const featBounds = feat.getBounds();
+
+        // if (featBounds.contains(this.initialBounds)) {
+        //   this.map.fitBounds(this.initialBounds);
+        // } else {
+        this.map.fitBounds(featBounds, { maxZoom: 8 });
+        // }
+      }
+    },
+    clearLayers: function clearLayers(map, specificClear) {
+      if (!map) {
+        return;
+      }
+
+      if (this.polygonLayerGroup) {
+        if ((specificClear && specificClear === 'polygons') || !specificClear) {
+          this.showMapElements(this.polygonLayerGroup, false);
+        }
+      }
+
+      if (this.pinLayerGroup) {
+        if ((specificClear && specificClear === 'pins') || !specificClear) {
+          this.showMapElements(this.pinLayerGroup, false);
+        }
+      }
+
+      if (this.multiPinLayerGroup) {
+        if ((specificClear && specificClear === 'multiPins') || !specificClear) {
+          this.showMapElements(this.multiPinLayerGroup, false);
         }
       }
     },
+    showMapElements(elements, show, checkBounds) {
+      const currentBounds = this.map.getBounds();
+
+      elements.forEach((el) => {
+        if ((show && !checkBounds) || (show && checkBounds && !el.getBounds().contains(currentBounds))) {
+          try {
+            el.addTo(this.map);
+          } catch (error) {
+            console.log('showMapElements error: ' + error + ' on element ' + el.title);
+          }
+        } else {
+          try {
+            this.map.removeLayer(el);
+          } catch (error) {
+            console.log('showMapElements remove error: ' + error + ' on element ' + el.title);
+          }
+        }
+      });
+    },
+    addControls: function addControls() {
+      const baseLayers = {
+        Map: this.mapLayerGroup,
+      };
+
+      const overlays = {
+        Pins: this.pinLayerGroup,
+        MultiPins: this.multiPinLayerGroup,
+        Polygons: this.polygonLayerGroup,
+      };
+
+      L.control.layers(baseLayers, overlays).addTo(this.map);
+    },
+    mergePinnedAndFiltered: function mergePinnedAndFiltered() {
+      const pinnedContent = [];
+
+      this.pinnedIds.forEach((pinId) => {
+        pinnedContent.push(this.metadatasContent[pinId]);
+      });
+
+      return [...pinnedContent, ...this.filteredContent];
+    },
+    updateMap: function updateMap() {
+      this.clearLayers(this.map);
+      const pinnedAndFilteredContent = this.mergePinnedAndFiltered();
+
+      // fills this.pinLayerGroup, this.multiPinLayerGroup, this.polygonLayerGroup
+      this.createMapElements(pinnedAndFilteredContent);
+
+      this.addElementsToMap(this.pinLayerGroup, this.pinEnabled);
+      this.addElementsToMap(this.multiPinLayerGroup, this.multiPinEnabled);
+      this.addElementsToMap(this.polygonLayerGroup, this.polygonEnabled, true);
+
+      // this.addGeoJSONToMap();
+    },
+    updatePins: function updatePins() {
+      this.clearLayers(this.map, 'pins');
+
+      this.addElementsToMap(this.pinLayerGroup, this.pinEnabled);
+    },
+    updateMultiPins: function updateMultiPins() {
+      this.clearLayers(this.map, 'multiPins');
+
+      this.addElementsToMap(this.multiPinLayerGroup, this.multiPinEnabled);
+    },
+    updatePolygons: function updatePolygons() {
+      this.clearLayers(this.map, 'polygons');
+
+      this.addElementsToMap(this.polygonLayerGroup, this.polygonEnabled, true);
+    },
   },
   watch: {
-    metadatasContent: function updateMetadatasContent() {
-      this.addGeoJSONToMap();
+    pinnedIds: function updateMapPinnedIds() {
+      this.updateMap();
+    },
+    filteredContent: function updateMetadatasContent() {
+      this.updateMap();
     },
   },
   data: () => ({
     map: null,
     mapIsSetup: false,
-    buttonHeight: 84,
+    setupCenterCoords: [46.943961, 8.199240],
+    initialBounds: null,
+    //Todo: sometimes the height isn't loaded correctly... 
+    buttonHeight: 135,
     updatingMap: true,
     addedObjectsKeys: [],
     mapFilteringActive: false,
     markerCount: 0,
     hoverBadge: false,
     errorLoadingLeaflet: false,
+    mapLayerGroup: null,
+    polygonEnabled: false,
+    polygonLayerGroup: null,
+    pinEnabled: true,
+    pinLayerGroup: null,
+    multiPinEnabled: true,
+    multiPinLayerGroup: null,
+    pinIcon: null,
+    multiPinIcon: null,
+    polygonIcon: null,
+    eyeIcon: null,
+    highlightedText: 'Select markers to pin them to the top of the list',
+    clearButtonText: 'Clear Pins',
+    filterText: 'Pinned: ',
+    marker,
+    marker2x,
+    selectedMarker,
+    selectedMarker2x,
+    markerShadow,
   }),
   components: {
     IconCountView,
+    RectangleButton,
+    IconButton,
   },
 };
 </script>

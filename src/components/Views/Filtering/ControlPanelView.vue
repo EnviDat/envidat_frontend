@@ -24,13 +24,15 @@
                       multiple>
 
           <v-btn flat
+                :class="isActiveControl(0) ? 'highlight' : ''"
                 :style="compactLayout ? 'height: 32px !important' : ''">
-            <img class="envidatIcon" :src="getIcon('listView')" />
+            <img class="envidatIcon" :src="listViewIcon" />
           </v-btn>
           
           <v-btn flat
+                :class="isActiveControl(1) ? 'highlight' : ''"
                 :style="compactLayout ? 'height: 32px !important' : ''">
-            <img class="envidatIcon" :src="getIcon('map')" />
+            <img class="envidatIcon" :src="mapIcon" />
           </v-btn>
 
         </v-btn-toggle>
@@ -48,6 +50,10 @@ export default {
   props: {
     compactLayout: Boolean,
   },
+  beforeMount: function beforeMount() {
+    this.listViewIcon = this.getIcon('listView');
+    this.mapIcon = this.getIcon('map');
+  },
   mounted: function mounted() {
     this.controlsActive = this.$store.getters.controls;
   },
@@ -57,11 +63,16 @@ export default {
     listViewActivate: 'List view',
     listViewDeactivate: 'Grid view',
     controlsActive: [],
+    listViewIcon: null,
+    mapIcon: null,
   }),
   updated: function updated() {
     this.$emit('controlsChanged', this.controlsActive);
   },
   methods: {
+    isActiveControl(number) {
+      return this.controlsActive.includes(number);
+    },
     catchMapFilterClick: function catchMapFilterClick() {
       this.$emit('clickedMapFilter');
     },

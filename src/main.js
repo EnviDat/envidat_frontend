@@ -16,6 +16,7 @@ Vue.use(Vuetify, {
     primary: '#00897B', // teal darken-1
     secondary: '#4DB6AC', // teal lighten-2
     accent: '#FFD740', // amber accent-2
+    highlight: '#B2DFDB', // teal lighten-4
     error: '#FF5252',
     info: '#2196F3',
     success: '#4CAF50',
