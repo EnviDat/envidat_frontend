@@ -51,27 +51,33 @@
           >
             <v-layout column>
               <v-flex px-0 v-if="doi">
-                <icon-label-view :text="doi" :icon="getIcon('doi')"
+                <icon-label-view :text="doi"
+                                  :icon="doiIcon"
                                   iconTooltip="Data Object Identifier" 
                                   :alignLeft="twoColumnLayout"/>
               </v-flex>
               <v-flex px-0 v-if="format">
-                <icon-label-view :label="fileFormatLabel" :text="format"
-                                  :icon="fileExtensionIcon" iconTooltip="Format of the file"
+                <icon-label-view :label="fileFormatLabel"
+                                  :text="format"
+                                  :icon="fileExtensionIcon"
+                                  iconTooltip="Format of the file"
                                   :alignLeft="twoColumnLayout" />
               </v-flex>
               <v-flex px-0 v-if="size">
-                <icon-label-view :text="formatedBytes" :icon="getIcon('fileSize')"
+                <icon-label-view :text="formatedBytes"
+                                  :icon="fileSizeIcon"
                                   iconTooltip="Filesize"
                                   :alignLeft="twoColumnLayout" />
               </v-flex>
               <v-flex px-0 v-if="created">
-                <icon-label-view :text="formatedDate(created)" :icon="getIcon('dateCreated')" 
+                <icon-label-view :text="formatedDate(created)"
+                                  :icon="dateCreatedIcon" 
                                   iconTooltip="Date of file creation" 
                                   :alignLeft="twoColumnLayout"/>
               </v-flex>
               <v-flex px-0 v-if="lastModified">
-                <icon-label-view :text="formatedDate(lastModified)" :icon="getIcon('dateModified')"
+                <icon-label-view :text="formatedDate(lastModified)"
+                                  :icon="lastModifiedIcon"
                                   iconTooltip="Date of last modification" 
                                   :alignLeft="twoColumnLayout"/>
               </v-flex>
@@ -99,7 +105,7 @@
                     v-on:clicked="showFullDescription = !showFullDescription" />
 
 
-      <icon-button :customIcon=" isFile ? getIcon('download') : getIcon('link')"
+      <icon-button :customIcon="isFile ? downloadIcon : linkIcon"
                   color="accent"
                   :isElevated="true"
                   :toolTipText="isFile ? 'Download file' : 'Open link'"
@@ -132,6 +138,12 @@ export default {
     twoColumnLayout: Boolean,
     height: String,
     dark: Boolean,
+    downloadIcon: String,
+    linkIcon: String,
+    doiIcon: String,
+    fileSizeIcon: String,
+    dateCreatedIcon: String,
+    lastModifiedIcon: String,
   },
   data: () => ({
     defaultTexture,
