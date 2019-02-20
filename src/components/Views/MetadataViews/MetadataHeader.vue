@@ -16,6 +16,7 @@
                       :iconColor=" (showPlaceholder || !metadataTitle) ? 'white' : 'primary'"
                       :outlined="true"
                       toolTipText ="Close Metadata"
+                      :toolTipBottom="true"
                       v-on:clicked="catchBackClicked" />
 
 
@@ -111,6 +112,7 @@
                         :isToggled="showTagsExpanded"
                         :rotateOnClick="true"
                         :toolTipText="showTagsExpanded ? 'Hide all tags' : 'Show all tags'"
+                        :toolTipBottom="true"
                         v-on:clicked="showTagsExpanded = !showTagsExpanded" />
 
         </v-card-actions>

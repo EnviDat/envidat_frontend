@@ -28,15 +28,16 @@
 
       <v-spacer />
 
-      <icon-button class="px-1"
+      <icon-button class="px-2"
                     :customIcon="eyeIcon"
                     color="highlight"
                     :outlined="true"
                     toolTipText="Focus on all elements on the map"
                     v-on:clicked="focusOnLayers()" />
 
-      <icon-button class="px-1"
+      <icon-button class="px-2"
                     v-if="hasPins"
+                    :count="pinLayerGroup.length"
                     :customIcon="pinIcon"
                     color="secondary"
                     :outlined="true"
@@ -44,8 +45,9 @@
                     :toolTipText="pinEnabled ? 'Hide single markers' : 'Show single markers'"
                     v-on:clicked="pinEnabled = !pinEnabled; updatePins()" />
 
-      <icon-button class="px-1"
+      <icon-button class="px-2"
                     v-if="hasMultiPins"
+                    :count="multiPinLayerGroup.length"
                     :customIcon="multiPinIcon"
                     color="secondary"
                     :outlined="true"
@@ -59,8 +61,9 @@
                     toolTipText="Polygon filtering is in development"
                     /> -->
 
-      <icon-button class="px-1"
+      <icon-button class="px-2"
                     v-if="hasPolygons"
+                    :count="polygonLayerGroup.length"
                     :customIcon="polygonIcon"
                     color="secondary"
                     :isToggled="polygonEnabled"
@@ -70,7 +73,7 @@
                     />
 
 
-      <rectangle-button class="pl-2"
+      <rectangle-button class="pl-3"
                         :buttonText="clearButtonText"
                         toolTipText="Clear all pinned Metadata"
                         :isSmall="true"
@@ -544,7 +547,7 @@ export default {
     setupCenterCoords: [46.943961, 8.199240],
     initialBounds: null,
     //Todo: sometimes the height isn't loaded correctly... 
-    buttonHeight: 130,
+    buttonHeight: 135,
     updatingMap: true,
     addedObjectsKeys: [],
     mapFilteringActive: false,
