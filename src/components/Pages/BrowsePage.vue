@@ -28,11 +28,10 @@
                       v-on:clickedTagClose="catchTagCloseClicked"
                       v-on:clickedClear="catchTagCleared"
                       :showMapFilter="showMapFilter"
-                      :mapFilteringEnabled="mapFilteringEnabled"
+                      :mapFilteringPossible="mapFilteringPossible"
                       :mapFilterHeight="mapFilterHeight"
                       v-on:clickedMapExpand="toggleMapExpand"
                       v-on:mapFilterChanged="catchMapFilterChanged"
-                      v-on:pointClicked="catchPointClicked"
                       :showPlaceholder="updatingTags"
                       v-on:controlsChanged="controlsChanged"
                       />
@@ -50,28 +49,31 @@
        >
 
        <metadata-list-view :listView="listViewActive"
-                            :compactLayout="showMapFilter"
-                            :hoverId="hoverId"
-                            :mapFilteringEnabled="mapFilteringEnabled"
+                            :showMapFilter="showMapFilter"
+                            :mapFilteringPossible="mapFilteringPossible"
                             :placeHolderAmount="placeHolderAmount"
                             v-on:clickedTag="catchTagClicked"
        />
 
       </v-flex>
 
-      <v-flex v-if="mapFilteringEnabled && showMapFilter"
+      <v-flex v-if="mapFilteringPossible && showMapFilter"
               py-3
-              v-bind="{ ['px-3']: showMapFilter & $vuetify.breakpoint.mdAndUp,
+              v-bind="{ ['pr-3']: showMapFilter & $vuetify.breakpoint.mdAndUp,
                         ['xs4']: showMapFilter & $vuetify.breakpoint.mdAndUp,
                         ['xs6']: showMapFilter & $vuetify.breakpoint.sm,
                         ['pl-2']: showMapFilter & $vuetify.breakpoint.sm,
                       }"
-              style="pointer-events: none; position: fixed; top: 135px; right: 10px;"
+              style="position: fixed; top: 135px; right: 10px;"
       >
 
         <filter-map-view :totalHeight="mapFilterHeight"
+                          :totalWidth="mapFilterWidth"
                           :expanded="showMapFilter"
-                          v-on:pointClicked="catchPointClicked" />
+                          v-on:pointClicked="catchPointClicked"
+                          v-on:pointHover="catchPointHovered"
+                          v-on:pointHoverLeave="catchPointHoverLeave"
+                          v-on:clearButtonClicked="catchClearButtonClick"  />
 
       </v-flex>
 
@@ -90,6 +92,8 @@
     SEARCH_METADATA,
     CLEAR_SEARCH_METADATA,
     FILTER_METADATA,
+    PIN_METADATA,
+    CLEAR_PINNED_METADATA,
   } from '../../store/metadataMutationsConsts';
   import {
     SET_APP_BACKGROUND,
@@ -213,19 +217,22 @@
       catchPointClicked: function catchPointClicked(id) {
         // bring to top
         // highlight entry
+
+        this.$store.commit(`metadata/${PIN_METADATA}`, id);
       },
       catchPointHovered: function catchPointHovered(id) {
         // bring to top
         // highlight entry
-        const domElement = this.$refs[id];
-        if (domElement && domElement.length > 0) {
-          this.hoverId = id;
+        const domElement = this.metadatasContent[id];
+        if (domElement) {
         }
       },
       catchPointHoverLeave: function catchPointHoverLeave(id) {
         // bring to top
         // highlight entry
-        this.hoverId = '';
+      },
+      catchClearButtonClick: function catchClearButtonClick() {
+        this.$store.commit(`metadata/${CLEAR_PINNED_METADATA}`);
       },
       controlsChanged: function controlsChanged(controlsActive) {
         // 0-entry: listView, 1-entry: mapActive
@@ -313,6 +320,7 @@
         loadingMetadataIds: 'metadata/loadingMetadataIds',
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
         filteredContent: 'metadata/filteredContent',
+        pinnedIds: 'metadata/pinnedIds',
         // tag Object structure: { tag: tagName, count: tagCount }
         allTags: 'metadata/allTags',
         currentMetadata: 'metadata/currentMetadata',
@@ -330,12 +338,25 @@
         let height = this.maxMapFilterHeight;
 
         if (sHeight < this.maxMapFilterHeight) {
-          height = sHeight - 170;
+          height = sHeight - 165;
         }
 
         // console.log('sHeight ' + sHeight + ' height ' + height + ' ' + this.maxMapFilterHeight);
 
         return height;
+      },
+      mapFilterWidth: function mapFilterWidth() {
+        const sWidth = document.documentElement.clientWidth;
+
+        if (this.$vuetify.breakpoint.mdAndUp) {
+          return sWidth * 0.31;
+        }
+
+        if (this.$vuetify.breakpoint.sm) {
+          return sWidth * 0.5;
+        }
+
+        return sWidth;
       },
       popularTags: function popularTags() {
         const popTags = [];
@@ -352,15 +373,15 @@
       },
       metadataListStyling: function metadataListStyling() {
         const json = {
-          xs8: this.mapFilteringEnabled && this.showMapFilter,
-          xs12: this.mapFilteringEnabled && !this.showMapFilter,
+          xs8: this.mapFilteringPossible && this.showMapFilter,
+          xs12: this.mapFilteringPossible && !this.showMapFilter,
           'mt-2': !this.showMapFilter,
           // style: this.showMapFilter ? `margin-top: -${this.mapFilterHeight}px;` : '',
         };
 
         return json;
       },
-      mapFilteringEnabled: function mapFilteringEnabled() {
+      mapFilteringPossible: function mapFilteringPossible() {
         return this.$vuetify.breakpoint.smAndUp;
       },
       searchCount: function searchCount() {
@@ -396,9 +417,8 @@
       popularTagAmount: 10,
       scrollPosition: 0,
       showMapFilter: false,
-      maxMapFilterHeight: 750,
+      maxMapFilterHeight: 725,
       mapFilterVisibleIds: [],
-      hoverId: '',
       listViewActive: false,
     }),
     components: {

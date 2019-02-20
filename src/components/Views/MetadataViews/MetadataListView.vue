@@ -24,12 +24,41 @@
 
         </v-flex>
 
+        <v-flex v-if="showPinnedElements" 
+                v-for="(pinnedId, index) in pinnedIds" :key="'pinned_' + index"
+                v-bind="cardGridClass" >
 
-        <v-flex v-if="!loading && !loadingContent"
-                v-bind="cardGridClass"
-                v-for="(metadata, index) in filteredContent" :key="'card_' + index">
+        <!-- Map hovering highlighted element -->
 
             <metadata-card
+                        class="highlighted"
+                        :title="metadatasContent[pinnedId].title"
+                        :id="metadatasContent[pinnedId].id"
+                        :name="metadatasContent[pinnedId].name"
+                        :ref="metadatasContent[pinnedId].id"
+                        :subtitle="metadatasContent[pinnedId].notes"
+                        :tags="metadatasContent[pinnedId].tags"
+                        :titleImg="metadatasContent[pinnedId].titleImg"
+                        :restricted="hasRestrictedResources(metadatasContent[pinnedId])"
+                        :resourceCount="metadatasContent[pinnedId].num_resources"
+                        :resources="metadatasContent[pinnedId].resources"
+                        :dark="false"
+                        :flatLayout="listView"
+                        :fileIconString="fileIconString"
+                        :lockedIconString="lockedIconString"
+                        :unlockedIconString="unlockedIconString"
+                        v-on:clickedEvent="metaDataClicked"
+                        v-on:clickedTag="catchTagClicked"
+            />
+
+        </v-flex>
+
+        <v-flex v-if="!loading && !loadingContent && !isPinned(metadata.id)"
+                v-bind="cardGridClass"
+                v-for="(metadata, index) in filteredContent" :key="'filtered_' + index"
+                >
+
+            <metadata-card 
                         :title="metadata.title"
                         :id="metadata.id"
                         :name="metadata.name"
@@ -42,14 +71,16 @@
                         :resources="metadata.resources"
                         :dark="false"
                         :flatLayout="listView"
-                        :class="{ ['elevation-10'] : hoverId === metadata.id }"
+                        :fileIconString="fileIconString"
+                        :lockedIconString="lockedIconString"
+                        :unlockedIconString="unlockedIconString"
                         v-on:clickedEvent="metaDataClicked"
                         v-on:clickedTag="catchTagClicked"
             />
 
         </v-flex>
 
-        <v-flex xs12 v-if="!loading && filteredContentSize <= 0">
+        <v-flex xs12 v-if="!loading && !loadingContent && filteredContentSize <= 0">
             <no-search-results-view v-on:clicked="catchCategoryClicked"
                                     :noResultText="noResultText"
                                     :suggestionText="suggestionText" />  
@@ -73,18 +104,23 @@
 export default {
     props: {
       listView: Boolean,
-      compactLayout: Boolean,
-      mapFilteringEnabled: Boolean,
-      hoverId: String,
+      showMapFilter: Boolean,
+      mapFilteringPossible: Boolean,
       placeHolderAmount: Number,
     },
     data: () => ({
       enhanceContentDone: false,
       noResultText: 'Nothing found for these search criterias',
       suggestionText: 'Try one of these categories',
+      fileIconString: null,
+      lockedIconString: null,
+      unlockedIconString: null,
     }),
     beforeMount: function beforeMount() {
       this.enhanceContent();
+      this.fileIconString = this.getIcon('file');
+      this.lockedIconString = this.getIcon('lock2Closed');
+      this.unlockedIconString = this.getIcon('lock2Open');
     },
     watch: {
       filteredContent: function watchEnhanceMetadata() {
@@ -104,8 +140,12 @@ export default {
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
         filteredContent: 'metadata/filteredContent',
         isFilteringContent: 'metadata/isFilteringContent',
+        pinnedIds: 'metadata/pinnedIds',
         cardBGImages: 'cardBGImages',
       }),
+      showPinnedElements: function showPinnedElements() {
+        return !this.loading && !this.loadingContent && this.showMapFilter && this.pinnedIds.length > 0;
+      },
       loading: function loading() {
         // console.log("loading " + this.isFilteringContent + " " + this.searchingMetadatasContent);
         return this.isFilteringContent || this.searchingMetadatasContent;
@@ -119,7 +159,7 @@ export default {
         return this.contentSize(this.filteredContent);
       },
       cardGridClass: function cardGridClass() {
-        if (this.mapFilteringEnabled && this.compactLayout) {
+        if (this.mapFilteringPossible && this.showMapFilter) {
           const twoThridsSize = {
             xs12: true,
             sm12: true,
@@ -191,6 +231,9 @@ export default {
 
         return false;
       },
+      isPinned: function isPinned(id) {
+        return this.pinnedIds.includes(id);
+      },
     },
     components: {
       NoSearchResultsView,
@@ -214,5 +257,9 @@ export default {
   .itemfade-leave-active {
     opacity: 0
   }  
+
+  .highlighted {
+    box-shadow: #4DB6AC 0px 0px 5px 5px;
+  }
 
 </style>
