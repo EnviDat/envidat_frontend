@@ -116,7 +116,6 @@ export default {
       unlockedIconString: null,
     }),
     beforeMount: function beforeMount() {
-      // this.enhanceContent();
       this.fileIconString = this.getIcon('file');
       this.lockedIconString = this.getIcon('lock2Closed');
       this.unlockedIconString = this.getIcon('lock2Open');
