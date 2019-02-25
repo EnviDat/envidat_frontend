@@ -338,15 +338,6 @@
           this.filterContent();
         }
       },
-      enhanceContent: function enhanceContent() {
-        if (this.filteredContent && this.filteredContent.length > 0) {
-          const enhancedContent = this.enhanceMetadata(this.filteredContent, this.cardBGImages);
-
-          if (enhancedContent && enhancedContent.length > 0) {
-            this.$store.commit(`metadata/${FILTER_METADATA_SUCCESS}`, enhancedContent);
-          }
-        }
-      },
     },
     computed: {
       ...mapGetters({
@@ -445,11 +436,6 @@
       searchingMetadatasContentOK: function watchSearchFilterContent() {
         if (this.searchingMetadatasContentOK) {
           this.filterContent();
-        }
-      },
-      isFilteringContent: function watchisFilteringContent() {
-        if (!this.isFilteringContent) {
-          this.enhanceContent();
         }
       },
     },
