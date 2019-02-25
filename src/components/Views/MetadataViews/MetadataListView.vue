@@ -18,7 +18,7 @@
 
         <v-flex v-if="loading || loadingContent"
                 v-bind="cardGridClass"
-                v-for="(n, index) in placeHolderAmount" :key="'card_' + index">
+                v-for="(n, index) in placeHolderAmount" :key="'filtered_' + index">
 
           <metadata-card-placeholder :dark="false" />
 
@@ -80,7 +80,8 @@
 
         </v-flex>
 
-        <v-flex xs12 v-if="!loading && !loadingContent && filteredContentSize <= 0">
+        <v-flex xs12 v-if="!loading && !loadingContent && filteredContentSize <= 0"
+        key="noSearchResultsView">
             <no-search-results-view v-on:clicked="catchCategoryClicked"
                                     :noResultText="noResultText"
                                     :suggestionText="suggestionText" />  
@@ -117,7 +118,7 @@ export default {
       unlockedIconString: null,
     }),
     beforeMount: function beforeMount() {
-      this.enhanceContent();
+      // this.enhanceContent();
       this.fileIconString = this.getIcon('file');
       this.lockedIconString = this.getIcon('lock2Closed');
       this.unlockedIconString = this.getIcon('lock2Open');
@@ -127,7 +128,9 @@ export default {
         this.enhanceContent();
       },
       searchingMetadatasContentOK: function watchSearchFilterContent() {
-        this.enhanceContent(true);
+        if (this.searchingMetadatasContentOK) {
+          this.enhanceContent(true);
+        }
       },
     },
     computed: {
