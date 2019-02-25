@@ -108,20 +108,46 @@ export default {
       });
 
       return imgCache;
+    },
+    enhanceTitleImg: function enhanceTitleImg(metadata, cardBGImages) {
+      /* eslint-disable no-param-reassign */
 
-      /*
-      const imports = {};
-      const pic = imgs('./c_b_snow.jpg');
-      console.log("pic " + pic);
+      const category = this.getTagCategory(metadata.tags);
+      const categoryImgs = cardBGImages[category];
+      const max = Object.keys(categoryImgs).length - 1;
+      const randomIndex = this.randomInt(0, max, metadata.title);
+      const cardImg = randomIndex >= 0 ? Object.values(categoryImgs)[randomIndex] : 0;
 
-      this.images.forEach(element => {
-        var imgImport = require(`../../../assets/cards/${element}`);
-        console.log("imgImport " + imgImport);
-        imports[element] = imgImport;
-      });
+      // console.log("loaded " + randomIndex + " category " + category + " img " + cardImg);
+      metadata.titleImg = cardImg;
+    },
+    getTagCategory: function getTagCategory(tags) {
+      let category = 'landscape';
 
-      return imports;
-      */
+      if (tags) {
+        for (let i = 0; i < tags.length; i++) {
+          const element = tags[i];
+          if (element.name) {
+            if (element.name.includes('HAZARD') || element.name.includes('ACCIDENTS')) {
+              category = 'hazard'; break;
+            }
+            if (element.name.includes('DIVERSITY')) {
+              category = 'diversity'; break;
+            }
+            if (element.name.includes('FOREST')) {
+              category = 'forest'; break;
+            }
+            if (element.name.includes('SNOW') || element.name.includes('AVALANCHE')) {
+              category = 'snow'; break;
+            }
+            if (element.name.includes('LANDSCAPE')) {
+              category = 'landscape'; break;
+            }
+          }
+        }
+      }
+
+      return category;
     },
     randomInt: function randomInt(min, max, seed) {
       if (!seed) {

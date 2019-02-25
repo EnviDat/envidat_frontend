@@ -188,6 +188,8 @@
   import MetadataCitation from '../Views/MetadataViews/MetadataCitation';
   import NotFoundView from '../Views/Errors/NotFoundView';
   import metaDataFactory from '../metaDataFactory';
+  import globalMethods from '../globalMethods';
+
   // import { LOAD_METADATAS_CONTENT } from '../../store/metadataMutationsConsts';
 
   // Might want to check https://css-tricks.com/use-cases-fixed-backgrounds-css/
@@ -335,6 +337,13 @@
           this.location = metaDataFactory.createLocation(currentContent);
           this.details = metaDataFactory.createDetails(currentContent);
         }
+      },
+      enhanceMetadataEntry: function enhanceMetadataEntry(entry, cardBGImages) {
+        if (!entry.titleImg) {
+          globalMethods.methods.enhanceTitleImg(entry, cardBGImages);
+        }
+
+        return entry;
       },
       isCurrentIdOrName: function isCurrentIdOrName(idOrName) {
         return this.currentMetadataContent.id === idOrName || this.currentMetadataContent.name === idOrName;

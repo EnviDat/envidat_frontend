@@ -63,51 +63,9 @@ function enhanceSearchWithTags(allTags, searchResult) {
   return searchResult;
 }
 
-function getTagCategory(tags) {
-  let category = 'landscape';
-
-  if (tags) {
-    for (let i = 0; i < tags.length; i++) {
-      const element = tags[i];
-      if (element.name) {
-        if (element.name.includes('HAZARD') || element.name.includes('ACCIDENTS')) {
-          category = 'hazard'; break;
-        }
-        if (element.name.includes('DIVERSITY')) {
-          category = 'diversity'; break;
-        }
-        if (element.name.includes('FOREST')) {
-          category = 'forest'; break;
-        }
-        if (element.name.includes('SNOW') || element.name.includes('AVALANCHE')) {
-          category = 'snow'; break;
-        }
-        if (element.name.includes('LANDSCAPE')) {
-          category = 'landscape'; break;
-        }
-      }
-    }
-  }
-
-  return category;
-}
-
-function enhanceTitleImg(metadata, cardBGImages) {
-  /* eslint-disable no-param-reassign */
-
-  const category = getTagCategory(metadata.tags);
-  const categoryImgs = cardBGImages[category];
-  const max = Object.keys(categoryImgs).length - 1;
-  const randomIndex = globalMethods.default.methods.randomInt(0, max, metadata.title);
-  const cardImg = randomIndex >= 0 ? Object.values(categoryImgs)[randomIndex] : 0;
-
-  // console.log("loaded " + randomIndex + " category " + category + " img " + cardImg);
-  metadata.titleImg = cardImg;
-}
-
 function enhanceMetadataEntry(entry, cardBGImages) {
   if (!entry.titleImg) {
-    enhanceTitleImg(entry, cardBGImages);
+    globalMethods.default.methods.enhanceTitleImg(entry, cardBGImages);
   }
 
   return entry;
@@ -125,7 +83,7 @@ function enhanceMetadata(metadatas, cardBGImages) {
       const el = metadatas[i];
 
       if (!el.titleImg) {
-        enhanceTitleImg(el, cardBGImages);
+        globalMethods.default.methods.enhanceTitleImg(el, cardBGImages);
       }
     }
   }
