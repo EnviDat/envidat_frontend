@@ -175,33 +175,35 @@ export default {
 
     commit(UPDATE_TAGS);
 
-    try {
-      const updatedTags = [];
+    setTimeout(() => {
+      try {
+        const updatedTags = [];
 
-      for (let i = 0; i < allTags.length; i++) {
-        const tag = allTags[i];
-        let found = false;
+        for (let i = 0; i < allTags.length; i++) {
+          const tag = allTags[i];
+          let found = false;
 
-        for (let j = 0; j < filteredContent.length; j++) {
-          const el = filteredContent[j];
+          for (let j = 0; j < filteredContent.length; j++) {
+            const el = filteredContent[j];
 
-          if (el.tags && el.tags.length > 0) {
-            const index = el.tags.findIndex(obj => obj.name.includes(tag.name));
+            if (el.tags && el.tags.length > 0) {
+              const index = el.tags.findIndex(obj => obj.name.includes(tag.name));
 
-            if (index >= 0) {
-              found = true;
-              break;
+              if (index >= 0) {
+                found = true;
+                break;
+              }
             }
           }
+
+          updatedTags.push({ name: tag.name, enabled: found });
         }
 
-        updatedTags.push({ name: tag.name, enabled: found });
+        commit(UPDATE_TAGS_SUCCESS, updatedTags);
+      } catch (error) {
+        commit(UPDATE_TAGS_ERROR, error);
       }
-
-      commit(UPDATE_TAGS_SUCCESS, updatedTags);
-    } catch (error) {
-      commit(UPDATE_TAGS_ERROR, error);
-    }
+    }, 100);
   },
   async [FILTER_METADATA]({ dispatch, commit }, selectedTagNames) {
     commit(FILTER_METADATA);

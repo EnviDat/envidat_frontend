@@ -36,7 +36,20 @@
 
             <v-flex xs12
                     py-0
+                    px-2
+                    v-if="showPlaceholder"
+            >
+
+              <tag-chip-placeholder py-0
+                        v-for="n in 6" :key="n"
+                        class="card_tag_placeholder" />              
+
+            </v-flex>
+
+            <v-flex xs12
+                    py-0
                     px-2 
+                    v-if="!showPlaceholder"
             >
 
               <tag-chip v-if="showPopularTags && tag.enabled"

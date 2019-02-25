@@ -32,7 +32,7 @@
                       :mapFilterHeight="mapFilterHeight"
                       v-on:clickedMapExpand="toggleMapExpand"
                       v-on:mapFilterChanged="catchMapFilterChanged"
-                      :showPlaceholder="updatingTags"
+                      :showPlaceholder="keywordsPlaceholder"
                       v-on:controlsChanged="controlsChanged"
                       />
 
@@ -365,6 +365,9 @@
         updatingTags: 'metadata/updatingTags',
         cardBGImages: 'cardBGImages',
       }),
+      keywordsPlaceholder: function keywordsPlaceholder() {
+        return this.searchingMetadatasContent || this.updatingTags;
+      },
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
       },
