@@ -7,15 +7,18 @@
                   pa-0
     >
 
-      <v-layout :class="{ ['column'] : listView,
-                          ['row'] : !listView,
-                          ['wrap'] : !listView
-                        }"
+      <transition-group
+        name="itemfade"
+        class="layout"
+        :class="{ ['column'] : listView,
+                      ['row'] : !listView,
+                      ['wrap'] : !listView
+                    }"
       >
 
         <v-flex v-if="loading || loadingContent"
                 v-bind="cardGridClass"
-                v-for="(n, index) in placeHolderAmount" :key="index">
+                v-for="(n, index) in placeHolderAmount" :key="'filtered_' + index">
 
           <metadata-card-placeholder :dark="false" />
 
@@ -77,14 +80,14 @@
 
         </v-flex>
 
-        <v-flex xs12 v-if="!loading && !loadingContent && filteredContentSize <= 0">
+        <v-flex xs12 v-if="!loading && !loadingContent && filteredContentSize <= 0"
+        key="noSearchResultsView">
             <no-search-results-view v-on:clicked="catchCategoryClicked"
                                     :noResultText="noResultText"
                                     :suggestionText="suggestionText" />  
         </v-flex>
 
-      </v-layout>
-
+      </transition-group>
 
     </v-container>
   
@@ -95,7 +98,6 @@
   import MetadataCard from '../Cards/MetadataCard';
   import MetadataCardPlaceholder from '../Cards/MetadataCardPlaceholder';
   import NoSearchResultsView from '../NoSearchResultsView';
-  import { FILTER_METADATA_SUCESS } from '../../../store/metadataMutationsConsts';
 
   // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
@@ -107,7 +109,6 @@ export default {
       placeHolderAmount: Number,
     },
     data: () => ({
-      enhanceContentDone: false,
       noResultText: 'Nothing found for these search criterias',
       suggestionText: 'Try one of these categories',
       fileIconString: null,
@@ -115,18 +116,10 @@ export default {
       unlockedIconString: null,
     }),
     beforeMount: function beforeMount() {
-      this.enhanceContent();
+      // this.enhanceContent();
       this.fileIconString = this.getIcon('file');
       this.lockedIconString = this.getIcon('lock2Closed');
       this.unlockedIconString = this.getIcon('lock2Open');
-    },
-    watch: {
-      filteredContent: function watchEnhanceMetadata() {
-        this.enhanceContent();
-      },
-      searchingMetadatasContentOK: function watchSearchFilterContent() {
-        this.enhanceContent(true);
-      },
     },
     computed: {
       ...mapGetters({
@@ -139,7 +132,6 @@ export default {
         filteredContent: 'metadata/filteredContent',
         isFilteringContent: 'metadata/isFilteringContent',
         pinnedIds: 'metadata/pinnedIds',
-        cardBGImages: 'cardBGImages',
       }),
       showPinnedElements: function showPinnedElements() {
         return !this.loading && !this.loadingContent && this.showMapFilter && this.pinnedIds.length > 0;
@@ -180,17 +172,6 @@ export default {
 
     },
     methods: {
-      enhanceContent: function enhanceContent(force = false) {
-        if (this.enhanceContentDone && !force) return;
-
-        if (this.filteredContent && this.filteredContent.length > 0) {
-          const enhancedContent = this.enhanceMetadata(this.filteredContent, this.cardBGImages);
-          if (enhancedContent && enhancedContent.length > 0) {
-            this.$store.commit(`metadata/${FILTER_METADATA_SUCESS}`, enhancedContent);
-            this.enhanceContentDone = true;
-          }
-        }
-      },
       contentSize: function contentSize(content) {
         return content !== undefined ? Object.keys(content).length : 0;
       },
@@ -245,17 +226,16 @@ export default {
 
 <style scoped>
 
-  .fade-enter-active,
-  .fade-leave-active {
-    transition-duration: 0.3s;
-    transition-property: opacity;
+  .itemfade-enter-active,
+  .itemfade-leave-active {
+    transition-duration: 0.1s;
     transition-timing-function: ease;
   }
 
-  .fade-enter,
-  .fade-leave-active {
+  .itemfade-enter,
+  .itemfade-leave-active {
     opacity: 0
-  }
+  }  
 
   .highlighted {
     box-shadow: #4DB6AC 0px 0px 5px 5px;

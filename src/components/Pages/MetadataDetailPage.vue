@@ -196,6 +196,8 @@
   // blured background?
   // https://paper-leaf.com/blog/2016/01/creating-blurred-background-using-only-css/
 
+  //TODO: Check #/metadata/2016gl071822 for the lost list of data and the background
+
   export default {
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
       next((vm) => {
@@ -217,6 +219,7 @@
     },
     mounted: function mounted() {
       this.loadMetaDataContent();
+      window.scrollTo(0, 0);
     },
     beforeDestroy: function beforeDestroy() {
       // clean current metadata to make be empty for the next to load up

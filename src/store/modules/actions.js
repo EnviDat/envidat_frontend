@@ -14,7 +14,7 @@ import {
   UPDATE_TAGS_ERROR,
   UPDATE_TAGS_SUCCESS,
   FILTER_METADATA,
-  FILTER_METADATA_SUCESS,
+  FILTER_METADATA_SUCCESS,
   FILTER_METADATA_ERROR,
 } from '../metadataMutationsConsts';
 
@@ -175,81 +175,86 @@ export default {
 
     commit(UPDATE_TAGS);
 
-    try {
-      const updatedTags = [];
+    setTimeout(() => {
+      try {
+        const updatedTags = [];
 
-      for (let i = 0; i < allTags.length; i++) {
-        const tag = allTags[i];
-        let found = false;
+        for (let i = 0; i < allTags.length; i++) {
+          const tag = allTags[i];
+          let found = false;
 
-        for (let j = 0; j < filteredContent.length; j++) {
-          const el = filteredContent[j];
+          for (let j = 0; j < filteredContent.length; j++) {
+            const el = filteredContent[j];
 
-          if (el.tags && el.tags.length > 0) {
-            const index = el.tags.findIndex(obj => obj.name.includes(tag.name));
+            if (el.tags && el.tags.length > 0) {
+              const index = el.tags.findIndex(obj => obj.name.includes(tag.name));
 
-            if (index >= 0) {
-              found = true;
-              break;
+              if (index >= 0) {
+                found = true;
+                break;
+              }
             }
+          }
+
+          updatedTags.push({ name: tag.name, enabled: found });
+        }
+
+        commit(UPDATE_TAGS_SUCCESS, updatedTags);
+      } catch (error) {
+        commit(UPDATE_TAGS_ERROR, error);
+      }
+    }, 100);
+  },
+  async [FILTER_METADATA]({ dispatch, commit }, selectedTagNames) {
+    commit(FILTER_METADATA);
+
+    // use timeout to make sure the placeholder as loading indicators will show up
+    setTimeout(() => {
+      let contentToFilter = [];
+      // console.log("filteredMetadataContent");
+
+      const isSearchResultContent = this.getters['metadata/searchingMetadatasContentOK'];
+
+      try {
+        if (isSearchResultContent) {
+          const searchContent = this.getters['metadata/searchedMetadatasContent'];
+          const searchContentSize = contentSize(searchContent);
+
+          if (searchContentSize > 0) {
+            const allTags = this.getters['metadata/allTags'];
+
+            contentToFilter = Object.values(searchContent);
+            contentToFilter = enhanceSearchWithTags(allTags, contentToFilter);
+          }
+        } else {
+          const metadatasContent = this.getters['metadata/metadatasContent'];
+          contentToFilter = Object.values(metadatasContent);
+        }
+
+        const filteredContent = [];
+        let keep = false;
+
+        for (let i = 0; i < contentToFilter.length; i++) {
+          const entry = contentToFilter[i];
+          keep = contentFilterAccessibility(entry);
+
+          if (keep) {
+            keep = contentFilteredByTags(entry, selectedTagNames);
+          }
+
+          if (keep) {
+            filteredContent.push(entry);
           }
         }
 
-        updatedTags.push({ name: tag.name, enabled: found });
-      }
+        contentToFilter = filteredContent;
 
-      commit(UPDATE_TAGS_SUCCESS, updatedTags);
-    } catch (error) {
-      commit(UPDATE_TAGS_ERROR, error);
-    }
+        commit(FILTER_METADATA_SUCCESS, contentToFilter);
+
+        dispatch(UPDATE_TAGS);
+      } catch (error) {
+        commit(FILTER_METADATA_ERROR, error);
+      }
+    }, 100);
   },
-  [FILTER_METADATA]({ dispatch, commit }, selectedTagNames) {
-    let contentToFilter = [];
-    // console.log("filteredMetadataContent");
-
-    const isSearchResultContent = this.getters['metadata/searchingMetadatasContentOK'];
-
-    try {
-      if (isSearchResultContent) {
-        const searchContent = this.getters['metadata/searchedMetadatasContent'];
-        const searchContentSize = contentSize(searchContent);
-
-        if (searchContentSize > 0) {
-          const allTags = this.getters['metadata/allTags'];
-
-          contentToFilter = Object.values(searchContent);
-          contentToFilter = enhanceSearchWithTags(allTags, contentToFilter);
-        }
-      } else {
-        const metadatasContent = this.getters['metadata/metadatasContent'];
-        contentToFilter = Object.values(metadatasContent);
-      }
-
-      const filteredContent = [];
-      let keep = false;
-
-      for (let i = 0; i < contentToFilter.length; i++) {
-        const entry = contentToFilter[i];
-        keep = contentFilterAccessibility(entry);
-
-        if (keep) {
-          keep = contentFilteredByTags(entry, selectedTagNames);
-        }
-
-        if (keep) {
-          filteredContent.push(entry);
-        }
-      }
-
-      contentToFilter = filteredContent;
-
-      commit(FILTER_METADATA_SUCESS, contentToFilter);
-
-      dispatch(UPDATE_TAGS);
-    } catch (error) {
-      commit(FILTER_METADATA_ERROR, error);
-    }
-  },
-
 };
-
