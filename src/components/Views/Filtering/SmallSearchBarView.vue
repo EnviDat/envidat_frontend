@@ -9,22 +9,30 @@
 
       <v-flex xs10 sm9 lg10 py-0 pl-2 >
 
-        <v-text-field
-            class="envidatSmallSearch"
-            style="align-items: center;" 
-            :class="compactLayout ? 'small' : ''"
-            single-line
-            hide-details
-            clearable
-            solo
-            flat
-            append-outer-icon="search"
-            @click:append-outer="clicked"
-            v-on:keyup.enter="clicked"
-            v-model="searchText"
-            @click:clear="clearClicked"
-            :placeholder="placeHolderText">
-        </v-text-field>
+        <v-tooltip bottom>
+          <div slot="activator" >
+
+            <v-text-field
+                class="envidatSmallSearch"
+                style="align-items: center;" 
+                :class="compactLayout ? 'small' : ''"
+                single-line
+                hide-details
+                clearable
+                solo
+                flat
+                append-outer-icon="search"
+                @click:append-outer="clicked"
+                v-on:keyup.enter="clicked"
+                v-model="searchText"
+                @click:clear="clearClicked"
+                :placeholder="placeHolderText">
+            </v-text-field>
+          </div>
+
+          <span>{{ searchToolTipText }}</span>
+
+        </v-tooltip>
 
       </v-flex>
 
@@ -72,7 +80,8 @@
     data: () => ({
       searchText: '',
       lastSearch: '',
-      placeHolderText: 'Enter research topic',
+      placeHolderText: 'Enter research term, topic or author',
+      searchToolTipText: 'The full text search works for research terms, topics or authors',
     }),
     updated: function updated() {
       if (!this.searchText && this.lastSearch) {

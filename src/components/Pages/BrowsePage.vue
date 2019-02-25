@@ -4,9 +4,6 @@
                 tag="article"
                 pa-0
   >
-                <!-- v-bind="{ 'pa-0': $vuetify.breakpoint.xsOnly }"
-                @scroll="updateScroll" -->
-
     <v-layout row wrap>
 
       <v-flex xs12
@@ -113,16 +110,8 @@
         vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
     },
-    // created: function created() {
-      // this.loadRouteTags();
-
-    // },
     mounted: function mounted() {
       this.checkRouteChanges();
-      // console.log('created ' + new Date());
-
-      // this.loadRouteSearch();
-      // this.filterContent();
     },
     methods: {
       loadRouteTags: function loadRouteTags() {
@@ -170,23 +159,12 @@
       updateScroll: function updateScroll() {
         this.scrollPosition = window.scrollY;
       },
-      decodeCategoryFromUrl: function decodeCategoryFromUrl(urlquery) {
-        if (urlquery) {
-          // TODO: figure out which tags should be auto selected
-          // console.log("got category via url: " + urlquery);
-        }
-
-        // return an empty array for the selectedTagNames
-        return [];
-      },
       catchTagClicked: function catchTagClicked(tagName) {
         if (!this.isTagSelected(tagName)) {
           const newTags = [...this.selectedTagNames, tagName];
-          // this.selectedTagNames.push(tagName);
 
           const tagsEncoded = this.encodeTagForUrl(newTags);
           this.additiveChangeRoute(undefined, tagsEncoded);
-          // this.filterContent();
         }
       },
       catchTagCloseClicked: function catchTagCloseClicked(tagId) {
@@ -194,12 +172,10 @@
           return;
         }
 
-        // this.selectedTagNames.splice(index, 1);
         const newTags = this.selectedTagNames.filter(tag => tag !== tagId);
 
         const tagsEncoded = this.encodeTagForUrl(newTags);
         this.additiveChangeRoute(undefined, tagsEncoded);
-        // this.filterContent();
       },
       catchTagCleared: function catchTagCleared() {
         this.selectedTagNames = [];
@@ -209,27 +185,9 @@
         /* eslint-disable no-param-reassign */
         searchTerm = searchTerm ? searchTerm.trim() : '';
         this.additiveChangeRoute(searchTerm, undefined);
-
-        // if (this.searchTerm !== searchTerm) {
-        //   // this.searchTerm = searchTerm;
-
-        //   if (searchTerm && searchTerm.length > 0) {
-        //     // this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm, this.selectedTagNames);
-
-        //     this.additiveChangeRoute(searchTerm, undefined);
-        //     return true;
-        //   }
-        // }
-
-        // return false;
       },
       catchSearchCleared: function catchSearchCleared() {
-        // const queryLength = Object.keys(this.$route.query).length;
-
-        // if (queryLength > 0 && this.$route.query.search) {
         this.additiveChangeRoute('', undefined);
-        // }
-
       },
       catchMapFilterChanged: function catchMapFilterChanged(visibleIds) {
         this.mapFilterVisibleIds = visibleIds;
