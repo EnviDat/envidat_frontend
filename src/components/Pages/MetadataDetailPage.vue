@@ -219,6 +219,7 @@
     },
     mounted: function mounted() {
       this.loadMetaDataContent();
+      window.scrollTo(0, 0);
     },
     beforeDestroy: function beforeDestroy() {
       // clean current metadata to make be empty for the next to load up
