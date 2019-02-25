@@ -98,7 +98,6 @@
   import MetadataCard from '../Cards/MetadataCard';
   import MetadataCardPlaceholder from '../Cards/MetadataCardPlaceholder';
   import NoSearchResultsView from '../NoSearchResultsView';
-  import { FILTER_METADATA_SUCESS } from '../../../store/metadataMutationsConsts';
 
   // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
@@ -110,7 +109,6 @@ export default {
       placeHolderAmount: Number,
     },
     data: () => ({
-      enhanceContentDone: false,
       noResultText: 'Nothing found for these search criterias',
       suggestionText: 'Try one of these categories',
       fileIconString: null,
@@ -123,16 +121,6 @@ export default {
       this.lockedIconString = this.getIcon('lock2Closed');
       this.unlockedIconString = this.getIcon('lock2Open');
     },
-    watch: {
-      filteredContent: function watchEnhanceMetadata() {
-        this.enhanceContent();
-      },
-      searchingMetadatasContentOK: function watchSearchFilterContent() {
-        if (this.searchingMetadatasContentOK) {
-          this.enhanceContent(true);
-        }
-      },
-    },
     computed: {
       ...mapGetters({
         metadataIds: 'metadata/metadataIds',
@@ -144,7 +132,6 @@ export default {
         filteredContent: 'metadata/filteredContent',
         isFilteringContent: 'metadata/isFilteringContent',
         pinnedIds: 'metadata/pinnedIds',
-        cardBGImages: 'cardBGImages',
       }),
       showPinnedElements: function showPinnedElements() {
         return !this.loading && !this.loadingContent && this.showMapFilter && this.pinnedIds.length > 0;
@@ -185,17 +172,6 @@ export default {
 
     },
     methods: {
-      enhanceContent: function enhanceContent(force = false) {
-        if (this.enhanceContentDone && !force) return;
-
-        if (this.filteredContent && this.filteredContent.length > 0) {
-          const enhancedContent = this.enhanceMetadata(this.filteredContent, this.cardBGImages);
-          if (enhancedContent && enhancedContent.length > 0) {
-            this.$store.commit(`metadata/${FILTER_METADATA_SUCESS}`, enhancedContent);
-            this.enhanceContentDone = true;
-          }
-        }
-      },
       contentSize: function contentSize(content) {
         return content !== undefined ? Object.keys(content).length : 0;
       },

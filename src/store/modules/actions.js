@@ -14,7 +14,7 @@ import {
   UPDATE_TAGS_ERROR,
   UPDATE_TAGS_SUCCESS,
   FILTER_METADATA,
-  FILTER_METADATA_SUCESS,
+  FILTER_METADATA_SUCCESS,
   FILTER_METADATA_ERROR,
 } from '../metadataMutationsConsts';
 
@@ -247,7 +247,7 @@ export default {
 
         contentToFilter = filteredContent;
 
-        commit(FILTER_METADATA_SUCESS, contentToFilter);
+        commit(FILTER_METADATA_SUCCESS, contentToFilter);
 
         dispatch(UPDATE_TAGS);
       } catch (error) {
@@ -256,6 +256,3 @@ export default {
     }, 100);
   },
 };
-
-};
-

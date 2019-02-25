@@ -92,6 +92,7 @@
     SEARCH_METADATA,
     CLEAR_SEARCH_METADATA,
     FILTER_METADATA,
+    FILTER_METADATA_SUCCESS,
     PIN_METADATA,
     CLEAR_PINNED_METADATA,
   } from '../../store/metadataMutationsConsts';
@@ -133,13 +134,7 @@
           decodedTags = this.decodeTagsFromUrl(tagsEncoded);
         }
 
-        if (!this.areArrayIdentical(this.selectedTagNames, decodedTags)
-        ) {
-        // this.selectedTagNames.length != decodedTags.length 
-        // && 
-          //TODO check for not the same content
-          
-          // console.log("loadRouteTags " + this.selectedTagNames + " " + decodedTags);
+        if (!this.areArrayIdentical(this.selectedTagNames, decodedTags)) {
           this.selectedTagNames = decodedTags;
           return true;
         }
@@ -149,27 +144,29 @@
       loadRouteSearch: function loadRouteSearch() {
         const search = this.$route.query.search ? this.$route.query.search : '';
 
-        if (search === this.searchTerm){
+        if (search === this.searchTerm) {
           return false;
         }
 
-        if (!search || search.length <= 0) {
-          this.catchSearchCleared();
-        } else {
-          return this.catchSearchClicked(search);
+        this.searchTerm = search;
+
+        if (this.searchTerm && this.searchTerm.length > 0) {
+          this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm, this.selectedTagNames);
+          // don't immediately filter the content, it's trigged via the searchingMetadatasContentOK watch
+          return false;
         }
 
-        return false;
+        this.$store.commit(`metadata/${CLEAR_SEARCH_METADATA}`);
+        return true;
       },
       areArrayIdentical: function areArrayIdentical(arr1, arr2) {
-        if(arr1.length !== arr2.length) return false;
+        if (arr1.length !== arr2.length) return false;
 
-        for(var i = arr1.length; i--;) {
-          if(arr1[i] !== arr2[i])
-            return false;
+        for (let i = arr1.length; i--;) {
+          if (arr1[i] !== arr2[i]) return false;
         }
 
-        return true;        
+        return true;
       },
       updateScroll: function updateScroll() {
         this.scrollPosition = window.scrollY;
@@ -185,9 +182,10 @@
       },
       catchTagClicked: function catchTagClicked(tagName) {
         if (!this.isTagSelected(tagName)) {
-          this.selectedTagNames.push(tagName);
+          const newTags = [...this.selectedTagNames, tagName];
+          // this.selectedTagNames.push(tagName);
 
-          const tagsEncoded = this.encodeTagForUrl(this.selectedTagNames);
+          const tagsEncoded = this.encodeTagForUrl(newTags);
           this.additiveChangeRoute(undefined, tagsEncoded);
           // this.filterContent();
         }
@@ -197,15 +195,12 @@
           return;
         }
 
-        const index = this.selectedTagNames.indexOf(tagId);
+        // this.selectedTagNames.splice(index, 1);
+        const newTags = this.selectedTagNames.filter(tag => tag !== tagId);
 
-        if (index >= 0) {
-          this.selectedTagNames.splice(index, 1);
-
-          const tagsEncoded = this.encodeTagForUrl(this.selectedTagNames);
-          this.additiveChangeRoute(undefined, tagsEncoded);
-          // this.filterContent();
-        }
+        const tagsEncoded = this.encodeTagForUrl(newTags);
+        this.additiveChangeRoute(undefined, tagsEncoded);
+        // this.filterContent();
       },
       catchTagCleared: function catchTagCleared() {
         this.selectedTagNames = [];
@@ -214,30 +209,28 @@
       catchSearchClicked: function catchSearchClicked(searchTerm) {
         /* eslint-disable no-param-reassign */
         searchTerm = searchTerm ? searchTerm.trim() : '';
+        this.additiveChangeRoute(searchTerm, undefined);
 
-        if (this.searchTerm !== searchTerm) {
-          this.searchTerm = searchTerm;
+        // if (this.searchTerm !== searchTerm) {
+        //   // this.searchTerm = searchTerm;
 
-          if (this.searchTerm && this.searchTerm.length > 0) {
-            this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm, this.selectedTagNames);
+        //   if (searchTerm && searchTerm.length > 0) {
+        //     // this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm, this.selectedTagNames);
 
-            this.additiveChangeRoute(this.searchTerm, undefined);
-            return true;
-          }
-        }
+        //     this.additiveChangeRoute(searchTerm, undefined);
+        //     return true;
+        //   }
+        // }
 
-        return false;
+        // return false;
       },
       catchSearchCleared: function catchSearchCleared() {
-        this.searchTerm = '';
-
         // const queryLength = Object.keys(this.$route.query).length;
 
         // if (queryLength > 0 && this.$route.query.search) {
-        this.additiveChangeRoute(this.searchTerm, undefined);
+        this.additiveChangeRoute('', undefined);
         // }
 
-        this.$store.commit(`metadata/${CLEAR_SEARCH_METADATA}`);
       },
       catchMapFilterChanged: function catchMapFilterChanged(visibleIds) {
         this.mapFilterVisibleIds = visibleIds;
@@ -345,6 +338,15 @@
           this.filterContent();
         }
       },
+      enhanceContent: function enhanceContent() {
+        if (this.filteredContent && this.filteredContent.length > 0) {
+          const enhancedContent = this.enhanceMetadata(this.filteredContent, this.cardBGImages);
+
+          if (enhancedContent && enhancedContent.length > 0) {
+            this.$store.commit(`metadata/${FILTER_METADATA_SUCCESS}`, enhancedContent);
+          }
+        }
+      },
     },
     computed: {
       ...mapGetters({
@@ -355,11 +357,13 @@
         loadingMetadataIds: 'metadata/loadingMetadataIds',
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
         filteredContent: 'metadata/filteredContent',
+        isFilteringContent: 'metadata/isFilteringContent',
         pinnedIds: 'metadata/pinnedIds',
         // tag Object structure: { tag: tagName, count: tagCount }
         allTags: 'metadata/allTags',
         currentMetadata: 'metadata/currentMetadata',
         updatingTags: 'metadata/updatingTags',
+        cardBGImages: 'cardBGImages',
       }),
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
@@ -436,8 +440,13 @@
         this.filterContent();
       },
       searchingMetadatasContentOK: function watchSearchFilterContent() {
-        if (this.searchingMetadatasContentOK) {          
+        if (this.searchingMetadatasContentOK) {
           this.filterContent();
+        }
+      },
+      isFilteringContent: function watchisFilteringContent() {
+        if (!this.isFilteringContent) {
+          this.enhanceContent();
         }
       },
     },
