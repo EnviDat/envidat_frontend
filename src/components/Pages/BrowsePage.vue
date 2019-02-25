@@ -92,7 +92,6 @@
     SEARCH_METADATA,
     CLEAR_SEARCH_METADATA,
     FILTER_METADATA,
-    FILTER_METADATA_SUCCESS,
     PIN_METADATA,
     CLEAR_PINNED_METADATA,
   } from '../../store/metadataMutationsConsts';
