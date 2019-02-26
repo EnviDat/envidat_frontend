@@ -7,6 +7,7 @@
               <v-flex pa-0>
                 <v-badge v-bind="{ left: !hoverBadge }"
                         overlap
+                        color="secondary"
                         :class="{ envidatBadgeBigNumber : count > 9,
                                   envidatBadge: count <= 9 }"
                         >
@@ -15,7 +16,7 @@
               </v-flex>
 
               <v-flex pa-0 >
-                <img class="envidatIcon" :src="getIcon(iconString)" />                
+                <img class="envidatIcon" :src="iconString" />                
               </v-flex>
               
             </v-layout>

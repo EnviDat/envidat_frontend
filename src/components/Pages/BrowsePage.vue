@@ -1,15 +1,17 @@
 <template>
-  <v-container grid-list-xs fluid py-1
-                v-bind="{ 'pa-0': $vuetify.breakpoint.xsOnly }"
-                @scroll="updateScroll"
+  <v-container grid-list-xs
+                fluid
+                tag="article"
+                pa-0
   >
-
     <v-layout row wrap>
 
-      <v-flex xs12 px-3 
-              class="envidatNavbar" >
+      <v-flex xs12
+              :class="{ 'stickyFilterBar': $vuetify.breakpoint.smAndUp }"
+              :style="$vuetify.breakpoint.sm ? 'top: 42px !important;' : ''"
+      >
 
-        <nav-bar-view :showFiltering="true"
+        <filter-bar-view :showFiltering="true"
                       :searchViewLabelText="searchLabelText"
                       :searchTerm="searchTerm"
                       :searchCount="searchCount"
@@ -23,43 +25,52 @@
                       v-on:clickedTagClose="catchTagCloseClicked"
                       v-on:clickedClear="catchTagCleared"
                       :showMapFilter="showMapFilter"
-                      :mapFilteringEnabled="mapFilteringEnabled"
+                      :mapFilteringPossible="mapFilteringPossible"
                       :mapFilterHeight="mapFilterHeight"
                       v-on:clickedMapExpand="toggleMapExpand"
                       v-on:mapFilterChanged="catchMapFilterChanged"
-                      v-on:pointClicked="catchPointClicked"
-                      :showPlaceholder="updatingTags"
+                      :showPlaceholder="keywordsPlaceholder"
                       v-on:controlsChanged="controlsChanged"
                       />
 
       </v-flex>
 
-      <v-flex px-3 py-2 style="z-index: 1;"
-              v-bind="metadataListStyling"
+      <v-flex py-2
+              style="z-index: 1;"
+              v-bind="{ ['mx-0']: $vuetify.breakpoint.mdAndUp,
+                        ['xs8']: showMapFilter & $vuetify.breakpoint.mdAndUp,
+                        ['xs6']: showMapFilter & $vuetify.breakpoint.sm,
+                        ['pr-3']: showMapFilter & $vuetify.breakpoint.sm,
+                        ['xs12']: !showMapFilter,
+                        metadataListStyling }"
        >
 
        <metadata-list-view :listView="listViewActive"
-                            :compactLayout="showMapFilter"
-                            :hoverId="hoverId"
-                            :mapFilteringEnabled="mapFilteringEnabled"
+                            :showMapFilter="showMapFilter"
+                            :mapFilteringPossible="mapFilteringPossible"
                             :placeHolderAmount="placeHolderAmount"
                             v-on:clickedTag="catchTagClicked"
        />
 
       </v-flex>
 
-      <v-flex xs4 py-3 pr-3
-              v-if="mapFilteringEnabled && showMapFilter" >
+      <v-flex v-if="mapFilteringPossible && showMapFilter"
+              py-3
+              v-bind="{ ['pr-3']: showMapFilter & $vuetify.breakpoint.mdAndUp,
+                        ['xs4']: showMapFilter & $vuetify.breakpoint.mdAndUp,
+                        ['xs6']: showMapFilter & $vuetify.breakpoint.sm,
+                        ['pl-2']: showMapFilter & $vuetify.breakpoint.sm,
+                      }"
+              style="position: fixed; top: 135px; right: 10px;"
+      >
 
-        <filter-map-view style="position: -webkit-sticky; position: sticky; top: 151px;"
-                          :totalHeight="mapFilterHeight"
+        <filter-map-view :totalHeight="mapFilterHeight"
+                          :totalWidth="mapFilterWidth"
                           :expanded="showMapFilter"
-                          v-on:clickedMapExpand="toggleMapExpand"
-                          v-on:viewChanged="catchMapFilterChanged"
                           v-on:pointClicked="catchPointClicked"
                           v-on:pointHover="catchPointHovered"
                           v-on:pointHoverLeave="catchPointHoverLeave"
-                           />
+                          v-on:clearButtonClicked="catchClearButtonClick"  />
 
       </v-flex>
 
@@ -71,35 +82,36 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import NavBarView from '../Views/NavbarView';
+  import FilterBarView from '../Views/Filtering/FilterBarView';
   import FilterMapView from '../Views/Filtering/FilterMapView';
   import MetadataListView from '../Views/MetadataViews/MetadataListView';
   import {
     SEARCH_METADATA,
     CLEAR_SEARCH_METADATA,
     FILTER_METADATA,
+    PIN_METADATA,
+    CLEAR_PINNED_METADATA,
   } from '../../store/metadataMutationsConsts';
-  import { SET_APP_BACKGROUND } from '../../store/mutationsConsts';
+  import {
+    SET_APP_BACKGROUND,
+    SET_CURRENT_PAGE,
+    SET_CONTROLS,
+  } from '../../store/mutationsConsts';
 
   // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
   export default {
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+      // console.log('beforeRouteEnter ' + new Date());
       next((vm) => {
-        // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
+        // console.log('beforeRouteEnter next' + new Date());
+        // console.log("browse beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
+        vm.$store.commit(SET_CURRENT_PAGE, 'browsePage');
         vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
     },
     mounted: function mounted() {
-      // handle initial loading of this Page
-
-      // window.addEventListener('scroll', this.updateScroll);
-
-      this.loadRouteTags();
-      this.loadRouteSearch();
-    },
-    destroy: function destroy() {
-      // window.removeEventListener('scroll', this.updateScroll);
+      this.checkRouteChanges();
     },
     methods: {
       loadRouteTags: function loadRouteTags() {
@@ -110,45 +122,49 @@
           decodedTags = this.decodeTagsFromUrl(tagsEncoded);
         }
 
-        if (this.selectedTagNames !== decodedTags) {
-          // console.log("loadRouteTags " + this.selectedTagNames + " " + decodedTags);
+        if (!this.areArrayIdentical(this.selectedTagNames, decodedTags)) {
           this.selectedTagNames = decodedTags;
+          return true;
         }
+
+        return false;
       },
       loadRouteSearch: function loadRouteSearch() {
         const search = this.$route.query.search ? this.$route.query.search : '';
 
-        if (this.searchTerm === search) {
-          return;
+        if (search === this.searchTerm) {
+          return false;
         }
 
-        // console.log("loadRouteSearch " + search);
+        this.searchTerm = search;
 
-        if (search.length > 0) {
-          this.catchSearchClicked(search);
-        } else {
-          this.catchSearchCleared();
+        if (this.searchTerm && this.searchTerm.length > 0) {
+          this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm, this.selectedTagNames);
+          // don't immediately filter the content, it's trigged via the searchingMetadatasContentOK watch
+          return false;
         }
+
+        this.$store.commit(`metadata/${CLEAR_SEARCH_METADATA}`);
+        return true;
+      },
+      areArrayIdentical: function areArrayIdentical(arr1, arr2) {
+        if (arr1.length !== arr2.length) return false;
+
+        for (let i = arr1.length; i--;) {
+          if (arr1[i] !== arr2[i]) return false;
+        }
+
+        return true;
       },
       updateScroll: function updateScroll() {
         this.scrollPosition = window.scrollY;
       },
-      decodeCategoryFromUrl: function decodeCategoryFromUrl(urlquery) {
-        if (urlquery) {
-          // TODO: figure out which tags should be auto selected
-          // console.log("got category via url: " + urlquery);
-        }
-
-        // return an empty array for the selectedTagNames
-        return [];
-      },
       catchTagClicked: function catchTagClicked(tagName) {
         if (!this.isTagSelected(tagName)) {
-          this.selectedTagNames.push(tagName);
+          const newTags = [...this.selectedTagNames, tagName];
 
-          const tagsEncoded = this.encodeTagForUrl(this.selectedTagNames);
+          const tagsEncoded = this.encodeTagForUrl(newTags);
           this.additiveChangeRoute(undefined, tagsEncoded);
-          this.filterContent();
         }
       },
       catchTagCloseClicked: function catchTagCloseClicked(tagId) {
@@ -156,15 +172,10 @@
           return;
         }
 
-        const index = this.selectedTagNames.indexOf(tagId);
+        const newTags = this.selectedTagNames.filter(tag => tag !== tagId);
 
-        if (index >= 0) {
-          this.selectedTagNames.splice(index, 1);
-
-          const tagsEncoded = this.encodeTagForUrl(this.selectedTagNames);
-          this.additiveChangeRoute(undefined, tagsEncoded);
-          this.filterContent();
-        }
+        const tagsEncoded = this.encodeTagForUrl(newTags);
+        this.additiveChangeRoute(undefined, tagsEncoded);
       },
       catchTagCleared: function catchTagCleared() {
         this.selectedTagNames = [];
@@ -173,29 +184,10 @@
       catchSearchClicked: function catchSearchClicked(searchTerm) {
         /* eslint-disable no-param-reassign */
         searchTerm = searchTerm ? searchTerm.trim() : '';
-
-        if (this.searchTerm !== searchTerm) {
-          this.searchTerm = searchTerm;
-
-          if (this.searchTerm && this.searchTerm.length > 0) {
-            this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm, this.selectedTagNames);
-
-            this.additiveChangeRoute(this.searchTerm, undefined);
-          }
-
-          // this.filterContent();
-        }
+        this.additiveChangeRoute(searchTerm, undefined);
       },
       catchSearchCleared: function catchSearchCleared() {
-        this.searchTerm = '';
-
-        // const queryLength = Object.keys(this.$route.query).length;
-
-        // if (queryLength > 0 && this.$route.query.search) {
-        this.additiveChangeRoute(this.searchTerm, undefined);
-        // }
-
-        this.$store.commit(`metadata/${CLEAR_SEARCH_METADATA}`);
+        this.additiveChangeRoute('', undefined);
       },
       catchMapFilterChanged: function catchMapFilterChanged(visibleIds) {
         this.mapFilterVisibleIds = visibleIds;
@@ -203,19 +195,22 @@
       catchPointClicked: function catchPointClicked(id) {
         // bring to top
         // highlight entry
+
+        this.$store.commit(`metadata/${PIN_METADATA}`, id);
       },
       catchPointHovered: function catchPointHovered(id) {
         // bring to top
         // highlight entry
-        const domElement = this.$refs[id];
-        if (domElement && domElement.length > 0) {
-          this.hoverId = id;
+        const domElement = this.metadatasContent[id];
+        if (domElement) {
         }
       },
       catchPointHoverLeave: function catchPointHoverLeave(id) {
         // bring to top
         // highlight entry
-        this.hoverId = '';
+      },
+      catchClearButtonClick: function catchClearButtonClick() {
+        this.$store.commit(`metadata/${CLEAR_PINNED_METADATA}`);
       },
       controlsChanged: function controlsChanged(controlsActive) {
         // 0-entry: listView, 1-entry: mapActive
@@ -236,6 +231,8 @@
 
         this.listViewActive = listActive;
         this.showMapFilter = mapToggled;
+
+        this.$store.commit(SET_CONTROLS, controlsActive);
       },
       toggleMapExpand: function toggleMapExpand() {
         this.showMapFilter = !this.showMapFilter;
@@ -291,10 +288,16 @@
       filterContent: function filterContent() {
         this.$store.dispatch(`metadata/${FILTER_METADATA}`, this.selectedTagNames);
       },
+      checkRouteChanges: function checkRouteChanges() {
+        const tagsChanges = this.loadRouteTags();
+        const searchTriggerd = this.loadRouteSearch();
+        if (tagsChanges || (!tagsChanges && searchTriggerd)) {
+          this.filterContent();
+        }
+      },
     },
     computed: {
       ...mapGetters({
-        metadataIds: 'metadata/metadataIds',
         metadatasContent: 'metadata/metadatasContent',
         searchedMetadatasContent: 'metadata/searchedMetadatasContent',
         searchingMetadatasContent: 'metadata/searchingMetadatasContent',
@@ -302,11 +305,17 @@
         loadingMetadataIds: 'metadata/loadingMetadataIds',
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
         filteredContent: 'metadata/filteredContent',
+        isFilteringContent: 'metadata/isFilteringContent',
+        pinnedIds: 'metadata/pinnedIds',
         // tag Object structure: { tag: tagName, count: tagCount }
         allTags: 'metadata/allTags',
         currentMetadata: 'metadata/currentMetadata',
         updatingTags: 'metadata/updatingTags',
+        cardBGImages: 'cardBGImages',
       }),
+      keywordsPlaceholder: function keywordsPlaceholder() {
+        return this.searchingMetadatasContent || this.updatingTags;
+      },
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
       },
@@ -315,13 +324,29 @@
       },
       mapFilterHeight: function mapFilterHeight() {
         const sHeight = document.documentElement.clientHeight;
+
         let height = this.maxMapFilterHeight;
 
         if (sHeight < this.maxMapFilterHeight) {
-          height = sHeight - 110;
+          height = sHeight - 165;
         }
 
+        // console.log('sHeight ' + sHeight + ' height ' + height + ' ' + this.maxMapFilterHeight);
+
         return height;
+      },
+      mapFilterWidth: function mapFilterWidth() {
+        const sWidth = document.documentElement.clientWidth;
+
+        if (this.$vuetify.breakpoint.mdAndUp) {
+          return sWidth * 0.31;
+        }
+
+        if (this.$vuetify.breakpoint.sm) {
+          return sWidth * 0.5;
+        }
+
+        return sWidth;
       },
       popularTags: function popularTags() {
         const popTags = [];
@@ -338,16 +363,16 @@
       },
       metadataListStyling: function metadataListStyling() {
         const json = {
-          xs8: this.mapFilteringEnabled && this.showMapFilter,
-          xs12: this.mapFilteringEnabled && !this.showMapFilter,
+          xs8: this.mapFilteringPossible && this.showMapFilter,
+          xs12: this.mapFilteringPossible && !this.showMapFilter,
           'mt-2': !this.showMapFilter,
           // style: this.showMapFilter ? `margin-top: -${this.mapFilterHeight}px;` : '',
         };
 
         return json;
       },
-      mapFilteringEnabled: function mapFilteringEnabled() {
-        return this.$vuetify.breakpoint.lgAndUp;
+      mapFilteringPossible: function mapFilteringPossible() {
+        return this.$vuetify.breakpoint.smAndUp;
       },
       searchCount: function searchCount() {
         return this.filteredContent !== undefined ? this.filteredContent.length : 0;
@@ -357,9 +382,7 @@
       /* eslint-disable no-unused-vars */
       $route: function watchRouteChanges(to, from) {
         // react on changes of the route (browser back / forward click)
-
-        this.loadRouteTags();
-        this.loadRouteSearch();
+        this.checkRouteChanges();
 
         window.scrollTo(0, this.scrollPosition);
         // console.log('watch $route ', this.$route.query.toString() + " to " + to.query + " from " + from.query);
@@ -368,7 +391,9 @@
         this.filterContent();
       },
       searchingMetadatasContentOK: function watchSearchFilterContent() {
-        this.filterContent();
+        if (this.searchingMetadatasContentOK) {
+          this.filterContent();
+        }
       },
     },
     data: () => ({
@@ -376,19 +401,17 @@
       searchTerm: '',
       searchLabelText: 'Search',
       placeHolderAmount: 6,
-      noResultText: 'Nothing found for these Search criterias',
       suggestionText: 'Try one of these categories',
       selectedTagNames: [],
       popularTagAmount: 10,
       scrollPosition: 0,
       showMapFilter: false,
-      maxMapFilterHeight: 750,
+      maxMapFilterHeight: 725,
       mapFilterVisibleIds: [],
-      hoverId: '',
       listViewActive: false,
     }),
     components: {
-      NavBarView,
+      FilterBarView,
       FilterMapView,
       MetadataListView,
     },
@@ -397,5 +420,12 @@
 
 
 <style scoped>
+
+.stickyFilterBar {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 50px;
+  z-index: 1000;
+}
 
 </style>

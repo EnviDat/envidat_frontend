@@ -1,15 +1,19 @@
 <template>
-  <v-card raised height="40">
-
+  <v-card raised
+          :height="compactLayout ? $vuetify.breakpoint.sm ? 38 : 32 : 40"
+  >
     <v-card-actions class="fill-height ma-0 py-0 px-1" >
 
       <v-text-field class="fill-height envidatControlInfos"
+                    style="align-items: center;" 
+                    :class="{'small' : compactLayout }"
                     label="Controls" 
                     flat
                     single-line
                     readonly
                     solo
                     disabled
+                    hide-details
       />
 
       <!-- <div class="pl-2">Controls</div> -->
@@ -19,12 +23,16 @@
         <v-btn-toggle v-model="controlsActive"
                       multiple>
 
-          <v-btn flat>
-            <img class="envidatIcon" :src="getIcon('listView')" />
+          <v-btn flat
+                :class="isActiveControl(0) ? 'highlight' : ''"
+                :style="compactLayout ? 'height: 32px !important' : ''">
+            <img class="envidatIcon" :src="listViewIcon" />
           </v-btn>
           
-          <v-btn flat>
-            <img class="envidatIcon" :src="getIcon('map')" />
+          <v-btn flat
+                :class="isActiveControl(1) ? 'highlight' : ''"
+                :style="compactLayout ? 'height: 32px !important' : ''">
+            <img class="envidatIcon" :src="mapIcon" />
           </v-btn>
 
         </v-btn-toggle>
@@ -40,7 +48,14 @@ import IconLabelView from '../IconLabelView';
 
 export default {
   props: {
-    // controlsActive: Array,
+    compactLayout: Boolean,
+  },
+  beforeMount: function beforeMount() {
+    this.listViewIcon = this.getIcon('listView');
+    this.mapIcon = this.getIcon('map');
+  },
+  mounted: function mounted() {
+    this.controlsActive = this.$store.getters.controls;
   },
   data: () => ({
     mapFilterActivateText: 'Activate Mapfiltering',
@@ -48,11 +63,16 @@ export default {
     listViewActivate: 'List view',
     listViewDeactivate: 'Grid view',
     controlsActive: [],
+    listViewIcon: null,
+    mapIcon: null,
   }),
   updated: function updated() {
     this.$emit('controlsChanged', this.controlsActive);
   },
   methods: {
+    isActiveControl(number) {
+      return this.controlsActive.includes(number);
+    },
     catchMapFilterClick: function catchMapFilterClick() {
       this.$emit('clickedMapFilter');
     },
@@ -68,8 +88,15 @@ export default {
 
 <style>
 
+.envidatControlInfos.small > .v-input__control > .v-input__slot > .v-text-field__slot > .v-label {
+  font-size: 12px !important;
+}
+
+.envidatControlInfos.small > .v-input__control {
+  min-height: 32px !important;
+}
 .envidatControlInfos > .v-input__control {
-    min-height: 40px !important;
+  min-height: 40px !important;
 }
 
 .envidatControlInfos > .v-input__slot {

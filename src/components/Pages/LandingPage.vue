@@ -1,5 +1,6 @@
 <template>
-  <v-container fluid >  
+  <v-container fluid
+                :class="$vuetify.breakpoint.smAndDown ? 'pa-1' : 'pa-2'">  
     <v-layout column >
   
       <title-view :title="envidatTitle"
@@ -36,7 +37,7 @@
         <v-container fluid grid-list-md pa-0>
           <v-layout row wrap>
     
-            <v-flex py-2 xs6
+            <v-flex my-1 xs6
               v-for="card in categorycards" :key="card.title">
     
               <category-card :title="card.title"
@@ -60,7 +61,10 @@
   import CategoryCard from '../Views/Cards/CategoryCard';
   import TitleView from '../Views/TitleView';
   import SearchBarView from '../Views/SearchBarView';
-  import { SET_APP_BACKGROUND } from '../../store/mutationsConsts';
+  import {
+    SET_APP_BACKGROUND,
+    SET_CURRENT_PAGE,
+  } from '../../store/mutationsConsts';
 
   // Login & Register form and animation
   // https://codepen.io/yusufbkr/pen/RPBQqg
@@ -74,7 +78,8 @@
   export default {
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
       next((vm) => {
-        // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
+        // console.log("landing beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
+        vm.$store.commit(SET_CURRENT_PAGE, 'landingPage');
         vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
     },

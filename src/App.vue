@@ -1,18 +1,55 @@
 <template>
-  <v-app v-bind:style="dynamicBackground">
+  <v-app class="application" :style="dynamicBackground">
 
     <v-content>
-      <transition
-        name="fade"
-        mode="out-in"
-        @beforeLeave="beforeLeave"
-        @enter="enter"
-        @afterEnter="afterEnter"
+      <v-container fluid
+                    v-bind="{ [`px-1`]: this.$vuetify.breakpoint.smAndDown,
+                              [`px-2`]: this.$vuetify.breakpoint.mdAndUp,
+                              [`py-1`]: this.$vuetify.breakpoint.mdAndUp,
+                              [`py-0`]: this.$vuetify.breakpoint.smAndDown }"
       >
-        <router-view />
-      </transition>
+
+        <v-layout column>
+
+          <v-flex xs12
+                  v-bind="{ [`mx-0`]: this.$vuetify.breakpoint.smAndDown,
+                            [`mx-3`]: this.$vuetify.breakpoint.mdAndUp,
+                            [`mb-1`]: this.$vuetify.breakpoint.smAndDown,
+                            [`my-1`]: this.$vuetify.breakpoint.mdAndUp,
+                          }"
+                  class="envidatNavbar"
+                  :class="{ 'small': this.$vuetify.breakpoint.smAndDown }"
+                  v-if="currentPage != 'landingPage'" >
+
+            <nav-bar-view />
+          </v-flex>
+
+
+          <v-flex xs12 
+                  v-bind="{ [`mx-0`]: this.$vuetify.breakpoint.smAndDown,
+                            [`mx-3`]: this.$vuetify.breakpoint.mdAndUp }"
+          >
+            <transition
+              name="fade"
+              mode="out-in"
+            >
+              <router-view />
+            </transition>
+          </v-flex>
+
+          <v-flex xs12 
+                  style="position: absolute; right: 5px; bottom: 2px; font-size: 5px !important;"
+          >
+            Verison: {{ appVersion }}
+          </v-flex>
+
+        </v-layout>
+          
+      </v-container>
+
+
     </v-content>
-        
+
   </v-app>
 </template>
 
@@ -24,6 +61,7 @@
     ADD_CARD_IMAGES,
     ADD_ICON_IMAGE,
   } from './store/mutationsConsts';
+  import NavBarView from './components/Views/NavbarView';
 
   export default {
     created: function created() {
@@ -36,22 +74,6 @@
       this.importIcons();
     },
     methods: {
-      beforeLeave(element) {
-        const style = getComputedStyle(element);
-        this.prevHeight = style.height;
-      },
-      enter(element) {
-        const { height } = getComputedStyle(element);
-
-        element.style.height = this.prevHeight;
-
-        setTimeout(() => {
-          element.style.height = height;
-        });
-      },
-      afterEnter(element) {
-        element.style.height = 'auto';
-      },
       loadAllMetadata: function loadAllMetadata() {
         if (!this.loadingMetadatasContent && this.metadatasContentSize <= 0) {
           this.$store.dispatch(`metadata/${BULK_LOAD_METADATAS_CONTENT}`);
@@ -113,6 +135,7 @@
         currentMetadataContent: 'metadata/currentMetadataContent',
         popularTags: 'metadata/popularTags',
         loadingPopularTags: 'metadata/loadingPopularTags',
+        currentPage: 'currentPage',
         appBGImage: 'appBGImage',
       }),
       metadatasContentSize: function metadatasContentSize() {
@@ -131,16 +154,15 @@
           bgStyle += `background-position: center top !important;
                       background-repeat: no-repeat !important;
                       background-size: cover !important; `;
+
+          if (bgImg.includes('browsepage')) {
+            // bgStyle = `background-image: url(${bgImg}) !important;`;
+            bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
+
+            bgStyle += `background-position: center top !important;
+                        background-repeat: repeat !important; `;
+          }
         }
-
-        if (bgImg.includes('browsepage')) {
-          // bgStyle = `background-image: url(${bgImg}) !important;`;
-          bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
-
-          bgStyle += `background-position: center top !important;
-                      background-repeat: repeat !important; `;
-        }
-
 
         return bgStyle;
       },
@@ -148,7 +170,11 @@
     data: () => ({
       appBGImages: {},
       prevHeight: 0,
+      appVersion: process.env.VERSION,
     }),
+    components: {
+      NavBarView,
+    },
     props: {
       source: String,
     },
@@ -164,18 +190,20 @@
 /* overwrite the applications background https://css-tricks.com/use-cases-fixed-backgrounds-css/ */
   .application {
     font-family: 'Raleway', sans-serif !important;
-    /* background-position: center top !important;
-    background-size: cover !important;
-    background-repeat: no-repeat !important;
-    background-attachment: fixed !important; */
+    font-size: 12px;
   }  
 
   .envidatNavbar {
     position: -webkit-sticky;
     position: sticky;
-    top: 3px;
-    z-index: 2;
+    top: 8px;
+    z-index: 1000;
   }
+
+  .envidatNavbar.small {
+    top: 0px;
+  }
+
 
   /*** General Card styles ***/
 
@@ -188,7 +216,7 @@
     text-overflow: ellipsis;    
     max-height: 2.15em;
     */
-    line-height: 1.2em !important;
+    line-height: 1.1em !important;
   }
 
 
@@ -259,6 +287,11 @@
     width: 24px !important;
   }
 
+  .envidatIcon.small {
+    height: 20px !important;
+    width: 20px !important;
+  }
+
   .envidatTitle {
     font-family: 'Libre Baskerville', serif !important;
     letter-spacing: 0em !important;
@@ -280,10 +313,37 @@
     font-size: 0.9em !important;
   }
 
+  .envidatChip {
+    height: 1.3rem;
+    font-size: 0.65rem;
+    margin: 1px 2px;
+    opacity: 0.85;
+  }
+
+  .smallChip {
+    height: 1.2rem;
+    font-size: 0.55rem;
+  }
+  .smallChip > .v-chip__content > .v-chip__close > .v-icon {    
+    font-size: 15px !important;
+  }
+
+  .envidatChip span {
+    cursor: pointer !important;
+  }
+
+  .filterTag {
+    opacity: 0.7;
+  }
+
+  .chip__content span {
+    cursor: pointer !important;
+  }
+
 
   .fade-enter-active,
   .fade-leave-active {
-    transition-duration: 0.3s;
+    transition-duration: 0.1s;
     transition-property: height, opacity;
     transition-timing-function: ease;
     /* overflow: hidden; */
@@ -292,6 +352,6 @@
   .fade-enter,
   .fade-leave-active {
     opacity: 0
-  }
+  }  
 
 </style>

@@ -1,22 +1,14 @@
 <template>
   <v-container fluid
               tag="article"
-              v-bind="{ [`pa-0`]: this.$vuetify.breakpoint.smAndDown,
-                        [`pa-2`]: this.$vuetify.breakpoint.mdAndUp }"
+              pa-0
   >
+              <!-- v-bind="{ [`pa-0`]: this.$vuetify.breakpoint.smAndDown,
+                        [`pa-2`]: this.$vuetify.breakpoint.mdAndUp }" -->
 
     <div v-if="currentMetadataContent">
       
       <v-layout row wrap v-if="twoColumnLayout">
-
-        <v-flex xs12 
-              md8 offset-md2
-              lg10 offset-lg1
-              class="envidatNavbar" >
-
-          <nav-bar-view />
-
-        </v-flex>
 
         <v-flex xs12
                 md8 offset-md2
@@ -27,7 +19,12 @@
           <metadata-header v-bind="header"
                             v-on:clickedTag="catchTagClicked"
                             v-on:clickedBack="catchBackClicked"                           
-                            :showPlaceholder="showPlaceholder" />
+                            :showPlaceholder="showPlaceholder"
+                            :doiIcon="doiIcon"
+                            :contactIcon="contactIcon"
+                            :mailIcon="mailIcon"
+                            :licenseIcon="licenseIcon"
+                            />
 
         </v-flex>
 
@@ -49,13 +46,11 @@
             </v-flex>
 
             <v-flex mb-2>
-              <metadata-location v-if="location"
-                                  v-bind="location" />
+              <metadata-location v-bind="location" />
             </v-flex>
 
             <v-flex mb-2 v-if="showDetailsOnTheLeft">
-              <metadata-details v-if="details"
-                              :details="details"
+              <metadata-details :details="details"
                               :showPlaceholder="showPlaceholder" />
             </v-flex>
 
@@ -73,12 +68,19 @@
               <metadata-resources v-bind="resources"
                                   :isOnTop="true"
                                   :twoColumnLayout="twoColumnLayout"
-                                  :showPlaceholder="showPlaceholder" />
+                                  :showPlaceholder="showPlaceholder"
+                                  :doiIcon="doiIcon"
+                                  :downloadIcon="downloadIcon"
+                                  :linkIcon="linkIcon"
+                                  :fileSizeIcon="fileSizeIcon"
+                                  :dateCreatedIcon="dateCreatedIcon"
+                                  :lastModifiedIcon="lastModifiedIcon"
+                                  />
+
             </v-flex>
 
             <v-flex xs12 mb-2 v-if="!showDetailsOnTheLeft">
-              <metadata-details v-if="details"
-                                :details="details"
+              <metadata-details :details="details"
                                 :showPlaceholder="showPlaceholder" />
             </v-flex>
 
@@ -88,6 +90,7 @@
       </v-layout>
 
       <v-layout row wrap v-if="!twoColumnLayout">
+
         <v-flex xs12
                 md10 offset-md1
                 elevation-5
@@ -96,7 +99,12 @@
           <metadata-header v-bind="header"
                             v-on:clickedTag="catchTagClicked"
                             v-on:clickedBack="catchBackClicked"
-                            :showPlaceholder="showPlaceholder" />
+                            :showPlaceholder="showPlaceholder"
+                            :doiIcon="doiIcon"
+                            :contactIcon="contactIcon"
+                            :mailIcon="mailIcon"
+                            :licenseIcon="licenseIcon"
+                            />
 
         </v-flex>
 
@@ -123,22 +131,30 @@
                 v-bind="fullWidthPadding"
                 >
 
-          <metadata-resources v-bind="resources" :twoColumnLayout="twoColumnLayout"
-                              :showPlaceholder="showPlaceholder" />
+          <metadata-resources v-bind="resources"
+                              :twoColumnLayout="twoColumnLayout"
+                              :showPlaceholder="showPlaceholder"
+                              :doiIcon="doiIcon"
+                              :downloadIcon="downloadIcon"
+                              :linkIcon="linkIcon"
+                              :fileSizeIcon="fileSizeIcon"
+                              :dateCreatedIcon="dateCreatedIcon"
+                              :lastModifiedIcon="lastModifiedIcon"
+                              />
         </v-flex>
 
         <v-flex xs12
                 mb-2
                 v-bind="fullWidthPadding"
                 >
-          <metadata-location v-if="location" v-bind="location" />
+          <metadata-location v-bind="location" />
         </v-flex>
 
         <v-flex xs12
                 mb-2
                 v-bind="fullWidthPadding"
                 >
-          <metadata-details v-if="details" :details="details"
+          <metadata-details :details="details"
                               :showPlaceholder="showPlaceholder" />
         </v-flex>
 
@@ -156,12 +172,14 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import { SET_APP_BACKGROUND } from '../../store/mutationsConsts';
+  import {
+    SET_APP_BACKGROUND,
+    SET_CURRENT_PAGE,
+  } from '../../store/mutationsConsts';
   import {
     LOAD_METADATA_CONTENT_BY_ID,
     CLEAN_CURRENT_METADATA,
   } from '../../store/metadataMutationsConsts';
-  import NavBarView from '../Views/NavbarView';
   import MetadataHeader from '../Views/MetadataViews/MetadataHeader';
   import MetadataBody from '../Views/MetadataViews/MetadataBody';
   import MetadataResources from '../Views/MetadataViews/MetadataResources';
@@ -169,36 +187,41 @@
   import MetadataDetails from '../Views/MetadataViews/MetadataDetails';
   import MetadataCitation from '../Views/MetadataViews/MetadataCitation';
   import NotFoundView from '../Views/Errors/NotFoundView';
+  import metaDataFactory from '../metaDataFactory';
+  import globalMethods from '../globalMethods';
+
   // import { LOAD_METADATAS_CONTENT } from '../../store/metadataMutationsConsts';
 
   // Might want to check https://css-tricks.com/use-cases-fixed-backgrounds-css/
   // for animations between the different parts of the Metadata
 
+  // blured background?
+  // https://paper-leaf.com/blog/2016/01/creating-blurred-background-using-only-css/
+
+  //TODO: Check #/metadata/2016gl071822 for the lost list of data and the background
+
   export default {
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
       next((vm) => {
         // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
+        vm.$store.commit(SET_CURRENT_PAGE, 'metadataDetailPage');
         vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
     },
-    // beforeRouteLeave: function beforeRouteLeave(to, from, next) {
-    //   // console.log("beforeRouteLeave to: " + to + " from: " + from + " next: " + next);
-    //   // called when the route that renders this component is about to
-    //   // be navigated away from.
-    //   // has access to `this` component instance.
-    // },
-    created: function created() {
-      // console.log('created ' + this.metadataId + ' loading ' + this.currentMetadataContent.title + ' ' + this.metadatasContentSize);
+    beforeMount: function beforeMount() {
+      this.downloadIcon = this.getIcon('download');
+      this.linkIcon = this.getIcon('link');
+      this.doiIcon = this.getIcon('doi');
+      this.fileSizeIcon = this.getIcon('fileSize');
+      this.dateCreatedIcon = this.getIcon('dateCreated');
+      this.lastModifiedIcon = this.getIcon('dateModified');
+      this.contactIcon = this.getIcon('contact2');
+      this.mailIcon = this.getIcon('mail');
+      this.licenseIcon = this.getIcon('license');
     },
     mounted: function mounted() {
-      // console.log('mounted ' + this.metadataId + ' loading ' + this.currentMetadataContent.title + ' ' + this.metadatasContentSize);
-      if (!this.loadingMetadatasContent && this.currentMetadataContent.title === undefined) {
-        // in case of directly entring the page load the content directly via Id
-        this.$store.dispatch(`metadata/${LOAD_METADATA_CONTENT_BY_ID}`, this.metadataId);
-        // console.log('mounted dispached content by id');
-      } else {
-        this.createMetadataContent();
-      }
+      this.loadMetaDataContent();
+      window.scrollTo(0, 0);
     },
     beforeDestroy: function beforeDestroy() {
       // clean current metadata to make be empty for the next to load up
@@ -238,12 +261,6 @@
       },
       fullWidthPadding: function fullwidthPadding() {
         const json = {
-          /*
-          md8: true,
-          'offset-md2': true,
-          lg10: true,
-          'offset-lg1': true,
-          */
           md10: true,
           'offset-md1': true,
         };
@@ -306,6 +323,31 @@
       },
     },
     methods: {
+      createMetadataContent: function createMetadataContent() {
+        let currentContent = this.currentMetadataContent;
+
+        currentContent = this.enhanceMetadataEntry(currentContent, this.cardBGImages);
+
+        if (currentContent && currentContent.title !== undefined) {
+          // console.log("create content " + currentContent.spatial + " " + this.header);
+          this.header = metaDataFactory.createHeader(currentContent, this.$vuetify.breakpoint);
+          this.body = metaDataFactory.createBody(currentContent);
+          this.citation = metaDataFactory.createCitation(currentContent);
+          this.resources = metaDataFactory.createResources(currentContent);
+          this.location = metaDataFactory.createLocation(currentContent);
+          this.details = metaDataFactory.createDetails(currentContent);
+        }
+      },
+      enhanceMetadataEntry: function enhanceMetadataEntry(entry, cardBGImages) {
+        if (!entry.titleImg) {
+          globalMethods.methods.enhanceTitleImg(entry, cardBGImages);
+        }
+
+        return entry;
+      },
+      isCurrentIdOrName: function isCurrentIdOrName(idOrName) {
+        return this.currentMetadataContent.id === idOrName || this.currentMetadataContent.name === idOrName;
+      },
       catchTagClicked: function catchTagClicked(tagName) {
         const tagNames = [];
         tagNames.push(tagName);
@@ -323,195 +365,27 @@
         // console.log(this.$router);
         this.$router.go(-1);
       },
-      createMetadataContent: function createMetadataContent() {
-        let currentContent = this.currentMetadataContent;
-
-        // console.log('createMetadataContent title? ' + currentContent.title + ' ' + this.loadingMetadatasContent);
-
-        // if (!currentContent.title === undefined
-        // && this.metadatasContentSize > 0 && this.metadataId) {
-        //   // console.log('createMetadataContent ' + this.metadataId + ' loading ' + this.currentMetadataContent.title + ' ' + this.metadatasContentSize);
-        //   currentContent = this.metadatasContent[this.metadataId];
-        //   // console.log('createMetadataContent ' + this.metadataId + ' currentContent ' + currentContent);
-        // }
-
-        currentContent = this.enhanceMetadataEntry(currentContent, this.cardBGImages);
-
-        if (currentContent && currentContent.title !== undefined) {
-          // console.log("create content " + currentContent.spatial + " " + this.header);
-          this.header = this.createHeader(currentContent);
-          this.body = this.createBody(currentContent);
-          this.citation = this.createCitation(currentContent);
-          this.resources = this.createResources(currentContent);
-          // createLocation is a globalMethod
-          this.location = this.createLocation(currentContent);
-          this.details = this.createDetails(currentContent);
-        }
-      },
-      createHeader: function createHeader(dataset) {
-        let { maintainer } = dataset;
-
-        if (typeof (dataset.maintainer) === 'string') {
-          maintainer = JSON.parse(dataset.maintainer);
-        }
-
-        let contactEmail = dataset.maintainer_email;
-        if (!dataset.maintainer_email && maintainer) {
-          contactEmail = maintainer.email ? maintainer.email : '';
-        }
-
-        const license = this.createLicense(dataset);
-
-        return {
-          metadataTitle: dataset.title,
-          doi: dataset.doi,
-          contactName: maintainer ? maintainer.name : '',
-          contactEmail,
-          license: license.title,
-          tags: dataset.tags,
-          titleImg: dataset.titleImg,
-          maxTags: 12,
-        };
-      },
-      createBody: function createBody(dataset) {
-        return {
-          id: dataset.id,
-          title: dataset.title,
-          doi: dataset.doi,
-          description: dataset.notes,
-        };
-      },
-      getAuthorsString: function getAuthorsString(dataset) {
-        let authors = '';
-
-        if (dataset.author !== undefined) {
-          let { author } = dataset;
-
-          if (typeof (dataset.author) === 'string') {
-            author = JSON.parse(dataset.author);
-          }
-
-          author.forEach((element) => {
-            authors += ` ${element.name};`;
-          });
-
-          // cut of the last ';'
-          if (authors.length > 1) {
-            authors = authors.substring(0, authors.length - 1);
-          }
-        }
-
-        return authors;
-      },
-      createCitation: function createCitation(dataset) {
-        const authors = this.getAuthorsString(dataset);
-
-        let { publication } = dataset;
-
-        if (typeof (dataset.publication) === 'string') {
-          publication = JSON.parse(dataset.publication);
-        }
-
-        let text = '';
-        if (publication) {
-          text = `${authors.trim()} (${publication.publication_year}). ${publication.publisher},`;
-        }
-
-        if (dataset.doi) {
-          text += ` doi: ${dataset.doi}`;
-        }
-
-        return {
-          id: dataset.id,
-          // title: dataset.title,
-          // authors: dataset.author,
-          // publication: dataset.publication,
-          citationText: text,
-          // TODO how to get to the links?
-          // https://www.envidat.ch/dataset/datasets-for-testing-the-repository-and-storage
-          // add /export/datacite.xml or /export/iso19139.xml to the base url www.envidat.ch/dataset/[title]
-          // citationXmlLink: 'https://www.envidat.ch/dataset/number-of-natural-hazard-fatalities-per-year-in-switzerland-since-1946/export/datacite.xml',
-          // ciationIsoXmlLink: 'https://www.envidat.ch/dataset/number-of-natural-hazard-fatalities-per-year-in-switzerland-since-1946/export/iso19139.xml',
-          citationXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/datacite.xml`,
-          ciationIsoXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/iso19139.xml`,
-          ciationGCMDXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/gcmd_diff.xml`,
-        };
-      },
-      createResources: function createResources(dataset) {
-        const resources = [];
-
-        if (dataset.resources) {
-          dataset.resources.forEach((element) => {
-            const res = {
-              // "hash": "",
-              description: element.description,
-              // "cache_last_updated": null,
-              metadataId: element.package_id,
-              // "mimetype_inner": null,
-              // url_type: "upload",
-              id: element.id,
-              size: element.size,
-              mimetype: element.mimetype,
-              cacheUrl: element.cache_url,
-              doi: element.doi,
-              name: element.name,
-              url: element.url,
-              restricted: element.restricted,
-              format: element.format,
-              state: element.state,
-              created: element.created,
-              lastModified: element.last_modified,
-              position: element.position,
-              revisionId: element.revision_id,
-            };
-
-            resources.push(res);
-          });
-        }
-
-        return {
-          metadataId: dataset.id,
-          metadataTitle: dataset.title,
-          doi: dataset.doi,
-          resources,
-        };
-      },
-      createDetails: function createDetails(dataset) {
-        const details = [];
-
-        details.push({ label: 'Title', text: dataset.title });
-
-        const authors = this.getAuthorsString(dataset);
-        details.push({ label: 'Authors', text: authors });
-
-        // DataCRedit
-
-        details.push({ label: 'DOI', text: dataset.doi, url: `https://doi.org/${dataset.doi}` });
-        details.push({ label: 'Created', text: dataset.created });
-        details.push({ label: 'Last Modified', text: dataset.last_modified });
-
-        const license = this.createLicense(dataset);
-        details.push({ label: 'License', text: license.title, url: license.url });
-
-        details.push({ label: 'MetadataId', text: dataset.id });
-
-
-        return details;
-      },
-      createLicense: function createLicense(dataset) {
-        const license = {};
-
-        license.id = dataset.license_id;
-        license.title = dataset.license_title;
-        license.url = dataset.license_url;
-
-        return license;
-      },
       OnScroll: function OnScroll(scrollPos) {
         this.savedPosition = scrollPos;
       },
+      loadMetaDataContent: function loadMetaDataContent() {
+        if (!this.loadingMetadatasContent
+        && (this.currentMetadataContent.title === undefined
+            || !this.isCurrentIdOrName(this.metadataId))) {
+          // in case of directly entring the page load the content directly via Id
+          this.$store.dispatch(`metadata/${LOAD_METADATA_CONTENT_BY_ID}`, this.metadataId);
+        } else {
+          this.createMetadataContent();
+        }
+      },
     },
     watch: {
+      /* eslint-disable no-unused-vars */
+      $route: function watchRouteChanges(to, from) {
+        // react on changes of the route (browser back / forward click)
+
+        this.loadMetaDataContent();
+      },
       currentMetadataContent: function updateContent() {
         this.createMetadataContent();
       },
@@ -534,9 +408,17 @@
       details: null,
       amountOfResourcesToShowDetailsLeft: 4,
       notFoundBackPath: 'browse',
+      downloadIcon: null,
+      linkIcon: null,
+      doiIcon: null,
+      fileSizeIcon: null,
+      dateCreatedIcon: null,
+      lastModifiedIcon: null,
+      contactIcon: null,
+      mailIcon: null,
+      licenseIcon: null,
     }),
     components: {
-      NavBarView,
       MetadataHeader,
       MetadataBody,
       MetadataResources,

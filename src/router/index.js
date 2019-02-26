@@ -4,6 +4,8 @@ import LandingPage from '@/components/Pages/LandingPage';
 import BrowsePage from '@/components/Pages/BrowsePage';
 import MetadataDetailPage from '@/components/Pages/MetadataDetailPage';
 import ResourceDetailPage from '@/components/Pages/ResourceDetailPage';
+import GCMDPage from '@/components/Pages/GCMDPage';
+import AboutPage from '@/components/Pages/AboutPage';
 
 Vue.use(Router);
 
@@ -33,6 +35,16 @@ export default new Router({
       path: '/metadata/:metadataid/resource/:resourceid',
       name: 'ResourceDetailPage',
       component: ResourceDetailPage,
+    },
+    {
+      path: '/gcmd/',
+      name: 'GCMDPage',
+      component: GCMDPage,
+    },
+    {
+      path: '/about/',
+      name: 'AboutPage',
+      component: AboutPage,
     },
   ],
   scrollBehavior(to, from, savedPosition) {

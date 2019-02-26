@@ -1,18 +1,15 @@
 <template>
 
   <v-card 
-    px-2 py-2
     ripple
     hover
-    height="330"
-    @click.native="show = !show"
+    style="height: 100%; max-height: 375px !important;"
     >
 
     <v-img
-      class="imagezoom"
-      background-color="primary"
-      v-bind="{['style'] : dynamicCardBackground }"
-      height="150px"
+        background-color="primary"
+        :style="!flatLayout ? dynamicCardBackground : ''"
+        :height="flatLayout ? '65px' : $vuetify.breakpoint.smAndDown ? '100px' : '125px'"
       >
       
       <!-- <img :src="landImg" /> -->
@@ -23,17 +20,17 @@
           <v-flex xs12 py-0>
             <v-layout row  align-start>
               <v-flex xs12 >
-                <div class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-pulse">
+                <div class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-shimmer">
                   <div class='bone bone-type-multiline bone-style-steps'></div>
                 </div>
               </v-flex>
             </v-layout>
           </v-flex>
   
-          <v-flex xs12 py-0>
-            <v-layout row align-end ma-0>
+          <v-flex xs12 py-0 mx-1>
+            <v-layout row fill-height align-end >
 
-                <tag-chip-placeholder
+                <tag-chip-placeholder py-0
                           v-for="n in 3" :key="n"
                           class="card_tag_placeholder" />              
               
@@ -46,7 +43,7 @@
     </v-img>
 
     <v-card-title primary-title v-if="!show">
-      <div class="skeleton skeleton-color-silver skeleton-animation-pulse" style="width: 100%;">
+      <div class="skeleton skeleton-color-silver skeleton-animation-shimmer" style="width: 100%;">
         <div class='bone bone-type-multiline'></div>
         <div class='bone bone-type-multiline bone-style-paragraph'></div>
       </div>
@@ -75,6 +72,7 @@ export default {
     tags: Array,
     titleImg: String,
     dark: Boolean,
+    flatLayout: Boolean,
   },
   components: {
     TagChipPlaceholder,
@@ -97,7 +95,9 @@ export default {
       const gradient = this.dark ? this.blackTopToBottom : this.whiteTopToBottom;
 
       if (this.defaultTexture) {
-        return `background-image: linear-gradient(0deg, ${gradient}), url(${this.defaultTexture}); background-position: center, center;`;
+        return `background-image: linear-gradient(0deg, ${gradient}), url(${this.defaultTexture});
+                background-position: center, center;
+                background-size: cover; background-repeat: initial; `;
       }
 
       return '';
@@ -135,7 +135,7 @@ export default {
     // maxTags: 3,
     maxTagTextlength: 40,
     blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
-    whiteTopToBottom: 'rgba(255,255,255, 0.25) 0%, rgba(255,255,255, 0.95) 60%',
+    whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
     imageDefaults: {
       snow: 'c_b_snow_icy2',
       landscape: 'c_b_landscape_lake2', // or c_b_landscape_view ! c_b_landscape_long_lake
