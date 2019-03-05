@@ -25,6 +25,7 @@ const initialState = {
   updatingTags: false,
   popularTags: [],
   loadingPopularTags: false,
+  detailPageBackRoute: null,
   error: Object,
   categorycards,
 };
@@ -50,6 +51,7 @@ export const metadata = {
     updatingTags: state => state.updatingTags,
     popularTags: state => state.popularTags,
     loadingPopularTags: state => state.loadingPopularTags,
+    detailPageBackRoute: state => state.detailPageBackRoute,
     categorycards: state => state.categorycards,
   },
   mutations,

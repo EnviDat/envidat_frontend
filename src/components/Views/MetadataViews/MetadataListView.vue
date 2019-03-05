@@ -98,7 +98,7 @@
   import MetadataCard from '../Cards/MetadataCard';
   import MetadataCardPlaceholder from '../Cards/MetadataCardPlaceholder';
   import NoSearchResultsView from '../NoSearchResultsView';
-
+  import { SET_DETAIL_PAGE_BACK_URL } from '../../../store/metadataMutationsConsts';
   // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
 export default {
@@ -186,6 +186,8 @@ export default {
         });
       },
       metaDataClicked: function metaDataClicked(datasetname) {
+        this.$store.commit(`metadata/${SET_DETAIL_PAGE_BACK_URL}`, this.$route);
+
         this.$router.push({
           name: 'MetadataDetailPage',
           params: {

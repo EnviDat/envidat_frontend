@@ -21,6 +21,7 @@ import {
   FILTER_METADATA_ERROR,
   PIN_METADATA,
   CLEAR_PINNED_METADATA,
+  SET_DETAIL_PAGE_BACK_URL,
 } from '../metadataMutationsConsts';
 
 const conversion = require('./conversion');
@@ -153,5 +154,8 @@ export default {
   },
   [CLEAR_PINNED_METADATA](state) {
     state.pinnedIds = [];
+  },
+  [SET_DETAIL_PAGE_BACK_URL](state, payload) {
+    state.detailPageBackRoute = payload;
   },
 };

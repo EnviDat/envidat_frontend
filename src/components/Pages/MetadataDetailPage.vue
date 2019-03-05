@@ -18,7 +18,8 @@
 
           <metadata-header v-bind="header"
                             v-on:clickedTag="catchTagClicked"
-                            v-on:clickedBack="catchBackClicked"                           
+                            v-on:clickedBack="catchBackClicked"
+                            v-on:clickedAuthor="catchAuthorClicked"
                             :showPlaceholder="showPlaceholder"
                             :doiIcon="doiIcon"
                             :contactIcon="contactIcon"
@@ -99,6 +100,7 @@
           <metadata-header v-bind="header"
                             v-on:clickedTag="catchTagClicked"
                             v-on:clickedBack="catchBackClicked"
+                            v-on:clickedAuthor="catchAuthorClicked"
                             :showPlaceholder="showPlaceholder"
                             :doiIcon="doiIcon"
                             :contactIcon="contactIcon"
@@ -233,6 +235,7 @@
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
         loadingCurrentMetadataContent: 'metadata/loadingCurrentMetadataContent',
         currentMetadataContent: 'metadata/currentMetadataContent',
+        detailPageBackRoute: 'metadata/detailPageBackRoute',
         iconImages: 'iconImages',
         cardBGImages: 'cardBGImages',
       }),
@@ -361,8 +364,28 @@
           query,
         });
       },
+      catchAuthorClicked: function catchAuthorClicked(authorName) {
+        const query = {};
+        query.search = authorName;
+
+        this.$router.push({
+          path: '/browse',
+          query,
+        });
+      },
       catchBackClicked: function catchBackClicked() {
         // console.log(this.$router);
+        const backRoute = this.detailPageBackRoute;
+
+        if (backRoute) {
+          this.$router.push({
+            path: backRoute.path,
+            query: backRoute.query,
+            params: backRoute.params,
+          });
+          return;
+        }
+
         this.$router.go(-1);
       },
       OnScroll: function OnScroll(scrollPos) {
