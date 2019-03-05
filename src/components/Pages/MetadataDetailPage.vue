@@ -174,6 +174,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
+  import { BROWSE_PATH } from '@/router/routeConsts';
   import {
     SET_APP_BACKGROUND,
     SET_CURRENT_PAGE,
@@ -360,7 +361,7 @@
         query.tags = tagsEncoded;
 
         this.$router.push({
-          path: '/browse',
+          path: BROWSE_PATH,
           query,
         });
       },
@@ -369,7 +370,7 @@
         query.search = authorName;
 
         this.$router.push({
-          path: '/browse',
+          path: BROWSE_PATH,
           query,
         });
       },
@@ -386,7 +387,9 @@
           return;
         }
 
-        this.$router.go(-1);
+        this.$router.push({
+          path: BROWSE_PATH,
+        });
       },
       OnScroll: function OnScroll(scrollPos) {
         this.savedPosition = scrollPos;

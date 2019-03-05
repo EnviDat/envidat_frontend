@@ -82,6 +82,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
+  import { BROWSE_PATH } from '@/router/routeConsts';
   import FilterBarView from '../Views/Filtering/FilterBarView';
   import FilterMapView from '../Views/Filtering/FilterMapView';
   import MetadataListView from '../Views/MetadataViews/MetadataListView';
@@ -97,6 +98,7 @@
     SET_CURRENT_PAGE,
     SET_CONTROLS,
   } from '../../store/mutationsConsts';
+
 
   // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
@@ -164,7 +166,7 @@
           const newTags = [...this.selectedTagNames, tagName];
 
           const tagsEncoded = this.encodeTagForUrl(newTags);
-          this.additiveChangeRoute(undefined, tagsEncoded);
+          this.additiveChangeRoute(BROWSE_PATH, undefined, tagsEncoded);
         }
       },
       catchTagCloseClicked: function catchTagCloseClicked(tagId) {
@@ -175,7 +177,7 @@
         const newTags = this.selectedTagNames.filter(tag => tag !== tagId);
 
         const tagsEncoded = this.encodeTagForUrl(newTags);
-        this.additiveChangeRoute(undefined, tagsEncoded);
+        this.additiveChangeRoute(BROWSE_PATH, undefined, tagsEncoded);
       },
       catchTagCleared: function catchTagCleared() {
         this.selectedTagNames = [];
@@ -184,10 +186,10 @@
       catchSearchClicked: function catchSearchClicked(searchTerm) {
         /* eslint-disable no-param-reassign */
         searchTerm = searchTerm ? searchTerm.trim() : '';
-        this.additiveChangeRoute(searchTerm, undefined);
+        this.additiveChangeRoute(BROWSE_PATH, searchTerm, undefined);
       },
       catchSearchCleared: function catchSearchCleared() {
-        this.additiveChangeRoute('', undefined);
+        this.additiveChangeRoute(BROWSE_PATH, '', undefined);
       },
       catchMapFilterChanged: function catchMapFilterChanged(visibleIds) {
         this.mapFilterVisibleIds = visibleIds;
@@ -289,10 +291,13 @@
         this.$store.dispatch(`metadata/${FILTER_METADATA}`, this.selectedTagNames);
       },
       checkRouteChanges: function checkRouteChanges() {
-        const tagsChanges = this.loadRouteTags();
+        const tagsChanged = this.loadRouteTags();
         const searchTriggerd = this.loadRouteSearch();
-        if (tagsChanges || (!tagsChanges && searchTriggerd)) {
-          this.filterContent();
+
+        if (tagsChanged || (!tagsChanged && searchTriggerd)) {
+          if (!this.$router.options.isSameRoute(this.$route, this.detailPageBackRoute)) {
+            this.filterContent();
+          }
         }
       },
     },
@@ -310,6 +315,7 @@
         // tag Object structure: { tag: tagName, count: tagCount }
         allTags: 'metadata/allTags',
         currentMetadata: 'metadata/currentMetadata',
+        detailPageBackRoute: 'metadata/detailPageBackRoute',
         updatingTags: 'metadata/updatingTags',
         cardBGImages: 'cardBGImages',
       }),

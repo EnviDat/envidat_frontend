@@ -1,0 +1,7 @@
+export const LANDING_PATH = '/';
+export const BROWSE_PATH = '/browse';
+export const METADATADETAIL_PATH = '/metadata';
+export const METADATADETAIL_NAME = 'MetadataDetailPage';
+export const GCMD_PATH = '/gcmd';
+export const ABOUT_PATH = '/about';
+

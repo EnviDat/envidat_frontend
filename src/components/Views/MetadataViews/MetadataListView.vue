@@ -95,6 +95,10 @@
 
 <script>
   import { mapGetters } from 'vuex';
+  import {
+    BROWSE_PATH,
+    METADATADETAIL_NAME,
+  } from '@/router/routeConsts';
   import MetadataCard from '../Cards/MetadataCard';
   import MetadataCardPlaceholder from '../Cards/MetadataCardPlaceholder';
   import NoSearchResultsView from '../NoSearchResultsView';
@@ -179,7 +183,7 @@ export default {
       },
       catchCategoryClicked: function catchCategoryClicked(cardTitle) {
         this.$router.push({
-          path: '/browse',
+          path: BROWSE_PATH,
           query: {
             search: cardTitle,
           },
@@ -189,7 +193,7 @@ export default {
         this.$store.commit(`metadata/${SET_DETAIL_PAGE_BACK_URL}`, this.$route);
 
         this.$router.push({
-          name: 'MetadataDetailPage',
+          name: METADATADETAIL_NAME,
           params: {
             metadataid: datasetname,
           },
