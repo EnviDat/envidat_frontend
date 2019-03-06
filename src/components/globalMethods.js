@@ -39,7 +39,7 @@ export default {
       // return an empty array for the selectedTagIds
       return [];
     },
-    additiveChangeRoute: function additiveChangeRoute(search, tags) {
+    additiveChangeRoute: function additiveChangeRoute(basePath, search, tags) {
       const query = {};
 
       if (search !== undefined) {
@@ -53,10 +53,9 @@ export default {
       } else if (this.$route.query.tags) {
         query.tags = this.$route.query.tags;
       }
-      // console.log("additiveChangeRoute search: " + query.search + " tags: " + query.tags);
 
       this.$router.push({
-        path: '/browse',
+        path: basePath,
         query,
       });
     },

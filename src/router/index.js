@@ -6,43 +6,54 @@ import MetadataDetailPage from '@/components/Pages/MetadataDetailPage';
 import ResourceDetailPage from '@/components/Pages/ResourceDetailPage';
 import GCMDPage from '@/components/Pages/GCMDPage';
 import AboutPage from '@/components/Pages/AboutPage';
+import {
+  LANDING_PATH,
+  BROWSE_PATH,
+  METADATADETAIL_PATH,
+  METADATADETAIL_NAME,
+  GCMD_PATH,
+  ABOUT_PATH,
+} from '@/router/routeConsts';
 
 Vue.use(Router);
+
+const START = '/';
+const trailingSlashRE = /\/?$/;
 
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: LANDING_PATH,
       name: 'LandingPage',
       component: LandingPage,
     },
     {
-      path: '/browse/:category',
+      path: `${BROWSE_PATH}/:category`,
       name: 'BrowsePage',
       component: BrowsePage,
     },
     {
-      path: '/browse',
+      path: BROWSE_PATH,
       name: 'BrowsePage',
       component: BrowsePage,
     },
     {
-      path: '/metadata/:metadataid',
-      name: 'MetadataDetailPage',
+      path: `${METADATADETAIL_PATH}/:metadataid`,
+      name: METADATADETAIL_NAME,
       component: MetadataDetailPage,
     },
     {
-      path: '/metadata/:metadataid/resource/:resourceid',
+      path: `${METADATADETAIL_PATH}/:metadataid/resource/:resourceid`,
       name: 'ResourceDetailPage',
       component: ResourceDetailPage,
     },
     {
-      path: '/gcmd/',
+      path: GCMD_PATH,
       name: 'GCMDPage',
       component: GCMDPage,
     },
     {
-      path: '/about/',
+      path: ABOUT_PATH,
       name: 'AboutPage',
       component: AboutPage,
     },
@@ -59,5 +70,51 @@ export default new Router({
         });
       }, 450);
     });
+  },
+  // methods is available as this.$router.options.isObjectEqual
+  isObjectEqual: function isObjectEqual(a, b) {
+    // if (a === void 0) a = {};
+    // if (b === void 0) b = {};
+    if (a === null) a = {};
+    if (b === null) b = {};
+
+    // handle null value #1566
+    if (!a || !b) { return a === b; }
+    const aKeys = Object.keys(a);
+    const bKeys = Object.keys(b);
+    if (aKeys.length !== bKeys.length) {
+      return false;
+    }
+    return aKeys.every((key) => {
+      const aVal = a[key];
+      const bVal = b[key];
+      // check nested equality
+      if (typeof aVal === 'object' && typeof bVal === 'object') {
+        return this.isObjectEqual(aVal, bVal);
+      }
+      return String(aVal) === String(bVal);
+    });
+  },
+  // methods is available as this.$router.options.isSameRoute
+  isSameRoute: function isSameRoute(a, b) {
+    if (b === START) {
+      return a === b;
+    } else if (!b) {
+      return false;
+    } else if (a.path && b.path) {
+      return (
+        a.path.replace(trailingSlashRE, '') === b.path.replace(trailingSlashRE, '') &&
+        a.hash === b.hash &&
+        this.isObjectEqual(a.query, b.query)
+      );
+    } else if (a.name && b.name) {
+      return (
+        a.name === b.name &&
+        a.hash === b.hash &&
+        this.isObjectEqual(a.query, b.query) &&
+        this.isObjectEqual(a.params, b.params)
+      );
+    }
+    return false;
   },
 });
