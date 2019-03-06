@@ -5,6 +5,7 @@
                           ['grid-list-lg'] : !listView,
                         }"
                   pa-0
+                  id="metadataListView"
     >
 
       <transition-group
@@ -16,7 +17,7 @@
                     }"
       >
 
-        <v-flex v-if="loading || loadingContent"
+        <v-flex v-if="loading"
                 v-bind="cardGridClass"
                 v-for="(n, index) in placeHolderAmount" :key="'filtered_' + index">
 
@@ -53,7 +54,7 @@
 
         </v-flex>
 
-        <v-flex v-if="!loading && !loadingContent && !isPinned(metadata.id)"
+        <v-flex v-if="!loading && !isPinned(metadata.id)"
                 v-bind="cardGridClass"
                 v-for="(metadata, index) in filteredContent" :key="'filtered_' + index"
                 >
@@ -80,7 +81,7 @@
 
         </v-flex>
 
-        <v-flex xs12 v-if="!loading && !loadingContent && filteredContentSize <= 0"
+        <v-flex xs12 v-if="!loading && filteredContentSize <= 0"
         key="noSearchResultsView">
             <no-search-results-view v-on:clicked="catchCategoryClicked"
                                     :noResultText="noResultText"
@@ -137,16 +138,10 @@ export default {
         pinnedIds: 'metadata/pinnedIds',
       }),
       showPinnedElements: function showPinnedElements() {
-        return !this.loading && !this.loadingContent && this.showMapFilter && this.pinnedIds.length > 0;
+        return !this.loading && this.showMapFilter && this.pinnedIds.length > 0;
       },
       loading: function loading() {
-        // console.log("loading " + this.isFilteringContent + " " + this.searchingMetadatasContent);
-        return this.isFilteringContent || this.searchingMetadatasContent;
-        // return this.isFilteringContent || this.contentSize(this.filteredContent) <= 0;
-      },
-      loadingContent: function loadingContent() {
-        // console.log("loadingContent " + this.loadingMetadatasContent + " " + this.contentSize(this.filteredContent));
-        return (this.loadingMetadatasContent && this.contentSize(this.filteredContent) < this.placeHolderAmount);
+        return this.loadingMetadatasContent || this.isFilteringContent || this.searchingMetadatasContent;
       },
       filteredContentSize: function filteredContentSize() {
         return this.contentSize(this.filteredContent);

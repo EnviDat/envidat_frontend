@@ -97,6 +97,7 @@
     SET_APP_BACKGROUND,
     SET_CURRENT_PAGE,
     SET_CONTROLS,
+    SET_BROWSE_SCROLL_POSITION,
   } from '../../store/mutationsConsts';
 
 
@@ -104,16 +105,22 @@
 
   export default {
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
-      // console.log('beforeRouteEnter ' + new Date());
       next((vm) => {
-        // console.log('beforeRouteEnter next' + new Date());
-        // console.log("browse beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
         vm.$store.commit(SET_CURRENT_PAGE, 'browsePage');
         vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
     },
     mounted: function mounted() {
-      this.checkRouteChanges();
+      const that = this;
+      window.onscroll = () => {
+        that.storeScroll(window.scrollY);
+      };
+
+      this.checkRouteChanges(null);
+    },
+    beforeDestroy: function beforeDestroy() {
+      // destory the scrolling hook that it won't use the scroll of another page
+      window.onscroll = null;
     },
     methods: {
       loadRouteTags: function loadRouteTags() {
@@ -131,9 +138,7 @@
 
         return false;
       },
-      loadRouteSearch: function loadRouteSearch() {
-        const search = this.$route.query.search ? this.$route.query.search : '';
-
+      triggerSearch: function triggerSearch(search) {
         if (search === this.searchTerm) {
           return false;
         }
@@ -142,12 +147,10 @@
 
         if (this.searchTerm && this.searchTerm.length > 0) {
           this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm, this.selectedTagNames);
-          // don't immediately filter the content, it's trigged via the searchingMetadatasContentOK watch
-          return false;
+          return true;
         }
 
-        this.$store.commit(`metadata/${CLEAR_SEARCH_METADATA}`);
-        return true;
+        return false;
       },
       areArrayIdentical: function areArrayIdentical(arr1, arr2) {
         if (arr1.length !== arr2.length) return false;
@@ -158,8 +161,15 @@
 
         return true;
       },
-      updateScroll: function updateScroll() {
-        this.scrollPosition = window.scrollY;
+      setScrollPositionOnList: function setScrollPositionOnList(pos) {
+        window.scrollTo(0, pos);
+      },
+      storeScroll: function storeScroll(scrollY) {
+        this.$store.commit(SET_BROWSE_SCROLL_POSITION, scrollY);
+      },
+      resetScrollPosition: function resetScrollPosition() {
+        this.storeScroll(0);
+        this.setScrollPositionOnList(0);
       },
       catchTagClicked: function catchTagClicked(tagName) {
         if (!this.isTagSelected(tagName)) {
@@ -216,7 +226,7 @@
       },
       controlsChanged: function controlsChanged(controlsActive) {
         // 0-entry: listView, 1-entry: mapActive
-        // console.log('controlsActive ' + controlsActive + ' ' + JSON.stringify(controlsActive));
+
         let listActive = false;
         let mapToggled = false;
 
@@ -263,7 +273,6 @@
         const max = Object.keys(this.imagesImports).length;
         const randomIndex = this.randomInt(0, max);
         const cardImg = Object.values(this.imagesImports)[randomIndex];
-        // console.log(this.imageIndex + " cardImg " + cardImg);
 
         if (cardImg) {
           return `background-image: linear-gradient(to bottom, rgba(1,1,1,0.5), rgba(255,255,255,0)), url(${cardImg}); background-position: center, center;`;
@@ -290,14 +299,49 @@
       filterContent: function filterContent() {
         this.$store.dispatch(`metadata/${FILTER_METADATA}`, this.selectedTagNames);
       },
-      checkRouteChanges: function checkRouteChanges() {
-        const tagsChanged = this.loadRouteTags();
-        const searchTriggerd = this.loadRouteSearch();
+      checkRouteChanges: function checkRouteChanges(fromRoute) {
+        if (!fromRoute) {
+          fromRoute = this.detailPageBackRoute;
+        }
 
-        if (tagsChanged || (!tagsChanged && searchTriggerd)) {
-          if (!this.$router.options.isSameRoute(this.$route, this.detailPageBackRoute)) {
-            this.filterContent();
+        const isABack = this.$router.options.isSameRoute(this.$route, fromRoute);
+        const tagsChanged = this.loadRouteTags();
+        const searchParameter = this.$route.query.search ? this.$route.query.search : '';
+        const checkSearchTriggering = searchParameter !== this.searchTerm;
+
+        if (checkSearchTriggering) {
+          // use the search parameter from the url in any case
+          // if it's a back navigation it has to be set that is will appear in the searchBar component
+          this.searchTerm = searchParameter;
+        }
+
+        if (isABack) {
+          // only set the scroll position because it's a back navigation
+          this.setScrollPositionOnList(this.browseScrollPosition);
+        } else {
+          if (checkSearchTriggering) {
+            if (this.searchTerm && this.searchTerm.length > 0) {
+              this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm, this.selectedTagNames);
+              this.resetScrollPosition();
+
+              // prevent immediately filtering, the search results
+              // will be filtered via searchingMetadatasContentOK watch
+              return;
+            }
+
+            // the searchTerm was changed to empty -> clear the search results
+            this.$store.commit(`metadata/${CLEAR_SEARCH_METADATA}`);
+            // and manually reset the scrolling
+            this.resetScrollPosition();
           }
+
+          if (tagsChanged) {
+            // in case the tags have changed the scroll needs to be reset
+            this.resetScrollPosition();
+          }
+
+          // filter changes of the url except a change of the search term
+          this.filterContent();
         }
       },
     },
@@ -314,9 +358,10 @@
         pinnedIds: 'metadata/pinnedIds',
         // tag Object structure: { tag: tagName, count: tagCount }
         allTags: 'metadata/allTags',
-        currentMetadata: 'metadata/currentMetadata',
+        currentMetadataContent: 'metadata/currentMetadataContent',
         detailPageBackRoute: 'metadata/detailPageBackRoute',
         updatingTags: 'metadata/updatingTags',
+        browseScrollPosition: 'browseScrollPosition',
         cardBGImages: 'cardBGImages',
       }),
       keywordsPlaceholder: function keywordsPlaceholder() {
@@ -336,8 +381,6 @@
         if (sHeight < this.maxMapFilterHeight) {
           height = sHeight - 165;
         }
-
-        // console.log('sHeight ' + sHeight + ' height ' + height + ' ' + this.maxMapFilterHeight);
 
         return height;
       },
@@ -388,10 +431,12 @@
       /* eslint-disable no-unused-vars */
       $route: function watchRouteChanges(to, from) {
         // react on changes of the route (browser back / forward click)
-        this.checkRouteChanges();
-
-        window.scrollTo(0, this.scrollPosition);
-        // console.log('watch $route ', this.$route.query.toString() + " to " + to.query + " from " + from.query);
+        this.checkRouteChanges(from);
+      },
+      isFilteringContent: function watchFiltering() {
+        if (!this.isFilteringContent) {
+          this.setScrollPositionOnList(this.browseScrollPosition);
+        }
       },
       metadatasContent: function watchFilterContent() {
         this.filterContent();
@@ -410,7 +455,6 @@
       suggestionText: 'Try one of these categories',
       selectedTagNames: [],
       popularTagAmount: 10,
-      scrollPosition: 0,
       showMapFilter: false,
       maxMapFilterHeight: 725,
       mapFilterVisibleIds: [],

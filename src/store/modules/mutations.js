@@ -33,7 +33,6 @@ export default {
     state.searchedMetadatasContent = {};
   },
   [SEARCH_METADATA_SUCCESS](state, payload, showRestrictedContent = false) {
-    state.searchingMetadatasContentOK = true;
 
     /* eslint-disable no-underscore-dangle */
     for (let i = 0; i < payload.length; i++) {
@@ -46,6 +45,7 @@ export default {
       }
     }
 
+    state.searchingMetadatasContentOK = true;
     state.searchingMetadatasContent = false;
   },
   [SEARCH_METADATA_ERROR](state, reason) {
@@ -103,7 +103,6 @@ export default {
     state.metadatasContent = {};
   },
   [BULK_LOAD_METADATAS_CONTENT_SUCCESS](state, payload, showRestrictedContent) {
-    state.metadatasContentOK = true;
 
     /* eslint-disable no-underscore-dangle */
     for (let i = 0; i < payload.length; i++) {
@@ -116,6 +115,7 @@ export default {
       }
     }
 
+    state.metadatasContentOK = true;
     state.loadingMetadatasContent = false;
   },
   [BULK_LOAD_METADATAS_CONTENT_ERROR](state, reason) {
