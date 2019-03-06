@@ -328,6 +328,7 @@
     font-size: 15px !important;
   }
 
+  .authorTag span,
   .envidatChip span {
     cursor: pointer !important;
   }
