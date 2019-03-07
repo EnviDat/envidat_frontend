@@ -58,6 +58,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
+  import { BROWSE_PATH } from '@/router/routeConsts';
   import CategoryCard from '../Views/Cards/CategoryCard';
   import TitleView from '../Views/TitleView';
   import SearchBarView from '../Views/SearchBarView';
@@ -99,7 +100,7 @@
         }
 
         this.$router.push({
-          path: '/browse',
+          path: BROWSE_PATH,
           query: {
             search: cardTitle,
           },
@@ -107,13 +108,13 @@
       },
       catchSearchClicked: function catchSearchClicked(search) {
         this.$router.push({
-          path: '/browse',
+          path: BROWSE_PATH,
           query: { search },
         });
       },
       catchBrowseClicked: function catchBrowseClicked() {
         this.$router.push({
-          path: '/browse',
+          path: BROWSE_PATH,
           // query: { '' },
         });
       },

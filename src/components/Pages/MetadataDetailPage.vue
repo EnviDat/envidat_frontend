@@ -18,7 +18,8 @@
 
           <metadata-header v-bind="header"
                             v-on:clickedTag="catchTagClicked"
-                            v-on:clickedBack="catchBackClicked"                           
+                            v-on:clickedBack="catchBackClicked"
+                            v-on:clickedAuthor="catchAuthorClicked"
                             :showPlaceholder="showPlaceholder"
                             :doiIcon="doiIcon"
                             :contactIcon="contactIcon"
@@ -99,6 +100,7 @@
           <metadata-header v-bind="header"
                             v-on:clickedTag="catchTagClicked"
                             v-on:clickedBack="catchBackClicked"
+                            v-on:clickedAuthor="catchAuthorClicked"
                             :showPlaceholder="showPlaceholder"
                             :doiIcon="doiIcon"
                             :contactIcon="contactIcon"
@@ -172,6 +174,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
+  import { BROWSE_PATH } from '@/router/routeConsts';
   import {
     SET_APP_BACKGROUND,
     SET_CURRENT_PAGE,
@@ -233,6 +236,7 @@
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
         loadingCurrentMetadataContent: 'metadata/loadingCurrentMetadataContent',
         currentMetadataContent: 'metadata/currentMetadataContent',
+        detailPageBackRoute: 'metadata/detailPageBackRoute',
         iconImages: 'iconImages',
         cardBGImages: 'cardBGImages',
       }),
@@ -357,13 +361,35 @@
         query.tags = tagsEncoded;
 
         this.$router.push({
-          path: '/browse',
+          path: BROWSE_PATH,
+          query,
+        });
+      },
+      catchAuthorClicked: function catchAuthorClicked(authorName) {
+        const query = {};
+        query.search = authorName;
+
+        this.$router.push({
+          path: BROWSE_PATH,
           query,
         });
       },
       catchBackClicked: function catchBackClicked() {
         // console.log(this.$router);
-        this.$router.go(-1);
+        const backRoute = this.detailPageBackRoute;
+
+        if (backRoute) {
+          this.$router.push({
+            path: backRoute.path,
+            query: backRoute.query,
+            params: backRoute.params,
+          });
+          return;
+        }
+
+        this.$router.push({
+          path: BROWSE_PATH,
+        });
       },
       OnScroll: function OnScroll(scrollPos) {
         this.savedPosition = scrollPos;
