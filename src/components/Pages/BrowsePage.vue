@@ -4,9 +4,6 @@
                 tag="article"
                 pa-0
   >
-                <!-- v-bind="{ 'pa-0': $vuetify.breakpoint.xsOnly }"
-                @scroll="updateScroll" -->
-
     <v-layout row wrap>
 
       <v-flex xs12
@@ -32,7 +29,7 @@
                       :mapFilterHeight="mapFilterHeight"
                       v-on:clickedMapExpand="toggleMapExpand"
                       v-on:mapFilterChanged="catchMapFilterChanged"
-                      :showPlaceholder="updatingTags"
+                      :showPlaceholder="keywordsPlaceholder"
                       v-on:controlsChanged="controlsChanged"
                       />
 
@@ -85,6 +82,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
+  import { BROWSE_PATH } from '@/router/routeConsts';
   import FilterBarView from '../Views/Filtering/FilterBarView';
   import FilterMapView from '../Views/Filtering/FilterMapView';
   import MetadataListView from '../Views/MetadataViews/MetadataListView';
@@ -99,30 +97,30 @@
     SET_APP_BACKGROUND,
     SET_CURRENT_PAGE,
     SET_CONTROLS,
+    SET_BROWSE_SCROLL_POSITION,
   } from '../../store/mutationsConsts';
+
 
   // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
   export default {
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
-      // console.log('beforeRouteEnter ' + new Date());
       next((vm) => {
-        // console.log('beforeRouteEnter next' + new Date());
-        // console.log("browse beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
         vm.$store.commit(SET_CURRENT_PAGE, 'browsePage');
         vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
     },
-    // created: function created() {
-      // this.loadRouteTags();
-
-    // },
     mounted: function mounted() {
-      this.checkRouteChanges();
-      // console.log('created ' + new Date());
+      const that = this;
+      window.onscroll = () => {
+        that.storeScroll(window.scrollY);
+      };
 
-      // this.loadRouteSearch();
-      // this.filterContent();
+      this.checkRouteChanges(null);
+    },
+    beforeDestroy: function beforeDestroy() {
+      // destory the scrolling hook that it won't use the scroll of another page
+      window.onscroll = null;
     },
     methods: {
       loadRouteTags: function loadRouteTags() {
@@ -133,63 +131,52 @@
           decodedTags = this.decodeTagsFromUrl(tagsEncoded);
         }
 
-        if (!this.areArrayIdentical(this.selectedTagNames, decodedTags)
-        ) {
-        // this.selectedTagNames.length != decodedTags.length 
-        // && 
-          //TODO check for not the same content
-          
-          // console.log("loadRouteTags " + this.selectedTagNames + " " + decodedTags);
+        if (!this.areArrayIdentical(this.selectedTagNames, decodedTags)) {
           this.selectedTagNames = decodedTags;
           return true;
         }
 
         return false;
       },
-      loadRouteSearch: function loadRouteSearch() {
-        const search = this.$route.query.search ? this.$route.query.search : '';
-
-        if (search === this.searchTerm){
+      triggerSearch: function triggerSearch(search) {
+        if (search === this.searchTerm) {
           return false;
         }
 
-        if (!search || search.length <= 0) {
-          this.catchSearchCleared();
-        } else {
-          return this.catchSearchClicked(search);
+        this.searchTerm = search;
+
+        if (this.searchTerm && this.searchTerm.length > 0) {
+          this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm, this.selectedTagNames);
+          return true;
         }
 
         return false;
       },
       areArrayIdentical: function areArrayIdentical(arr1, arr2) {
-        if(arr1.length !== arr2.length) return false;
+        if (arr1.length !== arr2.length) return false;
 
-        for(var i = arr1.length; i--;) {
-          if(arr1[i] !== arr2[i])
-            return false;
+        for (let i = arr1.length; i--;) {
+          if (arr1[i] !== arr2[i]) return false;
         }
 
-        return true;        
+        return true;
       },
-      updateScroll: function updateScroll() {
-        this.scrollPosition = window.scrollY;
+      setScrollPositionOnList: function setScrollPositionOnList(pos) {
+        window.scrollTo(0, pos);
       },
-      decodeCategoryFromUrl: function decodeCategoryFromUrl(urlquery) {
-        if (urlquery) {
-          // TODO: figure out which tags should be auto selected
-          // console.log("got category via url: " + urlquery);
-        }
-
-        // return an empty array for the selectedTagNames
-        return [];
+      storeScroll: function storeScroll(scrollY) {
+        this.$store.commit(SET_BROWSE_SCROLL_POSITION, scrollY);
+      },
+      resetScrollPosition: function resetScrollPosition() {
+        this.storeScroll(0);
+        this.setScrollPositionOnList(0);
       },
       catchTagClicked: function catchTagClicked(tagName) {
         if (!this.isTagSelected(tagName)) {
-          this.selectedTagNames.push(tagName);
+          const newTags = [...this.selectedTagNames, tagName];
 
-          const tagsEncoded = this.encodeTagForUrl(this.selectedTagNames);
-          this.additiveChangeRoute(undefined, tagsEncoded);
-          // this.filterContent();
+          const tagsEncoded = this.encodeTagForUrl(newTags);
+          this.additiveChangeRoute(BROWSE_PATH, undefined, tagsEncoded);
         }
       },
       catchTagCloseClicked: function catchTagCloseClicked(tagId) {
@@ -197,15 +184,10 @@
           return;
         }
 
-        const index = this.selectedTagNames.indexOf(tagId);
+        const newTags = this.selectedTagNames.filter(tag => tag !== tagId);
 
-        if (index >= 0) {
-          this.selectedTagNames.splice(index, 1);
-
-          const tagsEncoded = this.encodeTagForUrl(this.selectedTagNames);
-          this.additiveChangeRoute(undefined, tagsEncoded);
-          // this.filterContent();
-        }
+        const tagsEncoded = this.encodeTagForUrl(newTags);
+        this.additiveChangeRoute(BROWSE_PATH, undefined, tagsEncoded);
       },
       catchTagCleared: function catchTagCleared() {
         this.selectedTagNames = [];
@@ -214,30 +196,10 @@
       catchSearchClicked: function catchSearchClicked(searchTerm) {
         /* eslint-disable no-param-reassign */
         searchTerm = searchTerm ? searchTerm.trim() : '';
-
-        if (this.searchTerm !== searchTerm) {
-          this.searchTerm = searchTerm;
-
-          if (this.searchTerm && this.searchTerm.length > 0) {
-            this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm, this.selectedTagNames);
-
-            this.additiveChangeRoute(this.searchTerm, undefined);
-            return true;
-          }
-        }
-
-        return false;
+        this.additiveChangeRoute(BROWSE_PATH, searchTerm, undefined);
       },
       catchSearchCleared: function catchSearchCleared() {
-        this.searchTerm = '';
-
-        // const queryLength = Object.keys(this.$route.query).length;
-
-        // if (queryLength > 0 && this.$route.query.search) {
-        this.additiveChangeRoute(this.searchTerm, undefined);
-        // }
-
-        this.$store.commit(`metadata/${CLEAR_SEARCH_METADATA}`);
+        this.additiveChangeRoute(BROWSE_PATH, '', undefined);
       },
       catchMapFilterChanged: function catchMapFilterChanged(visibleIds) {
         this.mapFilterVisibleIds = visibleIds;
@@ -264,7 +226,7 @@
       },
       controlsChanged: function controlsChanged(controlsActive) {
         // 0-entry: listView, 1-entry: mapActive
-        // console.log('controlsActive ' + controlsActive + ' ' + JSON.stringify(controlsActive));
+
         let listActive = false;
         let mapToggled = false;
 
@@ -311,7 +273,6 @@
         const max = Object.keys(this.imagesImports).length;
         const randomIndex = this.randomInt(0, max);
         const cardImg = Object.values(this.imagesImports)[randomIndex];
-        // console.log(this.imageIndex + " cardImg " + cardImg);
 
         if (cardImg) {
           return `background-image: linear-gradient(to bottom, rgba(1,1,1,0.5), rgba(255,255,255,0)), url(${cardImg}); background-position: center, center;`;
@@ -338,10 +299,48 @@
       filterContent: function filterContent() {
         this.$store.dispatch(`metadata/${FILTER_METADATA}`, this.selectedTagNames);
       },
-      checkRouteChanges: function checkRouteChanges() {
-        const tagsChanges = this.loadRouteTags();
-        const searchTriggerd = this.loadRouteSearch();
-        if (tagsChanges || (!tagsChanges && searchTriggerd)) {
+      checkRouteChanges: function checkRouteChanges(fromRoute) {
+        if (!fromRoute) {
+          fromRoute = this.detailPageBackRoute;
+        }
+
+        const isABack = this.$router.options.isSameRoute(this.$route, fromRoute);
+        const tagsChanged = this.loadRouteTags();
+        const searchParameter = this.$route.query.search ? this.$route.query.search : '';
+        const checkSearchTriggering = searchParameter !== this.searchTerm;
+
+        if (checkSearchTriggering) {
+          // use the search parameter from the url in any case
+          // if it's a back navigation it has to be set that is will appear in the searchBar component
+          this.searchTerm = searchParameter;
+        }
+
+        if (isABack) {
+          // only set the scroll position because it's a back navigation
+          this.setScrollPositionOnList(this.browseScrollPosition);
+        } else {
+          if (checkSearchTriggering) {
+            if (this.searchTerm && this.searchTerm.length > 0) {
+              this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm, this.selectedTagNames);
+              this.resetScrollPosition();
+
+              // prevent immediately filtering, the search results
+              // will be filtered via searchingMetadatasContentOK watch
+              return;
+            }
+
+            // the searchTerm was changed to empty -> clear the search results
+            this.$store.commit(`metadata/${CLEAR_SEARCH_METADATA}`);
+            // and manually reset the scrolling
+            this.resetScrollPosition();
+          }
+
+          if (tagsChanged) {
+            // in case the tags have changed the scroll needs to be reset
+            this.resetScrollPosition();
+          }
+
+          // filter changes of the url except a change of the search term
           this.filterContent();
         }
       },
@@ -355,12 +354,19 @@
         loadingMetadataIds: 'metadata/loadingMetadataIds',
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
         filteredContent: 'metadata/filteredContent',
+        isFilteringContent: 'metadata/isFilteringContent',
         pinnedIds: 'metadata/pinnedIds',
         // tag Object structure: { tag: tagName, count: tagCount }
         allTags: 'metadata/allTags',
-        currentMetadata: 'metadata/currentMetadata',
+        currentMetadataContent: 'metadata/currentMetadataContent',
+        detailPageBackRoute: 'metadata/detailPageBackRoute',
         updatingTags: 'metadata/updatingTags',
+        browseScrollPosition: 'browseScrollPosition',
+        cardBGImages: 'cardBGImages',
       }),
+      keywordsPlaceholder: function keywordsPlaceholder() {
+        return this.searchingMetadatasContent || this.updatingTags;
+      },
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
       },
@@ -375,8 +381,6 @@
         if (sHeight < this.maxMapFilterHeight) {
           height = sHeight - 165;
         }
-
-        // console.log('sHeight ' + sHeight + ' height ' + height + ' ' + this.maxMapFilterHeight);
 
         return height;
       },
@@ -427,16 +431,18 @@
       /* eslint-disable no-unused-vars */
       $route: function watchRouteChanges(to, from) {
         // react on changes of the route (browser back / forward click)
-        this.checkRouteChanges();
-
-        window.scrollTo(0, this.scrollPosition);
-        // console.log('watch $route ', this.$route.query.toString() + " to " + to.query + " from " + from.query);
+        this.checkRouteChanges(from);
+      },
+      isFilteringContent: function watchFiltering() {
+        if (!this.isFilteringContent) {
+          this.setScrollPositionOnList(this.browseScrollPosition);
+        }
       },
       metadatasContent: function watchFilterContent() {
         this.filterContent();
       },
       searchingMetadatasContentOK: function watchSearchFilterContent() {
-        if (this.searchingMetadatasContentOK) {          
+        if (this.searchingMetadatasContentOK) {
           this.filterContent();
         }
       },
@@ -449,7 +455,6 @@
       suggestionText: 'Try one of these categories',
       selectedTagNames: [],
       popularTagAmount: 10,
-      scrollPosition: 0,
       showMapFilter: false,
       maxMapFilterHeight: 725,
       mapFilterVisibleIds: [],

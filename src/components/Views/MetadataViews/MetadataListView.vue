@@ -5,6 +5,7 @@
                           ['grid-list-lg'] : !listView,
                         }"
                   pa-0
+                  id="metadataListView"
     >
 
       <transition-group
@@ -16,7 +17,7 @@
                     }"
       >
 
-        <v-flex v-if="loading || loadingContent"
+        <v-flex v-if="loading"
                 v-bind="cardGridClass"
                 v-for="(n, index) in placeHolderAmount" :key="'filtered_' + index">
 
@@ -53,7 +54,7 @@
 
         </v-flex>
 
-        <v-flex v-if="!loading && !loadingContent && !isPinned(metadata.id)"
+        <v-flex v-if="!loading && !isPinned(metadata.id)"
                 v-bind="cardGridClass"
                 v-for="(metadata, index) in filteredContent" :key="'filtered_' + index"
                 >
@@ -80,7 +81,7 @@
 
         </v-flex>
 
-        <v-flex xs12 v-if="!loading && !loadingContent && filteredContentSize <= 0"
+        <v-flex xs12 v-if="!loading && filteredContentSize <= 0"
         key="noSearchResultsView">
             <no-search-results-view v-on:clicked="catchCategoryClicked"
                                     :noResultText="noResultText"
@@ -95,11 +96,14 @@
 
 <script>
   import { mapGetters } from 'vuex';
+  import {
+    BROWSE_PATH,
+    METADATADETAIL_NAME,
+  } from '@/router/routeConsts';
   import MetadataCard from '../Cards/MetadataCard';
   import MetadataCardPlaceholder from '../Cards/MetadataCardPlaceholder';
   import NoSearchResultsView from '../NoSearchResultsView';
-  import { FILTER_METADATA_SUCESS } from '../../../store/metadataMutationsConsts';
-
+  import { SET_DETAIL_PAGE_BACK_URL } from '../../../store/metadataMutationsConsts';
   // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
 export default {
@@ -110,7 +114,6 @@ export default {
       placeHolderAmount: Number,
     },
     data: () => ({
-      enhanceContentDone: false,
       noResultText: 'Nothing found for these search criterias',
       suggestionText: 'Try one of these categories',
       fileIconString: null,
@@ -118,20 +121,9 @@ export default {
       unlockedIconString: null,
     }),
     beforeMount: function beforeMount() {
-      // this.enhanceContent();
       this.fileIconString = this.getIcon('file');
       this.lockedIconString = this.getIcon('lock2Closed');
       this.unlockedIconString = this.getIcon('lock2Open');
-    },
-    watch: {
-      filteredContent: function watchEnhanceMetadata() {
-        this.enhanceContent();
-      },
-      searchingMetadatasContentOK: function watchSearchFilterContent() {
-        if (this.searchingMetadatasContentOK) {
-          this.enhanceContent(true);
-        }
-      },
     },
     computed: {
       ...mapGetters({
@@ -144,19 +136,12 @@ export default {
         filteredContent: 'metadata/filteredContent',
         isFilteringContent: 'metadata/isFilteringContent',
         pinnedIds: 'metadata/pinnedIds',
-        cardBGImages: 'cardBGImages',
       }),
       showPinnedElements: function showPinnedElements() {
-        return !this.loading && !this.loadingContent && this.showMapFilter && this.pinnedIds.length > 0;
+        return !this.loading && this.showMapFilter && this.pinnedIds.length > 0;
       },
       loading: function loading() {
-        // console.log("loading " + this.isFilteringContent + " " + this.searchingMetadatasContent);
-        return this.isFilteringContent || this.searchingMetadatasContent;
-        // return this.isFilteringContent || this.contentSize(this.filteredContent) <= 0;
-      },
-      loadingContent: function loadingContent() {
-        // console.log("loadingContent " + this.loadingMetadatasContent + " " + this.contentSize(this.filteredContent));
-        return (this.loadingMetadatasContent && this.contentSize(this.filteredContent) < this.placeHolderAmount);
+        return this.loadingMetadatasContent || this.isFilteringContent || this.searchingMetadatasContent;
       },
       filteredContentSize: function filteredContentSize() {
         return this.contentSize(this.filteredContent);
@@ -185,17 +170,6 @@ export default {
 
     },
     methods: {
-      enhanceContent: function enhanceContent(force = false) {
-        if (this.enhanceContentDone && !force) return;
-
-        if (this.filteredContent && this.filteredContent.length > 0) {
-          const enhancedContent = this.enhanceMetadata(this.filteredContent, this.cardBGImages);
-          if (enhancedContent && enhancedContent.length > 0) {
-            this.$store.commit(`metadata/${FILTER_METADATA_SUCESS}`, enhancedContent);
-            this.enhanceContentDone = true;
-          }
-        }
-      },
       contentSize: function contentSize(content) {
         return content !== undefined ? Object.keys(content).length : 0;
       },
@@ -204,15 +178,17 @@ export default {
       },
       catchCategoryClicked: function catchCategoryClicked(cardTitle) {
         this.$router.push({
-          path: '/browse',
+          path: BROWSE_PATH,
           query: {
             search: cardTitle,
           },
         });
       },
       metaDataClicked: function metaDataClicked(datasetname) {
+        this.$store.commit(`metadata/${SET_DETAIL_PAGE_BACK_URL}`, this.$route);
+
         this.$router.push({
-          name: 'MetadataDetailPage',
+          name: METADATADETAIL_NAME,
           params: {
             metadataid: datasetname,
           },

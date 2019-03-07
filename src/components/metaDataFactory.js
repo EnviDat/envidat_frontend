@@ -14,6 +14,12 @@ module.exports = {
 
     const license = this.createLicense(dataset);
 
+    let authors = null;
+
+    if (typeof (dataset.author) === 'string') {
+      authors = JSON.parse(dataset.author);
+    }
+
     return {
       metadataTitle: dataset.title,
       doi: dataset.doi,
@@ -23,6 +29,7 @@ module.exports = {
       tags: dataset.tags,
       titleImg: dataset.titleImg,
       maxTags: breakpoint.smAndDown ? 5 : 12,
+      authors,
     };
   },
   createBody: function createBody(dataset) {

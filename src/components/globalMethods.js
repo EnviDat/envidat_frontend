@@ -5,7 +5,7 @@ export default {
     /**
      * Encodes a array of tagNames via btoa() to a string.
      * Also replaces theses characters '.', '_', '-' which cause problems for urls.
-     * 
+     *
      * @param {array} jsonTags: array of tagNames
      * @return {String} encoded string usable for urls
      */
@@ -28,7 +28,7 @@ export default {
      * Decodes a string which was encoded via encodeTagForUrl().
      * Returns the original array or an empty one.
      * Also restores characters '.', '_', '-'.
-     * 
+     *
      * @param {String} urlquery: encoded string
      * @return {array}: array of tagNames
      */
@@ -51,12 +51,12 @@ export default {
      * Changes the route via this.$router.push();
      * The search and tag parameter are added as query parameters.
      * urlSubPath is added as the path.
-     * 
+     *
      * @param {String} search search term
      * @param {String} tags encoded string
      * @param {String} urlSubPath default: '/browse'
      */
-    additiveChangeRoute: function additiveChangeRoute(search = undefined, tags = undefined, urlSubPath = '/browse') {
+    additiveChangeRoute: function additiveChangeRoute(basePath, search, tags) {
       const query = {};
 
       if (search !== undefined) {
@@ -72,7 +72,7 @@ export default {
       }
 
       this.$router.push({
-        path: urlSubPath,
+        path: basePath,
         query,
       });
     },
@@ -103,8 +103,8 @@ export default {
     },
     /**
      * Loads the path to the icon image
-     * 
-     * @param {String} iconName 
+     *
+     * @param {String} iconName
      * @return {String} relative file path with extension to the icon image file
      */
     getIcon: function getIcon(iconName) {
@@ -113,8 +113,8 @@ export default {
     },
     /**
      * Loads the path to the icon image representing a file extension
-     * 
-     * @param {*} iconName 
+     *
+     * @param {*} iconName
      * @return {string} relative file path to the icon image file
      */
     getIconFileExtension: function getIconFileExtension(fileExtension) {
@@ -125,10 +125,10 @@ export default {
     },
     /**
      * Loads the file path to given images into a Map.
-     * 
+     *
      * @param {Map<string, string>} imgs imageContext which is loaded via require.context() (ex. require.context('./assets/', false, /\.jpg$/);)
-     * @param {String} checkForString 
-     * 
+     * @param {String} checkForString
+     *
      * @return {Map<string, string>} Image cache
      */
     importImages: function importImages(imgs, checkForString) {
@@ -144,10 +144,10 @@ export default {
     },
     /**
      * Create a psyeudo random integer based on a given seed using the "seedrandom" lib.
-     * 
-     * @param {Number} min 
-     * @param {Number} max 
-     * @param {String} seed 
+     *
+     * @param {Number} min
+     * @param {Number} max
+     * @param {String} seed
      */
     randomInt: function randomInt(min, max, seed = 'For the Horde!') {
       const rng = seedrandom(seed);
@@ -163,9 +163,9 @@ export default {
       return r;
     },
     /**
-     * @param {Object} metadataEntry 
-     * @param {Array} cardBGImages 
-     * 
+     * @param {Object} metadataEntry
+     * @param {Array} cardBGImages
+     *
      * @return {Object} metadataEntry enhanced with a title image based on the entrys tags
      */
     enhanceMetadataEntry: function enhanceMetadataEntry(metadataEntry, cardBGImages) {
@@ -176,9 +176,9 @@ export default {
       return metadataEntry;
     },
     /**
-     * @param {Array} metadatas 
-     * @param {Array} cardBGImages 
-     * 
+     * @param {Array} metadatas
+     * @param {Array} cardBGImages
+     *
      * @return {Array} metadatas enhanced with a title image based on the metadatas tags
      */
     enhanceMetadata: function enhanceMetadata(metadatas, cardBGImages) {
@@ -200,13 +200,14 @@ export default {
     },
     /**
      * @param {Object} metadata
-     * @param {Array} cardBGImages 
-     * 
+     * @param {Array} cardBGImages
+     *
      * @return {Object} metadata entry enhanced with a title image based on its tags
      */
     enhanceTitleImg: function enhanceTitleImg(metadata, cardBGImages) {
       /* eslint-disable no-param-reassign */
       const category = this.guessTagCategory(metadata.tags);
+
       const categoryImgs = cardBGImages[category];
       const max = Object.keys(categoryImgs).length - 1;
       const randomIndex = this.randomInt(0, max, metadata.title);
@@ -215,8 +216,8 @@ export default {
       metadata.titleImg = cardImg;
     },
     /**
-     * @param {Array} tags 
-     * 
+     * @param {Array} tags
+     *
      * @return {String} category based on tags array
      */
     guessTagCategory: function guessTagCategory(tags) {
@@ -227,7 +228,7 @@ export default {
           const element = tags[i];
 
           if (element.name) {
-            if (element.name.includes('HAZARD')) {
+            if (element.name.includes('HAZARD') || element.name.includes('ACCIDENTS')) {
               category = 'hazard'; break;
             }
             if (element.name.includes('DIVERSITY')) {
@@ -236,7 +237,7 @@ export default {
             if (element.name.includes('FOREST')) {
               category = 'forest'; break;
             }
-            if (element.name.includes('SNOW')) {
+            if (element.name.includes('SNOW') || element.name.includes('AVALANCHE')) {
               category = 'snow'; break;
             }
             if (element.name.includes('LANDSCAPE')) {
