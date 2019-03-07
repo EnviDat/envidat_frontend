@@ -70,13 +70,13 @@
                                   :alignLeft="twoColumnLayout" />
               </v-flex>
               <v-flex px-0 v-if="created">
-                <icon-label-view :text="formatedDate(created)"
+                <icon-label-view :text="formatedCreated"
                                   :icon="dateCreatedIcon" 
                                   iconTooltip="Date of file creation" 
                                   :alignLeft="twoColumnLayout"/>
               </v-flex>
               <v-flex px-0 v-if="lastModified">
-                <icon-label-view :text="formatedDate(lastModified)"
+                <icon-label-view :text="formatedLastModified"
                                   :icon="lastModifiedIcon"
                                   iconTooltip="Date of last modification" 
                                   :alignLeft="twoColumnLayout"/>
