@@ -20,7 +20,8 @@ export default new Vuex.Store({
     cardBGImages: {},
     iconImages: {},
     aboutText,
-    controls: [],
+    // controls default: [1] means the the second [0,1] is active -> map filtering is active per default
+    controls: [1],
     browseScrollPosition: 0,
   },
   getters: {
