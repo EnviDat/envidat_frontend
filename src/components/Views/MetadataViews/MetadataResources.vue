@@ -19,7 +19,15 @@
                 xs12 sm6
                 v-for="res in resources" :key="res.id">
 
-          <resource-card v-bind="res" v-on:clicked="resClicked(res)" :twoColumnLayout="twoColumnLayout" />
+          <resource-card v-bind="res"
+                        :doiIcon="doiIcon"
+                        :linkIcon="linkIcon"
+                        :downloadIcon="downloadIcon"
+                        :fileSizeIcon="fileSizeIcon"
+                        :dateCreatedIcon="dateCreatedIcon"
+                        :lastModifiedIcon="lastModifiedIcon"
+                        :twoColumnLayout="twoColumnLayout"
+                        v-on:clicked="resClicked(res)" />
 
         </v-flex>
 
@@ -54,6 +62,12 @@
       twoColumnLayout: Boolean,
       isOnTop: Boolean,
       showPlaceholder: Boolean,
+      doiIcon: String,
+      downloadIcon: String,
+      linkIcon: String,
+      fileSizeIcon: String,
+      dateCreatedIcon: String,
+      lastModifiedIcon: String,
     },
     updated: function updated() {
     },

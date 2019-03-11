@@ -14,10 +14,12 @@ import {
   UPDATE_TAGS_ERROR,
   UPDATE_TAGS_SUCCESS,
   FILTER_METADATA,
-  FILTER_METADATA_SUCESS,
+  FILTER_METADATA_SUCCESS,
   FILTER_METADATA_ERROR,
 } from '../metadataMutationsConsts';
 
+// import randomInt from '../../components/globalMethods';
+const globalMethods = require('../../components/globalMethods');
 /* eslint-disable no-unused-vars  */
 
 const ENVIDAT_PROXY = process.env.ENVIDAT_PROXY;
@@ -59,6 +61,44 @@ function enhanceSearchWithTags(allTags, searchResult) {
   }
 
   return searchResult;
+}
+
+function enhanceMetadataEntry(entry, cardBGImages) {
+  if (!entry.titleImg) {
+    globalMethods.default.methods.enhanceTitleImg(entry, cardBGImages);
+  }
+
+  return entry;
+}
+
+function enhanceMetadata(metadatas, cardBGImages) {
+  if (metadatas === undefined && metadatas.length <= 0) {
+    return undefined;
+  }
+
+  // console.log("enhanceMetadata " + Array.isArray(metadatas) + " " + cardBGImages );
+
+  if (Array.isArray(metadatas)) {
+    for (let i = 0; i < metadatas.length; i++) {
+      const el = metadatas[i];
+
+      if (!el.titleImg) {
+        globalMethods.default.methods.enhanceTitleImg(el, cardBGImages);
+      }
+    }
+  }
+
+  return metadatas;
+}
+
+function enhanceContent(metadatas, cardBGImages) {
+  let enhancedContent = [];
+
+  if (metadatas && metadatas.length > 0) {
+    enhancedContent = enhanceMetadata(metadatas, cardBGImages);
+  }
+
+  return enhanceContent;
 }
 
 function contentSize(content) {
@@ -121,7 +161,7 @@ export default {
       }
     }
 
-    const url = urlRewrite(`select?indent=on&q=notes:${searchTerm} OR title:${searchTerm}&wt=json&rows=1000`, SOLR_API_BASE, SOLR_PROXY);
+    const url = urlRewrite(`select?indent=on&q=notes:${searchTerm} OR title:${searchTerm} OR authors:${searchTerm}&wt=json&rows=1000`, SOLR_API_BASE, SOLR_PROXY);
 
     axios.get(url)
       .then((response) => {
@@ -175,81 +215,88 @@ export default {
 
     commit(UPDATE_TAGS);
 
-    try {
-      const updatedTags = [];
+    setTimeout(() => {
+      try {
+        const updatedTags = [];
 
-      for (let i = 0; i < allTags.length; i++) {
-        const tag = allTags[i];
-        let found = false;
+        for (let i = 0; i < allTags.length; i++) {
+          const tag = allTags[i];
+          let found = false;
 
-        for (let j = 0; j < filteredContent.length; j++) {
-          const el = filteredContent[j];
+          for (let j = 0; j < filteredContent.length; j++) {
+            const el = filteredContent[j];
 
-          if (el.tags && el.tags.length > 0) {
-            const index = el.tags.findIndex(obj => obj.name.includes(tag.name));
+            if (el.tags && el.tags.length > 0) {
+              const index = el.tags.findIndex(obj => obj.name.includes(tag.name));
 
-            if (index >= 0) {
-              found = true;
-              break;
+              if (index >= 0) {
+                found = true;
+                break;
+              }
             }
+          }
+
+          updatedTags.push({ name: tag.name, enabled: found });
+        }
+
+        commit(UPDATE_TAGS_SUCCESS, updatedTags);
+      } catch (error) {
+        commit(UPDATE_TAGS_ERROR, error);
+      }
+    }, 100);
+  },
+  async [FILTER_METADATA]({ dispatch, commit }, selectedTagNames) {
+    commit(FILTER_METADATA);
+
+    // use timeout to make sure the placeholder as loading indicators will show up
+    setTimeout(() => {
+      let content = [];
+      // console.log("filteredMetadataContent");
+
+      const isSearchResultContent = this.getters['metadata/searchingMetadatasContentOK'];
+
+      try {
+        if (isSearchResultContent) {
+          const searchContent = this.getters['metadata/searchedMetadatasContent'];
+          const searchContentSize = contentSize(searchContent);
+
+          if (searchContentSize > 0) {
+            const allTags = this.getters['metadata/allTags'];
+
+            content = Object.values(searchContent);
+            content = enhanceSearchWithTags(allTags, content);
+          }
+        } else {
+          const metadatasContent = this.getters['metadata/metadatasContent'];
+          content = Object.values(metadatasContent);
+        }
+
+        const filteredContent = [];
+        let keep = false;
+
+        for (let i = 0; i < content.length; i++) {
+          const entry = content[i];
+          keep = contentFilterAccessibility(entry);
+
+          if (keep) {
+            keep = contentFilteredByTags(entry, selectedTagNames);
+          }
+
+          if (keep) {
+            filteredContent.push(entry);
           }
         }
 
-        updatedTags.push({ name: tag.name, enabled: found });
-      }
+        const cardBGImages = this.getters.cardBGImages;
+        enhanceContent(filteredContent, cardBGImages);
+        content = filteredContent;
 
-      commit(UPDATE_TAGS_SUCCESS, updatedTags);
-    } catch (error) {
-      commit(UPDATE_TAGS_ERROR, error);
-    }
+        commit(FILTER_METADATA_SUCCESS, content);
+
+        dispatch(UPDATE_TAGS);
+      } catch (error) {
+        commit(FILTER_METADATA_ERROR, error);
+      }
+    }, 100);
   },
-  [FILTER_METADATA]({ dispatch, commit }, selectedTagNames) {
-    let contentToFilter = [];
-    // console.log("filteredMetadataContent");
-
-    const isSearchResultContent = this.getters['metadata/searchingMetadatasContentOK'];
-
-    try {
-      if (isSearchResultContent) {
-        const searchContent = this.getters['metadata/searchedMetadatasContent'];
-        const searchContentSize = contentSize(searchContent);
-
-        if (searchContentSize > 0) {
-          const allTags = this.getters['metadata/allTags'];
-
-          contentToFilter = Object.values(searchContent);
-          contentToFilter = enhanceSearchWithTags(allTags, contentToFilter);
-        }
-      } else {
-        const metadatasContent = this.getters['metadata/metadatasContent'];
-        contentToFilter = Object.values(metadatasContent);
-      }
-
-      const filteredContent = [];
-      let keep = false;
-
-      for (let i = 0; i < contentToFilter.length; i++) {
-        const entry = contentToFilter[i];
-        keep = contentFilterAccessibility(entry);
-
-        if (keep) {
-          keep = contentFilteredByTags(entry, selectedTagNames);
-        }
-
-        if (keep) {
-          filteredContent.push(entry);
-        }
-      }
-
-      contentToFilter = filteredContent;
-
-      commit(FILTER_METADATA_SUCESS, contentToFilter);
-
-      dispatch(UPDATE_TAGS);
-    } catch (error) {
-      commit(FILTER_METADATA_ERROR, error);
-    }
-  },
-
 };
-

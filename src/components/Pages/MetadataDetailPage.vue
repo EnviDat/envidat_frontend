@@ -18,8 +18,14 @@
 
           <metadata-header v-bind="header"
                             v-on:clickedTag="catchTagClicked"
-                            v-on:clickedBack="catchBackClicked"                           
-                            :showPlaceholder="showPlaceholder" />
+                            v-on:clickedBack="catchBackClicked"
+                            v-on:clickedAuthor="catchAuthorClicked"
+                            :showPlaceholder="showPlaceholder"
+                            :doiIcon="doiIcon"
+                            :contactIcon="contactIcon"
+                            :mailIcon="mailIcon"
+                            :licenseIcon="licenseIcon"
+                            />
 
         </v-flex>
 
@@ -63,7 +69,15 @@
               <metadata-resources v-bind="resources"
                                   :isOnTop="true"
                                   :twoColumnLayout="twoColumnLayout"
-                                  :showPlaceholder="showPlaceholder" />
+                                  :showPlaceholder="showPlaceholder"
+                                  :doiIcon="doiIcon"
+                                  :downloadIcon="downloadIcon"
+                                  :linkIcon="linkIcon"
+                                  :fileSizeIcon="fileSizeIcon"
+                                  :dateCreatedIcon="dateCreatedIcon"
+                                  :lastModifiedIcon="lastModifiedIcon"
+                                  />
+
             </v-flex>
 
             <v-flex xs12 mb-2 v-if="!showDetailsOnTheLeft">
@@ -86,7 +100,13 @@
           <metadata-header v-bind="header"
                             v-on:clickedTag="catchTagClicked"
                             v-on:clickedBack="catchBackClicked"
-                            :showPlaceholder="showPlaceholder" />
+                            v-on:clickedAuthor="catchAuthorClicked"
+                            :showPlaceholder="showPlaceholder"
+                            :doiIcon="doiIcon"
+                            :contactIcon="contactIcon"
+                            :mailIcon="mailIcon"
+                            :licenseIcon="licenseIcon"
+                            />
 
         </v-flex>
 
@@ -113,8 +133,16 @@
                 v-bind="fullWidthPadding"
                 >
 
-          <metadata-resources v-bind="resources" :twoColumnLayout="twoColumnLayout"
-                              :showPlaceholder="showPlaceholder" />
+          <metadata-resources v-bind="resources"
+                              :twoColumnLayout="twoColumnLayout"
+                              :showPlaceholder="showPlaceholder"
+                              :doiIcon="doiIcon"
+                              :downloadIcon="downloadIcon"
+                              :linkIcon="linkIcon"
+                              :fileSizeIcon="fileSizeIcon"
+                              :dateCreatedIcon="dateCreatedIcon"
+                              :lastModifiedIcon="lastModifiedIcon"
+                              />
         </v-flex>
 
         <v-flex xs12
@@ -146,6 +174,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
+  import { BROWSE_PATH } from '@/router/routeConsts';
   import {
     SET_APP_BACKGROUND,
     SET_CURRENT_PAGE,
@@ -162,6 +191,8 @@
   import MetadataCitation from '../Views/MetadataViews/MetadataCitation';
   import NotFoundView from '../Views/Errors/NotFoundView';
   import metaDataFactory from '../metaDataFactory';
+  import globalMethods from '../globalMethods';
+
   // import { LOAD_METADATAS_CONTENT } from '../../store/metadataMutationsConsts';
 
   // Might want to check https://css-tricks.com/use-cases-fixed-backgrounds-css/
@@ -169,6 +200,8 @@
 
   // blured background?
   // https://paper-leaf.com/blog/2016/01/creating-blurred-background-using-only-css/
+
+  //TODO: Check #/metadata/2016gl071822 for the lost list of data and the background
 
   export default {
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
@@ -178,14 +211,20 @@
         vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
     },
+    beforeMount: function beforeMount() {
+      this.downloadIcon = this.getIcon('download');
+      this.linkIcon = this.getIcon('link');
+      this.doiIcon = this.getIcon('doi');
+      this.fileSizeIcon = this.getIcon('fileSize');
+      this.dateCreatedIcon = this.getIcon('dateCreated');
+      this.lastModifiedIcon = this.getIcon('dateModified');
+      this.contactIcon = this.getIcon('contact2');
+      this.mailIcon = this.getIcon('mail');
+      this.licenseIcon = this.getIcon('license');
+    },
     mounted: function mounted() {
-      // console.log('mounted ' + this.metadataId + ' loading ' + this.currentMetadataContent.title + ' ' + this.metadatasContentSize);
-      if (!this.loadingMetadatasContent && this.currentMetadataContent.title === undefined) {
-        // in case of directly entring the page load the content directly via Id
-        this.$store.dispatch(`metadata/${LOAD_METADATA_CONTENT_BY_ID}`, this.metadataId);
-      } else {
-        this.createMetadataContent();
-      }
+      this.loadMetaDataContent();
+      window.scrollTo(0, 0);
     },
     beforeDestroy: function beforeDestroy() {
       // clean current metadata to make be empty for the next to load up
@@ -197,6 +236,7 @@
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
         loadingCurrentMetadataContent: 'metadata/loadingCurrentMetadataContent',
         currentMetadataContent: 'metadata/currentMetadataContent',
+        detailPageBackRoute: 'metadata/detailPageBackRoute',
         iconImages: 'iconImages',
         cardBGImages: 'cardBGImages',
       }),
@@ -302,6 +342,16 @@
           this.details = metaDataFactory.createDetails(currentContent);
         }
       },
+      enhanceMetadataEntry: function enhanceMetadataEntry(entry, cardBGImages) {
+        if (!entry.titleImg) {
+          globalMethods.methods.enhanceTitleImg(entry, cardBGImages);
+        }
+
+        return entry;
+      },
+      isCurrentIdOrName: function isCurrentIdOrName(idOrName) {
+        return this.currentMetadataContent.id === idOrName || this.currentMetadataContent.name === idOrName;
+      },
       catchTagClicked: function catchTagClicked(tagName) {
         const tagNames = [];
         tagNames.push(tagName);
@@ -311,19 +361,57 @@
         query.tags = tagsEncoded;
 
         this.$router.push({
-          path: '/browse',
+          path: BROWSE_PATH,
+          query,
+        });
+      },
+      catchAuthorClicked: function catchAuthorClicked(authorName) {
+        const query = {};
+        query.search = authorName;
+
+        this.$router.push({
+          path: BROWSE_PATH,
           query,
         });
       },
       catchBackClicked: function catchBackClicked() {
         // console.log(this.$router);
-        this.$router.go(-1);
+        const backRoute = this.detailPageBackRoute;
+
+        if (backRoute) {
+          this.$router.push({
+            path: backRoute.path,
+            query: backRoute.query,
+            params: backRoute.params,
+          });
+          return;
+        }
+
+        this.$router.push({
+          path: BROWSE_PATH,
+        });
       },
       OnScroll: function OnScroll(scrollPos) {
         this.savedPosition = scrollPos;
       },
+      loadMetaDataContent: function loadMetaDataContent() {
+        if (!this.loadingMetadatasContent
+        && (this.currentMetadataContent.title === undefined
+            || !this.isCurrentIdOrName(this.metadataId))) {
+          // in case of directly entring the page load the content directly via Id
+          this.$store.dispatch(`metadata/${LOAD_METADATA_CONTENT_BY_ID}`, this.metadataId);
+        } else {
+          this.createMetadataContent();
+        }
+      },
     },
     watch: {
+      /* eslint-disable no-unused-vars */
+      $route: function watchRouteChanges(to, from) {
+        // react on changes of the route (browser back / forward click)
+
+        this.loadMetaDataContent();
+      },
       currentMetadataContent: function updateContent() {
         this.createMetadataContent();
       },
@@ -346,6 +434,15 @@
       details: null,
       amountOfResourcesToShowDetailsLeft: 4,
       notFoundBackPath: 'browse',
+      downloadIcon: null,
+      linkIcon: null,
+      doiIcon: null,
+      fileSizeIcon: null,
+      dateCreatedIcon: null,
+      lastModifiedIcon: null,
+      contactIcon: null,
+      mailIcon: null,
+      licenseIcon: null,
     }),
     components: {
       MetadataHeader,

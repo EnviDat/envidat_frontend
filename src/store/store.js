@@ -21,6 +21,7 @@ export default new Vuex.Store({
     iconImages: {},
     aboutText,
     controls: [],
+    browseScrollPosition: 0,
   },
   getters: {
     currentPage: state => state.currentPage,
@@ -29,6 +30,7 @@ export default new Vuex.Store({
     iconImages: state => state.iconImages,
     aboutText: state => state.aboutText,
     controls: state => state.controls,
+    browseScrollPosition: state => state.browseScrollPosition,
   },
   mutations,
   modules: {

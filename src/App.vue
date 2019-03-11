@@ -32,9 +32,6 @@
             <transition
               name="fade"
               mode="out-in"
-              @beforeLeave="beforeLeave"
-              @enter="enter"
-              @afterEnter="afterEnter"
             >
               <router-view />
             </transition>
@@ -76,28 +73,7 @@
       this.importCardBackgrounds();
       this.importIcons();
     },
-    // beforeRouteEnter: function beforeRouteEnter(to, from, next) {
-    //   next((vm) => {
-    //     console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
-    //   });
-    // },
     methods: {
-      beforeLeave(element) {
-        const style = getComputedStyle(element);
-        this.prevHeight = style.height;
-      },
-      enter(element) {
-        const { height } = getComputedStyle(element);
-
-        element.style.height = this.prevHeight;
-
-        setTimeout(() => {
-          element.style.height = height;
-        });
-      },
-      afterEnter(element) {
-        element.style.height = 'auto';
-      },
       loadAllMetadata: function loadAllMetadata() {
         if (!this.loadingMetadatasContent && this.metadatasContentSize <= 0) {
           this.$store.dispatch(`metadata/${BULK_LOAD_METADATAS_CONTENT}`);
@@ -352,6 +328,7 @@
     font-size: 15px !important;
   }
 
+  .authorTag span,
   .envidatChip span {
     cursor: pointer !important;
   }
@@ -367,7 +344,7 @@
 
   .fade-enter-active,
   .fade-leave-active {
-    transition-duration: 0.3s;
+    transition-duration: 0.1s;
     transition-property: height, opacity;
     transition-timing-function: ease;
     /* overflow: hidden; */

@@ -16,6 +16,7 @@
                       :iconColor=" (showPlaceholder || !metadataTitle) ? 'white' : 'primary'"
                       :outlined="true"
                       toolTipText ="Close Metadata"
+                      :toolTipBottom="true"
                       v-on:clicked="catchBackClicked" />
 
 
@@ -36,6 +37,22 @@
 
         <!-- <v-card-media></v-card-media> -->
 
+        <v-divider :dark="dark" class="my-2" ></v-divider>
+
+        <v-layout row wrap>
+
+          <tag-chip-author v-if="authors"
+                    v-for="author in authors" :key="author.name"
+                    :name="author.name.trim()"
+                    :toolTipText="authorToolTipText"
+                    v-on:clicked="catchAuthorClicked($event, author.name.trim())"
+          />
+
+          <tag-chip-placeholder v-if="!authors && showPlaceholder"
+                    v-for="n in 5" :key="n" 
+                    class="headerTag" />
+
+        </v-layout>
 
         <v-divider :dark="dark" class="my-2" ></v-divider>
 
@@ -43,7 +60,7 @@
           <v-flex xs12 sm6 md6 lg3
                   py-1 class="headerInfo">
             <icon-label-view  :text="contactName"
-                              :icon="getIcon(this.iconFlip('contact2'))"
+                              :icon="contactIcon"
                               iconTooltip="Main contact"
                               :alignLeft="true"
                                />
@@ -51,18 +68,8 @@
 
           <v-flex xs12 sm6 md6 lg3
                   py-1 class="headerInfo">
-            <icon-label-view  :text="doi"
-                              :icon="getIcon(iconFlip('doi'))"
-                              iconTooltip="Data Object Identifier"
-                              :alignLeft="true"
-                              :wordBreak="true"
-                               />
-          </v-flex>
-
-          <v-flex xs12 sm6 md6 lg3
-                  py-1 class="headerInfo">
             <icon-label-view  :text="contactEmail"
-                              :icon="getIcon(iconFlip('mail'))"
+                              :icon="mailIcon"
                               iconTooltip="Email adress of the main contact"
                               :alignLeft="true"
                               :wordBreak="true"
@@ -71,8 +78,18 @@
 
           <v-flex xs12 sm6 md6 lg3
                   py-1 class="headerInfo">
+            <icon-label-view  :text="doi"
+                              :icon="doiIcon"
+                              iconTooltip="Data Object Identifier"
+                              :alignLeft="true"
+                              :wordBreak="true"
+                               />
+          </v-flex>
+
+          <v-flex xs12 sm6 md6 lg3
+                  py-1 class="headerInfo">
             <icon-label-view :text="license"
-                              :icon="getIcon(iconFlip('license'))"
+                              :icon="licenseIcon"
                               iconTooltip="License for Datafiles"
                               :alignLeft="true"
                                />
@@ -111,6 +128,7 @@
                         :isToggled="showTagsExpanded"
                         :rotateOnClick="true"
                         :toolTipText="showTagsExpanded ? 'Hide all tags' : 'Show all tags'"
+                        :toolTipBottom="true"
                         v-on:clicked="showTagsExpanded = !showTagsExpanded" />
 
         </v-card-actions>
@@ -124,6 +142,7 @@
 
 <script>
 import TagChip from '../Cards/TagChip';
+import TagChipAuthor from '../Cards/TagChipAuthor';
 import TagChipPlaceholder from '../Cards/TagChipPlaceholder';
 import IconLabelView from '../IconLabelView';
 import IconButton from '../../Elements/IconButton';
@@ -137,8 +156,13 @@ export default {
     doi: String,
     license: String,
     tags: Array,
+    authors: Array,
     maxTags: Number,
     showPlaceholder: Boolean,
+    doiIcon: String,
+    contactIcon: String,
+    mailIcon: String,
+    licenseIcon: String,
   },
   data: () => ({
     showTagsExpanded: false,
@@ -146,10 +170,14 @@ export default {
     blackTopToBottom: 'rgba(80,80,80, 0.1) 0%, rgba(80,80,80, 0.9) 70%',
     // whiteTopToBottom: 'rgba(255,255,255, 0.3) 0%, rgba(255,255,255, 1) 60%',
     whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
+    authorToolTipText: 'Search for more data of this Author',
   }),
   methods: {
     catchTagClicked: function catchTagClicked(tagId) {
       this.$emit('clickedTag', tagId);
+    },
+    catchAuthorClicked: function catchAuthorClicked(authorName) {
+      this.$emit('clickedAuthor', authorName);
     },
     catchBackClicked: function catchBackClicked() {
       this.$emit('clickedBack');
@@ -188,6 +216,7 @@ export default {
   },
   components: {
     TagChip,
+    TagChipAuthor,
     TagChipPlaceholder,
     IconLabelView,
     IconButton,

@@ -4,6 +4,7 @@ import {
   ADD_CARD_IMAGES,
   ADD_ICON_IMAGE,
   SET_CONTROLS,
+  SET_BROWSE_SCROLL_POSITION,
 } from './mutationsConsts';
 
 export default {
@@ -25,5 +26,8 @@ export default {
   },
   [SET_CONTROLS](state, payload) {
     state.controls = payload;
+  },
+  [SET_BROWSE_SCROLL_POSITION](state, payload) {
+    state.browseScrollPosition = payload;
   },
 };
