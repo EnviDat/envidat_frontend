@@ -173,6 +173,9 @@
 </template>
 
 <script>
+  /**
+   * The MetadataDetailPage shows all the important information of a metadata entry.
+   */
   import { mapGetters } from 'vuex';
   import { BROWSE_PATH } from '@/router/routeConsts';
   import {
@@ -206,11 +209,13 @@
   export default {
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
       next((vm) => {
-        // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
         vm.$store.commit(SET_CURRENT_PAGE, 'metadataDetailPage');
         vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
     },
+    /**
+     * @description load all the icons once before the first component's rendering.
+     */
     beforeMount: function beforeMount() {
       this.downloadIcon = this.getIcon('download');
       this.linkIcon = this.getIcon('link');
@@ -222,10 +227,16 @@
       this.mailIcon = this.getIcon('mail');
       this.licenseIcon = this.getIcon('license');
     },
+    /**
+     * @description reset the scrolling to the top.
+     */
     mounted: function mounted() {
       this.loadMetaDataContent();
       window.scrollTo(0, 0);
     },
+    /**
+     * @description
+     */
     beforeDestroy: function beforeDestroy() {
       // clean current metadata to make be empty for the next to load up
       this.$store.commit(`metadata/${CLEAN_CURRENT_METADATA}`);
@@ -240,29 +251,45 @@
         iconImages: 'iconImages',
         cardBGImages: 'cardBGImages',
       }),
+      /**
+       * @returns {Number} Size of the metadatasContent
+       */
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
       },
+      /**
+       * @returns {String} the metadataId from the route
+       */
       metadataId: function metadataId() {
         return this.$route.params.metadataid;
       },
-      metadataIdValid: function metadataIdValid() {
-        return true;
-        // return (this.metadataId && this.metadataIds !== undefined
-        //  && this.metadataIds.includes(this.metadataId));
-      },
+      /**
+       * @returns {Boolean} if the placeHolders should be shown be somethings are still loading
+       */
       showPlaceholder: function showPlaceholder() {
         return this.loadingMetadatasContent || this.loadingCurrentMetadataContent;
       },
+      /**
+       * @returns {Boolean}
+       */
       leftOrFullWidth: function leftOrFullWidth() {
         return this.twoColumnLayout ? this.halfWidthLeft : this.fullWidthPadding;
       },
+      /**
+       * @returns {Boolean}
+       */
       rightOrFullWidth: function rightOrFullWidth() {
         return this.twoColumnLayout ? this.halfWidthRight : this.fullWidthPadding;
       },
+      /**
+       * @returns {Boolean}
+       */
       twoColumnLayout: function twoColumnLayout() {
         return this.$vuetify.breakpoint.lgAndUp;
       },
+      /**
+       * @returns {Object} with the diffent paddings based on the screen size (this.$vuetify.breakpoint)
+       */
       fullWidthPadding: function fullwidthPadding() {
         const json = {
           md10: true,
@@ -280,6 +307,10 @@
 
         return json;
       },
+      /**
+       * @description
+       * @returns {any}
+       */
       halfWidthLeft: function halfWidthLeft() {
         const json = {
           md4: true,
@@ -301,6 +332,10 @@
 
         return json;
       },
+      /**
+       * @description
+       * @returns {any}
+       */
       halfWidthRight: function halfWidthRight() {
         const json = {
           md4: true,
@@ -320,6 +355,10 @@
 
         return json;
       },
+      /**
+       * @description
+       * @returns {any}
+       */
       showDetailsOnTheLeft: function showDetailsOnTheLeft() {
         const left = this.resources
         && this.resources.resources.length > this.amountOfResourcesToShowDetailsLeft;
@@ -327,6 +366,9 @@
       },
     },
     methods: {
+      /**
+       * @description
+       */
       createMetadataContent: function createMetadataContent() {
         let currentContent = this.currentMetadataContent;
 
@@ -342,6 +384,12 @@
           this.details = metaDataFactory.createDetails(currentContent);
         }
       },
+      /**
+       * @description
+       * @param {any} entry
+       * @param {any} cardBGImages
+       * @returns {any}
+       */
       enhanceMetadataEntry: function enhanceMetadataEntry(entry, cardBGImages) {
         if (!entry.titleImg) {
           globalMethods.methods.enhanceTitleImg(entry, cardBGImages);
@@ -349,9 +397,18 @@
 
         return entry;
       },
+      /**
+       * @description
+       * @param {any} idOrName
+       * @returns {any}
+       */
       isCurrentIdOrName: function isCurrentIdOrName(idOrName) {
         return this.currentMetadataContent.id === idOrName || this.currentMetadataContent.name === idOrName;
       },
+      /**
+       * @description
+       * @param {any} tagName
+       */
       catchTagClicked: function catchTagClicked(tagName) {
         const tagNames = [];
         tagNames.push(tagName);
@@ -365,6 +422,10 @@
           query,
         });
       },
+      /**
+       * @description
+       * @param {any} authorName
+       */
       catchAuthorClicked: function catchAuthorClicked(authorName) {
         const query = {};
         query.search = authorName;
@@ -374,6 +435,9 @@
           query,
         });
       },
+      /**
+       * @description
+       */
       catchBackClicked: function catchBackClicked() {
         // console.log(this.$router);
         const backRoute = this.detailPageBackRoute;
@@ -391,9 +455,10 @@
           path: BROWSE_PATH,
         });
       },
-      OnScroll: function OnScroll(scrollPos) {
-        this.savedPosition = scrollPos;
-      },
+      /**
+       * @description loads the content of this metadata entry (metadataid) from the URL.
+       * Either loads it from the backend via action or creates it from the localStorage.
+       */
       loadMetaDataContent: function loadMetaDataContent() {
         if (!this.loadingMetadatasContent
         && (this.currentMetadataContent.title === undefined
@@ -407,14 +472,25 @@
     },
     watch: {
       /* eslint-disable no-unused-vars */
+      /**
+       * @description
+       * @param {any} to
+       * @param {any} from
+       */
       $route: function watchRouteChanges(to, from) {
         // react on changes of the route (browser back / forward click)
 
         this.loadMetaDataContent();
       },
+      /**
+       * @description
+       */
       currentMetadataContent: function updateContent() {
         this.createMetadataContent();
       },
+      /**
+       * @description
+       */
       metadatasContent: function updateContent() {
         // in case all the metadataContents are already loaded take it from there
         // if EnviDat is called via MetadataDetailPage URL directly
