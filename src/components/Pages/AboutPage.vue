@@ -17,12 +17,14 @@
                         title="About EnviDat"
                         >
 
-            <icon-button style="position: absolute; top: 0px; right: 0px; z-index: 10;"
-                                    materialIconName="close"
-                                    :outlined="true"
-                                    toolTipText ="Close About Page"
-                                    :toolTipBottom="true"
-                                    v-on:clicked="catchBackClicked" />
+          <icon-button style="position: absolute; top: 0px; right: 0px; z-index: 10;"
+                                  materialIconName="close"
+                                  :outlined="true"
+                                  color="white"
+                                  iconColor="white"
+                                  toolTipText ="Close About Page"
+                                  :toolTipBottom="true"
+                                  v-on:clicked="catchBackClicked" />
           
 
           </img-and-text-layout>
