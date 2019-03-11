@@ -5,7 +5,6 @@ import createPersist from 'vuex-localstorage';
 /* eslint-disable no-unused-vars */
 import { metadata } from './modules/metadata';
 import mutations from './appMutations';
-import aboutText from './data/about';
 
 Vue.use(Vuex);
 
@@ -19,7 +18,6 @@ export default new Vuex.Store({
     appBGImage: './app_b_landingpage.jpg',
     cardBGImages: {},
     iconImages: {},
-    aboutText,
     // controls default: [1] means the the second [0,1] is active -> map filtering is active per default
     controls: [1],
     browseScrollPosition: 0,

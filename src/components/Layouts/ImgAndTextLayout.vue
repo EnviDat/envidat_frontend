@@ -1,6 +1,9 @@
 <template>
 
-  <v-container fluid fill-height pa-0>  
+  <v-container pa-0
+                style="position: relative;">  
+
+    <slot></slot>
 
     <v-layout v-if="!leftAlign && !rightAlign"
               column>
@@ -17,9 +20,10 @@
                   
       </v-flex>
 
-      <v-flex mt-2>
-        <div v-if="text"
-              :style="textFontSizeStyle">
+      <v-flex mt-2
+              v-if="text"
+              >
+        <div :style="textFontSizeStyle">
           <m-markdown-preview :markdown="text" :options="{ html: true, xhtmlOut: true, linkify: true, breaks: true }" />
         </div>
       </v-flex>
@@ -40,21 +44,23 @@
                   :textBackgroundColor="textBackgroundColor" />
       </v-flex>
 
-      <v-flex v-if="img2" xs12 sm4 mt-2>
+      <v-flex v-if="img2 && text"
+              xs12 sm4 mt-2>
+        <div :style="textFontSizeStyle">
+          <m-markdown-preview :markdown="text" :options="{ html: true, xhtmlOut: true, linkify: true, breaks: true }" />
+        </div>
+      </v-flex>
+
+      <v-flex v-if="!img2 && text"
+              xs12 sm6 md8 mt-2>
         <div v-if="text"
               :style="textFontSizeStyle">
           <m-markdown-preview :markdown="text" :options="{ html: true, xhtmlOut: true, linkify: true, breaks: true }" />
         </div>
       </v-flex>
 
-      <v-flex v-if="!img2" xs12 sm6 md8 mt-2>
-        <div v-if="text"
-              :style="textFontSizeStyle">
-          <m-markdown-preview :markdown="text" :options="{ html: true, xhtmlOut: true, linkify: true, breaks: true }" />
-        </div>
-      </v-flex>
-
-      <v-flex v-if="img2" xs12 sm6 md4 >
+      <v-flex v-if="img2"
+              xs12 sm6 md4 >
         <title-img :parallax="parallax"
                   :dark="dark"
                   :blur="blur2"
@@ -68,9 +74,9 @@
     <v-layout v-if="rightAlign"
               row wrap>
 
-      <v-flex xs12 sm6 md8 mt-2>
-        <div v-if="text"
-              :style="textFontSizeStyle">
+      <v-flex v-if="text"
+              xs12 sm6 md8 mt-2>
+        <div :style="textFontSizeStyle">
           <m-markdown-preview :markdown="text" :options="{ html: true, xhtmlOut: true, linkify: true, breaks: true }" />
         </div>
       </v-flex>

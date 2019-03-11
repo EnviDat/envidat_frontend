@@ -55,7 +55,7 @@
                                   :buttonText="aboutText"
                                   :toolTipText="aboutToolTip"
                                   :isSmall="true"
-                                  :url="aboutUrl"
+                                  v-on:clicked="navigateToAboutPage"
                 />
 
               </v-flex>
@@ -71,6 +71,8 @@
 </template>
 
 <script>
+import { BROWSE_PATH, ABOUT_PATH } from '@/router/routeConsts';
+import { SET_DETAIL_PAGE_BACK_URL, SET_ABOUT_PAGE_BACK_URL } from '@/store/metadataMutationsConsts';
 import Logo from '../../assets/logo/EnviDat_logo_32.png';
 import RectangleButton from '../Elements/RectangleButton';
 
@@ -80,13 +82,26 @@ export default {
   computed: {
   },
   methods: {
+    navigateToAboutPage: function navigateToAboutPage() {
+      if (this.$route.fullPath.includes(BROWSE_PATH)) {
+        // when the about click is done on the browse page,
+        // clear the detail back url to prevent the resetup of the wrong url
+        this.$store.commit(`metadata/${SET_DETAIL_PAGE_BACK_URL}`, null);
+      }
+
+      this.$store.commit(`metadata/${SET_ABOUT_PAGE_BACK_URL}`, this.$route);
+
+      this.$router.push({
+        path: ABOUT_PATH,
+      });
+    },
   },
   data: () => ({
     Logo,
     logoText: 'EnviDat',
     aboutText: 'About',
     aboutToolTip: 'What is the EnviDat Portal?',
-    aboutUrl: 'https://www.envidat.ch/about',
+    aboutUrl: './about',
     loginText: 'Creator Login',
     loginToolTip: 'Login to add and manage datasets',
     loginUrl: 'https://www.envidat.ch/user/reset',

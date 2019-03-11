@@ -1,11 +1,13 @@
 <template>
   <v-container tag="article"
-               py-2
-              :class="$vuetify.breakpoint.lgAndUp ? 'px-2' : 'px-0'"
+                fluid fill-height
+                pa-0
   >  
-    <v-layout column >
 
-      <v-flex xs12>
+    <v-layout row wrap >
+
+      <v-flex xs12 md8 offset-md2 lg10 offset-lg1>
+
         <img-and-text-layout :dark="true"
                         :blur="true"
                         :img="missionImg"
@@ -13,13 +15,22 @@
                         :textFontSize="16"
                         :parallax="true"
                         title="About EnviDat"
-                        />
+                        >
+
+            <icon-button style="position: absolute; top: 0px; right: 0px; z-index: 10;"
+                                    materialIconName="close"
+                                    :outlined="true"
+                                    toolTipText ="Close About Page"
+                                    :toolTipBottom="true"
+                                    v-on:clicked="catchBackClicked" />
+          
+
+          </img-and-text-layout>
       </v-flex>
 
-      <v-flex xs8 mt-5 
-              :class="$vuetify.breakpoint.lgAndUp ? 'px-5' : 'px-2'"
+      <v-flex xs12 md8 offset-md2 lg10 offset-lg1 px-3 mt-5 
       >
-        <v-container grid-list-lg px-0>
+        <v-container grid-list-lg pa-0>
           <v-layout row wrap >
 
             <v-flex my-2
@@ -45,10 +56,12 @@
 
 <script>
   import { mapGetters } from 'vuex';
+  import { BROWSE_PATH } from '@/router/routeConsts';
   import {
     SET_APP_BACKGROUND,
     SET_CURRENT_PAGE,
-  } from '../../store/mutationsConsts';
+  } from '@/store/mutationsConsts';
+  import IconButton from '../Elements/IconButton';
 
   import ImgAndTextLayout from '../Layouts/ImgAndTextLayout';
 
@@ -75,9 +88,12 @@
         vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
     },
+    mounted: function mounted() {
+      window.scrollTo(0, 0);
+    },
     computed: {
       ...mapGetters({
-        aboutText: 'aboutText',
+        aboutPageBackRoute: 'metadata/aboutPageBackRoute',
       }),
       teamImg: function teamImg() {
         if (this.$vuetify.breakpoint.mdAndUp) {
@@ -134,6 +150,22 @@
           // },
         ];
       },
+      catchBackClicked: function catchBackClicked() {
+        const backRoute = this.aboutPageBackRoute;
+
+        if (backRoute) {
+          this.$router.push({
+            path: backRoute.path,
+            query: backRoute.query,
+            params: backRoute.params,
+          });
+          return;
+        }
+
+        this.$router.push({
+          path: BROWSE_PATH,
+        });
+      },
     },
     data: () => ({
       PageBGImage: './app_b_browsepage.jpg',
@@ -152,6 +184,7 @@
     components: {
       ImgAndTextLayout,
       ExpandableCard,
+      IconButton,
     },
   };
 </script>

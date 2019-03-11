@@ -22,6 +22,7 @@ import {
   PIN_METADATA,
   CLEAR_PINNED_METADATA,
   SET_DETAIL_PAGE_BACK_URL,
+  SET_ABOUT_PAGE_BACK_URL,
 } from '../metadataMutationsConsts';
 
 const conversion = require('./conversion');
@@ -157,5 +158,8 @@ export default {
   },
   [SET_DETAIL_PAGE_BACK_URL](state, payload) {
     state.detailPageBackRoute = payload;
+  },
+  [SET_ABOUT_PAGE_BACK_URL](state, payload) {
+    state.aboutPageBackRoute = payload;
   },
 };
