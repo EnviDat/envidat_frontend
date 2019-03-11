@@ -57,6 +57,11 @@
 </template>
 
 <script>
+  /**
+   * The about page of EnviDat. It consists of:
+   * - TitleImage and Title (ImgAndTextLayout)
+   * - Different Card with infomation about some about topics (ExpandableCard)
+   */
   import { mapGetters } from 'vuex';
   import { BROWSE_PATH } from '@/router/routeConsts';
   import {
@@ -85,11 +90,14 @@
   export default {
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
       next((vm) => {
-        // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
         vm.$store.commit(SET_CURRENT_PAGE, 'aboutPage');
         vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
     },
+    /**
+     * @description reset the scrolling to the top,
+     * because of the scrolling is set from the browsePage or metaDetailPage
+     */
     mounted: function mounted() {
       window.scrollTo(0, 0);
     },
@@ -97,6 +105,9 @@
       ...mapGetters({
         aboutPageBackRoute: 'metadata/aboutPageBackRoute',
       }),
+      /**
+       * @returns teamImage based on the screen size
+       */
       teamImg: function teamImg() {
         if (this.$vuetify.breakpoint.mdAndUp) {
           return team;
@@ -104,6 +115,9 @@
 
         return teamSmall;
       },
+      /**
+       * @returns missionImage based on the screen size
+       */
       missionImg: function teamImg() {
         if (this.$vuetify.breakpoint.mdAndUp) {
           return mission;
@@ -113,6 +127,13 @@
       },
     },
     methods: {
+      /**
+       * @returns the infos of the about page topics. consiting of
+       * - title
+       * - text
+       * - img
+       * - widthClass
+       */
       AboutCardInfos: function AboutCardInfos() {
         return [
           {
@@ -152,6 +173,9 @@
           // },
         ];
       },
+      /**
+       * @description changes the url to page the user was before. Fallback: BrowsePage
+       */
       catchBackClicked: function catchBackClicked() {
         const backRoute = this.aboutPageBackRoute;
 
