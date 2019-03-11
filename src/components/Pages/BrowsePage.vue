@@ -301,7 +301,11 @@
       },
       checkRouteChanges: function checkRouteChanges(fromRoute) {
         if (!fromRoute) {
-          fromRoute = this.detailPageBackRoute;
+          if (this.detailPageBackRoute) {
+            fromRoute = this.detailPageBackRoute;
+          } else if (this.aboutPageBackRoute) {
+            fromRoute = this.aboutPageBackRoute;
+          }
         }
 
         const isABack = this.$router.options.isSameRoute(this.$route, fromRoute);
@@ -317,7 +321,14 @@
 
         if (isABack) {
           // only set the scroll position because it's a back navigation
-          this.setScrollPositionOnList(this.browseScrollPosition);
+          if (this.controls.includes(1)) {
+            // if the map-filtering is active use a delay
+            setTimeout(() => {
+              this.setScrollPositionOnList(this.browseScrollPosition);
+            }, 0);
+          } else {
+            this.setScrollPositionOnList(this.browseScrollPosition);
+          }
         } else {
           if (checkSearchTriggering) {
             if (this.searchTerm && this.searchTerm.length > 0) {
@@ -360,8 +371,10 @@
         allTags: 'metadata/allTags',
         currentMetadataContent: 'metadata/currentMetadataContent',
         detailPageBackRoute: 'metadata/detailPageBackRoute',
+        aboutPageBackRoute: 'metadata/aboutPageBackRoute',
         updatingTags: 'metadata/updatingTags',
         browseScrollPosition: 'browseScrollPosition',
+        controls: 'controls',
         cardBGImages: 'cardBGImages',
       }),
       keywordsPlaceholder: function keywordsPlaceholder() {

@@ -45,10 +45,12 @@
 
 <script>
   import { mapGetters } from 'vuex';
+  import { BROWSE_PATH } from '@/router/routeConsts';
   import {
     SET_APP_BACKGROUND,
     SET_CURRENT_PAGE,
-  } from '../../store/mutationsConsts';
+  } from '@/store/mutationsConsts';
+  import IconButton from '../Elements/IconButton';
 
   import ImgAndTextLayout from '../Layouts/ImgAndTextLayout';
 
@@ -75,9 +77,12 @@
         vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
     },
+    mounted: function mounted() {
+      window.scrollTo(0, 0);
+    },
     computed: {
       ...mapGetters({
-        aboutText: 'aboutText',
+        aboutPageBackRoute: 'metadata/aboutPageBackRoute',
       }),
       teamImg: function teamImg() {
         if (this.$vuetify.breakpoint.mdAndUp) {
@@ -134,6 +139,22 @@
           // },
         ];
       },
+      catchBackClicked: function catchBackClicked() {
+        const backRoute = this.aboutPageBackRoute;
+
+        if (backRoute) {
+          this.$router.push({
+            path: backRoute.path,
+            query: backRoute.query,
+            params: backRoute.params,
+          });
+          return;
+        }
+
+        this.$router.push({
+          path: BROWSE_PATH,
+        });
+      },
     },
     data: () => ({
       PageBGImage: './app_b_browsepage.jpg',
@@ -152,6 +173,7 @@
     components: {
       ImgAndTextLayout,
       ExpandableCard,
+      IconButton,
     },
   };
 </script>
