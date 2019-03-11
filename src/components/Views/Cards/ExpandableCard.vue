@@ -1,6 +1,7 @@
 <template>
   <v-card ripple
           hover
+          :expanded="expanded"
           v-on:click.native="clicked">  
           
     <v-container grid-list-md pa-0>
@@ -8,14 +9,14 @@
 
         <v-flex xs5 py-0>
           <v-card-media class="imagezoom"
-                        :height=" $vuetify.breakpoint.smAndDown ? minHeight + 'px' : maxHeight + 'px' ">
+                        :height=" $vuetify.breakpoint.xsOnly ? minHeight + 'px' : maxHeight + 'px' ">
             <img :src="img" />                        
           </v-card-media>
         </v-flex>
 
         <v-flex xs7 mx-1 mt-1>
             <div class="headline"
-                :class="{ 'compactTitle' : this.$vuetify.breakpoint.smAndDown }"
+                :class="{ 'compactTitle' : this.$vuetify.breakpoint.xsOnly }"
             >
               {{ title }}
             </div>

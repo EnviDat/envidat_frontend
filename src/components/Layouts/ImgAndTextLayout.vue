@@ -18,7 +18,8 @@
       </v-flex>
 
       <v-flex mt-2>
-        <div :style="textFontSizeStyle">
+        <div v-if="text"
+              :style="textFontSizeStyle">
           <m-markdown-preview :markdown="text" :options="{ html: true, xhtmlOut: true, linkify: true, breaks: true }" />
         </div>
       </v-flex>
@@ -40,13 +41,15 @@
       </v-flex>
 
       <v-flex v-if="img2" xs12 sm4 mt-2>
-        <div :style="textFontSizeStyle">
+        <div v-if="text"
+              :style="textFontSizeStyle">
           <m-markdown-preview :markdown="text" :options="{ html: true, xhtmlOut: true, linkify: true, breaks: true }" />
         </div>
       </v-flex>
 
       <v-flex v-if="!img2" xs12 sm6 md8 mt-2>
-        <div :style="textFontSizeStyle">
+        <div v-if="text"
+              :style="textFontSizeStyle">
           <m-markdown-preview :markdown="text" :options="{ html: true, xhtmlOut: true, linkify: true, breaks: true }" />
         </div>
       </v-flex>
@@ -66,7 +69,8 @@
               row wrap>
 
       <v-flex xs12 sm6 md8 mt-2>
-        <div :style="textFontSizeStyle">
+        <div v-if="text"
+              :style="textFontSizeStyle">
           <m-markdown-preview :markdown="text" :options="{ html: true, xhtmlOut: true, linkify: true, breaks: true }" />
         </div>
       </v-flex>
