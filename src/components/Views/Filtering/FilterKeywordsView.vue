@@ -116,12 +116,16 @@
                     style="position: absolute; bottom: 0px; right: 0px;">
       <v-spacer />
 
-      <v-btn icon small
-              @click="catchExpandClicked">
-        <v-icon color="accent" 
-                :style="expanded ? 'transform: rotate(-180deg);' : 'transform: rotate(0deg);'"
-        >expand_more</v-icon>
-      </v-btn>        
+      <base-icon-button :count="selectedTags.length"
+                        materialIconName="expand_more"
+                        color="secondary"
+                        iconColor="secondary"
+                        :outlined="true"
+                        :isSmall="true"
+                        :rotateOnClick="true"
+                        :rotateToggle="filterExpanded"
+                        v-on:clicked="catchExpandClicked"
+                        />
 
     </v-card-actions>
 
@@ -132,6 +136,7 @@
 
 <script>
 import BaseIconLabelView from '../../BaseElements/BaseIconLabelView';
+import BaseIconButton from '../../BaseElements/BaseIconButton';
 import TagChip from '../Cards/TagChip';
 import TagChipPlaceholder from '../Cards/TagChipPlaceholder';
 import FilterViewButtons from './FilterViewButtons';
@@ -247,6 +252,7 @@ export default {
       return numberOfTags;
     },
     catchExpandClicked: function catchExpandClicked() {
+      this.filterExpanded = !this.filterExpanded;
       this.$emit('clickedExpand');
     },
     catchMapExpandClicked: function catchMapExpandClicked() {
@@ -297,9 +303,11 @@ export default {
     mdTextLength: 65,
     tagIcon: null,
     tagsIcon: null,
+    filterExpanded: false,
   }),
   components: {
     BaseIconLabelView,
+    BaseIconButton,
     TagChip,
     TagChipPlaceholder,
     FilterViewButtons,

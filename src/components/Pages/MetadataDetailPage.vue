@@ -194,7 +194,6 @@
   import MetadataCitation from '../Views/MetadataViews/MetadataCitation';
   import NotFoundView from '../Views/Errors/NotFoundView';
   import metaDataFactory from '../metaDataFactory';
-  import globalMethods from '../globalMethods';
 
   // import { LOAD_METADATAS_CONTENT } from '../../store/metadataMutationsConsts';
 
