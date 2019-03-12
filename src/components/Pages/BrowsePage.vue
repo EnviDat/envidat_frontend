@@ -128,7 +128,7 @@
         let decodedTags = [];
 
         if (tagsEncoded.length > 0) {
-          decodedTags = this.decodeTagsFromUrl(tagsEncoded);
+          decodedTags = this.mixinMethods_decodeTagsFromUrl(tagsEncoded);
         }
 
         if (!this.areArrayIdentical(this.selectedTagNames, decodedTags)) {
@@ -175,8 +175,8 @@
         if (!this.isTagSelected(tagName)) {
           const newTags = [...this.selectedTagNames, tagName];
 
-          const tagsEncoded = this.encodeTagForUrl(newTags);
-          this.additiveChangeRoute(BROWSE_PATH, undefined, tagsEncoded);
+          const tagsEncoded = this.mixinMethods_encodeTagForUrl(newTags);
+          this.mixinMethods_additiveChangeRoute(BROWSE_PATH, undefined, tagsEncoded);
         }
       },
       catchTagCloseClicked: function catchTagCloseClicked(tagId) {
@@ -186,8 +186,8 @@
 
         const newTags = this.selectedTagNames.filter(tag => tag !== tagId);
 
-        const tagsEncoded = this.encodeTagForUrl(newTags);
-        this.additiveChangeRoute(BROWSE_PATH, undefined, tagsEncoded);
+        const tagsEncoded = this.mixinMethods_encodeTagForUrl(newTags);
+        this.mixinMethods_additiveChangeRoute(BROWSE_PATH, undefined, tagsEncoded);
       },
       catchTagCleared: function catchTagCleared() {
         this.selectedTagNames = [];
@@ -196,10 +196,10 @@
       catchSearchClicked: function catchSearchClicked(searchTerm) {
         /* eslint-disable no-param-reassign */
         searchTerm = searchTerm ? searchTerm.trim() : '';
-        this.additiveChangeRoute(BROWSE_PATH, searchTerm, undefined);
+        this.mixinMethods_additiveChangeRoute(BROWSE_PATH, searchTerm, undefined);
       },
       catchSearchCleared: function catchSearchCleared() {
-        this.additiveChangeRoute(BROWSE_PATH, '', undefined);
+        this.mixinMethods_additiveChangeRoute(BROWSE_PATH, '', undefined);
       },
       catchMapFilterChanged: function catchMapFilterChanged(visibleIds) {
         this.mapFilterVisibleIds = visibleIds;
@@ -211,15 +211,8 @@
         this.$store.commit(`metadata/${PIN_METADATA}`, id);
       },
       catchPointHovered: function catchPointHovered(id) {
-        // bring to top
-        // highlight entry
-        const domElement = this.metadatasContent[id];
-        if (domElement) {
-        }
       },
       catchPointHoverLeave: function catchPointHoverLeave(id) {
-        // bring to top
-        // highlight entry
       },
       catchClearButtonClick: function catchClearButtonClick() {
         this.$store.commit(`metadata/${CLEAR_PINNED_METADATA}`);
@@ -271,7 +264,7 @@
       },
       dynamicCardBackground: function dynamicCardBackground() {
         const max = Object.keys(this.imagesImports).length;
-        const randomIndex = this.randomInt(0, max);
+        const randomIndex = this.mixinMethods_randomInt(0, max);
         const cardImg = Object.values(this.imagesImports)[randomIndex];
 
         if (cardImg) {

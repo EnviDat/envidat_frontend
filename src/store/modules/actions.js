@@ -18,24 +18,20 @@ import {
   FILTER_METADATA_ERROR,
 } from '../metadataMutationsConsts';
 
-// import randomInt from '../../components/globalMethods';
 const globalMethods = require('../../components/globalMethods');
-/* eslint-disable no-unused-vars  */
 
+/* eslint-disable no-unused-vars  */
 const ENVIDAT_PROXY = process.env.ENVIDAT_PROXY;
 const SOLR_PROXY = process.env.SOLR_PROXY;
 const API_BASE = '/api/3/action/';
 const SOLR_API_BASE = '/solr/ckan_default/';
 
 function urlRewrite(url, baseUrl, proxyUrl) {
-  // const from = url;
-  // url = url.replace(/&/g, '%26');
   url = url.replace('?', '&');
   url = url.replace("'", '%22');
 
   url = `${proxyUrl}${baseUrl}${url}`;
 
-  // console.log("from " + from + " to " + url);
   return url;
 }
 
@@ -63,42 +59,30 @@ function enhanceSearchWithTags(allTags, searchResult) {
   return searchResult;
 }
 
-function enhanceMetadataEntry(entry, cardBGImages) {
-  if (!entry.titleImg) {
-    globalMethods.default.methods.enhanceTitleImg(entry, cardBGImages);
-  }
+// function enhanceMetadata(metadatas, cardBGImages) {
+//   if (metadatas === undefined && metadatas.length <= 0) {
+//     return undefined;
+//   }
 
-  return entry;
-}
+//   if (Array.isArray(metadatas)) {
+//     for (let i = 0; i < metadatas.length; i++) {
+//       const el = metadatas[i];
 
-function enhanceMetadata(metadatas, cardBGImages) {
-  if (metadatas === undefined && metadatas.length <= 0) {
-    return undefined;
-  }
+//       if (!el.titleImg) {
+//         globalMethods.default.methods.mixinMethods_enhanceTitleImg(el, cardBGImages);
+//       }
+//     }
+//   }
 
-  // console.log("enhanceMetadata " + Array.isArray(metadatas) + " " + cardBGImages );
-
-  if (Array.isArray(metadatas)) {
-    for (let i = 0; i < metadatas.length; i++) {
-      const el = metadatas[i];
-
-      if (!el.titleImg) {
-        globalMethods.default.methods.enhanceTitleImg(el, cardBGImages);
-      }
-    }
-  }
-
-  return metadatas;
-}
+//   return metadatas;
+// }
 
 function enhanceContent(metadatas, cardBGImages) {
-  let enhancedContent = [];
-
   if (metadatas && metadatas.length > 0) {
-    enhancedContent = enhanceMetadata(metadatas, cardBGImages);
+    return globalMethods.default.methods.mixinMethods_enhanceMetadata(metadatas, cardBGImages);
   }
 
-  return enhanceContent;
+  return [];
 }
 
 function contentSize(content) {

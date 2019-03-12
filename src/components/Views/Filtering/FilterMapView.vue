@@ -110,16 +110,6 @@ import marker2x from '../../../assets/map/marker-icon-2x.png';
 import selectedMarker from '../../../assets/map/selected-marker-icon.png';
 import selectedMarker2x from '../../../assets/map/selected-marker-icon-2x.png';
 import markerShadow from '../../../assets/map/marker-shadow.png';
-
-/* eslint-disable no-underscore-dangle */
-// delete L.Icon.Default.prototype._getIconUrl;
-
-// L.Icon.Default.mergeOptions({
-//   // iconRetinaUrl: marker2x,
-//   // iconUrl: marker,
-//   shadowUrl: markerShadow,
-// });
-
 // HACK end
 
 
@@ -131,15 +121,12 @@ export default {
     expanded: Boolean,
   },
   beforeMount: function beforeMount() {
-    this.pinIcon = this.getIcon('marker');
-    this.multiPinIcon = this.getIcon('markerMulti');
-    this.polygonIcon = this.getIcon('polygons');
-    this.eyeIcon = this.getIcon('eye');
+    this.pinIcon = this.mixinMethods_getIcon('marker');
+    this.multiPinIcon = this.mixinMethods_getIcon('markerMulti');
+    this.polygonIcon = this.mixinMethods_getIcon('polygons');
+    this.eyeIcon = this.mixinMethods_getIcon('eye');
   },
   mounted: function mounted() {
-    // if (L){
-    //   L.on('error', this.checkError);
-    // }
     this.setupMap();
   },
   beforeDestroy: function beforeDestroy() {
@@ -184,9 +171,6 @@ export default {
       console.log(`got leaflet error ${e}`);
       this.errorLoadingLeaflet = true;
     },
-    // expandClicked: function expandClicked(expand) {
-    //   this.expanded = expand;
-    // },
     catchPointClick: function catchPointClick(e) {
       this.$emit('pointClicked', e.target.id);
     },
@@ -209,8 +193,6 @@ export default {
         return;
       }
 
-      // console.log("pointArray " + this.pointArray + " " + this.geoJSON);
-
       this.map = this.initLeaflet(this.$refs.map, this.pointArray);
       this.markerCount = 0;
 
@@ -224,12 +206,10 @@ export default {
         this.updateMap();
 
         this.map.on('zoomend', () => {
-          // console.log("zooming map");
           this.updatePolygons();
         });
 
         this.map.on('moveend', () => {
-          // console.log("zooming map");
           this.updatePolygons();
         });
 
@@ -237,23 +217,6 @@ export default {
       }
     },
     initLeaflet: function initLeaflet(mapElement) {
-      // if (!L){
-      //   errorLoadingLeaflet = true;
-      //   return undefined;
-      // }
-
-      // if (coords) {
-      //   viewCoords = coords;
-
-      //   if (this.isPolygon) {
-      //     viewCoords = coords[0][0];
-      //   } else if (this.isMultiPoint) {
-      //     viewCoords = coords[0];
-      //   }
-
-      //   // map.setView(viewCoords, 9);
-      // }
-
       const map = L.map(mapElement, {
         scrollWheelZoom: false,
         center: this.setupCenterCoords,
@@ -280,22 +243,15 @@ export default {
       ).addTo(map);
       this.mapLayerGroup = L.layerGroup([baseMap]);
       this.mapLayerGroup.addTo(map);
-      // baseMap.addTo(map);
     },
     getPoint: function getPoint(coords, id, title, selected) {
       const iconOptions = L.Icon.Default.prototype.options;
-      delete iconOptions._getIconUrl;
+      delete iconOptions.mixinMethods_getIconUrl;
       // use the defaultoptions to ensure that all untouched defaults stay in place
 
       iconOptions.iconUrl = selected ? this.selectedMarker : this.marker;
       iconOptions.iconRetinaUrl = selected ? this.selectedMarker2x : this.marker2x;
       iconOptions.shadowUrl = this.markerShadow;
-
-      // L.Icon.Default.mergeOptions({
-      //   iconRetinaUrl: selected ? this.selectedMarker2x : this.marker2x,
-      //   iconUrl: selected ? this.selectedMarker : this.marker,
-      //   shadowUrl: this.markerShadow,
-      // });
 
       const icon = L.icon(iconOptions);
 
@@ -323,16 +279,7 @@ export default {
         fillOpacity: 0,
       });
 
-      // if (!map.getBounds().contains(polygon.getBounds())) {
-      //   return null;
-      // }
-
       polygon.on({ click: this.catchPointClick });
-      // polygon.on({ mouseover: this.catchPointHover });
-      // polygon.on({ mouseout: this.catchPointHoverLeave });
-
-      // zoom the map to the polygon
-      // map.fitBounds(polygon.getBounds());
       polygon.id = id;
       polygon.title = title;
 
@@ -546,7 +493,6 @@ export default {
     mapIsSetup: false,
     setupCenterCoords: [46.943961, 8.199240],
     initialBounds: null,
-    //Todo: sometimes the height isn't loaded correctly... 
     buttonHeight: 135,
     updatingMap: true,
     addedObjectsKeys: [],

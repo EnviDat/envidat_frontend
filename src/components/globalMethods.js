@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import seedrandom from 'seedrandom';
 
 export default {
@@ -9,7 +10,7 @@ export default {
      * @param {array} jsonTags: array of tagNames
      * @return {String} encoded string usable for urls
      */
-    encodeTagForUrl: function encodeTagForUrl(jsonTags) {
+    mixinMethods_encodeTagForUrl: function mixinMethods_encodeTagForUrl(jsonTags) {
       if (jsonTags && jsonTags.length > 0) {
         const jsonString = JSON.stringify(jsonTags);
 
@@ -25,14 +26,14 @@ export default {
       return '';
     },
     /**
-     * Decodes a string which was encoded via encodeTagForUrl().
+     * Decodes a string which was encoded via mixinMethods_encodeTagForUrl().
      * Returns the original array or an empty one.
      * Also restores characters '.', '_', '-'.
      *
      * @param {String} urlquery: encoded string
      * @return {array}: array of tagNames
      */
-    decodeTagsFromUrl: function decodeTagsFromUrl(urlquery) {
+    mixinMethods_decodeTagsFromUrl: function mixinMethods_decodeTagsFromUrl(urlquery) {
       if (urlquery) {
         let jsonConformString = urlquery.replace(/\./g, '+');
         jsonConformString = jsonConformString.replace(/_/g, '/');
@@ -52,11 +53,11 @@ export default {
      * The search and tag parameter are added as query parameters.
      * urlSubPath is added as the path.
      *
+     * @param {String} basePath the path of the route
      * @param {String} search search term
      * @param {String} tags encoded string
-     * @param {String} urlSubPath default: '/browse'
      */
-    additiveChangeRoute: function additiveChangeRoute(basePath, search, tags) {
+    mixinMethods_additiveChangeRoute: function mixinMethods_additiveChangeRoute(basePath, search, tags) {
       const query = {};
 
       if (search !== undefined) {
@@ -80,7 +81,7 @@ export default {
      * @param {String} date expecting a format like 2017-08-15T15:25:45.175790
      * @return {String} Returns a date string containing the date and hours:minutes:seconds
      */
-    formatDate: function formatDate(date) {
+    mixinMethods_formatDate: function mixinMethods_formatDate(date) {
       // expecting a format like 2017-08-15T15:25:45.175790
       let formatedDate = '';
 
@@ -107,7 +108,7 @@ export default {
      * @param {String} iconName
      * @return {String} relative file path with extension to the icon image file
      */
-    getIcon: function getIcon(iconName) {
+    mixinMethods_getIcon: function mixinMethods_getIcon(iconName) {
       const iconKey = `./${iconName}.png`;
       return this.$store.getters.iconImages[iconKey];
     },
@@ -117,7 +118,7 @@ export default {
      * @param {*} iconName
      * @return {string} relative file path to the icon image file
      */
-    getIconFileExtension: function getIconFileExtension(fileExtension) {
+    mixinMethods_getIconFileExtension: function mixinMethods_getIconFileExtension(fileExtension) {
       const ext = fileExtension.toLowerCase();
       const iconKey = `./file${ext}.png`;
 
@@ -131,7 +132,7 @@ export default {
      *
      * @return {Map<string, string>} Image cache
      */
-    importImages: function importImages(imgs, checkForString) {
+    mixinMethods_importImages: function mixinMethods_importImages(imgs, checkForString) {
       const imgCache = {};
 
       imgs.keys().forEach((key) => {
@@ -149,7 +150,7 @@ export default {
      * @param {Number} max
      * @param {String} seed
      */
-    randomInt: function randomInt(min, max, seed = 'For the Horde!') {
+    mixinMethods_randomInt: function mixinMethods_randomInt(min, max, seed = 'For the Horde!') {
       const rng = seedrandom(seed);
       const r = Math.floor(rng() * 10);
 
@@ -168,9 +169,9 @@ export default {
      *
      * @return {Object} metadataEntry enhanced with a title image based on the entrys tags
      */
-    enhanceMetadataEntry: function enhanceMetadataEntry(metadataEntry, cardBGImages) {
+    mixinMethods_enhanceMetadataEntry: function mixinMethods_enhanceMetadataEntry(metadataEntry, cardBGImages) {
       if (!metadataEntry.titleImg) {
-        this.enhanceTitleImg(metadataEntry, cardBGImages);
+        this.mixinMethods_enhanceTitleImg(metadataEntry, cardBGImages);
       }
 
       return metadataEntry;
@@ -181,7 +182,7 @@ export default {
      *
      * @return {Array} metadatas enhanced with a title image based on the metadatas tags
      */
-    enhanceMetadata: function enhanceMetadata(metadatas, cardBGImages) {
+    mixinMethods_enhanceMetadata: function mixinMethods_enhanceMetadata(metadatas, cardBGImages) {
       if (metadatas === undefined && metadatas.length <= 0) {
         return undefined;
       }
@@ -191,7 +192,7 @@ export default {
           const el = metadatas[i];
 
           if (!el.titleImg) {
-            this.enhanceTitleImg(el, cardBGImages);
+            this.mixinMethods_enhanceTitleImg(el, cardBGImages);
           }
         }
       }
@@ -204,13 +205,13 @@ export default {
      *
      * @return {Object} metadata entry enhanced with a title image based on its tags
      */
-    enhanceTitleImg: function enhanceTitleImg(metadata, cardBGImages) {
+    mixinMethods_enhanceTitleImg: function mixinMethods_enhanceTitleImg(metadata, cardBGImages) {
       /* eslint-disable no-param-reassign */
-      const category = this.guessTagCategory(metadata.tags);
+      const category = this.mixinMethods_guessTagCategory(metadata.tags);
 
       const categoryImgs = cardBGImages[category];
       const max = Object.keys(categoryImgs).length - 1;
-      const randomIndex = this.randomInt(0, max, metadata.title);
+      const randomIndex = this.mixinMethods_randomInt(0, max, metadata.title);
       const cardImg = randomIndex >= 0 ? Object.values(categoryImgs)[randomIndex] : 0;
 
       metadata.titleImg = cardImg;
@@ -220,7 +221,7 @@ export default {
      *
      * @return {String} category based on tags array
      */
-    guessTagCategory: function guessTagCategory(tags) {
+    mixinMethods_guessTagCategory: function mixinMethods_guessTagCategory(tags) {
       let category = 'landscape';
 
       if (tags) {
@@ -256,7 +257,7 @@ export default {
      * @param {*} a 
      * @param {*} b 
      */
-    formatBytes: function formatBytes(a,b) {
+    mixinMethods_formatBytes: function mixinMethods_formatBytes(a,b) {
       if(0==a) return "0 Bytes";
 
       const c=1024, d=b||2,

@@ -121,9 +121,9 @@ export default {
       unlockedIconString: null,
     }),
     beforeMount: function beforeMount() {
-      this.fileIconString = this.getIcon('file');
-      this.lockedIconString = this.getIcon('lock2Closed');
-      this.unlockedIconString = this.getIcon('lock2Open');
+      this.fileIconString = this.mixinMethods_getIcon('file');
+      this.lockedIconString = this.mixinMethods_getIcon('lock2Closed');
+      this.unlockedIconString = this.mixinMethods_getIcon('lock2Open');
     },
     computed: {
       ...mapGetters({

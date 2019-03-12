@@ -8,7 +8,7 @@
 
           <v-flex xs1 py-2 class="metadataInfoIcon" >
             
-            <icon-label-view :icon="getIcon('tag')" 
+            <icon-label-view :icon="mixinMethods_getIcon('tag')" 
                               iconTooltip="Filtered Tags" 
                               />
           </v-flex>
@@ -45,7 +45,7 @@
 
           <v-flex xs1 py-2 class="metadataInfoIcon" >
 
-            <icon-label-view :icon="getIcon('tags')" 
+            <icon-label-view :icon="mixinMethods_getIcon('tags')" 
                               iconTooltip="All Tags" 
                               />
           </v-flex>

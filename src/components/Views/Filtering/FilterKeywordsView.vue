@@ -153,8 +153,8 @@ export default {
     compactLayout: Boolean,
   },
   beforeMount: function beforeMount() {
-    this.tagIcon = this.getIcon('tag');
-    this.tagsIcon = this.getIcon('tags');
+    this.tagIcon = this.mixinMethods_getIcon('tag');
+    this.tagsIcon = this.mixinMethods_getIcon('tags');
   },
   computed: {
     selectedTags: function selectedTags() {

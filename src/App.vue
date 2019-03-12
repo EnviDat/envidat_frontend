@@ -68,7 +68,7 @@
       this.loadAllMetadata();
 
       const bgImgs = require.context('./assets/', false, /\.jpg$/);
-      this.appBGImages = this.importImages(bgImgs, 'app_b');
+      this.appBGImages = this.mixinMethods_importImages(bgImgs, 'app_b');
 
       this.importCardBackgrounds();
       this.importIcons();
@@ -88,23 +88,23 @@
         }
 
         let imgPaths = require.context('./assets/cards/landscape/', false, /\.jpg$/);
-        let images = this.importImages(imgPaths);
+        let images = this.mixinMethods_importImages(imgPaths);
         this.$store.commit(ADD_CARD_IMAGES, { key: 'landscape', value: images });
 
         imgPaths = require.context('./assets/cards/forest/', false, /\.jpg$/);
-        images = this.importImages(imgPaths);
+        images = this.mixinMethods_importImages(imgPaths);
         this.$store.commit(ADD_CARD_IMAGES, { key: 'forest', value: images });
 
         imgPaths = require.context('./assets/cards/snow/', false, /\.jpg$/);
-        images = this.importImages(imgPaths);
+        images = this.mixinMethods_importImages(imgPaths);
         this.$store.commit(ADD_CARD_IMAGES, { key: 'snow', value: images });
 
         imgPaths = require.context('./assets/cards/diversity/', false, /\.jpg$/);
-        images = this.importImages(imgPaths);
+        images = this.mixinMethods_importImages(imgPaths);
         this.$store.commit(ADD_CARD_IMAGES, { key: 'diversity', value: images });
 
         imgPaths = require.context('./assets/cards/hazard/', false, /\.jpg$/);
-        images = this.importImages(imgPaths);
+        images = this.mixinMethods_importImages(imgPaths);
         this.$store.commit(ADD_CARD_IMAGES, { key: 'hazard', value: images });
       },
       importIcons: function importIcons() {
@@ -116,7 +116,7 @@
         }
 
         const imgPaths = require.context('./assets/icons/', false, /\.png$/);
-        const images = this.importImages(imgPaths);
+        const images = this.mixinMethods_importImages(imgPaths);
 
         const keys = Object.keys(images);
         keys.forEach((key) => {

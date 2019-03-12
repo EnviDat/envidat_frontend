@@ -162,14 +162,14 @@ export default {
     },
     formatedBytes: function formatedBytes() {
       if (!this.size) return '';
-      const bytesString = this.formatBytes(this.size);
+      const bytesString = this.mixinMethods_formatBytes(this.size);
       return bytesString;
     },
     formatedCreated: function formatedCreated() {
-      return this.formatDate(this.created);
+      return this.mixinMethods_formatDate(this.created);
     },
     formatedLastModified: function formatedLastModified() {
-      return this.formatDate(this.lastModified);
+      return this.mixinMethods_formatDate(this.lastModified);
     },
     isLink: function isLink() {
       return this.format && (this.format.toLowerCase() === 'link' || this.format.toLowerCase() === 'url');
@@ -181,7 +181,7 @@ export default {
       return this.description && this.description.length > this.maxDescriptionLength;
     },
     fileExtensionIcon: function fileExtensionIcon() {
-      return this.getIconFileExtension(this.format);
+      return this.mixinMethods_getIconFileExtension(this.format);
     },
     fileFormatLabel: function fileFormatLabel() {
       const label = this.fileExtensionIcon ? '' : 'Format:';
@@ -193,7 +193,7 @@ export default {
       this.$emit('clicked');
     },
     formatedDate: function formatedDate(value) {
-      return this.formatDate(value);
+      return this.mixinMethods_formatDate(value);
     },
   },
   components: {

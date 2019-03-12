@@ -217,15 +217,15 @@
      * @description load all the icons once before the first component's rendering.
      */
     beforeMount: function beforeMount() {
-      this.downloadIcon = this.getIcon('download');
-      this.linkIcon = this.getIcon('link');
-      this.doiIcon = this.getIcon('doi');
-      this.fileSizeIcon = this.getIcon('fileSize');
-      this.dateCreatedIcon = this.getIcon('dateCreated');
-      this.lastModifiedIcon = this.getIcon('dateModified');
-      this.contactIcon = this.getIcon('contact2');
-      this.mailIcon = this.getIcon('mail');
-      this.licenseIcon = this.getIcon('license');
+      this.downloadIcon = this.mixinMethods_getIcon('download');
+      this.linkIcon = this.mixinMethods_getIcon('link');
+      this.doiIcon = this.mixinMethods_getIcon('doi');
+      this.fileSizeIcon = this.mixinMethods_getIcon('fileSize');
+      this.dateCreatedIcon = this.mixinMethods_getIcon('dateCreated');
+      this.lastModifiedIcon = this.mixinMethods_getIcon('dateModified');
+      this.contactIcon = this.mixinMethods_getIcon('contact2');
+      this.mailIcon = this.mixinMethods_getIcon('mail');
+      this.licenseIcon = this.mixinMethods_getIcon('license');
     },
     /**
      * @description reset the scrolling to the top.
@@ -372,7 +372,7 @@
       createMetadataContent: function createMetadataContent() {
         let currentContent = this.currentMetadataContent;
 
-        currentContent = this.enhanceMetadataEntry(currentContent, this.cardBGImages);
+        currentContent = this.mixinMethods_enhanceMetadataEntry(currentContent, this.cardBGImages);
 
         if (currentContent && currentContent.title !== undefined) {
           // console.log("create content " + currentContent.spatial + " " + this.header);
@@ -383,19 +383,6 @@
           this.location = metaDataFactory.createLocation(currentContent);
           this.details = metaDataFactory.createDetails(currentContent);
         }
-      },
-      /**
-       * @description
-       * @param {any} entry
-       * @param {any} cardBGImages
-       * @returns {any}
-       */
-      enhanceMetadataEntry: function enhanceMetadataEntry(entry, cardBGImages) {
-        if (!entry.titleImg) {
-          globalMethods.methods.enhanceTitleImg(entry, cardBGImages);
-        }
-
-        return entry;
       },
       /**
        * @description
@@ -413,7 +400,7 @@
         const tagNames = [];
         tagNames.push(tagName);
 
-        const tagsEncoded = this.encodeTagForUrl(tagNames);
+        const tagsEncoded = this.mixinMethods_encodeTagForUrl(tagNames);
         const query = {};
         query.tags = tagsEncoded;
 
