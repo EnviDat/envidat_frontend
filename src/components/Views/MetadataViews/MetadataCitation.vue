@@ -17,41 +17,41 @@
           <!-- use xs5 to ensure on xs screens it will be in two rows -->
           <v-flex xs5 sm3 lg4 xl3>
         
-            <rectangle-button v-if="citationXmlLink"
-                          class="ml-2"
-                          buttonText="DataCite"
-                          materialIconName="assignment"
-                          :isSmall="$vuetify.breakpoint.xsOnly"
-                          iconColor="white"
-                          toolTipText="Download XML citation"
-                          :url="citationXmlLink"
-            />
+            <base-rectangle-button v-if="citationXmlLink"
+                                  class="ml-2"
+                                  buttonText="DataCite"
+                                  materialIconName="assignment"
+                                  :isSmall="$vuetify.breakpoint.xsOnly"
+                                  iconColor="white"
+                                  toolTipText="Download XML citation"
+                                  :url="citationXmlLink"
+                                  />
           </v-flex>
 
           <!-- use xs5 to ensure on xs screens it will be in two rows -->
           <v-flex xs5 sm3 lg4 xl3>
-            <rectangle-button v-if="ciationIsoXmlLink"
-                          class="ml-2"
-                          buttonText="ISO 19139"
-                          toolTipText="Download ISO XML citation"
-                          materialIconName="assignment"
-                          :isSmall="$vuetify.breakpoint.xsOnly"
-                          iconColor="white"
-                          :url="ciationIsoXmlLink"
-            />
+            <base-rectangle-button v-if="ciationIsoXmlLink"
+                                  class="ml-2"
+                                  buttonText="ISO 19139"
+                                  toolTipText="Download ISO XML citation"
+                                  materialIconName="assignment"
+                                  :isSmall="$vuetify.breakpoint.xsOnly"
+                                  iconColor="white"
+                                  :url="ciationIsoXmlLink"
+                                  />
           </v-flex>
 
           <!-- use xs5 to ensure on xs screens it will be in two rows -->
           <v-flex xs5 sm3 lg4 xl3>
-            <rectangle-button v-if="ciationGCMDXmlLink"
-                          class="ml-2"
-                          buttonText="GCMD DIF"
-                          toolTipText="Download GCMD XML citation"
-                          materialIconName="assignment"
-                          :isSmall="$vuetify.breakpoint.xsOnly"
-                          iconColor="white"
-                          :url="ciationGCMDXmlLink"
-            />
+            <base-rectangle-button v-if="ciationGCMDXmlLink"
+                                  class="ml-2"
+                                  buttonText="GCMD DIF"
+                                  toolTipText="Download GCMD XML citation"
+                                  materialIconName="assignment"
+                                  :isSmall="$vuetify.breakpoint.xsOnly"
+                                  iconColor="white"
+                                  :url="ciationGCMDXmlLink"
+                                  />
           </v-flex>
 
         </v-layout>
@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import RectangleButton from '../../Elements/RectangleButton';
+import BaseRectangleButton from '../../BaseElements/BaseRectangleButton';
 
 export default {
   props: {
@@ -104,7 +104,7 @@ export default {
   methods: {
   },
   components: {
-    RectangleButton,
+    BaseRectangleButton,
   },
 };
 

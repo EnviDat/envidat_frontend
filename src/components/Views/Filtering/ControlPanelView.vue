@@ -44,7 +44,6 @@
 </template>
 
 <script>
-import IconLabelView from '../IconLabelView';
 
 export default {
   props: {
@@ -81,7 +80,6 @@ export default {
     },
   },
   components: {
-    IconLabelView,
   },
 };
 </script>

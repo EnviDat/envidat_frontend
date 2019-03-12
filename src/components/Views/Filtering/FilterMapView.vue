@@ -28,61 +28,64 @@
 
       <v-spacer />
 
-      <icon-button class="px-2"
-                    :customIcon="eyeIcon"
-                    color="highlight"
-                    :outlined="true"
-                    toolTipText="Focus on all elements on the map"
-                    v-on:clicked="focusOnLayers()" />
+      <base-icon-button class="px-2"
+                        :customIcon="eyeIcon"
+                        color="highlight"
+                        :outlined="true"
+                        toolTipText="Focus on all elements on the map"
+                        v-on:clicked="focusOnLayers()"
+                        />
 
-      <icon-button class="px-2"
-                    v-if="hasPins"
-                    :count="pinLayerGroup.length"
-                    :customIcon="pinIcon"
-                    color="secondary"
-                    :outlined="true"
-                    :isToggled="pinEnabled"
-                    :toolTipText="pinEnabled ? 'Hide single markers' : 'Show single markers'"
-                    v-on:clicked="pinEnabled = !pinEnabled; updatePins()" />
+      <base-icon-button class="px-2"
+                        v-if="hasPins"
+                        :count="pinLayerGroup.length"
+                        :customIcon="pinIcon"
+                        color="secondary"
+                        :outlined="true"
+                        :isToggled="pinEnabled"
+                        :toolTipText="pinEnabled ? 'Hide single markers' : 'Show single markers'"
+                        v-on:clicked="pinEnabled = !pinEnabled; updatePins()"
+                        />
 
-      <icon-button class="px-2"
-                    v-if="hasMultiPins"
-                    :count="multiPinLayerGroup.length"
-                    :customIcon="multiPinIcon"
-                    color="secondary"
-                    :outlined="true"
-                    :isToggled="multiPinEnabled"
-                    :toolTipText="multiPinEnabled ? 'Hide multi markers' : 'Show multi markers'"
-                    v-on:clicked="multiPinEnabled = !multiPinEnabled; updateMultiPins()" />
+      <base-icon-button class="px-2"
+                        v-if="hasMultiPins"
+                        :count="multiPinLayerGroup.length"
+                        :customIcon="multiPinIcon"
+                        color="secondary"
+                        :outlined="true"
+                        :isToggled="multiPinEnabled"
+                        :toolTipText="multiPinEnabled ? 'Hide multi markers' : 'Show multi markers'"
+                        v-on:clicked="multiPinEnabled = !multiPinEnabled; updateMultiPins()"
+                        />
 
-      <!-- <icon-button class="px-1"
+      <!-- <base-icon-button class="px-1"
                     :customIcon="polygonIcon"
                     :disabled="true"
                     toolTipText="Polygon filtering is in development"
                     /> -->
 
-      <icon-button class="px-2"
-                    v-if="hasPolygons"
-                    :count="polygonLayerGroup.length"
-                    :customIcon="polygonIcon"
-                    color="secondary"
-                    :isToggled="polygonEnabled"
-                    :outlined="true"
-                    :toolTipText="polygonEnabled ? 'Hide polygons' : 'Show polygons'"
-                    v-on:clicked="polygonEnabled = !polygonEnabled; updatePolygons()"
-                    />
+      <base-icon-button class="px-2"
+                        v-if="hasPolygons"
+                        :count="polygonLayerGroup.length"
+                        :customIcon="polygonIcon"
+                        color="secondary"
+                        :isToggled="polygonEnabled"
+                        :outlined="true"
+                        :toolTipText="polygonEnabled ? 'Hide polygons' : 'Show polygons'"
+                        v-on:clicked="polygonEnabled = !polygonEnabled; updatePolygons()"
+                        />
 
 
-      <rectangle-button class="pl-3"
-                        :buttonText="clearButtonText"
-                        toolTipText="Clear all pinned Metadata"
-                        :isSmall="true"
-                        :isFlat="true"
-                        iconColor="red"
-                        :disabled="this.pinnedIds.length <= 0"
-                        materialIconName="close"
-                        v-on:clicked="catchClearButtonClicked"
-      />
+      <base-rectangle-button class="pl-3"
+                            :buttonText="clearButtonText"
+                            toolTipText="Clear all pinned Metadata"
+                            :isSmall="true"
+                            :isFlat="true"
+                            iconColor="red"
+                            :disabled="this.pinnedIds.length <= 0"
+                            materialIconName="close"
+                            v-on:clicked="catchClearButtonClicked"
+                            />
 
 
     </v-card-actions>
@@ -95,10 +98,9 @@
 import { mapGetters } from 'vuex';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import IconCountView from '../IconCountView';
 import metaDataFactory from '../../metaDataFactory';
-import RectangleButton from '../../Elements/RectangleButton';
-import IconButton from '../../Elements/IconButton';
+import BaseRectangleButton from '../../BaseElements/BaseRectangleButton';
+import BaseIconButton from '../../BaseElements/BaseIconButton';
 
 // HACK start
 /* eslint-disable import/first */
@@ -521,9 +523,8 @@ export default {
     markerShadow,
   }),
   components: {
-    IconCountView,
-    RectangleButton,
-    IconButton,
+    BaseRectangleButton,
+    BaseIconButton,
   },
 };
 </script>

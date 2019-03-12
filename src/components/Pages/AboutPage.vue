@@ -17,7 +17,7 @@
                         title="About EnviDat"
                         >
 
-          <icon-button style="position: absolute; top: 0px; right: 0px; z-index: 10;"
+          <base-icon-button style="position: absolute; top: 0px; right: 0px; z-index: 10;"
                                   materialIconName="close"
                                   :outlined="true"
                                   color="white"
@@ -25,7 +25,6 @@
                                   toolTipText ="Close About Page"
                                   :toolTipBottom="true"
                                   v-on:clicked="catchBackClicked" />
-          
 
           </img-and-text-layout>
       </v-flex>
@@ -68,7 +67,7 @@
     SET_APP_BACKGROUND,
     SET_CURRENT_PAGE,
   } from '@/store/mutationsConsts';
-  import IconButton from '../Elements/IconButton';
+  import BaseIconButton from '../BaseElements/BaseIconButton';
 
   import ImgAndTextLayout from '../Layouts/ImgAndTextLayout';
 
@@ -210,7 +209,7 @@
     components: {
       ImgAndTextLayout,
       ExpandableCard,
-      IconButton,
+      BaseIconButton,
     },
   };
 </script>

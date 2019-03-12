@@ -2,8 +2,7 @@
 
     <v-container fluid
                   :class="{ ['grid-list-sm'] : listView,
-                          ['grid-list-lg'] : !listView,
-                        }"
+                            ['grid-list-lg'] : !listView }"
                   pa-0
                   id="metadataListView"
     >
@@ -12,9 +11,8 @@
         name="itemfade"
         class="layout"
         :class="{ ['column'] : listView,
-                      ['row'] : !listView,
-                      ['wrap'] : !listView
-                    }"
+                  ['row'] : !listView,
+                  ['wrap'] : !listView }"
       >
 
         <v-flex v-if="loading"

@@ -21,7 +21,8 @@
                   :class="{ 'small': this.$vuetify.breakpoint.smAndDown }"
                   v-if="currentPage != 'landingPage'" >
 
-            <nav-bar-view />
+            <the-nav-bar-view />
+            
           </v-flex>
 
 
@@ -61,7 +62,7 @@
     ADD_CARD_IMAGES,
     ADD_ICON_IMAGE,
   } from './store/mutationsConsts';
-  import NavBarView from './components/Views/NavbarView';
+  import TheNavBarView from './components/Views/TheNavBarView';
 
   export default {
     created: function created() {
@@ -173,7 +174,7 @@
       appVersion: process.env.VERSION,
     }),
     components: {
-      NavBarView,
+      TheNavBarView,
     },
     props: {
       source: String,

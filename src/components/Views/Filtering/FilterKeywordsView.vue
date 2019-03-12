@@ -1,6 +1,6 @@
 <template>
   <v-card raised
-          :style="!expanded && compactLayout ? 'height: 32px;' : '',
+          :style="compactLayout && !expanded ? 'height: 32px;' : '',
                   !compactLayout ? 'height: 85px;' : ''"
   >
 
@@ -28,7 +28,7 @@
             <v-flex pl-2
                     class="metadataInfoIcon" 
             >
-              <icon-label-view :icon="tagsIcon"
+              <base-icon-label-view :icon="tagsIcon"
                                 :compactLayout="compactLayout"
                                 iconTooltip="Possible Keywords"
               />
@@ -49,11 +49,10 @@
             <v-flex xs12
                     py-0
                     px-2 
-                    v-if="!showPlaceholder"
+                    v-if="!showPlaceholder && showPopularTags"
             >
 
-              <tag-chip v-if="showPopularTags && tag.enabled"
-                        v-for="tag in showPopularTags"
+              <tag-chip v-for="tag in showPopularTags"
                         :key="tag.name" 
                         :name="tag.name"
                         :selectable="tag.enabled"
@@ -83,7 +82,7 @@
 
             <v-flex pl-2 class="metadataInfoIcon" 
             >
-              <icon-label-view :icon="tagIcon"
+              <base-icon-label-view :icon="tagIcon"
                                 :compactLayout="compactLayout"
                                 iconTooltip="Active Keyword filter"
               />
@@ -92,10 +91,10 @@
             <v-flex xs12
                     py-0
                     px-2
+                    v-if="selectedTags.length > 0"
             >
 
-              <tag-chip v-if="selectedTags.length > 0"
-                        v-for="tag in selectedTags" :key="tag.name" 
+              <tag-chip v-for="tag in selectedTags" :key="tag.name" 
                         :name="tag.name"
                         :selectable="true"
                         :highlighted="true"
@@ -132,7 +131,7 @@
 </template>
 
 <script>
-import IconLabelView from '../IconLabelView';
+import BaseIconLabelView from '../../BaseElements/BaseIconLabelView';
 import TagChip from '../Cards/TagChip';
 import TagChipPlaceholder from '../Cards/TagChipPlaceholder';
 import FilterViewButtons from './FilterViewButtons';
@@ -300,7 +299,7 @@ export default {
     tagsIcon: null,
   }),
   components: {
-    IconLabelView,
+    BaseIconLabelView,
     TagChip,
     TagChipPlaceholder,
     FilterViewButtons,

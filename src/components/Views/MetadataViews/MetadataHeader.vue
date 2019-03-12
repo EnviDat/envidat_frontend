@@ -11,13 +11,13 @@
               v-bind="{['style'] : dynamicCardBackground }"
       >
 
-        <icon-button style="position: absolute; top: 0px; right: 0px;"
-                      materialIconName="close"
-                      :iconColor=" (showPlaceholder || !metadataTitle) ? 'white' : 'primary'"
-                      :outlined="true"
-                      toolTipText ="Close Metadata"
-                      :toolTipBottom="true"
-                      v-on:clicked="catchBackClicked" />
+        <base-icon-button style="position: absolute; top: 0px; right: 0px;"
+                          materialIconName="close"
+                          :iconColor=" (showPlaceholder || !metadataTitle) ? 'white' : 'primary'"
+                          :outlined="true"
+                          toolTipText ="Close Metadata"
+                          :toolTipBottom="true"
+                          v-on:clicked="catchBackClicked" />
 
 
         <!--h1 class="py-3" >{{ metadataTitle }} id: {{ $route.params.id }}</h1-->
@@ -59,40 +59,40 @@
         <v-layout row wrap>
           <v-flex xs12 sm6 md6 lg3
                   py-1 class="headerInfo">
-            <icon-label-view  :text="contactName"
-                              :icon="contactIcon"
-                              iconTooltip="Main contact"
-                              :alignLeft="true"
-                               />
+            <base-icon-label-view :text="contactName"
+                                  :icon="contactIcon"
+                                  iconTooltip="Main contact"
+                                  :alignLeft="true"
+                                  />
           </v-flex>
 
           <v-flex xs12 sm6 md6 lg3
                   py-1 class="headerInfo">
-            <icon-label-view  :text="contactEmail"
-                              :icon="mailIcon"
-                              iconTooltip="Email adress of the main contact"
-                              :alignLeft="true"
-                              :wordBreak="true"
-                               />
+            <base-icon-label-view :text="contactEmail"
+                                  :icon="mailIcon"
+                                  iconTooltip="Email adress of the main contact"
+                                  :alignLeft="true"
+                                  :wordBreak="true"
+                                  />
           </v-flex>
 
           <v-flex xs12 sm6 md6 lg3
                   py-1 class="headerInfo">
-            <icon-label-view  :text="doi"
-                              :icon="doiIcon"
-                              iconTooltip="Data Object Identifier"
-                              :alignLeft="true"
-                              :wordBreak="true"
-                               />
+            <base-icon-label-view :text="doi"
+                                  :icon="doiIcon"
+                                  iconTooltip="Data Object Identifier"
+                                  :alignLeft="true"
+                                  :wordBreak="true"
+                                  />
           </v-flex>
 
           <v-flex xs12 sm6 md6 lg3
                   py-1 class="headerInfo">
-            <icon-label-view :text="license"
-                              :icon="licenseIcon"
-                              iconTooltip="License for Datafiles"
-                              :alignLeft="true"
-                               />
+            <base-icon-label-view :text="license"
+                                  :icon="licenseIcon"
+                                  iconTooltip="License for Datafiles"
+                                  :alignLeft="true"
+                                  />
           </v-flex>
         </v-layout>
 
@@ -121,15 +121,15 @@
         <v-card-actions v-if="maxTagsReached"
                         style="position: absolute; bottom: 0px; right: 0px;" >
 
-          <icon-button materialIconName="expand_more"
-                        :outlined="true"
-                        color="primary"
-                        iconColor="accent"
-                        :isToggled="showTagsExpanded"
-                        :rotateOnClick="true"
-                        :toolTipText="showTagsExpanded ? 'Hide all tags' : 'Show all tags'"
-                        :toolTipBottom="true"
-                        v-on:clicked="showTagsExpanded = !showTagsExpanded" />
+          <base-icon-button materialIconName="expand_more"
+                            :outlined="true"
+                            color="primary"
+                            iconColor="accent"
+                            :isToggled="showTagsExpanded"
+                            :rotateOnClick="true"
+                            :toolTipText="showTagsExpanded ? 'Hide all tags' : 'Show all tags'"
+                            :toolTipBottom="true"
+                            v-on:clicked="showTagsExpanded = !showTagsExpanded" />
 
         </v-card-actions>
 
@@ -144,8 +144,8 @@
 import TagChip from '../Cards/TagChip';
 import TagChipAuthor from '../Cards/TagChipAuthor';
 import TagChipPlaceholder from '../Cards/TagChipPlaceholder';
-import IconLabelView from '../IconLabelView';
-import IconButton from '../../Elements/IconButton';
+import BaseIconLabelView from '../../BaseElements/BaseIconLabelView';
+import BaseIconButton from '../../BaseElements/BaseIconButton';
 
 export default {
   props: {
@@ -218,8 +218,8 @@ export default {
     TagChip,
     TagChipAuthor,
     TagChipPlaceholder,
-    IconLabelView,
-    IconButton,
+    BaseIconLabelView,
+    BaseIconButton,
   },
 };
 </script>

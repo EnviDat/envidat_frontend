@@ -101,7 +101,7 @@
 
 <script>
   import MMarkdownPreview from 'm-markdown-preview';
-  import TitleImg from '../Elements/TitleImg';
+  import BaseTitleImg from '../BaseElements/BaseTitleImg';
 
   export default {
     props: {
@@ -126,7 +126,7 @@
       },
     },
     components: {
-      TitleImg,
+      BaseTitleImg,
       MMarkdownPreview,
     },
   };

@@ -32,31 +32,31 @@
 
               <v-flex xs4 sm3 md2 >
 
-                <rectangle-button marginClass="ma-0"
-                                  :class="{
-                                    ['envidatNavbarLinksSmall']: this.$vuetify.breakpoint.smAndDown,
-                                  }" 
-                                  :isFlat="true"
-                                  :buttonText="loginText"
-                                  :toolTipText="loginToolTip"
-                                  :isSmall="true"
-                                  :url="loginUrl"
-                />
+                <base-rectangle-button marginClass="ma-0"
+                                      :class="{
+                                        ['envidatNavbarLinksSmall']: this.$vuetify.breakpoint.smAndDown,
+                                      }" 
+                                      :isFlat="true"
+                                      :buttonText="loginText"
+                                      :toolTipText="loginToolTip"
+                                      :isSmall="true"
+                                      :url="loginUrl"
+                                      />
 
               </v-flex>
 
               <v-flex xs3 sm3 md1 lg1>
 
-                <rectangle-button marginClass="ma-0"
-                                  :class="{
-                                    ['envidatNavbarLinksSmall']: this.$vuetify.breakpoint.smAndDown,
-                                  }" 
-                                  :isFlat="true"
-                                  :buttonText="aboutText"
-                                  :toolTipText="aboutToolTip"
-                                  :isSmall="true"
-                                  v-on:clicked="navigateToAboutPage"
-                />
+                <base-rectangle-button marginClass="ma-0"
+                                      :class="{
+                                        ['envidatNavbarLinksSmall']: this.$vuetify.breakpoint.smAndDown,
+                                      }" 
+                                      :isFlat="true"
+                                      :buttonText="aboutText"
+                                      :toolTipText="aboutToolTip"
+                                      :isSmall="true"
+                                      v-on:clicked="navigateToAboutPage"
+                                      />
 
               </v-flex>
             
@@ -74,7 +74,7 @@
 import { BROWSE_PATH, ABOUT_PATH } from '@/router/routeConsts';
 import { SET_DETAIL_PAGE_BACK_URL, SET_ABOUT_PAGE_BACK_URL } from '@/store/metadataMutationsConsts';
 import Logo from '../../assets/logo/EnviDat_logo_32.png';
-import RectangleButton from '../Elements/RectangleButton';
+import BaseRectangleButton from '../BaseElements/BaseRectangleButton';
 
 export default {
   props: {
@@ -107,7 +107,7 @@ export default {
     loginUrl: 'https://www.envidat.ch/user/reset',
   }),
   components: {
-    RectangleButton,
+    BaseRectangleButton,
   },
 };
 </script>
