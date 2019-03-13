@@ -33,7 +33,7 @@
   /* eslint-disable no-unused-vars */
   import 'leaflet/dist/leaflet.css';
 
-  // HACK start
+  // HACK starts
   // Solution to loading in the imgs correctly via webpack
   // see more https://github.com/PaulLeCam/react-leaflet/issues/255
   // stupid hack so that leaflet's images work after going through webpack
@@ -42,7 +42,7 @@
   import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
   /* eslint-disable no-underscore-dangle */
-  delete L.Icon.Default.prototype._getIconUrl;
+  delete L.Icon.Default.prototype.mixinMethods_getIconUrl;
 
   L.Icon.Default.mergeOptions({
     iconRetinaUrl: marker2x,
@@ -62,8 +62,6 @@
       geoJSON: String,
     },
     mounted: function mounted() {
-      // this.map = L.map('map').setView([51.505, -0.09], 13);
-
       this.setupMap();
     },
     beforeDestroy: function beforeDestroy() {
@@ -108,8 +106,6 @@
         if (this.isEmpty) {
           return;
         }
-
-        // console.log("pointArray " + this.pointArray + " " + this.geoJSON);
 
         this.map = this.initLeaflet(this.$refs.map, this.pointArray);
         this.addOpenStreetMapLayer(this.map);

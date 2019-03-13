@@ -25,15 +25,20 @@
                     :class="titleClass"
                 >
                   {{ truncatedTitle }}</div>
+
               </v-flex>
 
               <v-flex xs12 v-if="maxTitleLengthReached">
-                <v-tooltip bottom>
+                <v-tooltip bottom
+                            :disabled="$vuetify.breakpoint.xsOnly"
+                            >
                   <div slot="activator" class="headline mb-0"
                       :class="titleClass"
                   >
                     {{ truncatedTitle }}</div>
+
                   <span>{{ title }}</span>
+
                 </v-tooltip>
               </v-flex>
               
@@ -41,9 +46,11 @@
           </v-flex>
   
           <v-flex xs12 py-0 mx-1>
-            <v-layout row fill-height align-end >
+            <v-layout row fill-height align-end 
+                      v-if="tags" >
+
                 <tag-chip py-0
-                          v-if="tags" v-for="tag in tags.slice (0, maxTagNumber)" :key="tag.name"
+                          v-for="tag in tags.slice (0, maxTagNumber)" :key="tag.name"
                           :name="tag.name"
                           :selectable="true"
                           v-on:clicked="catchTagClicked($event, tag.name)"
@@ -77,7 +84,11 @@
       
       <v-spacer></v-spacer>
 
-      <v-tooltip bottom v-if="isRestricted">
+      <v-tooltip v-if="isRestricted"
+                bottom 
+                :disabled="$vuetify.breakpoint.xsOnly"
+                >
+                
         <v-icon slot="activator" color="black" >lock</v-icon>
           <div v-if="userHasAccess"
                 class="iconCentering">
@@ -93,10 +104,10 @@
 
       </v-tooltip>
 
-      <icon-count-view :count="resourceAmount"
-                        :iconString="fileIconString"
-                        :tooltip="`Metadata with ${resourceAmount} resources`">
-      </icon-count-view>
+      <base-icon-count-view :count="resourceAmount"
+                            :iconString="fileIconString"
+                            :tooltip="`Metadata with ${resourceAmount} resources`"
+                            />
 
     </v-card-actions>
 
@@ -106,8 +117,8 @@
 
 
 <script>
-import TagChip from './TagChip';
-import IconCountView from '../IconCountView';
+import TagChip from '@/components/Cards/TagChip';
+import BaseIconCountView from '@/components/BaseElements/BaseIconCountView';
 
 // checkout possible transition animation
 // https://codepen.io/balapa/pen/embYYB
@@ -147,7 +158,7 @@ export default {
   },
   components: {
     TagChip,
-    IconCountView,
+    BaseIconCountView,
   },
   created: function created() {
   },

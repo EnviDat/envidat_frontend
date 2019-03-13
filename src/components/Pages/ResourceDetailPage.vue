@@ -1,16 +1,12 @@
 <template>
   <v-container fluid >
-
-
-    <v-card>
+    <!--
+      
+      This page is unsed so far
+      
+      <v-card>
       id: {{ $route.params.id }}
-    </v-card>
-
-    <!--metadata-header v-bind="header"> </metadata-header>
-
-    <metadata-body v-bind="body"> </metadata-body>
-
-    <metadata-resources v-bind="resources" ></metadata-resources-->
+    </v-card> -->
 
   </v-container>
 </template>

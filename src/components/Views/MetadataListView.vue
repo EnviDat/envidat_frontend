@@ -2,8 +2,7 @@
 
     <v-container fluid
                   :class="{ ['grid-list-sm'] : listView,
-                          ['grid-list-lg'] : !listView,
-                        }"
+                            ['grid-list-lg'] : !listView }"
                   pa-0
                   id="metadataListView"
     >
@@ -12,9 +11,8 @@
         name="itemfade"
         class="layout"
         :class="{ ['column'] : listView,
-                      ['row'] : !listView,
-                      ['wrap'] : !listView
-                    }"
+                  ['row'] : !listView,
+                  ['wrap'] : !listView }"
       >
 
         <v-flex v-if="loading"
@@ -81,8 +79,10 @@
 
         </v-flex>
 
-        <v-flex xs12 v-if="!loading && filteredContentSize <= 0"
-        key="noSearchResultsView">
+        <v-flex xs12 mx-2 
+                v-if="!loading && filteredContentSize <= 0"
+                key="noSearchResultsView"
+                >
             <no-search-results-view v-on:clicked="catchCategoryClicked"
                                     :noResultText="noResultText"
                                     :suggestionText="suggestionText" />  
@@ -100,10 +100,10 @@
     BROWSE_PATH,
     METADATADETAIL_NAME,
   } from '@/router/routeConsts';
-  import MetadataCard from '../Cards/MetadataCard';
-  import MetadataCardPlaceholder from '../Cards/MetadataCardPlaceholder';
-  import NoSearchResultsView from '../NoSearchResultsView';
-  import { SET_DETAIL_PAGE_BACK_URL } from '../../../store/metadataMutationsConsts';
+  import MetadataCard from '@/components/Cards/MetadataCard';
+  import MetadataCardPlaceholder from '@/components/Cards/MetadataCardPlaceholder';
+  import NoSearchResultsView from '@/components/Filtering/NoSearchResultsView';
+  import { SET_DETAIL_PAGE_BACK_URL } from '@/store/metadataMutationsConsts';
   // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
 export default {
@@ -114,16 +114,16 @@ export default {
       placeHolderAmount: Number,
     },
     data: () => ({
-      noResultText: 'Nothing found for these search criterias',
-      suggestionText: 'Try one of these categories',
+      noResultText: 'Nothing found for these search criterias.',
+      suggestionText: 'Change the criterias or try one of these categories',
       fileIconString: null,
       lockedIconString: null,
       unlockedIconString: null,
     }),
     beforeMount: function beforeMount() {
-      this.fileIconString = this.getIcon('file');
-      this.lockedIconString = this.getIcon('lock2Closed');
-      this.unlockedIconString = this.getIcon('lock2Open');
+      this.fileIconString = this.mixinMethods_getIcon('file');
+      this.lockedIconString = this.mixinMethods_getIcon('lock2Closed');
+      this.unlockedIconString = this.mixinMethods_getIcon('lock2Open');
     },
     computed: {
       ...mapGetters({

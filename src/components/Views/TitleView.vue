@@ -95,11 +95,11 @@
 </template>
 
 <script>
-import SloganCard from './Cards/SloganCard';
-// import xsLogo from '../../assets/logo/EnviDat_logo_32.png';
-import smLogo from '../../assets/logo/EnviDat_logo_64.png';
-import mdLogo from '../../assets/logo/EnviDat_logo_128.png';
-import lgLogo from '../../assets/logo/EnviDat_logo_256.png';
+import SloganCard from '@/components/Cards/SloganCard';
+// import xsLogo from '@/assets/logo/EnviDat_logo_32.png';
+import smLogo from '@/assets/logo/EnviDat_logo_64.png';
+import mdLogo from '@/assets/logo/EnviDat_logo_128.png';
+import lgLogo from '@/assets/logo/EnviDat_logo_256.png';
 
 export default {
   props: {

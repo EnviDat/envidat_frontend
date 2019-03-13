@@ -18,6 +18,7 @@ Vue.use(Vuetify, {
     accent: '#FFD740', // amber accent-2
     highlight: '#B2DFDB', // teal lighten-4
     error: '#FF5252',
+    errorHighlight: '#FF8A80', // red lighten-4
     info: '#2196F3',
     success: '#4CAF50',
     warning: '#FFC107',

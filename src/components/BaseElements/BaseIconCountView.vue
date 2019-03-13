@@ -1,5 +1,7 @@
 <template>
-      <v-tooltip bottom>
+      <v-tooltip bottom
+                :disabled="$vuetify.breakpoint.xsOnly"
+                >
         
           <div slot="activator" class="metadataInfoIcon">
             <v-layout row @mouseover="hoverBadge = true" @mouseleave="hoverBadge = false">

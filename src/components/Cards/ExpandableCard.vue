@@ -28,14 +28,14 @@
     <v-card-actions class="ma-0 pa-2"
                     style="position: absolute; bottom: 5px; right: 5px;">
       
-      <icon-button materialIconName="expand_more"
-                    :outlined="false"
-                    color="transparent"
-                    iconColor="grey"
-                    :isToggled="expanded"
-                    :rotateOnClick="true"
-                    :toolTipText="expanded ? 'Hide info' : 'Show info'"
-                    v-on:clicked="clicked" />
+      <base-icon-button materialIconName="expand_more"
+                        :outlined="false"
+                        color="transparent"
+                        iconColor="grey"
+                        :isToggled="expanded"
+                        :rotateOnClick="true"
+                        :toolTipText="expanded ? 'Hide info' : 'Show info'"
+                        v-on:clicked="clicked" />
 
     </v-card-actions>
 
@@ -52,7 +52,7 @@
 
 <script>
   import MMarkdownPreview from 'm-markdown-preview';
-  import IconButton from '../../Elements/IconButton';
+  import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
   export default {
     props: {
@@ -73,7 +73,7 @@
       expanded: false,
     }),
     components: {
-      IconButton,
+      BaseIconButton,
       MMarkdownPreview,
     },
   };

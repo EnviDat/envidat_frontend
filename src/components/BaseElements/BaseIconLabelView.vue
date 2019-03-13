@@ -6,13 +6,18 @@
         :class="alignClass"
         style="position: relative: top: 2px;"
         >
-        <v-tooltip bottom>
+        <v-tooltip bottom
+                    :disabled="$vuetify.breakpoint.xsOnly"
+                    >
+
           <div slot="activator" class="iconCentering">
             <img class="envidatIcon"
                 :class="compactLayout ? 'small' : ''"
                 :src="icon" />          
           </div>
+
           <span>{{ iconTooltip }}</span>
+          
         </v-tooltip>
       </div>
 
