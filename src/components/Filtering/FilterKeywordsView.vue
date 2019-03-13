@@ -1,7 +1,6 @@
 <template>
   <v-card raised
-          :style="compactLayout && !expanded ? 'height: 32px;' : '',
-                  !compactLayout ? 'height: 85px;' : ''"
+          :style="this.compactLayout ? '' : 'height: 85px'"
   >
 
     <v-layout column
