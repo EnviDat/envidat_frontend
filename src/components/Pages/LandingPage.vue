@@ -40,7 +40,7 @@
             <v-flex my-1 xs6
               v-for="card in categorycards" :key="card.title">
     
-              <click-card :title="card.title"
+              <base-click-card :title="card.title"
                             :img="card.img"
                             v-on:clicked="catchCategoryClicked"
                             />
