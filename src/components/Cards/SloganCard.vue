@@ -68,8 +68,8 @@
 
 
 <script>
-import fingertipsImg from '../../../assets/cards/fingertips_small.jpg';
-import BaseRectangleButton from '../../BaseElements/BaseRectangleButton';
+import fingertipsImg from '@/assets/cards/fingertips_small.jpg';
+import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 
 export default {
   props: {

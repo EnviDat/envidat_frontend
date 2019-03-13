@@ -50,8 +50,8 @@
 </template>
 
 <script>
-  import ResourceCard from '../Cards/ResourceCard';
-  import ResourceCardPlaceholder from '../Cards/ResourceCardPlaceholder';
+  import ResourceCard from '@/components/Cards/ResourceCard';
+  import ResourceCardPlaceholder from '@/components/Cards/ResourceCardPlaceholder';
 
   export default {
     props: {

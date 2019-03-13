@@ -39,17 +39,22 @@
 
         <v-divider :dark="dark" class="my-2" ></v-divider>
 
-        <v-layout row wrap>
+        <v-layout row wrap
+                  v-if="authors"
+                    >
 
-          <tag-chip-author v-if="authors"
-                    v-for="author in authors" :key="author.name"
+          <tag-chip-author v-for="author in authors" :key="author.name"
                     :name="author.name.trim()"
                     :toolTipText="authorToolTipText"
                     v-on:clicked="catchAuthorClicked($event, author.name.trim())"
           />
+        </v-layout>
 
-          <tag-chip-placeholder v-if="!authors && showPlaceholder"
-                    v-for="n in 5" :key="n" 
+        <v-layout row wrap 
+                  v-if="!authors && showPlaceholder"
+                  >
+
+          <tag-chip-placeholder v-for="n in 5" :key="n" 
                     class="headerTag" />
 
         </v-layout>
@@ -98,10 +103,11 @@
 
         <v-divider :dark="dark" class="my-2" ></v-divider>
 
-        <v-layout row wrap>
+        <v-layout row wrap 
+                  v-if="tags"
+                  >
 
-          <tag-chip v-if="tags"
-                    v-for="tag in slicedTags" :key="tag.name"
+          <tag-chip v-for="tag in slicedTags" :key="tag.name"
                     :name="tag.name"
                     :selectable="true"
                     v-on:clicked="catchTagClicked($event, tag.name)"
@@ -110,9 +116,13 @@
           <v-flex xs2 v-if="tags && maxTagsReached && !showTagsExpanded">
             <tag-chip class="headerTag" :name="'...'" />
           </v-flex>
+        </v-layout>
 
+        <v-layout row wrap
+                   v-if="!tags && showPlaceholder"
+                  >
 
-          <tag-chip-placeholder v-if="!tags && showPlaceholder"
+          <tag-chip-placeholder
                     v-for="n in 5" :key="n" 
                     class="headerTag" />
 
@@ -141,11 +151,11 @@
 </template>
 
 <script>
-import TagChip from '../Cards/TagChip';
-import TagChipAuthor from '../Cards/TagChipAuthor';
-import TagChipPlaceholder from '../Cards/TagChipPlaceholder';
-import BaseIconLabelView from '../../BaseElements/BaseIconLabelView';
-import BaseIconButton from '../../BaseElements/BaseIconButton';
+import TagChip from '@/components/Cards/TagChip';
+import TagChipAuthor from '@/components/Cards/TagChipAuthor';
+import TagChipPlaceholder from '@/components/Cards/TagChipPlaceholder';
+import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
+import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 export default {
   props: {

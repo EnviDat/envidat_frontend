@@ -90,11 +90,11 @@
 </template>
 
 <script>
-  import FilterKeywordsView from './FilterKeywordsView';
-  import FilterMapView from './FilterMapView';
-  import SmallSearchBarView from './SmallSearchBarView';
-  import ControlPanelView from './ControlPanelView';
-  import Logo from '../../../assets/logo/EnviDat_logo_32.png';
+  import FilterKeywordsView from '@/components/Filtering/FilterKeywordsView';
+  import FilterMapView from '@/components/Filtering/FilterMapView';
+  import SmallSearchBarView from '@/components/Filtering/SmallSearchBarView';
+  import ControlPanelView from '@/components/Filtering/ControlPanelView';
+  import Logo from '@/assets/logo/EnviDat_logo_32.png';
 
   export default {
     props: {

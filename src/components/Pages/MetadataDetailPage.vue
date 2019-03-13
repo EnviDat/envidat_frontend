@@ -181,29 +181,27 @@
   import {
     SET_APP_BACKGROUND,
     SET_CURRENT_PAGE,
-  } from '../../store/mutationsConsts';
+  } from '@/store/mutationsConsts';
   import {
     LOAD_METADATA_CONTENT_BY_ID,
     CLEAN_CURRENT_METADATA,
-  } from '../../store/metadataMutationsConsts';
-  import MetadataHeader from '../Views/MetadataViews/MetadataHeader';
-  import MetadataBody from '../Views/MetadataViews/MetadataBody';
-  import MetadataResources from '../Views/MetadataViews/MetadataResources';
-  import MetadataLocation from '../Views/MetadataViews/MetadataLocation';
-  import MetadataDetails from '../Views/MetadataViews/MetadataDetails';
-  import MetadataCitation from '../Views/MetadataViews/MetadataCitation';
-  import NotFoundView from '../Views/Errors/NotFoundView';
-  import metaDataFactory from '../metaDataFactory';
+  } from '@/store/metadataMutationsConsts';
+  import MetadataHeader from '@/components/MetadataDetailViews/MetadataHeader';
+  import MetadataBody from '@/components/MetadataDetailViews/MetadataBody';
+  import MetadataResources from '@/components/MetadataDetailViews/MetadataResources';
+  import MetadataLocation from '@/components/MetadataDetailViews/MetadataLocation';
+  import MetadataDetails from '@/components/MetadataDetailViews/MetadataDetails';
+  import MetadataCitation from '@/components/MetadataDetailViews/MetadataCitation';
+  import NotFoundView from '@/components/Errors/NotFoundView';
+  import metaDataFactory from '@/components/metaDataFactory';
 
-  // import { LOAD_METADATAS_CONTENT } from '../../store/metadataMutationsConsts';
+  // import { LOAD_METADATAS_CONTENT } from '@/store/metadataMutationsConsts';
 
   // Might want to check https://css-tricks.com/use-cases-fixed-backgrounds-css/
   // for animations between the different parts of the Metadata
 
   // blured background?
   // https://paper-leaf.com/blog/2016/01/creating-blurred-background-using-only-css/
-
-  //TODO: Check #/metadata/2016gl071822 for the lost list of data and the background
 
   export default {
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {

@@ -55,8 +55,8 @@
 
 
 <script>
-import TagChipPlaceholder from './TagChip';
-import defaultTexture from '../../../assets/cards/forest/c_b_forest_texture_bark2.jpg';
+import TagChipPlaceholder from '@/components/Cards/TagChip';
+import defaultTexture from '@/assets/cards/forest/c_b_forest_texture_bark2.jpg';
 
 // checkout skeleton
 // https://github.com/ToxicJojo/SkeletonPlaceholder

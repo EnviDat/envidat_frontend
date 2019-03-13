@@ -52,7 +52,7 @@
 
 <script>
   import MMarkdownPreview from 'm-markdown-preview';
-  import BaseIconButton from '../../BaseElements/BaseIconButton';
+  import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
   export default {
     props: {

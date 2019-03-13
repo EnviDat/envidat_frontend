@@ -108,8 +108,8 @@
 
 
 <script>
-import TagChip from './TagChip';
-import BaseIconCountView from '../../BaseElements/BaseIconCountView';
+import TagChip from '@/components/Cards/TagChip';
+import BaseIconCountView from '@/components/BaseElements/BaseIconCountView';
 
 // checkout possible transition animation
 // https://codepen.io/balapa/pen/embYYB

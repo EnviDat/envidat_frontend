@@ -16,9 +16,9 @@ import {
   FILTER_METADATA,
   FILTER_METADATA_SUCCESS,
   FILTER_METADATA_ERROR,
-} from '../metadataMutationsConsts';
+} from '@/store/metadataMutationsConsts';
 
-const globalMethods = require('../../components/globalMethods');
+const globalMethods = require('@/components/globalMethods');
 
 /* eslint-disable no-unused-vars  */
 const ENVIDAT_PROXY = process.env.ENVIDAT_PROXY;

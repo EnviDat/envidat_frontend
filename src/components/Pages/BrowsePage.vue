@@ -68,8 +68,6 @@
                           :totalWidth="mapFilterWidth"
                           :expanded="showMapFilter"
                           v-on:pointClicked="catchPointClicked"
-                          v-on:pointHover="catchPointHovered"
-                          v-on:pointHoverLeave="catchPointHoverLeave"
                           v-on:clearButtonClicked="catchClearButtonClick"  />
 
       </v-flex>
@@ -83,25 +81,23 @@
 <script>
   import { mapGetters } from 'vuex';
   import { BROWSE_PATH } from '@/router/routeConsts';
-  import FilterBarView from '../Views/Filtering/FilterBarView';
-  import FilterMapView from '../Views/Filtering/FilterMapView';
-  import MetadataListView from '../Views/MetadataViews/MetadataListView';
+  import FilterBarView from '@/components/Filtering/FilterBarView';
+  import FilterMapView from '@/components/Filtering/FilterMapView';
+  import MetadataListView from '@/components/Views/MetadataListView';
   import {
     SEARCH_METADATA,
     CLEAR_SEARCH_METADATA,
     FILTER_METADATA,
     PIN_METADATA,
     CLEAR_PINNED_METADATA,
-  } from '../../store/metadataMutationsConsts';
+  } from '@/store/metadataMutationsConsts';
   import {
     SET_APP_BACKGROUND,
     SET_CURRENT_PAGE,
     SET_CONTROLS,
     SET_BROWSE_SCROLL_POSITION,
-  } from '../../store/mutationsConsts';
+  } from '@/store/mutationsConsts';
 
-
-  // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
   export default {
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
@@ -209,10 +205,6 @@
         // highlight entry
 
         this.$store.commit(`metadata/${PIN_METADATA}`, id);
-      },
-      catchPointHovered: function catchPointHovered(id) {
-      },
-      catchPointHoverLeave: function catchPointHoverLeave(id) {
       },
       catchClearButtonClick: function catchClearButtonClick() {
         this.$store.commit(`metadata/${CLEAR_PINNED_METADATA}`);

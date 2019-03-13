@@ -121,9 +121,9 @@
 
 
 <script>
-import defaultTexture from '../../../assets/cards/c_b_forest_texture_bark2_small.jpg';
-import BaseIconButton from '../../BaseElements/BaseIconButton';
-import BaseIconLabelView from '../../BaseElements/BaseIconLabelView';
+import defaultTexture from '@/assets/cards/c_b_forest_texture_bark2_small.jpg';
+import BaseIconButton from '@/components/BaseElements/BaseIconButton';
+import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 
 export default {
   props: {

@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import BaseRectangleButton from '../../BaseElements/BaseRectangleButton';
+import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 
 export default {
   props: {

@@ -56,13 +56,13 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import '../node_modules/skeleton-placeholder/dist/bone.min.css';
-  import { BULK_LOAD_METADATAS_CONTENT } from './store/metadataMutationsConsts';
+  import { BULK_LOAD_METADATAS_CONTENT } from '@/store/metadataMutationsConsts';
   import {
     ADD_CARD_IMAGES,
     ADD_ICON_IMAGE,
-  } from './store/mutationsConsts';
-  import TheNavBarView from './components/Views/TheNavBarView';
+  } from '@/store/mutationsConsts';
+  import TheNavBarView from '@/components/Views/TheNavbarView';
+  import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
 
   export default {
     created: function created() {

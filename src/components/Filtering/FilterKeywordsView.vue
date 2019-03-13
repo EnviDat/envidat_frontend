@@ -135,11 +135,11 @@
 </template>
 
 <script>
-import BaseIconLabelView from '../../BaseElements/BaseIconLabelView';
-import BaseIconButton from '../../BaseElements/BaseIconButton';
-import TagChip from '../Cards/TagChip';
-import TagChipPlaceholder from '../Cards/TagChipPlaceholder';
-import FilterViewButtons from './FilterViewButtons';
+import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
+import BaseIconButton from '@/components/BaseElements/BaseIconButton';
+import TagChip from '@/components/Cards/TagChip';
+import TagChipPlaceholder from '@/components/Cards/TagChipPlaceholder';
+import FilterViewButtons from '@/components/Filtering/FilterViewButtons';
 
 export default {
   props: {

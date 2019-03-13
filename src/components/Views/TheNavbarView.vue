@@ -73,8 +73,8 @@
 <script>
 import { BROWSE_PATH, ABOUT_PATH } from '@/router/routeConsts';
 import { SET_DETAIL_PAGE_BACK_URL, SET_ABOUT_PAGE_BACK_URL } from '@/store/metadataMutationsConsts';
-import Logo from '../../assets/logo/EnviDat_logo_32.png';
-import BaseRectangleButton from '../BaseElements/BaseRectangleButton';
+import Logo from '@/assets/logo/EnviDat_logo_32.png';
+import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 
 export default {
   props: {

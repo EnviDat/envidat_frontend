@@ -98,20 +98,20 @@
 import { mapGetters } from 'vuex';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import metaDataFactory from '../../metaDataFactory';
-import BaseRectangleButton from '../../BaseElements/BaseRectangleButton';
-import BaseIconButton from '../../BaseElements/BaseIconButton';
+import metaDataFactory from '@/components/metaDataFactory';
+import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
+import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 // HACK start
 /* eslint-disable import/first */
 // Solution to loading in the imgs correctly via webpack
 // see more https://github.com/PaulLeCam/react-leaflet/issues/255
 // stupid hack so that leaflet's images work after going through webpack
-import marker from '../../../assets/map/marker-icon.png';
-import marker2x from '../../../assets/map/marker-icon-2x.png';
-import selectedMarker from '../../../assets/map/selected-marker-icon.png';
-import selectedMarker2x from '../../../assets/map/selected-marker-icon-2x.png';
-import markerShadow from '../../../assets/map/marker-shadow.png';
+import marker from '@/assets/map/marker-icon.png';
+import marker2x from '@/assets/map/marker-icon-2x.png';
+import selectedMarker from '@/assets/map/selected-marker-icon.png';
+import selectedMarker2x from '@/assets/map/selected-marker-icon-2x.png';
+import markerShadow from '@/assets/map/marker-shadow.png';
 // HACK end
 
 

@@ -94,9 +94,9 @@
 </template>
 
 <script>
-import TagChip from '../Cards/TagChip';
-import BaseIconLabelView from '../../BaseElements/BaseIconLabelView';
-import FilterViewButtons from './FilterViewButtons';
+import TagChip from '@/components/Cards/TagChip';
+import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
+import FilterViewButtons from '@/components/Filtering/FilterViewButtons';
 
 export default {
   props: {

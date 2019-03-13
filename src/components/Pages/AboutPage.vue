@@ -67,24 +67,24 @@
     SET_APP_BACKGROUND,
     SET_CURRENT_PAGE,
   } from '@/store/mutationsConsts';
-  import BaseIconButton from '../BaseElements/BaseIconButton';
+  import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
-  import ImgAndTextLayout from '../Layouts/ImgAndTextLayout';
+  import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
 
-  import team from '../../assets/about/team.jpg';
-  import teamSmall from '../../assets/about/team_small.jpg';
-  import mission from '../../assets/about/mission.jpg';
-  import missionSmall from '../../assets/about/mission_small.jpg';
-  import handsSmall from '../../assets/about/hands_small.jpg';
-  import orga from '../../assets/about/EnviDat_organigram.png';
-  import orgaSmall from '../../assets/about/EnviDat_organigram_small.png';
+  import team from '@/assets/about/team.jpg';
+  import teamSmall from '@/assets/about/team_small.jpg';
+  import mission from '@/assets/about/mission.jpg';
+  import missionSmall from '@/assets/about/mission_small.jpg';
+  import handsSmall from '@/assets/about/hands_small.jpg';
+  import orga from '@/assets/about/EnviDat_organigram.png';
+  import orgaSmall from '@/assets/about/EnviDat_organigram_small.png';
 
-  import conceptSmall from '../../assets/about/concept_small.jpg';
-  import communitySmall from '../../assets/about/community_small.jpg';
-  import wslLogo from '../../assets/about/wslLogo.jpg';
-  import wslLogoSmall from '../../assets/about/wslLogo_small.jpg';
+  import conceptSmall from '@/assets/about/concept_small.jpg';
+  import communitySmall from '@/assets/about/community_small.jpg';
+  import wslLogo from '@/assets/about/wslLogo.jpg';
+  import wslLogoSmall from '@/assets/about/wslLogo_small.jpg';
 
-  import ExpandableCard from '../Views/Cards/ExpandableCard';
+  import ExpandableCard from '@/components/Cards/ExpandableCard';
 
   export default {
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
@@ -161,7 +161,7 @@
           },
           {
             title: 'Team',
-            text: '<img src="' + this.orga + '" style="width: 100%; height: 100%;" />',
+            text: `<img src="${this.orga} style="width: 100%; height: 100%;" />`,
             img: this.teamSmall,
             widthClass: 'xs12 sm12 md8',
           },
