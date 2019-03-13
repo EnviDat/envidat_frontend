@@ -61,8 +61,14 @@
 <script>
   export default {
     props: {
+      genericProps: Object,
       details: Array,
       showPlaceholder: Boolean,
+    },
+    updated: function updated() {
+      if (this.genericProps) {
+        Object.assign(this, 'props', this.genericProps);
+      }
     },
     data: () => ({
       maxSingleTextLengthLg: 80,

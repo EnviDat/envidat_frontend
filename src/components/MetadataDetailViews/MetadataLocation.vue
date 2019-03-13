@@ -54,6 +54,7 @@
 
   export default {
     props: {
+      genericProps: Object,
       title: String,
       isPolygon: Boolean,
       isPoint: Boolean,
@@ -70,6 +71,9 @@
       }
     },
     updated: function updated() {
+      if (this.genericProps) {
+        Object.assign(this, 'props', this.genericProps);
+      }
     },
     computed: {
       isEmpty: function isEmpty() {

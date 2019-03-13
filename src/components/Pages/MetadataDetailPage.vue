@@ -3,10 +3,94 @@
               tag="article"
               pa-0
   >
+
+  <two-column-layout :firstColumn="$vuetify.breakpoint.lgAndUp ? firstColumn : singleColumn"
+                      :secondColumn="$vuetify.breakpoint.lgAndUp ? secondColumn : []"
+                      />
+
               <!-- v-bind="{ [`pa-0`]: this.$vuetify.breakpoint.smAndDown,
                         [`pa-2`]: this.$vuetify.breakpoint.mdAndUp }" -->
 
-    <div v-if="currentMetadataContent">
+    <!-- <div v-if="currentMetadataContent">
+      
+      <v-layout row wrap>
+
+        <v-flex xs12
+                md8 offset-md2
+                lg10 offset-lg1
+                elevation-5
+                style="z-index: 1;">
+
+          <metadata-header v-bind="header"
+                            v-on:clickedTag="catchTagClicked"
+                            v-on:clickedBack="catchBackClicked"
+                            v-on:clickedAuthor="catchAuthorClicked"
+                            :showPlaceholder="showPlaceholder"
+                            :doiIcon="doiIcon"
+                            :contactIcon="contactIcon"
+                            :mailIcon="mailIcon"
+                            :licenseIcon="licenseIcon"
+                            />
+
+        </v-flex>
+
+        <v-flex xs12
+                md8 offset-md2
+                lg10 offset-lg1
+                px-3
+                mb-2 
+                style="z-index: 0;">
+
+          <v-layout row wrap>
+
+            <v-flex xs12 lg6 order-lg0
+                    mb-2 >
+              <metadata-body v-bind="body" :isOnTop="true" 
+                              :showPlaceholder="showPlaceholder" />
+            </v-flex>
+
+            <v-flex xs12 lg6 order-lg2
+                    mb-2>
+              <metadata-citation v-bind="citation"
+                                  :showPlaceholder="showPlaceholder" />
+            </v-flex>
+
+            <v-flex xs12 lg6 order-lg1
+                    mb-2>
+              <metadata-resources v-bind="resources"
+                                  :isOnTop="true"
+                                  :twoColumnLayout="twoColumnLayout"
+                                  :showPlaceholder="showPlaceholder"
+                                  :doiIcon="doiIcon"
+                                  :downloadIcon="downloadIcon"
+                                  :linkIcon="linkIcon"
+                                  :fileSizeIcon="fileSizeIcon"
+                                  :dateCreatedIcon="dateCreatedIcon"
+                                  :lastModifiedIcon="lastModifiedIcon"
+                                  />
+
+            </v-flex>
+
+            <v-flex xs12 lg6 order-lg4
+                    mb-2>
+              <metadata-location v-bind="location" />
+            </v-flex>
+
+            <v-flex xs12 lg6  order-lg3
+                    mb-2 >
+              <metadata-details :details="details"
+                              :showPlaceholder="showPlaceholder" />
+            </v-flex>
+
+          </v-layout>
+        </v-flex>
+
+
+      </v-layout>
+
+    </div> -->
+
+    <!-- <div v-if="currentMetadataContent">
       
       <v-layout row wrap v-if="twoColumnLayout">
 
@@ -161,14 +245,14 @@
         </v-flex>
 
       </v-layout>
-    </div>
+    </div> 
 
     <div v-else> 
 
         <not-found-view :backPath="notFoundBackPath">
         </not-found-view>
 
-    </div>
+    </div>-->
   </v-container>
 </template>
 
@@ -194,6 +278,7 @@
   import MetadataCitation from '@/components/MetadataDetailViews/MetadataCitation';
   import NotFoundView from '@/components/Errors/NotFoundView';
   import metaDataFactory from '@/components/metaDataFactory';
+  import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
 
   // import { LOAD_METADATAS_CONTENT } from '@/store/metadataMutationsConsts';
 
@@ -368,17 +453,57 @@
        */
       createMetadataContent: function createMetadataContent() {
         let currentContent = this.currentMetadataContent;
+        const components = this.$options.components;
 
         currentContent = this.mixinMethods_enhanceMetadataEntry(currentContent, this.cardBGImages);
 
         if (currentContent && currentContent.title !== undefined) {
           // console.log("create content " + currentContent.spatial + " " + this.header);
           this.header = metaDataFactory.createHeader(currentContent, this.$vuetify.breakpoint);
+          this.$set(components.MetadataHeader, 'genericProps', this.header);
+
           this.body = metaDataFactory.createBody(currentContent);
+          this.$set(components.MetadataBody, 'genericProps', this.body);
+
           this.citation = metaDataFactory.createCitation(currentContent);
+          this.$set(components.MetadataCitation, 'genericProps', this.citation);
+
           this.resources = metaDataFactory.createResources(currentContent);
+          this.$set(components.MetadataResources, 'genericProps', this.resources);
+
           this.location = metaDataFactory.createLocation(currentContent);
+          this.$set(components.MetadataLocation, 'genericProps', this.location);
+
           this.details = metaDataFactory.createDetails(currentContent);
+          this.$set(components.MetadataDetails, 'genericProps', this.details);
+
+          const fstCol = [
+            components.MetadataBody,
+            components.MetadataCitation,
+            components.MetadataLocation,
+          ];
+          // const sndCol = [components.MetadataResources, components.MetadataDetails];
+
+          const snglCol = [
+            components.MetadataBody,
+            components.MetadataCitation,
+            components.MetadataResources,
+            components.MetadataLocation,
+            components.MetadataDetails,
+          ];
+
+          this.firstColumn = fstCol;
+          // this.secondColumn = sndCol;
+          this.singleColumn = snglCol;
+
+          // console.log("before set fstCol ");
+          // this.$set(this, 'firstColumn', fstCol);
+          // console.log("before set sndCol ");
+          // this.$set(this, 'secondColumn', sndCol);
+          // console.log("before set snglCol ");
+          // this.$set(this, 'singleColumn', snglCol);
+
+          this.$forceUpdate();
         }
       },
       /**
@@ -488,7 +613,15 @@
       PageBGImage: './app_b_browsepage.jpg',
       header: null,
       body: null,
-      citation: null,
+      citation: {
+        id: String,
+        citationText: String,
+        citationXmlLink: String,
+        ciationIsoXmlLink: String,
+        ciationGCMDXmlLink: String,
+        fixedHeight: Boolean,
+        showPlaceholder: Boolean,
+      },
       resources: null,
       location: null,
       details: null,
@@ -503,6 +636,12 @@
       contactIcon: null,
       mailIcon: null,
       licenseIcon: null,
+      // firstColumn: ['B', 'C', 'L'],
+      // secondColumn: ['R', 'D'],
+      // singleColumn: ['B', 'C', 'R', 'L', 'D'],
+      firstColumn: [],
+      secondColumn: [MetadataResources, MetadataDetails],
+      singleColumn: [MetadataBody, MetadataCitation, MetadataResources, MetadataLocation, MetadataDetails],
     }),
     components: {
       MetadataHeader,
@@ -512,6 +651,7 @@
       MetadataDetails,
       MetadataCitation,
       NotFoundView,
+      TwoColumnLayout,
     },
   };
 </script>

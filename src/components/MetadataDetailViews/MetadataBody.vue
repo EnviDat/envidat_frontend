@@ -40,12 +40,7 @@
 
   export default {
     props: {
-      id: String,
-      title: String,
-      doi: String,
-      description: String,
-      isOnTop: Boolean,
-      showPlaceholder: Boolean,
+      genericProps: Object,
     },
     mounted: function mounted() {
     },
@@ -65,7 +60,18 @@
         return this.description && this.description.length > this.maxTextLength;
       },
     },
+    updated: function updated() {
+      if (this.genericProps) {
+        Object.assign(this, 'props', this.genericProps);
+      }
+    },
     data: () => ({
+      id: null,
+      title: null,
+      doi: '',
+      description: '',
+      isOnTop: false,
+      showPlaceholder: false,
       showFullDescription: false,
       maxTextLength: 1000,
       emptyText: 'No description found for this dataset',

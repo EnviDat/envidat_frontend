@@ -55,6 +55,7 @@
 
   export default {
     props: {
+      genericProps: Object,
       metadataId: String,
       metadataTitle: String,
       doi: String,
@@ -70,6 +71,9 @@
       lastModifiedIcon: String,
     },
     updated: function updated() {
+      if (this.genericProps) {
+        Object.assign(this, 'props', this.genericProps);
+      }
     },
     data: () => ({
       showAllResources: false,
