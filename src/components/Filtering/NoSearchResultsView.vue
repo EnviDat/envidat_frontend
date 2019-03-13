@@ -38,7 +38,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import CategoryCard from '@/components/Cards/CategoryCard';
+  import BaseClickCard from '@/components/BaseElements/BaseClickCard';
 
   export default {
     props: {
@@ -56,7 +56,7 @@
       },
     },
     components: {
-      CategoryCard,
+      BaseClickCard,
     },
   };
 </script>
