@@ -79,8 +79,10 @@
 
         </v-flex>
 
-        <v-flex xs12 v-if="!loading && filteredContentSize <= 0"
-        key="noSearchResultsView">
+        <v-flex xs12 mx-2 
+                v-if="!loading && filteredContentSize <= 0"
+                key="noSearchResultsView"
+                >
             <no-search-results-view v-on:clicked="catchCategoryClicked"
                                     :noResultText="noResultText"
                                     :suggestionText="suggestionText" />  
@@ -112,8 +114,8 @@ export default {
       placeHolderAmount: Number,
     },
     data: () => ({
-      noResultText: 'Nothing found for these search criterias',
-      suggestionText: 'Try one of these categories',
+      noResultText: 'Nothing found for these search criterias.',
+      suggestionText: 'Change the criterias or try one of these categories',
       fileIconString: null,
       lockedIconString: null,
       unlockedIconString: null,

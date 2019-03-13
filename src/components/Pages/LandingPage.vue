@@ -40,10 +40,10 @@
             <v-flex my-1 xs6
               v-for="card in categorycards" :key="card.title">
     
-              <category-card :title="card.title"
-                              :type="card.type"
-                              v-on:clicked="catchCategoryClicked">
-              </category-card>
+              <base-click-card :title="card.title"
+                            :img="card.img"
+                            v-on:clicked="catchCategoryClicked"
+                            />
     
             </v-flex>
 
@@ -59,13 +59,14 @@
 <script>
   import { mapGetters } from 'vuex';
   import { BROWSE_PATH } from '@/router/routeConsts';
-  import CategoryCard from '@/components/Cards/CategoryCard';
+  import BaseClickCard from '@/components/BaseElements/BaseClickCard';
   import TitleView from '@/components/Views/TitleView';
   import SearchBarView from '@/components/Filtering/SearchBarView';
   import {
     SET_APP_BACKGROUND,
     SET_CURRENT_PAGE,
   } from '@/store/mutationsConsts';
+
 
   // Login & Register form and animation
   // https://codepen.io/yusufbkr/pen/RPBQqg
@@ -154,7 +155,7 @@
     components: {
       TitleView,
       SearchBarView,
-      CategoryCard,
+      BaseClickCard,
     },
   };
 </script>

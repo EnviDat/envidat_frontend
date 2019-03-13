@@ -9,7 +9,9 @@
 
       <v-flex xs10 sm9 lg10 py-0 pl-2 >
 
-        <v-tooltip bottom>
+        <v-tooltip bottom
+                  :disabled="$vuetify.breakpoint.xsOnly"
+                  >
           <div slot="activator" >
 
             <v-text-field
@@ -39,7 +41,9 @@
       <v-flex xs2 sm3 lg2 pa-0
               style="text-align: center;">
 
-        <v-tooltip bottom >
+        <v-tooltip bottom
+                    :disabled="$vuetify.breakpoint.xsOnly"
+                    >
           
           <tag-chip slot="activator"
                   :style="$vuetify.breakpoint.xsOnly ? 'font-size: 0.65rem !important;' : 'font-size: 0.8rem !important;'"

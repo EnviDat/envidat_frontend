@@ -1,6 +1,7 @@
 <template>
   <v-layout column>
-    <v-flex xs12 py-5 style="font-weight: 700;">
+    <v-flex xs12 py-4
+            :style="`font-weight: 700; background-color: ${$vuetify.theme.errorHighlight}`" >
       <h2>{{ noResultText }}</h2>
     </v-flex>
 
@@ -9,9 +10,8 @@
     </v-flex>
 
     <v-flex xs12
-            mx-1
             pt-2
-    >
+            >
       <v-container fluid grid-list-md pa-0>
         <v-layout row wrap>
 
@@ -21,10 +21,10 @@
                       }"                  
               v-for="card in categorycards" :key="card.title">
 
-            <category-card :title="card.title"
-                            :type="card.type"
-                            v-on:clicked="catchCategoryClicked">
-            </category-card>
+            <base-click-card :title="card.title"
+                            :img="card.img"
+                            v-on:clicked="catchCategoryClicked"
+                            />
 
           </v-flex>
 
@@ -38,7 +38,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import CategoryCard from '@/components/Cards/CategoryCard';
+  import BaseClickCard from '@/components/BaseElements/BaseClickCard';
 
   export default {
     props: {
@@ -56,7 +56,7 @@
       },
     },
     components: {
-      CategoryCard,
+      BaseClickCard,
     },
   };
 </script>

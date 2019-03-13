@@ -9,7 +9,7 @@
         <v-flex xs5 py-0>
           <v-card-media class="imagezoom"
                         :height=" $vuetify.breakpoint.smAndDown ? '65px' : '100px' ">
-            <img :src="imageSrc" />                        
+            <img :src="img" />                        
           </v-card-media>
         </v-flex>
 
@@ -29,13 +29,6 @@
 
 
 <script>
-  import defaultImg from '@/assets/cards/default.png';
-  import snowImg from '@/assets/cards/c_b_snow_icy2_small.jpg';
-  import woodImg from '@/assets/cards/c_b_forest_topdown3_small.jpg';
-  import landImg from '@/assets/cards/c_b_landscape_view_small.jpg';
-  import hazardImg from '@/assets/cards/c_b_hazard_cloud_small.jpg';
-  import diversityImg from '@/assets/cards/b_c_diversity_meadow_small.jpg';
-  import dataCreatorImg from '@/assets/cards/data_creator_small.jpg';
 
   // un blurry zooming
   // https://stackoverflow.com/questions/36143337/how-to-prevent-blur-from-css-transform
@@ -43,51 +36,13 @@
   export default {
     props: {
       title: String,
-      type: String,
+      img: String,
     },
     methods: {
       clicked: function clicked() {
         this.$emit('clicked', this.title.toLowerCase());
       },
     },
-    computed: {
-      imageSrc: function imageSrc() {
-        if (this.type === 'snow') {
-          return snowImg;
-        }
-
-        if (this.type === 'forest') {
-          return woodImg;
-        }
-
-        if (this.type === 'landscape') {
-          return landImg;
-        }
-
-        if (this.type === 'hazard') {
-          return hazardImg;
-        }
-
-        if (this.type === 'diversity') {
-          return diversityImg;
-        }
-
-        if (this.type === 'login') {
-          return dataCreatorImg;
-        }
-
-        return defaultImg;
-      },
-    },
-    data: () => ({
-      defaultImg,
-      snowImg,
-      woodImg,
-      landImg,
-      hazardImg,
-      diversityImg,
-      dataCreatorImg,
-    }),
   };
 </script>
 
