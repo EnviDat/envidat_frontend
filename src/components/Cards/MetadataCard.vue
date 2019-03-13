@@ -25,15 +25,20 @@
                     :class="titleClass"
                 >
                   {{ truncatedTitle }}</div>
+
               </v-flex>
 
               <v-flex xs12 v-if="maxTitleLengthReached">
-                <v-tooltip bottom>
+                <v-tooltip bottom
+                            :disabled="$vuetify.breakpoint.xsOnly"
+                            >
                   <div slot="activator" class="headline mb-0"
                       :class="titleClass"
                   >
                     {{ truncatedTitle }}</div>
+
                   <span>{{ title }}</span>
+
                 </v-tooltip>
               </v-flex>
               
@@ -79,7 +84,11 @@
       
       <v-spacer></v-spacer>
 
-      <v-tooltip bottom v-if="isRestricted">
+      <v-tooltip v-if="isRestricted"
+                bottom 
+                :disabled="$vuetify.breakpoint.xsOnly"
+                >
+                
         <v-icon slot="activator" color="black" >lock</v-icon>
           <div v-if="userHasAccess"
                 class="iconCentering">
