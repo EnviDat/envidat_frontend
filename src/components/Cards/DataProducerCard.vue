@@ -53,7 +53,7 @@
 
 
 <script>
-  import dataCreatorImg from '../../../assets/cards/data_creator.jpg';
+  import dataCreatorImg from '@/assets/cards/data_creator.jpg';
 
   export default {
     props: {

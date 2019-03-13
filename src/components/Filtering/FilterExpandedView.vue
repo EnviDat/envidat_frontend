@@ -8,15 +8,16 @@
 
           <v-flex xs1 py-2 class="metadataInfoIcon" >
             
-            <icon-label-view :icon="getIcon('tag')" 
+            <base-icon-label-view :icon="mixinMethods_getIcon('tag')" 
                               iconTooltip="Filtered Tags" 
                               />
           </v-flex>
 
-          <v-flex xs9 >
+          <v-flex xs9
+                  v-if="selectedTags"
+                  >
 
-            <tag-chip v-if="selectedTags"
-                      v-for="tag in selectedTags" :key="tag.name"
+            <tag-chip v-for="tag in selectedTags" :key="tag.name"
                       :name="tag.name"
                       :selectable="false"
                       :highlighted="true"
@@ -45,22 +46,23 @@
 
           <v-flex xs1 py-2 class="metadataInfoIcon" >
 
-            <icon-label-view :icon="getIcon('tags')" 
+            <base-icon-label-view :icon="mixinMethods_getIcon('tags')" 
                               iconTooltip="All Tags" 
                               />
           </v-flex>
 
-          <v-flex xs11>
+          <v-flex xs11
+                  v-if="unselectedTags" >
 
-            <tag-chip v-if="unselectedTags"
-                      v-for="tag in unselectedTags" :key="tag.name" 
+            <tag-chip v-for="tag in unselectedTags" :key="tag.name" 
                       :name="tag.name"
                       :selectable="false"
                       :highlighted="false"
                       :closeable="false"
                       v-on:clicked="catchTagClicked($event, tag.name)"
                       v-on:clickedClose="catchTagCloseClicked($event, tag.name)"
-                      class="filterTag" />
+                      class="filterTag"
+                      />
 
           </v-flex>
         </v-layout>
@@ -92,9 +94,9 @@
 </template>
 
 <script>
-import TagChip from '../Cards/TagChip';
-import IconLabelView from '../IconLabelView';
-import FilterViewButtons from './FilterViewButtons';
+import TagChip from '@/components/Cards/TagChip';
+import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
+import FilterViewButtons from '@/components/Filtering/FilterViewButtons';
 
 export default {
   props: {
@@ -171,7 +173,7 @@ export default {
   },
   components: {
     TagChip,
-    IconLabelView,
+    BaseIconLabelView,
     FilterViewButtons,
   },
 };

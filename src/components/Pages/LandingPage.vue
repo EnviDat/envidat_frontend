@@ -59,13 +59,13 @@
 <script>
   import { mapGetters } from 'vuex';
   import { BROWSE_PATH } from '@/router/routeConsts';
-  import CategoryCard from '../Views/Cards/CategoryCard';
-  import TitleView from '../Views/TitleView';
-  import SearchBarView from '../Views/SearchBarView';
+  import CategoryCard from '@/components/Cards/CategoryCard';
+  import TitleView from '@/components/Views/TitleView';
+  import SearchBarView from '@/components/Filtering/SearchBarView';
   import {
     SET_APP_BACKGROUND,
     SET_CURRENT_PAGE,
-  } from '../../store/mutationsConsts';
+  } from '@/store/mutationsConsts';
 
   // Login & Register form and animation
   // https://codepen.io/yusufbkr/pen/RPBQqg

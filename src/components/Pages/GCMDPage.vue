@@ -22,7 +22,7 @@
   import {
     SET_APP_BACKGROUND,
     SET_CURRENT_PAGE,
-  } from '../../store/mutationsConsts';
+  } from '@/store/mutationsConsts';
 
   export default {
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {

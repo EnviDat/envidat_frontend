@@ -56,11 +56,10 @@
     <v-card-actions class="ma-0 pa-2"
                     style="position: absolute; bottom: 0; right: 0;">
 
-      <rectangle-button 
-                    :buttonText="buttonText"
-                    :isSmall="true"
-                    v-on:clicked="buttonCallback"
-      />
+      <base-rectangle-button :buttonText="buttonText"
+                            :isSmall="true"
+                            v-on:clicked="buttonCallback"
+                            />
 
     </v-card-actions>
   </v-card>
@@ -69,8 +68,8 @@
 
 
 <script>
-import fingertipsImg from '../../../assets/cards/fingertips_small.jpg';
-import RectangleButton from '../../Elements/RectangleButton';
+import fingertipsImg from '@/assets/cards/fingertips_small.jpg';
+import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 
 export default {
   props: {
@@ -80,16 +79,13 @@ export default {
     buttonCallback: Function,
   },
   components: {
-    RectangleButton,
+    BaseRectangleButton,
   },
   created: function created() {
   },
   methods: {
   },
   computed: {
-    // responsiveLayout: function responsiveLayout() {
-    //   return 
-    // },
   },
   data: () => ({
     fingertipsImg,

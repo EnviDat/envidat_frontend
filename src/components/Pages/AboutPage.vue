@@ -17,7 +17,7 @@
                         title="About EnviDat"
                         >
 
-          <icon-button style="position: absolute; top: 0px; right: 0px; z-index: 10;"
+          <base-icon-button style="position: absolute; top: 0px; right: 0px; z-index: 10;"
                                   materialIconName="close"
                                   :outlined="true"
                                   color="white"
@@ -25,7 +25,6 @@
                                   toolTipText ="Close About Page"
                                   :toolTipBottom="true"
                                   v-on:clicked="catchBackClicked" />
-          
 
           </img-and-text-layout>
       </v-flex>
@@ -57,39 +56,47 @@
 </template>
 
 <script>
+  /**
+   * The about page of EnviDat. It consists of:
+   * - TitleImage and Title (ImgAndTextLayout)
+   * - Different Card with infomation about some about topics (ExpandableCard)
+   */
   import { mapGetters } from 'vuex';
   import { BROWSE_PATH } from '@/router/routeConsts';
   import {
     SET_APP_BACKGROUND,
     SET_CURRENT_PAGE,
   } from '@/store/mutationsConsts';
-  import IconButton from '../Elements/IconButton';
+  import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
-  import ImgAndTextLayout from '../Layouts/ImgAndTextLayout';
+  import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
 
-  import team from '../../assets/about/team.jpg';
-  import teamSmall from '../../assets/about/team_small.jpg';
-  import mission from '../../assets/about/mission.jpg';
-  import missionSmall from '../../assets/about/mission_small.jpg';
-  import handsSmall from '../../assets/about/hands_small.jpg';
-  import orga from '../../assets/about/EnviDat_organigram.png';
-  import orgaSmall from '../../assets/about/EnviDat_organigram_small.png';
+  import team from '@/assets/about/team.jpg';
+  import teamSmall from '@/assets/about/team_small.jpg';
+  import mission from '@/assets/about/mission.jpg';
+  import missionSmall from '@/assets/about/mission_small.jpg';
+  import handsSmall from '@/assets/about/hands_small.jpg';
+  import orga from '@/assets/about/EnviDat_organigram.png';
+  import orgaSmall from '@/assets/about/EnviDat_organigram_small.png';
 
-  import conceptSmall from '../../assets/about/concept_small.jpg';
-  import communitySmall from '../../assets/about/community_small.jpg';
-  import wslLogo from '../../assets/about/wslLogo.jpg';
-  import wslLogoSmall from '../../assets/about/wslLogo_small.jpg';
+  import conceptSmall from '@/assets/about/concept_small.jpg';
+  import communitySmall from '@/assets/about/community_small.jpg';
+  import wslLogo from '@/assets/about/wslLogo.jpg';
+  import wslLogoSmall from '@/assets/about/wslLogo_small.jpg';
 
-  import ExpandableCard from '../Views/Cards/ExpandableCard';
+  import ExpandableCard from '@/components/Cards/ExpandableCard';
 
   export default {
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
       next((vm) => {
-        // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
         vm.$store.commit(SET_CURRENT_PAGE, 'aboutPage');
         vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
     },
+    /**
+     * @description reset the scrolling to the top,
+     * because of the scrolling is set from the browsePage or metaDetailPage
+     */
     mounted: function mounted() {
       window.scrollTo(0, 0);
     },
@@ -97,6 +104,9 @@
       ...mapGetters({
         aboutPageBackRoute: 'metadata/aboutPageBackRoute',
       }),
+      /**
+       * @returns teamImage based on the screen size
+       */
       teamImg: function teamImg() {
         if (this.$vuetify.breakpoint.mdAndUp) {
           return team;
@@ -104,6 +114,9 @@
 
         return teamSmall;
       },
+      /**
+       * @returns missionImage based on the screen size
+       */
       missionImg: function teamImg() {
         if (this.$vuetify.breakpoint.mdAndUp) {
           return mission;
@@ -113,6 +126,13 @@
       },
     },
     methods: {
+      /**
+       * @returns the infos of the about page topics. consiting of
+       * - title
+       * - text
+       * - img
+       * - widthClass
+       */
       AboutCardInfos: function AboutCardInfos() {
         return [
           {
@@ -141,7 +161,7 @@
           },
           {
             title: 'Team',
-            text: '<img src="' + this.orga + '" style="width: 100%; height: 100%;" />',
+            text: `<img src="${this.orga} style="width: 100%; height: 100%;" />`,
             img: this.teamSmall,
             widthClass: 'xs12 sm12 md8',
           },
@@ -152,6 +172,9 @@
           // },
         ];
       },
+      /**
+       * @description changes the url to page the user was before. Fallback: BrowsePage
+       */
       catchBackClicked: function catchBackClicked() {
         const backRoute = this.aboutPageBackRoute;
 
@@ -186,7 +209,7 @@
     components: {
       ImgAndTextLayout,
       ExpandableCard,
-      IconButton,
+      BaseIconButton,
     },
   };
 </script>

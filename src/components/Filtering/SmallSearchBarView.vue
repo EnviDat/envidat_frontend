@@ -65,7 +65,7 @@
 </template>
 
 <script>
-  import TagChip from '../Cards/TagChip';
+  import TagChip from '@/components/Cards/TagChip';
 
   export default {
     props: {

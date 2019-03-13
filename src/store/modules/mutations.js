@@ -23,7 +23,7 @@ import {
   CLEAR_PINNED_METADATA,
   SET_DETAIL_PAGE_BACK_URL,
   SET_ABOUT_PAGE_BACK_URL,
-} from '../metadataMutationsConsts';
+} from '@/store/metadataMutationsConsts';
 
 const conversion = require('./conversion');
 

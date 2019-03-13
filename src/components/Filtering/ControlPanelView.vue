@@ -44,15 +44,14 @@
 </template>
 
 <script>
-import IconLabelView from '../IconLabelView';
 
 export default {
   props: {
     compactLayout: Boolean,
   },
   beforeMount: function beforeMount() {
-    this.listViewIcon = this.getIcon('listView');
-    this.mapIcon = this.getIcon('map');
+    this.listViewIcon = this.mixinMethods_getIcon('listView');
+    this.mapIcon = this.mixinMethods_getIcon('map');
   },
   mounted: function mounted() {
     this.controlsActive = this.$store.getters.controls;
@@ -81,7 +80,6 @@ export default {
     },
   },
   components: {
-    IconLabelView,
   },
 };
 </script>

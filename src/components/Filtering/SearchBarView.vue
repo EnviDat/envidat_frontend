@@ -24,11 +24,10 @@
                     class="ma-0 pa-2"
                     style="position: absolute; bottom: 0; right: 0;">
 
-      <rectangle-button 
-                    :buttonText="buttonText"
-                    :isSmall="true"
-                    v-on:clicked="clicked"
-      />
+      <base-rectangle-button :buttonText="buttonText"
+                              :isSmall="true"
+                              v-on:clicked="clicked"
+                              />
 
       <!-- <v-btn  color="primary"
               small
@@ -39,7 +38,7 @@
 </template>
 
 <script>
-import RectangleButton from '../Elements/RectangleButton';
+import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 
 export default {
   props: {
@@ -61,7 +60,7 @@ export default {
     }
   },
   components: {
-    RectangleButton,
+    BaseRectangleButton,
   },
 };
 </script>

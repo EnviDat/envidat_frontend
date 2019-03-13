@@ -51,35 +51,35 @@
           >
             <v-layout column>
               <v-flex px-0 v-if="doi">
-                <icon-label-view :text="doi"
-                                  :icon="doiIcon"
-                                  iconTooltip="Data Object Identifier" 
-                                  :alignLeft="twoColumnLayout"/>
+                <base-icon-label-view :text="doi"
+                                      :icon="doiIcon"
+                                      iconTooltip="Data Object Identifier" 
+                                      :alignLeft="twoColumnLayout"/>
               </v-flex>
               <v-flex px-0 v-if="format">
-                <icon-label-view :label="fileFormatLabel"
-                                  :text="format"
-                                  :icon="fileExtensionIcon"
-                                  iconTooltip="Format of the file"
-                                  :alignLeft="twoColumnLayout" />
+                <base-icon-label-view :label="fileFormatLabel"
+                                      :text="format"
+                                      :icon="fileExtensionIcon"
+                                      iconTooltip="Format of the file"
+                                      :alignLeft="twoColumnLayout" />
               </v-flex>
               <v-flex px-0 v-if="size">
-                <icon-label-view :text="formatedBytes"
-                                  :icon="fileSizeIcon"
-                                  iconTooltip="Filesize"
-                                  :alignLeft="twoColumnLayout" />
+                <base-icon-label-view :text="formatedBytes"
+                                      :icon="fileSizeIcon"
+                                      iconTooltip="Filesize"
+                                      :alignLeft="twoColumnLayout" />
               </v-flex>
               <v-flex px-0 v-if="created">
-                <icon-label-view :text="formatedCreated"
-                                  :icon="dateCreatedIcon" 
-                                  iconTooltip="Date of file creation" 
-                                  :alignLeft="twoColumnLayout"/>
+                <base-icon-label-view :text="formatedCreated"
+                                      :icon="dateCreatedIcon" 
+                                      iconTooltip="Date of file creation" 
+                                      :alignLeft="twoColumnLayout"/>
               </v-flex>
               <v-flex px-0 v-if="lastModified">
-                <icon-label-view :text="formatedLastModified"
-                                  :icon="lastModifiedIcon"
-                                  iconTooltip="Date of last modification" 
-                                  :alignLeft="twoColumnLayout"/>
+                <base-icon-label-view :text="formatedLastModified"
+                                      :icon="lastModifiedIcon"
+                                      iconTooltip="Date of last modification" 
+                                      :alignLeft="twoColumnLayout"/>
               </v-flex>
             </v-layout>
           </v-flex>
@@ -94,22 +94,24 @@
       <v-spacer></v-spacer>
 
 
-      <icon-button v-if="maxDescriptionLengthReached"
-                    class="mr-2"
-                    materialIconName="expand_more"
-                    iconColor="accent"
-                    color="transparent"
-                    :isToggled="showFullDescription"
-                    :rotateOnClick="true"
-                    :toolTipText="showFullDescription ? 'Hide full description' : 'Show full description'"
-                    v-on:clicked="showFullDescription = !showFullDescription" />
+      <base-icon-button v-if="maxDescriptionLengthReached"
+                        class="mr-2"
+                        materialIconName="expand_more"
+                        iconColor="accent"
+                        color="transparent"
+                        :isToggled="showFullDescription"
+                        :rotateOnClick="true"
+                        :toolTipText="showFullDescription ? 'Hide full description' : 'Show full description'"
+                        v-on:clicked="showFullDescription = !showFullDescription"
+                        />
 
 
-      <icon-button :customIcon="isFile ? downloadIcon : linkIcon"
-                  color="accent"
-                  :isElevated="true"
-                  :toolTipText="isFile ? 'Download file' : 'Open link'"
-                  :url="url" />
+      <base-icon-button :customIcon="isFile ? downloadIcon : linkIcon"
+                        color="accent"
+                        :isElevated="true"
+                        :toolTipText="isFile ? 'Download file' : 'Open link'"
+                        :url="url"
+                        />
 
 
     </v-card-actions>
@@ -119,9 +121,9 @@
 
 
 <script>
-import defaultTexture from '../../../assets/cards/c_b_forest_texture_bark2_small.jpg';
-import IconButton from '../../Elements/IconButton';
-import IconLabelView from '../IconLabelView';
+import defaultTexture from '@/assets/cards/c_b_forest_texture_bark2_small.jpg';
+import BaseIconButton from '@/components/BaseElements/BaseIconButton';
+import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 
 export default {
   props: {
@@ -162,14 +164,14 @@ export default {
     },
     formatedBytes: function formatedBytes() {
       if (!this.size) return '';
-      const bytesString = this.formatBytes(this.size);
+      const bytesString = this.mixinMethods_formatBytes(this.size);
       return bytesString;
     },
     formatedCreated: function formatedCreated() {
-      return this.formatDate(this.created);
+      return this.mixinMethods_formatDate(this.created);
     },
     formatedLastModified: function formatedLastModified() {
-      return this.formatDate(this.lastModified);
+      return this.mixinMethods_formatDate(this.lastModified);
     },
     isLink: function isLink() {
       return this.format && (this.format.toLowerCase() === 'link' || this.format.toLowerCase() === 'url');
@@ -181,7 +183,7 @@ export default {
       return this.description && this.description.length > this.maxDescriptionLength;
     },
     fileExtensionIcon: function fileExtensionIcon() {
-      return this.getIconFileExtension(this.format);
+      return this.mixinMethods_getIconFileExtension(this.format);
     },
     fileFormatLabel: function fileFormatLabel() {
       const label = this.fileExtensionIcon ? '' : 'Format:';
@@ -193,12 +195,12 @@ export default {
       this.$emit('clicked');
     },
     formatedDate: function formatedDate(value) {
-      return this.formatDate(value);
+      return this.mixinMethods_formatDate(value);
     },
   },
   components: {
-    IconLabelView,
-    IconButton,
+    BaseIconLabelView,
+    BaseIconButton,
   },
 };
 </script>

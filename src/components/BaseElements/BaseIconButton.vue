@@ -1,19 +1,20 @@
 <template>
   <div @mouseover="hoverBadge = true" @mouseleave="hoverBadge = false"
       @click.stop="clicked"
-      style="height: 36px;"
+      :style="isSmall ? 'height: 28px;' : 'height: 36px;'"
   >
     <v-tooltip v-bind="{ top: !toolTipBottom, bottom: toolTipBottom }" >
 
       <v-btn :icon="!isElevated"
               :fab="isElevated"
-              :small="isElevated"
+              :small="isSmall || isElevated"
               :outline="outlined && !isToggled"
               :color="color ? color : disabled ? '' : 'primary'"
               :href="url"
               :disabled="disabled"
               @click.stop="clicked" slot="activator"
-              v-bind="{['target'] : '_blank' }">
+              v-bind="{['target'] : '_blank' }"
+              >
 
           <div class="iconCentering"
                 v-if="customIcon">
@@ -22,9 +23,9 @@
 
           <v-icon v-if="materialIconName"
                   :color="iconColor ? iconColor : 'primary'"
-                  :style="rotateOnClick && isToggled ? 'transform: rotate(-180deg);' : ''"
-          >
-              {{ materialIconName }}
+                  :style="rotateOnClick && rotateToggle ? 'transform: rotate(-180deg);' : ''"
+                  >
+            {{ materialIconName }}
           </v-icon>
 
 
@@ -34,9 +35,9 @@
     </v-tooltip>
 
     <div v-if="count > 0"
-          style="position: relative; right: -5px; top: -25px;">
+          style="position: relative; right: -7px; top: -25px;">
 
-      <v-badge v-bind="{ left: !hoverBadge }"
+      <v-badge :style="(hoverBadge && $vuetify.breakpoint.smAndUp) || $vuetify.breakpoint.xsOnly ? 'right: 5px;' : ''"
               overlap
               color="highlight"
               :class="{ envidatBadgeBigNumber : count > 9,
@@ -60,7 +61,9 @@ export default {
     color: String,
     iconColor: String,
     isToggled: Boolean,
+    isSmall: Boolean,
     rotateOnClick: Boolean,
+    rotateToggle: Boolean,
     url: String,
     isElevated: Boolean,
     disabled: Boolean,

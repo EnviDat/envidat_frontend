@@ -1,6 +1,6 @@
 <template>
   <v-card raised
-          :style="!expanded && compactLayout ? 'height: 32px;' : '',
+          :style="compactLayout && !expanded ? 'height: 32px;' : '',
                   !compactLayout ? 'height: 85px;' : ''"
   >
 
@@ -28,7 +28,7 @@
             <v-flex pl-2
                     class="metadataInfoIcon" 
             >
-              <icon-label-view :icon="tagsIcon"
+              <base-icon-label-view :icon="tagsIcon"
                                 :compactLayout="compactLayout"
                                 iconTooltip="Possible Keywords"
               />
@@ -49,11 +49,10 @@
             <v-flex xs12
                     py-0
                     px-2 
-                    v-if="!showPlaceholder"
+                    v-if="!showPlaceholder && showPopularTags"
             >
 
-              <tag-chip v-if="showPopularTags && tag.enabled"
-                        v-for="tag in showPopularTags"
+              <tag-chip v-for="tag in showPopularTags"
                         :key="tag.name" 
                         :name="tag.name"
                         :selectable="tag.enabled"
@@ -83,7 +82,7 @@
 
             <v-flex pl-2 class="metadataInfoIcon" 
             >
-              <icon-label-view :icon="tagIcon"
+              <base-icon-label-view :icon="tagIcon"
                                 :compactLayout="compactLayout"
                                 iconTooltip="Active Keyword filter"
               />
@@ -92,10 +91,10 @@
             <v-flex xs12
                     py-0
                     px-2
+                    v-if="selectedTags.length > 0"
             >
 
-              <tag-chip v-if="selectedTags.length > 0"
-                        v-for="tag in selectedTags" :key="tag.name" 
+              <tag-chip v-for="tag in selectedTags" :key="tag.name" 
                         :name="tag.name"
                         :selectable="true"
                         :highlighted="true"
@@ -117,12 +116,16 @@
                     style="position: absolute; bottom: 0px; right: 0px;">
       <v-spacer />
 
-      <v-btn icon small
-              @click="catchExpandClicked">
-        <v-icon color="accent" 
-                :style="expanded ? 'transform: rotate(-180deg);' : 'transform: rotate(0deg);'"
-        >expand_more</v-icon>
-      </v-btn>        
+      <base-icon-button :count="selectedTags.length"
+                        materialIconName="expand_more"
+                        color="secondary"
+                        iconColor="secondary"
+                        :outlined="true"
+                        :isSmall="true"
+                        :rotateOnClick="true"
+                        :rotateToggle="filterExpanded"
+                        v-on:clicked="catchExpandClicked"
+                        />
 
     </v-card-actions>
 
@@ -132,10 +135,11 @@
 </template>
 
 <script>
-import IconLabelView from '../IconLabelView';
-import TagChip from '../Cards/TagChip';
-import TagChipPlaceholder from '../Cards/TagChipPlaceholder';
-import FilterViewButtons from './FilterViewButtons';
+import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
+import BaseIconButton from '@/components/BaseElements/BaseIconButton';
+import TagChip from '@/components/Cards/TagChip';
+import TagChipPlaceholder from '@/components/Cards/TagChipPlaceholder';
+import FilterViewButtons from '@/components/Filtering/FilterViewButtons';
 
 export default {
   props: {
@@ -153,8 +157,8 @@ export default {
     compactLayout: Boolean,
   },
   beforeMount: function beforeMount() {
-    this.tagIcon = this.getIcon('tag');
-    this.tagsIcon = this.getIcon('tags');
+    this.tagIcon = this.mixinMethods_getIcon('tag');
+    this.tagsIcon = this.mixinMethods_getIcon('tags');
   },
   computed: {
     selectedTags: function selectedTags() {
@@ -248,6 +252,7 @@ export default {
       return numberOfTags;
     },
     catchExpandClicked: function catchExpandClicked() {
+      this.filterExpanded = !this.filterExpanded;
       this.$emit('clickedExpand');
     },
     catchMapExpandClicked: function catchMapExpandClicked() {
@@ -298,9 +303,11 @@ export default {
     mdTextLength: 65,
     tagIcon: null,
     tagsIcon: null,
+    filterExpanded: false,
   }),
   components: {
-    IconLabelView,
+    BaseIconLabelView,
+    BaseIconButton,
     TagChip,
     TagChipPlaceholder,
     FilterViewButtons,
