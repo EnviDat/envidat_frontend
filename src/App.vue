@@ -21,7 +21,8 @@
                   :class="{ 'small': this.$vuetify.breakpoint.smAndDown }"
                   v-if="currentPage != 'landingPage'" >
 
-            <nav-bar-view />
+            <the-nav-bar-view />
+            
           </v-flex>
 
 
@@ -55,20 +56,20 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import '../node_modules/skeleton-placeholder/dist/bone.min.css';
-  import { BULK_LOAD_METADATAS_CONTENT } from './store/metadataMutationsConsts';
+  import { BULK_LOAD_METADATAS_CONTENT } from '@/store/metadataMutationsConsts';
   import {
     ADD_CARD_IMAGES,
     ADD_ICON_IMAGE,
-  } from './store/mutationsConsts';
-  import NavBarView from './components/Views/NavbarView';
+  } from '@/store/mutationsConsts';
+  import TheNavBarView from '@/components/Views/TheNavbarView';
+  import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
 
   export default {
     created: function created() {
       this.loadAllMetadata();
 
       const bgImgs = require.context('./assets/', false, /\.jpg$/);
-      this.appBGImages = this.importImages(bgImgs, 'app_b');
+      this.appBGImages = this.mixinMethods_importImages(bgImgs, 'app_b');
 
       this.importCardBackgrounds();
       this.importIcons();
@@ -88,23 +89,23 @@
         }
 
         let imgPaths = require.context('./assets/cards/landscape/', false, /\.jpg$/);
-        let images = this.importImages(imgPaths);
+        let images = this.mixinMethods_importImages(imgPaths);
         this.$store.commit(ADD_CARD_IMAGES, { key: 'landscape', value: images });
 
         imgPaths = require.context('./assets/cards/forest/', false, /\.jpg$/);
-        images = this.importImages(imgPaths);
+        images = this.mixinMethods_importImages(imgPaths);
         this.$store.commit(ADD_CARD_IMAGES, { key: 'forest', value: images });
 
         imgPaths = require.context('./assets/cards/snow/', false, /\.jpg$/);
-        images = this.importImages(imgPaths);
+        images = this.mixinMethods_importImages(imgPaths);
         this.$store.commit(ADD_CARD_IMAGES, { key: 'snow', value: images });
 
         imgPaths = require.context('./assets/cards/diversity/', false, /\.jpg$/);
-        images = this.importImages(imgPaths);
+        images = this.mixinMethods_importImages(imgPaths);
         this.$store.commit(ADD_CARD_IMAGES, { key: 'diversity', value: images });
 
         imgPaths = require.context('./assets/cards/hazard/', false, /\.jpg$/);
-        images = this.importImages(imgPaths);
+        images = this.mixinMethods_importImages(imgPaths);
         this.$store.commit(ADD_CARD_IMAGES, { key: 'hazard', value: images });
       },
       importIcons: function importIcons() {
@@ -116,7 +117,7 @@
         }
 
         const imgPaths = require.context('./assets/icons/', false, /\.png$/);
-        const images = this.importImages(imgPaths);
+        const images = this.mixinMethods_importImages(imgPaths);
 
         const keys = Object.keys(images);
         keys.forEach((key) => {
@@ -173,7 +174,7 @@
       appVersion: process.env.VERSION,
     }),
     components: {
-      NavBarView,
+      TheNavBarView,
     },
     props: {
       source: String,

@@ -68,8 +68,6 @@
                           :totalWidth="mapFilterWidth"
                           :expanded="showMapFilter"
                           v-on:pointClicked="catchPointClicked"
-                          v-on:pointHover="catchPointHovered"
-                          v-on:pointHoverLeave="catchPointHoverLeave"
                           v-on:clearButtonClicked="catchClearButtonClick"  />
 
       </v-flex>
@@ -83,25 +81,23 @@
 <script>
   import { mapGetters } from 'vuex';
   import { BROWSE_PATH } from '@/router/routeConsts';
-  import FilterBarView from '../Views/Filtering/FilterBarView';
-  import FilterMapView from '../Views/Filtering/FilterMapView';
-  import MetadataListView from '../Views/MetadataViews/MetadataListView';
+  import FilterBarView from '@/components/Filtering/FilterBarView';
+  import FilterMapView from '@/components/Filtering/FilterMapView';
+  import MetadataListView from '@/components/Views/MetadataListView';
   import {
     SEARCH_METADATA,
     CLEAR_SEARCH_METADATA,
     FILTER_METADATA,
     PIN_METADATA,
     CLEAR_PINNED_METADATA,
-  } from '../../store/metadataMutationsConsts';
+  } from '@/store/metadataMutationsConsts';
   import {
     SET_APP_BACKGROUND,
     SET_CURRENT_PAGE,
     SET_CONTROLS,
     SET_BROWSE_SCROLL_POSITION,
-  } from '../../store/mutationsConsts';
+  } from '@/store/mutationsConsts';
 
-
-  // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
   export default {
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
@@ -128,7 +124,7 @@
         let decodedTags = [];
 
         if (tagsEncoded.length > 0) {
-          decodedTags = this.decodeTagsFromUrl(tagsEncoded);
+          decodedTags = this.mixinMethods_decodeTagsFromUrl(tagsEncoded);
         }
 
         if (!this.areArrayIdentical(this.selectedTagNames, decodedTags)) {
@@ -175,8 +171,8 @@
         if (!this.isTagSelected(tagName)) {
           const newTags = [...this.selectedTagNames, tagName];
 
-          const tagsEncoded = this.encodeTagForUrl(newTags);
-          this.additiveChangeRoute(BROWSE_PATH, undefined, tagsEncoded);
+          const tagsEncoded = this.mixinMethods_encodeTagForUrl(newTags);
+          this.mixinMethods_additiveChangeRoute(BROWSE_PATH, undefined, tagsEncoded);
         }
       },
       catchTagCloseClicked: function catchTagCloseClicked(tagId) {
@@ -186,8 +182,8 @@
 
         const newTags = this.selectedTagNames.filter(tag => tag !== tagId);
 
-        const tagsEncoded = this.encodeTagForUrl(newTags);
-        this.additiveChangeRoute(BROWSE_PATH, undefined, tagsEncoded);
+        const tagsEncoded = this.mixinMethods_encodeTagForUrl(newTags);
+        this.mixinMethods_additiveChangeRoute(BROWSE_PATH, undefined, tagsEncoded);
       },
       catchTagCleared: function catchTagCleared() {
         this.selectedTagNames = [];
@@ -196,10 +192,10 @@
       catchSearchClicked: function catchSearchClicked(searchTerm) {
         /* eslint-disable no-param-reassign */
         searchTerm = searchTerm ? searchTerm.trim() : '';
-        this.additiveChangeRoute(BROWSE_PATH, searchTerm, undefined);
+        this.mixinMethods_additiveChangeRoute(BROWSE_PATH, searchTerm, undefined);
       },
       catchSearchCleared: function catchSearchCleared() {
-        this.additiveChangeRoute(BROWSE_PATH, '', undefined);
+        this.mixinMethods_additiveChangeRoute(BROWSE_PATH, '', undefined);
       },
       catchMapFilterChanged: function catchMapFilterChanged(visibleIds) {
         this.mapFilterVisibleIds = visibleIds;
@@ -209,17 +205,6 @@
         // highlight entry
 
         this.$store.commit(`metadata/${PIN_METADATA}`, id);
-      },
-      catchPointHovered: function catchPointHovered(id) {
-        // bring to top
-        // highlight entry
-        const domElement = this.metadatasContent[id];
-        if (domElement) {
-        }
-      },
-      catchPointHoverLeave: function catchPointHoverLeave(id) {
-        // bring to top
-        // highlight entry
       },
       catchClearButtonClick: function catchClearButtonClick() {
         this.$store.commit(`metadata/${CLEAR_PINNED_METADATA}`);
@@ -271,7 +256,7 @@
       },
       dynamicCardBackground: function dynamicCardBackground() {
         const max = Object.keys(this.imagesImports).length;
-        const randomIndex = this.randomInt(0, max);
+        const randomIndex = this.mixinMethods_randomInt(0, max);
         const cardImg = Object.values(this.imagesImports)[randomIndex];
 
         if (cardImg) {
@@ -301,7 +286,11 @@
       },
       checkRouteChanges: function checkRouteChanges(fromRoute) {
         if (!fromRoute) {
-          fromRoute = this.detailPageBackRoute;
+          if (this.detailPageBackRoute) {
+            fromRoute = this.detailPageBackRoute;
+          } else if (this.aboutPageBackRoute) {
+            fromRoute = this.aboutPageBackRoute;
+          }
         }
 
         const isABack = this.$router.options.isSameRoute(this.$route, fromRoute);
@@ -317,7 +306,14 @@
 
         if (isABack) {
           // only set the scroll position because it's a back navigation
-          this.setScrollPositionOnList(this.browseScrollPosition);
+          if (this.controls.includes(1)) {
+            // if the map-filtering is active use a delay
+            setTimeout(() => {
+              this.setScrollPositionOnList(this.browseScrollPosition);
+            }, 0);
+          } else {
+            this.setScrollPositionOnList(this.browseScrollPosition);
+          }
         } else {
           if (checkSearchTriggering) {
             if (this.searchTerm && this.searchTerm.length > 0) {
@@ -360,8 +356,10 @@
         allTags: 'metadata/allTags',
         currentMetadataContent: 'metadata/currentMetadataContent',
         detailPageBackRoute: 'metadata/detailPageBackRoute',
+        aboutPageBackRoute: 'metadata/aboutPageBackRoute',
         updatingTags: 'metadata/updatingTags',
         browseScrollPosition: 'browseScrollPosition',
+        controls: 'controls',
         cardBGImages: 'cardBGImages',
       }),
       keywordsPlaceholder: function keywordsPlaceholder() {

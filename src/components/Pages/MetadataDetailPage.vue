@@ -173,27 +173,29 @@
 </template>
 
 <script>
+  /**
+   * The MetadataDetailPage shows all the important information of a metadata entry.
+   */
   import { mapGetters } from 'vuex';
   import { BROWSE_PATH } from '@/router/routeConsts';
   import {
     SET_APP_BACKGROUND,
     SET_CURRENT_PAGE,
-  } from '../../store/mutationsConsts';
+  } from '@/store/mutationsConsts';
   import {
     LOAD_METADATA_CONTENT_BY_ID,
     CLEAN_CURRENT_METADATA,
-  } from '../../store/metadataMutationsConsts';
-  import MetadataHeader from '../Views/MetadataViews/MetadataHeader';
-  import MetadataBody from '../Views/MetadataViews/MetadataBody';
-  import MetadataResources from '../Views/MetadataViews/MetadataResources';
-  import MetadataLocation from '../Views/MetadataViews/MetadataLocation';
-  import MetadataDetails from '../Views/MetadataViews/MetadataDetails';
-  import MetadataCitation from '../Views/MetadataViews/MetadataCitation';
-  import NotFoundView from '../Views/Errors/NotFoundView';
-  import metaDataFactory from '../metaDataFactory';
-  import globalMethods from '../globalMethods';
+  } from '@/store/metadataMutationsConsts';
+  import MetadataHeader from '@/components/MetadataDetailViews/MetadataHeader';
+  import MetadataBody from '@/components/MetadataDetailViews/MetadataBody';
+  import MetadataResources from '@/components/MetadataDetailViews/MetadataResources';
+  import MetadataLocation from '@/components/MetadataDetailViews/MetadataLocation';
+  import MetadataDetails from '@/components/MetadataDetailViews/MetadataDetails';
+  import MetadataCitation from '@/components/MetadataDetailViews/MetadataCitation';
+  import NotFoundView from '@/components/Errors/NotFoundView';
+  import metaDataFactory from '@/components/metaDataFactory';
 
-  // import { LOAD_METADATAS_CONTENT } from '../../store/metadataMutationsConsts';
+  // import { LOAD_METADATAS_CONTENT } from '@/store/metadataMutationsConsts';
 
   // Might want to check https://css-tricks.com/use-cases-fixed-backgrounds-css/
   // for animations between the different parts of the Metadata
@@ -201,31 +203,37 @@
   // blured background?
   // https://paper-leaf.com/blog/2016/01/creating-blurred-background-using-only-css/
 
-  //TODO: Check #/metadata/2016gl071822 for the lost list of data and the background
-
   export default {
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
       next((vm) => {
-        // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
         vm.$store.commit(SET_CURRENT_PAGE, 'metadataDetailPage');
         vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
     },
+    /**
+     * @description load all the icons once before the first component's rendering.
+     */
     beforeMount: function beforeMount() {
-      this.downloadIcon = this.getIcon('download');
-      this.linkIcon = this.getIcon('link');
-      this.doiIcon = this.getIcon('doi');
-      this.fileSizeIcon = this.getIcon('fileSize');
-      this.dateCreatedIcon = this.getIcon('dateCreated');
-      this.lastModifiedIcon = this.getIcon('dateModified');
-      this.contactIcon = this.getIcon('contact2');
-      this.mailIcon = this.getIcon('mail');
-      this.licenseIcon = this.getIcon('license');
+      this.downloadIcon = this.mixinMethods_getIcon('download');
+      this.linkIcon = this.mixinMethods_getIcon('link');
+      this.doiIcon = this.mixinMethods_getIcon('doi');
+      this.fileSizeIcon = this.mixinMethods_getIcon('fileSize');
+      this.dateCreatedIcon = this.mixinMethods_getIcon('dateCreated');
+      this.lastModifiedIcon = this.mixinMethods_getIcon('dateModified');
+      this.contactIcon = this.mixinMethods_getIcon('contact2');
+      this.mailIcon = this.mixinMethods_getIcon('mail');
+      this.licenseIcon = this.mixinMethods_getIcon('license');
     },
+    /**
+     * @description reset the scrolling to the top.
+     */
     mounted: function mounted() {
       this.loadMetaDataContent();
       window.scrollTo(0, 0);
     },
+    /**
+     * @description
+     */
     beforeDestroy: function beforeDestroy() {
       // clean current metadata to make be empty for the next to load up
       this.$store.commit(`metadata/${CLEAN_CURRENT_METADATA}`);
@@ -240,29 +248,45 @@
         iconImages: 'iconImages',
         cardBGImages: 'cardBGImages',
       }),
+      /**
+       * @returns {Number} Size of the metadatasContent
+       */
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
       },
+      /**
+       * @returns {String} the metadataId from the route
+       */
       metadataId: function metadataId() {
         return this.$route.params.metadataid;
       },
-      metadataIdValid: function metadataIdValid() {
-        return true;
-        // return (this.metadataId && this.metadataIds !== undefined
-        //  && this.metadataIds.includes(this.metadataId));
-      },
+      /**
+       * @returns {Boolean} if the placeHolders should be shown be somethings are still loading
+       */
       showPlaceholder: function showPlaceholder() {
         return this.loadingMetadatasContent || this.loadingCurrentMetadataContent;
       },
+      /**
+       * @returns {Boolean}
+       */
       leftOrFullWidth: function leftOrFullWidth() {
         return this.twoColumnLayout ? this.halfWidthLeft : this.fullWidthPadding;
       },
+      /**
+       * @returns {Boolean}
+       */
       rightOrFullWidth: function rightOrFullWidth() {
         return this.twoColumnLayout ? this.halfWidthRight : this.fullWidthPadding;
       },
+      /**
+       * @returns {Boolean}
+       */
       twoColumnLayout: function twoColumnLayout() {
         return this.$vuetify.breakpoint.lgAndUp;
       },
+      /**
+       * @returns {Object} with the diffent paddings based on the screen size (this.$vuetify.breakpoint)
+       */
       fullWidthPadding: function fullwidthPadding() {
         const json = {
           md10: true,
@@ -280,6 +304,10 @@
 
         return json;
       },
+      /**
+       * @description
+       * @returns {any}
+       */
       halfWidthLeft: function halfWidthLeft() {
         const json = {
           md4: true,
@@ -301,6 +329,10 @@
 
         return json;
       },
+      /**
+       * @description
+       * @returns {any}
+       */
       halfWidthRight: function halfWidthRight() {
         const json = {
           md4: true,
@@ -320,6 +352,10 @@
 
         return json;
       },
+      /**
+       * @description
+       * @returns {any}
+       */
       showDetailsOnTheLeft: function showDetailsOnTheLeft() {
         const left = this.resources
         && this.resources.resources.length > this.amountOfResourcesToShowDetailsLeft;
@@ -327,10 +363,13 @@
       },
     },
     methods: {
+      /**
+       * @description
+       */
       createMetadataContent: function createMetadataContent() {
         let currentContent = this.currentMetadataContent;
 
-        currentContent = this.enhanceMetadataEntry(currentContent, this.cardBGImages);
+        currentContent = this.mixinMethods_enhanceMetadataEntry(currentContent, this.cardBGImages);
 
         if (currentContent && currentContent.title !== undefined) {
           // console.log("create content " + currentContent.spatial + " " + this.header);
@@ -342,21 +381,23 @@
           this.details = metaDataFactory.createDetails(currentContent);
         }
       },
-      enhanceMetadataEntry: function enhanceMetadataEntry(entry, cardBGImages) {
-        if (!entry.titleImg) {
-          globalMethods.methods.enhanceTitleImg(entry, cardBGImages);
-        }
-
-        return entry;
-      },
+      /**
+       * @description
+       * @param {any} idOrName
+       * @returns {any}
+       */
       isCurrentIdOrName: function isCurrentIdOrName(idOrName) {
         return this.currentMetadataContent.id === idOrName || this.currentMetadataContent.name === idOrName;
       },
+      /**
+       * @description
+       * @param {any} tagName
+       */
       catchTagClicked: function catchTagClicked(tagName) {
         const tagNames = [];
         tagNames.push(tagName);
 
-        const tagsEncoded = this.encodeTagForUrl(tagNames);
+        const tagsEncoded = this.mixinMethods_encodeTagForUrl(tagNames);
         const query = {};
         query.tags = tagsEncoded;
 
@@ -365,6 +406,10 @@
           query,
         });
       },
+      /**
+       * @description
+       * @param {any} authorName
+       */
       catchAuthorClicked: function catchAuthorClicked(authorName) {
         const query = {};
         query.search = authorName;
@@ -374,6 +419,9 @@
           query,
         });
       },
+      /**
+       * @description
+       */
       catchBackClicked: function catchBackClicked() {
         // console.log(this.$router);
         const backRoute = this.detailPageBackRoute;
@@ -391,9 +439,10 @@
           path: BROWSE_PATH,
         });
       },
-      OnScroll: function OnScroll(scrollPos) {
-        this.savedPosition = scrollPos;
-      },
+      /**
+       * @description loads the content of this metadata entry (metadataid) from the URL.
+       * Either loads it from the backend via action or creates it from the localStorage.
+       */
       loadMetaDataContent: function loadMetaDataContent() {
         if (!this.loadingMetadatasContent
         && (this.currentMetadataContent.title === undefined
@@ -407,14 +456,25 @@
     },
     watch: {
       /* eslint-disable no-unused-vars */
+      /**
+       * @description
+       * @param {any} to
+       * @param {any} from
+       */
       $route: function watchRouteChanges(to, from) {
         // react on changes of the route (browser back / forward click)
 
         this.loadMetaDataContent();
       },
+      /**
+       * @description
+       */
       currentMetadataContent: function updateContent() {
         this.createMetadataContent();
       },
+      /**
+       * @description
+       */
       metadatasContent: function updateContent() {
         // in case all the metadataContents are already loaded take it from there
         // if EnviDat is called via MetadataDetailPage URL directly
