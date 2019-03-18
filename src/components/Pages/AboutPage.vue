@@ -41,6 +41,9 @@
 </template>
 
 <script>
+/**
+ * @description The main component which makes the AboutPage
+ */
   import { mapGetters } from 'vuex';
   import {
     SET_APP_BACKGROUND,
@@ -65,9 +68,12 @@
   import ExpandableCard from '../Views/Cards/ExpandableCard';
 
   export default {
+    /**
+     * @description beforeRouteEnter is used to change background image of this page.
+     * It's called via vue-router.
+     */
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
       next((vm) => {
-        // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
         vm.$store.commit(SET_CURRENT_PAGE, 'aboutPage');
         vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
@@ -76,6 +82,9 @@
       ...mapGetters({
         aboutText: 'aboutText',
       }),
+      /**
+       * @returns Returns the team image either in small format for mobile or in normal.
+       */
       teamImg: function teamImg() {
         if (this.$vuetify.breakpoint.mdAndUp) {
           return team;
@@ -83,6 +92,9 @@
 
         return teamSmall;
       },
+      /**
+       * @returns Returns the mission image either in small format for mobile or in normal.
+       */
       missionImg: function teamImg() {
         if (this.$vuetify.breakpoint.mdAndUp) {
           return mission;
@@ -92,6 +104,10 @@
       },
     },
     methods: {
+      /**
+       * @description
+       * @returns {any}
+       */
       AboutCardInfos: function AboutCardInfos() {
         return [
           {
