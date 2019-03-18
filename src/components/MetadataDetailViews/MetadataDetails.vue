@@ -62,12 +62,15 @@
   export default {
     props: {
       genericProps: Object,
-      details: Array,
       showPlaceholder: Boolean,
     },
     updated: function updated() {
-      if (this.genericProps) {
-        Object.assign(this, 'props', this.genericProps);
+      if (this.genericProps && !this.checkedGenericProps) {
+        if (this.details.length <= 0) {
+          this.details = this.genericProps;
+        }
+
+        this.checkedGenericProps = true;
       }
     },
     data: () => ({
@@ -75,6 +78,8 @@
       maxSingleTextLengthMd: 80,
       maxSingleTextLengthXs: 70,
       emptyText: 'No details found for this dataset',
+      details: [],
+      checkedGenericProps: false,
     }),
     methods: {
       clicking: function clicking() {
