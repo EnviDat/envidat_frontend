@@ -28,7 +28,34 @@
   <two-column-layout :firstColumn="$vuetify.breakpoint.mdAndUp ? firstColumn : singleColumn"
                       :secondColumn="$vuetify.breakpoint.mdAndUp ? secondColumn : []"
                       :showPlaceholder="showPlaceholder"
+                      >
+
+      <template v-slot:leftColumn v-bind:firstColumn="firstColumn">
+        <v-flex mb-2
+                v-for="(entry, index) in firstColumn"
+                :key="`left_${index}`"
+                >
+          <component :is="entry"
+                      v-bind="entry.props"
+                      v-on:click.native="alert('click ' + entry.props);"
+                      :showPlaceholder="showPlaceholder"
                       />
+        </v-flex>
+      </template>
+
+      <template v-slot:rightColumn v-bind:secondColumn="secondColumn">
+        <v-flex mb-2
+                v-for="(entry, index) in secondColumn"
+                :key="`right_${index}`"
+                >
+          <component :is="entry"
+                      v-bind="entry.props"
+                      :showPlaceholder="showPlaceholder"
+                      />
+        </v-flex>
+      </template>
+
+  </two-column-layout>
 
   </v-container>
 </template>
