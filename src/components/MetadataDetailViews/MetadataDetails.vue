@@ -64,22 +64,16 @@
       genericProps: Object,
       showPlaceholder: Boolean,
     },
-    updated: function updated() {
-      if (this.genericProps && !this.checkedGenericProps) {
-        if (this.details.length <= 0) {
-          this.details = this.genericProps;
-        }
-
-        this.checkedGenericProps = true;
-      }
+    computed:{
+      details() {
+        return this.mixinMethods_getGenericProp('details');
+      },
     },
     data: () => ({
       maxSingleTextLengthLg: 80,
       maxSingleTextLengthMd: 80,
       maxSingleTextLengthXs: 70,
       emptyText: 'No details found for this dataset',
-      details: [],
-      checkedGenericProps: false,
     }),
     methods: {
       clicking: function clicking() {

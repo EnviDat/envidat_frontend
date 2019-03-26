@@ -45,6 +45,9 @@
     mounted: function mounted() {
     },
     computed: {
+      description() {
+        return this.mixinMethods_getGenericProp('description');
+      },
       fullDescription: function fullDescription() {
         if (this.description !== undefined) {
           if (this.maxDescriptionLengthReached) {
@@ -60,19 +63,22 @@
         return this.description && this.description.length > this.maxTextLength;
       },
     },
-    updated: function updated() {
-      if (this.genericProps) {
-        Object.assign(this, 'props', this.genericProps);
-      }
-    },
+    // updated: function updated() {
+    //   if (this.genericProps && !this.checkedGenericProps) {
+    //     Object.assign(this, 'props', this.genericProps);
+
+    //     this.checkedGenericProps = true;
+    //   }
+    // },
     data: () => ({
       id: null,
       title: null,
       doi: '',
-      description: '',
+      // description: '',
       isOnTop: false,
       showPlaceholder: false,
       showFullDescription: false,
+      checkedGenericProps: false,
       maxTextLength: 1000,
       emptyText: 'No description found for this dataset',
     }),

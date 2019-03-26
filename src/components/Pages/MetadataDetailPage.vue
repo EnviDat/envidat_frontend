@@ -36,7 +36,7 @@
                 :key="`left_${index}`"
                 >
           <component :is="entry"
-                      v-bind="entry.props"
+                      :genericProps="entry.genericProps"
                       v-on:click.native="alert('click ' + entry.props);"
                       :showPlaceholder="showPlaceholder"
                       />
@@ -49,7 +49,7 @@
                 :key="`right_${index}`"
                 >
           <component :is="entry"
-                      v-bind="entry.props"
+                      :genericProps="entry.genericProps"
                       :showPlaceholder="showPlaceholder"
                       />
         </v-flex>
@@ -186,28 +186,24 @@
           this.details = metaDataFactory.createDetails(currentContent);
           this.$set(components.MetadataDetails, 'genericProps', this.details);
 
-          const fstCol = [
+          this.firstColumn = [
             components.MetadataBody,
             components.MetadataCitation,
             components.MetadataLocation,
           ];
 
-          const sndCol = [
+          this.secondColumn = [
             components.MetadataResources,
             components.MetadataDetails,
           ];
 
-          const snglCol = [
+          this.singleColumn = [
             components.MetadataBody,
             components.MetadataCitation,
             components.MetadataResources,
             components.MetadataLocation,
             components.MetadataDetails,
           ];
-
-          this.firstColumn = fstCol;
-          this.secondColumn = sndCol;
-          this.singleColumn = snglCol;
 
           this.$forceUpdate();
         }

@@ -89,23 +89,27 @@ import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 export default {
   props: {
     genericProps: Object,
-    id: String,
-    citationText: String,
-    citationXmlLink: String,
-    ciationIsoXmlLink: String,
-    ciationGCMDXmlLink: String,
-    fixedHeight: Boolean,
     showPlaceholder: Boolean,
-  },
-  updated: function updated() {
-    if (this.genericProps) {
-      Object.assign(this, 'props', this.genericProps);
-    }
   },
   data: () => ({
     emptyText: 'No citation found for this dataset',
   }),
-  methods: {
+  computed: {
+    citationText() {
+      return this.mixinMethods_getGenericProp('citationText');
+    },
+    citationXmlLink() {
+      return this.mixinMethods_getGenericProp('citationXmlLink');
+    },
+    ciationIsoXmlLink() {
+      return this.mixinMethods_getGenericProp('ciationIsoXmlLink');
+    },    
+    ciationGCMDXmlLink() {
+      return this.mixinMethods_getGenericProp('ciationGCMDXmlLink');
+    },
+    fixedHeight() {
+      return this.mixinMethods_getGenericProp('fixedHeight');
+    },
   },
   components: {
     BaseRectangleButton,
