@@ -67,6 +67,7 @@
     },
     data: () => ({
       showFullDescription: false,
+      checkedGenericProps: false,
       maxTextLength: 1000,
       emptyText: 'No description found for this dataset',
     }),

@@ -100,9 +100,30 @@ export default {
   },
   data: () => ({
     emptyText: 'No citation found for this dataset',
+    checkedGenericProps: false,
   }),
-  methods: {
+  computed: {
+    citationText() {
+      return this.mixinMethods_getGenericProp('citationText');
+    },
+    citationXmlLink() {
+      return this.mixinMethods_getGenericProp('citationXmlLink');
+    },
+    ciationIsoXmlLink() {
+      return this.mixinMethods_getGenericProp('ciationIsoXmlLink');
+    },    
+    ciationGCMDXmlLink() {
+      return this.mixinMethods_getGenericProp('ciationGCMDXmlLink');
+    },
+    fixedHeight() {
+      return this.mixinMethods_getGenericProp('fixedHeight');
+    },
   },
+  // methods: {
+  //   getGenericProp(propName) {
+  //     return this.genericProps[propName] ? this.genericProps[propName] : null;
+  //   },
+  // },
   components: {
     BaseRectangleButton,
   },

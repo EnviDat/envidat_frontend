@@ -176,6 +176,9 @@ export default {
 
       return metadataEntry;
     },
+    mixinMethods_getGenericProp(propName) {
+      return this.genericProps[propName] ? this.genericProps[propName] : null;
+    },
     /**
      * @param {Array} metadatas
      * @param {Array} cardBGImages
