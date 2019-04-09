@@ -151,9 +151,13 @@ export default {
 
     const url = urlRewrite(`select?indent=on&q=${titleQuery} OR ${notesQuery} OR ${authorQuery}&wt=json&rows=1000`, SOLR_API_BASE, SOLR_PROXY);
 
+    // const url = `/api/search/dataset?q=${searchTerm}`;
+    // const url = urlRewrite(`/api/search/dataset?q=${searchTerm}`, '', '');
+
     axios.get(url)
       .then((response) => {
         commit(SEARCH_METADATA_SUCCESS, response.data.response.docs);
+        // commit(SEARCH_METADATA_SUCCESS, response.data.results);
       })
       .catch((reason) => {
         commit(SEARCH_METADATA_ERROR, reason);
@@ -176,11 +180,15 @@ export default {
 
     // const url = urlRewrite('package_search', API_BASE, ENVIDAT_PROXY);
     // const url = urlRewrite('select?q=title:*&wt=json&rows=1000', SOLR_API_BASE, SOLR_PROXY);
-    const url = `${SOLR_PROXY}${SOLR_API_BASE}select&q=title:*&wt=json&rows=1000`;
+    // const url = `${SOLR_PROXY}${SOLR_API_BASE}select&q=title:*&wt=json&rows=1000`;
+
+    // const url = '/api/action/current_package_list_with_resources&limit=1000&offset=0';
+    const url = urlRewrite('/api/action/current_package_list_with_resources?limit=1000&offset=0', '', '');
 
     axios.get(url)
       .then((response) => {
-        commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, response.data.response.docs, showRestrictedContent);
+        // commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, response.data.response.docs, showRestrictedContent);
+        commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, response.data.result, showRestrictedContent);
 
         // for the case when loaded up on landingpage
         dispatch(FILTER_METADATA, []);
@@ -266,7 +274,7 @@ export default {
           const entry = content[i];
           keep = contentFilterAccessibility(entry);
 
-          if (keep) {
+          if (keep && selectedTagNames.length > 0) {
             keep = contentFilteredByTags(entry, selectedTagNames);
           }
 
