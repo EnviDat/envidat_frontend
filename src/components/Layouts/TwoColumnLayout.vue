@@ -8,21 +8,9 @@
 
       <v-layout column>
 
-        <slot>
-        </slot>
         <slot name="leftColumn">
 
         </slot>
-
-        <!-- <v-flex mb-2
-                v-for="(entry, index) in firstColumn"
-                :key="`left_${index}`"
-                >
-          <component :is="entry"
-                      :genericProps="entry.genericProps"
-                      :showPlaceholder="showPlaceholder"
-                      />
-        </v-flex> -->
 
       </v-layout>
     </v-flex>
@@ -37,16 +25,6 @@
         <slot name="rightColumn">
 
         </slot>
-
-        <!-- <v-flex mb-2
-                v-for="(entry, index) in secondColumn"
-                :key="`right_${index}`"
-                >
-          <component :is="entry"
-                      :genericProps="entry.genericProps"
-                      :showPlaceholder="showPlaceholder"
-                      />
-        </v-flex> -->
 
       </v-layout>
     </v-flex>

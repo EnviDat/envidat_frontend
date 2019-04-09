@@ -25,12 +25,12 @@
     </v-flex>
   </v-layout>
 
-  <two-column-layout :firstColumn="$vuetify.breakpoint.mdAndUp ? firstColumn : singleColumn"
-                      :secondColumn="$vuetify.breakpoint.mdAndUp ? secondColumn : []"
-                      :showPlaceholder="showPlaceholder"
+  <two-column-layout :firstColumn="firstColumn"
+                    :secondColumn="secondColumn"
+                    :showPlaceholder="showPlaceholder"
                       >
 
-      <template v-slot:leftColumn v-bind:firstColumn="firstColumn">
+      <template v-slot:leftColumn >
         <v-flex mb-2
                 v-for="(entry, index) in firstColumn"
                 :key="`left_${index}`"
@@ -42,7 +42,7 @@
         </v-flex>
       </template>
 
-      <template v-slot:rightColumn v-bind:secondColumn="secondColumn">
+      <template v-slot:rightColumn>
         <v-flex mb-2
                 v-for="(entry, index) in secondColumn"
                 :key="`right_${index}`"
@@ -154,6 +154,12 @@
       showPlaceholder: function showPlaceholder() {
         return this.loadingMetadatasContent || this.loadingCurrentMetadataContent;
       },
+      firstColumn: function firstColumn() {
+        return this.$vuetify.breakpoint.mdAndUp ? this.firstCol : this.singleCol;
+      },
+      secondColumn: function secondColumn() {
+        return this.$vuetify.breakpoint.mdAndUp ? this.secondCol : [];
+      },
     },
     methods: {
       /**
@@ -191,18 +197,18 @@
           this.details = metaDataFactory.createDetails(currentContent);
           this.$set(components.MetadataDetails, 'genericProps', this.details);
 
-          this.firstColumn = [
+          this.firstCol = [
             components.MetadataBody,
             components.MetadataCitation,
             components.MetadataLocation,
           ];
 
-          this.secondColumn = [
+          this.secondCol = [
             components.MetadataResources,
             components.MetadataDetails,
           ];
 
-          this.singleColumn = [
+          this.singleCol = [
             components.MetadataBody,
             components.MetadataCitation,
             components.MetadataResources,
@@ -343,14 +349,9 @@
       contactIcon: null,
       mailIcon: null,
       licenseIcon: null,
-      // firstColumn: ['B', 'C', 'L'],
-      // secondColumn: ['R', 'D'],
-      // singleColumn: ['B', 'C', 'R', 'L', 'D'],
-      firstColumn: [],
-      // secondColumn: [MetadataResources, MetadataDetails],
-      secondColumn: [],
-      // singleColumn: [MetadataBody, MetadataCitation, MetadataResources, MetadataLocation, MetadataDetails],
-      singleColumn: [],
+      firstCol: [],
+      secondCol: [],
+      singleCol: [],
     }),
     components: {
       MetadataHeader,
