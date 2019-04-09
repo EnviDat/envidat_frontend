@@ -90,8 +90,11 @@
         return this.mixinMethods_getGenericProp('lastModifiedIcon');
       },
     },
+    updated: function updated() {
+    },
     data: () => ({
       showAllResources: false,
+      checkedGenericProps: false,
       emptyText: 'No resources found for this dataset',
     }),
     methods: {

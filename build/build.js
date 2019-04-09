@@ -23,8 +23,8 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
       colors: true,
       modules: false,
       children: false, // If you are using ts-loader, setting this to true will make TypeScript errors show up during build.
-      chunks: false,
-      chunkModules: false
+      chunks: true,
+      chunkModules: true
     }) + '\n\n')
 
     if (stats.hasErrors()) {

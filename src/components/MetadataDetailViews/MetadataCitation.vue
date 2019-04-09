@@ -93,6 +93,7 @@ export default {
   },
   data: () => ({
     emptyText: 'No citation found for this dataset',
+    checkedGenericProps: false,
   }),
   computed: {
     citationText() {
@@ -111,6 +112,11 @@ export default {
       return this.mixinMethods_getGenericProp('fixedHeight');
     },
   },
+  // methods: {
+  //   getGenericProp(propName) {
+  //     return this.genericProps[propName] ? this.genericProps[propName] : null;
+  //   },
+  // },
   components: {
     BaseRectangleButton,
   },

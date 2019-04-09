@@ -145,7 +145,11 @@ export default {
       }
     }
 
-    const url = urlRewrite(`select?indent=on&q=notes:${searchTerm} OR title:${searchTerm} OR authors:${searchTerm}&wt=json&rows=1000`, SOLR_API_BASE, SOLR_PROXY);
+    const notesQuery = `{! q.op=OR df=notes}${searchTerm}`;
+    const titleQuery = `{! q.op=OR df=title}${searchTerm}`;
+    const authorQuery = `{! df=author}${searchTerm}`;
+
+    const url = urlRewrite(`select?indent=on&q=${titleQuery} OR ${notesQuery} OR ${authorQuery}&wt=json&rows=1000`, SOLR_API_BASE, SOLR_PROXY);
 
     axios.get(url)
       .then((response) => {

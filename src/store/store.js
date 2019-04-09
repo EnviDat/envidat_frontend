@@ -3,8 +3,8 @@ import Vuex from 'vuex';
 import createPersist from 'vuex-localstorage';
 
 /* eslint-disable no-unused-vars */
-import { metadata } from './modules/metadata';
-import mutations from './appMutations';
+import { metadata } from '@/store/modules/metadata';
+import mutations from '@/store/appMutations';
 
 Vue.use(Vuex);
 
@@ -18,7 +18,7 @@ export default new Vuex.Store({
     appBGImage: './app_b_landingpage.jpg',
     cardBGImages: {},
     iconImages: {},
-    // controls default: [1] means the the second [0,1] is active -> map filtering is active per default
+    // controls default: [1] means the second [0,1] is active -> map filtering is active per default
     controls: [1],
     browseScrollPosition: 0,
   },

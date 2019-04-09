@@ -238,6 +238,7 @@
       fullWidthSize: 875,
       map: null,
       mapIsSetup: false,
+      checkedGenericProps: false,
       emptyText: 'No location found for this dataset',
     }),
     components: {
