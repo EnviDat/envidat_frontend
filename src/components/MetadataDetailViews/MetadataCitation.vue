@@ -14,45 +14,86 @@
 
         <v-layout justify-end row wrap>
 
+
+          <v-flex xs4 sm2 md3 lg2
+                  v-for="link in citationLinks"
+                  :key="link.text"
+          >
+            <base-rectangle-button marginClass="mx-1 citationButton"
+                                  :buttonText="link.text"
+                                  :toolTipText="link.toolTipText"
+                                  materialIconName="assignment"
+                                  :isSmall="true"
+                                  iconColor="white"
+                                  :url="link.url"
+                                  />
+          </v-flex>
+
           <!-- use xs5 to ensure on xs screens it will be in two rows -->
-          <v-flex xs5 sm3 lg4 xl3>
-        
-            <base-rectangle-button v-if="citationXmlLink"
-                                  class="ml-2"
+          <!-- <v-flex xs4 sm2
+                  v-if="citationXmlLink"
+          >
+            <base-rectangle-button marginClass="mx-1 citationButton"
                                   buttonText="DataCite"
                                   materialIconName="assignment"
-                                  :isSmall="$vuetify.breakpoint.xsOnly"
+                                  :isSmall="true"
                                   iconColor="white"
                                   toolTipText="Download XML citation"
                                   :url="citationXmlLink"
                                   />
           </v-flex>
 
-          <!-- use xs5 to ensure on xs screens it will be in two rows -->
-          <v-flex xs5 sm3 lg4 xl3>
-            <base-rectangle-button v-if="ciationIsoXmlLink"
-                                  class="ml-2"
+          <v-flex xs4 sm2
+                  v-if="ciationIsoXmlLink"
+          >
+            <base-rectangle-button marginClass="mx-1 citationButton"
                                   buttonText="ISO 19139"
                                   toolTipText="Download ISO XML citation"
                                   materialIconName="assignment"
-                                  :isSmall="$vuetify.breakpoint.xsOnly"
+                                  :isSmall="true"
                                   iconColor="white"
                                   :url="ciationIsoXmlLink"
                                   />
           </v-flex>
 
-          <!-- use xs5 to ensure on xs screens it will be in two rows -->
-          <v-flex xs5 sm3 lg4 xl3>
-            <base-rectangle-button v-if="ciationGCMDXmlLink"
-                                  class="ml-2"
+          <v-flex xs4 sm2
+                  v-if="ciationGCMDXmlLink"
+          >
+            <base-rectangle-button marginClass="mx-1 citationButton"
                                   buttonText="GCMD DIF"
                                   toolTipText="Download GCMD XML citation"
                                   materialIconName="assignment"
-                                  :isSmall="$vuetify.breakpoint.xsOnly"
+                                  :isSmall="true"
                                   iconColor="white"
                                   :url="ciationGCMDXmlLink"
                                   />
           </v-flex>
+
+          <v-flex xs4 sm2
+                  v-if="ciationBibtexXmlLink"
+          >
+            <base-rectangle-button marginClass="mx-1 citationButton"
+                                  buttonText="BibTex"
+                                  toolTipText="Download BibTex XML citation"
+                                  materialIconName="bookmark"
+                                  :isSmall="true"
+                                  iconColor="white"
+                                  :url="ciationBibtexXmlLink"
+                                  />
+          </v-flex>
+
+          <v-flex xs4 sm2
+                  v-if="ciationRisXmlLink"
+          >
+            <base-rectangle-button marginClass="mx-1 citationButton"
+                                  buttonText="RIS"
+                                  toolTipText="Download RIS XML citation"
+                                  materialIconName="bookmark"
+                                  :isSmall="true"
+                                  iconColor="white"
+                                  :url="ciationRisXmlLink"
+                                  />
+          </v-flex> -->
 
         </v-layout>
       </v-container>
@@ -88,15 +129,8 @@ import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 
 export default {
   props: {
-    id: String,
-    citationText: String,
-    citationXmlLink: String,
-    ciationIsoXmlLink: String,
-    ciationGCMDXmlLink: String,
-    fixedHeight: Boolean,
+    genericProps: Object,
     showPlaceholder: Boolean,
-  },
-  mounted: function mounted() {
   },
   data: () => ({
     emptyText: 'No citation found for this dataset',
@@ -106,14 +140,48 @@ export default {
     citationText() {
       return this.mixinMethods_getGenericProp('citationText');
     },
+    citationLinks() {
+      return [{
+        text: "DataCite",
+        toolTipText: "Download XML citation",
+        url: this.citationXmlLink,
+      },
+      {
+        text: "ISO 19139",
+        toolTipText: "Download ISO XML citation",
+        url: this.ciationIsoXmlLink,
+      },
+      {
+        text: "GCMD DIF",
+        toolTipText: "Download GCMD XML citation",
+        url: this.ciationGCMDXmlLink,
+      },
+      {
+        text: "BibTex",
+        toolTipText: "Download BibTex XML citation",
+        url: this.ciationBibtexXmlLink,
+      },
+      {
+        text: "RIS",
+        toolTipText: "Download RIS XML citation",
+        url: this.ciationRisXmlLink,
+      },
+      ];
+    },
     citationXmlLink() {
       return this.mixinMethods_getGenericProp('citationXmlLink');
     },
     ciationIsoXmlLink() {
       return this.mixinMethods_getGenericProp('ciationIsoXmlLink');
-    },    
+    },
     ciationGCMDXmlLink() {
       return this.mixinMethods_getGenericProp('ciationGCMDXmlLink');
+    },
+    ciationBibtexXmlLink() {
+      return this.mixinMethods_getGenericProp('ciationBibtexXmlLink');
+    },
+    ciationRisXmlLink() {
+      return this.mixinMethods_getGenericProp('ciationRisXmlLink');
     },
     fixedHeight() {
       return this.mixinMethods_getGenericProp('fixedHeight');
@@ -130,5 +198,4 @@ export default {
 };
 
 </script>
-
 

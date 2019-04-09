@@ -61,8 +61,13 @@
 <script>
   export default {
     props: {
-      details: Array,
+      genericProps: Object,
       showPlaceholder: Boolean,
+    },
+    computed:{
+      details() {
+        return this.mixinMethods_getGenericProp('details');
+      },
     },
     data: () => ({
       maxSingleTextLengthLg: 80,
