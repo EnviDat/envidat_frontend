@@ -73,11 +73,11 @@ module.exports = {
 
     let text = '';
     if (publication) {
-      text = `${authors.trim()} (${publication.publication_year}). ${publication.publisher},`;
+      text += `${authors.trim()} (${publication.publication_year}). ${dataset.title}. ${publication.publisher}. `;
     }
 
     if (dataset.doi) {
-      text += ` doi: ${dataset.doi}`;
+      text += ` doi: ${dataset.doi} .`;
     }
 
     return {
@@ -86,6 +86,8 @@ module.exports = {
       citationXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/datacite.xml`,
       ciationIsoXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/iso19139.xml`,
       ciationGCMDXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/gcmd_dif.xml`,
+      ciationBibtexXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/bibtex.bib`,
+      ciationRisXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/ris.ris`,
     };
   },
   createResources: function createResources(dataset) {

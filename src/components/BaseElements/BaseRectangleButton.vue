@@ -64,3 +64,10 @@ export default {
 };
 
 </script>
+
+<style scoped>
+  .citationButton > .v-btn__content > i.v-icon.material-icons.theme--light.white--text {
+    padding-right: 5px !important;
+  }
+
+</style>
