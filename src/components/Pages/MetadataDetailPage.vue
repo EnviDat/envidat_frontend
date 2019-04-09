@@ -37,7 +37,6 @@
                 >
           <component :is="entry"
                       :genericProps="entry.genericProps"
-                      v-on:click.native="alert('click ' + entry.props);"
                       :showPlaceholder="showPlaceholder"
                       />
         </v-flex>
@@ -178,6 +177,12 @@
           this.$set(components.MetadataCitation, 'genericProps', this.citation);
 
           this.resources = metaDataFactory.createResources(currentContent);
+          this.resources.doiIcon = this.doiIcon;
+          this.resources.downloadIcon = this.downloadIcon;
+          this.resources.linkIcon = this.linkIcon;
+          this.resources.fileSizeIcon = this.fileSizeIcon;
+          this.resources.dateCreatedIcon = this.dateCreatedIcon;
+          this.resources.lastModifiedIcon = this.lastModifiedIcon;
           this.$set(components.MetadataResources, 'genericProps', this.resources);
 
           this.location = metaDataFactory.createLocation(currentContent);

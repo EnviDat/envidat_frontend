@@ -22,11 +22,11 @@
           <resource-card v-bind="res"
                         :doiIcon="doiIcon"
                         :linkIcon="linkIcon"
-                        :downloadIcon="getGenericProp('downloadIcon')"
-                        :fileSizeIcon="getGenericProp('fileSizeIcon')"
-                        :dateCreatedIcon="getGenericProp('dateCreatedIcon')"
-                        :lastModifiedIcon="getGenericProp('lastModifiedIcon')"
-                        :twoColumnLayout="getGenericProp('twoColumnLayout')"
+                        :downloadIcon="downloadIcon"
+                        :fileSizeIcon="fileSizeIcon"
+                        :dateCreatedIcon="dateCreatedIcon"
+                        :lastModifiedIcon="lastModifiedIcon"
+                        :twoColumnLayout="twoColumnLayout"
                         v-on:clicked="resClicked(res)" />
 
         </v-flex>

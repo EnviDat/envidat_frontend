@@ -45,6 +45,15 @@
     mounted: function mounted() {
     },
     computed: {
+      doi() {
+        return this.mixinMethods_getGenericProp('doi');
+      },
+      title() {
+        return this.mixinMethods_getGenericProp('title');
+      },
+      id() {
+        return this.mixinMethods_getGenericProp('id');
+      },
       description() {
         return this.mixinMethods_getGenericProp('description');
       },
@@ -71,10 +80,6 @@
     //   }
     // },
     data: () => ({
-      id: null,
-      title: null,
-      doi: '',
-      // description: '',
       isOnTop: false,
       showPlaceholder: false,
       showFullDescription: false,
