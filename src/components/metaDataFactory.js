@@ -146,8 +146,7 @@ module.exports = {
 
     details.push({ label: 'MetadataId', text: dataset.id });
 
-
-    return details;
+    return { details };
   },
   createLicense: function createLicense(dataset) {
     const license = {};

@@ -88,15 +88,8 @@ import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 
 export default {
   props: {
-    id: String,
-    citationText: String,
-    citationXmlLink: String,
-    ciationIsoXmlLink: String,
-    ciationGCMDXmlLink: String,
-    fixedHeight: Boolean,
+    genericProps: Object,
     showPlaceholder: Boolean,
-  },
-  mounted: function mounted() {
   },
   data: () => ({
     emptyText: 'No citation found for this dataset',

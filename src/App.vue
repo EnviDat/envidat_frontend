@@ -176,9 +176,6 @@
     components: {
       TheNavBarView,
     },
-    props: {
-      source: String,
-    },
   };
 </script>
 

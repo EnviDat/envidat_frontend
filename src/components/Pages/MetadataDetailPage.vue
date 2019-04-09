@@ -3,172 +3,59 @@
               tag="article"
               pa-0
   >
-              <!-- v-bind="{ [`pa-0`]: this.$vuetify.breakpoint.smAndDown,
-                        [`pa-2`]: this.$vuetify.breakpoint.mdAndUp }" -->
 
-    <div v-if="currentMetadataContent">
-      
-      <v-layout row wrap v-if="twoColumnLayout">
+  <v-layout row wrap>
 
-        <v-flex xs12
-                md8 offset-md2
-                lg10 offset-lg1
-                elevation-5
-                style="z-index: 1;">
+    <v-flex xs12
+            lg10 offset-lg1
+            elevation-5
+            style="z-index: 1;">
 
-          <metadata-header v-bind="header"
-                            v-on:clickedTag="catchTagClicked"
-                            v-on:clickedBack="catchBackClicked"
-                            v-on:clickedAuthor="catchAuthorClicked"
-                            :showPlaceholder="showPlaceholder"
-                            :doiIcon="doiIcon"
-                            :contactIcon="contactIcon"
-                            :mailIcon="mailIcon"
-                            :licenseIcon="licenseIcon"
-                            />
+      <metadata-header v-bind="header"
+                        v-on:clickedTag="catchTagClicked"
+                        v-on:clickedBack="catchBackClicked"
+                        v-on:clickedAuthor="catchAuthorClicked"
+                        :showPlaceholder="showPlaceholder"
+                        :doiIcon="doiIcon"
+                        :contactIcon="contactIcon"
+                        :mailIcon="mailIcon"
+                        :licenseIcon="licenseIcon"
+                        />
 
-        </v-flex>
+    </v-flex>
+  </v-layout>
 
-        <v-flex 
-                v-bind="leftOrFullWidth"
-                mb-2 
-                style="z-index: 0;">
+  <two-column-layout :firstColumn="$vuetify.breakpoint.mdAndUp ? firstColumn : singleColumn"
+                      :secondColumn="$vuetify.breakpoint.mdAndUp ? secondColumn : []"
+                      :showPlaceholder="showPlaceholder"
+                      >
 
-          <v-layout column>
-
-            <v-flex mb-2 >
-              <metadata-body v-bind="body" :isOnTop="true" 
-                              :showPlaceholder="showPlaceholder" />
-            </v-flex>
-
-            <v-flex mb-2>
-              <metadata-citation v-bind="citation"
-                                  :showPlaceholder="showPlaceholder" />
-            </v-flex>
-
-            <v-flex mb-2>
-              <metadata-location v-bind="location" />
-            </v-flex>
-
-            <v-flex mb-2 v-if="showDetailsOnTheLeft">
-              <metadata-details :details="details"
-                              :showPlaceholder="showPlaceholder" />
-            </v-flex>
-
-          </v-layout>
-        </v-flex>
-
-
-        <v-flex 
-                v-bind="rightOrFullWidth"
-                mb-2 
-                style="z-index: 0;">
-
-          <v-layout row wrap>
-            <v-flex xs12 mb-2>
-              <metadata-resources v-bind="resources"
-                                  :isOnTop="true"
-                                  :twoColumnLayout="twoColumnLayout"
-                                  :showPlaceholder="showPlaceholder"
-                                  :doiIcon="doiIcon"
-                                  :downloadIcon="downloadIcon"
-                                  :linkIcon="linkIcon"
-                                  :fileSizeIcon="fileSizeIcon"
-                                  :dateCreatedIcon="dateCreatedIcon"
-                                  :lastModifiedIcon="lastModifiedIcon"
-                                  />
-
-            </v-flex>
-
-            <v-flex xs12 mb-2 v-if="!showDetailsOnTheLeft">
-              <metadata-details :details="details"
-                                :showPlaceholder="showPlaceholder" />
-            </v-flex>
-
-          </v-layout>
-        </v-flex>
-
-      </v-layout>
-
-      <v-layout row wrap v-if="!twoColumnLayout">
-
-        <v-flex xs12
-                md10 offset-md1
-                elevation-5
-                style="z-index: 1;">
-
-          <metadata-header v-bind="header"
-                            v-on:clickedTag="catchTagClicked"
-                            v-on:clickedBack="catchBackClicked"
-                            v-on:clickedAuthor="catchAuthorClicked"
-                            :showPlaceholder="showPlaceholder"
-                            :doiIcon="doiIcon"
-                            :contactIcon="contactIcon"
-                            :mailIcon="mailIcon"
-                            :licenseIcon="licenseIcon"
-                            />
-
-        </v-flex>
-
-        <v-flex xs12
-                v-bind="leftOrFullWidth"
-                mb-2 
-                style="z-index: 0;">
-
-          <metadata-body v-bind="body" :isOnTop="true"
-                          :showPlaceholder="showPlaceholder" />
-        </v-flex>
-
-        <v-flex xs12
-                mb-2 
-                v-bind="rightOrFullWidth"
-                 >
-
-          <metadata-citation v-bind="citation" :fixedHeight="twoColumnLayout"
-                              :showPlaceholder="showPlaceholder" />
-        </v-flex>
-
-        <v-flex xs12
-                mb-2
-                v-bind="fullWidthPadding"
+      <template v-slot:leftColumn v-bind:firstColumn="firstColumn">
+        <v-flex mb-2
+                v-for="(entry, index) in firstColumn"
+                :key="`left_${index}`"
                 >
-
-          <metadata-resources v-bind="resources"
-                              :twoColumnLayout="twoColumnLayout"
-                              :showPlaceholder="showPlaceholder"
-                              :doiIcon="doiIcon"
-                              :downloadIcon="downloadIcon"
-                              :linkIcon="linkIcon"
-                              :fileSizeIcon="fileSizeIcon"
-                              :dateCreatedIcon="dateCreatedIcon"
-                              :lastModifiedIcon="lastModifiedIcon"
-                              />
+          <component :is="entry"
+                      :genericProps="entry.genericProps"
+                      :showPlaceholder="showPlaceholder"
+                      />
         </v-flex>
+      </template>
 
-        <v-flex xs12
-                mb-2
-                v-bind="fullWidthPadding"
+      <template v-slot:rightColumn v-bind:secondColumn="secondColumn">
+        <v-flex mb-2
+                v-for="(entry, index) in secondColumn"
+                :key="`right_${index}`"
                 >
-          <metadata-location v-bind="location" />
+          <component :is="entry"
+                      :genericProps="entry.genericProps"
+                      :showPlaceholder="showPlaceholder"
+                      />
         </v-flex>
+      </template>
 
-        <v-flex xs12
-                mb-2
-                v-bind="fullWidthPadding"
-                >
-          <metadata-details :details="details"
-                              :showPlaceholder="showPlaceholder" />
-        </v-flex>
+  </two-column-layout>
 
-      </v-layout>
-    </div>
-
-    <div v-else> 
-
-        <not-found-view :backPath="notFoundBackPath">
-        </not-found-view>
-
-    </div>
   </v-container>
 </template>
 
@@ -194,6 +81,7 @@
   import MetadataCitation from '@/components/MetadataDetailViews/MetadataCitation';
   import NotFoundView from '@/components/Errors/NotFoundView';
   import metaDataFactory from '@/components/metaDataFactory';
+  import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
 
   // import { LOAD_METADATAS_CONTENT } from '@/store/metadataMutationsConsts';
 
@@ -266,101 +154,6 @@
       showPlaceholder: function showPlaceholder() {
         return this.loadingMetadatasContent || this.loadingCurrentMetadataContent;
       },
-      /**
-       * @returns {Boolean}
-       */
-      leftOrFullWidth: function leftOrFullWidth() {
-        return this.twoColumnLayout ? this.halfWidthLeft : this.fullWidthPadding;
-      },
-      /**
-       * @returns {Boolean}
-       */
-      rightOrFullWidth: function rightOrFullWidth() {
-        return this.twoColumnLayout ? this.halfWidthRight : this.fullWidthPadding;
-      },
-      /**
-       * @returns {Boolean}
-       */
-      twoColumnLayout: function twoColumnLayout() {
-        return this.$vuetify.breakpoint.lgAndUp;
-      },
-      /**
-       * @returns {Object} with the diffent paddings based on the screen size (this.$vuetify.breakpoint)
-       */
-      fullWidthPadding: function fullwidthPadding() {
-        const json = {
-          md10: true,
-          'offset-md1': true,
-        };
-
-        if (this.$vuetify.breakpoint.xsOnly) {
-          json['px-1'] = true;
-        } else if (this.$vuetify.breakpoint.mdAndUp
-          && this.$vuetify.breakpoint.lgAndDown) {
-          json['px-2'] = true;
-        } else if (this.$vuetify.breakpoint.lgAndUp) {
-          json['px-3'] = true;
-        }
-
-        return json;
-      },
-      /**
-       * @description
-       * @returns {any}
-       */
-      halfWidthLeft: function halfWidthLeft() {
-        const json = {
-          md4: true,
-          'offset-md2': true,
-          lg5: true,
-          'offset-lg1': true,
-        };
-
-        if (this.$vuetify.breakpoint.xsOnly) {
-          json['px-1'] = true;
-        } else if (this.$vuetify.breakpoint.mdAndUp
-          && this.$vuetify.breakpoint.lgAndDown) {
-          json['pl-2'] = true;
-          json['pr-1'] = true;
-        } else if (this.$vuetify.breakpoint.lgAndUp) {
-          json['pl-3'] = true;
-          json['pr-1'] = true;
-        }
-
-        return json;
-      },
-      /**
-       * @description
-       * @returns {any}
-       */
-      halfWidthRight: function halfWidthRight() {
-        const json = {
-          md4: true,
-          lg5: true,
-        };
-
-        if (this.$vuetify.breakpoint.xsOnly) {
-          json['px-1'] = true;
-        } else if (this.$vuetify.breakpoint.mdAndUp
-          && this.$vuetify.breakpoint.lgAndDown) {
-          json['pl-1'] = true;
-          json['pr-2'] = true;
-        } else if (this.$vuetify.breakpoint.lgAndUp) {
-          json['pl-1'] = true;
-          json['pr-3'] = true;
-        }
-
-        return json;
-      },
-      /**
-       * @description
-       * @returns {any}
-       */
-      showDetailsOnTheLeft: function showDetailsOnTheLeft() {
-        const left = this.resources
-        && this.resources.resources.length > this.amountOfResourcesToShowDetailsLeft;
-        return left;
-      },
     },
     methods: {
       /**
@@ -368,17 +161,56 @@
        */
       createMetadataContent: function createMetadataContent() {
         let currentContent = this.currentMetadataContent;
+        const components = this.$options.components;
 
         currentContent = this.mixinMethods_enhanceMetadataEntry(currentContent, this.cardBGImages);
 
         if (currentContent && currentContent.title !== undefined) {
           // console.log("create content " + currentContent.spatial + " " + this.header);
           this.header = metaDataFactory.createHeader(currentContent, this.$vuetify.breakpoint);
+          this.$set(components.MetadataHeader, 'genericProps', this.header);
+
           this.body = metaDataFactory.createBody(currentContent);
+          this.$set(components.MetadataBody, 'genericProps', this.body);
+
           this.citation = metaDataFactory.createCitation(currentContent);
+          this.$set(components.MetadataCitation, 'genericProps', this.citation);
+
           this.resources = metaDataFactory.createResources(currentContent);
+          this.resources.doiIcon = this.doiIcon;
+          this.resources.downloadIcon = this.downloadIcon;
+          this.resources.linkIcon = this.linkIcon;
+          this.resources.fileSizeIcon = this.fileSizeIcon;
+          this.resources.dateCreatedIcon = this.dateCreatedIcon;
+          this.resources.lastModifiedIcon = this.lastModifiedIcon;
+          this.$set(components.MetadataResources, 'genericProps', this.resources);
+
           this.location = metaDataFactory.createLocation(currentContent);
+          this.$set(components.MetadataLocation, 'genericProps', this.location);
+
           this.details = metaDataFactory.createDetails(currentContent);
+          this.$set(components.MetadataDetails, 'genericProps', this.details);
+
+          this.firstColumn = [
+            components.MetadataBody,
+            components.MetadataCitation,
+            components.MetadataLocation,
+          ];
+
+          this.secondColumn = [
+            components.MetadataResources,
+            components.MetadataDetails,
+          ];
+
+          this.singleColumn = [
+            components.MetadataBody,
+            components.MetadataCitation,
+            components.MetadataResources,
+            components.MetadataLocation,
+            components.MetadataDetails,
+          ];
+
+          this.$forceUpdate();
         }
       },
       /**
@@ -488,7 +320,15 @@
       PageBGImage: './app_b_browsepage.jpg',
       header: null,
       body: null,
-      citation: null,
+      citation: {
+        id: String,
+        citationText: String,
+        citationXmlLink: String,
+        ciationIsoXmlLink: String,
+        ciationGCMDXmlLink: String,
+        fixedHeight: Boolean,
+        showPlaceholder: Boolean,
+      },
       resources: null,
       location: null,
       details: null,
@@ -503,6 +343,14 @@
       contactIcon: null,
       mailIcon: null,
       licenseIcon: null,
+      // firstColumn: ['B', 'C', 'L'],
+      // secondColumn: ['R', 'D'],
+      // singleColumn: ['B', 'C', 'R', 'L', 'D'],
+      firstColumn: [],
+      // secondColumn: [MetadataResources, MetadataDetails],
+      secondColumn: [],
+      // singleColumn: [MetadataBody, MetadataCitation, MetadataResources, MetadataLocation, MetadataDetails],
+      singleColumn: [],
     }),
     components: {
       MetadataHeader,
@@ -512,6 +360,7 @@
       MetadataDetails,
       MetadataCitation,
       NotFoundView,
+      TwoColumnLayout,
     },
   };
 </script>

@@ -54,12 +54,7 @@
 
   export default {
     props: {
-      title: String,
-      isPolygon: Boolean,
-      isPoint: Boolean,
-      isMultiPoint: Boolean,
-      pointArray: Array,
-      geoJSON: String,
+      genericProps: Object,
     },
     mounted: function mounted() {
       this.setupMap();
@@ -69,9 +64,25 @@
         this.map.remove();
       }
     },
-    updated: function updated() {
-    },
     computed: {
+      title() {
+        return this.mixinMethods_getGenericProp('title');
+      },
+      isPolygon() {
+        return this.mixinMethods_getGenericProp('isPolygon');
+      },
+      isPoint() {
+        return this.mixinMethods_getGenericProp('isPoint');
+      },
+      isMultiPoint() {
+        return this.mixinMethods_getGenericProp('isMultiPoint');
+      },
+      pointArray() {
+        return this.mixinMethods_getGenericProp('pointArray');
+      },
+      geoJSON() {
+        return this.mixinMethods_getGenericProp('geoJSON');
+      },
       isEmpty: function isEmpty() {
         return !this.pointArray && !this.geoJSON;
       },
