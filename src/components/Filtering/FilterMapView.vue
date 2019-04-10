@@ -420,13 +420,13 @@ export default {
           try {
             el.addTo(this.map);
           } catch (error) {
-            console.log('showMapElements error: ' + error + ' on element ' + el.title);
+            console.log(`showMapElements error: ${error} on element ${el.title}`);
           }
         } else {
           try {
             this.map.removeLayer(el);
           } catch (error) {
-            console.log('showMapElements remove error: ' + error + ' on element ' + el.title);
+            console.log(`showMapElements error: ${error} on element ${el.title}`);
           }
         }
       });
