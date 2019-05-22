@@ -183,7 +183,7 @@ export default {
     // const url = `${SOLR_PROXY}${SOLR_API_BASE}select&q=title:*&wt=json&rows=1000`;
 
     // const url = '/api/action/current_package_list_with_resources&limit=1000&offset=0';
-    const url = urlRewrite('/api/action/current_package_list_with_resources?limit=1000&offset=0', '', '');
+    const url = urlRewrite('/api/action/current_package_list_with_resources?limit=1000&offset=0', '', ENVIDAT_PROXY);
 
     axios.get(url)
       .then((response) => {
