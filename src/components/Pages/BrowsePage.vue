@@ -293,7 +293,7 @@
           }
         }
 
-        const isABack = this.$router.options.isSameRoute(this.$route, fromRoute);
+        const isBackNavigation = this.$router.options.isSameRoute(this.$route, fromRoute);
         const tagsChanged = this.loadRouteTags();
         const searchParameter = this.$route.query.search ? this.$route.query.search : '';
         const checkSearchTriggering = searchParameter !== this.searchTerm;
@@ -304,16 +304,24 @@
           this.searchTerm = searchParameter;
         }
 
-        if (isABack) {
+        if (isBackNavigation) {
           // only set the scroll position because it's a back navigation
-          if (this.controls.includes(1)) {
-            // if the map-filtering is active use a delay
-            setTimeout(() => {
-              this.setScrollPositionOnList(this.browseScrollPosition);
-            }, 0);
-          } else {
+          // if (this.controls.includes(1)) {
+          //   // if the map-filtering is active use a delay
+          //   setTimeout(() => {
+          //     this.setScrollPositionOnList(this.browseScrollPosition);
+          //   }, 0);
+          // } else {
+          //   this.setScrollPositionOnList(this.browseScrollPosition);
+          // }
+
+          // setTimeout(() => {
+          //   this.setScrollPositionOnList(this.browseScrollPosition);
+          // }, 300);
+
+          this.$nextTick(() => {
             this.setScrollPositionOnList(this.browseScrollPosition);
-          }
+          });
         } else {
           if (checkSearchTriggering) {
             if (this.searchTerm && this.searchTerm.length > 0) {

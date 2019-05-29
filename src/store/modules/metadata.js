@@ -19,6 +19,9 @@ const initialState = {
   searchingMetadatasContentOK: false,
   isFilteringContent: false,
   filteredContent: [],
+  // vProperties for the virtualList of the MetadataCards
+  vIndex: 0,
+  vReloadAmount: 9,
   pinnedIds: [],
   allTags: tags,
   loadingAllTags: false,
@@ -46,6 +49,8 @@ export const metadata = {
     currentMetadataContent: state => state.currentMetadataContent,
     isFilteringContent: state => state.isFilteringContent,
     filteredContent: state => state.filteredContent,
+    vIndex: state => state.vIndex,
+    vReloadAmount: state => state.vReloadAmount,
     pinnedIds: state => state.pinnedIds,
     allTags: state => state.allTags,
     loadingAllTags: state => state.loadingAllTags,
