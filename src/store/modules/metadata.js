@@ -40,8 +40,9 @@ const initialState = {
    */
   vIndex: 0,
   vReloadAmount: 9,
-  vReloadDelay: 250,
-  scrollPositionDelay: this.vReloadDelay + 50,
+  vReloadDelay: 150,
+  // scrollPositionDelay has to be more than the vReloadDelay
+  scrollPositionDelay: 200,
   /**
    * Pinned Elements from the MapFilter
    */

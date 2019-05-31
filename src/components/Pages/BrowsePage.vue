@@ -157,15 +157,12 @@
 
         return true;
       },
-      setScrollPositionOnList: function setScrollPositionOnList(pos) {
-        window.scrollTo(0, pos);
-      },
       storeScroll: function storeScroll(scrollY) {
         this.$store.commit(SET_BROWSE_SCROLL_POSITION, scrollY);
       },
       resetScrollPosition: function resetScrollPosition() {
         this.storeScroll(0);
-        this.setScrollPositionOnList(0);
+        this.mixinMethods_setScrollPosition(0);
       },
       catchTagClicked: function catchTagClicked(tagName) {
         if (!this.isTagSelected(tagName)) {
@@ -307,7 +304,7 @@
         if (isBackNavigation) {
           // use a delayed scroll position setup because the list as to be loaded first
           setTimeout(() => {
-            this.setScrollPositionOnList(this.browseScrollPosition);
+            this.mixinMethods_setScrollPosition(this.browseScrollPosition);
           }, this.scrollPositionDelay);
         } else {
           if (checkSearchTriggering) {
@@ -429,7 +426,7 @@
       },
       isFilteringContent: function watchFiltering() {
         if (!this.isFilteringContent) {
-          this.setScrollPositionOnList(this.browseScrollPosition);
+          this.mixinMethods_setScrollPosition(this.browseScrollPosition);
         }
       },
       metadatasContent: function watchFilterContent() {

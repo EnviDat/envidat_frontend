@@ -269,5 +269,11 @@ export default {
 
       return parseFloat((a/Math.pow(c,f)).toFixed(d))+" "+e[f];
     },
+    /**
+     * @param {Number} pos Sets the position to the main scroll position of the main
+     */
+    mixinMethods_setScrollPosition: function mixinMethods_setScrollPosition(pos) {
+      window.scrollTo(0, pos);
+    },
   },
 };

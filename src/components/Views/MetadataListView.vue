@@ -85,7 +85,24 @@
                             spinner="waveDots"
                             :identifier="infiniteId"
                             :distance="preloadingDistance"
-                            />
+                            >
+            <div slot="no-results">
+              <!-- for the case of a back Navigation -->
+              <BaseRectangleButton v-if="vIndex > 0 && vIndex > vReloadAmount"
+                                    @clicked="mixinMethods_setScrollPosition(0);"
+                                    :buttonText="scrollTopButtonText"
+                                    :isSmall="true"
+                                    :isFlat="true"
+                                    />
+            </div>
+            <div slot="no-more">
+              <BaseRectangleButton @clicked="mixinMethods_setScrollPosition(0);"
+                                    :buttonText="scrollTopButtonText"
+                                    :isSmall="true"
+                                    :isFlat="true"
+                                    />
+            </div>
+          </infinite-loading>
         </v-flex>
 
         <v-flex xs12 mx-2 
@@ -117,6 +134,7 @@
     SET_DETAIL_PAGE_BACK_URL,
     SET_VIRTUAL_LIST_INDEX,
   } from '@/store/metadataMutationsConsts';
+  import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
   // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
 export default {
@@ -136,6 +154,7 @@ export default {
       vLoading: false,
       infiniteId: +new Date(),
       preloadingDistance: 200,
+      scrollTopButtonText: 'Scroll to the top',
     }),
     beforeMount: function beforeMount() {
       this.fileIconString = this.mixinMethods_getIcon('file');
@@ -198,7 +217,7 @@ export default {
         that.vLoading = true;
         // console.log("loading list from " + that.vIndex + " to " + (that.vIndex + that.vReloadAmount) );
 
-        if (that.filteredContentSize <= 0){
+        if (that.filteredContentSize <= 0 && $state){
           $state.complete();
           return;
         }
@@ -287,6 +306,7 @@ export default {
       NoSearchResultsView,
       MetadataCard,
       MetadataCardPlaceholder,
+      BaseRectangleButton,
     },
 
 };
