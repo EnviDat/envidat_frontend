@@ -157,15 +157,12 @@
 
         return true;
       },
-      setScrollPositionOnList: function setScrollPositionOnList(pos) {
-        window.scrollTo(0, pos);
-      },
       storeScroll: function storeScroll(scrollY) {
         this.$store.commit(SET_BROWSE_SCROLL_POSITION, scrollY);
       },
       resetScrollPosition: function resetScrollPosition() {
         this.storeScroll(0);
-        this.setScrollPositionOnList(0);
+        this.mixinMethods_setScrollPosition(0);
       },
       catchTagClicked: function catchTagClicked(tagName) {
         if (!this.isTagSelected(tagName)) {
@@ -293,7 +290,7 @@
           }
         }
 
-        const isABack = this.$router.options.isSameRoute(this.$route, fromRoute);
+        const isBackNavigation = this.$router.options.isSameRoute(this.$route, fromRoute);
         const tagsChanged = this.loadRouteTags();
         const searchParameter = this.$route.query.search ? this.$route.query.search : '';
         const checkSearchTriggering = searchParameter !== this.searchTerm;
@@ -304,16 +301,11 @@
           this.searchTerm = searchParameter;
         }
 
-        if (isABack) {
-          // only set the scroll position because it's a back navigation
-          if (this.controls.includes(1)) {
-            // if the map-filtering is active use a delay
-            setTimeout(() => {
-              this.setScrollPositionOnList(this.browseScrollPosition);
-            }, 0);
-          } else {
-            this.setScrollPositionOnList(this.browseScrollPosition);
-          }
+        if (isBackNavigation) {
+          // use a delayed scroll position setup because the list as to be loaded first
+          setTimeout(() => {
+            this.mixinMethods_setScrollPosition(this.browseScrollPosition);
+          }, this.scrollPositionDelay);
         } else {
           if (checkSearchTriggering) {
             if (this.searchTerm && this.searchTerm.length > 0) {
@@ -358,6 +350,7 @@
         detailPageBackRoute: 'metadata/detailPageBackRoute',
         aboutPageBackRoute: 'metadata/aboutPageBackRoute',
         updatingTags: 'metadata/updatingTags',
+        scrollPositionDelay: 'metadata/scrollPositionDelay',
         browseScrollPosition: 'browseScrollPosition',
         controls: 'controls',
         cardBGImages: 'cardBGImages',
@@ -433,7 +426,7 @@
       },
       isFilteringContent: function watchFiltering() {
         if (!this.isFilteringContent) {
-          this.setScrollPositionOnList(this.browseScrollPosition);
+          this.mixinMethods_setScrollPosition(this.browseScrollPosition);
         }
       },
       metadatasContent: function watchFilterContent() {

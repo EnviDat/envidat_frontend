@@ -4,11 +4,13 @@ import 'babel-polyfill';
 import Vue from 'vue';
 import Vuetify from 'vuetify';
 import Vue2Filters from 'vue2-filters';
+import InfiniteLoading from 'vue-infinite-loading';
 import App from './App';
 import router from './router';
 import store from './store/store';
 import globalMethods from './components/globalMethods';
 
+Vue.use(InfiniteLoading /* , { options } */);
 Vue.use(Vue2Filters);
 
 Vue.use(Vuetify, {

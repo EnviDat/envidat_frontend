@@ -23,6 +23,7 @@ import {
   CLEAR_PINNED_METADATA,
   SET_DETAIL_PAGE_BACK_URL,
   SET_ABOUT_PAGE_BACK_URL,
+  SET_VIRTUAL_LIST_INDEX,
 } from '@/store/metadataMutationsConsts';
 
 const conversion = require('./conversion');
@@ -161,5 +162,8 @@ export default {
   },
   [SET_ABOUT_PAGE_BACK_URL](state, payload) {
     state.aboutPageBackRoute = payload;
+  },
+  [SET_VIRTUAL_LIST_INDEX](state, payload) {
+    state.vIndex = payload;
   },
 };
