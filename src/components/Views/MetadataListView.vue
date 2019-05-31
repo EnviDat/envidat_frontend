@@ -54,7 +54,8 @@
 
         <v-flex v-if="!loading && !isPinned(metadata.id)"
                 v-bind="cardGridClass"
-                v-for="(metadata, index) in virtualListContent" :key="'filtered_' + index"
+                v-for="(metadata, index) in virtualListContent"
+                :key="'filtered_' + index"
                 >
 
             <metadata-card 
@@ -82,6 +83,8 @@
         <v-flex xs12 mx-2 key="infiniteLoader" >
           <infinite-loading @infinite="infiniteHandler"
                             spinner="waveDots"
+                            :identifier="infiniteId"
+                            :distance="preloadingDistance"
                             />
         </v-flex>
 
@@ -131,6 +134,8 @@ export default {
       unlockedIconString: null,
       virtualListContent: [],
       vLoading: false,
+      infiniteId: +new Date(),
+      preloadingDistance: 200,
     }),
     beforeMount: function beforeMount() {
       this.fileIconString = this.mixinMethods_getIcon('file');
@@ -151,6 +156,7 @@ export default {
         filteredContent: 'metadata/filteredContent',
         vIndex: 'metadata/vIndex',
         vReloadAmount: 'metadata/vReloadAmount',
+        vReloadDelay: 'metadata/vReloadDelay',
         isFilteringContent: 'metadata/isFilteringContent',
         pinnedIds: 'metadata/pinnedIds',
       }),
@@ -199,7 +205,7 @@ export default {
 
 
         // use a small timeout to show the loading?
-        // setTimeout(() => {
+        setTimeout(() => {
           let i = 0;
 
           if (that.virtualListContent.length > 0){
@@ -223,7 +229,7 @@ export default {
 
           that.vLoading = false;
           // console.log("loaded to " + that.vIndex );
-        // }, 250);          
+        }, this.vReloadDelay);          
       },
       contentSize: function contentSize(content) {
         return content !== undefined ? Object.keys(content).length : 0;
@@ -273,6 +279,7 @@ export default {
       filteredContentSize: function resetVirtualContent(){
         this.$store.commit(`metadata/${SET_VIRTUAL_LIST_INDEX}`, 0);
         this.virtualListContent = [];
+        this.infiniteId += 1;        
         this.infiniteHandler();
       }, 
     },

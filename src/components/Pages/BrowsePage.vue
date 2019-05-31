@@ -305,23 +305,10 @@
         }
 
         if (isBackNavigation) {
-          // only set the scroll position because it's a back navigation
-          // if (this.controls.includes(1)) {
-          //   // if the map-filtering is active use a delay
-          //   setTimeout(() => {
-          //     this.setScrollPositionOnList(this.browseScrollPosition);
-          //   }, 0);
-          // } else {
-          //   this.setScrollPositionOnList(this.browseScrollPosition);
-          // }
-
-          // setTimeout(() => {
-          //   this.setScrollPositionOnList(this.browseScrollPosition);
-          // }, 300);
-
-          this.$nextTick(() => {
+          // use a delayed scroll position setup because the list as to be loaded first
+          setTimeout(() => {
             this.setScrollPositionOnList(this.browseScrollPosition);
-          });
+          }, this.scrollPositionDelay);
         } else {
           if (checkSearchTriggering) {
             if (this.searchTerm && this.searchTerm.length > 0) {
@@ -366,6 +353,7 @@
         detailPageBackRoute: 'metadata/detailPageBackRoute',
         aboutPageBackRoute: 'metadata/aboutPageBackRoute',
         updatingTags: 'metadata/updatingTags',
+        scrollPositionDelay: 'metadata/scrollPositionDelay',
         browseScrollPosition: 'browseScrollPosition',
         controls: 'controls',
         cardBGImages: 'cardBGImages',

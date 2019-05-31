@@ -6,32 +6,67 @@ import categorycards from './categorycards';
 import tags from './tags';
 
 const initialState = {
+  /**
+   * metadataIds properties are used for step by step loading all the metadata
+   */
   loadingMetadataIds: false,
   metadataIdsOK: false,
   metadataIds: [],
+  /**
+   * metadatasContent properties are used for "bulk" loading all the metadata when the app starts up
+   */
   loadingMetadatasContent: false,
+  loadingCurrentMetadataContent: false,
   metadatasContentOK: false,
   metadatasContent: {},
-  loadingCurrentMetadataContent: false,
-  currentMetadataContent: {},
+  /**
+   * the Search properties used when the users makes a full text search
+   */
   searchedMetadatasContent: {},
   searchingMetadatasContent: false,
   searchingMetadatasContentOK: false,
+  /**
+   * filteredContent is the Metadata which is actually shown on the BrowsePage
+   */
   isFilteringContent: false,
   filteredContent: [],
-  // vProperties for the virtualList of the MetadataCards
+  /**
+   * currentMetadataContent is set when clicking on a MetadataCard / entry
+   * it's used by the MetadataDetailPage
+   */
+  currentMetadataContent: {},
+  /**
+   * virtual List properties for MetaDataCards of the BrowsePage via MetadataListView
+   */
   vIndex: 0,
   vReloadAmount: 9,
+  vReloadDelay: 250,
+  scrollPositionDelay: this.vReloadDelay + 50,
+  /**
+   * Pinned Elements from the MapFilter
+   */
   pinnedIds: [],
+  /**
+   * FilterBar properties
+   */
   allTags: tags,
   loadingAllTags: false,
   updatingTags: false,
   popularTags: [],
   loadingPopularTags: false,
+  /**
+   * Route properties
+   */
   detailPageBackRoute: null,
   aboutPageBackRoute: null,
-  error: Object,
+  /**
+   * static category cards for the suggestions of search categories
+   */
   categorycards,
+  /**
+   * Error properties for general Error handling in the app (incomplete)
+   */
+  error: Object,
 };
 
 export const metadata = {
@@ -51,6 +86,8 @@ export const metadata = {
     filteredContent: state => state.filteredContent,
     vIndex: state => state.vIndex,
     vReloadAmount: state => state.vReloadAmount,
+    vReloadDelay: state => state.vReloadDelay,
+    scrollPositionDelay: state => state.scrollPositionDelay,
     pinnedIds: state => state.pinnedIds,
     allTags: state => state.allTags,
     loadingAllTags: state => state.loadingAllTags,
