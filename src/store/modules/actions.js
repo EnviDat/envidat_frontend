@@ -149,10 +149,11 @@ export default {
     const titleQuery = `{! q.op=OR df=title}${searchTerm}`;
     const authorQuery = `{! df=author}${searchTerm}`;
 
-    const url = urlRewrite(`select?indent=on&q=${titleQuery} OR ${notesQuery} OR ${authorQuery}&wt=json&rows=1000`, SOLR_API_BASE, SOLR_PROXY);
+    // const url = urlRewrite(`select?q=${titleQuery} OR ${notesQuery} OR ${authorQuery}&wt=json&rows=1000`, SOLR_API_BASE, SOLR_PROXY);
+    const url = urlRewrite(`select?q=title:${searchTerm} OR notes:${searchTerm} OR author:${searchTerm}&wt=json&rows=1000`, SOLR_API_BASE, SOLR_PROXY);
 
     // const url = `/api/search/dataset?q=${searchTerm}`;
-    // const url = urlRewrite(`/api/search/dataset?q=${searchTerm}`, '', '');
+    // const url = urlRewrite(`/api/search/dataset?q=${searchTerm}&rows=1000`, '', ENVIDAT_PROXY);
 
     axios.get(url)
       .then((response) => {
