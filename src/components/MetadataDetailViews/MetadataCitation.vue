@@ -143,7 +143,7 @@ export default {
     citationLinks() {
       return [{
         text: 'DataCite',
-        toolTipText: 'Download XML citation',
+        toolTipText: 'Download DataCite XML citation',
         url: this.citationXmlLink,
       },
       {

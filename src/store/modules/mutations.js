@@ -35,7 +35,6 @@ export default {
     state.searchedMetadatasContent = {};
   },
   [SEARCH_METADATA_SUCCESS](state, payload, showRestrictedContent = false) {
-
     /* eslint-disable no-underscore-dangle */
     for (let i = 0; i < payload.length; i++) {
       const element = payload[i];
@@ -105,7 +104,6 @@ export default {
     state.metadatasContent = {};
   },
   [BULK_LOAD_METADATAS_CONTENT_SUCCESS](state, payload, showRestrictedContent) {
-
     /* eslint-disable no-underscore-dangle */
     for (let i = 0; i < payload.length; i++) {
       const element = payload[i];

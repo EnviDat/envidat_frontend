@@ -31,11 +31,6 @@ export default new Router({
       // component: () => import('@/components/Pages/LandingPage'),
     },
     {
-      path: `${BROWSE_PATH}/:category`,
-      name: BROWSE_NAME,
-      component: () => import(/* webpackChunkName: "browsePage" */ '@/components/Pages/BrowsePage'),
-    },
-    {
       path: BROWSE_PATH,
       name: BROWSE_NAME,
       component: () => import(/* webpackChunkName: "browsePage" */ '@/components/Pages/BrowsePage'),
