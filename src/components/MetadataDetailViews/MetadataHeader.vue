@@ -120,8 +120,11 @@
                     v-on:clicked="catchTagClicked($event, tag.name)"
                     class="headerTag" />
 
-          <v-flex xs2 v-if="tags && maxTagsReached && !showTagsExpanded">
-            <tag-chip class="headerTag" :name="'...'" />
+          <v-flex xs2 v-if="tags && maxTagsReached && !showTagsExpanded"
+          >
+            <tag-chip class="headerTag" :name="'...'"
+                      @click.native="showTagsExpanded = !showTagsExpanded"
+            />
           </v-flex>
         </v-layout>
 
@@ -144,6 +147,7 @@
                             iconColor="accent"
                             :isToggled="showTagsExpanded"
                             :rotateOnClick="true"
+                            :rotateToggle="showTagsExpanded"
                             :toolTipText="showTagsExpanded ? 'Hide all tags' : 'Show all tags'"
                             :toolTipBottom="true"
                             v-on:clicked="showTagsExpanded = !showTagsExpanded" />

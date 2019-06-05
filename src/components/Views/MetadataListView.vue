@@ -194,6 +194,7 @@ export default {
             xs12: true,
             sm12: true,
             md6: true,
+            lg4: true,
             xl4: true,
           };
 
@@ -204,6 +205,7 @@ export default {
           xs12: true,
           sm6: true,
           md4: true,
+          lg3: true,
           xl3: true,
         };
 
