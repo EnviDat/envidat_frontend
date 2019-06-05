@@ -6,7 +6,7 @@
 
     <v-layout row wrap >
 
-      <v-flex xs12 md8 offset-md2 lg10 offset-lg1>
+      <v-flex xs12 lg10 offset-lg1>
 
         <img-and-text-layout :dark="true"
                         :blur="true"
@@ -29,7 +29,7 @@
         </img-and-text-layout>
       </v-flex>
 
-      <v-flex xs12 md8 offset-md2 lg10 offset-lg1 px-3 mt-5 
+      <v-flex xs12 lg10 offset-lg1 px-3 mt-5 
       >
         <v-container grid-list-lg pa-0>
           <v-layout row wrap >
@@ -43,6 +43,7 @@
                                   :img="card.img"
                                   :minHeight="100"
                                   :maxHeight="150"
+                                  :contain="card.title === 'WSL'"
                 />
 
             </v-flex>
@@ -161,15 +162,11 @@
           },
           {
             title: 'Team',
-            text: `<img src="${this.orga} style="width: 100%; height: 100%;" />`,
+            /* eslint-disable prefer-template */
+            text: '<img src="' + this.orga + '" style="width: 100%; height: 100%;" />',
             img: this.teamSmall,
             widthClass: 'xs12 sm12 md8',
           },
-          // {
-          //   title: 'Organigram',
-          //   text: '<img src="' + this.orga + '" style="width: 100%; height: 100%;" />',
-          //   img: this.orgaSmall,
-          // },
         ];
       },
       /**
