@@ -13,7 +13,7 @@ module.exports = {
     proxyTable: {
       '/api': {
         target: 'https://www.envidat.ch/ui/proxy/ServiceProxyServlet?server=0&serverpath=',
-        /* target: 'http://www.envidat.ch', */
+        // target: 'http://www.envidat.ch',
         changeOrigin: true,
         secure: false,
         // logLevel: 'debug',
@@ -39,7 +39,7 @@ module.exports = {
         secure: false,
         // logLevel: 'debug',
         pathRewrite: function (path, req) {
-          const from = path;
+          // const from = path;
           // path = encodeURIComponent(path);
           // path = path.replace('?', '&amp;');
           // console.log('solr-replaced path from ' + from + ' to: ' + path);
