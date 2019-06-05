@@ -2,7 +2,7 @@
 
 import mutations from './mutations';
 import actions from './actions';
-import categorycards from './categorycards';
+import categorycards from '../categorycards';
 import tags from './tags';
 
 const initialState = {

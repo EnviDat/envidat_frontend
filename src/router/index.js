@@ -15,6 +15,7 @@ import {
   METADATADETAIL_NAME,
   GCMD_PATH,
   ABOUT_PATH,
+  POLICIES_PATH,
 } from '@/router/routeConsts';
 
 Vue.use(Router);
@@ -59,6 +60,11 @@ export default new Router({
       path: ABOUT_PATH,
       name: 'AboutPage',
       component: () => import(/* webpackChunkName: "aboutPage" */ '@/components/Pages/AboutPage'),
+    },
+    {
+      path: POLICIES_PATH,
+      name: 'PoliciesPage',
+      component: () => import(/* webpackChunkName: "policiesPage" */ '@/components/Pages/PoliciesPage'),
     },
   ],
   scrollBehavior(to, from, savedPosition) {
