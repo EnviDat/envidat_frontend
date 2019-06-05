@@ -19,13 +19,6 @@
             />
           </v-flex>
 
-          <!-- <v-flex xs5 py-0>
-            <v-card-media class="imagezoom"
-                          height="100px">
-              <img :src="imageSrc" />                        
-            </v-card-media>
-          </v-flex> -->
-
           <v-flex xs7 pa-2>
 
             <div class="hidden-sm-and-down envidatSlogan display-1"

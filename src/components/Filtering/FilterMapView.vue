@@ -169,8 +169,9 @@ export default {
     },
   },
   methods: {
-    checkError: function checkError(e) {
-      console.log(`got leaflet error ${e}`);
+    checkError: function checkError() {
+    // checkError: function checkError(e) {
+      // console.log(`got leaflet error ${e}`);
       this.errorLoadingLeaflet = true;
     },
     catchPointClick: function catchPointClick(e) {
@@ -420,13 +421,13 @@ export default {
           try {
             el.addTo(this.map);
           } catch (error) {
-            console.log('showMapElements error: ' + error + ' on element ' + el.title);
+            // console.log(`showMapElements error: ${error} on element ${el.title}`);
           }
         } else {
           try {
             this.map.removeLayer(el);
           } catch (error) {
-            console.log('showMapElements remove error: ' + error + ' on element ' + el.title);
+            // console.log(`showMapElements error: ${error} on element ${el.title}`);
           }
         }
       });

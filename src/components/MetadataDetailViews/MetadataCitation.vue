@@ -142,28 +142,28 @@ export default {
     },
     citationLinks() {
       return [{
-        text: "DataCite",
-        toolTipText: "Download XML citation",
+        text: 'DataCite',
+        toolTipText: 'Download DataCite XML citation',
         url: this.citationXmlLink,
       },
       {
-        text: "ISO 19139",
-        toolTipText: "Download ISO XML citation",
+        text: 'ISO 19139',
+        toolTipText: 'Download ISO XML citation',
         url: this.ciationIsoXmlLink,
       },
       {
-        text: "GCMD DIF",
-        toolTipText: "Download GCMD XML citation",
+        text: 'GCMD DIF',
+        toolTipText: 'Download GCMD XML citation',
         url: this.ciationGCMDXmlLink,
       },
       {
-        text: "BibTex",
-        toolTipText: "Download BibTex XML citation",
+        text: 'BibTex',
+        toolTipText: 'Download BibTex XML citation',
         url: this.ciationBibtexXmlLink,
       },
       {
-        text: "RIS",
-        toolTipText: "Download RIS XML citation",
+        text: 'RIS',
+        toolTipText: 'Download RIS XML citation',
         url: this.ciationRisXmlLink,
       },
       ];
