@@ -35,8 +35,6 @@
           <div class='bone bone-type-multiline bone-style-steps' ></div>
         </div>
 
-        <!-- <v-card-media></v-card-media> -->
-
         <v-divider :dark="dark" class="my-2" ></v-divider>
 
         <v-layout row wrap

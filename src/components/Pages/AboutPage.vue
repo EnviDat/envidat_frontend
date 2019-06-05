@@ -26,7 +26,7 @@
                                   :toolTipBottom="true"
                                   v-on:clicked="catchBackClicked" />
 
-          </img-and-text-layout>
+        </img-and-text-layout>
       </v-flex>
 
       <v-flex xs12 md8 offset-md2 lg10 offset-lg1 px-3 mt-5 
