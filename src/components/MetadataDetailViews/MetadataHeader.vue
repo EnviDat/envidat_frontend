@@ -35,7 +35,10 @@
           <div class='bone bone-type-multiline bone-style-steps' ></div>
         </div>
 
-        <v-divider :dark="dark" class="my-2" ></v-divider>
+        <v-divider :dark="dark"
+                    :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
+                              'my-2': $vuetify.breakpoint.smAndUp }"
+        />
 
         <v-layout row wrap
                   v-if="authors"
@@ -57,7 +60,10 @@
 
         </v-layout>
 
-        <v-divider :dark="dark" class="my-2" ></v-divider>
+        <v-divider :dark="dark"
+                    :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
+                              'my-2': $vuetify.breakpoint.smAndUp }"
+        />
 
         <v-layout row wrap>
           <v-flex xs12 sm6 md6 lg3
@@ -99,7 +105,10 @@
           </v-flex>
         </v-layout>
 
-        <v-divider :dark="dark" class="my-2" ></v-divider>
+        <v-divider :dark="dark"
+                    :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
+                              'my-2': $vuetify.breakpoint.smAndUp }"
+        />
 
         <v-layout row wrap 
                   v-if="tags"
