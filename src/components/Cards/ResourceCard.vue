@@ -101,6 +101,7 @@
                         color="transparent"
                         :isToggled="showFullDescription"
                         :rotateOnClick="true"
+                        :rotateToggle="showFullDescription"
                         :toolTipText="showFullDescription ? 'Hide full description' : 'Show full description'"
                         v-on:clicked="showFullDescription = !showFullDescription"
                         />

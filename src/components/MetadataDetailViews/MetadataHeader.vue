@@ -35,9 +35,10 @@
           <div class='bone bone-type-multiline bone-style-steps' ></div>
         </div>
 
-        <!-- <v-card-media></v-card-media> -->
-
-        <v-divider :dark="dark" class="my-2" ></v-divider>
+        <v-divider :dark="dark"
+                    :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
+                              'my-2': $vuetify.breakpoint.smAndUp }"
+        />
 
         <v-layout row wrap
                   v-if="authors"
@@ -59,7 +60,10 @@
 
         </v-layout>
 
-        <v-divider :dark="dark" class="my-2" ></v-divider>
+        <v-divider :dark="dark"
+                    :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
+                              'my-2': $vuetify.breakpoint.smAndUp }"
+        />
 
         <v-layout row wrap>
           <v-flex xs12 sm6 md6 lg3
@@ -101,7 +105,10 @@
           </v-flex>
         </v-layout>
 
-        <v-divider :dark="dark" class="my-2" ></v-divider>
+        <v-divider :dark="dark"
+                    :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
+                              'my-2': $vuetify.breakpoint.smAndUp }"
+        />
 
         <v-layout row wrap 
                   v-if="tags"
@@ -113,8 +120,11 @@
                     v-on:clicked="catchTagClicked($event, tag.name)"
                     class="headerTag" />
 
-          <v-flex xs2 v-if="tags && maxTagsReached && !showTagsExpanded">
-            <tag-chip class="headerTag" :name="'...'" />
+          <v-flex xs2 v-if="tags && maxTagsReached && !showTagsExpanded"
+          >
+            <tag-chip class="headerTag" :name="'...'"
+                      @click.native="showTagsExpanded = !showTagsExpanded"
+            />
           </v-flex>
         </v-layout>
 
@@ -137,6 +147,7 @@
                             iconColor="accent"
                             :isToggled="showTagsExpanded"
                             :rotateOnClick="true"
+                            :rotateToggle="showTagsExpanded"
                             :toolTipText="showTagsExpanded ? 'Hide all tags' : 'Show all tags'"
                             :toolTipBottom="true"
                             v-on:clicked="showTagsExpanded = !showTagsExpanded" />

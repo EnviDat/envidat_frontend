@@ -71,13 +71,20 @@ module.exports = {
       publication = JSON.parse(dataset.publication);
     }
 
-    let text = '';
-    if (publication) {
-      text += `${authors.trim()} (${publication.publication_year}). ${dataset.title}. ${publication.publisher}. `;
+    let text = `${authors.trim()} `;
+
+    if (publication && publication.publication_year) {
+      text += `(${publication.publication_year}). `;
+    }
+
+    text += `${dataset.title}. `;
+
+    if (publication && publication.publisher) {
+      text += ` ${publication.publisher}. `;
     }
 
     if (dataset.doi) {
-      text += ` doi: ${dataset.doi} .`;
+      text += ` doi: ${dataset.doi}. `;
     }
 
     return {

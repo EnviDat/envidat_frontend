@@ -7,11 +7,19 @@
     <v-container grid-list-md pa-0>
       <v-layout row align-center>
 
-        <v-flex xs5 py-0>
+        <!-- <v-flex xs5 py-0>
           <v-card-media class="imagezoom"
                         :height=" $vuetify.breakpoint.xsOnly ? minHeight + 'px' : maxHeight + 'px' ">
             <img :src="img" />                        
           </v-card-media>
+        </v-flex> -->
+
+        <v-flex xs5 py-0>
+          <v-img class="imagezoom"
+                :contain="contain"
+                :height=" $vuetify.breakpoint.xsOnly ? minHeight + 'px' : maxHeight + 'px' "
+                :src="img"
+                />
         </v-flex>
 
         <v-flex xs7 mx-1 mt-1>
@@ -58,6 +66,7 @@
     props: {
       title: String,
       img: String,
+      contain: Boolean,
       text: String,
       minHeight: Number,
       maxHeight: Number,

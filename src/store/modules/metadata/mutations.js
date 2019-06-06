@@ -35,7 +35,6 @@ export default {
     state.searchedMetadatasContent = {};
   },
   [SEARCH_METADATA_SUCCESS](state, payload, showRestrictedContent = false) {
-
     /* eslint-disable no-underscore-dangle */
     for (let i = 0; i < payload.length; i++) {
       const element = payload[i];
@@ -105,15 +104,14 @@ export default {
     state.metadatasContent = {};
   },
   [BULK_LOAD_METADATAS_CONTENT_SUCCESS](state, payload, showRestrictedContent) {
-
     /* eslint-disable no-underscore-dangle */
     for (let i = 0; i < payload.length; i++) {
       const element = payload[i];
-      const ckanJSON = conversion.solrResultToCKANJSON(element);
+      // const ckanJSON = conversion.solrResultToCKANJSON(element);
 
-      if ((showRestrictedContent && ckanJSON.private)
-      || (!showRestrictedContent && !ckanJSON.private)) {
-        this._vm.$set(state.metadatasContent, ckanJSON.id, ckanJSON);
+      if ((showRestrictedContent && element.private)
+      || (!showRestrictedContent && !element.private)) {
+        this._vm.$set(state.metadatasContent, element.id, element);
       }
     }
 

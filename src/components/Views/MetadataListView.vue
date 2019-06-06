@@ -15,14 +15,6 @@
                   ['wrap'] : !listView }"
       >
 
-        <v-flex v-if="loading"
-                v-bind="cardGridClass"
-                v-for="(n, index) in placeHolderAmount" :key="'filtered_' + index">
-
-          <metadata-card-placeholder :dark="false" />
-
-        </v-flex>
-
         <v-flex v-if="showPinnedElements" 
                 v-for="(pinnedId, index) in pinnedIds" :key="'pinned_' + index"
                 v-bind="cardGridClass" >
@@ -49,6 +41,14 @@
                         v-on:clickedEvent="metaDataClicked"
                         v-on:clickedTag="catchTagClicked"
             />
+
+        </v-flex>
+
+        <v-flex v-if="loading"
+                v-bind="cardGridClass"
+                v-for="(n, index) in placeHolderAmount" :key="'filtered_' + index">
+
+          <metadata-card-placeholder :dark="false" />
 
         </v-flex>
 
@@ -194,6 +194,7 @@ export default {
             xs12: true,
             sm12: true,
             md6: true,
+            lg4: true,
             xl4: true,
           };
 
@@ -204,6 +205,7 @@ export default {
           xs12: true,
           sm6: true,
           md4: true,
+          lg3: true,
           xl3: true,
         };
 
@@ -217,7 +219,7 @@ export default {
         that.vLoading = true;
         // console.log("loading list from " + that.vIndex + " to " + (that.vIndex + that.vReloadAmount) );
 
-        if (that.filteredContentSize <= 0 && $state){
+        if (that.filteredContentSize <= 0 && $state) {
           $state.complete();
           return;
         }
@@ -227,7 +229,7 @@ export default {
         setTimeout(() => {
           let i = 0;
 
-          if (that.virtualListContent.length > 0){
+          if (that.virtualListContent.length > 0) {
             // use the current index only if the virutalList has already elements
             i = that.vIndex;
           }
@@ -236,8 +238,8 @@ export default {
             that.virtualListContent.push(that.filteredContent[i]);
           }
 
-          if ($state){
-            if (that.virtualListContent.length >= that.filteredContentSize){
+          if ($state) {
+            if (that.virtualListContent.length >= that.filteredContentSize) {
               $state.complete();
             } else {
               $state.loaded();
@@ -248,7 +250,7 @@ export default {
 
           that.vLoading = false;
           // console.log("loaded to " + that.vIndex );
-        }, this.vReloadDelay);          
+        }, this.vReloadDelay);
       },
       contentSize: function contentSize(content) {
         return content !== undefined ? Object.keys(content).length : 0;
@@ -295,12 +297,12 @@ export default {
       },
     },
     watch: {
-      filteredContentSize: function resetVirtualContent(){
+      filteredContentSize: function resetVirtualContent() {
         this.$store.commit(`metadata/${SET_VIRTUAL_LIST_INDEX}`, 0);
         this.virtualListContent = [];
-        this.infiniteId += 1;        
+        this.infiniteId += 1;
         this.infiniteHandler();
-      }, 
+      },
     },
     components: {
       NoSearchResultsView,
