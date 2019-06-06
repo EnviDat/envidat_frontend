@@ -514,7 +514,7 @@ export default {
     multiPinIcon: null,
     polygonIcon: null,
     eyeIcon: null,
-    highlightedText: 'Select markers to pin them to the top of the list',
+    highlightedText: 'Select markers to pin entries to the top',
     clearButtonText: 'Clear Pins',
     filterText: 'Pinned: ',
     marker,
