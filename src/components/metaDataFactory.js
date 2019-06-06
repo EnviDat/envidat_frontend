@@ -71,13 +71,20 @@ module.exports = {
       publication = JSON.parse(dataset.publication);
     }
 
-    let text = '';
-    if (publication) {
-      text = `${authors.trim()} (${publication.publication_year}). ${publication.publisher},`;
+    let text = `${authors.trim()} `;
+
+    if (publication && publication.publication_year) {
+      text += `(${publication.publication_year}). `;
+    }
+
+    text += `${dataset.title}. `;
+
+    if (publication && publication.publisher) {
+      text += ` ${publication.publisher}. `;
     }
 
     if (dataset.doi) {
-      text += ` doi: ${dataset.doi}`;
+      text += ` doi: ${dataset.doi}. `;
     }
 
     return {
@@ -86,6 +93,8 @@ module.exports = {
       citationXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/datacite.xml`,
       ciationIsoXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/iso19139.xml`,
       ciationGCMDXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/gcmd_dif.xml`,
+      ciationBibtexXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/bibtex.bib`,
+      ciationRisXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/ris.ris`,
     };
   },
   createResources: function createResources(dataset) {
@@ -146,8 +155,7 @@ module.exports = {
 
     details.push({ label: 'MetadataId', text: dataset.id });
 
-
-    return details;
+    return { details };
   },
   createLicense: function createLicense(dataset) {
     const license = {};

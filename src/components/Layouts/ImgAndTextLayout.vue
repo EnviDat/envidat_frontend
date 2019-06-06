@@ -9,7 +9,7 @@
               column>
 
       <v-flex >
-        <title-img :parallax="parallax"
+        <base-title-img :parallax="parallax"
                   :dark="dark"
                   :blur="blur"
                   :img="img"
@@ -34,7 +34,7 @@
               row wrap>
 
       <v-flex xs12 sm6 md4 >
-        <title-img :parallax="parallax"
+        <base-title-img :parallax="parallax"
                   :dark="dark"
                   :blur="blur"
                   :img="img"
@@ -61,7 +61,7 @@
 
       <v-flex v-if="img2"
               xs12 sm6 md4 >
-        <title-img :parallax="parallax"
+        <base-title-img :parallax="parallax"
                   :dark="dark"
                   :blur="blur2"
                   :img="img2"
@@ -82,7 +82,7 @@
       </v-flex>
 
       <v-flex xs12 sm6 md4 >
-        <title-img :parallax="parallax"
+        <base-title-img :parallax="parallax"
                   :dark="dark"
                   :blur="blur"
                   :img="img"

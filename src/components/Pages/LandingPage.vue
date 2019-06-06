@@ -19,19 +19,6 @@
         </search-bar-view>
       </v-flex>
 
-      <!-- <v-flex mt-5 offset-sm6>
-        <data-producer-card 
-                        :titleText="loginInfos.titleText"
-                        :loginText="loginInfos.loginText"
-                        :signupText="loginInfos.signupText"
-                        :loggedIn="loginInfos.loggedIn"
-                        :loggedinText="loginInfos.loggedinText"
-                        v-on:enterclick="catchEnterclick"
-                        v-on:singupclick="catchSingupclick"
-                        v-on:loginclick="catchLoginclick">
-        </data-producer-card>
-      </v-flex> -->
-
       <v-flex mt-5 offset-md6>
     
         <v-container fluid grid-list-md pa-0>

@@ -7,10 +7,10 @@
       <v-layout row align-center>
 
         <v-flex xs5 py-0>
-          <v-card-media class="imagezoom"
-                        :height=" $vuetify.breakpoint.smAndDown ? '65px' : '100px' ">
-            <img :src="img" />                        
-          </v-card-media>
+          <v-img class="imagezoom"
+                :height=" $vuetify.breakpoint.smAndDown ? '65px' : '100px' "
+                :src="img"
+                />
         </v-flex>
 
         <v-flex xs7 mx-1 mt-1>

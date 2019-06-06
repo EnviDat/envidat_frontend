@@ -13,7 +13,7 @@
 
         <div v-for="val in details" :key="val.label" >
 
-          <v-text-field v-if="isSingleText(val.text, val.label)"
+          <v-text-field v-if="isSingleText(val.text)"
                         :label="val.label"
                         :name="val.label"
                         :value="val.text"
@@ -21,7 +21,7 @@
                         readonly
           />
 
-          <v-textarea v-if="!isSingleText(val.text, val.label)"
+          <v-textarea v-if="!isSingleText(val.text)"
                         :label="val.label"
                         :name="val.label"
                         :value="val.text"
@@ -61,8 +61,13 @@
 <script>
   export default {
     props: {
-      details: Array,
+      genericProps: Object,
       showPlaceholder: Boolean,
+    },
+    computed: {
+      details() {
+        return this.mixinMethods_getGenericProp('details');
+      },
     },
     data: () => ({
       maxSingleTextLengthLg: 80,
@@ -71,10 +76,7 @@
       emptyText: 'No details found for this dataset',
     }),
     methods: {
-      clicking: function clicking() {
-        alert(this.props);
-      },
-      isSingleText: function isSingleText(text, label) {
+      isSingleText: function isSingleText(text) {
         if (!text || text.length <= 0) {
           return true;
         }

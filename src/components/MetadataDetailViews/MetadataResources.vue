@@ -55,28 +55,48 @@
 
   export default {
     props: {
-      metadataId: String,
-      metadataTitle: String,
-      doi: String,
-      resources: Array,
-      twoColumnLayout: Boolean,
-      isOnTop: Boolean,
+      genericProps: Object,
       showPlaceholder: Boolean,
-      doiIcon: String,
-      downloadIcon: String,
-      linkIcon: String,
-      fileSizeIcon: String,
-      dateCreatedIcon: String,
-      lastModifiedIcon: String,
+    },
+    computed: {
+      doi() {
+        return this.mixinMethods_getGenericProp('doi');
+      },
+      resources() {
+        return this.mixinMethods_getGenericProp('resources');
+      },
+      twoColumnLayout() {
+        return this.mixinMethods_getGenericProp('twoColumnLayout');
+      },
+      isOnTop() {
+        return this.mixinMethods_getGenericProp('isOnTop');
+      },
+      doiIcon() {
+        return this.mixinMethods_getGenericProp('doiIcon');
+      },
+      downloadIcon() {
+        return this.mixinMethods_getGenericProp('downloadIcon');
+      },
+      linkIcon() {
+        return this.mixinMethods_getGenericProp('linkIcon');
+      },
+      fileSizeIcon() {
+        return this.mixinMethods_getGenericProp('fileSizeIcon');
+      },
+      dateCreatedIcon() {
+        return this.mixinMethods_getGenericProp('dateCreatedIcon');
+      },
+      lastModifiedIcon() {
+        return this.mixinMethods_getGenericProp('lastModifiedIcon');
+      },
     },
     updated: function updated() {
     },
     data: () => ({
       showAllResources: false,
+      checkedGenericProps: false,
       emptyText: 'No resources found for this dataset',
     }),
-    computed: {
-    },
     methods: {
       readMore: function readMore() {
         this.showAllResources = !this.showAllResources;

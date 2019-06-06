@@ -15,14 +15,6 @@
                   ['wrap'] : !listView }"
       >
 
-        <v-flex v-if="loading"
-                v-bind="cardGridClass"
-                v-for="(n, index) in placeHolderAmount" :key="'filtered_' + index">
-
-          <metadata-card-placeholder :dark="false" />
-
-        </v-flex>
-
         <v-flex v-if="showPinnedElements" 
                 v-for="(pinnedId, index) in pinnedIds" :key="'pinned_' + index"
                 v-bind="cardGridClass" >
@@ -52,9 +44,18 @@
 
         </v-flex>
 
+        <v-flex v-if="loading"
+                v-bind="cardGridClass"
+                v-for="(n, index) in placeHolderAmount" :key="'filtered_' + index">
+
+          <metadata-card-placeholder :dark="false" />
+
+        </v-flex>
+
         <v-flex v-if="!loading && !isPinned(metadata.id)"
                 v-bind="cardGridClass"
-                v-for="(metadata, index) in filteredContent" :key="'filtered_' + index"
+                v-for="(metadata, index) in virtualListContent"
+                :key="'filtered_' + index"
                 >
 
             <metadata-card 
@@ -79,6 +80,31 @@
 
         </v-flex>
 
+        <v-flex xs12 mx-2 key="infiniteLoader" >
+          <infinite-loading @infinite="infiniteHandler"
+                            spinner="waveDots"
+                            :identifier="infiniteId"
+                            :distance="preloadingDistance"
+                            >
+            <div slot="no-results">
+              <!-- for the case of a back Navigation -->
+              <BaseRectangleButton v-if="vIndex > 0 && vIndex > vReloadAmount"
+                                    @clicked="mixinMethods_setScrollPosition(0);"
+                                    :buttonText="scrollTopButtonText"
+                                    :isSmall="true"
+                                    :isFlat="true"
+                                    />
+            </div>
+            <div slot="no-more">
+              <BaseRectangleButton @clicked="mixinMethods_setScrollPosition(0);"
+                                    :buttonText="scrollTopButtonText"
+                                    :isSmall="true"
+                                    :isFlat="true"
+                                    />
+            </div>
+          </infinite-loading>
+        </v-flex>
+
         <v-flex xs12 mx-2 
                 v-if="!loading && filteredContentSize <= 0"
                 key="noSearchResultsView"
@@ -89,6 +115,7 @@
         </v-flex>
 
       </transition-group>
+
 
     </v-container>
   
@@ -103,7 +130,11 @@
   import MetadataCard from '@/components/Cards/MetadataCard';
   import MetadataCardPlaceholder from '@/components/Cards/MetadataCardPlaceholder';
   import NoSearchResultsView from '@/components/Filtering/NoSearchResultsView';
-  import { SET_DETAIL_PAGE_BACK_URL } from '@/store/metadataMutationsConsts';
+  import {
+    SET_DETAIL_PAGE_BACK_URL,
+    SET_VIRTUAL_LIST_INDEX,
+  } from '@/store/metadataMutationsConsts';
+  import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
   // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
 export default {
@@ -119,11 +150,19 @@ export default {
       fileIconString: null,
       lockedIconString: null,
       unlockedIconString: null,
+      virtualListContent: [],
+      vLoading: false,
+      infiniteId: +new Date(),
+      preloadingDistance: 200,
+      scrollTopButtonText: 'Scroll to the top',
     }),
     beforeMount: function beforeMount() {
       this.fileIconString = this.mixinMethods_getIcon('file');
       this.lockedIconString = this.mixinMethods_getIcon('lock2Closed');
       this.unlockedIconString = this.mixinMethods_getIcon('lock2Open');
+    },
+    mounted: function mounted() {
+      this.infiniteHandler();
     },
     computed: {
       ...mapGetters({
@@ -134,6 +173,9 @@ export default {
         searchingMetadatasContentOK: 'metadata/searchingMetadatasContentOK',
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
         filteredContent: 'metadata/filteredContent',
+        vIndex: 'metadata/vIndex',
+        vReloadAmount: 'metadata/vReloadAmount',
+        vReloadDelay: 'metadata/vReloadDelay',
         isFilteringContent: 'metadata/isFilteringContent',
         pinnedIds: 'metadata/pinnedIds',
       }),
@@ -152,6 +194,7 @@ export default {
             xs12: true,
             sm12: true,
             md6: true,
+            lg4: true,
             xl4: true,
           };
 
@@ -162,6 +205,7 @@ export default {
           xs12: true,
           sm6: true,
           md4: true,
+          lg3: true,
           xl3: true,
         };
 
@@ -170,6 +214,44 @@ export default {
 
     },
     methods: {
+      infiniteHandler($state) {
+        const that = this;
+        that.vLoading = true;
+        // console.log("loading list from " + that.vIndex + " to " + (that.vIndex + that.vReloadAmount) );
+
+        if (that.filteredContentSize <= 0 && $state) {
+          $state.complete();
+          return;
+        }
+
+
+        // use a small timeout to show the loading?
+        setTimeout(() => {
+          let i = 0;
+
+          if (that.virtualListContent.length > 0) {
+            // use the current index only if the virutalList has already elements
+            i = that.vIndex;
+          }
+
+          for (; (i < that.vIndex + that.vReloadAmount) && (i < that.filteredContentSize); i++) {
+            that.virtualListContent.push(that.filteredContent[i]);
+          }
+
+          if ($state) {
+            if (that.virtualListContent.length >= that.filteredContentSize) {
+              $state.complete();
+            } else {
+              $state.loaded();
+            }
+          }
+
+          that.$store.commit(`metadata/${SET_VIRTUAL_LIST_INDEX}`, i);
+
+          that.vLoading = false;
+          // console.log("loaded to " + that.vIndex );
+        }, this.vReloadDelay);
+      },
       contentSize: function contentSize(content) {
         return content !== undefined ? Object.keys(content).length : 0;
       },
@@ -214,10 +296,19 @@ export default {
         return this.pinnedIds.includes(id);
       },
     },
+    watch: {
+      filteredContentSize: function resetVirtualContent() {
+        this.$store.commit(`metadata/${SET_VIRTUAL_LIST_INDEX}`, 0);
+        this.virtualListContent = [];
+        this.infiniteId += 1;
+        this.infiniteHandler();
+      },
+    },
     components: {
       NoSearchResultsView,
       MetadataCard,
       MetadataCardPlaceholder,
+      BaseRectangleButton,
     },
 
 };

@@ -1,14 +1,16 @@
+/* eslint-disable prefer-template */
 import Vue from 'vue';
 import Router from 'vue-router';
-import LandingPage from '@/components/Pages/LandingPage';
-import BrowsePage from '@/components/Pages/BrowsePage';
-import MetadataDetailPage from '@/components/Pages/MetadataDetailPage';
-import ResourceDetailPage from '@/components/Pages/ResourceDetailPage';
-import GCMDPage from '@/components/Pages/GCMDPage';
-import AboutPage from '@/components/Pages/AboutPage';
+// import LandingPage from '@/components/Pages/LandingPage';
+// import BrowsePage from '@/components/Pages/BrowsePage';
+// import MetadataDetailPage from '@/components/Pages/MetadataDetailPage';
+// import ResourceDetailPage from '@/components/Pages/ResourceDetailPage';
+// import GCMDPage from '@/components/Pages/GCMDPage';
+// import AboutPage from '@/components/Pages/AboutPage';
 import {
   LANDING_PATH,
   BROWSE_PATH,
+  BROWSE_NAME,
   METADATADETAIL_PATH,
   METADATADETAIL_NAME,
   GCMD_PATH,
@@ -25,37 +27,33 @@ export default new Router({
     {
       path: LANDING_PATH,
       name: 'LandingPage',
-      component: LandingPage,
-    },
-    {
-      path: `${BROWSE_PATH}/:category`,
-      name: 'BrowsePage',
-      component: BrowsePage,
+      component: () => import(/* webpackChunkName: "landingPage" */ '@/components/Pages/LandingPage'),
+      // component: () => import('@/components/Pages/LandingPage'),
     },
     {
       path: BROWSE_PATH,
-      name: 'BrowsePage',
-      component: BrowsePage,
+      name: BROWSE_NAME,
+      component: () => import(/* webpackChunkName: "browsePage" */ '@/components/Pages/BrowsePage'),
     },
     {
       path: `${METADATADETAIL_PATH}/:metadataid`,
       name: METADATADETAIL_NAME,
-      component: MetadataDetailPage,
+      component: () => import(/* webpackChunkName: "metadataDetailPage" */ '@/components/Pages/MetadataDetailPage'),
     },
     {
       path: `${METADATADETAIL_PATH}/:metadataid/resource/:resourceid`,
       name: 'ResourceDetailPage',
-      component: ResourceDetailPage,
+      component: () => import(/* webpackChunkName: "resourceDetailPage" */ '@/components/Pages/ResourceDetailPage'),
     },
     {
       path: GCMD_PATH,
       name: 'GCMDPage',
-      component: GCMDPage,
+      component: () => import(/* webpackChunkName: "gcmdPage" */ '@/components/Pages/GCMDPage'),
     },
     {
       path: ABOUT_PATH,
       name: 'AboutPage',
-      component: AboutPage,
+      component: () => import(/* webpackChunkName: "aboutPage" */ '@/components/Pages/AboutPage'),
     },
   ],
   scrollBehavior(to, from, savedPosition) {

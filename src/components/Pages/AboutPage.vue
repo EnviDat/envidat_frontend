@@ -6,7 +6,7 @@
 
     <v-layout row wrap >
 
-      <v-flex xs12 md8 offset-md2 lg10 offset-lg1>
+      <v-flex xs12 lg10 offset-lg1>
 
         <img-and-text-layout :dark="true"
                         :blur="true"
@@ -26,10 +26,10 @@
                                   :toolTipBottom="true"
                                   v-on:clicked="catchBackClicked" />
 
-          </img-and-text-layout>
+        </img-and-text-layout>
       </v-flex>
 
-      <v-flex xs12 md8 offset-md2 lg10 offset-lg1 px-3 mt-5 
+      <v-flex xs12 lg10 offset-lg1 px-3 mt-5 
       >
         <v-container grid-list-lg pa-0>
           <v-layout row wrap >
@@ -43,6 +43,7 @@
                                   :img="card.img"
                                   :minHeight="100"
                                   :maxHeight="150"
+                                  :contain="card.title === 'WSL'"
                 />
 
             </v-flex>
@@ -149,7 +150,7 @@
           },
           {
             title: 'Community',
-            text: 'With EnviDat, WSL aims to disseminate its data sets as broadly as possible in order to foster international research cooperation in the field of environmental science and contribute to the ongoing cultural evolution in research towards openness, shared data and opportunities for collaboration. Consequently, we are registered in <a href="https://fairsharing.org/biodbcore-001178/" target="_blank" onclick="event.stopPropagation();" >FAIRsharing.org</a> and <a href="https://www.re3data.org/repository/r3d100012587" target="_blank" onclick="event.stopPropagation();" >re3data.org</a> and a contributor community to <a href="http://geoportal.org/community/envidat-community" target="_blank" onclick="event.stopPropagation();" >ESA Geoportal </a>, NASA GCMD (coming soon) and <a href="http://b2find.eudat.eu/dataset?groups=envidat" target="_blank" onclick="event.stopPropagation();" >EOSC-Hub via B2FIND</a>. ',
+            text: 'With EnviDat, WSL aims to disseminate its data sets as broadly as possible in order to foster international research cooperation in the field of environmental science and contribute to the ongoing cultural evolution in research towards openness, shared data and opportunities for collaboration. Consequently, we are registered in <a href="https://fairsharing.org/biodbcore-001178/" target="_blank" onclick="event.stopPropagation();" >FAIRsharing.org</a> and <a href="https://www.re3data.org/repository/r3d100012587" target="_blank" onclick="event.stopPropagation();" >re3data.org</a> and a contributor community to <a href="http://geoportal.org/community/envidat-community" target="_blank" onclick="event.stopPropagation();" >ESA Geoportal </a>, <a href="https://gcmd.nasa.gov/search/Titles.do?AutoDisplayTitles=true&subset=envidat#titles" target="_blank" onclick="event.stopPropagation();" >NASA GCMD</a> and <a href="http://b2find.eudat.eu/dataset?groups=envidat" target="_blank" onclick="event.stopPropagation();" >EOSC-Hub via B2FIND</a>. ',
             img: this.communitySmall,
             widthClass: 'xs12 sm6 md4',
           },
@@ -161,15 +162,11 @@
           },
           {
             title: 'Team',
-            text: `<img src="${this.orga} style="width: 100%; height: 100%;" />`,
+            /* eslint-disable prefer-template */
+            text: '<img src="' + this.orga + '" style="width: 100%; height: 100%;" />',
             img: this.teamSmall,
             widthClass: 'xs12 sm12 md8',
           },
-          // {
-          //   title: 'Organigram',
-          //   text: '<img src="' + this.orga + '" style="width: 100%; height: 100%;" />',
-          //   img: this.orgaSmall,
-          // },
         ];
       },
       /**

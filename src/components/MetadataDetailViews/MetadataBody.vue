@@ -40,16 +40,23 @@
 
   export default {
     props: {
-      id: String,
-      title: String,
-      doi: String,
-      description: String,
-      isOnTop: Boolean,
-      showPlaceholder: Boolean,
+      genericProps: Object,
     },
     mounted: function mounted() {
     },
     computed: {
+      doi() {
+        return this.mixinMethods_getGenericProp('doi');
+      },
+      title() {
+        return this.mixinMethods_getGenericProp('title');
+      },
+      id() {
+        return this.mixinMethods_getGenericProp('id');
+      },
+      description() {
+        return this.mixinMethods_getGenericProp('description');
+      },
       fullDescription: function fullDescription() {
         if (this.description !== undefined) {
           if (this.maxDescriptionLengthReached) {
@@ -65,8 +72,18 @@
         return this.description && this.description.length > this.maxTextLength;
       },
     },
+    // updated: function updated() {
+    //   if (this.genericProps && !this.checkedGenericProps) {
+    //     Object.assign(this, 'props', this.genericProps);
+
+    //     this.checkedGenericProps = true;
+    //   }
+    // },
     data: () => ({
+      isOnTop: false,
+      showPlaceholder: false,
       showFullDescription: false,
+      checkedGenericProps: false,
       maxTextLength: 1000,
       emptyText: 'No description found for this dataset',
     }),

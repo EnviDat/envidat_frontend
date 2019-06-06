@@ -176,6 +176,9 @@ export default {
 
       return metadataEntry;
     },
+    mixinMethods_getGenericProp(propName) {
+      return this.genericProps[propName] ? this.genericProps[propName] : null;
+    },
     /**
      * @param {Array} metadatas
      * @param {Array} cardBGImages
@@ -265,6 +268,12 @@ export default {
       f=Math.floor(Math.log(a)/Math.log(c));
 
       return parseFloat((a/Math.pow(c,f)).toFixed(d))+" "+e[f];
+    },
+    /**
+     * @param {Number} pos Sets the position to the main scroll position of the main
+     */
+    mixinMethods_setScrollPosition: function mixinMethods_setScrollPosition(pos) {
+      window.scrollTo(0, pos);
     },
   },
 };
