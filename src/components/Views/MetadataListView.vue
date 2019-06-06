@@ -15,14 +15,6 @@
                   ['wrap'] : !listView }"
       >
 
-        <v-flex v-if="loading"
-                v-bind="cardGridClass"
-                v-for="(n, index) in placeHolderAmount" :key="'filtered_' + index">
-
-          <metadata-card-placeholder :dark="false" />
-
-        </v-flex>
-
         <v-flex v-if="showPinnedElements" 
                 v-for="(pinnedId, index) in pinnedIds" :key="'pinned_' + index"
                 v-bind="cardGridClass" >
@@ -49,6 +41,14 @@
                         v-on:clickedEvent="metaDataClicked"
                         v-on:clickedTag="catchTagClicked"
             />
+
+        </v-flex>
+
+        <v-flex v-if="loading"
+                v-bind="cardGridClass"
+                v-for="(n, index) in placeHolderAmount" :key="'filtered_' + index">
+
+          <metadata-card-placeholder :dark="false" />
 
         </v-flex>
 
