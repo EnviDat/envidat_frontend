@@ -327,7 +327,7 @@ export default {
   }
   
   .headline {
-    font-size: 21px !important;
+    font-size: 19px !important;
   }
 
   .compactTitle {
