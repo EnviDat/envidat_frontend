@@ -10,7 +10,6 @@
     "AVALANCHE",
     "SNOW",
     "TEMPERATURE",
-    "LONG-TERM",
     "ICE",
     "FOREST",
     "LANDSLIDE",

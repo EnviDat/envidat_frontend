@@ -195,7 +195,7 @@ export default {
             sm12: true,
             md6: true,
             lg4: true,
-            xl4: true,
+            xl3: true,
           };
 
           return twoThridsSize;
