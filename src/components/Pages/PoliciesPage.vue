@@ -6,7 +6,7 @@
 
     <v-layout row wrap >
 
-      <v-flex xs12 lg10 offset-lg1>
+      <!-- <v-flex xs12 lg10 offset-lg1>
 
         <img-and-text-layout :dark="false"
                         :blur="true"
@@ -27,7 +27,7 @@
                                   v-on:clicked="catchBackClicked" />
 
         </img-and-text-layout>
-      </v-flex>
+      </v-flex> -->
 
 
       <v-flex xs12 md8 offset-md2 lg10 offset-lg1 mt-5 >
@@ -56,9 +56,9 @@
   import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
   import GenericTextLayout from '@/components/Layouts/GenericTextLayout';
 
-  import books from '@/assets/policies/books.jpg';
-  import inkpen from '@/assets/policies/inkpen.jpg';
-  import lawBooks from '@/assets/policies/law_books.jpg';
+  // import books from '@/assets/policies/books.jpg';
+  // import inkpen from '@/assets/policies/inkpen.jpg';
+  // import lawBooks from '@/assets/policies/law_books.jpg';
 
   // import ExpandableCard from '@/components/Cards/ExpandableCard';
 
@@ -116,9 +116,9 @@
     },
     data: () => ({
       PageBGImage: './app_b_browsepage.jpg',
-      books,
-      inkpen,
-      lawBooks,
+      // books,
+      // inkpen,
+      // lawBooks,
     }),
     components: {
       GenericTextLayout,
