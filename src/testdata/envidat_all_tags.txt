@@ -59,8 +59,6 @@
     17,
     "TEMPERATURE",
     17,
-    "LONG-TERM",
-    16,
     "METEO",
     16,
     "METEOROLOGY",

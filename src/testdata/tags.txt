@@ -215,7 +215,6 @@
         "LIDAR",
         "LIGHTNING FATALITIES",
         "LITTER",
-        "LONG-TERM",
         "LONGWAVE RADIATION",
         "LOWER-HIGHER ALTITUDINAL ZONES",
         "MAIN TREE SPECIES",

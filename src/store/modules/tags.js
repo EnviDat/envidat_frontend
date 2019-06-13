@@ -7,7 +7,7 @@ export default [
   { name: 'HUMIDITY', enabled: true },
   { name: 'ICE', enabled: true },
   { name: 'LANDSLIDE', enabled: true },
-  { name: 'LONG-TERM', enabled: true },
+  // { name: 'LONG-TERM', enabled: true },
   { name: 'METEO', enabled: true },
   { name: 'PRECIPITATION', enabled: true },
   { name: 'ROCKFALL', enabled: true },

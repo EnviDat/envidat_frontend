@@ -88,6 +88,10 @@
   import ExpandableCard from '@/components/Cards/ExpandableCard';
 
   export default {
+    /**
+     * @description beforeRouteEnter is used to change background image of this page.
+     * It's called via vue-router.
+     */
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
       next((vm) => {
         vm.$store.commit(SET_CURRENT_PAGE, 'aboutPage');

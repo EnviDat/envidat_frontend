@@ -64,6 +64,21 @@
 </template>
 
 <script>
+/**
+ * The @class titleImg uses a image a background and overlays the Title and subTitle on top of it.
+ * 
+ * If @prop parallax is true the image will be shown with a parallax effect provided the images is
+ * bigger than the @prop height.
+ * 
+ * Set @prop blur to true to add a blur filter of 2px and reduce the opacity, which increases
+ * the focus and readability of the Title & subTitle.
+ * 
+ * If @prop dark is true the text color will be black otherwise it's white.
+ * 
+ * Depending on the contrasts and brigthness of the image it might make sense to set a
+ * @prop textBackgroundColor which works well together with the text and increases contrast
+ * and readability of the text.
+ */
   export default {
     props: {
       parallax: Boolean,
