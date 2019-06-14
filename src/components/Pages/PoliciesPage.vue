@@ -31,7 +31,7 @@
 
 
       <v-flex xs12 md8 offset-md2 lg10 offset-lg1 mt-5 >
-        <generic-text-layout :textArray="policiesInfo" />
+        <generic-text-layout :textArray="policiesInfo"/>
       </v-flex>
 
     </v-layout>
