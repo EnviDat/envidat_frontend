@@ -65,6 +65,20 @@
   import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
 
   export default {
+    beforeCreate() {
+      // check for the backend version
+      window.applicationCache.onupdateready = function (e) {
+        console.log("applicationCache.onupdateready");
+      };
+
+      window.applicationCache.onerror = function (e) {
+        console.log("applicationCache.onerror");
+      };
+
+      window.applicationCache.onnoupdate = function (e) {
+        console.log("applicationCache.onnoupdate");
+      };
+    },
     created: function created() {
       this.loadAllMetadata();
 
