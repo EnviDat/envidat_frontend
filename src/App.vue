@@ -48,10 +48,17 @@
           
       </v-container>
 
-      <v-combobox>
-        
-      </v-combobox>
-
+      <v-dialog v-model="showReloadDialog" persistent max-width="290">
+        <v-card>
+          <v-card-title class="headline">New Version Available!</v-card-title>
+          <v-card-text>{{ dialogVersionText }} </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="green darken-1" flat @click="reloadApp();">Reload</v-btn>
+            <v-btn color="green darken-1" flat @click="dialogCanceled = true">Cancel</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-content>
 
   </v-app>
@@ -63,6 +70,7 @@
   import {
     ADD_CARD_IMAGES,
     ADD_ICON_IMAGE,
+    CHECK_FRONTEND_VERSION,
   } from '@/store/mutationsConsts';
   import TheNavBarView from '@/components/Views/TheNavbarView';
   import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
@@ -70,17 +78,18 @@
   export default {
     beforeCreate() {
       // check for the backend version
-      window.applicationCache.onupdateready = function (e) {
-        console.log("applicationCache.onupdateready");
-      };
+      this.$store.dispatch(CHECK_FRONTEND_VERSION);
+      // window.applicationCache.onupdateready = function (e) {
+      //   console.log("applicationCache.onupdateready");
+      // };
 
-      window.applicationCache.onerror = function (e) {
-        console.log("applicationCache.onerror");
-      };
+      // window.applicationCache.onerror = function (e) {
+      //   console.log("applicationCache.onerror");
+      // };
 
-      window.applicationCache.onnoupdate = function (e) {
-        console.log("applicationCache.onnoupdate");
-      };
+      // window.applicationCache.onnoupdate = function (e) {
+      //   console.log("applicationCache.onnoupdate");
+      // };
     },
     created: function created() {
       this.loadAllMetadata();
@@ -92,6 +101,9 @@
       this.importIcons();
     },
     methods: {
+      reloadApp(){
+        window.location.reload();
+      },
       loadAllMetadata: function loadAllMetadata() {
         if (!this.loadingMetadatasContent && this.metadatasContentSize <= 0) {
           this.$store.dispatch(`metadata/${BULK_LOAD_METADATAS_CONTENT}`);
@@ -155,9 +167,13 @@
         loadingPopularTags: 'metadata/loadingPopularTags',
         currentPage: 'currentPage',
         appBGImage: 'appBGImage',
+        showVersionModal: 'showVersionModal',
       }),
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
+      },
+      showReloadDialog() {
+        return this.showVersionModal && !this.dialogCanceled;
       },
       dynamicBackground: function dynamicBackground() {
         const imageKey = this.appBGImage;
@@ -188,6 +204,8 @@
     data: () => ({
       appBGImages: {},
       prevHeight: 0,
+      dialogCanceled: false,
+      dialogVersionText: `You are using the version ${process.env.VERSION}, but there is are newer version aviable. Please reload to get the latest verison of EnviDat.`,
       appVersion: process.env.VERSION,
     }),
     components: {

@@ -11,7 +11,7 @@ import {
 export default {
   [CHECK_FRONTEND_VERSION]({ commit }) {
     const response = {
-      data: { version: '0.5.71' },
+      data: { version: '0.5.72' },
     };
 
     // const url = 'version.json'; // urlRewrite('version.json', SOLR_API_BASE, SOLR_PROXY);
