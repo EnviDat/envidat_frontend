@@ -5,7 +5,9 @@ import {
   ADD_ICON_IMAGE,
   SET_CONTROLS,
   SET_BROWSE_SCROLL_POSITION,
+  CHECK_FRONTEND_VERSION_NEW,
 } from './mutationsConsts';
+// import { stat } from 'fs';
 
 export default {
   [SET_APP_BACKGROUND](state, bgImg) {
@@ -29,5 +31,10 @@ export default {
   },
   [SET_BROWSE_SCROLL_POSITION](state, payload) {
     state.browseScrollPosition = payload;
+  },
+  [CHECK_FRONTEND_VERSION_NEW](state, payload) {
+    if (payload.version > process.env.VERSION) {
+      state.showVersionModal = true;
+    }
   },
 };
