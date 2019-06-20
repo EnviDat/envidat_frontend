@@ -3,7 +3,8 @@ import Vuex from 'vuex';
 import createPersist from 'vuex-localstorage';
 
 /* eslint-disable no-unused-vars */
-import { metadata } from '@/store/modules/metadata';
+import { metadata } from '@/store/modules/metadata/metadata';
+import { policies } from '@/store/modules/policies/policies';
 import mutations from '@/store/appMutations';
 
 Vue.use(Vuex);
@@ -34,6 +35,7 @@ export default new Vuex.Store({
   mutations,
   modules: {
     metadata,
+    policies,
   },
   plugins: [createPersist({
     namespace: 'metadata',
