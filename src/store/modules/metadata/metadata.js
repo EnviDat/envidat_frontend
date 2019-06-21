@@ -39,7 +39,7 @@ const initialState = {
    * virtual List properties for MetaDataCards of the BrowsePage via MetadataListView
    */
   vIndex: 0,
-  vReloadAmount: 9,
+  vReloadAmount: 12,
   vReloadDelay: 150,
   // scrollPositionDelay has to be more than the vReloadDelay
   scrollPositionDelay: 200,

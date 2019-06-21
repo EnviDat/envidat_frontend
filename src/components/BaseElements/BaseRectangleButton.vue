@@ -33,6 +33,25 @@
 </template>
 
 <script>
+/**
+ * A rectangle button with an icon, either a custom icon or a material (material design libery) icon.
+ * Similar to @class IconButton
+ * React on the 'clicked' event or pass an @prop url to create a href-link.
+ *
+ * Use the @prop isSmall to make a 
+ * Fill the @prop toolTipText for a toolTip when hovering over the Button.
+ * 
+ * If @prop outlined is true the button only has an outline in the @prop color.
+ * Otherwise the whole button as that color.
+ * The @prop iconColor only works for material icons.
+ * 
+ * Set the @prop rotateOnClick to true for the icon to rotate 180° once clicked
+ * works together with the @prop isToggled
+ * 
+ * Use @prop marginClass to apply any css-class to the button
+ * 
+ * When @prop disabled is true clicks won't do anything.
+ */
 
 export default {
   props: {
@@ -50,6 +69,9 @@ export default {
     disabled: Boolean,
   },
   methods: {
+    /**
+     * @description emits the 'clicked' event
+     */
     clicked: function clicked() {
       this.$emit('clicked');
     },
