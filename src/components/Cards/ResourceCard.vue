@@ -9,10 +9,10 @@
     </v-card-title>
 
     <v-card-text class="pt-0"
-    :class="{
-        'pb-3': $vuetify.breakpoint.mdAndUp,
-        'pb-5': $vuetify.breakpoint.smAndDown,
-      }">
+                :class="{
+                    'pb-3': $vuetify.breakpoint.mdAndUp,
+                    'pb-5': $vuetify.breakpoint.smAndDown,
+                  }">
 
       <v-container grid-list-xs pa-0>
         <v-layout v-bind="{ ['row']: $vuetify.breakpoint.smAndUp,
@@ -21,30 +21,34 @@
                           }"
         >
 
-          <v-flex v-bind="{ [`xs6`]: !this.twoColumnLayout , 
-                            [`xs12`]: this.twoColumnLayout  }"
+          <v-flex v-bind="{ [`xs6`]: !this.twoColumnLayout && !showFullDescription, 
+                            [`xs12`]: this.twoColumnLayout || showFullDescription }"
                             order-xs3 order-sm1
           >
 
             <v-layout column>
-              <v-flex xs11 v-if="showFullDescription"
-                            class="resourceCardText">
+              <v-flex v-if="showFullDescription"
+                      xs11 pb-4
+                      class="resourceCardText heightAndScroll">
                 {{ description }}
               </v-flex>
 
-              <v-flex xs11 v-if="!showFullDescription"
-                            class="resourceCardText">
+              <v-flex v-if="!showFullDescription"
+                      xs11 
+                      class="resourceCardText">
                 {{ description | truncate(maxDescriptionLength) }}
               </v-flex>
 
             </v-layout>
           </v-flex>
     
-          <v-flex order-xs2 hidden-sm-and-up>
+          <v-flex v-if="!showFullDescription" 
+                  order-xs2 hidden-sm-and-up>
             <v-divider :dark="dark" class="my-1" ></v-divider>
           </v-flex>
 
-          <v-flex v-bind="{ [`xs6`]: !this.twoColumnLayout , 
+          <v-flex v-if="!showFullDescription"
+                  v-bind="{ [`xs6`]: !this.twoColumnLayout , 
                             [`xs12`]: this.twoColumnLayout,
                             [`pt-3`]: this.twoColumnLayout  }"
                             order-xs1 order-sm3
@@ -88,8 +92,8 @@
       </v-container>
     </v-card-text>
 
-    <v-card-actions class="ma-0 pa-2"
-                    style="position: absolute; bottom: 0; right: 0;">
+    <v-card-actions class="ma-0 pa-2 "
+                    style="position: absolute; bottom: 5px; right: 20px;">
 
       <v-spacer></v-spacer>
 
@@ -218,5 +222,9 @@ export default {
     color: rgba(255,255,255,.9) !important;
   }
 
+  .heightAndScroll {
+    max-height: 400px;
+    overflow-y: auto !important;
+  }
 
 </style>
