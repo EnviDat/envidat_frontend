@@ -51,6 +51,7 @@
     SET_APP_BACKGROUND,
     SET_CURRENT_PAGE,
   } from '@/store/mutationsConsts';
+  import { GET_POLICIES } from '@/store/policiesMutationsConsts';
 
   import BaseIconButton from '@/components/BaseElements/BaseIconButton';
   import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
@@ -68,6 +69,11 @@
         vm.$store.commit(SET_CURRENT_PAGE, 'aboutPage');
         vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
+    },
+    beforeMount() {
+      if (!this.policiesInfo) {
+        this.$store.dispatch(`policies/${GET_POLICIES}`);
+      }
     },
     /**
      * @description reset the scrolling to the top,

@@ -1,8 +1,12 @@
+import actions from '@/store/modules/policies/policiesActions';
+import mutations from '@/store/modules/policies/policiesMutations';
 
 const policiesState = {
   policiesPageBackRoute: '',
   policiesTitle: 'EnviDat General Policies v. 1.0',
+  policiesInfo: null,
   // use markdown syntax to style the text: https://markdown-it.github.io/
+  /*
   policiesInfo: [
     '# EnviDat General Policies v. 1.0',
     '### Preamble',
@@ -66,6 +70,8 @@ const policiesState = {
     '## Acknowledgments',
     'We would like to thank OpenDOAR (link) and Zenodo (link) for the general policy templates.',
   ],
+  */
+  error: null,
 };
 
 
@@ -78,4 +84,6 @@ export const policies = {
     policiesTitle: state => state.policiesTitle,
     policiesPageBackRoute: state => state.policiesPageBackRoute,
   },
+  mutations,
+  actions,
 };
