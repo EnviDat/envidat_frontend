@@ -5,7 +5,9 @@ import {
   ADD_ICON_IMAGE,
   SET_CONTROLS,
   SET_BROWSE_SCROLL_POSITION,
-  CHECK_FRONTEND_VERSION_NEW,
+  SET_CONFIG_SUCCESS,
+  SET_CONFIG_ERROR,
+  CHECK_FRONTEND_VERSION,
 } from './mutationsConsts';
 // import { stat } from 'fs';
 
@@ -32,8 +34,14 @@ export default {
   [SET_BROWSE_SCROLL_POSITION](state, payload) {
     state.browseScrollPosition = payload;
   },
-  [CHECK_FRONTEND_VERSION_NEW](state, payload) {
-    if (payload.version > process.env.VERSION) {
+  [SET_CONFIG_SUCCESS](state, payload) {
+    state.config = payload;
+  },
+  [SET_CONFIG_ERROR](state, reason) {
+    state.error = reason;
+  },
+  [CHECK_FRONTEND_VERSION](state, version) {
+    if (version > process.env.VERSION) {
       state.showVersionModal = true;
     }
   },

@@ -70,7 +70,7 @@
   import {
     ADD_CARD_IMAGES,
     ADD_ICON_IMAGE,
-    CHECK_FRONTEND_VERSION,
+    SET_CONFIG,
   } from '@/store/mutationsConsts';
   import TheNavBarView from '@/components/Views/TheNavbarView';
   import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
@@ -78,7 +78,7 @@
   export default {
     beforeCreate() {
       // check for the backend version
-      this.$store.dispatch(CHECK_FRONTEND_VERSION);
+      this.$store.dispatch(SET_CONFIG);
       // window.applicationCache.onupdateready = function (e) {
       //   console.log("applicationCache.onupdateready");
       // };
