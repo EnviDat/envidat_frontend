@@ -30,8 +30,15 @@
       </v-flex> -->
 
 
-      <v-flex xs12 md8 offset-md2 lg10 offset-lg1 mt-5 >
-        <generic-text-layout :textArray="policiesInfo"/>
+      <v-flex v-show="loading" >
+        Loading Policies...
+      </v-flex>
+
+
+      <v-flex v-if="!loading"
+              xs12 md8 offset-md2 lg10 offset-lg1 mt-5 >
+        <m-markdown-preview :markdown="policiesInfo"
+                            :options="markdownOptions" />
       </v-flex>
 
     </v-layout>
@@ -56,6 +63,7 @@
   import BaseIconButton from '@/components/BaseElements/BaseIconButton';
   import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
   import GenericTextLayout from '@/components/Layouts/GenericTextLayout';
+  import MMarkdownPreview from 'm-markdown-preview';
 
   // import books from '@/assets/policies/books.jpg';
   // import inkpen from '@/assets/policies/inkpen.jpg';
@@ -87,7 +95,16 @@
         policiesPageBackRoute: 'policies/policiesPageBackRoute',
         policiesTitle: 'policies/policiesTitle',
         policiesInfo: 'policies/policiesInfo',
+        loading: 'policies/loading',
       }),
+      markdownOptions() {
+        return {
+          html: true,
+          xhtmlOut: true,
+          linkify: true,
+          breaks: true,
+        };
+      },
       /**
        * @returns missionImage based on the screen size
        */
@@ -130,6 +147,7 @@
       GenericTextLayout,
       ImgAndTextLayout,
       BaseIconButton,
+      MMarkdownPreview,
     },
   };
 </script>

@@ -51,7 +51,7 @@
       <v-dialog v-model="showReloadDialog" persistent max-width="290">
         <v-card>
           <v-card-title class="headline">New Version Available!</v-card-title>
-          <v-card-text>{{ dialogVersionText }} </v-card-text>
+          <v-card-text>{{ dialogVersionText() }} </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="green darken-1" flat @click="reloadApp();">Reload</v-btn>
@@ -154,6 +154,9 @@
           this.$store.commit(ADD_ICON_IMAGE, { key, value: images[key] });
         });
       },
+      dialogVersionText() {
+        return `You are using the version ${process.env.VERSION}, but there is are newer version available (${this.newVersion}). Please reload to get the latest verison of EnviDat.`;
+      },
     },
     computed: {
       ...mapGetters({
@@ -168,6 +171,7 @@
         currentPage: 'currentPage',
         appBGImage: 'appBGImage',
         showVersionModal: 'showVersionModal',
+        newVersion: 'newVersion',
       }),
       metadatasContentSize: function metadatasContentSize() {
         return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
@@ -205,7 +209,6 @@
       appBGImages: {},
       prevHeight: 0,
       dialogCanceled: false,
-      dialogVersionText: `You are using the version ${process.env.VERSION}, but there is are newer version aviable. Please reload to get the latest verison of EnviDat.`,
       appVersion: process.env.VERSION,
     }),
     components: {

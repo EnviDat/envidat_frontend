@@ -43,6 +43,7 @@ export default {
   [CHECK_FRONTEND_VERSION](state, version) {
     if (version > process.env.VERSION) {
       state.showVersionModal = true;
+      state.newVersion = version;
     }
   },
 };

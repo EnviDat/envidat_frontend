@@ -1,6 +1,6 @@
 {
   "name": "envidat.ch",
-  "version": "0.5.73",
+  "version": "0.5.8",
   "description": "Envidat frontend with vue",
   "author": "Dominik Haas-Artho",
   "private": true,

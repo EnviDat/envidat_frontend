@@ -7,35 +7,27 @@ import {
   CHECK_FRONTEND_VERSION,
 } from '@/store/mutationsConsts';
 
-// const globalMethods = require('@/components/globalMethods');
-const ENVIDAT_PROXY = process.env.ENVIDAT_PROXY;
-
-function urlRewrite(url, baseUrl, proxyUrl) {
-  url = url.replace('?', '&');
-  url = url.replace("'", '%22');
-
-  url = `${proxyUrl}${baseUrl}${url}`;
-
-  return url;
-}
-
-
 export default {
   [SET_CONFIG]({ commit }) {
-    // const response = {
-    //   data: { version: '0.5.72' },
-    // };
-
-    // const url = urlRewrite('./config.json', ENVIDAT_PROXY, '');
-    const url = './config.json';
-    // commit(CHECK_FRONTEND_VERSION, response.data);
+    const url = `./config.json?nocache=${new Date().getTime()}`;
 
     axios.get(url)
       .then((response) => {
-        commit(SET_CONFIG_SUCCESS, response.data);
+        try {
+          let config;
+          if (typeof (response.data) === 'string') {
+            config = JSON.parse(response.data);
+          } else {
+            config = response.data;
+          }
 
-        if (response.data.version) {
-          commit(CHECK_FRONTEND_VERSION, response.data.version);
+          commit(SET_CONFIG_SUCCESS, config);
+
+          if (config.version) {
+            commit(CHECK_FRONTEND_VERSION, config.version);
+          }
+        } catch (error) {
+          console.error(`tried loading config, error: ${error}`);
         }
       })
       .catch((reason) => {
