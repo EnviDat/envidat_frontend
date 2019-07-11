@@ -6,30 +6,6 @@
 
     <v-layout row wrap >
 
-      <!-- <v-flex xs12 lg10 offset-lg1>
-
-        <img-and-text-layout :dark="false"
-                        :blur="true"
-                        :img="books"
-                        :height="300"
-                        :textFontSize="16"
-                        :parallax="true"
-                        :title="policiesTitle"
-                        >
-
-          <base-icon-button style="position: absolute; top: 0px; right: 0px; z-index: 10;"
-                                  materialIconName="close"
-                                  :outlined="true"
-                                  color="white"
-                                  iconColor="white"
-                                  toolTipText ="Close Policies Page"
-                                  :toolTipBottom="true"
-                                  v-on:clicked="catchBackClicked" />
-
-        </img-and-text-layout>
-      </v-flex> -->
-
-
       <v-flex v-show="loading" >
         Loading Policies...
       </v-flex>
@@ -37,7 +13,7 @@
 
       <v-flex v-if="!loading"
               xs12 md8 offset-md2 lg10 offset-lg1 mt-5 >
-        <m-markdown-preview :markdown="policiesInfo"
+        <m-markdown-preview :markdown="policiesMarkdown"
                             :options="markdownOptions" />
       </v-flex>
 
@@ -62,7 +38,7 @@
 
   import BaseIconButton from '@/components/BaseElements/BaseIconButton';
   import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
-  import GenericTextLayout from '@/components/Layouts/GenericTextLayout';
+  // import GenericTextLayout from '@/components/Layouts/GenericTextLayout';
   import MMarkdownPreview from 'm-markdown-preview';
 
   // import books from '@/assets/policies/books.jpg';
@@ -79,9 +55,7 @@
       });
     },
     beforeMount() {
-      if (!this.policiesInfo) {
-        this.$store.dispatch(`policies/${GET_POLICIES}`);
-      }
+      this.$store.dispatch(`policies/${GET_POLICIES}`);
     },
     /**
      * @description reset the scrolling to the top,
@@ -94,7 +68,7 @@
       ...mapGetters({
         policiesPageBackRoute: 'policies/policiesPageBackRoute',
         policiesTitle: 'policies/policiesTitle',
-        policiesInfo: 'policies/policiesInfo',
+        policiesMarkdown: 'policies/policiesMarkdown',
         loading: 'policies/loading',
       }),
       markdownOptions() {
@@ -144,7 +118,7 @@
       // lawBooks,
     }),
     components: {
-      GenericTextLayout,
+      // GenericTextLayout,
       ImgAndTextLayout,
       BaseIconButton,
       MMarkdownPreview,
