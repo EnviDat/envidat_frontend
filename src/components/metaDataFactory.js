@@ -100,8 +100,18 @@ module.exports = {
   createResources: function createResources(dataset) {
     const resources = [];
 
+    // @TODO shorten url for the restricted resources
+
     if (dataset.resources) {
       dataset.resources.forEach((element) => {
+        const isProtected = typeof (element.restricted) === 'string' && element.restricted.includes('private');
+        let resURL = element.url;
+
+        if (isProtected) {
+          const splits = element.url.split('resource');
+          resURL = splits[0];
+        }
+
         const res = {
           // "hash": "",
           description: element.description,
@@ -115,7 +125,7 @@ module.exports = {
           cacheUrl: element.cache_url,
           doi: element.doi,
           name: element.name,
-          url: element.url,
+          url: resURL,
           restricted: element.restricted,
           format: element.format,
           state: element.state,
@@ -123,6 +133,7 @@ module.exports = {
           lastModified: element.last_modified,
           position: element.position,
           revisionId: element.revision_id,
+          isProtected,
         };
 
         resources.push(res);
