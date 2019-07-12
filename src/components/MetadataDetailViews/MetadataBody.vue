@@ -4,7 +4,9 @@
     
     <v-card-title class="metadata_title title" >Description</v-card-title>
 
-    <v-card-text v-if="fullDescription" >
+    <v-card-text v-if="fullDescription"
+                 class="heightAndScroll pb-4"
+                 ref="description" >
       <m-markdown-preview :markdown="fullDescription" :options="{ html: true, xhtmlOut: true, linkify: true, breaks: true }" />
     </v-card-text>
 
@@ -19,8 +21,8 @@
       {{ emptyText }}
     </v-card-text>
 
-    <v-card-actions v-if="maxDescriptionLengthReached"
-                    style="position: absolute; bottom: 0; right: 0;" >
+    <v-card-actions v-show="maxDescriptionLengthReached"
+                    :style="`position: absolute; bottom: 0; right: 20px;`" >
 
       <v-spacer></v-spacer>
 
@@ -91,6 +93,9 @@
       readMore: function readMore() {
         this.showFullDescription = !this.showFullDescription;
       },
+      rightPos() {
+        return this.$refs.description && this.$refs.description.clientHeight >= 500 ? '10px' : '0';
+      },
     },
     components: {
       MMarkdownPreview,
@@ -98,4 +103,10 @@
   };
 </script>
 
+<style scoped>
 
+.heightAndScroll {
+  max-height: 500px;
+  overflow-y: auto !important;
+}
+</style>
