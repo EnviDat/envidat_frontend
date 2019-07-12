@@ -93,7 +93,7 @@
     </v-card-text>
 
     <v-card-actions class="ma-0 pa-2 "
-                    style="position: absolute; bottom: 5px; right: 20px;">
+                    style="position: absolute; bottom: 5px; right: 40px;">
 
       <v-spacer></v-spacer>
 
@@ -110,16 +110,28 @@
                         v-on:clicked="showFullDescription = !showFullDescription"
                         />
 
+    </v-card-actions>
 
-      <base-icon-button :customIcon="isFile ? downloadIcon : linkIcon"
+    <div class="fab_container ma-0 py-3"
+          style="position: absolute; bottom: 5px; right: 0px;">
+
+      <base-icon-button v-if="isProtected"
+                        :customIcon="isFile ? downloadIcon : linkIcon"
                         color="accent"
                         :isElevated="true"
                         :toolTipText="isFile ? 'Download file' : 'Open link'"
                         :url="url"
                         />
 
-
-    </v-card-actions>
+      <div v-if="!isProtected"
+            class="circle elevation-2 ma-0 pl-2 pt-2" >
+          <v-icon class="pl-1 pt-1">shield</v-icon>      
+        <p class="pt-2 lockedText black--text resourceCardText"
+            v-html="protectedText">
+          
+          </p>
+      </div>    
+    </div>
 
   </v-card>
 </template>
@@ -133,7 +145,6 @@ import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 export default {
   props: {
     id: String,
-    metadataId: String,
     doi: String,
     name: String,
     description: String,
@@ -151,11 +162,13 @@ export default {
     fileSizeIcon: String,
     dateCreatedIcon: String,
     lastModifiedIcon: String,
+    isProtected: Boolean,
   },
   data: () => ({
     defaultTexture,
     maxDescriptionLength: 175,
     showFullDescription: false,
+    audioFormats: ['mp3', 'wav', 'wma', 'ogg'],
   }),
   computed: {
     dynamicCardBackground: function dynamicCardBackground() {
@@ -188,11 +201,18 @@ export default {
       return this.description && this.description.length > this.maxDescriptionLength;
     },
     fileExtensionIcon: function fileExtensionIcon() {
+      if (this.audioFormats.includes(this.format.inc)) {
+        return this.mixinMethods_getIcon('Audio');
+      }
+
       return this.mixinMethods_getIconFileExtension(this.format);
     },
     fileFormatLabel: function fileFormatLabel() {
       const label = this.fileExtensionIcon ? '' : 'Format:';
       return label;
+    },
+    protectedText() {
+      return `This resource is protected <a href="${this.url}">click here to Login</a> to get access.`;
     },
   },
   methods: {
@@ -227,4 +247,33 @@ export default {
     overflow-y: auto !important;
   }
 
+
+  .circle {
+    width: 48px;
+    height: 48px;
+    background-color: #FFD740;
+    border-radius: 50%;
+    position: absolute; bottom: 5px; right: 10px;
+    transition: .3s;
+  }
+
+  .circle:hover {
+    background: #FFF;
+    width: 150px;
+    height: 125px;
+    border-radius: 3px 3px;
+    visibility: visible;
+  }
+
+  .lockedText {
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.1s;
+  }
+
+  .circle:hover .lockedText {
+    visibility: visible;
+    transition: 0.5s;
+    opacity: 1;
+  }
 </style>
