@@ -9,10 +9,10 @@
     </v-card-title>
 
     <v-card-text class="pt-0"
-    :class="{
-        'pb-3': $vuetify.breakpoint.mdAndUp,
-        'pb-5': $vuetify.breakpoint.smAndDown,
-      }">
+                :class="{
+                    'pb-3': $vuetify.breakpoint.mdAndUp,
+                    'pb-5': $vuetify.breakpoint.smAndDown,
+                  }">
 
       <v-container grid-list-xs pa-0>
         <v-layout v-bind="{ ['row']: $vuetify.breakpoint.smAndUp,
@@ -21,61 +21,64 @@
                           }"
         >
 
-          <v-flex v-bind="{ [`xs6`]: !this.twoColumnLayout , 
-                            [`xs12`]: this.twoColumnLayout  }"
-                            order-xs3 order-sm1
+          <v-flex v-bind="{ [`xs6`]: !this.twoColumnLayout && !showFullDescription, 
+                            [`xs12`]: this.twoColumnLayout || showFullDescription }"
+                            order-xs1 order-sm3
           >
 
             <v-layout column>
-              <v-flex xs11 v-if="showFullDescription"
-                            class="resourceCardText">
+              <v-flex v-if="showFullDescription"
+                      xs11 pb-4
+                      class="resourceCardText heightAndScroll">
                 {{ description }}
               </v-flex>
 
-              <v-flex xs11 v-if="!showFullDescription"
-                            class="resourceCardText">
+              <v-flex v-if="!showFullDescription"
+                      xs11 
+                      class="resourceCardText">
                 {{ description | truncate(maxDescriptionLength) }}
               </v-flex>
 
             </v-layout>
           </v-flex>
     
-          <v-flex order-xs2 hidden-sm-and-up>
+          <v-flex v-if="!showFullDescription" 
+                  order-xs2 hidden-sm-and-up>
             <v-divider :dark="dark" class="my-1" ></v-divider>
           </v-flex>
 
-          <v-flex v-bind="{ [`xs6`]: !this.twoColumnLayout , 
+          <v-flex v-if="!showFullDescription"
+                  v-bind="{ [`xs6`]: !this.twoColumnLayout , 
                             [`xs12`]: this.twoColumnLayout,
                             [`pt-3`]: this.twoColumnLayout  }"
-                            order-xs1 order-sm3
+                            order-xs3 order-sm1
           >
             <v-layout column>
-              <v-flex px-0 v-if="doi">
+              <v-flex pa-0 v-if="doi">
                 <base-icon-label-view :text="doi"
                                       :icon="doiIcon"
                                       iconTooltip="Data Object Identifier" 
                                       :alignLeft="twoColumnLayout"/>
               </v-flex>
-              <v-flex px-0 v-if="format">
-                <base-icon-label-view :label="fileFormatLabel"
-                                      :text="format"
+              <v-flex pa-0 v-if="format">
+                <base-icon-label-view :text="format"
                                       :icon="fileExtensionIcon"
                                       iconTooltip="Format of the file"
                                       :alignLeft="twoColumnLayout" />
               </v-flex>
-              <v-flex px-0 v-if="size">
+              <v-flex pa-0 v-if="size">
                 <base-icon-label-view :text="formatedBytes"
                                       :icon="fileSizeIcon"
                                       iconTooltip="Filesize"
                                       :alignLeft="twoColumnLayout" />
               </v-flex>
-              <v-flex px-0 v-if="created">
+              <v-flex pa-0 v-if="created">
                 <base-icon-label-view :text="formatedCreated"
                                       :icon="dateCreatedIcon" 
                                       iconTooltip="Date of file creation" 
                                       :alignLeft="twoColumnLayout"/>
               </v-flex>
-              <v-flex px-0 v-if="lastModified">
+              <v-flex pa-0 v-if="lastModified">
                 <base-icon-label-view :text="formatedLastModified"
                                       :icon="lastModifiedIcon"
                                       iconTooltip="Date of last modification" 
@@ -88,11 +91,10 @@
       </v-container>
     </v-card-text>
 
-    <v-card-actions class="ma-0 pa-2"
-                    style="position: absolute; bottom: 0; right: 0;">
+    <v-card-actions class="ma-0 pa-2 "
+                    style="position: absolute; bottom: 5px; right: 50px;">
 
       <v-spacer></v-spacer>
-
 
       <base-icon-button v-if="maxDescriptionLengthReached"
                         class="mr-2"
@@ -106,16 +108,30 @@
                         v-on:clicked="showFullDescription = !showFullDescription"
                         />
 
+    </v-card-actions>
 
-      <base-icon-button :customIcon="isFile ? downloadIcon : linkIcon"
+    <div class="ma-0 py-3"
+          style="position: absolute; bottom: 0px; right: 0px; height: 90%">
+
+      <div v-if="isProtected"
+            class="fabMenu fabPosition elevation-2 ma-2 pl-2 pt-2" >
+          <v-icon class="pl-1 pt-1">shield</v-icon>      
+        <p class="pt-2 lockedText black--text resourceCardText"
+            v-html="protectedText">
+          </p>
+      </div>    
+
+      <base-icon-button v-if="!isProtected"
+                        class="fabPosition ma-3"
+                        style="height: 40px; width: 40px;"
+                        :customIcon="isFile ? downloadIcon : linkIcon"
                         color="accent"
                         :isElevated="true"
                         :toolTipText="isFile ? 'Download file' : 'Open link'"
                         :url="url"
                         />
 
-
-    </v-card-actions>
+    </div>
 
   </v-card>
 </template>
@@ -129,7 +145,6 @@ import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 export default {
   props: {
     id: String,
-    metadataId: String,
     doi: String,
     name: String,
     description: String,
@@ -147,11 +162,13 @@ export default {
     fileSizeIcon: String,
     dateCreatedIcon: String,
     lastModifiedIcon: String,
+    isProtected: Boolean,
   },
   data: () => ({
     defaultTexture,
     maxDescriptionLength: 175,
     showFullDescription: false,
+    audioFormats: ['mp3', 'wav', 'wma', 'ogg'],
   }),
   computed: {
     dynamicCardBackground: function dynamicCardBackground() {
@@ -184,11 +201,23 @@ export default {
       return this.description && this.description.length > this.maxDescriptionLength;
     },
     fileExtensionIcon: function fileExtensionIcon() {
-      return this.mixinMethods_getIconFileExtension(this.format);
+      if (this.audioFormats.includes(this.format)) {
+        return this.mixinMethods_getIcon('Audio');
+      }
+
+      const extIcon = this.mixinMethods_getIconFileExtension(this.format);
+      if (extIcon) {
+        return extIcon;
+      }
+
+      return this.mixinMethods_getIcon('file');
     },
-    fileFormatLabel: function fileFormatLabel() {
-      const label = this.fileExtensionIcon ? '' : 'Format:';
-      return label;
+    protectedText() {
+      if (this.url && this.url.length > 0) {
+        return `This resource is protected <a href="${this.url}" target="_blank" >login via the old UI to get access</a>.`;
+      }
+
+      return 'Could not load the resource, please contact envidat@wsl.ch for support.';
     },
   },
   methods: {
@@ -218,5 +247,40 @@ export default {
     color: rgba(255,255,255,.9) !important;
   }
 
+  .heightAndScroll {
+    max-height: 400px;
+    overflow-y: auto !important;
+  }
 
+  .fabPosition {
+    position: absolute; bottom: 0px; right: 0px;
+  }
+
+  .fabMenu {
+    width: 48px;
+    height: 48px;
+    background-color: #FFD740;
+    border-radius: 50%;
+    transition: .3s;
+  }
+
+  .fabMenu:hover {
+    background: #FFF;
+    width: 150px;
+    height: 100%;
+    border-radius: 3px 3px;
+    visibility: visible;
+  }
+
+  .lockedText {
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.1s;
+  }
+
+  .fabMenu:hover .lockedText {
+    visibility: visible;
+    transition: 0.5s;
+    opacity: 1;
+  }
 </style>

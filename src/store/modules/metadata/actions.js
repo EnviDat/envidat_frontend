@@ -90,14 +90,17 @@ function contentSize(content) {
 }
 
 function contentFilterAccessibility(value) {
-  if (value.capacity && value.capacity !== 'public') {
-    // unpublished entries have 'private'
-    return false;
-  } else if (value.private && value.private === true) {
-    return false;
-  }
-
+  // don't make a check for now
   return true;
+
+  // if (value.capacity && value.capacity !== 'public') {
+  //   // unpublished entries have 'private'
+  //   return false;
+  // } else if (value.private && value.private === true) {
+  //   return false;
+  // }
+
+  // return true;
 }
 
 function tagsIncludedInSelectedTags(tags, selectedTagNames) {
