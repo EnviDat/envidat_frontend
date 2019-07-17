@@ -90,14 +90,17 @@ function contentSize(content) {
 }
 
 function contentFilterAccessibility(value) {
-  if (value.capacity && value.capacity !== 'public') {
-    // unpublished entries have 'private'
-    return false;
-  } else if (value.private && value.private === true) {
-    return false;
-  }
-
+  // don't make a check for now
   return true;
+
+  // if (value.capacity && value.capacity !== 'public') {
+  //   // unpublished entries have 'private'
+  //   return false;
+  // } else if (value.private && value.private === true) {
+  //   return false;
+  // }
+
+  // return true;
 }
 
 function tagsIncludedInSelectedTags(tags, selectedTagNames) {
@@ -167,15 +170,42 @@ export default {
   async [LOAD_METADATA_CONTENT_BY_ID]({ commit }, metadataId) {
     commit(LOAD_METADATA_CONTENT_BY_ID);
 
-    const url = urlRewrite(`package_show?id=${metadataId}`, API_BASE, ENVIDAT_PROXY);
+    const metadatasContent = this.getters['metadata/metadatasContent'];
+    const contents = Object.values(metadatasContent);
 
+    // contents.forEach((element) => {
+    //   console.log(element.id + " name " + element.name);
+    // });
+
+    const localEntry = contents.filter(entry => entry.name === metadataId);
+    // filter() always return an array
+    if (localEntry.length === 1) {
+      commit(LOAD_METADATA_CONTENT_BY_ID_SUCCESS, localEntry[0]);
+      return;
+    }
+
+
+    const url = urlRewrite(`select?q=name:${metadataId} OR id:${metadataId} &wt=json&rows=1`, SOLR_API_BASE, SOLR_PROXY);
     axios.get(url).then((response) => {
-      commit(LOAD_METADATA_CONTENT_BY_ID_SUCCESS, response.data.result);
+      let entry = response.data.response.docs;
+      if (response.data.response.docs instanceof Array) {
+        entry = response.data.response.docs[0];
+      }
+
+      commit(LOAD_METADATA_CONTENT_BY_ID_SUCCESS, entry);
     }).catch((reason) => {
       commit(LOAD_METADATA_CONTENT_BY_ID_ERROR, reason);
     });
+
+    // const url = urlRewrite(`package_show?id=${metadataId}`, API_BASE, ENVIDAT_PROXY);
+
+    // axios.get(url).then((response) => {
+    //   commit(LOAD_METADATA_CONTENT_BY_ID_SUCCESS, response.data.result);
+    // }).catch((reason) => {
+    //   commit(LOAD_METADATA_CONTENT_BY_ID_ERROR, reason);
+    // });
   },
-  async [BULK_LOAD_METADATAS_CONTENT]({ dispatch, commit, showRestrictedContent = false }) {
+  async [BULK_LOAD_METADATAS_CONTENT]({ dispatch, commit }) {
     commit(BULK_LOAD_METADATAS_CONTENT);
     // console.log(BULK_LOAD_METADATAS_CONTENT);
 
@@ -189,7 +219,7 @@ export default {
     axios.get(url)
       .then((response) => {
         // commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, response.data.response.docs, showRestrictedContent);
-        commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, response.data.result, showRestrictedContent);
+        commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, response.data.result);
 
         // for the case when loaded up on landingpage
         dispatch(FILTER_METADATA, []);
