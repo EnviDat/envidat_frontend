@@ -268,6 +268,7 @@ export default {
     background: #FFF;
     width: 150px;
     height: 100%;
+    min-height: 110px;
     border-radius: 3px 3px;
     visibility: visible;
   }

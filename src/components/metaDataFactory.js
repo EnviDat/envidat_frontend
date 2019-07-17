@@ -104,10 +104,25 @@ module.exports = {
 
     if (dataset.resources) {
       dataset.resources.forEach((element) => {
-        const isProtected = typeof (element.restricted) === 'string' && element.restricted.includes('private');
+        let isProtected = false;
+        let restrictedUsers;
+        let restrictedObj = false;
+
+        if (typeof element.restricted === 'string') {
+          try {
+            restrictedObj = JSON.parse(element.restricted);
+            isProtected = restrictedObj.level !== 'public';
+            restrictedUsers = restrictedObj.allowed_users !== '';
+            // "{"allowed_users": "", "level": "public", "shared_secret": ""}"
+          } catch (err) {
+            isProtected = !element.restricted.includes('public');
+          }
+        }
+
         let resURL = element.url;
 
-        if (isProtected) {
+        if (isProtected ||
+          (typeof restrictedUsers === 'boolean' && restrictedUsers === true)) {
           const splits = element.url.split('resource');
           if (splits && splits.length > 0) {
             resURL = splits[0];
