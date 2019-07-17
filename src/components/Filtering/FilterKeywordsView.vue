@@ -13,7 +13,7 @@
       </v-flex>
 
 
-      <v-flex xs12 px-2 mt-2
+      <v-flex xs12 px-2 mt-1
                 v-if="expanded || $vuetify.breakpoint.smAndUp">
 
         <v-layout row
@@ -68,7 +68,7 @@
       </v-flex>
 
 
-      <v-flex xs12 px-2 mt-2
+      <v-flex xs12 px-2 mt-1
               v-if="expanded || $vuetify.breakpoint.smAndUp">
 
         <v-layout row

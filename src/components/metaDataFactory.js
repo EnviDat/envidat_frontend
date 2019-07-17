@@ -109,8 +109,15 @@ module.exports = {
 
         if (isProtected) {
           const splits = element.url.split('resource');
-          resURL = splits[0];
+          if (splits && splits.length > 0) {
+            resURL = splits[0];
+          } else {
+            resURL = '';
+          }
         }
+
+        let format = element.format;
+        format = format.replace('.', '').toLowerCase();
 
         const res = {
           // "hash": "",
@@ -127,7 +134,7 @@ module.exports = {
           name: element.name,
           url: resURL,
           restricted: element.restricted,
-          format: element.format,
+          format,
           state: element.state,
           created: element.created,
           lastModified: element.last_modified,

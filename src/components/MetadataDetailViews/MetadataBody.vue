@@ -22,7 +22,7 @@
     </v-card-text>
 
     <v-card-actions v-show="maxDescriptionLengthReached"
-                    :style="`position: absolute; bottom: 0; right: 20px;`" >
+                    :style="`position: absolute; bottom: 0; right: 0px;`" >
 
       <v-spacer></v-spacer>
 
