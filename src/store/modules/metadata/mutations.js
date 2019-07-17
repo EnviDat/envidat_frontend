@@ -34,16 +34,13 @@ export default {
     state.searchingMetadatasContentOK = false;
     state.searchedMetadatasContent = {};
   },
-  [SEARCH_METADATA_SUCCESS](state, payload, showRestrictedContent = false) {
+  [SEARCH_METADATA_SUCCESS](state, payload) {
     /* eslint-disable no-underscore-dangle */
     for (let i = 0; i < payload.length; i++) {
       const element = payload[i];
       const ckanJSON = conversion.solrResultToCKANJSON(element);
 
-      if ((showRestrictedContent && ckanJSON.private)
-      || (!showRestrictedContent && !ckanJSON.private)) {
-        this._vm.$set(state.searchedMetadatasContent, ckanJSON.id, ckanJSON);
-      }
+      this._vm.$set(state.searchedMetadatasContent, ckanJSON.id, ckanJSON);
     }
 
     state.searchingMetadatasContentOK = true;
@@ -103,16 +100,13 @@ export default {
     state.loadingMetadatasContent = true;
     state.metadatasContent = {};
   },
-  [BULK_LOAD_METADATAS_CONTENT_SUCCESS](state, payload, showRestrictedContent) {
+  [BULK_LOAD_METADATAS_CONTENT_SUCCESS](state, payload) {
     /* eslint-disable no-underscore-dangle */
     for (let i = 0; i < payload.length; i++) {
       const element = payload[i];
       // const ckanJSON = conversion.solrResultToCKANJSON(element);
 
-      if ((showRestrictedContent && element.private)
-      || (!showRestrictedContent && !element.private)) {
-        this._vm.$set(state.metadatasContent, element.id, element);
-      }
+      this._vm.$set(state.metadatasContent, element.id, element);
     }
 
     state.metadatasContentOK = true;
