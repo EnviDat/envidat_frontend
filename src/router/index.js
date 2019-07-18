@@ -16,6 +16,7 @@ import {
   GCMD_PATH,
   ABOUT_PATH,
   POLICIES_PATH,
+  GUIDELINES_PATH,
 } from '@/router/routeConsts';
 
 Vue.use(Router);
@@ -41,11 +42,11 @@ export default new Router({
       name: METADATADETAIL_NAME,
       component: () => import(/* webpackChunkName: "metadataDetailPage" */ '@/components/Pages/MetadataDetailPage'),
     },
-    {
-      path: `${METADATADETAIL_PATH}/:metadataid/resource/:resourceid`,
-      name: 'ResourceDetailPage',
-      component: () => import(/* webpackChunkName: "resourceDetailPage" */ '@/components/Pages/ResourceDetailPage'),
-    },
+    // {
+    //   path: `${METADATADETAIL_PATH}/:metadataid/resource/:resourceid`,
+    //   name: 'ResourceDetailPage',
+    //   component: () => import(/* webpackChunkName: "resourceDetailPage" */ '@/components/Pages/ResourceDetailPage'),
+    // },
     {
       path: GCMD_PATH,
       name: 'GCMDPage',
@@ -60,6 +61,11 @@ export default new Router({
       path: POLICIES_PATH,
       name: 'PoliciesPage',
       component: () => import(/* webpackChunkName: "policiesPage" */ '@/components/Pages/PoliciesPage'),
+    },
+    {
+      path: GUIDELINES_PATH,
+      name: 'GuidelinesPage',
+      component: () => import(/* webpackChunkName: "guidelinesPage" */ '@/components/Pages/GuidelinesPage'),
     },
   ],
   scrollBehavior(to, from, savedPosition) {

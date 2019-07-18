@@ -7,13 +7,13 @@
     <v-layout row wrap >
 
       <v-flex v-show="loading" >
-        Loading Policies...
+        Loading Guidelines...
       </v-flex>
 
 
       <v-flex v-if="!loading"
               xs12 md8 offset-md2 lg10 offset-lg1 mt-5 >
-        <m-markdown-preview :markdown="policiesMarkdown"
+        <m-markdown-preview :markdown="guidelinesMarkdown"
                             :options="markdownOptions" />
       </v-flex>
 
@@ -34,21 +34,20 @@
     SET_APP_BACKGROUND,
     SET_CURRENT_PAGE,
   } from '@/store/mutationsConsts';
-  import { GET_POLICIES } from '@/store/policiesMutationsConsts';
+  import { GET_GUIDELINES } from '@/store/guidelinesMutationsConsts';
 
-  // import BaseIconButton from '@/components/BaseElements/BaseIconButton';
-  // import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
   import MMarkdownPreview from 'm-markdown-preview';
+
 
   export default {
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
       next((vm) => {
-        vm.$store.commit(SET_CURRENT_PAGE, 'policiesPage');
+        vm.$store.commit(SET_CURRENT_PAGE, 'guidelinesPage');
         vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
       });
     },
     beforeMount() {
-      this.$store.dispatch(`policies/${GET_POLICIES}`);
+      this.$store.dispatch(`guidelines/${GET_GUIDELINES}`);
     },
     /**
      * @description reset the scrolling to the top,
@@ -59,10 +58,10 @@
     },
     computed: {
       ...mapGetters({
-        policiesPageBackRoute: 'policies/policiesPageBackRoute',
-        policiesTitle: 'policies/policiesTitle',
-        policiesMarkdown: 'policies/policiesMarkdown',
-        loading: 'policies/loading',
+        guidelinesPageBackRoute: 'guidelines/guidelinesPageBackRoute',
+        // guidelinesTitle: 'guidelines/guidelinesTitle',
+        guidelinesMarkdown: 'guidelines/guidelinesMarkdown',
+        loading: 'guidelines/loading',
       }),
       markdownOptions() {
         return {
@@ -78,7 +77,7 @@
        * @description changes the url to page the user was before. Fallback: BrowsePage
        */
       catchBackClicked: function catchBackClicked() {
-        const backRoute = this.policiesPageBackRoute;
+        const backRoute = this.aboutPageBackRoute;
 
         if (backRoute) {
           this.$router.push({
