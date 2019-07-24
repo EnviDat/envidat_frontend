@@ -1,67 +1,89 @@
 <template>
-
   <v-card :style="fixedHeight ? 'height: 304px;' : ''">
-    <v-card-title class="title metadata_title" >Citation</v-card-title>
+    <v-card-title class="title metadata_title">
+      Citation
+    </v-card-title>
 
-    <v-card-text v-if="citationText"
-                  style="font-style: italic; ">
+    <v-card-text
+      v-if="citationText"
+      style="font-style: italic; "
+    >
       {{ citationText }}
     </v-card-text>
 
     <v-card-actions v-if="!showPlaceholder && citationText">
-      
-      <v-container fluid grid-list-md pa-0>
-
-        <v-layout justify-end row wrap>
-
-
-          <v-flex xs4 sm2 md3 lg2
-                  v-for="link in citationLinks"
-                  :key="link.text"
+      <v-container
+        fluid
+        grid-list-md
+        pa-0
+      >
+        <v-layout
+          justify-end
+          row
+          wrap
+        >
+          <v-flex
+            v-for="link in citationLinks"
+            :key="link.text"
+            xs4
+            sm2
+            md3
+            lg2
           >
-            <base-rectangle-button marginClass="mx-1 citationButton"
-                                  :buttonText="link.text"
-                                  :toolTipText="link.toolTipText"
-                                  materialIconName="assignment"
-                                  :isSmall="true"
-                                  iconColor="white"
-                                  :url="link.url"
-                                  />
+            <base-rectangle-button
+              margin-class="mx-1 citationButton"
+              :button-text="link.text"
+              :tool-tip-text="link.toolTipText"
+              material-icon-name="assignment"
+              :is-small="true"
+              icon-color="white"
+              :url="link.url"
+            />
           </v-flex>
-
         </v-layout>
       </v-container>
-
     </v-card-actions>
 
-    <v-card-text v-if="showPlaceholder && !citationText" >
-      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
-        <div class='bone bone-type-multiline bone-style-paragraph' ></div>
+    <v-card-text v-if="showPlaceholder && !citationText">
+      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer">
+        <div class="bone bone-type-multiline bone-style-paragraph" />
       </div>
     </v-card-text>
 
-    <v-card-text v-if="!showPlaceholder && !citationText"
-                  style="color: red;" >
+    <v-card-text
+      v-if="!showPlaceholder && !citationText"
+      style="color: red;"
+    >
       {{ emptyText }}
     </v-card-text>
 
     <v-card-actions v-if="showPlaceholder && !citationText">
-      <v-spacer></v-spacer>          
-      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
-        <div style="width: 128px; height: 32px;" class='px-1 bone bone-type-image bone-style-rectangle' ></div>
-        <div style="width: 128px; height: 32px;" class='px-1 bone bone-type-image bone-style-rectangle' ></div>
-        <div style="width: 128px; height: 32px;" class='px-1 bone bone-type-image bone-style-rectangle' ></div>
+      <v-spacer />
+      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer">
+        <div
+          style="width: 128px; height: 32px;"
+          class="px-1 bone bone-type-image bone-style-rectangle"
+        />
+        <div
+          style="width: 128px; height: 32px;"
+          class="px-1 bone bone-type-image bone-style-rectangle"
+        />
+        <div
+          style="width: 128px; height: 32px;"
+          class="px-1 bone bone-type-image bone-style-rectangle"
+        />
       </div>
     </v-card-actions>
-
   </v-card>
-
 </template>
 
 <script>
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 
 export default {
+  components: {
+    BaseRectangleButton,
+  },
   props: {
     genericProps: Object,
     showPlaceholder: Boolean,
@@ -121,10 +143,6 @@ export default {
       return this.mixinMethods_getGenericProp('fixedHeight');
     },
   },
-  components: {
-    BaseRectangleButton,
-  },
 };
 
 </script>
-

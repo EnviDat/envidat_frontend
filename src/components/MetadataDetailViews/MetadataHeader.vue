@@ -1,164 +1,217 @@
 <template>
-    <v-flex >
+  <v-flex>
+    <v-card
+      elevation-5
+      :class="{
+        'pa-4': $vuetify.breakpoint.smAndUp,
+        'pa-3': $vuetify.breakpoint.xsOnly,
+      }"
+      :dark="dark"
+      color="primary"
+      v-bind="{['style'] : dynamicCardBackground }"
+    >
+      <base-icon-button
+        style="position: absolute; top: 0px; right: 0px;"
+        material-icon-name="close"
+        :icon-color=" (showPlaceholder || !metadataTitle) ? 'white' : 'primary'"
+        :outlined="true"
+        tool-tip-text="Close Metadata"
+        :tool-tip-bottom="true"
+        @clicked="catchBackClicked"
+      />
 
-      <v-card elevation-5
-              :class="{
-                  'pa-4': $vuetify.breakpoint.smAndUp,
-                  'pa-3': $vuetify.breakpoint.xsOnly,
-                }"
-              :dark="dark"
-              color="primary"
-              v-bind="{['style'] : dynamicCardBackground }"
+
+      <!--h1 class="py-3" >{{ metadataTitle }} id: {{ $route.params.id }}</h1-->
+      <div
+        v-if="metadataTitle"
+        class="headerTitle py-3"
+        :class="{ 'display-2': $vuetify.breakpoint.lgAndUp,
+                  'display-1': $vuetify.breakpoint.mdAndDown,
+                  'headline': $vuetify.breakpoint.smAndDown,
+        }"
       >
+        {{ metadataTitle }}
+      </div>
 
-        <base-icon-button style="position: absolute; top: 0px; right: 0px;"
-                          materialIconName="close"
-                          :iconColor=" (showPlaceholder || !metadataTitle) ? 'white' : 'primary'"
-                          :outlined="true"
-                          toolTipText ="Close Metadata"
-                          :toolTipBottom="true"
-                          v-on:clicked="catchBackClicked" />
+      <div
+        v-if="!metadataTitle && showPlaceholder"
+        class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-shimmer"
+      >
+        <div class="bone bone-type-multiline bone-style-steps" />
+      </div>
 
+      <v-divider
+        :dark="dark"
+        :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
+                  'my-2': $vuetify.breakpoint.smAndUp }"
+      />
 
-        <!--h1 class="py-3" >{{ metadataTitle }} id: {{ $route.params.id }}</h1-->
-        <div v-if="metadataTitle"
-            class="headerTitle py-3"
-            :class="{ 'display-2': $vuetify.breakpoint.lgAndUp,
-                      'display-1': $vuetify.breakpoint.mdAndDown, 
-                      'headline': $vuetify.breakpoint.smAndDown, 
-                      }">
-          {{ metadataTitle }}
-        </div>
-        
-        <div v-if="!metadataTitle && showPlaceholder"
-          class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-shimmer" >
-          <div class='bone bone-type-multiline bone-style-steps' ></div>
-        </div>
-
-        <v-divider :dark="dark"
-                    :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
-                              'my-2': $vuetify.breakpoint.smAndUp }"
+      <v-layout
+        v-if="authors"
+        row
+        wrap
+      >
+        <tag-chip-author
+          v-for="author in authors"
+          :key="author.name"
+          :name="author.name.trim()"
+          :tool-tip-text="authorToolTipText"
+          @clicked="catchAuthorClicked($event, author.name.trim())"
         />
+      </v-layout>
 
-        <v-layout row wrap
-                  v-if="authors"
-                    >
+      <v-layout
+        v-if="!authors && showPlaceholder"
+        row
+        wrap
+      >
+        <tag-chip-placeholder
+          v-for="n in 5"
+          :key="n"
+          class="headerTag"
+        />
+      </v-layout>
 
-          <tag-chip-author v-for="author in authors" :key="author.name"
-                    :name="author.name.trim()"
-                    :toolTipText="authorToolTipText"
-                    v-on:clicked="catchAuthorClicked($event, author.name.trim())"
+      <v-divider
+        :dark="dark"
+        :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
+                  'my-2': $vuetify.breakpoint.smAndUp }"
+      />
+
+      <v-layout
+        row
+        wrap
+      >
+        <v-flex
+          xs12
+          sm6
+          md6
+          lg3
+          py-1
+          class="headerInfo"
+        >
+          <base-icon-label-view
+            :text="contactName"
+            :icon="contactIcon"
+            icon-tooltip="Main contact"
+            :align-left="true"
           />
-        </v-layout>
+        </v-flex>
 
-        <v-layout row wrap 
-                  v-if="!authors && showPlaceholder"
-                  >
+        <v-flex
+          xs12
+          sm6
+          md6
+          lg3
+          py-1
+          class="headerInfo"
+        >
+          <base-icon-label-view
+            :text="contactEmail"
+            :icon="mailIcon"
+            icon-tooltip="Email adress of the main contact"
+            :align-left="true"
+            :word-break="true"
+          />
+        </v-flex>
 
-          <tag-chip-placeholder v-for="n in 5" :key="n" 
-                    class="headerTag" />
+        <v-flex
+          xs12
+          sm6
+          md6
+          lg3
+          py-1
+          class="headerInfo"
+        >
+          <base-icon-label-view
+            :text="doi"
+            :icon="doiIcon"
+            icon-tooltip="Data Object Identifier"
+            :align-left="true"
+            :word-break="true"
+          />
+        </v-flex>
 
-        </v-layout>
+        <v-flex
+          xs12
+          sm6
+          md6
+          lg3
+          py-1
+          class="headerInfo"
+        >
+          <base-icon-label-view
+            :text="license"
+            :icon="licenseIcon"
+            icon-tooltip="License for Datafiles"
+            :align-left="true"
+          />
+        </v-flex>
+      </v-layout>
 
-        <v-divider :dark="dark"
-                    :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
-                              'my-2': $vuetify.breakpoint.smAndUp }"
+      <v-divider
+        :dark="dark"
+        :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
+                  'my-2': $vuetify.breakpoint.smAndUp }"
+      />
+
+      <v-layout
+        v-if="tags"
+        row
+        wrap
+      >
+        <tag-chip
+          v-for="tag in slicedTags"
+          :key="tag.name"
+          :name="tag.name"
+          :selectable="true"
+          class="headerTag"
+          @clicked="catchTagClicked($event, tag.name)"
         />
 
-        <v-layout row wrap>
-          <v-flex xs12 sm6 md6 lg3
-                  py-1 class="headerInfo">
-            <base-icon-label-view :text="contactName"
-                                  :icon="contactIcon"
-                                  iconTooltip="Main contact"
-                                  :alignLeft="true"
-                                  />
-          </v-flex>
+        <v-flex
+          v-if="tags && maxTagsReached && !showTagsExpanded"
+          xs2
+        >
+          <tag-chip
+            class="headerTag"
+            :name="'...'"
+            @click.native="showTagsExpanded = !showTagsExpanded"
+          />
+        </v-flex>
+      </v-layout>
 
-          <v-flex xs12 sm6 md6 lg3
-                  py-1 class="headerInfo">
-            <base-icon-label-view :text="contactEmail"
-                                  :icon="mailIcon"
-                                  iconTooltip="Email adress of the main contact"
-                                  :alignLeft="true"
-                                  :wordBreak="true"
-                                  />
-          </v-flex>
-
-          <v-flex xs12 sm6 md6 lg3
-                  py-1 class="headerInfo">
-            <base-icon-label-view :text="doi"
-                                  :icon="doiIcon"
-                                  iconTooltip="Data Object Identifier"
-                                  :alignLeft="true"
-                                  :wordBreak="true"
-                                  />
-          </v-flex>
-
-          <v-flex xs12 sm6 md6 lg3
-                  py-1 class="headerInfo">
-            <base-icon-label-view :text="license"
-                                  :icon="licenseIcon"
-                                  iconTooltip="License for Datafiles"
-                                  :alignLeft="true"
-                                  />
-          </v-flex>
-        </v-layout>
-
-        <v-divider :dark="dark"
-                    :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
-                              'my-2': $vuetify.breakpoint.smAndUp }"
+      <v-layout
+        v-if="!tags && showPlaceholder"
+        row
+        wrap
+      >
+        <tag-chip-placeholder
+          v-for="n in 5"
+          :key="n"
+          class="headerTag"
         />
+      </v-layout>
 
-        <v-layout row wrap 
-                  v-if="tags"
-                  >
-
-          <tag-chip v-for="tag in slicedTags" :key="tag.name"
-                    :name="tag.name"
-                    :selectable="true"
-                    v-on:clicked="catchTagClicked($event, tag.name)"
-                    class="headerTag" />
-
-          <v-flex xs2 v-if="tags && maxTagsReached && !showTagsExpanded"
-          >
-            <tag-chip class="headerTag" :name="'...'"
-                      @click.native="showTagsExpanded = !showTagsExpanded"
-            />
-          </v-flex>
-        </v-layout>
-
-        <v-layout row wrap
-                   v-if="!tags && showPlaceholder"
-                  >
-
-          <tag-chip-placeholder
-                    v-for="n in 5" :key="n" 
-                    class="headerTag" />
-
-        </v-layout>
-          
-        <v-card-actions v-if="maxTagsReached"
-                        style="position: absolute; bottom: 0px; right: 0px;" >
-
-          <base-icon-button materialIconName="expand_more"
-                            :outlined="true"
-                            color="primary"
-                            iconColor="accent"
-                            :isToggled="showTagsExpanded"
-                            :rotateOnClick="true"
-                            :rotateToggle="showTagsExpanded"
-                            :toolTipText="showTagsExpanded ? 'Hide all tags' : 'Show all tags'"
-                            :toolTipBottom="true"
-                            v-on:clicked="showTagsExpanded = !showTagsExpanded" />
-
-        </v-card-actions>
-
-      </v-card>
-
-
-    </v-flex>
-    
+      <v-card-actions
+        v-if="maxTagsReached"
+        style="position: absolute; bottom: 0px; right: 0px;"
+      >
+        <base-icon-button
+          material-icon-name="expand_more"
+          :outlined="true"
+          color="primary"
+          icon-color="accent"
+          :is-toggled="showTagsExpanded"
+          :rotate-on-click="true"
+          :rotate-toggle="showTagsExpanded"
+          :tool-tip-text="showTagsExpanded ? 'Hide all tags' : 'Show all tags'"
+          :tool-tip-bottom="true"
+          @clicked="showTagsExpanded = !showTagsExpanded"
+        />
+      </v-card-actions>
+    </v-card>
+  </v-flex>
 </template>
 
 <script>
@@ -169,6 +222,13 @@ import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 export default {
+  components: {
+    TagChip,
+    TagChipAuthor,
+    TagChipPlaceholder,
+    BaseIconLabelView,
+    BaseIconButton,
+  },
   props: {
     metadataTitle: String,
     titleImg: String,
@@ -193,21 +253,6 @@ export default {
     whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
     authorToolTipText: 'Search for more data of this Author',
   }),
-  methods: {
-    catchTagClicked: function catchTagClicked(tagId) {
-      this.$emit('clickedTag', tagId);
-    },
-    catchAuthorClicked: function catchAuthorClicked(authorName) {
-      this.$emit('clickedAuthor', authorName);
-    },
-    catchBackClicked: function catchBackClicked() {
-      this.$emit('clickedBack');
-    },
-    iconFlip: function iconFlip(icon) {
-      const iconflip = this.dark ? `${icon}_w` : icon;
-      return iconflip;
-    },
-  },
   computed: {
     maxTagsReached: function maxTagsReached() {
       return this.tags ? this.tags.length >= this.maxTags : false;
@@ -235,12 +280,20 @@ export default {
       return '';
     },
   },
-  components: {
-    TagChip,
-    TagChipAuthor,
-    TagChipPlaceholder,
-    BaseIconLabelView,
-    BaseIconButton,
+  methods: {
+    catchTagClicked: function catchTagClicked(tagId) {
+      this.$emit('clickedTag', tagId);
+    },
+    catchAuthorClicked: function catchAuthorClicked(authorName) {
+      this.$emit('clickedAuthor', authorName);
+    },
+    catchBackClicked: function catchBackClicked() {
+      this.$emit('clickedBack');
+    },
+    iconFlip: function iconFlip(icon) {
+      const iconflip = this.dark ? `${icon}_w` : icon;
+      return iconflip;
+    },
   },
 };
 </script>
@@ -269,6 +322,3 @@ export default {
   }
 
 </style>
-
-
-

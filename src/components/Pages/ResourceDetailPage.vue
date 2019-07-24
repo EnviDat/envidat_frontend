@@ -1,13 +1,12 @@
 <template>
-  <v-container fluid >
+  <v-container fluid>
     <!--
-      
+
       This page is unsed so far
-      
+
       <v-card>
       id: {{ $route.params.id }}
     </v-card> -->
-
   </v-container>
 </template>
 
@@ -45,5 +44,3 @@
   }
   */
 </script>
-
-

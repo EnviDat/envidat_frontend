@@ -1,9 +1,8 @@
-
-module.exports = {
+export default {
   createHeader: function createHeader(dataset, breakpoint) {
     let { maintainer } = dataset;
 
-    if (typeof (dataset.maintainer) === 'string') {
+    if (typeof dataset.maintainer === 'string') {
       maintainer = JSON.parse(dataset.maintainer);
     }
 
@@ -16,7 +15,7 @@ module.exports = {
 
     let authors = null;
 
-    if (typeof (dataset.author) === 'string') {
+    if (typeof dataset.author === 'string') {
       authors = JSON.parse(dataset.author);
     }
 
@@ -46,7 +45,7 @@ module.exports = {
     if (dataset.author !== undefined) {
       let { author } = dataset;
 
-      if (typeof (dataset.author) === 'string') {
+      if (typeof dataset.author === 'string') {
         author = JSON.parse(dataset.author);
       }
 
@@ -67,7 +66,7 @@ module.exports = {
 
     let { publication } = dataset;
 
-    if (typeof (dataset.publication) === 'string') {
+    if (typeof dataset.publication === 'string') {
       publication = JSON.parse(dataset.publication);
     }
 
@@ -121,8 +120,7 @@ module.exports = {
 
         let resURL = element.url;
 
-        if (isProtected ||
-          (typeof restrictedUsers === 'boolean' && restrictedUsers === true)) {
+        if (isProtected || (typeof restrictedUsers === 'boolean' && restrictedUsers === true)) {
           const splits = element.url.split('resource');
           if (splits && splits.length > 0) {
             resURL = splits[0];
@@ -131,7 +129,7 @@ module.exports = {
           }
         }
 
-        let format = element.format;
+        let { format } = element;
         format = format.replace('.', '').toLowerCase();
 
         const res = {

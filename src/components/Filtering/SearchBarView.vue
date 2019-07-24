@@ -1,39 +1,43 @@
 <template>
-  <v-card hover
-          raised >
-
-    <v-layout row 
-              align-center >
-
-      <v-flex xs8 sm9 pl-2>
+  <v-card
+    hover
+    raised
+  >
+    <v-layout
+      row
+      align-center
+    >
+      <v-flex
+        xs8
+        sm9
+        pl-2
+      >
         <v-text-field
+          v-model="searchText"
           hide-details
-          full-width  
+          full-width
           solo
           flat
           prepend-icon="search"
+          :label="labelText"
           @click:prepend="clicked"
-          v-on:keyup.enter="clicked"
-          v-model="searchText"
-          :label="labelText">
-        </v-text-field>
+          @keyup.enter="clicked"
+        />
       </v-flex>
     </v-layout>
 
-    <v-card-actions v-if="hasButton"
-                    class="ma-0 pa-2"
-                    style="position: absolute; bottom: 0; right: 0;">
+    <v-card-actions
+      v-if="hasButton"
+      class="ma-0 pa-2"
+      style="position: absolute; bottom: 0; right: 0;"
+    >
+      <base-rectangle-button
+        :button-text="buttonText"
+        :is-small="true"
+        @clicked="clicked"
+      />
 
-      <base-rectangle-button :buttonText="buttonText"
-                              :isSmall="true"
-                              v-on:clicked="clicked"
-                              />
-
-      <!-- <v-btn  color="primary"
-              small
-              @click.native="clicked"> {{ buttonText }}</v-btn> -->
     </v-card-actions>
-    
   </v-card>
 </template>
 
@@ -41,6 +45,9 @@
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 
 export default {
+  components: {
+    BaseRectangleButton,
+  },
   props: {
     labelText: String,
     buttonText: String,
@@ -49,23 +56,20 @@ export default {
   data: () => ({
     searchText: '',
   }),
-  methods: {
-    clicked: function clicked() {
-      this.$emit('clicked', this.searchText);
-    },
-  },
   updated: function updated() {
     if (!this.searchText) {
       this.$emit('searchEmpty');
     }
   },
-  components: {
-    BaseRectangleButton,
+  methods: {
+    clicked: function clicked() {
+      this.$emit('clicked', this.searchText);
+    },
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-  
+
 </style>

@@ -109,20 +109,20 @@ export default new Router({
   isSameRoute: function isSameRoute(a, b) {
     if (b === START) {
       return a === b;
-    } else if (!b) {
+    } if (!b) {
       return false;
-    } else if (a.path && b.path) {
+    } if (a.path && b.path) {
       return (
-        a.path.replace(trailingSlashRE, '') === b.path.replace(trailingSlashRE, '') &&
-        a.hash === b.hash &&
-        this.isObjectEqual(a.query, b.query)
+        a.path.replace(trailingSlashRE, '') === b.path.replace(trailingSlashRE, '')
+        && a.hash === b.hash
+        && this.isObjectEqual(a.query, b.query)
       );
-    } else if (a.name && b.name) {
+    } if (a.name && b.name) {
       return (
-        a.name === b.name &&
-        a.hash === b.hash &&
-        this.isObjectEqual(a.query, b.query) &&
-        this.isObjectEqual(a.params, b.params)
+        a.name === b.name
+        && a.hash === b.hash
+        && this.isObjectEqual(a.query, b.query)
+        && this.isObjectEqual(a.params, b.params)
       );
     }
     return false;

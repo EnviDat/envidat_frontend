@@ -1,56 +1,74 @@
 <template>
-
-  <v-card 
+  <v-card
     ripple
     hover
     style="height: 100%; max-height: 375px !important;"
-    >
-
+  >
     <v-img
-        background-color="primary"
-        :style="!flatLayout ? dynamicCardBackground : ''"
-        :height="flatLayout ? '65px' : $vuetify.breakpoint.smAndDown ? '100px' : '125px'"
-      >
-      
+      background-color="primary"
+      :style="!flatLayout ? dynamicCardBackground : ''"
+      :height="flatLayout ? '65px' : $vuetify.breakpoint.smAndDown ? '100px' : '125px'"
+    >
       <!-- <img :src="landImg" /> -->
 
-      <v-container style="position: absolute;"
-                  fill-height grid-list-xs pb-0>
+      <v-container
+        style="position: absolute;"
+        fill-height
+        grid-list-xs
+        pb-0
+      >
         <v-layout column>
-          <v-flex xs12 py-0>
-            <v-layout row  align-start>
-              <v-flex xs12 >
+          <v-flex
+            xs12
+            py-0
+          >
+            <v-layout
+              row
+              align-start
+            >
+              <v-flex xs12>
                 <div class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-shimmer">
-                  <div class='bone bone-type-multiline bone-style-steps'></div>
+                  <div class="bone bone-type-multiline bone-style-steps" />
                 </div>
               </v-flex>
             </v-layout>
           </v-flex>
-  
-          <v-flex xs12 py-0 mx-1>
-            <v-layout row fill-height align-end >
 
-                <tag-chip-placeholder py-0
-                          v-for="n in 3" :key="n"
-                          class="card_tag_placeholder" />              
-              
+          <v-flex
+            xs12
+            py-0
+            mx-1
+          >
+            <v-layout
+              row
+              fill-height
+              align-end
+            >
+              <tag-chip-placeholder
+                v-for="n in 3"
+                :key="n"
+                py-0
+                class="card_tag_placeholder"
+              />
             </v-layout>
           </v-flex>
         </v-layout>
       </v-container>
-
-
     </v-img>
 
-    <v-card-title primary-title v-if="!show">
-      <div class="skeleton skeleton-color-silver skeleton-animation-shimmer" style="width: 100%;">
-        <div class='bone bone-type-multiline'></div>
-        <div class='bone bone-type-multiline bone-style-paragraph'></div>
+    <v-card-title
+      v-if="!show"
+      primary-title
+    >
+      <div
+        class="skeleton skeleton-color-silver skeleton-animation-shimmer"
+        style="width: 100%;"
+      >
+        <div class="bone bone-type-multiline" />
+        <div class="bone bone-type-multiline bone-style-paragraph" />
       </div>
     </v-card-title>
-
   </v-card>
-
 </template>
 
 
@@ -62,6 +80,9 @@ import defaultTexture from '@/assets/cards/forest/c_b_forest_texture_bark2.jpg';
 // https://github.com/ToxicJojo/SkeletonPlaceholder
 
 export default {
+  components: {
+    TagChipPlaceholder,
+  },
   props: {
     id: String,
     title: String,
@@ -74,22 +95,25 @@ export default {
     dark: Boolean,
     flatLayout: Boolean,
   },
-  components: {
-    TagChipPlaceholder,
-  },
-  created: function created() {
-  },
-  methods: {
-    cardClick: function cardClick() {
-      this.$emit('clickedEvent', this.id);
+  data: () => ({
+    defaultTexture,
+    show: false,
+    showDataText: 'SHOW DATA',
+    maxTitleLength: 70,
+    maxSubtitleLength: 190,
+    // maxTags: 3,
+    maxTagTextlength: 40,
+    blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
+    whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
+    imageDefaults: {
+      snow: 'c_b_snow_icy2',
+      landscape: 'c_b_landscape_lake2', // or c_b_landscape_view ! c_b_landscape_long_lake
+      forest: 'c_b_forest_texture_bark', // maybe c_b_forest_texture_bark2
+      diversity: 'b_c_diversity_meadow',
+      hazard: 'c_b_hazard_cloud_road', // maybe c_b_hazard_cloud
     },
-    favouritClicked: function favouritClicked() {
-      this.$emit('clickedFavourit', this.id);
-    },
-    catchTagClicked: function catchTagClicked(tagId) {
-      this.$emit('clickedTag', tagId);
-    },
-  },
+
+  }),
   computed: {
     dynamicCardBackground: function dynamicCardBackground() {
       const gradient = this.dark ? this.blackTopToBottom : this.whiteTopToBottom;
@@ -126,25 +150,19 @@ export default {
       return numberOfTags;
     },
   },
-  data: () => ({
-    defaultTexture,
-    show: false,
-    showDataText: 'SHOW DATA',
-    maxTitleLength: 70,
-    maxSubtitleLength: 190,
-    // maxTags: 3,
-    maxTagTextlength: 40,
-    blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
-    whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
-    imageDefaults: {
-      snow: 'c_b_snow_icy2',
-      landscape: 'c_b_landscape_lake2', // or c_b_landscape_view ! c_b_landscape_long_lake
-      forest: 'c_b_forest_texture_bark', // maybe c_b_forest_texture_bark2
-      diversity: 'b_c_diversity_meadow',
-      hazard: 'c_b_hazard_cloud_road', // maybe c_b_hazard_cloud
+  created: function created() {
+  },
+  methods: {
+    cardClick: function cardClick() {
+      this.$emit('clickedEvent', this.id);
     },
-
-  }),
+    favouritClicked: function favouritClicked() {
+      this.$emit('clickedFavourit', this.id);
+    },
+    catchTagClicked: function catchTagClicked(tagId) {
+      this.$emit('clickedTag', tagId);
+    },
+  },
 };
 </script>
 
