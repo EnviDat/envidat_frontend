@@ -1,118 +1,154 @@
 <template>
-
-  <v-card 
+  <v-card
     ripple
     hover
-    @click.native="cardClick"
     style="height: 100%;"
-    >
-
+    @click.native="cardClick"
+  >
     <v-img
-        background-color="primary"
-        :style="!flatLayout ? dynamicCardBackground : ''"
-        :height="flatLayout ? '65px' : $vuetify.breakpoint.smAndDown ? '100px' : '125px'"
+      background-color="primary"
+      :style="!flatLayout ? dynamicCardBackground : ''"
+      :height="flatLayout ? '65px' : $vuetify.breakpoint.smAndDown ? '100px' : '125px'"
+    >
+      <v-container
+        grid-list-xs
+        fluid
+        fill-height
+        px-3
+        pt-3
+        pb-0
       >
-      
-      <v-container grid-list-xs fluid fill-height
-                    px-3 pt-3 pb-0>
-
         <v-layout column>
-          <v-flex xs12 py-0>
-            <v-layout row >
-
-              <v-flex xs12 v-if="!maxTitleLengthReached">
-                <div class="headline mb-0"
-                    :class="titleClass"
+          <v-flex
+            xs12
+            py-0
+          >
+            <v-layout row>
+              <v-flex
+                v-if="!maxTitleLengthReached"
+                xs12
+              >
+                <div
+                  class="headline mb-0"
+                  :class="titleClass"
                 >
-                  {{ truncatedTitle }}</div>
-
+                  {{ truncatedTitle }}
+                </div>
               </v-flex>
 
-              <v-flex xs12 v-if="maxTitleLengthReached">
-                <v-tooltip bottom
-                            :disabled="$vuetify.breakpoint.xsOnly"
-                            >
-                  <div slot="activator" class="headline mb-0"
-                      :class="titleClass"
+              <v-flex
+                v-if="maxTitleLengthReached"
+                xs12
+              >
+                <v-tooltip
+                  bottom
+                  :disabled="$vuetify.breakpoint.xsOnly"
+                >
+                  <div
+                    slot="activator"
+                    class="headline mb-0"
+                    :class="titleClass"
                   >
-                    {{ truncatedTitle }}</div>
+                    {{ truncatedTitle }}
+                  </div>
 
                   <span>{{ title }}</span>
-
                 </v-tooltip>
               </v-flex>
-              
             </v-layout>
           </v-flex>
-  
-          <v-flex xs12 py-0 mx-1>
-            <v-layout row fill-height align-end 
-                      v-if="tags" >
 
-                <tag-chip py-0
-                          v-for="tag in tags.slice (0, maxTagNumber)" :key="tag.name"
-                          :name="tag.name"
-                          :selectable="true"
-                          v-on:clicked="catchTagClicked($event, tag.name)"
-                />
-              
-                <tag-chip py-0
-                          v-if="maxTagsReached" name="..." />
-              
+          <v-flex
+            xs12
+            py-0
+            mx-1
+          >
+            <v-layout
+              v-if="tags"
+              row
+              fill-height
+              align-end
+            >
+              <tag-chip
+                v-for="tag in tags.slice (0, maxTagNumber)"
+                :key="tag.name"
+                py-0
+                :name="tag.name"
+                :selectable="true"
+                @clicked="catchTagClicked($event, tag.name)"
+              />
+
+              <tag-chip
+                v-if="maxTagsReached"
+                py-0
+                name="..."
+              />
             </v-layout>
           </v-flex>
         </v-layout>
       </v-container>
-
-
     </v-img>
 
-    <v-card-text :class="{['cardText'] : $vuetify.breakpoint.mdAndUp,
-                          ['compactText'] : flatLayout || $vuetify.breakpoint.smAndDown,
-                          ['py-2'] : flatLayout,
-                          ['pr-5'] : flatLayout,
-                          ['pb-4'] : !flatLayout,
-                        }"
+    <v-card-text
+      :class="{['cardText'] : $vuetify.breakpoint.mdAndUp,
+               ['compactText'] : flatLayout || $vuetify.breakpoint.smAndDown,
+               ['py-2'] : flatLayout,
+               ['pr-5'] : flatLayout,
+               ['pb-4'] : !flatLayout,
+      }"
     >
       <!-- TODO: need to strip the markdown characters from the desc -->
       {{ truncatedSubtitle }}
     </v-card-text>
 
 
-    <v-card-actions class="ma-0 pa-2"
-                    style="position: absolute; bottom: 5px; right: 5px;">
-      
-      <v-spacer></v-spacer>
+    <v-card-actions
+      class="ma-0 pa-2"
+      style="position: absolute; bottom: 5px; right: 5px;"
+    >
+      <v-spacer />
 
-      <v-tooltip v-if="isRestricted"
-                bottom 
-                :disabled="$vuetify.breakpoint.xsOnly"
-                >
-                
-        <v-icon slot="activator" color="black" >lock</v-icon>
-          <div v-if="userHasAccess"
-                class="iconCentering">
-            <img class="envidatIcon" :src="unlockedIconString" />          
-            <span>The data of this entry is only accessible with permission.</span>
-          </div>
+      <v-tooltip
+        v-if="isRestricted"
+        bottom
+        :disabled="$vuetify.breakpoint.xsOnly"
+      >
+        <v-icon
+          slot="activator"
+          color="black"
+        >
+          lock
+        </v-icon>
+        <div
+          v-if="userHasAccess"
+          class="iconCentering"
+        >
+          <img
+            class="envidatIcon"
+            :src="unlockedIconString"
+          >
+          <span>The data of this entry is only accessible with permission.</span>
+        </div>
 
-          <div v-if="userHasAccess"
-                class="iconCentering">
-            <img class="envidatIcon" :src="lockedIconString" />          
-            <span>The data of this entry is only accessible with permission.</span>
-          </div>
-
+        <div
+          v-if="userHasAccess"
+          class="iconCentering"
+        >
+          <img
+            class="envidatIcon"
+            :src="lockedIconString"
+          >
+          <span>The data of this entry is only accessible with permission.</span>
+        </div>
       </v-tooltip>
 
-      <base-icon-count-view :count="resourceAmount"
-                            :iconString="fileIconString"
-                            :tooltip="`Metadata with ${resourceAmount} resources`"
-                            />
-
+      <base-icon-count-view
+        :count="resourceAmount"
+        :icon-string="fileIconString"
+        :tooltip="`Metadata with ${resourceAmount} resources`"
+      />
     </v-card-actions>
-
   </v-card>
-
 </template>
 
 
@@ -138,6 +174,10 @@ import BaseIconCountView from '@/components/BaseElements/BaseIconCountView';
 // http://hackingui.com/front-end/a-pure-css-solution-for-multiline-text-truncation/
 
 export default {
+  components: {
+    TagChip,
+    BaseIconCountView,
+  },
   props: {
     id: String,
     title: String,
@@ -156,27 +196,27 @@ export default {
     lockedIconString: String,
     unlockedIconString: String,
   },
-  components: {
-    TagChip,
-    BaseIconCountView,
-  },
-  created: function created() {
-  },
-  methods: {
-    cardClick: function cardClick() {
-      let detailParam = this.name;
-      if (!detailParam) {
-        detailParam = this.id; // fallback id in url isn't too nice
-      }
-      this.$emit('clickedEvent', detailParam);
+  data: () => ({
+    show: false,
+    showDataText: 'SHOW DATA',
+    maxTitleLength: 80,
+    compactTitleLength: 100,
+    maxSubtitleLength: 280,
+    compactSubtitleLength: 140,
+    // maxTags: 3,
+    maxTagtextLength: 40,
+    maxCompactTagtextLength: 170,
+    blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
+    whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
+    imageDefaults: {
+      snow: 'c_b_snow_icy2',
+      landscape: 'c_b_landscape_lake2', // or c_b_landscape_view ! c_b_landscape_long_lake
+      forest: 'c_b_forest_texture_bark', // maybe c_b_forest_texture_bark2
+      diversity: 'b_c_diversity_meadow',
+      hazard: 'c_b_hazard_cloud_road', // maybe c_b_hazard_cloud
     },
-    favouritClicked: function favouritClicked() {
-      this.$emit('clickedFavourit', this.id);
-    },
-    catchTagClicked: function catchTagClicked(tagId) {
-      this.$emit('clickedTag', tagId);
-    },
-  },
+    hoverBadge: false,
+  }),
   computed: {
     dynamicCardBackground: function dynamicCardBackground() {
       const gradient = this.dark ? this.blackTopToBottom : this.whiteTopToBottom;
@@ -281,27 +321,23 @@ export default {
       };
     },
   },
-  data: () => ({
-    show: false,
-    showDataText: 'SHOW DATA',
-    maxTitleLength: 80,
-    compactTitleLength: 100,
-    maxSubtitleLength: 280,
-    compactSubtitleLength: 140,
-    // maxTags: 3,
-    maxTagtextLength: 40,
-    maxCompactTagtextLength: 170,
-    blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
-    whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
-    imageDefaults: {
-      snow: 'c_b_snow_icy2',
-      landscape: 'c_b_landscape_lake2', // or c_b_landscape_view ! c_b_landscape_long_lake
-      forest: 'c_b_forest_texture_bark', // maybe c_b_forest_texture_bark2
-      diversity: 'b_c_diversity_meadow',
-      hazard: 'c_b_hazard_cloud_road', // maybe c_b_hazard_cloud
+  created: function created() {
+  },
+  methods: {
+    cardClick: function cardClick() {
+      let detailParam = this.name;
+      if (!detailParam) {
+        detailParam = this.id; // fallback id in url isn't too nice
+      }
+      this.$emit('clickedEvent', detailParam);
     },
-    hoverBadge: false,
-  }),
+    favouritClicked: function favouritClicked() {
+      this.$emit('clickedFavourit', this.id);
+    },
+    catchTagClicked: function catchTagClicked(tagId) {
+      this.$emit('clickedTag', tagId);
+    },
+  },
 };
 </script>
 
@@ -325,7 +361,7 @@ export default {
   .white_title{
     color: rgba(255,255,255,.9) !important;
   }
-  
+
   .headline {
     font-size: 19px !important;
   }

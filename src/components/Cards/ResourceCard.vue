@@ -1,138 +1,187 @@
 <template>
-  <v-card color="primary"
-          class="metadataResourceCard white--text"
-          style="height: 100%;"
+  <v-card
+    color="primary"
+    class="metadataResourceCard white--text"
+    style="height: 100%;"
   >
-
     <v-card-title>
-      <div class="headline">{{ name }}</div>
+      <div class="headline">
+        {{ name }}
+      </div>
     </v-card-title>
 
-    <v-card-text class="pt-0"
-                :class="{
-                    'pb-3': $vuetify.breakpoint.mdAndUp,
-                    'pb-5': $vuetify.breakpoint.smAndDown,
-                  }">
-
-      <v-container grid-list-xs pa-0>
-        <v-layout v-bind="{ ['row']: $vuetify.breakpoint.smAndUp,
-                            ['wrap']: $vuetify.breakpoint.smAndUp,
-                            ['column']: $vuetify.breakpoint.xsOnly,
-                          }"
+    <v-card-text
+      class="pt-0"
+      :class="{
+        'pb-3': $vuetify.breakpoint.mdAndUp,
+        'pb-5': $vuetify.breakpoint.smAndDown,
+      }"
+    >
+      <v-container
+        grid-list-xs
+        pa-0
+      >
+        <v-layout
+          v-bind="{ ['row']: $vuetify.breakpoint.smAndUp,
+                    ['wrap']: $vuetify.breakpoint.smAndUp,
+                    ['column']: $vuetify.breakpoint.xsOnly,
+          }"
         >
-
-          <v-flex v-bind="{ [`xs6`]: !this.twoColumnLayout && !showFullDescription, 
-                            [`xs12`]: this.twoColumnLayout || showFullDescription }"
-                            order-xs1 order-sm3
+          <v-flex
+            v-bind="{ [`xs6`]: !this.twoColumnLayout && !showFullDescription,
+                      [`xs12`]: this.twoColumnLayout || showFullDescription }"
+            order-xs1
+            order-sm3
           >
-
             <v-layout column>
-              <v-flex v-if="showFullDescription"
-                      xs11 pb-4
-                      class="resourceCardText heightAndScroll">
+              <v-flex
+                v-if="showFullDescription"
+                xs11
+                pb-4
+                class="resourceCardText heightAndScroll"
+              >
                 {{ description }}
               </v-flex>
 
-              <v-flex v-if="!showFullDescription"
-                      xs11 
-                      class="resourceCardText">
+              <v-flex
+                v-if="!showFullDescription"
+                xs11
+                class="resourceCardText"
+              >
                 {{ description | truncate(maxDescriptionLength) }}
               </v-flex>
-
             </v-layout>
           </v-flex>
-    
-          <v-flex v-if="!showFullDescription" 
-                  order-xs2 hidden-sm-and-up>
-            <v-divider :dark="dark" class="my-1" ></v-divider>
+
+          <v-flex
+            v-if="!showFullDescription"
+            order-xs2
+            hidden-sm-and-up
+          >
+            <v-divider
+              :dark="dark"
+              class="my-1"
+            />
           </v-flex>
 
-          <v-flex v-if="!showFullDescription"
-                  v-bind="{ [`xs6`]: !this.twoColumnLayout , 
-                            [`xs12`]: this.twoColumnLayout,
-                            [`pt-3`]: this.twoColumnLayout  }"
-                            order-xs3 order-sm1
+          <v-flex
+            v-if="!showFullDescription"
+            v-bind="{ [`xs6`]: !this.twoColumnLayout ,
+                      [`xs12`]: this.twoColumnLayout,
+                      [`pt-3`]: this.twoColumnLayout }"
+            order-xs3
+            order-sm1
           >
             <v-layout column>
-              <v-flex pa-0 v-if="doi">
-                <base-icon-label-view :text="doi"
-                                      :icon="doiIcon"
-                                      iconTooltip="Data Object Identifier" 
-                                      :alignLeft="twoColumnLayout"/>
+              <v-flex
+                v-if="doi"
+                pa-0
+              >
+                <base-icon-label-view
+                  :text="doi"
+                  :icon="doiIcon"
+                  icon-tooltip="Data Object Identifier"
+                  :align-left="twoColumnLayout"
+                />
               </v-flex>
-              <v-flex pa-0 v-if="format">
-                <base-icon-label-view :text="format"
-                                      :icon="fileExtensionIcon"
-                                      iconTooltip="Format of the file"
-                                      :alignLeft="twoColumnLayout" />
+              <v-flex
+                v-if="format"
+                pa-0
+              >
+                <base-icon-label-view
+                  :text="format"
+                  :icon="fileExtensionIcon"
+                  icon-tooltip="Format of the file"
+                  :align-left="twoColumnLayout"
+                />
               </v-flex>
-              <v-flex pa-0 v-if="size">
-                <base-icon-label-view :text="formatedBytes"
-                                      :icon="fileSizeIcon"
-                                      iconTooltip="Filesize"
-                                      :alignLeft="twoColumnLayout" />
+              <v-flex
+                v-if="size"
+                pa-0
+              >
+                <base-icon-label-view
+                  :text="formatedBytes"
+                  :icon="fileSizeIcon"
+                  icon-tooltip="Filesize"
+                  :align-left="twoColumnLayout"
+                />
               </v-flex>
-              <v-flex pa-0 v-if="created">
-                <base-icon-label-view :text="formatedCreated"
-                                      :icon="dateCreatedIcon" 
-                                      iconTooltip="Date of file creation" 
-                                      :alignLeft="twoColumnLayout"/>
+              <v-flex
+                v-if="created"
+                pa-0
+              >
+                <base-icon-label-view
+                  :text="formatedCreated"
+                  :icon="dateCreatedIcon"
+                  icon-tooltip="Date of file creation"
+                  :align-left="twoColumnLayout"
+                />
               </v-flex>
-              <v-flex pa-0 v-if="lastModified">
-                <base-icon-label-view :text="formatedLastModified"
-                                      :icon="lastModifiedIcon"
-                                      iconTooltip="Date of last modification" 
-                                      :alignLeft="twoColumnLayout"/>
+              <v-flex
+                v-if="lastModified"
+                pa-0
+              >
+                <base-icon-label-view
+                  :text="formatedLastModified"
+                  :icon="lastModifiedIcon"
+                  icon-tooltip="Date of last modification"
+                  :align-left="twoColumnLayout"
+                />
               </v-flex>
             </v-layout>
           </v-flex>
-    
         </v-layout>
       </v-container>
     </v-card-text>
 
-    <v-card-actions class="ma-0 pa-2 "
-                    style="position: absolute; bottom: 5px; right: 50px;">
+    <v-card-actions
+      class="ma-0 pa-2 "
+      style="position: absolute; bottom: 5px; right: 50px;"
+    >
+      <v-spacer />
 
-      <v-spacer></v-spacer>
-
-      <base-icon-button v-if="maxDescriptionLengthReached"
-                        class="mr-2"
-                        materialIconName="expand_more"
-                        iconColor="accent"
-                        color="transparent"
-                        :isToggled="showFullDescription"
-                        :rotateOnClick="true"
-                        :rotateToggle="showFullDescription"
-                        :toolTipText="showFullDescription ? 'Hide full description' : 'Show full description'"
-                        v-on:clicked="showFullDescription = !showFullDescription"
-                        />
-
+      <base-icon-button
+        v-if="maxDescriptionLengthReached"
+        class="mr-2"
+        material-icon-name="expand_more"
+        icon-color="accent"
+        color="transparent"
+        :is-toggled="showFullDescription"
+        :rotate-on-click="true"
+        :rotate-toggle="showFullDescription"
+        :tool-tip-text="showFullDescription ? 'Hide full description' : 'Show full description'"
+        @clicked="showFullDescription = !showFullDescription"
+      />
     </v-card-actions>
 
-    <div class="ma-0 py-3"
-          style="position: absolute; bottom: 0px; right: 0px; height: 90%">
+    <div
+      class="ma-0 py-3"
+      style="position: absolute; bottom: 0px; right: 0px; height: 90%"
+    >
+      <div
+        v-if="isProtected"
+        class="fabMenu fabPosition elevation-2 ma-2 pl-2 pt-2"
+      >
+        <v-icon class="pl-1 pt-1">
+          shield
+        </v-icon>
+        <p
+          class="pt-2 lockedText black--text resourceCardText"
+          v-html="protectedText"
+        />
+      </div>
 
-      <div v-if="isProtected"
-            class="fabMenu fabPosition elevation-2 ma-2 pl-2 pt-2" >
-          <v-icon class="pl-1 pt-1">shield</v-icon>      
-        <p class="pt-2 lockedText black--text resourceCardText"
-            v-html="protectedText">
-          </p>
-      </div>    
-
-      <base-icon-button v-if="!isProtected"
-                        class="fabPosition ma-3"
-                        style="height: 40px; width: 40px;"
-                        :customIcon="isFile ? downloadIcon : linkIcon"
-                        color="accent"
-                        :isElevated="true"
-                        :toolTipText="isFile ? 'Download file' : 'Open link'"
-                        :url="url"
-                        />
-
+      <base-icon-button
+        v-if="!isProtected"
+        class="fabPosition ma-3"
+        style="height: 40px; width: 40px;"
+        :custom-icon="isFile ? downloadIcon : linkIcon"
+        color="accent"
+        :is-elevated="true"
+        :tool-tip-text="isFile ? 'Download file' : 'Open link'"
+        :url="url"
+      />
     </div>
-
   </v-card>
 </template>
 
@@ -143,6 +192,10 @@ import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 
 export default {
+  components: {
+    BaseIconLabelView,
+    BaseIconButton,
+  },
   props: {
     id: String,
     doi: String,
@@ -227,10 +280,6 @@ export default {
     formatedDate: function formatedDate(value) {
       return this.mixinMethods_formatDate(value);
     },
-  },
-  components: {
-    BaseIconLabelView,
-    BaseIconButton,
   },
 };
 </script>
