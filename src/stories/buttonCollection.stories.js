@@ -1,25 +1,27 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { storiesOf } from "@storybook/vue";
-import { action } from "@storybook/addon-actions";
+import { storiesOf } from '@storybook/vue';
+import { action } from '@storybook/addon-actions';
 
-import Vue from "vue";
-import { VBtn, VTooltip, VIcon, VImg, VLayout, VFlex } from "vuetify/lib";
+import Vue from 'vue';
+import {
+  VBtn, VTooltip, VIcon, VImg, VLayout, VFlex,
+} from 'vuetify/lib';
 
-Vue.component("v-btn", VBtn);
-Vue.component("v-tooltip", VTooltip);
-Vue.component("v-icon", VIcon);
-Vue.component("v-img", VImg);
-Vue.component("v-layout", VLayout);
-Vue.component("v-flex", VFlex);
+import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton.vue';
 
-import BaseRectangleButton from "@/components/BaseElements/BaseRectangleButton.vue";
+Vue.component('v-btn', VBtn);
+Vue.component('v-tooltip', VTooltip);
+Vue.component('v-icon', VIcon);
+Vue.component('v-img', VImg);
+Vue.component('v-layout', VLayout);
+Vue.component('v-flex', VFlex);
 
 export const methods = {
-  onClick: action("clicked")
+  onClick: action('clicked'),
 };
 
-storiesOf("buttonCollection", module)
-  .add("buttons with differents states", () => ({
+storiesOf('buttonCollection', module)
+  .add('buttons with differents states', () => ({
     components: { BaseRectangleButton },
     template: `
     <v-layout row wrap>
@@ -145,9 +147,9 @@ storiesOf("buttonCollection", module)
       </v-flex>
 
     </v-layout>`,
-    methods
+    methods,
   }))
-  .add("buttons with icons", () => ({
+  .add('buttons with icons', () => ({
     components: { BaseRectangleButton },
     template: `
     <v-layout row wrap>
@@ -183,5 +185,5 @@ storiesOf("buttonCollection", module)
       </v-flex>
 
     </v-layout>`,
-    methods
+    methods,
   }));
