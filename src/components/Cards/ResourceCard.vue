@@ -146,10 +146,10 @@
         material-icon-name="expand_more"
         icon-color="accent"
         color="transparent"
-        :is-toggled="showFullDescription"
-        :rotate-on-click="true"
-        :rotate-toggle="showFullDescription"
-        :tool-tip-text="showFullDescription ? 'Hide full description' : 'Show full description'"
+        :isToggled="showFullDescription"
+        :rotateOnClick="true"
+        :rotateToggle="showFullDescription"
+        :toolTipText="showFullDescription ? 'Hide full description' : 'Show full description'"
         @clicked="showFullDescription = !showFullDescription"
       />
     </v-card-actions>
@@ -175,10 +175,10 @@
         v-if="!isProtected"
         class="fabPosition ma-3"
         style="height: 40px; width: 40px;"
-        :custom-icon="isFile ? downloadIcon : linkIcon"
+        :customIcon="isFile ? downloadIcon : linkIcon"
         color="accent"
-        :is-elevated="true"
-        :tool-tip-text="isFile ? 'Download file' : 'Open link'"
+        :isElevated="true"
+        :toolTipText="isFile ? 'Download file' : 'Open link'"
         :url="url"
       />
     </div>
