@@ -25,8 +25,8 @@ export const methods = {
   onClick: action("clicked")
 };
 
-storiesOf("Buttons | Icons", module)
-  .add("icon buttons with differents states", () => ({
+storiesOf("2 Buttons | Icon buttons", module)
+  .add("icon buttons with envidat icons", () => ({
     components: { BaseIconButton },
     template: `
     <v-layout row wrap>
@@ -64,13 +64,13 @@ storiesOf("Buttons | Icons", module)
       contact2Icon
     })
   }))
-  .add("icon with count badge", () => ({
+  .add("envidat icons with count badge", () => ({
     components: { BaseIconCountView },
     template: `
     <v-layout row wrap>
 
       <v-flex xs1>
-        <div style="position: absolute; top: 0px; left: 20px;" >
+        <div style="position: absolute; top: 10px; left: 20px;" >
           <base-icon-count-view
             class="mr-2"
             :iconString="fileIcon"
@@ -81,7 +81,7 @@ storiesOf("Buttons | Icons", module)
       </v-flex>
 
       <v-flex xs1>
-        <div style="position: absolute; top: 0px; left: 80px;" >
+        <div style="position: absolute; top: 10px; left: 80px;" >
           <base-icon-count-view
             class="mr-2"
             :iconString="contact2Icon"

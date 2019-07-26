@@ -11,12 +11,13 @@ Vue.component("v-icon", VIcon);
 Vue.component("v-img", VImg);
 
 import BaseRectangleButton from "@/components/BaseElements/BaseRectangleButton.vue";
+import "@mdi/font/css/materialdesignicons.css";
 
 export const methods = {
   onClick: action("clicked")
 };
 
-storiesOf("Buttons | Rectangle", module)
+storiesOf("2 Buttons | Rectangle", module)
   .add("basic with tool tip", () => ({
     components: { BaseRectangleButton },
     template: `<base-rectangle-button
@@ -35,7 +36,9 @@ storiesOf("Buttons | Rectangle", module)
   }))
   .add("basic with icon", () => ({
     components: { BaseRectangleButton },
-    template: `<base-rectangle-button materialIconName="add"
+    template: `<base-rectangle-button
+      materialIconName="mdi-settings"
+      iconColor="white"
       buttonText="SEARCH"
       toolTipText="Text for the tool tip"
       @click="onClick"/> `,

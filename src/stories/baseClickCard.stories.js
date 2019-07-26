@@ -19,7 +19,7 @@ export const methods = {
   onClick: action("clicked")
 };
 
-storiesOf("Cards | clickCard Collection", module).add("category cards", () => ({
+storiesOf("3 Cards | ClickCards ", module).add("CategoryCcard Collection", () => ({
   components: { BaseClickCard },
   template: `
     <v-layout row wrap>
