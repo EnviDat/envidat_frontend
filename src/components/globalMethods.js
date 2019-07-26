@@ -185,7 +185,7 @@ export default {
      *
      * @return {Array} metadatas enhanced with a title image based on the metadatas tags
      */
-    mixinMethods_enhanceMetadata: function mixinMethods_enhanceMetadata(metadatas, cardBGImages) {
+    mixinMethods_enhanceMetadatas: function mixinMethods_enhanceMetadatas(metadatas, cardBGImages) {
       if (metadatas === undefined && metadatas.length <= 0) {
         return undefined;
       }
