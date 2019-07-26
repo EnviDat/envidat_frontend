@@ -1,23 +1,36 @@
 <template>
   <v-navigation-drawer app permanent>
     <v-list class="pt-0" dense>
-      <v-list-tile v-for="item in navItems" :key="item">
-        <v-list-tile-action class="v-list__group__header__prepend-icon">
-          <div v-if="item.icon === 'envidat'">
+      <v-list-tile v-for="(item, index) in navItems" :key="index">
+        <v-list-tile-action v-if="item.icon === 'envidat'">
+          <div>
             <v-btn icon href="./" class="ma-0">
               <img :src="Logo" alt="envidat_logo" />
             </v-btn>
 
             <div class="headline envidatLogoText envidatNavbarTitleSmall">{{ logoText }}</div>
           </div>
-
-          <div v-else>
-            <v-icon>{{ item.icon }}</v-icon>
-          </div>
         </v-list-tile-action>
 
-        <v-list-tile-content>
-          <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+        <!-- <v-list-tile-action
+          v-if="item.icon !== 'envidat'"
+          class="v-list__group__header__prepend-icon"
+        >
+          <v-icon>{{ item.icon }}</v-icon>
+        </v-list-tile-action>-->
+
+        <v-list-tile-content v-if="item.icon !== 'envidat'">
+          <!-- <v-list-tile-title> -->
+
+          <base-rectangle-button
+            isSmall
+            isFlat
+            :buttonText="item.title"
+            :toolTipText="item.toolTip"
+            :materialIconName="item.icon"
+            color="secondary"
+          />
+          <!-- </v-list-tile-title> -->
         </v-list-tile-content>
       </v-list-tile>
     </v-list>
@@ -26,6 +39,7 @@
 
 <script>
 import Logo from '@/assets/logo/EnviDat_logo_32.png';
+import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 
 export default {
   props: {
@@ -38,7 +52,9 @@ export default {
   }),
   computed: {},
   methods: {},
-  components: {},
+  components: {
+    BaseRectangleButton,
+  },
 };
 </script>
 
