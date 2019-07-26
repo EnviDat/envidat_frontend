@@ -34,13 +34,13 @@
         >
           <resource-card
             v-bind="res"
-            :doi-icon="doiIcon"
-            :link-icon="linkIcon"
-            :download-icon="downloadIcon"
-            :file-size-icon="fileSizeIcon"
-            :date-created-icon="dateCreatedIcon"
-            :last-modified-icon="lastModifiedIcon"
-            :two-column-layout="twoColumnLayout"
+            :doiIcon="doiIcon"
+            :linkIcon="linkIcon"
+            :downloadIcon="downloadIcon"
+            :fileSizeIcon="fileSizeIcon"
+            :dateCreatedIcon="dateCreatedIcon"
+            :lastModifiedIcon="lastModifiedIcon"
+            :twoColumnLayout="twoColumnLayout"
             @clicked="resClicked(res)"
           />
         </v-flex>
