@@ -7,7 +7,7 @@
   >
     <v-tooltip
       v-bind="{ top: !toolTipBottom, bottom: toolTipBottom }"
-      :disabled="$vuetify.breakpoint.xsOnly"
+      :disabled="$vuetify.breakpoint.xsOnly || toolTipText === ''"
     >
       <v-btn
         slot="activator"
