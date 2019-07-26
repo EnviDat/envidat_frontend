@@ -17,6 +17,7 @@
       </div>
 
       <v-icon
+        left
         v-if="materialIconName"
         :color="iconColor ? iconColor : 'primary'"
       >{{ materialIconName }}</v-icon>
