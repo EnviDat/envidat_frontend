@@ -37,7 +37,7 @@ export const methods = {
   onClick: action("clicked")
 };
 
-storiesOf("SearchBarView", module)
+storiesOf("Filtering | SearchBarView", module)
   .add("basic", () => ({
     components: { SearchBarView },
     template: `

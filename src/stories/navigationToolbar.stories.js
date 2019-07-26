@@ -45,26 +45,8 @@ Vue.component("v-icon", VIcon);
 Vue.component("v-img", VImg);
 Vue.component("v-text-field", VTextField);
 
-Vue.component("v-navigation-drawer", VNavigationDrawer);
-Vue.component("v-spacer", VSpacer);
-Vue.component("v-divider", VDivider);
-Vue.component("v-list", VList);
-Vue.component("v-list-group", VListGroup);
-Vue.component("v-list-tile", VListTile);
-Vue.component("v-list-tile-action", VListTileAction);
-Vue.component("v-list-tile-aciton-text", VListTileActionText);
-Vue.component("v-list-tile-avatar", VListTileAvatar);
-Vue.component("v-list-tile-content", VListTileContent);
-Vue.component("v-list-tile-sub-title", VListTileSubTitle);
-Vue.component("v-list-tile-title", VListTileTitle);
-
-Vue.component("v-container", VContainer);
-Vue.component("v-layout", VLayout);
-Vue.component("v-flex", VFlex);
-
-import Navigation from "@/components/Views/Navigation.vue";
 import NavigationToolbar from "@/components/Views/NavigationToolbar.vue";
-// import BaseRectangleButton from "@/components/BaseElements/BaseRectangleButton.vue";
+import BaseRectangleButton from "@/components/BaseElements/BaseRectangleButton.vue";
 
 export const methods = {
   onMenuClick: action("clicked on menu"),
@@ -81,24 +63,24 @@ export const navItems = [
   { title: "Contact", icon: "info", toolTip: "What is EnviDat? How is behind EnviDat?" }
 ];
 
-storiesOf("Navigation | Menu", module).add("menu", () => ({
-  components: { Navigation },
-  template: `
+storiesOf("Navigation", module)
+  .add("menu", () => ({
+    components: { Navigation },
+    template: `
     <navigation
                 :navItems="navItems"
           />`,
-  data: () => ({ navItems }),
-  methods
-}));
-
-storiesOf("Navigation | Toolbar", module).add("toolbar", () => ({
-  components: { NavigationToolbar },
-  template: `
+    data: () => ({ navItems }),
+    methods
+  }))
+  .add("toolbar", () => ({
+    components: { NavigationToolbar },
+    template: `
       <navigation-toolbar
                   labelText="Search for something"
             @menuClick="onMenuClick"
             @searchClick="onSearchClick"
             @loginClick="onLoginClick"
             />`,
-  methods
-}));
+    methods
+  }));
