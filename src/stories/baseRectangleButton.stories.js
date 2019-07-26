@@ -16,7 +16,7 @@ export const methods = {
   onClick: action("clicked")
 };
 
-storiesOf("BaseRectangleButton", module)
+storiesOf("Buttons | Rectangle", module)
   .add("basic with tool tip", () => ({
     components: { BaseRectangleButton },
     template: `<base-rectangle-button
