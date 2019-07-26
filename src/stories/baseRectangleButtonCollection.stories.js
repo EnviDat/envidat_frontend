@@ -4,6 +4,7 @@ import { action } from "@storybook/addon-actions";
 
 import Vue from "vue";
 import { VBtn, VTooltip, VIcon, VImg, VLayout, VFlex } from "vuetify/lib";
+import "@mdi/font/css/materialdesignicons.css";
 
 Vue.component("v-btn", VBtn);
 Vue.component("v-tooltip", VTooltip);
@@ -18,7 +19,7 @@ export const methods = {
   onClick: action("clicked")
 };
 
-storiesOf("Buttons | Rectangle Collection", module)
+storiesOf("2 Buttons | Rectangle Collection", module)
   .add("buttons with differents states", () => ({
     components: { BaseRectangleButton },
     template: `
@@ -154,13 +155,14 @@ storiesOf("Buttons | Rectangle Collection", module)
       <v-flex xs4>
         <base-rectangle-button
           buttonText="normal button"
-          materialIconName="add"
+          materialIconName="mdi-settings"
+          iconColor="white"
           @click="onClick"/>       
       </v-flex>
       <v-flex xs4>
         <base-rectangle-button
           buttonText="normal button"
-          materialIconName="add"
+          materialIconName="mdi-settings"
           iconColor="secondary"
           isOutlined
           @click="onClick"/>       
@@ -169,7 +171,7 @@ storiesOf("Buttons | Rectangle Collection", module)
         <base-rectangle-button
           buttonText="normal button"
           iconColor="accent"
-          materialIconName="add"
+          materialIconName="mdi-settings"
           isFlat
           @click="onClick"/>       
       </v-flex>
@@ -177,7 +179,7 @@ storiesOf("Buttons | Rectangle Collection", module)
       <v-flex xs4>
         <base-rectangle-button
           buttonText="normal button"
-          materialIconName="add"
+          materialIconName="mdi-settings"
           disabled
           @click="onClick"/>       
       </v-flex>
