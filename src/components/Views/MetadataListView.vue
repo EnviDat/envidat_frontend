@@ -29,15 +29,15 @@
           :name="metadatasContent[pinnedId].name"
           :subtitle="metadatasContent[pinnedId].notes"
           :tags="metadatasContent[pinnedId].tags"
-          :title-img="metadatasContent[pinnedId].titleImg"
+          :titleImg="metadatasContent[pinnedId].titleImg"
           :restricted="hasRestrictedResources(metadatasContent[pinnedId])"
-          :resource-count="metadatasContent[pinnedId].num_resources"
+          :resourceCount="metadatasContent[pinnedId].num_resources"
           :resources="metadatasContent[pinnedId].resources"
           :dark="false"
-          :flat-layout="listView"
-          :file-icon-string="fileIconString"
-          :locked-icon-string="lockedIconString"
-          :unlocked-icon-string="unlockedIconString"
+          :flatLayout="listView"
+          :fileIconString="fileIconString"
+          :lockedIconString="lockedIconString"
+          :unlockedIconString="unlockedIconString"
           @clickedEvent="metaDataClicked"
           @clickedTag="catchTagClicked"
         />
@@ -65,25 +65,21 @@
           :name="metadata.name"
           :subtitle="metadata.notes"
           :tags="metadata.tags"
-          :title-img="metadata.titleImg"
+          :titleImg="metadata.titleImg"
           :restricted="hasRestrictedResources(metadata)"
-          :resource-count="metadata.num_resources"
+          :resourceCount="metadata.num_resources"
           :resources="metadata.resources"
           :dark="false"
-          :flat-layout="listView"
-          :file-icon-string="fileIconString"
-          :locked-icon-string="lockedIconString"
-          :unlocked-icon-string="unlockedIconString"
+          :flatLayout="listView"
+          :fileIconString="fileIconString"
+          :lockedIconString="lockedIconString"
+          :unlockedIconString="unlockedIconString"
           @clickedEvent="metaDataClicked"
           @clickedTag="catchTagClicked"
         />
       </v-flex>
 
-      <v-flex
-        key="infiniteLoader"
-        xs12
-        mx-2
-      >
+      <v-flex key="infiniteLoader" xs12 mx-2>
         <infinite-loading
           spinner="waveDots"
           :identifier="infiniteId"
@@ -94,29 +90,24 @@
             <!-- for the case of a back Navigation -->
             <BaseRectangleButton
               v-if="vIndex > 0 && vIndex > vReloadAmount"
-              :button-text="scrollTopButtonText"
-              :is-small="true"
-              :is-flat="true"
+              :buttonText="scrollTopButtonText"
+              :isSmall="true"
+              :isFlat="true"
               @clicked="mixinMethods_setScrollPosition(0);"
             />
           </div>
           <div slot="no-more">
             <BaseRectangleButton
-              :button-text="scrollTopButtonText"
-              :is-small="true"
-              :is-flat="true"
+              :buttonText="scrollTopButtonText"
+              :isSmall="true"
+              :isFlat="true"
               @clicked="mixinMethods_setScrollPosition(0);"
             />
           </div>
         </infinite-loading>
       </v-flex>
 
-      <v-flex
-        v-if="!loading && filteredContentSize <= 0"
-        key="noSearchResultsView"
-        xs12
-        mx-2
-      >
+      <v-flex v-if="!loading && filteredContentSize <= 0" key="noSearchResultsView" xs12 mx-2>
         <no-search-results-view
           :no-result-text="noResultText"
           :suggestion-text="suggestionText"
@@ -128,19 +119,16 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import {
-  BROWSE_PATH,
-  METADATADETAIL_NAME,
-} from '@/router/routeConsts';
-import MetadataCard from '@/components/Cards/MetadataCard';
-import MetadataCardPlaceholder from '@/components/Cards/MetadataCardPlaceholder';
-import NoSearchResultsView from '@/components/Filtering/NoSearchResultsView';
+import { mapGetters } from "vuex";
+import { BROWSE_PATH, METADATADETAIL_NAME } from "@/router/routeConsts";
+import MetadataCard from "@/components/Cards/MetadataCard";
+import MetadataCardPlaceholder from "@/components/Cards/MetadataCardPlaceholder";
+import NoSearchResultsView from "@/components/Filtering/NoSearchResultsView";
 import {
   SET_DETAIL_PAGE_BACK_URL,
-  SET_VIRTUAL_LIST_INDEX,
-} from '@/store/metadataMutationsConsts';
-import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
+  SET_VIRTUAL_LIST_INDEX
+} from "@/store/metadataMutationsConsts";
+import BaseRectangleButton from "@/components/BaseElements/BaseRectangleButton";
 // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
 export default {
@@ -148,11 +136,11 @@ export default {
     listView: Boolean,
     showMapFilter: Boolean,
     mapFilteringPossible: Boolean,
-    placeHolderAmount: Number,
+    placeHolderAmount: Number
   },
   data: () => ({
-    noResultText: 'Nothing found for these search criterias.',
-    suggestionText: 'Change the criterias or try one of these categories',
+    noResultText: "Nothing found for these search criterias.",
+    suggestionText: "Change the criterias or try one of these categories",
     fileIconString: null,
     lockedIconString: null,
     unlockedIconString: null,
@@ -160,36 +148,40 @@ export default {
     vLoading: false,
     infiniteId: +new Date(),
     preloadingDistance: 200,
-    scrollTopButtonText: 'Scroll to the top',
+    scrollTopButtonText: "Scroll to the top"
   }),
   beforeMount: function beforeMount() {
-    this.fileIconString = this.mixinMethods_getIcon('file');
-    this.lockedIconString = this.mixinMethods_getIcon('lock2Closed');
-    this.unlockedIconString = this.mixinMethods_getIcon('lock2Open');
+    this.fileIconString = this.mixinMethods_getIcon("file");
+    this.lockedIconString = this.mixinMethods_getIcon("lock2Closed");
+    this.unlockedIconString = this.mixinMethods_getIcon("lock2Open");
   },
   mounted: function mounted() {
     this.infiniteHandler();
   },
   computed: {
     ...mapGetters({
-      metadataIds: 'metadata/metadataIds',
-      metadatasContent: 'metadata/metadatasContent',
-      searchedMetadatasContent: 'metadata/searchedMetadatasContent',
-      searchingMetadatasContent: 'metadata/searchingMetadatasContent',
-      searchingMetadatasContentOK: 'metadata/searchingMetadatasContentOK',
-      loadingMetadatasContent: 'metadata/loadingMetadatasContent',
-      filteredContent: 'metadata/filteredContent',
-      vIndex: 'metadata/vIndex',
-      vReloadAmount: 'metadata/vReloadAmount',
-      vReloadDelay: 'metadata/vReloadDelay',
-      isFilteringContent: 'metadata/isFilteringContent',
-      pinnedIds: 'metadata/pinnedIds',
+      metadataIds: "metadata/metadataIds",
+      metadatasContent: "metadata/metadatasContent",
+      searchedMetadatasContent: "metadata/searchedMetadatasContent",
+      searchingMetadatasContent: "metadata/searchingMetadatasContent",
+      searchingMetadatasContentOK: "metadata/searchingMetadatasContentOK",
+      loadingMetadatasContent: "metadata/loadingMetadatasContent",
+      filteredContent: "metadata/filteredContent",
+      vIndex: "metadata/vIndex",
+      vReloadAmount: "metadata/vReloadAmount",
+      vReloadDelay: "metadata/vReloadDelay",
+      isFilteringContent: "metadata/isFilteringContent",
+      pinnedIds: "metadata/pinnedIds"
     }),
     showPinnedElements: function showPinnedElements() {
       return !this.loading && this.showMapFilter && this.pinnedIds.length > 0;
     },
     loading: function loading() {
-      return this.loadingMetadatasContent || this.isFilteringContent || this.searchingMetadatasContent;
+      return (
+        this.loadingMetadatasContent ||
+        this.isFilteringContent ||
+        this.searchingMetadatasContent
+      );
     },
     filteredContentSize: function filteredContentSize() {
       return this.contentSize(this.filteredContent);
@@ -201,7 +193,7 @@ export default {
           sm12: true,
           md6: true,
           lg4: true,
-          xl3: true,
+          xl3: true
         };
 
         return twoThridsSize;
@@ -212,12 +204,11 @@ export default {
         sm6: true,
         md4: true,
         lg3: true,
-        xl3: true,
+        xl3: true
       };
 
       return fullSize;
-    },
-
+    }
   },
   methods: {
     infiniteHandler($state) {
@@ -230,7 +221,6 @@ export default {
         return;
       }
 
-
       // use a small timeout to show the loading?
       setTimeout(() => {
         let i = 0;
@@ -240,7 +230,11 @@ export default {
           i = that.vIndex;
         }
 
-        for (; (i < that.vIndex + that.vReloadAmount) && (i < that.filteredContentSize); i++) {
+        for (
+          ;
+          i < that.vIndex + that.vReloadAmount && i < that.filteredContentSize;
+          i++
+        ) {
           that.virtualListContent.push(that.filteredContent[i]);
         }
 
@@ -262,14 +256,14 @@ export default {
       return content !== undefined ? Object.keys(content).length : 0;
     },
     catchTagClicked: function catchTagClicked(tagName) {
-      this.$emit('clickedTag', tagName);
+      this.$emit("clickedTag", tagName);
     },
     catchCategoryClicked: function catchCategoryClicked(cardTitle) {
       this.$router.push({
         path: BROWSE_PATH,
         query: {
-          search: cardTitle,
-        },
+          search: cardTitle
+        }
       });
     },
     metaDataClicked: function metaDataClicked(datasetname) {
@@ -278,8 +272,8 @@ export default {
       this.$router.push({
         name: METADATADETAIL_NAME,
         params: {
-          metadataid: datasetname,
-        },
+          metadataid: datasetname
+        }
       });
     },
     hasRestrictedResources: function hasRestrictedResources(metadata) {
@@ -288,10 +282,13 @@ export default {
       }
 
       /* eslint-disable consistent-return  */
-      metadata.resources.forEach((res) => {
-        if (res.restricted !== undefined
-            && (res.restricted.allowed_users !== undefined
-            || (res.restricted.level !== undefined && res.restricted.level !== 'public'))) {
+      metadata.resources.forEach(res => {
+        if (
+          res.restricted !== undefined &&
+          (res.restricted.allowed_users !== undefined ||
+            (res.restricted.level !== undefined &&
+              res.restricted.level !== "public"))
+        ) {
           return true;
         }
       });
@@ -300,7 +297,7 @@ export default {
     },
     isPinned: function isPinned(id) {
       return this.pinnedIds.includes(id);
-    },
+    }
   },
   watch: {
     filteredContentSize: function resetVirtualContent() {
@@ -308,34 +305,31 @@ export default {
       this.virtualListContent = [];
       this.infiniteId += 1;
       this.infiniteHandler();
-    },
+    }
   },
   components: {
     NoSearchResultsView,
     MetadataCard,
     MetadataCardPlaceholder,
-    BaseRectangleButton,
-  },
-
+    BaseRectangleButton
+  }
 };
 </script>
 
 
 <style scoped>
+.itemfade-enter-active,
+.itemfade-leave-active {
+  transition-duration: 0.1s;
+  transition-timing-function: ease;
+}
 
-  .itemfade-enter-active,
-  .itemfade-leave-active {
-    transition-duration: 0.1s;
-    transition-timing-function: ease;
-  }
+.itemfade-enter,
+.itemfade-leave-active {
+  opacity: 0;
+}
 
-  .itemfade-enter,
-  .itemfade-leave-active {
-    opacity: 0
-  }
-
-  .highlighted {
-    box-shadow: #4DB6AC 0px 0px 5px 5px;
-  }
-
+.highlighted {
+  box-shadow: #4db6ac 0px 0px 5px 5px;
+}
 </style>
