@@ -9,17 +9,12 @@ import {
 
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton.vue';
 
-Vue.component('v-btn', VBtn);
-Vue.component('v-tooltip', VTooltip);
-Vue.component('v-icon', VIcon);
-Vue.component('v-img', VImg);
-
 export const methods = {
   onClick: action('clicked'),
 };
 
-storiesOf('Base Elements | BaseRectangleButton', module)
-  .add('basic with tool tip', () => ({
+storiesOf("2 Buttons | Rectangle", module)
+  .add("basic with tool tip", () => ({
     components: { BaseRectangleButton },
     template: `<base-rectangle-button
       buttonText="SEARCH"
@@ -37,7 +32,9 @@ storiesOf('Base Elements | BaseRectangleButton', module)
   }))
   .add('basic with icon', () => ({
     components: { BaseRectangleButton },
-    template: `<base-rectangle-button materialIconName="add"
+    template: `<base-rectangle-button
+      materialIconName="mdi-settings"
+      iconColor="white"
       buttonText="SEARCH"
       toolTipText="Text for the tool tip"
       @click="onClick"/> `,

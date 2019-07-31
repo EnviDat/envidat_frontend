@@ -1,6 +1,6 @@
 <template>
   <v-toolbar color="white" height="36">
-    <v-toolbar-side-icon></v-toolbar-side-icon>
+    <v-toolbar-side-icon @click.native="menuClick"></v-toolbar-side-icon>
 
     <!-- <v-toolbar-title>
       <v-btn icon href="./" class="ma-0">
@@ -14,11 +14,11 @@
 
     <v-text-field></v-text-field>
 
-    <v-btn icon>
+    <v-btn icon @click.native="searchClick">
       <v-icon>search</v-icon>
     </v-btn>
 
-    <v-btn icon>
+    <v-btn icon @click.native="loginClick">
       <v-icon>login</v-icon>
     </v-btn>
 
@@ -45,6 +45,15 @@ export default {
   }),
   computed: {},
   methods: {
+    menuClick() {
+      this.$emit('menuClick');
+    },
+    searchClick() {
+      this.$emit('searchClick');
+    },
+    loginClick() {
+      this.$emit('loginClick');
+    },
     // navigateToAboutPage: function navigateToAboutPage() {
     //   if (this.$route.fullPath.includes(BROWSE_PATH)) {
     //     // when the about click is done on the browse page,

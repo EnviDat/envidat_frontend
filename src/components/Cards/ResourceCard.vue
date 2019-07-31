@@ -90,7 +90,7 @@
               >
                 <base-icon-label-view
                   :text="format"
-                  :icon="fileExtensionIcon"
+                  :icon="extensionIcon()"
                   icon-tooltip="Format of the file"
                   :align-left="twoColumnLayout"
                 />
@@ -146,10 +146,10 @@
         material-icon-name="expand_more"
         icon-color="accent"
         color="transparent"
-        :is-toggled="showFullDescription"
-        :rotate-on-click="true"
-        :rotate-toggle="showFullDescription"
-        :tool-tip-text="showFullDescription ? 'Hide full description' : 'Show full description'"
+        :isToggled="showFullDescription"
+        :rotateOnClick="true"
+        :rotateToggle="showFullDescription"
+        :toolTipText="showFullDescription ? 'Hide full description' : 'Show full description'"
         @clicked="showFullDescription = !showFullDescription"
       />
     </v-card-actions>
@@ -175,10 +175,10 @@
         v-if="!isProtected"
         class="fabPosition ma-3"
         style="height: 40px; width: 40px;"
-        :custom-icon="isFile ? downloadIcon : linkIcon"
+        :customIcon="isFile ? downloadIcon : linkIcon"
         color="accent"
-        :is-elevated="true"
-        :tool-tip-text="isFile ? 'Download file' : 'Open link'"
+        :isElevated="true"
+        :toolTipText="isFile ? 'Download file' : 'Open link'"
         :url="url"
       />
     </div>
@@ -216,6 +216,7 @@ export default {
     dateCreatedIcon: String,
     lastModifiedIcon: String,
     isProtected: Boolean,
+    fileExtensionIcon: Map,
   },
   data: () => ({
     defaultTexture,
@@ -253,18 +254,7 @@ export default {
     maxDescriptionLengthReached: function maxDescriptionLengthReached() {
       return this.description && this.description.length > this.maxDescriptionLength;
     },
-    fileExtensionIcon: function fileExtensionIcon() {
-      if (this.audioFormats.includes(this.format)) {
-        return this.mixinMethods_getIcon('Audio');
-      }
 
-      const extIcon = this.mixinMethods_getIconFileExtension(this.format);
-      if (extIcon) {
-        return extIcon;
-      }
-
-      return this.mixinMethods_getIcon('file');
-    },
     protectedText() {
       if (this.url && this.url.length > 0) {
         return `This resource is protected <a href="${this.url}" target="_blank" >login via the old UI to get access</a>.`;
@@ -276,6 +266,39 @@ export default {
   methods: {
     clicked: function clicked() {
       this.$emit('clicked');
+    },
+    extensionIcon: function extensionIcon() {
+      if (typeof this.mixinMethods_getIconFileExtension === 'undefined'
+          || typeof this.$store === 'undefined') {
+        const lookUp = `file${this.format.toLowerCase()}`;
+        let icon = this.fileExtensionIcon.get(lookUp);
+
+        if (!icon && this.format.toLowerCase() === 'url') {
+          icon = this.fileExtensionIcon.get('link');
+        }
+
+        if (!icon && this.audioFormats.includes(this.format)) {
+          icon = this.fileExtensionIcon.get('fileAudio');
+        }
+
+        if (!icon) {
+          icon = this.fileExtensionIcon.get('file');
+        }
+
+        // alert('icon ' + icon);
+        return icon;
+      } else {
+        if (this.audioFormats.includes(this.format)) {
+          return this.mixinMethods_getIcon('Audio');
+        }
+
+        const extIcon = this.mixinMethods_getIconFileExtension(this.format);
+        if (extIcon) {
+          return extIcon;
+        }
+
+        return this.mixinMethods_getIcon('file');
+      }
     },
     formatedDate: function formatedDate(value) {
       return this.mixinMethods_formatDate(value);
