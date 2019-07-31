@@ -59,6 +59,8 @@
   },
   "postcss": {
     "plugins": {
+      "postcss-import": {},
+      "postcss-url" : {},
       "autoprefixer": {}
     }
   },
