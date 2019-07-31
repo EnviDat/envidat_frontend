@@ -46,7 +46,19 @@ storiesOf("2 Buttons | Icon buttons", module)
       <v-flex xs1>
         <base-icon-button
           class="mr-2"
-          materialIconName="mdi-more"
+          materialIconName="expand_more"
+          color="transparent"
+          :isToggled="showFullDescription"
+          :rotateOnClick="true"
+          :rotateToggle="showFullDescription"
+          @clicked="showFullDescription = !showFullDescription"
+        />
+      </v-flex>
+
+      <v-flex xs1>
+        <base-icon-button
+          class="mr-2"
+          materialIconName="close"
           iconColor="accent"
           color="transparent"
           :isToggled="showFullDescription"
