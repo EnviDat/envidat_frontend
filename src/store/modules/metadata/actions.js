@@ -1,5 +1,4 @@
 import axios from 'axios';
-import dotenv from 'dotenv';
 
 import {
   LOAD_METADATA_CONTENT_BY_ID,
@@ -21,8 +20,6 @@ import {
 
 const globalMethods = require('@/components/globalMethods');
 
-dotenv.config();
-
 /* eslint-disable no-unused-vars  */
 const ENVIDAT_PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
 const SOLR_PROXY = process.env.VUE_APP_SOLR_PROXY;
@@ -30,6 +27,7 @@ const API_BASE = '/api/3/action/';
 const SOLR_API_BASE = '/solr/ckan_default/';
 
 console.log(`loaded VUE_APP_ENVIDAT_PROXY: ${ENVIDAT_PROXY}`);
+console.log(`loaded VUE_APP_SOLR_PROXY: ${SOLR_PROXY}`);
 console.log(`loaded VUE_APP_VERSION: ${process.env.VUE_APP_VERSION}`);
 
 function urlRewrite(url, baseUrl, proxyUrl) {
@@ -85,7 +83,7 @@ function enhanceSearchWithTags(allTags, searchResult) {
 
 function enhanceContent(metadatas, cardBGImages) {
   if (metadatas && metadatas.length > 0) {
-    return globalMethods.default.methods.mixinMethods_enhanceMetadata(metadatas, cardBGImages);
+    return globalMethods.default.methods.mixinMethods_enhanceMetadatas(metadatas, cardBGImages);
   }
 
   return [];
