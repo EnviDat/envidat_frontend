@@ -156,6 +156,9 @@
 import TagChip from '@/components/Cards/TagChip';
 import BaseIconCountView from '@/components/BaseElements/BaseIconCountView';
 
+// Header Sleek design
+// https://codepen.io/GeorgeGedox/pen/NQrxrY
+
 // checkout possible transition animation
 // https://codepen.io/balapa/pen/embYYB
 // https://codepen.io/zavoloklom/pen/eNaEBM
