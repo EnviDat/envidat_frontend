@@ -89,6 +89,5 @@ typings/
 .dynamodb/
 
 # envidat frontend
-public/
 dist/
 .vscode/
