@@ -16,15 +16,6 @@ import App from "@/App.vue";
 import fileIcon from "@/assets/icons/fileAudio.png";
 import contact2Icon from "@/assets/icons/contact2.png";
 
-// icon: String,
-// iconTooltip: String,
-// label: String,
-// text: String,
-// alignLeft: Boolean,
-// bold: Boolean,
-// usePlaceholder: Boolean,
-// wordBreak: Boolean,
-// compactLayout: Boolean,
 
 storiesOf("1 Lables | IconLabel Collection", module).add("different labels", () => ({
   components: { BaseIconLabelView },

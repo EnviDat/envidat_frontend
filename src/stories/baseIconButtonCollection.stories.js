@@ -1,7 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from "@storybook/vue";
 import { action } from "@storybook/addon-actions";
-import "@mdi/font/css/materialdesignicons.css";
 
 import Vue from "vue";
 import { VBtn, VTooltip, VIcon, VImg, VLayout, VFlex, VBadge } from "vuetify/lib";

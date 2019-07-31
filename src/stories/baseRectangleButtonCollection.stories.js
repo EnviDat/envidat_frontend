@@ -4,7 +4,6 @@ import { action } from "@storybook/addon-actions";
 
 import Vue from "vue";
 import { VBtn, VTooltip, VIcon, VImg, VLayout, VFlex } from "vuetify/lib";
-import "@mdi/font/css/materialdesignicons.css";
 
 Vue.component("v-btn", VBtn);
 Vue.component("v-tooltip", VTooltip);
@@ -155,14 +154,14 @@ storiesOf("2 Buttons | Rectangle Collection", module)
       <v-flex xs4>
         <base-rectangle-button
           buttonText="normal button"
-          materialIconName="mdi-settings"
+          materialIconName="edit"
           iconColor="white"
           @click="onClick"/>       
       </v-flex>
       <v-flex xs4>
         <base-rectangle-button
           buttonText="normal button"
-          materialIconName="mdi-settings"
+          materialIconName="add"
           iconColor="secondary"
           isOutlined
           @click="onClick"/>       
@@ -171,7 +170,7 @@ storiesOf("2 Buttons | Rectangle Collection", module)
         <base-rectangle-button
           buttonText="normal button"
           iconColor="accent"
-          materialIconName="mdi-settings"
+          materialIconName="settings"
           isFlat
           @click="onClick"/>       
       </v-flex>
@@ -179,7 +178,7 @@ storiesOf("2 Buttons | Rectangle Collection", module)
       <v-flex xs4>
         <base-rectangle-button
           buttonText="normal button"
-          materialIconName="mdi-settings"
+          materialIconName="search"
           disabled
           @click="onClick"/>       
       </v-flex>
