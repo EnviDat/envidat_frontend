@@ -1,8 +1,8 @@
 // /* eslint-disable import/no-extraneous-dependencies */
-import { storiesOf } from "@storybook/vue";
-import { action } from "@storybook/addon-actions";
+import { storiesOf } from '@storybook/vue';
+import { action } from '@storybook/addon-actions';
 
-import Vue from "vue";
+import Vue from 'vue';
 import {
   VBtn,
   VTooltip,
@@ -13,31 +13,29 @@ import {
   VCardActions,
   VChip,
   VLayout,
-  VFlex
-} from "vuetify/lib";
+  VFlex,
+} from 'vuetify/lib';
 
-import "@mdi/font/css/materialdesignicons.css";
+import SearchBarView from '../components/Filtering/SearchBarView.vue';
+import SmallSearchBarView from '../components/Filtering/SmallSearchBarView.vue';
 
-Vue.component("v-btn", VBtn);
-Vue.component("v-tooltip", VTooltip);
-Vue.component("v-icon", VIcon);
-Vue.component("v-img", VImg);
-Vue.component("v-text-field", VTextField);
-Vue.component("v-card", VCard);
-Vue.component("v-card-actions", VCardActions);
-Vue.component("v-chip", VChip);
+Vue.component('v-btn', VBtn);
+Vue.component('v-tooltip', VTooltip);
+Vue.component('v-icon', VIcon);
+Vue.component('v-img', VImg);
+Vue.component('v-text-field', VTextField);
+Vue.component('v-card', VCard);
+Vue.component('v-card-actions', VCardActions);
+Vue.component('v-chip', VChip);
 
-Vue.component("v-layout", VLayout);
-Vue.component("v-flex", VFlex);
-
-import SearchBarView from "../components/Filtering/SearchBarView.vue";
-import SmallSearchBarView from "../components/Filtering/SmallSearchBarView.vue";
+Vue.component('v-layout', VLayout);
+Vue.component('v-flex', VFlex);
 
 export const methods = {
-  onClick: action("clicked")
+  onClick: action('clicked'),
 };
 
-storiesOf("Filtering | SearchBarView", module)
+storiesOf("4 Filtering | SearchBarView", module)
   .add("basic", () => ({
     components: { SearchBarView },
     template: `
@@ -45,9 +43,9 @@ storiesOf("Filtering | SearchBarView", module)
                     buttonText="SEARCH"
                     hasButton
           @click="onClick"/>`,
-    methods
+    methods,
   }))
-  .add("small", () => ({
+  .add('small', () => ({
     components: { SmallSearchBarView },
     template: `
     <v-layout column>
@@ -101,5 +99,5 @@ storiesOf("Filtering | SearchBarView", module)
         </v-flex>
 
         </v-layout>`,
-    methods
+    methods,
   }));

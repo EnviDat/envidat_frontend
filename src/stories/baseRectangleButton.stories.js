@@ -1,20 +1,16 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { storiesOf } from "@storybook/vue";
-import { action } from "@storybook/addon-actions";
+import { storiesOf } from '@storybook/vue';
+import { action } from '@storybook/addon-actions';
 
-import Vue from "vue";
-import { VBtn, VTooltip, VIcon, VImg } from "vuetify/lib";
+import Vue from 'vue';
+import {
+  VBtn, VTooltip, VIcon, VImg,
+} from 'vuetify/lib';
 
-Vue.component("v-btn", VBtn);
-Vue.component("v-tooltip", VTooltip);
-Vue.component("v-icon", VIcon);
-Vue.component("v-img", VImg);
-
-import BaseRectangleButton from "@/components/BaseElements/BaseRectangleButton.vue";
-import "@mdi/font/css/materialdesignicons.css";
+import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton.vue';
 
 export const methods = {
-  onClick: action("clicked")
+  onClick: action('clicked'),
 };
 
 storiesOf("2 Buttons | Rectangle", module)
@@ -24,17 +20,17 @@ storiesOf("2 Buttons | Rectangle", module)
       buttonText="SEARCH"
       toolTipText="Text for the tool tip"
       @click="onClick"/> `,
-    methods
+    methods,
   }))
-  .add("disabled", () => ({
+  .add('disabled', () => ({
     components: { BaseRectangleButton },
     template: `<base-rectangle-button
       buttonText="SEARCH"
       :disabled='true'
       @click="onClick"/> `,
-    methods
+    methods,
   }))
-  .add("basic with icon", () => ({
+  .add('basic with icon', () => ({
     components: { BaseRectangleButton },
     template: `<base-rectangle-button
       materialIconName="mdi-settings"
@@ -42,13 +38,13 @@ storiesOf("2 Buttons | Rectangle", module)
       buttonText="SEARCH"
       toolTipText="Text for the tool tip"
       @click="onClick"/> `,
-    methods
+    methods,
   }))
-  .add("small", () => ({
+  .add('small', () => ({
     components: { BaseRectangleButton },
     template: `<base-rectangle-button
       buttonText="text"
       isSmall
       @click="onClick"/> `,
-    methods
+    methods,
   }));

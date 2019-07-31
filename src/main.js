@@ -11,7 +11,10 @@ import router from './router';
 import store from './store/store';
 import globalMethods from './components/globalMethods';
 
-import '@mdi/font/css/materialdesignicons.css';
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
+// Icons list: https://jossef.github.io/material-design-icons-iconfont/
+
+// import '@mdi/font/css/materialdesignicons.css';
 
 Vue.use(InfiniteLoading /* , { options } */);
 Vue.use(Vue2Filters);
