@@ -16,8 +16,6 @@ import {
   VFlex,
 } from 'vuetify/lib';
 
-import '@mdi/font/css/materialdesignicons.css';
-
 import SearchBarView from '../components/Filtering/SearchBarView.vue';
 import SmallSearchBarView from '../components/Filtering/SmallSearchBarView.vue';
 
@@ -37,7 +35,7 @@ export const methods = {
   onClick: action('clicked'),
 };
 
-storiesOf("Filtering | SearchBarView", module)
+storiesOf("4 Filtering | SearchBarView", module)
   .add("basic", () => ({
     components: { SearchBarView },
     template: `

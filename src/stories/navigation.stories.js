@@ -31,9 +31,6 @@ import {
   VListTileTitle,
 } from 'vuetify/lib';
 
-import mdiCss from "@mdi/font/css/materialdesignicons.css";
-
-// console.log("mdiCss " + mdiCss.properties);
 
 Vue.component("v-toolbar", VToolbar);
 Vue.component("v-toolbar-items", VToolbarItems);
@@ -89,7 +86,7 @@ export const navItems = [
   { title: "Contact", icon: "info", toolTip: "What is EnviDat? How is behind EnviDat?" }
 ];
 
-storiesOf("Navigation | Menu", module).add("menu", () => ({
+storiesOf("5 Navigation | Redesigned Navigation", module).add("Menu", () => ({
   components: { Navigation },
   template: `
     <navigation
@@ -97,9 +94,7 @@ storiesOf("Navigation | Menu", module).add("menu", () => ({
           />`,
   data: () => ({ navItems }),
   methods
-}));
-
-storiesOf("Navigation | Toolbar", module).add("toolbar", () => ({
+})).add("Toolbar", () => ({
   components: { NavigationToolbar },
   template: `
       <navigation-toolbar
