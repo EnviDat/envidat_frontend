@@ -78,7 +78,7 @@ export const methods = {
 };
 
 storiesOf("3 Cards | Metadata Cards", module)
-  .add("Metadata collection", () => ({
+  .add("collection", () => ({
     components: { MetadataCard },
     template: `
 <v-layout column>
@@ -176,7 +176,7 @@ storiesOf("3 Cards | Metadata Cards", module)
       unlockedIcon
     })
   }))
-  .add("Metadata collection flat", () => ({
+  .add("Flat collection", () => ({
     components: { MetadataCard },
     template: `
     <v-layout row wrap>
@@ -214,7 +214,7 @@ storiesOf("3 Cards | Metadata Cards", module)
       unlockedIcon
     })
   }))
-  .add("Metadata Placeholder collection", () => ({
+  .add("Placeholder / Loading collection", () => ({
     components: { MetadataCardPlaceholder },
     template: `
 <v-layout column>

@@ -2,7 +2,13 @@ import { configure, addDecorator } from "@storybook/vue";
 import "@/plugins/vuetify";
 
 import Vue from "vue";
-import { VApp, VContainer, VLayout, VFlex } from "vuetify/lib";
+import Vuetify, { VApp, VContainer, VLayout, VFlex } from "vuetify/lib";
+
+// const dotenv = require('dotenv');
+
+// dotenv.config();
+// process.env.VUE_APP_VERSION = require('./package.json').version;
+// console.log(`starting storybook ${process.env.VUE_APP_VERSION} on ${process.env.NODE_ENV}`);
 
 // import "vuetify/src/stylus/app.styl";
 // import "vuetify/dist/vuetify.min.css";
@@ -12,21 +18,10 @@ Vue.component("v-container", VContainer);
 Vue.component("v-layout", VLayout);
 Vue.component("v-flex", VFlex);
 
-import "@mdi/font/css/materialdesignicons.css";
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
-// Ensures every story is wrapped in a v-app tag
-addDecorator(() => ({
-  // template: "<v-app><story/></v-app>"
-  template: `<v-app>
-    <v-container fluid>
-      <v-layout row wrap>
-        <v-flex>
-          <story/>
-        </v-flex>
-      </v-layout>
-    </v-container>
-    </v-app>`
-}));
+Vue.use(Vuetify, {
+});
 
 import { configureViewport, INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
 
@@ -75,6 +70,21 @@ configureViewport({
     ...INITIAL_VIEWPORTS
   }
 });
+
+
+// Ensures every story is wrapped in a v-app tag
+addDecorator(() => ({
+  // template: "<v-app><story/></v-app>"
+  template: `<v-app>
+    <v-container fluid>
+      <v-layout row wrap>
+        <v-flex>
+          <story/>
+        </v-flex>
+      </v-layout>
+    </v-container>
+    </v-app>`
+}));
 
 const req = require.context("@/stories", true, /\.stories.js$/);
 
