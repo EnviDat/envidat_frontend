@@ -221,8 +221,16 @@ export default {
 };
 </script>
 
-<style>
-@import "../node_modules/leaflet/dist/leaflet.css";
+<!-- style lang="scss">
+  $material-design-icons-font-path: '~material-design-icons-iconfont/dist/fonts/';
+
+  @import '~material-design-icons-iconfont/src/material-design-icons';
+</style -->
+
+
+<style >
+ /* @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville|Raleway&display=swap'); */
+/* @import "../node_modules/leaflet/dist/leaflet.css"; */
 /* import vuetify.css here to be able to overwrite the fonts */
 @import "../node_modules/vuetify/dist/vuetify.min.css";
 
@@ -351,15 +359,15 @@ export default {
 }
 
 .envidatChip {
-  height: 1.3rem;
-  font-size: 0.65rem;
-  margin: 1px 2px;
-  opacity: 0.85;
+  height: 1.3rem !important;
+  font-size: 0.65rem !important;
+  margin: 1px 2px !important;
+  opacity: 0.85 !important;
 }
 
 .smallChip {
-  height: 1.2rem;
-  font-size: 0.55rem;
+  height: 1.2rem !important;
+  font-size: 0.55rem !important;
 }
 .smallChip > .v-chip__content > .v-chip__close > .v-icon {
   font-size: 15px !important;
