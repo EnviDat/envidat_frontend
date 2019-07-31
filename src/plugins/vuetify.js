@@ -1,6 +1,16 @@
 import Vue from 'vue';
+
+// vuetify loader installation https://vuetifyjs.com/en/getting-started/quick-start#vuetify-loader-installation
+// importing from lib should only load the components which are used
 import Vuetify from 'vuetify/lib';
-import 'vuetify/src/stylus/app.styl';
+
+// Full installation https://vuetifyjs.com/en/getting-started/quick-start#full-installation
+// import Vuetify from 'vuetify/dist/vuetify.min';
+
+import 'vuetify/dist/vuetify.min.css';
+
+// import 'material-design-icons-iconfont/dist/material-design-icons.css'
+// Icons list: https://jossef.github.io/material-design-icons-iconfont/
 
 Vue.use(Vuetify, {
   theme: {

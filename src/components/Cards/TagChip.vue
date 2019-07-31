@@ -1,6 +1,5 @@
 <template>
   <v-chip
-    small
     class="envidatChip"
     :class="{ 'white--text': highlighted ? true : false,
               'smallChip': $vuetify.breakpoint.smAndDown ? true : false,

@@ -1,26 +1,43 @@
-process.env.VUE_APP_VERSION = require("./package.json").version;
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const dotenv = require('dotenv');
+
+dotenv.config();
+process.env.VUE_APP_VERSION = require('./package.json').version;
 
 console.log(`starting ${process.env.VUE_APP_VERSION} on ${process.env.NODE_ENV}`);
 
 module.exports = {
+  publicPath: './',
+  assetsDir: './static',
   runtimeCompiler: true,
   css: {
-    modules: true,
-    sourceMap: true
-  },
-  pluginOptions: {
-    storybook: {
-      allowedPlugins: ["define"]
+    extract: { filename: 'styles.css' },
+    modules: false,
+    sourceMap: true,
+    loaderOptions: {
+      css: {
+        url: true, 
+        import: true,
+        // localIdentName: '[local]_[hash:base64:8]',
+      }
     }
   },
-  devServer: {
-    proxy: {
-      "/api/": {
-        // target: "https://www.envidat.ch/ui/proxy/ServiceProxyServlet?server=0&serverpath=",
-        target: "https://www.envidat.ch/",
-        changeOrigin: true,
-        toProxy: true
-      }
+  
+  pluginOptions: {
+    storybook: {
+      allowedPlugins: ['define'],
+    },
+  },
+  chainWebpack: config => {
+    // config.optimization.delete('splitChunks'),
+    // disabling prefetch will prevent the browser from loading the other parts of the ap
+    // while on idle state
+    // config.plugins.delete('prefetch')
+  },
+  configureWebpack: {
+    optimization: {
+      // splitChunks: false
     }
   }
   // devServer: {

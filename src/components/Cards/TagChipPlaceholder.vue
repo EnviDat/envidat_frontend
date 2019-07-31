@@ -1,6 +1,5 @@
 <template>
   <v-chip
-    small
     class="placeholder_chip"
   >
     <div
