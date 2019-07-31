@@ -4,10 +4,9 @@ import { action } from "@storybook/addon-actions";
 
 import Vue from "vue";
 import { VBtn, VTooltip, VIcon, VImg, VLayout, VFlex, VChip } from "vuetify/lib";
-import "@mdi/font/css/materialdesignicons.css";
 
 Vue.component("v-btn", VBtn);
-Vue.component("v-btn", VChip);
+Vue.component("v-chip", VChip);
 Vue.component("v-tooltip", VTooltip);
 Vue.component("v-icon", VIcon);
 Vue.component("v-img", VImg);
