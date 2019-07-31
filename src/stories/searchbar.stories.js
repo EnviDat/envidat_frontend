@@ -37,8 +37,8 @@ export const methods = {
   onClick: action('clicked'),
 };
 
-storiesOf('SearchBarView', module)
-  .add('basic', () => ({
+storiesOf("Filtering | SearchBarView", module)
+  .add("basic", () => ({
     components: { SearchBarView },
     template: `
     <search-bar-view labelText="Search for something"
