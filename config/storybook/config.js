@@ -1,7 +1,6 @@
+import Vue from "vue";
 import { configure, addDecorator } from "@storybook/vue";
 import "@/plugins/vuetify";
-
-import Vue from "vue";
 import Vuetify, { VApp, VContainer, VLayout, VFlex } from "vuetify/lib";
 
 // const dotenv = require('dotenv');
@@ -20,8 +19,8 @@ Vue.component("v-flex", VFlex);
 
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
-Vue.use(Vuetify, {
-});
+// Vue.use(Vuetify, {
+// });
 
 import { configureViewport, INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
 
