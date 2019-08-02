@@ -11,14 +11,14 @@
               v-model="searchText"
               single-line
               hide-details
-              clearable
               solo
               flat
-              append-outer-icon="search"
               :placeholder="placeHolderText"
+              append-outer-icon="search"
               @click:append-outer="clicked"
               @keyup.enter="clicked"
-              @click:clear="clearClicked"
+              append-icon="clear"
+              @click:append="clearClicked"
             />
           </div>
 

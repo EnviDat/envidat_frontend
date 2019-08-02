@@ -9,7 +9,7 @@ import Vuetify from 'vuetify/lib';
 
 import 'vuetify/dist/vuetify.min.css';
 
-// import 'material-design-icons-iconfont/dist/material-design-icons.css'
+// icons are imported in the App.vue via sass/scss
 // Icons list: https://jossef.github.io/material-design-icons-iconfont/
 
 Vue.use(Vuetify, {
