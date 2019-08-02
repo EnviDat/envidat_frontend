@@ -12,16 +12,22 @@ module.exports = {
   assetsDir: './static',
   runtimeCompiler: true,
   css: {
-    extract: { filename: 'styles.css' },
+    // extract: { filename: 'styles.css' },
     modules: false,
     sourceMap: true,
-    loaderOptions: {
-      css: {
-        url: true, 
-        import: true,
-        // localIdentName: '[local]_[hash:base64:8]',
-      }
-    }
+    // loaderOptions: {
+    //   css: {
+    //     url: true, 
+    //     // import: true,
+    //     // localIdentName: '[local]_[hash:base64:8]',
+    //   },
+    //   // postcss: {
+    //   //   // "postcss-import": {},
+    //   //   // "postcss-url": {},
+    //   //   // to edit target browsers: use "browserslist" field in package.json
+    //   //   "autoprefixer": {}
+    //   // }
+    // }
   },
   
   pluginOptions: {
@@ -29,17 +35,17 @@ module.exports = {
       allowedPlugins: ['define'],
     },
   },
-  chainWebpack: config => {
-    // config.optimization.delete('splitChunks'),
-    // disabling prefetch will prevent the browser from loading the other parts of the ap
-    // while on idle state
-    // config.plugins.delete('prefetch')
-  },
-  configureWebpack: {
-    optimization: {
-      // splitChunks: false
-    }
-  }
+  // chainWebpack: config => {
+  //   // config.optimization.delete('splitChunks'),
+  //   // disabling prefetch will prevent the browser from loading the other parts of the ap
+  //   // while on idle state
+  //   // config.plugins.delete('prefetch')
+  // },
+  // configureWebpack: {
+  //   optimization: {
+  //     // splitChunks: false
+  //   }
+  // }
   // devServer: {
   //   // assetsSubDirectory: "static",
   //   // assetsPublicPath: "/",
