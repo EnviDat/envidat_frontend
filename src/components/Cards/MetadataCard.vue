@@ -63,25 +63,20 @@
             py-0
             mx-1
           >
-            <v-layout
-              v-if="tags"
-              row
-              fill-height
-              align-end
+            <v-layout v-if="tags"
+                      row fill-height align-end
             >
-              <tag-chip
-                v-for="tag in tags.slice (0, maxTagNumber)"
-                :key="tag.name"
-                py-0
-                :name="tag.name"
-                :selectable="true"
-                @clicked="catchTagClicked($event, tag.name)"
+              <tag-chip py-0
+                        v-for="(tag, index) in tags.slice (0, maxTagNumber)"
+                        :key="index"
+                        :name="tag.name"
+                        :selectable="true"
+                        @clicked="catchTagClicked($event, tag.name)"
               />
 
-              <tag-chip
-                v-if="maxTagsReached"
-                py-0
-                name="..."
+              <tag-chip v-if="maxTagsReached"
+                        py-0
+                        name="..."
               />
             </v-layout>
           </v-flex>

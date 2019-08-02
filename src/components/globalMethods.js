@@ -253,7 +253,6 @@ export default {
 
       return category;
     },
-    /* eslint-disable */
     /**
      * 
      * for details: https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
