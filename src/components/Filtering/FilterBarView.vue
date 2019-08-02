@@ -28,17 +28,18 @@
               >
                 <control-panel-view
                   :compact-layout="$vuetify.breakpoint.smAndDown"
+                  :label="controlsLabel"
                   @controlsChanged="catchControlsChanged"
                 />
               </v-flex>
 
               <v-flex py-1>
                 <small-search-bar-view
-                  :compact-layout="$vuetify.breakpoint.smAndDown"
-                  :search-term="searchTerm"
-                  :search-count="searchCount"
-                  :label-text="searchViewLabelText"
-                  :has-button="searchViewHasButton"
+                  :compactLayout="$vuetify.breakpoint.smAndDown"
+                  :searchTerm="searchTerm"
+                  :searchCount="searchCount"
+                  :labelText="searchViewLabelText"
+                  :hasButton="searchViewHasButton"
                   style="align-items: center;"
                   @clicked="catchSearchClicked"
                   @searchCleared="catchSearchCleared"
@@ -121,6 +122,7 @@ export default {
     mapFilteringEnabled: Boolean,
     mapFilterHeight: Number,
     controlsActive: Array,
+    controlsLabel: String,
   },
   data: () => ({
     Logo,

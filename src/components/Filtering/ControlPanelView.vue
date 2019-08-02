@@ -8,7 +8,7 @@
         class="fill-height envidatControlInfos"
         style="align-items: center;"
         :class="{'small' : compactLayout }"
-        label="Controls"
+        :label="label"
         flat
         single-line
         readonly
@@ -58,6 +58,7 @@ export default {
   },
   props: {
     compactLayout: Boolean,
+    label: String,
   },
   data: () => ({
     mapFilterActivateText: 'Activate Mapfiltering',

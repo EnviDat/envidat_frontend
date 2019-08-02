@@ -31,8 +31,10 @@ Vue.component('v-chip', VChip);
 Vue.component('v-layout', VLayout);
 Vue.component('v-flex', VFlex);
 
+
 export const methods = {
   onClick: action('clicked'),
+  onClear: action('clicked on clear'),
 };
 
 storiesOf("4 Filtering | SearchBarView", module)
@@ -42,62 +44,89 @@ storiesOf("4 Filtering | SearchBarView", module)
     <search-bar-view labelText="Search for something"
                     buttonText="SEARCH"
                     hasButton
-          @click="onClick"/>`,
+          @clicked="onClick"
+          @searchCleared="onClear"
+          />`,
     methods,
   }))
   .add('small', () => ({
     components: { SmallSearchBarView },
     template: `
     <v-layout column>
-        <v-flex>
-            <small-search-bar-view labelText="Search for something"
+        <v-flex py-1>
+            <small-search-bar-view
+                        labelText="Search for something"
                         buttonText="SEARCH"
                         hasButton
                         :searchCount='0'
                         compactLayout
-            @click="onClick"/>
+                        @clicked="onClick"
+                        @searchCleared="onClear"
+                          />
         </v-flex>
-        <v-flex>
+        <v-flex py-1>
+            <small-search-bar-view
+                        labelText="Search for something"
+                        buttonText="SEARCH"
+                        :searchCount='0'
+                        compactLayout
+                        @clicked="onClick"
+                        @searchCleared="onClear"
+                          />
+        </v-flex>
+
+        <v-flex py-1>
             <v-layout row>
             <v-flex xs6>
                 <small-search-bar-view
-                            labelText="Flex with xs6 is might be optimal?"
+                            labelText="xs6 optimal for button search"
                             buttonText="SEARCH"
                             hasButton
                             :searchCount='0'
                             compactLayout
-                @click="onClick"/>
+                />
             </v-flex>
             </v-layout>
         </v-flex>
-        </v-flex>
+
         <v-flex>
             <v-layout row>
-            <v-flex xs4>
+            <v-flex xs4 px-1>
                 <small-search-bar-view
-                            labelText="Flex with xs4"
-                            buttonText="SEARCH"
-                            hasButton
+                            labelText="xs4 no button"
                             :searchCount='0'
                             compactLayout
-                @click="onClick"/>
+                />
             </v-flex>
-            <v-flex xs3>
 
-            </v-flex>
-            <v-flex xs3>
+            <v-flex xs3 px-1>
                 <small-search-bar-view
-                            labelText="Flex with xs3"
-                            buttonText="SEARCH"
-                            hasButton
+                            labelText="xs3 with compactLayout"
                             :searchCount='0'
                             compactLayout
-                @click="onClick"/>
+                />
             </v-flex>
 
+            <v-flex xs3 px-1>
+                <small-search-bar-view
+                            labelText="xs3 no compactLayout"
+                            :searchCount='0'
+                />
+            </v-flex>
+            
             </v-layout>
         </v-flex>
 
-        </v-layout>`,
-    methods,
+      </v-layout>`,
+    methods: {
+      onClick() {
+        action('clicked search');
+      },
+      onClear() {
+        action('cleared Search')(this.searchTerm);
+      }
+    },
+    data: () => ({
+      searchTerm: '',
+    }),
   }));

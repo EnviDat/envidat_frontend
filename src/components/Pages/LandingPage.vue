@@ -17,9 +17,9 @@
         offset-md6
       >
         <search-bar-view
-          :label-text="labelText"
-          :button-text="buttonlText"
-          :has-button="true"
+          :labelText="labelText"
+          :buttonText="buttonlText"
+          :hasButton="true"
           @clicked="catchSearchClicked"
         />
       </v-flex>

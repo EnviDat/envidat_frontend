@@ -1,8 +1,9 @@
 <template>
   <v-card raised :height="compactLayout ? $vuetify.breakpoint.sm ? 38 : 32 : 40">
-    <v-layout row align-center fill-height>
-      <v-flex xs10 sm9 lg10 py-0 pl-2>
-        <v-tooltip bottom :disabled="$vuetify.breakpoint.xsOnly">
+    <v-layout row align-center fill-height justify-space-between>
+
+      <v-flex grow py-0 pl-2>
+        <v-tooltip bottom :disabled="$vuetify.breakpoint.xsOnly || !searchToolTipText">
           <div slot="activator">
             <v-text-field
               class="envidatSmallSearch"
@@ -13,7 +14,7 @@
               hide-details
               solo
               flat
-              :placeholder="placeHolderText"
+              :placeholder="labelText"
               append-outer-icon="search"
               @click:append-outer="clicked"
               @keyup.enter="clicked"
@@ -26,7 +27,9 @@
         </v-tooltip>
       </v-flex>
 
-      <v-flex xs2 sm3 lg2 pa-0 style="text-align: center;">
+      <v-flex shrink
+              :class="hasButton ? 'pa-0' : 'py-0 pl-0 pr-2'"
+              style="text-align: center;">
         <v-tooltip bottom :disabled="$vuetify.breakpoint.xsOnly">
           <tag-chip
             slot="activator"
@@ -41,7 +44,7 @@
         </v-tooltip>
       </v-flex>
 
-      <v-flex v-if="hasButton" sm4 lg3 xl2>
+      <v-flex v-if="hasButton" shrink>
         <base-rectangle-button :button-text="buttonText" :is-small="true" @clicked="clicked" />
 
         <!-- <v-btn

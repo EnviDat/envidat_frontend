@@ -16,7 +16,8 @@
       >
         <filter-bar-view
           :show-filtering="true"
-          :search-view-label-text="searchLabelText"
+          :search-view-label-text="searchBarPlaceholder"
+          :controlsLabel="controlsLabel"
           :search-term="searchTerm"
           :search-count="searchCount"
           :search-view-has-button="false"
@@ -356,6 +357,9 @@ export default {
       controls: 'controls',
       cardBGImages: 'cardBGImages',
     }),
+    searchBarPlaceholder() {
+      return this.$vuetify.breakpoint.smAndUp ? this.searchLabelText : this.searchLabelTextSmall;
+    },
     keywordsPlaceholder: function keywordsPlaceholder() {
       return this.searchingMetadatasContent || this.updatingTags;
     },
@@ -447,7 +451,9 @@ export default {
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
     searchTerm: '',
-    searchLabelText: 'Search',
+    searchLabelText: 'Enter search term',
+    searchLabelTextSmall: 'Enter research term, topic or author name',
+    controlsLabel: 'List Controls',
     placeHolderAmount: 6,
     suggestionText: 'Try one of these categories',
     selectedTagNames: [],
