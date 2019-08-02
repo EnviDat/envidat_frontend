@@ -221,18 +221,15 @@ export default {
 };
 </script>
 
-<!-- style lang="scss">
-  $material-design-icons-font-path: '~material-design-icons-iconfont/dist/fonts/';
+<style lang="scss">
+  $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
 
-  @import '~material-design-icons-iconfont/src/material-design-icons';
-</style -->
+  @import '~material-design-icons-iconfont/src/material-design-icons.scss';
+</style>
 
 
 <style >
- /* @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville|Raleway&display=swap'); */
-/* @import "../node_modules/leaflet/dist/leaflet.css"; */
-/* import vuetify.css here to be able to overwrite the fonts */
-@import "../node_modules/vuetify/dist/vuetify.min.css";
+ @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville|Raleway&display=swap');
 
 /* overwrite the applications background https://css-tricks.com/use-cases-fixed-backgrounds-css/ */
 .application {
