@@ -6,38 +6,37 @@
     <v-layout
       row
       align-center
+      justify-space-between
     >
       <v-flex
-        xs8
-        sm9
+        grow
         pl-2
       >
         <v-text-field
+          class="adjustIconSearchbar"
           v-model="searchText"
           hide-details
           full-width
-          solo
-          flat
           prepend-icon="search"
           :label="labelText"
           @click:prepend="clicked"
           @keyup.enter="clicked"
         />
       </v-flex>
+
+      <v-flex
+        shrink
+        pl-2
+      >
+        <base-rectangle-button
+          :button-text="buttonText"
+          :is-small="true"
+          @clicked="clicked"
+        />
+      </v-flex>
+
     </v-layout>
 
-    <v-card-actions
-      v-if="hasButton"
-      class="ma-0 pa-2"
-      style="position: absolute; bottom: 0; right: 0;"
-    >
-      <base-rectangle-button
-        :button-text="buttonText"
-        :is-small="true"
-        @clicked="clicked"
-      />
-
-    </v-card-actions>
   </v-card>
 </template>
 
@@ -71,5 +70,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-
+.adjustIconSearchbar > .v-input__prepend-outer {
+  margin-top: 16px !important;
+}
 </style>

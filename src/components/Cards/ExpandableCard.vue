@@ -13,12 +13,6 @@
         row
         align-center
       >
-        <!-- <v-flex xs5 py-0>
-          <v-card-media class="imagezoom"
-                        :height=" $vuetify.breakpoint.xsOnly ? minHeight + 'px' : maxHeight + 'px' ">
-            <img :src="img" />
-          </v-card-media>
-        </v-flex> -->
 
         <v-flex
           xs5
