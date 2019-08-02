@@ -75,20 +75,20 @@ export default {
     emptyText: 'No description found for this dataset',
   }),
   computed: {
-    doi() {
-      return this.mixinMethods_getGenericProp('doi');
-    },
-    title() {
-      return this.mixinMethods_getGenericProp('title');
-    },
-    id() {
-      return this.mixinMethods_getGenericProp('id');
-    },
+    // doi() {
+    //   return this.mixinMethods_getGenericProp('doi');
+    // },
+    // title() {
+    //   return this.mixinMethods_getGenericProp('title');
+    // },
+    // id() {
+    //   return this.mixinMethods_getGenericProp('id');
+    // },
     description() {
       return this.mixinMethods_getGenericProp('description');
     },
     fullDescription: function fullDescription() {
-      if (this.description !== undefined) {
+      if (this.description) {
         if (this.maxDescriptionLengthReached) {
           return this.showFullDescription ? this.description.trim() : `${this.description.trim().substring(0, this.maxTextLength)}...`;
         }
