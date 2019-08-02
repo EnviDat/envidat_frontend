@@ -46,10 +46,8 @@
                   'my-2': $vuetify.breakpoint.smAndUp }"
       />
 
-      <v-layout
-        v-if="authors"
-        row
-        wrap
+      <v-layout v-if="authors"
+                row wrap
       >
         <tag-chip-author
           v-for="author in authors"
@@ -60,10 +58,8 @@
         />
       </v-layout>
 
-      <v-layout
-        v-if="!authors && showPlaceholder"
-        row
-        wrap
+      <v-layout v-if="!authors && showPlaceholder"
+                row wrap
       >
         <tag-chip-placeholder
           v-for="n in 5"
@@ -78,15 +74,9 @@
                   'my-2': $vuetify.breakpoint.smAndUp }"
       />
 
-      <v-layout
-        row
-        wrap
-      >
+      <v-layout row wrap >
         <v-flex
-          xs12
-          sm6
-          md6
-          lg3
+          xs12 sm6 md6 lg3
           py-1
           class="headerInfo"
         >
@@ -98,13 +88,9 @@
           />
         </v-flex>
 
-        <v-flex
-          xs12
-          sm6
-          md6
-          lg3
-          py-1
-          class="headerInfo"
+        <v-flex xs12 sm6 md6 lg3
+                py-1
+                class="headerInfo"
         >
           <base-icon-label-view
             :text="contactEmail"
@@ -115,13 +101,9 @@
           />
         </v-flex>
 
-        <v-flex
-          xs12
-          sm6
-          md6
-          lg3
-          py-1
-          class="headerInfo"
+        <v-flex xs12 sm6 md6 lg3
+                py-1
+                class="headerInfo"
         >
           <base-icon-label-view
             :text="doi"
@@ -132,13 +114,9 @@
           />
         </v-flex>
 
-        <v-flex
-          xs12
-          sm6
-          md6
-          lg3
-          py-1
-          class="headerInfo"
+        <v-flex xs12 sm6 md6 lg3
+                py-1
+                class="headerInfo"
         >
           <base-icon-label-view
             :text="license"
@@ -155,10 +133,8 @@
                   'my-2': $vuetify.breakpoint.smAndUp }"
       />
 
-      <v-layout
-        v-if="tags"
-        row
-        wrap
+      <v-layout v-if="tags"
+                row wrap
       >
         <tag-chip
           v-for="tag in slicedTags"
@@ -181,10 +157,8 @@
         </v-flex>
       </v-layout>
 
-      <v-layout
-        v-if="!tags && showPlaceholder"
-        row
-        wrap
+      <v-layout v-if="!tags && showPlaceholder"
+                row wrap
       >
         <tag-chip-placeholder
           v-for="n in 5"

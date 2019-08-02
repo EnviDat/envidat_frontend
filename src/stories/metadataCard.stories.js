@@ -39,19 +39,7 @@ import fileIcon from "@/assets/icons/file.png";
 import lockedIcon from "@/assets/icons/lockClosed.png";
 import unlockedIcon from "@/assets/icons/lockOpen.png";
 
-import globalMethods from "@/components/globalMethods";
-const conversion = require("@/store/modules/metadata/conversion");
-
-// import solrResultToCKANJSON from "@/store/modules/metadata/conversion";
-
-// alert(
-//   "conversion " +
-//     typeof conversion +
-//     " conversion.solrResultToCKANJSON " +
-//     conversion.solrResultToCKANJSON
-// );
-const cardImages = getCardImages(globalMethods);
-
+// metadata gets enhance in the storybook config
 import metadataCards from "@/stories/metadata";
 
 export const methods = {
@@ -259,42 +247,3 @@ storiesOf("3 Cards | Metadata Cards", module)
     methods,
     data: () => ({})
   }));
-// metadataCards.forEach(el => {
-//   // el = conversion.solrResultToCKANJSON(el);
-//   let keys = Object.keys(el.tags[0]);
-//   let props = "";
-//   keys.forEach(element => {
-//     props += element + " ";
-//   });
-//   alert(el.name + " tags: " + props + " " + el.tags.length + " ");
-// });
-
-globalMethods.methods.mixinMethods_enhanceMetadatas(metadataCards, cardImages);
-
-function getCardImages(globalMethods) {
-  let cardImages = {};
-
-  // alert(
-  //   "globalMethods " +
-  //     typeof globalMethods +
-  //     " globalMethods.methods.mixinMethods_importImages " +
-  //     typeof globalMethods.methods.mixinMethods_importImages
-  // );
-
-  let imgPaths = require.context("@/assets/cards/landscape/", false, /\.jpg$/);
-  cardImages.landscape = globalMethods.methods.mixinMethods_importImages(imgPaths);
-
-  imgPaths = require.context("@/assets/cards/forest/", false, /\.jpg$/);
-  cardImages.forest = globalMethods.methods.mixinMethods_importImages(imgPaths);
-
-  imgPaths = require.context("@/assets/cards/snow/", false, /\.jpg$/);
-  cardImages.snow = globalMethods.methods.mixinMethods_importImages(imgPaths);
-
-  imgPaths = require.context("@/assets/cards/diversity/", false, /\.jpg$/);
-  cardImages.diversity = globalMethods.methods.mixinMethods_importImages(imgPaths);
-
-  imgPaths = require.context("@/assets/cards/hazard/", false, /\.jpg$/);
-  cardImages.hazard = globalMethods.methods.mixinMethods_importImages(imgPaths);
-
-  return cardImages;
-}

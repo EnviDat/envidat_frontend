@@ -19,38 +19,34 @@ export const methods = {
   onClick: action("clicked")
 };
 
-// name: String,
-// closeable: Boolean,
-// selectable: Boolean,
-// highlighted: Boolean,
-// count: Number,
-
-
-storiesOf("2 Buttons | Keyword Tag", module)
-  .add("Tag with differents states", () => ({
+storiesOf("4 Filtering | Keyword Tag", module)
+  .add("Tag states", () => ({
     components: { TagChip },
     template: `
     <v-layout row wrap>
 
-      <v-flex xs4>
-        <tag-chip
-          buttonText="normal button"
-          toolTipText="Text for the tool tip"
-          @click="onClick"/>       
+      <v-flex>
+        <tag-chip name="Snow" />
       </v-flex>
-      <v-flex xs4>
-        <base-rectangle-button
-          buttonText="normal button"
-          isOutlined
-          toolTipText="Text for the tool tip"
-          @click="onClick"/>       
+
+      <v-flex>
+        <tag-chip name="some very long tag name" />       
       </v-flex>
-      <v-flex xs4>
-        <base-rectangle-button
-          buttonText="normal button"
-          isFlat
-          toolTipText="Text for the tool tip"
-          @click="onClick"/>       
+
+      <v-flex>
+        <tag-chip name="closeable" closeable />       
+      </v-flex>
+
+      <v-flex>
+        <tag-chip name="closeable & selectable" closeable selectable />       
+      </v-flex>
+
+      <v-flex>
+        <tag-chip name="highlighted" closeable selectable highlighted />
+      </v-flex>
+
+      <v-flex>
+        <tag-chip name="count='5'" selectable :count="5" />       
       </v-flex>
 
     </v-layout>`,

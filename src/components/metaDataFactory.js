@@ -1,5 +1,5 @@
 export default {
-  createHeader: function createHeader(dataset, breakpoint) {
+  createHeader: function createHeader(dataset, smallScreen) {
     let { maintainer } = dataset;
 
     if (typeof dataset.maintainer === 'string') {
@@ -27,7 +27,7 @@ export default {
       license: license.title,
       tags: dataset.tags,
       titleImg: dataset.titleImg,
-      maxTags: breakpoint.smAndDown ? 5 : 12,
+      maxTags: smallScreen ? 5 : 12 ,
       authors,
     };
   },
@@ -247,4 +247,13 @@ export default {
 
     return location;
   },
+  convertTags(tagsStringArray, tagsEnabled){
+    const tagObjs = [];
+
+    tagsStringArray.forEach(element => {
+      tagObjs.push({ name: element, enabled: tagsEnabled });
+    });
+
+    return tagObjs;
+  }
 };

@@ -17,11 +17,11 @@
       >
         <metadata-header
           v-bind="header"
-          :show-placeholder="showPlaceholder"
-          :doi-icon="doiIcon"
-          :contact-icon="contactIcon"
-          :mail-icon="mailIcon"
-          :license-icon="licenseIcon"
+          :showPlaceholder="showPlaceholder"
+          :doiIcon="doiIcon"
+          :contactIcon="contactIcon"
+          :mailIcon="mailIcon"
+          :licenseIcon="licenseIcon"
           @clickedTag="catchTagClicked"
           @clickedBack="catchBackClicked"
           @clickedAuthor="catchAuthorClicked"
@@ -179,7 +179,7 @@ export default {
 
       if (currentContent && currentContent.title !== undefined) {
         // console.log("create content " + currentContent.spatial + " " + this.header);
-        this.header = metaDataFactory.createHeader(currentContent, this.$vuetify.breakpoint);
+        this.header = metaDataFactory.createHeader(currentContent, this.$vuetify.breakpoint.smAndDown);
         this.$set(components.MetadataHeader, 'genericProps', this.header);
 
         this.body = metaDataFactory.createBody(currentContent);
