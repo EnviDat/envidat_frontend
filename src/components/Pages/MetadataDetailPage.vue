@@ -201,7 +201,7 @@ export default {
         this.$set(components.MetadataLocation, 'genericProps', this.location);
 
         this.details = metaDataFactory.createDetails(currentContent);
-        this.$set(components.MetadataDetails, 'genericProps', this.details);
+        this.$set(components.MetadataDetails, 'genericProps', { details: this.details });
 
         this.firstCol = [
           components.MetadataBody,

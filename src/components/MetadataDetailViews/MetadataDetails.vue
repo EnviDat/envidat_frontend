@@ -17,22 +17,20 @@
           v-for="val in details"
           :key="val.label"
         >
-          <v-text-field
-            v-if="isSingleText(val.text)"
-            :id="val.label"
-            :label="val.label"
-            :name="val.label"
-            :value="val.text"
-            readonly
+          <v-text-field v-if="isSingleText(val.text)"
+                        :id="val.label"
+                        :label="val.label"
+                        :name="val.label"
+                        :value="val.text"
+                        readonly
           />
 
-          <v-textarea
-            v-if="!isSingleText(val.text)"
-            :id="val.label"
-            :label="val.label"
-            :name="val.label"
-            :value="val.text"
-            readonly
+          <v-textarea v-if="!isSingleText(val.text)"
+                      :id="val.label"
+                      :label="val.label"
+                      :name="val.label"
+                      :value="val.text"
+                      readonly
           />
 
           <div
