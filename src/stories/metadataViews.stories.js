@@ -63,22 +63,22 @@ const genericProps1 = {
   showPlaceholder: false,
   id: citation1.id,
   citationText: citation1.citationText,
-  citationXmlLink: citation1.ciationBibtexXmlLink,
-  ciationIsoXmlLink: citation1.ciationIsoXmlLink,
-  ciationGCMDXmlLink: citation1.ciationGCMDXmlLink,
-  ciationBibtexXmlLink: citation1.ciationBibtexXmlLink,
-  ciationRisXmlLink: citation1.ciationRisXmlLink,
+  citationXmlLink: citation1.citationBibtexXmlLink,
+  citationIsoXmlLink: citation1.citationIsoXmlLink,
+  citationGCMDXmlLink: citation1.citationGCMDXmlLink,
+  citationBibtexXmlLink: citation1.citationBibtexXmlLink,
+  citationRisXmlLink: citation1.citationRisXmlLink,
 };
 
 const genericProps2 = {
   showPlaceholder: false,
   id: citation2.id,
   citationText: citation2.citationText,
-  citationXmlLink: citation2.ciationBibtexXmlLink,
-  ciationIsoXmlLink: citation2.ciationIsoXmlLink,
-  ciationGCMDXmlLink: citation2.ciationGCMDXmlLink,
-  ciationBibtexXmlLink: citation2.ciationBibtexXmlLink,
-  ciationRisXmlLink: citation2.ciationRisXmlLink,
+  citationXmlLink: citation2.citationBibtexXmlLink,
+  citationIsoXmlLink: citation2.citationIsoXmlLink,
+  citationGCMDXmlLink: citation2.citationGCMDXmlLink,
+  citationBibtexXmlLink: citation2.citationBibtexXmlLink,
+  citationRisXmlLink: citation2.citationRisXmlLink,
 };
 
 export const methods = {
@@ -148,6 +148,7 @@ storiesOf("6 Metadata Detail | DetailViews", module)
       <v-flex xs6 py-3>
         <metadata-body
           :genericProps="genericPropsPlaceholder"
+          :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
         />
       </v-flex>
 
@@ -189,12 +190,6 @@ storiesOf("6 Metadata Detail | DetailViews", module)
     template: `
     <v-layout row wrap>
 
-      <v-flex xs12 py-3>
-        <metadata-citation
-          :genericProps="genericPropsPlaceholder"
-        />
-      </v-flex>
-
       <v-flex xs6 py-3>
         <metadata-citation
           :genericProps="genericProps1"
@@ -204,12 +199,32 @@ storiesOf("6 Metadata Detail | DetailViews", module)
       <v-flex xs6 py-3>
         <metadata-citation
           :genericProps="genericPropsPlaceholder"
+          :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
         />
       </v-flex>
 
       <v-flex xs12 py-3>
         <metadata-citation
           :genericProps="genericProps2"
+        />
+      </v-flex>
+
+      <v-flex xs12 py-3>
+        <metadata-citation
+          :genericProps="genericPropsPlaceholder"
+          :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
+        />
+      </v-flex>
+
+      <v-flex xs12 py-3>
+        <metadata-citation
+          :genericProps="genericPropsPlaceholder"
+        />
+      </v-flex>
+
+      <v-flex xs6 py-3>
+        <metadata-citation
+          :genericProps="genericPropsPlaceholder"
         />
       </v-flex>
 
