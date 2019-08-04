@@ -4,16 +4,12 @@
     hover
     @click.native="clicked"
   >
-    <v-container
-      grid-list-md
-      pa-0
+    <v-container grid-list-md
+                  pa-0
     >
-      <v-layout
-        row
-        align-center
+      <v-layout row align-center
       >
-        <v-flex
-          xs5
+        <v-flex xs5
           py-0
         >
           <v-img
@@ -23,10 +19,8 @@
           />
         </v-flex>
 
-        <v-flex
-          xs7
-          mx-1
-          mt-1
+        <v-flex xs7
+          px-1 mt-1
         >
           <div
             class="headline"

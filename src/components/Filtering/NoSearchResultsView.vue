@@ -12,8 +12,7 @@
       <h3>{{ suggestionText }}</h3>
     </v-flex>
 
-    <v-flex
-      xs12
+    <v-flex xs12
       pt-2
     >
       <v-container
@@ -21,18 +20,13 @@
         grid-list-md
         pa-0
       >
-        <v-layout
-          row
-          wrap
+        <v-layout row wrap
         >
           <v-flex
             v-for="card in categorycards"
             :key="card.title"
-            my-2
-            px-1
-            v-bind="{ 'xs3' : $vuetify.breakpoint.xsOnly ? false : true,
-                      'xs6' : $vuetify.breakpoint.xsOnly ? true : false,
-            }"
+            my-2 px-1
+            xs6 md4
           >
             <base-click-card
               :title="card.title"

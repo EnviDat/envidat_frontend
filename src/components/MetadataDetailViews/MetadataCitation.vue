@@ -12,23 +12,16 @@
     </v-card-text>
 
     <v-card-actions v-if="!showPlaceholder && citationText">
-      <v-container
-        fluid
+      <v-container fluid
         grid-list-md
         pa-0
       >
-        <v-layout
-          justify-end
-          row
-          wrap
+        <v-layout justify-end
+          row wrap
         >
           <v-flex
             v-for="link in citationLinks"
             :key="link.text"
-            xs4
-            sm2
-            md3
-            lg2
           >
             <base-rectangle-button
               margin-class="mx-1 citationButton"
@@ -62,15 +55,15 @@
       <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer">
         <div
           style="width: 128px; height: 32px;"
-          class="px-1 bone bone-type-image bone-style-rectangle"
+          class="mx-1 bone bone-type-image bone-style-rectangle"
         />
         <div
           style="width: 128px; height: 32px;"
-          class="px-1 bone bone-type-image bone-style-rectangle"
+          class="mx-1 bone bone-type-image bone-style-rectangle"
         />
         <div
           style="width: 128px; height: 32px;"
-          class="px-1 bone bone-type-image bone-style-rectangle"
+          class="mx-1 bone bone-type-image bone-style-rectangle"
         />
       </div>
     </v-card-actions>
