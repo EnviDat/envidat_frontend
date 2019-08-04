@@ -19,7 +19,9 @@ import {
   VChip,
   VSpacer,
   VDivider,
-  VAvatar
+  VAvatar,
+  VForm,
+  VTextarea
 } from "vuetify/lib";
 
 Vue.component("v-card", VCard);
@@ -31,6 +33,8 @@ Vue.component("v-chip", VChip);
 Vue.component("v-avatar", VAvatar);
 Vue.component("v-spacer", VSpacer);
 Vue.component("v-divider", VDivider);
+Vue.component("v-form", VForm);
+Vue.component("v-textarea", VTextarea);
 Vue.component("v-btn", VBtn);
 Vue.component("v-icon", VIcon);
 Vue.component("v-img", VImg);
@@ -40,6 +44,8 @@ Vue.component("v-flex", VFlex);
 import MetadataHeader from "@/components/MetadataDetailViews/MetadataHeader.vue";
 import MetadataBody from "@/components/MetadataDetailViews/MetadataBody.vue";
 import MetadataCitation from "@/components/MetadataDetailViews/MetadataCitation.vue";
+import MetadataDetails from "@/components/MetadataDetailViews/MetadataDetails.vue";
+import MetadataLocation from "@/components/MetadataDetailViews/MetadataLocation.vue";
 
 // import for css classes
 import App from "@/App.vue";
@@ -59,9 +65,9 @@ const largeHeader = metaDataFactory.createHeader(metadata[1], false);
 
 const citation1 = metaDataFactory.createCitation(metadata[0]);
 const citation2 = metaDataFactory.createCitation(metadata[2]);
+
 const genericProps1 = {
-  showPlaceholder: false,
-  id: citation1.id,
+  showPlaceholder: false, id: citation1.id,
   citationText: citation1.citationText,
   citationXmlLink: citation1.citationBibtexXmlLink,
   citationIsoXmlLink: citation1.citationIsoXmlLink,
@@ -71,14 +77,36 @@ const genericProps1 = {
 };
 
 const genericProps2 = {
-  showPlaceholder: false,
-  id: citation2.id,
+  showPlaceholder: false, id: citation2.id,
   citationText: citation2.citationText,
   citationXmlLink: citation2.citationBibtexXmlLink,
   citationIsoXmlLink: citation2.citationIsoXmlLink,
   citationGCMDXmlLink: citation2.citationGCMDXmlLink,
   citationBibtexXmlLink: citation2.citationBibtexXmlLink,
   citationRisXmlLink: citation2.citationRisXmlLink,
+};
+
+const details1 = metaDataFactory.createDetails(metadata[0]);
+const details2 = metaDataFactory.createDetails(metadata[1]);
+
+
+const genericProps3 = {
+  showPlaceholder: false,
+  details: details1,
+};
+
+const location1 = metaDataFactory.createLocation(metadata[2]);
+
+const genericProps4 = {
+  showPlaceholder: false,
+  id: location1.id,
+  name: location1.name,
+  title: location1.title,
+  pointArray: location1.pointArray,
+  isPolygon: location1.isPolygon,
+  isPoint: location1.isPoint,
+  isMultiPoint: location1.isMultiPoint,
+  geoJSON: location1.geoJSON,
 };
 
 export const methods = {
@@ -241,6 +269,95 @@ storiesOf("6 Metadata Detail | DetailViews", module)
       genericProps1,
       genericProps2,
       genericPropsPlaceholder: {
+        showPlaceholder: true,
+        fixedHeight: false,
+      },
+    })
+  })).add("Details", () => ({
+    components: { MetadataDetails },
+    template: `
+    <v-layout row wrap>
+
+      <v-flex xs6 py-3>
+        <metadata-details :genericProps="genericProps3"
+        />
+      </v-flex>
+
+      <v-flex xs6 py-3>
+        <metadata-details :genericProps="genericPropsPlaceholder"
+          :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
+        />
+      </v-flex>
+
+<!--
+      <v-flex xs12 py-3>
+        <metadata-details :genericProps="genericProps2"
+        />
+      </v-flex>
+
+      <v-flex xs12 py-3>
+        <metadata-details :genericProps="genericPropsPlaceholder"
+          :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
+        />
+      </v-flex>
+
+      <v-flex xs12 py-3>
+        <metadata-details :genericProps="genericPropsPlaceholder"
+        />
+      </v-flex>
+
+      <v-flex xs6 py-3>
+        <metadata-details :genericProps="genericPropsPlaceholder"
+        />
+      </v-flex>
+-->
+    </v-layout>        
+    `,
+    updated() {
+      this.$children.forEach((child) => {
+        child.$forceUpdate();
+      });
+    },    
+    methods: {
+    },
+    data: () => ({
+      genericProps3,
+      genericProps2,
+      genericPropsPlaceholder: {
+        details: [],
+        showPlaceholder: true,
+        fixedHeight: false,
+      },
+    })
+  })).add("Location", () => ({
+    components: { MetadataLocation },
+    template: `
+    <v-layout row wrap>
+
+      <v-flex xs6 py-3>
+        <metadata-location :genericProps="genericProps4"
+        />
+      </v-flex>
+
+      <v-flex xs6 py-3>
+        <metadata-location :genericProps="genericPropsPlaceholder"
+          :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
+        />
+      </v-flex>
+
+    </v-layout>        
+    `,
+    updated() {
+      this.$children.forEach((child) => {
+        child.$forceUpdate();
+      });
+    },    
+    methods: {
+    },
+    data: () => ({
+      genericProps4,
+      genericPropsPlaceholder: {
+        details: [],
         showPlaceholder: true,
         fixedHeight: false,
       },
