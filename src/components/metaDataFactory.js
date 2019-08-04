@@ -90,10 +90,10 @@ export default {
       id: dataset.id,
       citationText: text,
       citationXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/datacite.xml`,
-      ciationIsoXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/iso19139.xml`,
-      ciationGCMDXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/gcmd_dif.xml`,
-      ciationBibtexXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/bibtex.bib`,
-      ciationRisXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/ris.ris`,
+      citationIsoXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/iso19139.xml`,
+      citationGCMDXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/gcmd_dif.xml`,
+      citationBibtexXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/bibtex.bib`,
+      citationRisXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/ris.ris`,
     };
   },
   createResources: function createResources(dataset) {

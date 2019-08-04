@@ -98,39 +98,39 @@ export default {
       {
         text: 'ISO 19139',
         toolTipText: 'Download ISO XML citation',
-        url: this.ciationIsoXmlLink,
+        url: this.citationIsoXmlLink,
       },
       {
         text: 'GCMD DIF',
         toolTipText: 'Download GCMD XML citation',
-        url: this.ciationGCMDXmlLink,
+        url: this.citationGCMDXmlLink,
       },
       {
         text: 'BibTex',
         toolTipText: 'Download BibTex XML citation',
-        url: this.ciationBibtexXmlLink,
+        url: this.citationBibtexXmlLink,
       },
       {
         text: 'RIS',
         toolTipText: 'Download RIS XML citation',
-        url: this.ciationRisXmlLink,
+        url: this.citationRisXmlLink,
       },
       ];
     },
     citationXmlLink() {
       return this.mixinMethods_getGenericProp('citationXmlLink');
     },
-    ciationIsoXmlLink() {
-      return this.mixinMethods_getGenericProp('ciationIsoXmlLink');
+    citationIsoXmlLink() {
+      return this.mixinMethods_getGenericProp('citationIsoXmlLink');
     },
-    ciationGCMDXmlLink() {
-      return this.mixinMethods_getGenericProp('ciationGCMDXmlLink');
+    citationGCMDXmlLink() {
+      return this.mixinMethods_getGenericProp('citationGCMDXmlLink');
     },
-    ciationBibtexXmlLink() {
-      return this.mixinMethods_getGenericProp('ciationBibtexXmlLink');
+    citationBibtexXmlLink() {
+      return this.mixinMethods_getGenericProp('citationBibtexXmlLink');
     },
-    ciationRisXmlLink() {
-      return this.mixinMethods_getGenericProp('ciationRisXmlLink');
+    citationRisXmlLink() {
+      return this.mixinMethods_getGenericProp('citationRisXmlLink');
     },
     fixedHeight() {
       return this.mixinMethods_getGenericProp('fixedHeight');
