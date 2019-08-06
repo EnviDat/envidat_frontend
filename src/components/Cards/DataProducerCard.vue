@@ -1,17 +1,20 @@
 <template>
-
   <v-card
     ripple
-    hover>
-
+    hover
+  >
     <v-card-media
       class="imagezoom"
-      v-bind="{ [`height`]: this.$vuetify.breakpoint.smAndDown ? '200px' : '300px', 
-              }"
-      :src="dataCreatorImg">
-      <v-container fill-height fluid>
+      v-bind="{ [`height`]: this.$vuetify.breakpoint.smAndDown ? '200px' : '300px',
+      }"
+      :src="dataCreatorImg"
+    >
+      <v-container
+        fill-height
+        fluid
+      >
         <v-layout fill-height>
-          <v-flex xs12 >
+          <v-flex xs12>
             <span class="display-2 dataproducer_title white--text">{{ titleText }}</span>
           </v-flex>
         </v-layout>
@@ -19,65 +22,64 @@
     </v-card-media>
 
     <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn      
+      <v-spacer />
+      <v-btn
         v-if="loggedIn"
         large
         color="primary"
-        @click.native="enterclick">
-          {{ loggedinText }}
-      </v-btn>      
-
-      <v-btn
-        v-if="!loggedIn"
-        large
-        color="primary"
-        @click.native="singupclick">
-          {{ signupText }}
+        @click.native="enterclick"
+      >
+        {{ loggedinText }}
       </v-btn>
-      
+
       <v-btn
         v-if="!loggedIn"
         large
         color="primary"
-        @click.native="loginclick">
-          {{ loginText }}
-      </v-btn>      
+        @click.native="singupclick"
+      >
+        {{ signupText }}
+      </v-btn>
 
+      <v-btn
+        v-if="!loggedIn"
+        large
+        color="primary"
+        @click.native="loginclick"
+      >
+        {{ loginText }}
+      </v-btn>
     </v-card-actions>
-    
   </v-card>
-
-  
 </template>
 
 
 <script>
-  import dataCreatorImg from '@/assets/cards/data_creator.jpg';
+import dataCreatorImg from '@/assets/cards/data_creator.jpg';
 
-  export default {
-    props: {
-      titleText: String,
-      loginText: String,
-      signupText: String,
-      loggedIn: Boolean,
-      loggedinText: String,
+export default {
+  props: {
+    titleText: String,
+    loginText: String,
+    signupText: String,
+    loggedIn: Boolean,
+    loggedinText: String,
+  },
+  data: () => ({
+    dataCreatorImg,
+  }),
+  methods: {
+    enterclick: function enterclick() {
+      this.$emit('enterclick', this.loggedinText);
     },
-    methods: {
-      enterclick: function enterclick() {
-        this.$emit('enterclick', this.loggedinText);
-      },
-      singupclick: function singupclick() {
-        this.$emit('singupclick', this.signupText);
-      },
-      loginclick: function loginclick() {
-        this.$emit('loginclick', this.loginText);
-      },
+    singupclick: function singupclick() {
+      this.$emit('singupclick', this.signupText);
     },
-    data: () => ({
-      dataCreatorImg,
-    }),
-  };
+    loginclick: function loginclick() {
+      this.$emit('loginclick', this.loginText);
+    },
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
