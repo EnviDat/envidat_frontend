@@ -7,4 +7,3 @@ export const GCMD_PATH = '/gcmd';
 export const ABOUT_PATH = '/about';
 export const POLICIES_PATH = '/policies';
 export const GUIDELINES_PATH = '/guidelines';
-

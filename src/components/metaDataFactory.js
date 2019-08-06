@@ -1,9 +1,8 @@
-
-module.exports = {
-  createHeader: function createHeader(dataset, breakpoint) {
+export default {
+  createHeader: function createHeader(dataset, smallScreen) {
     let { maintainer } = dataset;
 
-    if (typeof (dataset.maintainer) === 'string') {
+    if (typeof dataset.maintainer === 'string') {
       maintainer = JSON.parse(dataset.maintainer);
     }
 
@@ -16,7 +15,7 @@ module.exports = {
 
     let authors = null;
 
-    if (typeof (dataset.author) === 'string') {
+    if (typeof dataset.author === 'string') {
       authors = JSON.parse(dataset.author);
     }
 
@@ -28,7 +27,7 @@ module.exports = {
       license: license.title,
       tags: dataset.tags,
       titleImg: dataset.titleImg,
-      maxTags: breakpoint.smAndDown ? 5 : 12,
+      maxTags: smallScreen ? 5 : 12 ,
       authors,
     };
   },
@@ -46,7 +45,7 @@ module.exports = {
     if (dataset.author !== undefined) {
       let { author } = dataset;
 
-      if (typeof (dataset.author) === 'string') {
+      if (typeof dataset.author === 'string') {
         author = JSON.parse(dataset.author);
       }
 
@@ -67,7 +66,7 @@ module.exports = {
 
     let { publication } = dataset;
 
-    if (typeof (dataset.publication) === 'string') {
+    if (typeof dataset.publication === 'string') {
       publication = JSON.parse(dataset.publication);
     }
 
@@ -91,10 +90,10 @@ module.exports = {
       id: dataset.id,
       citationText: text,
       citationXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/datacite.xml`,
-      ciationIsoXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/iso19139.xml`,
-      ciationGCMDXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/gcmd_dif.xml`,
-      ciationBibtexXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/bibtex.bib`,
-      ciationRisXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/ris.ris`,
+      citationIsoXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/iso19139.xml`,
+      citationGCMDXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/gcmd_dif.xml`,
+      citationBibtexXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/bibtex.bib`,
+      citationRisXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/ris.ris`,
     };
   },
   createResources: function createResources(dataset) {
@@ -121,8 +120,7 @@ module.exports = {
 
         let resURL = element.url;
 
-        if (isProtected ||
-          (typeof restrictedUsers === 'boolean' && restrictedUsers === true)) {
+        if (isProtected || (typeof restrictedUsers === 'boolean' && restrictedUsers === true)) {
           const splits = element.url.split('resource');
           if (splits && splits.length > 0) {
             resURL = splits[0];
@@ -131,7 +129,7 @@ module.exports = {
           }
         }
 
-        let format = element.format;
+        let { format } = element;
         format = format.replace('.', '').toLowerCase();
 
         const res = {
@@ -188,7 +186,7 @@ module.exports = {
 
     details.push({ label: 'MetadataId', text: dataset.id });
 
-    return { details };
+    return details;
   },
   createLicense: function createLicense(dataset) {
     const license = {};
@@ -249,4 +247,13 @@ module.exports = {
 
     return location;
   },
+  convertTags(tagsStringArray, tagsEnabled){
+    const tagObjs = [];
+
+    tagsStringArray.forEach(element => {
+      tagObjs.push({ name: element, enabled: tagsEnabled });
+    });
+
+    return tagObjs;
+  }
 };
