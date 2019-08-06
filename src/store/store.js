@@ -5,6 +5,7 @@ import createPersist from 'vuex-localstorage';
 /* eslint-disable no-unused-vars */
 import { metadata } from '@/store/modules/metadata/metadata';
 import { policies } from '@/store/modules/policies/policies';
+import { guidelines } from '@/store/modules/guidelines/guidelines';
 import mutations from '@/store/appMutations';
 import actions from '@/store/appActions';
 
@@ -13,7 +14,7 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   strict: true,
   state: {
-    currentPage: 'none',
+    currentPage: '',
     organizations: [],
     projects: [],
     // use a './' before the img for the img name for the local path
@@ -24,6 +25,7 @@ const store = new Vuex.Store({
     controls: [1],
     browseScrollPosition: 0,
     showVersionModal: false,
+    newVersion: process.env.VERSION,
     config: null,
     error: null,
   },
@@ -36,6 +38,7 @@ const store = new Vuex.Store({
     controls: state => state.controls,
     browseScrollPosition: state => state.browseScrollPosition,
     showVersionModal: state => state.showVersionModal,
+    newVersion: state => state.newVersion,
     config: state => state.config,
     error: state => state.error,
   },
@@ -44,6 +47,7 @@ const store = new Vuex.Store({
   modules: {
     metadata,
     policies,
+    guidelines,
   },
 });
 

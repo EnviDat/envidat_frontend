@@ -1,96 +1,110 @@
 <template>
-
   <v-card raised>
-
-    <v-layout column px-2 pt-2>
-      <v-flex xs12 >
+    <v-layout
+      column
+      px-2
+      pt-2
+    >
+      <v-flex xs12>
         <v-layout row>
-
-          <v-flex xs1 py-2 class="metadataInfoIcon" >
-            
-            <base-icon-label-view :icon="mixinMethods_getIcon('tag')" 
-                              iconTooltip="Filtered Tags" 
-                              />
+          <v-flex
+            xs1
+            py-2
+            class="metadataInfoIcon"
+          >
+            <base-icon-label-view
+              :icon="mixinMethods_getIcon('tag')"
+              icon-tooltip="Filtered Tags"
+            />
           </v-flex>
 
-          <v-flex xs9
-                  v-if="selectedTags"
-                  >
-
-            <tag-chip v-for="tag in selectedTags" :key="tag.name"
-                      :name="tag.name"
-                      :selectable="false"
-                      :highlighted="true"
-                      :closeable="true"
-                      v-on:clicked="catchTagClicked($event, tag.name)"
-                      v-on:clickedClose="catchTagCloseClicked($event, tag.name)"
-                      class="filterTag" />
-
+          <v-flex
+            v-if="selectedTags"
+            xs9
+          >
+            <tag-chip
+              v-for="tag in selectedTags"
+              :key="tag.name"
+              :name="tag.name"
+              :selectable="false"
+              :highlighted="true"
+              :closeable="true"
+              class="filterTag"
+              @clicked="catchTagClicked($event, tag.name)"
+              @clickedClose="catchTagCloseClicked($event, tag.name)"
+            />
           </v-flex>
 
-          <v-flex xs1 >
-            <v-btn v-if="selectedTags.length > 0"
-                    small
-                    flat 
-                    @click.native="catchClearTags">
-                {{ clearButtonText }}
-                <v-icon color="red" style="font-size: 20px !important">close</v-icon>
+          <v-flex xs1>
+            <v-btn
+              v-if="selectedTags.length > 0"
+              small
+              flat
+              @click.native="catchClearTags"
+            >
+              {{ clearButtonText }}
+              <v-icon
+                color="red"
+                style="font-size: 20px !important"
+              >
+                close
+              </v-icon>
             </v-btn>
           </v-flex>
-
         </v-layout>
       </v-flex>
 
-      <v-flex >
+      <v-flex>
         <v-layout row>
-
-          <v-flex xs1 py-2 class="metadataInfoIcon" >
-
-            <base-icon-label-view :icon="mixinMethods_getIcon('tags')" 
-                              iconTooltip="All Tags" 
-                              />
+          <v-flex
+            xs1
+            py-2
+            class="metadataInfoIcon"
+          >
+            <base-icon-label-view
+              :icon="mixinMethods_getIcon('tags')"
+              icon-tooltip="All Tags"
+            />
           </v-flex>
 
-          <v-flex xs11
-                  v-if="unselectedTags" >
-
-            <tag-chip v-for="tag in unselectedTags" :key="tag.name" 
-                      :name="tag.name"
-                      :selectable="false"
-                      :highlighted="false"
-                      :closeable="false"
-                      v-on:clicked="catchTagClicked($event, tag.name)"
-                      v-on:clickedClose="catchTagCloseClicked($event, tag.name)"
-                      class="filterTag"
-                      />
-
+          <v-flex
+            v-if="unselectedTags"
+            xs11
+          >
+            <tag-chip
+              v-for="tag in unselectedTags"
+              :key="tag.name"
+              :name="tag.name"
+              :selectable="false"
+              :highlighted="false"
+              :closeable="false"
+              class="filterTag"
+              @clicked="catchTagClicked($event, tag.name)"
+              @clickedClose="catchTagCloseClicked($event, tag.name)"
+            />
           </v-flex>
         </v-layout>
       </v-flex>
-
     </v-layout>
 
     <v-card-actions>
       <v-spacer />
 
-      <filter-view-buttons :expanded.sync="expanded"
-                            :expandButtonText="expandButtonText"
-                            :expandedButtonText="expandedButtonText"
-                            :showClearTags="true"
-                            :clearButtonText="clearButtonText"
-                            v-on:clickedExpand="catchExpandClicked"
-                            v-on:clickedClearTags="catchClearTags"
-                            :mapExpanded="mapExpanded"
-                            :mapExpandButtonText="mapExpandButtonText"
-                            :mapExpandedButtonText="mapExpandedButtonText"
-                            v-on:clickedMapExpand="catchMapExpandClicked" >
-                            
-      </filter-view-buttons>
-
+      <filter-view-buttons
+        :expanded.sync="expanded"
+        :expand-button-text="expandButtonText"
+        :expanded-button-text="expandedButtonText"
+        :show-clear-tags="true"
+        :clear-button-text="clearButtonText"
+        :map-expanded="mapExpanded"
+        :map-expand-button-text="mapExpandButtonText"
+        :map-expanded-button-text="mapExpandedButtonText"
+        @clickedExpand="catchExpandClicked"
+        @clickedClearTags="catchClearTags"
+        @clickedMapExpand="catchMapExpandClicked"
+      />
     </v-card-actions>
-            
   </v-card>
-
 </template>
 
 <script>
@@ -99,6 +113,11 @@ import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 import FilterViewButtons from '@/components/Filtering/FilterViewButtons';
 
 export default {
+  components: {
+    TagChip,
+    BaseIconLabelView,
+    FilterViewButtons,
+  },
   props: {
     allTags: Array,
     selectedTagNames: Array,
@@ -171,14 +190,5 @@ export default {
       this.$emit('clickedClear');
     },
   },
-  components: {
-    TagChip,
-    BaseIconLabelView,
-    FilterViewButtons,
-  },
 };
 </script>
-
-
-
-

@@ -1,62 +1,77 @@
 <template>
-
-  <v-card raised
-          :height="totalHeight"
-          :width="totalWidth"
+  <v-card
+    raised
+    :height="totalHeight"
+    :width="totalWidth"
   >
-
     <v-card-title>
-      <div class="headline mb-0">Cartographic Filtering</div>
+      <div class="headline mb-0">
+        Cartographic Filtering
+      </div>
     </v-card-title>
-    
-    <div class="mb-2" :style="`background-color: ${this.$vuetify.theme.highlight};`">
-      <p class="px-3 py-0 my-0 body-2" > {{ highlightedText }} </p>
+
+    <div
+      class="mb-2"
+      :style="`background-color: ${this.$vuetify.theme.highlight};`"
+    >
+      <p class="px-3 py-0 my-0 body-2">
+        {{ highlightedText }}
+      </p>
     </div>
 
-    <div v-if="expanded && !errorLoadingLeaflet"
-          id="map"
-          ref="map"
-          v-bind="mapViewHeight" />
+    <div
+      v-if="expanded && !errorLoadingLeaflet"
+      id="map"
+      ref="map"
+      v-bind="mapViewHeight"
+    />
 
-    <div v-if="expanded && errorLoadingLeaflet"
-          v-bind="mapViewHeight" >
-          Error loading leaflet
+    <div
+      v-if="expanded && errorLoadingLeaflet"
+      v-bind="mapViewHeight"
+    >
+      Error loading leaflet
     </div>
 
     <v-card-actions class="pr-2">
-      <div :style="`color:${this.pinnedIds.length > 0 ? this.$vuetify.theme.primary : 'rgba(0,0,0,.47)'};`" >{{ this.filterText + this.pinnedIds.length }}</div>
+      <div :style="`color:${this.pinnedIds.length > 0 ? this.$vuetify.theme.primary : 'rgba(0,0,0,.47)'};`">
+        {{ this.filterText + this.pinnedIds.length }}
+      </div>
 
       <v-spacer />
 
-      <base-icon-button class="px-2"
-                        :customIcon="eyeIcon"
-                        color="highlight"
-                        :outlined="true"
-                        toolTipText="Focus on all elements on the map"
-                        v-on:clicked="focusOnLayers()"
-                        />
+      <base-icon-button
+        class="px-2"
+        :custom-icon="eyeIcon"
+        color="highlight"
+        :outlined="true"
+        tool-tip-text="Focus on all elements on the map"
+        @clicked="focusOnLayers()"
+      />
 
-      <base-icon-button class="px-2"
-                        v-if="hasPins"
-                        :count="pinLayerGroup.length"
-                        :customIcon="pinIcon"
-                        color="secondary"
-                        :outlined="true"
-                        :isToggled="pinEnabled"
-                        :toolTipText="pinEnabled ? 'Hide single markers' : 'Show single markers'"
-                        v-on:clicked="pinEnabled = !pinEnabled; updatePins()"
-                        />
+      <base-icon-button
+        v-if="hasPins"
+        class="px-2"
+        :count="pinLayerGroup.length"
+        :custom-icon="pinIcon"
+        color="secondary"
+        :outlined="true"
+        :is-toggled="pinEnabled"
+        :tool-tip-text="pinEnabled ? 'Hide single markers' : 'Show single markers'"
+        @clicked="pinEnabled = !pinEnabled; updatePins()"
+      />
 
-      <base-icon-button class="px-2"
-                        v-if="hasMultiPins"
-                        :count="multiPinLayerGroup.length"
-                        :customIcon="multiPinIcon"
-                        color="secondary"
-                        :outlined="true"
-                        :isToggled="multiPinEnabled"
-                        :toolTipText="multiPinEnabled ? 'Hide multi markers' : 'Show multi markers'"
-                        v-on:clicked="multiPinEnabled = !multiPinEnabled; updateMultiPins()"
-                        />
+      <base-icon-button
+        v-if="hasMultiPins"
+        class="px-2"
+        :count="multiPinLayerGroup.length"
+        :custom-icon="multiPinIcon"
+        color="secondary"
+        :outlined="true"
+        :is-toggled="multiPinEnabled"
+        :tool-tip-text="multiPinEnabled ? 'Hide multi markers' : 'Show multi markers'"
+        @clicked="multiPinEnabled = !multiPinEnabled; updateMultiPins()"
+      />
 
       <!-- <base-icon-button class="px-1"
                     :customIcon="polygonIcon"
@@ -64,34 +79,32 @@
                     toolTipText="Polygon filtering is in development"
                     /> -->
 
-      <base-icon-button class="px-2"
-                        v-if="hasPolygons"
-                        :count="polygonLayerGroup.length"
-                        :customIcon="polygonIcon"
-                        color="secondary"
-                        :isToggled="polygonEnabled"
-                        :outlined="true"
-                        :toolTipText="polygonEnabled ? 'Hide polygons' : 'Show polygons'"
-                        v-on:clicked="polygonEnabled = !polygonEnabled; updatePolygons()"
-                        />
+      <base-icon-button
+        v-if="hasPolygons"
+        class="px-2"
+        :count="polygonLayerGroup.length"
+        :custom-icon="polygonIcon"
+        color="secondary"
+        :is-toggled="polygonEnabled"
+        :outlined="true"
+        :tool-tip-text="polygonEnabled ? 'Hide polygons' : 'Show polygons'"
+        @clicked="polygonEnabled = !polygonEnabled; updatePolygons()"
+      />
 
 
-      <base-rectangle-button class="pl-3"
-                            :buttonText="clearButtonText"
-                            toolTipText="Clear all pinned Metadata"
-                            :isSmall="true"
-                            :isFlat="true"
-                            iconColor="red"
-                            :disabled="this.pinnedIds.length <= 0"
-                            materialIconName="close"
-                            v-on:clicked="catchClearButtonClicked"
-                            />
-
-
+      <base-rectangle-button
+        class="pl-3"
+        :button-text="clearButtonText"
+        tool-tip-text="Clear all pinned Metadata"
+        :is-small="true"
+        :is-flat="true"
+        icon-color="red"
+        :disabled="this.pinnedIds.length <= 0"
+        material-icon-name="close"
+        @clicked="catchClearButtonClicked"
+      />
     </v-card-actions>
-
   </v-card>
-
 </template>
 
 <script>
@@ -535,7 +548,7 @@ export default {
 .rotating {
   animation: rotateturn 1s steps(8, end) infinite;
 }
- 
+
 @keyframes rotateturn {
   to {
     transform: rotate(360deg);
@@ -547,6 +560,3 @@ export default {
     to {transform: rotate(360deg);}
 }
 </style>
-
-
-
