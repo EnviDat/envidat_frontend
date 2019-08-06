@@ -1,0 +1,14 @@
+{
+  "eslint.enable": true,
+  "eslint.autoFixOnSave": false,
+  "eslint.run": "onType",
+  "eslint.options": {
+    "extensions": [".js", ".vue"]
+  },
+  "eslint.validate": [
+    {
+      "language": "vue",
+      "autoFix": false
+    }
+  ]
+}
