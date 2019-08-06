@@ -21,10 +21,14 @@ import {
 const globalMethods = require('@/components/globalMethods');
 
 /* eslint-disable no-unused-vars  */
-const ENVIDAT_PROXY = process.env.ENVIDAT_PROXY;
-const SOLR_PROXY = process.env.SOLR_PROXY;
+const ENVIDAT_PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
+const SOLR_PROXY = process.env.VUE_APP_SOLR_PROXY;
 const API_BASE = '/api/3/action/';
 const SOLR_API_BASE = '/solr/ckan_default/';
+
+console.log(`loaded VUE_APP_ENVIDAT_PROXY: ${ENVIDAT_PROXY}`);
+console.log(`loaded VUE_APP_SOLR_PROXY: ${SOLR_PROXY}`);
+console.log(`loaded VUE_APP_VERSION: ${process.env.VUE_APP_VERSION}`);
 
 function urlRewrite(url, baseUrl, proxyUrl) {
   url = url.replace('?', '&');
@@ -79,7 +83,7 @@ function enhanceSearchWithTags(allTags, searchResult) {
 
 function enhanceContent(metadatas, cardBGImages) {
   if (metadatas && metadatas.length > 0) {
-    return globalMethods.default.methods.mixinMethods_enhanceMetadata(metadatas, cardBGImages);
+    return globalMethods.default.methods.mixinMethods_enhanceMetadatas(metadatas, cardBGImages);
   }
 
   return [];
@@ -130,7 +134,6 @@ function contentFilteredByTags(value, selectedTagNames) {
   return false;
 }
 
-
 export default {
   async [SEARCH_METADATA]({ commit }, searchTerm) {
     commit(SEARCH_METADATA);
@@ -153,12 +156,17 @@ export default {
     const authorQuery = `{! df=author}${searchTerm}`;
 
     // const url = urlRewrite(`select?q=${titleQuery} OR ${notesQuery} OR ${authorQuery}&wt=json&rows=1000`, SOLR_API_BASE, SOLR_PROXY);
-    const url = urlRewrite(`select?q=title:${searchTerm} OR notes:${searchTerm} OR author:${searchTerm}&wt=json&rows=1000`, SOLR_API_BASE, SOLR_PROXY);
+    const url = urlRewrite(
+      `select?q=title:${searchTerm} OR notes:${searchTerm} OR author:${searchTerm}&wt=json&rows=1000`,
+      SOLR_API_BASE,
+      SOLR_PROXY,
+    );
 
     // const url = `/api/search/dataset?q=${searchTerm}`;
     // const url = urlRewrite(`/api/search/dataset?q=${searchTerm}&rows=1000`, '', ENVIDAT_PROXY);
 
-    axios.get(url)
+    axios
+      .get(url)
       .then((response) => {
         commit(SEARCH_METADATA_SUCCESS, response.data.response.docs);
         // commit(SEARCH_METADATA_SUCCESS, response.data.results);
@@ -184,18 +192,24 @@ export default {
       return;
     }
 
+    const url = urlRewrite(
+      `select?q=name:${metadataId} OR id:${metadataId} &wt=json&rows=1`,
+      SOLR_API_BASE,
+      SOLR_PROXY,
+    );
+    axios
+      .get(url)
+      .then((response) => {
+        let entry = response.data.response.docs;
+        if (response.data.response.docs instanceof Array) {
+          entry = response.data.response.docs[0];
+        }
 
-    const url = urlRewrite(`select?q=name:${metadataId} OR id:${metadataId} &wt=json&rows=1`, SOLR_API_BASE, SOLR_PROXY);
-    axios.get(url).then((response) => {
-      let entry = response.data.response.docs;
-      if (response.data.response.docs instanceof Array) {
-        entry = response.data.response.docs[0];
-      }
-
-      commit(LOAD_METADATA_CONTENT_BY_ID_SUCCESS, entry);
-    }).catch((reason) => {
-      commit(LOAD_METADATA_CONTENT_BY_ID_ERROR, reason);
-    });
+        commit(LOAD_METADATA_CONTENT_BY_ID_SUCCESS, entry);
+      })
+      .catch((reason) => {
+        commit(LOAD_METADATA_CONTENT_BY_ID_ERROR, reason);
+      });
 
     // const url = urlRewrite(`package_show?id=${metadataId}`, API_BASE, ENVIDAT_PROXY);
 
@@ -214,9 +228,14 @@ export default {
     // const url = `${SOLR_PROXY}${SOLR_API_BASE}select&q=title:*&wt=json&rows=1000`;
 
     // const url = '/api/action/current_package_list_with_resources&limit=1000&offset=0';
-    const url = urlRewrite('/api/action/current_package_list_with_resources?limit=1000&offset=0', '', ENVIDAT_PROXY);
+    const url = urlRewrite(
+      '/api/action/current_package_list_with_resources?limit=1000&offset=0',
+      '',
+      ENVIDAT_PROXY,
+    );
 
-    axios.get(url)
+    axios
+      .get(url)
       .then((response) => {
         // commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, response.data.response.docs, showRestrictedContent);
         commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, response.data.result);
@@ -314,7 +333,7 @@ export default {
           }
         }
 
-        const cardBGImages = this.getters.cardBGImages;
+        const { cardBGImages } = this.getters;
         enhanceContent(filteredContent, cardBGImages);
         content = filteredContent;
 
