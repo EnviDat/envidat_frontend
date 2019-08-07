@@ -155,7 +155,7 @@ export default {
       });
     },
     dialogVersionText() {
-      return `You are using the version ${process.env.VERSION}, but there is are newer version available (${this.newVersion}). Please reload to get the latest verison of EnviDat.`;
+      return `You are using the version ${process.env.VUE_APP_VERSION}, but there is are newer version available (${this.newVersion}). Please reload to get the latest verison of EnviDat.`;
     },
   },
   computed: {
