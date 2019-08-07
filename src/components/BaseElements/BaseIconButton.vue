@@ -11,6 +11,7 @@
     >
       <v-btn
         slot="activator"
+        :class="marginClass"
         :icon="!isElevated"
         :fab="isElevated"
         :small="isSmall || isElevated"
@@ -103,6 +104,7 @@ export default {
     isElevated: Boolean,
     disabled: Boolean,
     count: Number,
+    marginClass: String,
   },
   data: () => ({
     showTagsExpanded: false,

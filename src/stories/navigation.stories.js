@@ -99,9 +99,25 @@ storiesOf("5 Navigation | Redesigned Navigation", module).add("Menu", () => ({
   template: `
       <navigation-toolbar
                   labelText="Search for something"
+            v-on:menuClick="onMenuClick"
+            v-on:searchClick="onSearchClick"
+            v-on:loginClick="onLoginClick"
+            />`,
+  methods
+})).add("Menu & Toolbar", () => ({
+  components: { Navigation, NavigationToolbar },
+  template: `
+      <navigation
+        :navItems="navItems"
+      />  
+      <navigation-toolbar
+                  labelText="Search for something"
             @menuClick="onMenuClick"
             @searchClick="onSearchClick"
             @loginClick="onLoginClick"
-            />`,
+            />
+  `,
+  data: () => ({ navItems }),
   methods
 }));
+

@@ -1,6 +1,9 @@
 <template>
-  <v-toolbar color="white" height="36">
-    <v-toolbar-side-icon @click.native="menuClick"></v-toolbar-side-icon>
+  <v-toolbar color="white" height="36" :extended="expanded">
+    <!-- <v-toolbar-side-icon @click.native="menuClick"></v-toolbar-side-icon> -->
+    <v-btn icon @click.native="menuClick">
+      <v-icon>menu</v-icon>
+    </v-btn>
 
     <!-- <v-toolbar-title>
       <v-btn icon href="./" class="ma-0">
@@ -18,30 +21,49 @@
       <v-icon>search</v-icon>
     </v-btn>
 
-    <v-btn icon @click.native="loginClick">
+    <!-- <v-btn icon @click.native="loginClick">
       <v-icon>login</v-icon>
-    </v-btn>
+    </v-btn> -->
 
     <!-- <v-btn icon>
       <v-icon>refresh</v-icon>
-    </v-btn>
+    </v-btn> -->
 
-    <v-btn icon>
+    <!-- <v-btn icon>
       <v-icon>more_vert</v-icon>
-    </v-btn>-->
+    </v-btn> -->
+    <base-icon-button materialIconName="more_vert"
+                      marginClass="ma-0"
+                      iconColor="accent"
+                      color="transparent"
+                      :isToggled="expanded"
+                      :rotateOnClick="true"
+                      :rotateToggle="expanded"
+                      @clicked="expanded = !expanded"
+      >
+
+    </base-icon-button>
+
+    <template v-if="expanded"
+              v-slot:extension>
+      <div style="background-color: red; width: 100%; height: 30px;"></div>
+    </template>
+
   </v-toolbar>
 </template>
 
 <script>
 import Logo from '@/assets/logo/EnviDat_logo_32.png';
+import baseIconButton from '@/components/BaseElements/BaseIconButton';
 
 export default {
-  components: {},
+  components: { baseIconButton },
   props: {},
   data: () => ({
     Logo,
     logoText: 'EnviDat',
     searchFocused: false,
+    expanded: false,
   }),
   computed: {},
   methods: {

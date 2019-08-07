@@ -23,11 +23,13 @@
           <!-- <v-list-tile-title> -->
 
           <base-rectangle-button
+            marginClass="ma-0"
             isSmall
             isFlat
             :buttonText="item.title"
             :toolTipText="item.toolTip"
             :materialIconName="item.icon"
+            iconColor="black"
             color="secondary"
           />
           <!-- </v-list-tile-title> -->
