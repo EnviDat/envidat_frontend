@@ -152,7 +152,7 @@ export default {
     envidatSlogan: 'Environmental Research Data<br/>at your Fingertips',
     // envidatSlogan: 'Environmental Research Data at your Fingertips. Provided by the many research units of the Swiss Federal Institute for Forest, Snow and Landscape WSL.',
     envidatSubSlogan: 'The data is being provided by the many research units of the Swiss Federal Institute for Forest, Snow and Landscape WSL.',
-    sloganButtonText: 'BROWSE DATA',
+    sloganButtonText: 'EXPLORE DATA',
     loginInfos: {
       titleText: 'Do you create data?',
       loginText: 'Creator Login',
