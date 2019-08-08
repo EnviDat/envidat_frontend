@@ -4,7 +4,7 @@
                         right
                         mini-variant-width="60"
                         mini-variant
-                        :height=" menuItem.active ? navItems.length * 45 : 50"
+                        :height=" menuItem.active ? navItems.length * 44 : 50"
   >
 
     <v-list dense
@@ -17,7 +17,7 @@
                       :class="{
                               'pt-4': item.icon === 'menu' && menuItem.active,
                               'pt-1': item.icon === 'menu' && !menuItem.active,
-                              'pt-3': item.icon === 'envidat'
+                              'pt-2': item.icon === 'envidat'
                               }" >
 
           <v-list-tile-action v-if="item.icon === 'envidat'"
