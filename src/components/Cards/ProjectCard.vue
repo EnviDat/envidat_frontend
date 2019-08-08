@@ -3,14 +3,18 @@
           hover
           style="height: 100%; max-height: 375px !important;"
   >
-    <v-img background-color="primary"
-            :style="!flatLayout ? dynamicCardBackground : ''"
-            :height="flatLayout ? '65px' : $vuetify.breakpoint.smAndDown ? '100px' : '125px'"
-    >
+    <img style="position: relative; left: -2px; height: 200px; max-width: 102%; border-radius: 2px;"
+          :src="defaultTexture"
+          gradient="to top bottom, rgba(255,255,255, 0.6), rgba(255,255,255, 0.99)"
+    />
+    <!-- <v-img
+          :src="defaultTexture"
+          gradient="to top bottom, rgba(255,255,255, 0.6), rgba(255,255,255, 0.99)"
+    > -->
+            <!-- rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70% -->
       <!-- <img :src="landImg" /> -->
 
-      <v-container style="position: absolute;"
-                  fill-height
+      <v-container style="position: absolute; top: 0; height: 200px;"
                   grid-list-xs
                   pb-0
       >
@@ -43,18 +47,18 @@
           </v-flex>
         </v-layout>
       </v-container>
-    </v-img>
 
-    <v-card-title v-if="!show"
-                  primary-title
+    <!-- </v-img> -->
+
+    <v-card-title primary-title
     >
       <div class="skeleton skeleton-color-silver skeleton-animation-shimmer"
             style="width: 100%;"
       >
-        <div class="bone bone-type-multiline" />
         <div class="bone bone-type-multiline bone-style-paragraph" />
       </div>
     </v-card-title>
+
   </v-card>
 </template>
 
@@ -72,20 +76,13 @@ export default {
   },
   props: {
     id: String,
+    img: String,
     title: String,
     subtitle: String,
-    type: Number,
-    restricted: Boolean,
-    favourit: Boolean,
     tags: Array,
-    titleImg: String,
-    dark: Boolean,
-    flatLayout: Boolean,
   },
   data: () => ({
     defaultTexture,
-    show: false,
-    showDataText: 'SHOW DATA',
     maxTitleLength: 70,
     maxSubtitleLength: 190,
     // maxTags: 3,
@@ -102,17 +99,6 @@ export default {
 
   }),
   computed: {
-    dynamicCardBackground: function dynamicCardBackground() {
-      const gradient = this.dark ? this.blackTopToBottom : this.whiteTopToBottom;
-
-      if (this.defaultTexture) {
-        return `background-image: linear-gradient(0deg, ${gradient}), url(${this.defaultTexture});
-                background-position: center, center;
-                background-size: cover; background-repeat: initial; `;
-      }
-
-      return '';
-    },
     maxTagsReached: function maxTagsReached() {
       return this.tags !== undefined && this.tags.length > this.maxTagNumber;
     },
