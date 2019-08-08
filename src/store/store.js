@@ -25,7 +25,7 @@ const store = new Vuex.Store({
     controls: [1],
     browseScrollPosition: 0,
     showVersionModal: false,
-    newVersion: process.env.VERSION,
+    newVersion: process.env.VUE_APP_VERSION,
     config: null,
     error: null,
   },
