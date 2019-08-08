@@ -41,7 +41,7 @@ export default {
     state.error = reason;
   },
   [CHECK_FRONTEND_VERSION](state, version) {
-    if (version > process.env.VERSION) {
+    if (version > process.env.VUE_APP_VERSION) {
       state.showVersionModal = true;
       state.newVersion = version;
     }

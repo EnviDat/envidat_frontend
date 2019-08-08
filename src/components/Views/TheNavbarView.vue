@@ -1,20 +1,18 @@
 <template>
   <v-layout column>
-    <v-flex
-      xs12
-      hidden-md-and-up
+    <!-- <v-flex xs12
+            hidden-md-and-up
     >
       <v-card raised>
         <v-layout column>
           <v-flex>
-            <v-btn
-              icon
-              href="./"
-              class="ma-0"
+
+            <v-btn icon
+                    href="./"
+                    class="ma-0"
             >
-              <img
-                :src="Logo"
-                alt="envidat_logo"
+              <img :src="Logo"
+                    alt="envidat_logo"
               >
             </v-btn>
 
@@ -39,57 +37,42 @@
           <v-flex>About</v-flex>
         </v-layout>
       </v-card>
-    </v-flex>
+    </v-flex> -->
 
-    <v-flex
-      xs12
-      hidden-sm-and-down
+    <v-flex xs12
+            hidden-sm-and-down
     >
       <v-card raised>
-        <v-layout
-          row
+        <v-layout row
           align-center
         >
-          <v-flex
-            xs5
-            sm3
-            md2
-            lg2
-            pl-1
+          <v-flex xs5 sm3 md2 lg2
+                  pl-1
           >
-            <v-btn
-              icon
-              href="./"
-              class="ma-0"
+            <v-btn icon
+                    href="./"
+                    class="ma-0"
             >
-              <img
-                :src="Logo"
-                alt="envidat_logo"
+              <img :src="Logo"
+                    alt="envidat_logo"
               >
             </v-btn>
 
-            <div
-              class="headline envidatLogoText"
-              :class="{
-                ['envidatNavbarTitleSmall']: this.$vuetify.breakpoint.xsOnly,
-              }"
+            <div class="headline envidatLogoText"
+                  :class="{
+                    ['envidatNavbarTitleSmall']: this.$vuetify.breakpoint.xsOnly,
+                  }"
             >
               {{ logoText }}
             </div>
           </v-flex>
 
-          <v-flex
-            sm5
-            md8
-            lg8
+          <v-flex sm5 md8 lg8
           >
             <!-- spacer -->
           </v-flex>
 
-          <v-flex
-            xs4
-            sm3
-            md2
+          <v-flex xs4 sm3 md2
           >
             <base-rectangle-button
               margin-class="ma-0"
@@ -102,11 +85,7 @@
             />
           </v-flex>
 
-          <v-flex
-            xs3
-            sm3
-            md1
-            lg1
+          <v-flex xs3 sm3 md1 lg1
           >
             <base-rectangle-button
               margin-class="ma-0"
@@ -119,7 +98,9 @@
             />
           </v-flex>
         </v-layout>
+
       </v-card>
+
     </v-flex>
   </v-layout>
 </template>
