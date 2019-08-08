@@ -23,16 +23,14 @@ const globalMethods = require('@/components/globalMethods');
 /* eslint-disable no-unused-vars  */
 const ENVIDAT_PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
 const SOLR_PROXY = process.env.VUE_APP_SOLR_PROXY;
-const API_BASE = '/api/3/action/';
+// const API_BASE = '/api/3/action/';
 const SOLR_API_BASE = '/solr/ckan_default/';
-
-console.log(`loaded VUE_APP_ENVIDAT_PROXY: ${ENVIDAT_PROXY}`);
-console.log(`loaded VUE_APP_SOLR_PROXY: ${SOLR_PROXY}`);
-console.log(`loaded VUE_APP_VERSION: ${process.env.VUE_APP_VERSION}`);
 
 function urlRewrite(url, baseUrl, proxyUrl) {
   url = url.replace('?', '&');
   url = url.replace("'", '%22');
+
+  proxyUrl = proxyUrl.replace('NULL', '');
 
   url = `${proxyUrl}${baseUrl}${url}`;
 
