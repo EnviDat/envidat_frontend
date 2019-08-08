@@ -1,41 +1,42 @@
 <template>
-  <v-navigation-drawer app permanent>
+  <v-navigation-drawer app
+                        permanent
+                        width="160"
+  >
+
     <v-list class="pt-0" dense>
-      <v-list-tile v-for="(item, index) in navItems" :key="index">
+
+      <v-list-tile v-for="(item, index) in navItemsMenuExcluded" :key="index">
         <v-list-tile-action v-if="item.icon === 'envidat'">
           <div>
             <v-btn icon href="./" class="ma-0">
               <img :src="Logo" alt="envidat_logo" />
             </v-btn>
 
-            <div class="headline envidatLogoText envidatNavbarTitleSmall">{{ logoText }}</div>
+            <div class="pl-1 headline envidatLogoText envidatNavbarTitleSmall">
+              {{ logoText }}
+            </div>
           </div>
         </v-list-tile-action>
 
-        <!-- <v-list-tile-action
-          v-if="item.icon !== 'envidat'"
-          class="v-list__group__header__prepend-icon"
-        >
-          <v-icon>{{ item.icon }}</v-icon>
-        </v-list-tile-action>-->
-
         <v-list-tile-content v-if="item.icon !== 'envidat'">
-          <!-- <v-list-tile-title> -->
 
-          <base-rectangle-button
-            marginClass="ma-0"
-            isSmall
-            isFlat
-            :buttonText="item.title"
-            :toolTipText="item.toolTip"
-            :materialIconName="item.icon"
-            iconColor="black"
-            color="secondary"
-          />
-          <!-- </v-list-tile-title> -->
+            <base-rectangle-button
+              marginClass="ma-0"
+              isSmall
+              isFlat
+              :buttonText="item.title"
+              :toolTipText="item.toolTip"
+              :materialIconName="item.icon"
+              iconColor="grey"
+              color="secondary"
+            />
+
+
         </v-list-tile-content>
       </v-list-tile>
     </v-list>
+
   </v-navigation-drawer>
 </template>
 
@@ -45,14 +46,25 @@ import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 
 export default {
   props: {
-    mini: Boolean,
     navItems: Array,
   },
   data: () => ({
     Logo,
     logoText: 'EnviDat',
   }),
-  computed: {},
+  computed: {
+    navItemsMenuExcluded() {
+      const actives = [];
+
+      this.navItems.forEach((el) => {
+        if (el.icon !== 'menu') {
+          actives.push(el);
+        }
+      });
+
+      return actives;
+    },
+  },
   methods: {},
   components: {
     BaseRectangleButton,
@@ -61,6 +73,7 @@ export default {
 </script>
 
 <style>
+
 .envidatLogoText {
   display: inline;
   vertical-align: middle;
