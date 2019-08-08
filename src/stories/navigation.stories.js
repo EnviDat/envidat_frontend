@@ -80,6 +80,7 @@ export const methods = {
 
 export const navItems = [
   { title: "Home", icon: "envidat", toolTip: "Back to the start page", active: false },
+  { title: "Explore", icon: "search", toolTip: "Explore research data", active: false },
   { title: "Login", icon: "dashboard", toolTip: "Login to upload data", active: false },
   { title: "Guidelines", icon: "book", toolTip: "Guidlines about the creation of metadata", active: false },
   { title: "Policies", icon: "book", toolTip: "The rules of EnviDat", active: false },
@@ -92,9 +93,16 @@ storiesOf("5 Navigation | Redesigned Navigation", module)
 .add("Menu", () => ({
   components: { Navigation },
   template: `
-    <navigation
-                :navItems="navItems"
-          />`,
+    <v-container>
+      <navigation :navItems="navItems" />
+
+      <p v-for="(item, index) in navItems" :key="index" 
+          v-show="item.active"
+          style="margin: 100px;" >
+        {{ item.title }}
+      </p>
+    </v-container>
+  `,
   data: () => ({ navItems }),
   methods
 }))

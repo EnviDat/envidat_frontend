@@ -4,7 +4,7 @@
                         right
                         mini-variant-width="60"
                         mini-variant
-                        :height=" menuItem.active ? navItems.length * 50 : 50"
+                        :height=" menuItem.active ? navItems.length * 45 : 50"
   >
 
     <v-list dense
@@ -15,7 +15,7 @@
         <v-list-tile v-show="menuItem.active || item.icon === 'menu'"
                       class="tileNoPadding"
                       :class="{
-                              'pt-5': item.icon === 'menu' && menuItem.active,
+                              'pt-4': item.icon === 'menu' && menuItem.active,
                               'pt-1': item.icon === 'menu' && !menuItem.active,
                               'pt-3': item.icon === 'envidat'
                               }" >
@@ -38,7 +38,6 @@
                 color="transparent"
                 @clicked="item.icon === 'menu' ? item.active = !item.active : itemClick(item)"
               />
-                <!-- @clicked="item.active = !item.active" -->
 
           </v-list-tile-action>
         </v-list-tile>
@@ -89,9 +88,6 @@ export default {
     },
   },
   methods: {
-    // menuClick() {
-    //   this.$emit('menuClick');
-    // },
     itemClick(item) {
       item.active = true;
 

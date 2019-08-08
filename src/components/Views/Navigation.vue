@@ -28,8 +28,9 @@
               :buttonText="item.title"
               :toolTipText="item.toolTip"
               :materialIconName="item.icon"
-              iconColor="grey"
+              :iconColor="item.active ? 'accent' : 'grey'"
               color="secondary"
+              @clicked="item.icon === 'menu' ? item.active = !item.active : itemClick(item)"
             />
 
 
@@ -65,7 +66,19 @@ export default {
       return actives;
     },
   },
-  methods: {},
+  methods: {
+    itemClick(item) {
+      item.active = true;
+
+      this.navItems.forEach((el) => {
+        if (el.icon !== 'menu'
+         && item.active
+         && el.title !== item.title) {
+          el.active = false;
+        }
+      });
+    },
+  },
   components: {
     BaseRectangleButton,
   },
