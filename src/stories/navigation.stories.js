@@ -81,11 +81,13 @@ export const methods = {
 export const navItems = [
   { title: "Home", icon: "envidat", toolTip: "Back to the start page", active: false },
   { title: "Explore", icon: "search", toolTip: "Explore research data", active: false },
-  { title: "Login", icon: "dashboard", toolTip: "Login to upload data", active: false },
-  { title: "Guidelines", icon: "book", toolTip: "Guidlines about the creation of metadata", active: false },
-  { title: "Policies", icon: "book", toolTip: "The rules of EnviDat", active: false },
+  { title: "Login", icon: "person", toolTip: "Login to upload data", active: false },
+  { title: "Organizations", icon: "account_tree", toolTip: "Explore research data", active: false },
+  { title: "Projects", icon: "library_books", toolTip: "Explore research data", active: false },
+  { title: "Guidelines", icon: "local_library", toolTip: "Guidlines about the creation of metadata", active: false },
+  { title: "Policies", icon: "policy", toolTip: "The rules of EnviDat", active: false },
   { title: "About", icon: "info", toolTip: "What is EnviDat? How is behind EnviDat?", active: false },
-  { title: "Contact", icon: "person", toolTip: "Do you need support?", active: false },
+  { title: "Contact", icon: "contact_support", toolTip: "Do you need support?", active: false },
   { title: "Menu", icon: "menu", active: true }
 ];
 

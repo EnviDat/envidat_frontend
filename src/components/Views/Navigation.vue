@@ -1,7 +1,7 @@
 <template>
   <v-navigation-drawer app
                         permanent
-                        width="160"
+                        width="190"
   >
 
     <v-list class="pt-0" dense>
