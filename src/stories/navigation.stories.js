@@ -68,6 +68,7 @@ Vue.component('v-list-tile-sub-title', VListTileSubTitle);
 Vue.component('v-list-tile-title', VListTileTitle);
 
 import Navigation from "@/components/Views/Navigation.vue";
+import NavigationMini from "@/components/Views/NavigationMini.vue";
 import NavigationToolbar from "@/components/Views/NavigationToolbar.vue";
 // import BaseRectangleButton from "@/components/BaseElements/BaseRectangleButton.vue";
 
@@ -78,15 +79,17 @@ export const methods = {
 };
 
 export const navItems = [
-  { title: "Home", icon: "envidat", toolTip: "Back to the start page" },
-  { title: "Login", icon: "dashboard", toolTip: "Login to upload data" },
-  { title: "Guidelines", icon: "map", toolTip: "Guidlines about the creation of metadata" },
-  { title: "About", icon: "info", toolTip: "What is EnviDat? How is behind EnviDat?" },
-  { title: "Policies", icon: "list", toolTip: "The rules of EnviDat" },
-  { title: "Contact", icon: "info", toolTip: "What is EnviDat? How is behind EnviDat?" }
+  { title: "Home", icon: "envidat", toolTip: "Back to the start page", active: false },
+  { title: "Login", icon: "dashboard", toolTip: "Login to upload data", active: false },
+  { title: "Guidelines", icon: "book", toolTip: "Guidlines about the creation of metadata", active: false },
+  { title: "Policies", icon: "book", toolTip: "The rules of EnviDat", active: false },
+  { title: "About", icon: "info", toolTip: "What is EnviDat? How is behind EnviDat?", active: false },
+  { title: "Contact", icon: "person", toolTip: "Do you need support?", active: false },
+  { title: "Menu", icon: "menu", active: true }
 ];
 
-storiesOf("5 Navigation | Redesigned Navigation", module).add("Menu", () => ({
+storiesOf("5 Navigation | Redesigned Navigation", module)
+.add("Menu", () => ({
   components: { Navigation },
   template: `
     <navigation
@@ -94,7 +97,26 @@ storiesOf("5 Navigation | Redesigned Navigation", module).add("Menu", () => ({
           />`,
   data: () => ({ navItems }),
   methods
-})).add("Toolbar", () => ({
+}))
+.add("Menu Mini", () => ({
+  components: { NavigationMini },
+  template: `
+    <v-container>
+      <navigation-mini :navItems="navItems"
+                        style="position: fixed; top: auto; left: auto; bottom: 25px; right: 25px;"
+                        class="elevation-2"
+                        />
+      <p v-for="(item, index) in navItems" :key="index" 
+          v-show="item.active">
+        {{ item.title }}
+      </p>
+
+    </v-container>    
+  `,
+  data: () => ({ navItems }),
+  methods
+}))
+.add("Toolbar", () => ({
   components: { NavigationToolbar },
   template: `
       <navigation-toolbar
