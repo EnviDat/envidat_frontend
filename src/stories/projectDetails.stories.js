@@ -133,8 +133,8 @@ storiesOf("7 Project | Detail Views", module)
 
       <v-flex xs12 py-3>
         <project-body
-          :description="header1.description"
-          :subProjects="header1.subProjects"
+          :description="body1.description"
+          :subProjects="body1.subProjects"
         />
       </v-flex>        
 
