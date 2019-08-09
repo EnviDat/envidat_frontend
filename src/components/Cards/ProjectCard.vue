@@ -1,129 +1,114 @@
 <template>
   <v-card ripple
           hover
-          style="height: 100%; max-height: 375px !important;"
-  >
-    <img style="position: relative; left: -2px; height: 200px; max-width: 102%; border-radius: 2px;"
-          :src="defaultTexture"
-          gradient="to top bottom, rgba(255,255,255, 0.6), rgba(255,255,255, 0.99)"
-    />
-    <!-- <v-img
-          :src="defaultTexture"
-          gradient="to top bottom, rgba(255,255,255, 0.6), rgba(255,255,255, 0.99)"
-    > -->
-            <!-- rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70% -->
-      <!-- <img :src="landImg" /> -->
+          height="100%" >
 
-      <v-container style="position: absolute; top: 0; height: 200px;"
-                  grid-list-xs
-                  pb-0
-      >
-        <v-layout column>
-          <v-flex xs12 py-0
-          >
-            <v-layout row align-start
-            >
-              <v-flex xs12>
-                <div class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-shimmer">
-                  <div class="bone bone-type-multiline bone-style-steps" />
-                </div>
-              </v-flex>
-            </v-layout>
-          </v-flex>
+    <v-layout row
+              style="background-color: white;"
+              class="fullWidthImg elevation-2" >
 
-          <v-flex xs12 py-0 mx-1
-          >
-            <v-layout
-              row
-              fill-height
-              align-end
-            >
-              <tag-chip-placeholder v-for="n in 3"
-                                    :key="n"
-                                    py-0
-                                    class="card_tag_placeholder"
-              />
-            </v-layout>
-          </v-flex>
-        </v-layout>
-      </v-container>
+      <v-flex xs6>
+        <v-img height="100%" cover :src="cardImg.src" />
+      </v-flex>
 
-    <!-- </v-img> -->
+      <!-- <v-flex xs8 ml-3>
+        <div class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-shimmer">
+          <div class="bone bone-type-multiline bone-style-steps" />
+        </div>
+      </v-flex> -->
 
-    <v-card-title primary-title
-    >
-      <div class="skeleton skeleton-color-silver skeleton-animation-shimmer"
-            style="width: 100%;"
-      >
-        <div class="bone bone-type-multiline bone-style-paragraph" />
+      <v-flex xs6 px-2 pt-4>
+        <div class="headline mb-0"
+              :class="this.dark ? 'white--text' : 'black--text'"
+        >
+          {{ truncatedTitle }}
+        </div>
+      </v-flex>
+
+    </v-layout>
+
+    <v-card-text  >
+      {{ truncatedDescription }}
+    </v-card-text>
+
+
+    <v-card-text v-if="subProjects" >
+      <div v-for="sub in subProjects" :key="sub.id">
+        SubProject: {{ sub.title }}
       </div>
-    </v-card-title>
+    </v-card-text>
 
   </v-card>
 </template>
 
 
 <script>
-import TagChipPlaceholder from '@/components/Cards/TagChip';
-import defaultTexture from '@/assets/cards/forest/c_b_forest_texture_bark2.jpg';
+// import defaultTexture from '@/assets/cards/forest/c_b_forest_texture_bark2.jpg';
 
 // checkout skeleton
 // https://github.com/ToxicJojo/SkeletonPlaceholder
 
 export default {
   components: {
-    TagChipPlaceholder,
   },
   props: {
     id: String,
+    defaultImg: String,
     img: String,
     title: String,
     subtitle: String,
-    tags: Array,
+    description: String,
+    subProjects: Array,
+    dark: Boolean,
   },
-  data: () => ({
-    defaultTexture,
-    maxTitleLength: 70,
-    maxSubtitleLength: 190,
-    // maxTags: 3,
-    maxTagTextlength: 40,
-    blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
-    whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
-    imageDefaults: {
-      snow: 'c_b_snow_icy2',
-      landscape: 'c_b_landscape_lake2', // or c_b_landscape_view ! c_b_landscape_long_lake
-      forest: 'c_b_forest_texture_bark', // maybe c_b_forest_texture_bark2
-      diversity: 'b_c_diversity_meadow',
-      hazard: 'c_b_hazard_cloud_road', // maybe c_b_hazard_cloud
-    },
-
-  }),
   computed: {
-    maxTagsReached: function maxTagsReached() {
-      return this.tags !== undefined && this.tags.length > this.maxTagNumber;
-    },
-    maxTagNumber: function maxTagNumber() {
-      let textLength = 0;
-      let numberOfTags = 0;
+    cardImg() {
+      let img = new Image();
+      let imgSrc = this.defaultImg;
 
-      if (this.tags !== undefined) {
-        for (let i = 0; i < this.tags.length; i++) {
-          if (this.tags[i].name !== undefined) {
-            textLength += this.tags[i].name.length + 1;
-
-            if (textLength >= this.maxTagTextlength) {
-              break;
-            }
-
-            numberOfTags++;
-          }
+      if (this.img) {
+        imgSrc = this.img;
+        if (!imgSrc.includes('http')) {
+          imgSrc = `https://www.envidat.ch/uploads/group/${imgSrc}`
         }
       }
 
-      return numberOfTags;
+      img.src = imgSrc;
+      img.onload = this.setHeightAndWidth;
+
+      return img;
     },
-  },
-  created: function created() {
+    maxTitleLengthReached() {
+      return this.title.length > this.maxTitleLength;
+    },
+    truncatedTitle() {
+      let maxLength = this.maxTitleLength;
+
+      if (this.title !== undefined && this.title.length > 0) {
+        let modifiedTitle = this.title;
+        let splits = this.title.split('(');
+        if (splits.length > 0){
+          modifiedTitle = splits[0];
+        }
+
+        if (this.maxTitleLengthReached){
+          return `${modifiedTitle.substring(0, maxLength)}...`;
+        }
+
+        return modifiedTitle;
+      }
+
+      return '';
+    },    
+    truncatedDescription() {
+      let maxLength = this.maxDescriptionLength;
+
+      if (this.description !== undefined && this.description.length > 0) {
+        return `${this.description.substring(0, maxLength)}...`;
+      }
+
+      return 'No description found for ' + this.truncatedTitle;
+    },
   },
   methods: {
     cardClick: function cardClick() {
@@ -135,13 +120,43 @@ export default {
     catchTagClicked: function catchTagClicked(tagId) {
       this.$emit('clickedTag', tagId);
     },
+    setHeightAndWidth() {
+      this.imgWidth = this.cardImg.width;
+      this.imgHeight = this.cardImg.height;
+    },
   },
+  data: () => ({
+    headerImgWidth: 400,
+    imgWidth: 0,
+    imgHeight: 0,
+    maxDescriptionLength: 290,
+    maxTitleLength: 100,
+    // maxTags: 3,
+    maxTagTextlength: 40,
+    blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
+    whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
+  }),
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
+  .fullWidthImg,
+  .sideImg {
+    position: relative;
+    left: -5px;
+    height: 130px;
+    border-radius: 2px;
+  }
+  
+  .fullWidthImg {
+    width: 103%;
+  }
+
+  .sideImg {
+    width: 200px;
+  }
   .placeholder .black_title {
     background-color: rgba(0,0,0,.87) !important;
   }

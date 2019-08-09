@@ -10,59 +10,41 @@
       :style="!flatLayout ? dynamicCardBackground : ''"
       :height="flatLayout ? '65px' : $vuetify.breakpoint.smAndDown ? '100px' : '125px'"
     >
-      <v-container
-        grid-list-xs
-        fluid
-        fill-height
-        px-3
-        pt-3
-        pb-0
+      <v-container grid-list-xs fluid fill-height
+                    px-3 pt-3 pb-0
       >
         <v-layout column>
-          <v-flex
-            xs12
-            py-0
-          >
+          <v-flex xs12
+                  py-0 >
             <v-layout row>
-              <v-flex
-                v-if="!maxTitleLengthReached"
-                xs12
-              >
-                <div
-                  class="headline mb-0"
-                  :class="titleClass"
-                >
+
+              <v-flex v-if="!maxTitleLengthReached"
+                      xs12 >
+                <div class="headline mb-0"
+                    :class="titleClass" >
                   {{ truncatedTitle }}
                 </div>
               </v-flex>
 
-              <v-flex
-                v-if="maxTitleLengthReached"
-                xs12
-              >
-                <v-tooltip
-                  bottom
-                  :disabled="$vuetify.breakpoint.xsOnly"
-                >
-                  <div
-                    slot="activator"
-                    class="headline mb-0"
-                    :class="titleClass"
-                  >
+              <v-flex v-if="maxTitleLengthReached"
+                      xs12 >
+                <v-tooltip bottom
+                            :disabled="$vuetify.breakpoint.xsOnly" >
+                  <div slot="activator"
+                        class="headline mb-0"
+                        :class="titleClass" >
                     {{ truncatedTitle }}
                   </div>
 
                   <span>{{ title }}</span>
                 </v-tooltip>
               </v-flex>
+
             </v-layout>
           </v-flex>
 
-          <v-flex
-            xs12
-            py-0
-            mx-1
-          >
+          <v-flex xs12
+                  py-0 mx-1 >
             <v-layout v-if="tags"
                       row fill-height align-end
             >

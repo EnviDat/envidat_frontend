@@ -1,18 +1,16 @@
 <template>
   <v-card :class="{ ['pt-2']: this.isOnTop }">
-    <v-card-title class="metadata_title title">
-      Description
-    </v-card-title>
+    <v-card-title class="metadata_title title">Description</v-card-title>
 
-    <v-card-text
-      v-if="fullDescription"
-      ref="description"
-      class="heightAndScroll pb-4"
+    <v-card-text v-if="fullDescription"
+                  ref="description"
+                  class="heightAndScroll pb-4"
     >
-      <m-markdown-preview
-        :markdown="fullDescription"
-        :options="{ html: true, xhtmlOut: true, linkify: true, breaks: true }"
-      />
+      <m-markdown-preview :markdown="fullDescription"
+                          :options="{ html: true,
+                                      xhtmlOut: true,
+                                      linkify: true,
+                                      breaks: true }" />
     </v-card-text>
 
     <div v-if="showPlaceholder && !fullDescription">
@@ -34,12 +32,10 @@
     >
       <v-spacer />
 
-      <v-btn
-        icon
+      <v-btn icon
         @click.native="readMore()"
       >
-        <v-icon
-          color="accent"
+        <v-icon color="accent"
           :style="this.showFullDescription ? 'transform: rotate(-180deg); font-size: 30px !important;' : 'transform: rotate(0deg); font-size: 30px !important;'"
         >
           expand_more
@@ -58,6 +54,7 @@ export default {
   },
   props: {
     genericProps: Object,
+    showPlaceholder: Boolean,
   },
   // updated: function updated() {
   //   if (this.genericProps && !this.checkedGenericProps) {
@@ -68,11 +65,10 @@ export default {
   // },
   data: () => ({
     isOnTop: false,
-    showPlaceholder: false,
     showFullDescription: false,
     checkedGenericProps: false,
     maxTextLength: 1000,
-    emptyText: 'No description found for this dataset',
+    emptyText: 'No description found for this dataset.',
   }),
   computed: {
     // doi() {

@@ -134,23 +134,21 @@
       </v-container>
     </v-card-text>
 
-    <v-card-actions
-      class="ma-0 pa-2 "
-      style="position: absolute; bottom: 5px; right: 50px;"
+    <v-card-actions class="ma-0 pa-2"
+                    style="position: absolute; bottom: 5px; right: 50px;"
     >
       <v-spacer />
 
-      <base-icon-button
-        v-if="maxDescriptionLengthReached"
-        class="mr-2"
-        material-icon-name="expand_more"
-        icon-color="accent"
-        color="transparent"
-        :isToggled="showFullDescription"
-        :rotateOnClick="true"
-        :rotateToggle="showFullDescription"
-        :toolTipText="showFullDescription ? 'Hide full description' : 'Show full description'"
-        @clicked="showFullDescription = !showFullDescription"
+      <base-icon-button v-if="maxDescriptionLengthReached"
+                        class="mr-2"
+                        material-icon-name="expand_more"
+                        icon-color="accent"
+                        color="transparent"
+                        :isToggled="showFullDescription"
+                        :rotateOnClick="true"
+                        :rotateToggle="showFullDescription"
+                        :toolTipText="showFullDescription ? 'Hide full description' : 'Show full description'"
+                        @clicked="showFullDescription = !showFullDescription"
       />
     </v-card-actions>
 

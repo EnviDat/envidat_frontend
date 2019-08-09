@@ -1,7 +1,5 @@
 <template>
-  <v-flex>
     <v-card
-      elevation-5
       :class="{
         'pa-4': $vuetify.breakpoint.smAndUp,
         'pa-3': $vuetify.breakpoint.xsOnly,
@@ -13,8 +11,9 @@
       <base-icon-button
         style="position: absolute; top: 0px; right: 0px;"
         material-icon-name="close"
-        :icon-color=" (showPlaceholder || !metadataTitle) ? 'white' : 'primary'"
-        :outlined="true"
+        icon-color="primary"
+        :color="(showPlaceholder || !metadataTitle) ? 'white' : 'primary'"
+        :outlined="!showPlaceholder"
         tool-tip-text="Close Metadata"
         :tool-tip-bottom="true"
         @clicked="catchBackClicked"
@@ -77,7 +76,7 @@
       <v-layout row wrap >
         <v-flex
           xs12 sm6 md6 lg3
-          py-1
+          py-0
           class="headerInfo"
         >
           <base-icon-label-view
@@ -89,7 +88,7 @@
         </v-flex>
 
         <v-flex xs12 sm6 md6 lg3
-                py-1
+                py-0
                 class="headerInfo"
         >
           <base-icon-label-view
@@ -102,7 +101,7 @@
         </v-flex>
 
         <v-flex xs12 sm6 md6 lg3
-                py-1
+                py-0
                 class="headerInfo"
         >
           <base-icon-label-view
@@ -115,7 +114,7 @@
         </v-flex>
 
         <v-flex xs12 sm6 md6 lg3
-                py-1
+                py-0
                 class="headerInfo"
         >
           <base-icon-label-view
@@ -185,7 +184,6 @@
         />
       </v-card-actions>
     </v-card>
-  </v-flex>
 </template>
 
 <script>
