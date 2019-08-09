@@ -133,6 +133,7 @@
         loadingCurrentMetadataContent: 'metadata/loadingCurrentMetadataContent',
         currentMetadataContent: 'metadata/currentMetadataContent',
         detailPageBackRoute: 'metadata/detailPageBackRoute',
+        idRemapping: 'metadata/idRemapping',
         iconImages: 'iconImages',
         cardBGImages: 'cardBGImages',
       }),
@@ -146,7 +147,13 @@
        * @returns {String} the metadataId from the route
        */
       metadataId: function metadataId() {
-        return this.$route.params.metadataid;
+        let id = this.$route.params.metadataid;
+        
+        if (this.idRemapping.has(id)){
+          id = this.idRemapping.get(id);
+        }
+
+        return id;
       },
       /**
        * @returns {Boolean} if the placeHolders should be shown be somethings are still loading

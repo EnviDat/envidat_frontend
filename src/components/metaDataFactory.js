@@ -100,7 +100,16 @@ module.exports = {
   createResources: function createResources(dataset) {
     const resources = [];
 
-    // @TODO shorten url for the restricted resources
+    let { maintainer } = dataset;
+
+    if (typeof (dataset.maintainer) === 'string') {
+      maintainer = JSON.parse(dataset.maintainer);
+    }
+
+    let contactEmail = dataset.maintainer_email;
+    if (!dataset.maintainer_email && maintainer) {
+      contactEmail = maintainer.email ? maintainer.email : '';
+    }
 
     if (dataset.resources) {
       dataset.resources.forEach((element) => {
@@ -156,6 +165,7 @@ module.exports = {
           position: element.position,
           revisionId: element.revision_id,
           isProtected,
+          metadataContact: contactEmail,
         };
 
         resources.push(res);

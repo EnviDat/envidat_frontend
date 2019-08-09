@@ -65,6 +65,14 @@ const initialState = {
    */
   categorycards,
   /**
+   * The idRemapping Map is a key value pair which is used for the metadatadetail page
+   * to remap an metadataid (it's the name of the ckan json object) to another one
+   * because a User might have given the direct url to a paper and later on changed it
+   */
+  idRemapping: new Map([
+    ['als‐based‐snow‐depth‐and‐canopy‐height‐maps‐from‐flights‐in‐2017‐grisons‐ch‐and‐grand‐mesa‐co', 'grand-mesa-co']
+  ]),
+  /**
    * Error properties for general Error handling in the app (incomplete)
    */
   error: Object,
@@ -98,6 +106,7 @@ export const metadata = {
     detailPageBackRoute: state => state.detailPageBackRoute,
     aboutPageBackRoute: state => state.aboutPageBackRoute,
     categorycards: state => state.categorycards,
+    idRemapping: state => state.idRemapping,
   },
   mutations,
   actions,
