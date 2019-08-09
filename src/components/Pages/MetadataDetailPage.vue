@@ -176,12 +176,11 @@
         let currentContent = this.currentMetadataContent;
         const components = this.$options.components;
 
+      if (currentContent && currentContent.title !== undefined) {
         currentContent = this.mixinMethods_enhanceMetadataEntry(currentContent, this.cardBGImages);
 
-        if (currentContent && currentContent.title !== undefined) {
-          // console.log("create content " + currentContent.spatial + " " + this.header);
-          this.header = metaDataFactory.createHeader(currentContent, this.$vuetify.breakpoint);
-          this.$set(components.MetadataHeader, 'genericProps', this.header);
+        this.header = metaDataFactory.createHeader(currentContent, this.$vuetify.breakpoint.smAndDown);
+        this.$set(components.MetadataHeader, 'genericProps', this.header);
 
           this.body = metaDataFactory.createBody(currentContent);
           this.$set(components.MetadataBody, 'genericProps', this.body);
