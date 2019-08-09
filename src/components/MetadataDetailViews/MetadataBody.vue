@@ -13,11 +13,11 @@
                                       breaks: true }" />
     </v-card-text>
 
-    <div v-if="showPlaceholder && !fullDescription">
+    <v-card-text v-if="showPlaceholder && !fullDescription" >      
       <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer">
         <div class="bone bone-type-multiline bone-style-paragraph" />
       </div>
-    </div>
+    </v-card-text>
 
     <v-card-text
       v-if="!showPlaceholder && !fullDescription"
@@ -26,7 +26,23 @@
       {{ emptyText }}
     </v-card-text>
 
-    <v-card-actions
+    <v-card-actions v-if="maxDescriptionLengthReached"
+                    class="ma-0 pa-2"
+                    style="position: absolute; bottom: 5px; right: 0px;" >
+
+      <base-icon-button class="mr-2"
+                        material-icon-name="expand_more"
+                        icon-color="accent"
+                        color="accent"
+                        outlined
+                        :rotateOnClick="true"
+                        :rotateToggle="showFullDescription"
+                        :toolTipText="showFullDescription ? 'Hide full description' : 'Show full description'"
+                        @clicked="showFullDescription = !showFullDescription" />
+
+    </v-card-actions>
+
+    <!-- <v-card-actions
       v-show="maxDescriptionLengthReached"
       :style="`position: absolute; bottom: 0; right: 0px;`"
     >
@@ -41,16 +57,18 @@
           expand_more
         </v-icon>
       </v-btn>
-    </v-card-actions>
+    </v-card-actions> -->
   </v-card>
 </template>
 
 <script>
 import MMarkdownPreview from 'm-markdown-preview';
+import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 export default {
   components: {
     MMarkdownPreview,
+    BaseIconButton,
   },
   props: {
     genericProps: Object,
