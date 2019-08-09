@@ -182,10 +182,9 @@ export default {
       let currentContent = this.currentMetadataContent;
       const { components } = this.$options;
 
-      currentContent = this.mixinMethods_enhanceMetadataEntry(currentContent, this.cardBGImages);
-
       if (currentContent && currentContent.title !== undefined) {
-        // console.log("create content " + currentContent.spatial + " " + this.header);
+        currentContent = this.mixinMethods_enhanceMetadataEntry(currentContent, this.cardBGImages);
+
         this.header = metaDataFactory.createHeader(currentContent, this.$vuetify.breakpoint.smAndDown);
         this.$set(components.MetadataHeader, 'genericProps', this.header);
 
