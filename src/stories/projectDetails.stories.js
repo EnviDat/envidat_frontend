@@ -70,6 +70,8 @@ const header3 = projects[7];
 
 
 const body1 = projects[5];
+const body2 = projects[6];
+const body3 = projects[8];
 
 export const methods = {
   onCardClick: action("clicked on card"),
@@ -138,10 +140,26 @@ storiesOf("7 Project | Detail Views", module)
         />
       </v-flex>        
 
+      <v-flex xs12 py-3>
+        <project-body
+          :description="body2.description"
+          :subProjects="body2.subProjects"
+        />
+      </v-flex>        
+
+      <v-flex xs12 py-3>
+        <project-body
+          :description="body3.description"
+          :subProjects="body3.subProjects"
+        />
+      </v-flex>        
+
     </v-layout>        
     `,
     methods,
     data: () => ({
       body1,
+      body2,
+      body3,
     })
   }));  

@@ -1,6 +1,5 @@
 <template>
-  <v-card :class="{ ['pt-2']: this.isOnTop }"
-          :dark="dark" >
+  <v-card :dark="dark" >
 
     <v-card-title class="bodyTitle title">Description</v-card-title>
 
@@ -15,11 +14,11 @@
                                       breaks: true }" />
     </v-card-text>
 
-    <div v-if="showPlaceholder && !fullDescription">
+    <v-card-text v-if="showPlaceholder && !fullDescription" >      
       <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer">
         <div class="bone bone-type-multiline bone-style-paragraph" />
       </div>
-    </div>
+    </v-card-text>
 
     <v-card-text v-if="!showPlaceholder && !fullDescription"
                   style="color: red;" >
@@ -27,19 +26,20 @@
     </v-card-text>
 
 
-    <v-card-actions class="ma-0 pa-2"
-                    style="position: absolute; bottom: 5px; right: 50px;"
-    >
-      <base-icon-button v-if="maxDescriptionLengthReached"
-                        class="mr-2"
+    <v-card-actions v-if="maxDescriptionLengthReached"
+                    class="ma-0 pa-2"
+                    style="position: absolute; bottom: 5px; right: 0px;" >
+
+      <base-icon-button class="mr-2"
                         material-icon-name="expand_more"
                         icon-color="accent"
-                        color="transparent"
-                        :isToggled="showFullDescription"
+                        color="accent"
+                        outlined
                         :rotateOnClick="true"
                         :rotateToggle="showFullDescription"
                         :toolTipText="showFullDescription ? 'Hide full description' : 'Show full description'"
                         @clicked="showFullDescription = !showFullDescription" />
+
     </v-card-actions>
 
 
@@ -79,9 +79,6 @@ export default {
     },
   },
   methods: {
-    readMore: function readMore() {
-      this.showFullDescription = !this.showFullDescription;
-    },
   },
   data: () => ({
     showFullDescription: false,
