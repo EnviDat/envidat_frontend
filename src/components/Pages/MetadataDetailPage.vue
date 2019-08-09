@@ -128,21 +128,22 @@ export default {
   /**
      * @description
      */
-  beforeDestroy: function beforeDestroy() {
-    // clean current metadata to make be empty for the next to load up
-    this.$store.commit(`metadata/${CLEAN_CURRENT_METADATA}`);
-  },
-  computed: {
-    ...mapGetters({
-      metadatasContent: 'metadata/metadatasContent',
-      loadingMetadatasContent: 'metadata/loadingMetadatasContent',
-      loadingCurrentMetadataContent: 'metadata/loadingCurrentMetadataContent',
-      currentMetadataContent: 'metadata/currentMetadataContent',
-      detailPageBackRoute: 'metadata/detailPageBackRoute',
-      iconImages: 'iconImages',
-      cardBGImages: 'cardBGImages',
-    }),
-    /**
+    beforeDestroy: function beforeDestroy() {
+      // clean current metadata to make be empty for the next to load up
+      this.$store.commit(`metadata/${CLEAN_CURRENT_METADATA}`);
+    },
+    computed: {
+      ...mapGetters({
+        metadatasContent: 'metadata/metadatasContent',
+        loadingMetadatasContent: 'metadata/loadingMetadatasContent',
+        loadingCurrentMetadataContent: 'metadata/loadingCurrentMetadataContent',
+        currentMetadataContent: 'metadata/currentMetadataContent',
+        detailPageBackRoute: 'metadata/detailPageBackRoute',
+        idRemapping: 'metadata/idRemapping',
+        iconImages: 'iconImages',
+        cardBGImages: 'cardBGImages',
+      }),
+      /**
        * @returns {Number} Size of the metadatasContent
        */
     metadatasContentSize: function metadatasContentSize() {
@@ -151,10 +152,16 @@ export default {
     /**
        * @returns {String} the metadataId from the route
        */
-    metadataId: function metadataId() {
-      return this.$route.params.metadataid;
-    },
-    /**
+      metadataId: function metadataId() {
+        let id = this.$route.params.metadataid;
+        
+        if (this.idRemapping.has(id)){
+          id = this.idRemapping.get(id);
+        }
+
+        return id;
+      },
+      /**
        * @returns {Boolean} if the placeHolders should be shown be somethings are still loading
        */
     showPlaceholder: function showPlaceholder() {

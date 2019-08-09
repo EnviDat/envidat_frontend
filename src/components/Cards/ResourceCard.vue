@@ -217,6 +217,7 @@ export default {
     lastModifiedIcon: String,
     isProtected: Boolean,
     fileExtensionIcon: Map,
+    metadataContact: String,
   },
   data: () => ({
     defaultTexture,
@@ -260,7 +261,7 @@ export default {
         return `This resource is protected <a href="${this.url}" target="_blank" >login via the old UI to get access</a>.`;
       }
 
-      return 'Could not load the resource, please contact envidat@wsl.ch for support.';
+      return `Could not load the resource, please contact ${this.metadataContact} for getting access or envidat@wsl.ch for support.`;
     },
   },
   methods: {
