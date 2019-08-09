@@ -35,30 +35,65 @@ Vue.component("v-flex", VFlex);
 import ProjectCard from "@/components/Cards/ProjectCard.vue";
 import MetadataCardPlaceholder from "@/components/Cards/MetadataCardPlaceholder.vue";
 import App from "@/App.vue";
-import fileIcon from "@/assets/icons/file.png";
-import lockedIcon from "@/assets/icons/lockClosed.png";
-import unlockedIcon from "@/assets/icons/lockOpen.png";
 
-// metadata gets enhance in the storybook config
-import projectJSON from "@/testdata/projects.js";
-const projectsCards = projectJSON.result;
+// get Project test data and enhance it
+import projectJSON from "@/testdata/projects";
+import projectDataFactory from "@/components/projectsDataFactory";
+const enhancedProjects = projectDataFactory.enhanceSubprojects(projectJSON.result);
+const projectsCards = enhancedProjects;
+
+import globalMethods from "@/components/globalMethods";
+const imgPaths = require.context( '../assets/cards/forest/', false, /\.jpg$/);
+const imgName = 'c_b_forest_texture_bark2';
+const images = globalMethods.methods.mixinMethods_importImages(imgPaths, imgName);
+const defaultImg = images[`./${imgName}.jpg`];
 
 export const methods = {
   onCardClick: action("clicked on card"),
-  onTagClick: action("clicked on tag")
+  onTagClick: action("clicked on tag"),
+  projectsCardsParents() {
+    let noSubs = [];
+
+    for (let i = 0; i < this.projectsCards.length; i++) {
+      const p = this.projectsCards[i];
+      if (!p.parent){
+        noSubs.push(p);
+      }
+    }
+
+    return noSubs;
+  },
+  projectsCardsChilds() {
+    let noSubs = [];
+
+    for (let i = 0; i < this.projectsCards.length; i++) {
+      const p = this.projectsCards[i];
+      if (p.parent){
+        noSubs.push(p);
+      }
+    }
+
+    return noSubs;
+  }
 };
 
 storiesOf("3 Cards | Projects Cards", module)
-  .add("collection", () => ({
+  .add("collection of Parents", () => ({
     components: { ProjectCard },
     template: `
     <v-layout row wrap>
 
-      <v-flex xs3 pa-2
-        v-for="(metadata, index) in projectsCards"
+      <v-flex xs3 pa-3
+        v-for="(project, index) in projectsCardsParents()"
         :key="index"
       >
         <project-card
+          :id="project.id"
+          :title="project.title"
+          :img="project.image_url"
+          :defaultImg="defaultImg"
+          :description="project.description"
+          :subProjects="project.subProjects"
           @clickedEvent="onCardClick"
           @clickedTag="onTagClick"
         />
@@ -69,8 +104,35 @@ storiesOf("3 Cards | Projects Cards", module)
     methods,
     data: () => ({
       projectsCards,
-      fileIcon,
-      lockedIcon,
-      unlockedIcon
+      defaultImg,
     })
-  }));
+  }))
+  .add("collection of Children", () => ({
+    components: { ProjectCard },
+    template: `
+    <v-layout row wrap>
+
+      <v-flex xs3 pa-3
+        v-for="(project, index) in projectsCardsChilds()"
+        :key="index"
+      >
+        <project-card
+          :id="project.id"
+          :title="project.title"
+          :img="project.image_url"
+          :defaultImg="defaultImg"
+          :description="project.description"
+          :subProjects="project.subProjects"
+          @clickedEvent="onCardClick"
+          @clickedTag="onTagClick"
+        />
+      </v-flex>
+
+    </v-layout>
+    `,
+    methods,
+    data: () => ({
+      projectsCards,
+      defaultImg,
+    })
+  }))  ;
