@@ -70,7 +70,7 @@ const initialState = {
    * because a User might have given the direct url to a paper and later on changed it
    */
   idRemapping: new Map([
-    ['als‐based‐snow‐depth‐and‐canopy‐height‐maps‐from‐flights‐in‐2017‐grisons‐ch‐and‐grandmesa‐co', 'grand-mesa-co']
+    ['als‐based‐snow‐depth‐and‐canopy‐height‐maps‐from‐flights‐in‐2017‐grisons‐ch‐and‐grand‐mesa‐co', 'grand-mesa-co']
   ]),
   /**
    * Error properties for general Error handling in the app (incomplete)
