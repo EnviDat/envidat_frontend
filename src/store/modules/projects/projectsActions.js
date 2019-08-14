@@ -6,8 +6,11 @@ import {
   GET_PROJECTS_ERROR,
 } from '@/store/projectsMutationsConsts';
 
+import projectDataFactory from "@/components/projectsDataFactory";
+
 const API_BASE = '/api/action/';
 const ENVIDAT_PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
+const useTestData = process.env.VUE_APP_USE_TESTDATA;
 
 function urlRewrite(url, baseUrl, proxyUrl) {
   url = url.replace('?', '&');
@@ -31,9 +34,10 @@ export default {
       ENVIDAT_PROXY,
     );
 
-    if (typeof VUE_APP_USE_TESTDATA === 'boolean' && VUE_APP_USE_TESTDATA === true){
+    if (typeof useTestData === 'string' && useTestData.toLowerCase() === 'true'){
         const projectJSON = require('@/testdata/projects.js');
-        commit(GET_PROJECTS_SUCCESS, projectJSON.result);
+        const enhancedProjects = projectDataFactory.enhanceSubprojects(projectJSON.default.result);
+        commit(GET_PROJECTS_SUCCESS, enhancedProjects);
         return;
     }
 

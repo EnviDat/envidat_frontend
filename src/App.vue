@@ -113,8 +113,8 @@ export default {
         return;
       }
 
-      let imgPaths = require.context( './assets/cards/landscape/', false, /\.jpg$/);
-      
+      let imgPaths = require.context('./assets/cards/landscape/', false, /\.jpg$/);
+
       let images = this.mixinMethods_importImages(imgPaths);
       this.$store.commit(ADD_CARD_IMAGES, { key: 'landscape', value: images });
 

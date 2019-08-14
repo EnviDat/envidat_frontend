@@ -5,19 +5,10 @@
 
     <v-layout row wrap>
 
-      <v-flex xs3 pa-3
-        v-for="(project, index) in projectsCardsParents()"
-        :key="index" >
-
-        <project-card :id="project.id"
-                      :title="project.title"
-                      :img="project.image_url"
-                      :defaultImg="defaultImg"
-                      :description="project.description"
-                      :subProjects="project.subProjects"
-                      @clickedEvent="onCardClick"
-                      @clickedTag="onTagClick"
-        />
+      <v-flex xs12 lg10 offset-lg1
+        elevation-5
+        style="z-index: 1;"
+      >
       </v-flex>
 
     </v-layout>
@@ -34,9 +25,13 @@ import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
 } from '@/store/mutationsConsts';
-import { GET_PROJECTS } from '@/store/projectsMutationsConsts';
+import {
+  PROJECTS_NAMESPACE,
+  PROJECTS_DETAIL_PAGE,
+} from '@/store/projectsMutationsConsts';
 
-import ProjectCard from '@/components/Cards/ProjectCard';
+import ProjectHeader from '@/components/ProjectDetailViews/ProjectHeader';
+import ProjectBody from '@/components/ProjectDetailViews/ProjectBody';
 
 
 export default {
@@ -46,7 +41,7 @@ export default {
      */
   beforeRouteEnter: function beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.$store.commit(SET_CURRENT_PAGE, 'projectPage');
+      vm.$store.commit(SET_CURRENT_PAGE, PROJECTS_DETAIL_PAGE);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
     });
   },
@@ -62,25 +57,58 @@ export default {
   },
   computed: {
     ...mapGetters({
-      projects: 'projects/projects',
+      projects: `${PROJECTS_NAMESPACE}/projects`,
+      projectsPageBackRoute: `${PROJECTS_NAMESPACE}/projectsPageBackRoute`,
     }),
+    projectId() {
+      return this.$route.params.id;
+    },
+    currentProject() {
+      for (let i = 0; i < this.projects.length; i++) {
+        const el = this.projects[i];
+
+        if (el.id === this.projectId) {
+          return el;
+        }
+      }
+
+      return null;
+    },
   },
   methods: {
     projectsCardsParents() {
-      let noSubs = [];
+      const noSubs = [];
 
       for (let i = 0; i < this.projects.length; i++) {
         const p = this.projects[i];
-        if (!p.parent){
+        if (!p.parent) {
           noSubs.push(p);
         }
       }
 
       return noSubs;
     },
+    /**
+     * @description changes the url to page the user was before. Fallback: PROJECTS_PATH
+     */
+    catchBackClicked() {
+      const backRoute = this.projectsPageBackRoute;
+
+      if (backRoute) {
+        this.$router.push({
+          path: backRoute.path,
+          query: backRoute.query,
+          params: backRoute.params,
+        });
+        return;
+      }
+
+      this.$router.push({ path: PROJECTS_PATH });
+    },
   },
   components: {
-    ProjectCard,
+    ProjectHeader,
+    ProjectBody,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',

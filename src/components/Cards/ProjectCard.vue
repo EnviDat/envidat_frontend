@@ -1,13 +1,15 @@
 <template>
   <v-card ripple
           hover
-          height="100%" >
+          height="100%"
+          style="max-width: 350px"
+          @click.native="cardClick" >
 
     <v-layout row
               style="background-color: white;"
               class="fullWidthImg elevation-2" >
 
-      <v-flex xs6>
+      <v-flex xs6 pa-0>
         <v-img height="100%" cover :src="cardImg.src" />
       </v-flex>
 
@@ -33,7 +35,8 @@
 
 
     <v-card-text v-if="subProjects" >
-      <div v-for="sub in subProjects" :key="sub.id">
+      <div v-for="sub in subProjects" :key="sub.id"
+            @click.stop="subprojectClick" >
         SubProject: {{ sub.title }}
       </div>
     </v-card-text>
@@ -63,13 +66,13 @@ export default {
   },
   computed: {
     cardImg() {
-      let img = new Image();
+      const img = new Image();
       let imgSrc = this.defaultImg;
 
       if (this.img) {
         imgSrc = this.img;
         if (!imgSrc.includes('http')) {
-          imgSrc = `https://www.envidat.ch/uploads/group/${imgSrc}`
+          imgSrc = `https://www.envidat.ch/uploads/group/${imgSrc}`;
         }
       }
 
@@ -82,16 +85,16 @@ export default {
       return this.title.length > this.maxTitleLength;
     },
     truncatedTitle() {
-      let maxLength = this.maxTitleLength;
+      const maxLength = this.maxTitleLength;
 
       if (this.title !== undefined && this.title.length > 0) {
         let modifiedTitle = this.title;
-        let splits = this.title.split('(');
-        if (splits.length > 0){
+        const splits = this.title.split('(');
+        if (splits.length > 0) {
           modifiedTitle = splits[0];
         }
 
-        if (this.maxTitleLengthReached){
+        if (this.maxTitleLengthReached) {
           return `${modifiedTitle.substring(0, maxLength)}...`;
         }
 
@@ -99,26 +102,23 @@ export default {
       }
 
       return '';
-    },    
+    },
     truncatedDescription() {
-      let maxLength = this.maxDescriptionLength;
+      const maxLength = this.maxDescriptionLength;
 
       if (this.description !== undefined && this.description.length > 0) {
         return `${this.description.substring(0, maxLength)}...`;
       }
 
-      return 'No description found for ' + this.truncatedTitle;
+      return `No description found for ${this.truncatedTitle}`;
     },
   },
   methods: {
-    cardClick: function cardClick() {
-      this.$emit('clickedEvent', this.id);
+    cardClick() {
+      this.$emit('cardClick', this.id);
     },
-    favouritClicked: function favouritClicked() {
-      this.$emit('clickedFavourit', this.id);
-    },
-    catchTagClicked: function catchTagClicked(tagId) {
-      this.$emit('clickedTag', tagId);
+    subprojectClick(sub) {
+      this.$emit('subprojectClick', sub.id);
     },
     setHeightAndWidth() {
       this.imgWidth = this.cardImg.width;
@@ -145,13 +145,17 @@ export default {
   .fullWidthImg,
   .sideImg {
     position: relative;
-    left: -5px;
+    left: -4px;
     height: 130px;
     border-radius: 2px;
   }
-  
+
+  .fullWidthImg > .flex >.v-image {
+    border-radius: 2px;
+  }
+
   .fullWidthImg {
-    width: 103%;
+    width: 375px;
   }
 
   .sideImg {

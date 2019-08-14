@@ -2,6 +2,7 @@ import {
   GET_PROJECTS,
   GET_PROJECTS_SUCCESS,
   GET_PROJECTS_ERROR,
+  SET_PROJECTDETAIL_PAGE_BACK_URL
 } from '@/store/projectsMutationsConsts';
 
 export default {
@@ -21,5 +22,8 @@ export default {
 
     state.error = reason;
     state.loading = false;
+  },
+  [SET_PROJECTDETAIL_PAGE_BACK_URL](state, payload) {
+    state.projectsPageBackRoute = payload;
   },
 };

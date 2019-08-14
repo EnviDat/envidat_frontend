@@ -94,8 +94,7 @@ storiesOf("3 Cards | Projects Cards", module)
           :defaultImg="defaultImg"
           :description="project.description"
           :subProjects="project.subProjects"
-          @clickedEvent="onCardClick"
-          @clickedTag="onTagClick"
+          @cardClick="onCardClick"
         />
       </v-flex>
 
@@ -123,8 +122,7 @@ storiesOf("3 Cards | Projects Cards", module)
           :defaultImg="defaultImg"
           :description="project.description"
           :subProjects="project.subProjects"
-          @clickedEvent="onCardClick"
-          @clickedTag="onTagClick"
+          @cardClick="onCardClick"
         />
       </v-flex>
 
