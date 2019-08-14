@@ -13,38 +13,32 @@
                             :parallax="true"
                             title="Research Projects"
         >
-          <base-icon-button style="position: absolute; top: 0px; right: 0px; z-index: 10;"
-                            materialIconName="close"
-                            :outlined="true"
-                            color="white"
-                            iconColor="white"
-                            toolTipText="Close About Page"
-                            :toolTipBottom="true"
-                            @clicked="catchBackClicked" />
         </img-and-text-layout>
       </v-flex>
 
-      <!-- <v-flex xs12 lg10 offset-lg1 px-3 mt-5>
+      <v-flex xs12 lg10 offset-lg1 px-3 mt-5>
         <v-container grid-list-lg pa-0>
           <v-layout row wrap>
-            <v-flex
-              v-for="(card, index) in AboutCardInfos()"
-              :key="index"
-              my-2
-              :class="card.widthClass"
+
+            <v-flex v-for="(project, index) in projectsCardsParents()"
+                    :key="index"
+                    xs3 pa-3
             >
-              <project-card
-                :title="card.title"
-                :text="card.text"
-                :img="card.img"
-                :min-height="100"
-                :max-height="150"
-                :contain="card.title === 'WSL'"
+              <project-card :id="project.id"
+                            :title="project.title"
+                            :img="project.image_url"
+                            :defaultImg="defaultImg"
+                            :description="project.description"
+                            :subProjects="project.subProjects"
+                            @cardClick="onCardClick"
+                            @subprojectClick="onSubprojectClick"
               />
             </v-flex>
+
           </v-layout>
         </v-container>
-      </v-flex> -->
+      </v-flex>
+
     </v-layout>
   </v-container>
 </template>
@@ -54,15 +48,15 @@
  * The projects page lists all the projects and their subprojects.
  */
 import { mapGetters } from 'vuex';
-import { BROWSE_PATH } from '@/router/routeConsts';
+import { PROJECT_DETAIL_NAME } from '@/router/routeConsts';
 import { SET_APP_BACKGROUND, SET_CURRENT_PAGE } from '@/store/mutationsConsts';
 import {
   GET_PROJECTS,
   PROJECTS_NAMESPACE,
   PROJECTS_PAGE,
+  SET_PROJECTDETAIL_PAGE_BACK_URL,
 } from '@/store/projectsMutationsConsts';
 
-import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
 import ProjectCard from '@/components/Cards/ProjectCard';
 
@@ -84,13 +78,16 @@ export default {
    * @description reset the scrolling to the top,
    * because of the scrolling is set from the browsePage or metaDetailPage
    */
+  beforeMount() {
+    this.$store.dispatch(`${PROJECTS_NAMESPACE}/${GET_PROJECTS}`);
+  },
   mounted: function mounted() {
     window.scrollTo(0, 0);
   },
   computed: {
     ...mapGetters({
       projects: `${PROJECTS_NAMESPACE}/projects`,
-      projectsPageBackRoute: `${PROJECTS_NAMESPACE}/projectsPageBackRoute`,
+      cardBGImages: 'cardBGImages',
     }),
     /**
      * @returns missionImage based on the screen size
@@ -101,30 +98,38 @@ export default {
       }
 
       return missionSmall;
-    }
+    },
+    defaultImg() {
+      return this.cardBGImages['./c_b_forest_texture_bark2.jpg'];
+    },
   },
   methods: {
-    /**
-     * @description changes the url to page the user was before. Fallback: BrowsePage
-     */
-    catchBackClicked: function catchBackClicked() {
-      const backRoute = this.projectsPageBackRoute;
+    projectsCardsParents() {
+      const noSubs = [];
 
-      if (backRoute) {
-        this.$router.push({
-          path: backRoute.path,
-          query: backRoute.query,
-          params: backRoute.params,
-        });
-        return;
+      for (let i = 0; i < this.projects.length; i++) {
+        const p = this.projects[i];
+        if (!p.parent) {
+          noSubs.push(p);
+        }
       }
 
-      this.$router.push({ path: BROWSE_PATH });
+      return noSubs;
+    },
+    onCardClick(projectId) {
+      this.$store.commit(`${PROJECTS_NAMESPACE}/${SET_PROJECTDETAIL_PAGE_BACK_URL}`, this.$route);
+
+      this.$router.push({
+        name: PROJECT_DETAIL_NAME,
+        params: { id: projectId },
+      });
+    },
+    onSubprojectClick(sub) {
+      this.$emit('subprojectClick', sub.id);
     },
   },
   components: {
     ImgAndTextLayout,
-    BaseIconButton,
     ProjectCard,
   },
   data: () => ({

@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 process.env.VUE_APP_VERSION = require('./package.json').version;
 
-console.log(`starting ${process.env.VUE_APP_VERSION} on ${process.env.NODE_ENV}`);
+console.log(`starting ${process.env.VUE_APP_VERSION} with use of testdata '${process.env.VUE_APP_USE_TESTDATA}' on ${process.env.NODE_ENV}`);
 
 module.exports = {
   publicPath: './',
