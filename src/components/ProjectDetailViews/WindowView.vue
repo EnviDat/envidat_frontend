@@ -1,5 +1,11 @@
 <template>
-<v-card>
+<v-card tile >
+
+<!-- <v-card color="black"
+        dark
+        flat
+        tile > -->
+
   <v-layout align-center>
     <v-item-group v-model="window"
                   mandatory
@@ -10,16 +16,6 @@
               :key="'nav_' + index" >
 
         <div slot-scope="{ active, toggle }">
-
-          <!-- <base-icon-button :materialIconName="active ? 'arrow_right' : 'arrow_drop_down'"
-                            :outlined="false"
-                            color="transparent"
-                            iconColor="grey"
-                            :isToggled="expanded"
-                            :rotateOnClick="true"
-                            :rotateToggle="expanded"
-                            :toolTipText="sub.title"
-                            @clicked="toggle" /> -->
 
           <v-tooltip>
             <v-btn slot="activator"
@@ -43,28 +39,58 @@
         <v-window-item v-for="(sub, index) in subProjects"
                         :key="'window_' + index" >
 
-          <v-card flat>
+          <v-card height="200">
             <v-card-text>
-              <v-layout align-center mb-3>
+              <v-layout align-center
+                        justify-center
+                        fill-height
+                        mb-3 >
                 <strong class="title">{{ sub.title }}</strong>
 
                 <v-spacer></v-spacer>
                 <v-btn icon>
                   <v-icon>find_in_page</v-icon>
                 </v-btn>
-              </v-layout>
 
-              <m-markdown-preview :markdown="sub.description"
-                                  :options="{ html: true,
-                                              xhtmlOut: true,
-                                              linkify: true,
-                                              breaks: true }" />
+                <m-markdown-preview :markdown="sub.description"
+                                    :options="{ html: true,
+                                                xhtmlOut: true,
+                                                linkify: true,
+                                                breaks: true }" />
+              </v-layout>
             </v-card-text>
           </v-card>
+
         </v-window-item>
       </v-window>
     </v-flex>
   </v-layout>
+
+  <!-- <v-card-actions class="justify-space-between">
+    <v-item-group v-model="window"
+                  mandatory
+                  class="align-center" >
+
+      <v-item v-for="(sub, index) in subProjects"
+              :key="`btn-${index}`" >
+
+        <div slot-scope="{ active, toggle }">
+
+          <v-tooltip>
+            <v-btn slot="activator"
+                    :input-value="active"
+                    icon
+                    @click="toggle" >
+              <v-icon>{{ active ? 'arrow_right' : 'arrow_drop_down' }}</v-icon>
+            </v-btn>
+
+            <span>{{ sub.title }}</span>
+          </v-tooltip>
+        </div>
+      </v-item>
+    </v-item-group>
+
+  </v-card-actions> -->
 </v-card>
 </template>
 
@@ -89,7 +115,6 @@ export default {
   methods: {
   },
   data: () => ({
-    length: 5,
     window: 0,
   }),
 };
