@@ -1,119 +1,106 @@
 <template>
-  <v-container
-    id="metadataListView"
-    fluid
-    :class="{ ['grid-list-sm'] : listView,
-              ['grid-list-lg'] : !listView }"
-    pa-0
-  >
-    <transition-group
-      name="itemfade"
-      class="layout"
-      :class="{ ['column'] : listView,
-                ['row'] : !listView,
-                ['wrap'] : !listView }"
-    >
-      <v-flex
-        v-for="(pinnedId, index) in pinnedIds"
-        v-if="showPinnedElements"
-        :key="'pinned_' + index"
-        v-bind="cardGridClass"
-      >
+  <v-container id="metadataListView"
+                fluid
+                :class="{ ['grid-list-sm'] : listView,
+                          ['grid-list-lg'] : !listView }"
+                pa-0 >
+    <transition-group name="itemfade"
+                      class="layout"
+                      :class="{ ['column'] : listView,
+                                ['row'] : !listView,
+                                ['wrap'] : !listView }" >
+      <v-flex v-for="(pinnedId, index) in pinnedIds"
+              v-if="showPinnedElements"
+              :key="'pinned_' + index"
+              v-bind="cardGridClass" >
         <!-- Map hovering highlighted element -->
 
-        <metadata-card
-          :id="metadatasContent[pinnedId].id"
-          :ref="metadatasContent[pinnedId].id"
-          class="highlighted"
-          :title="metadatasContent[pinnedId].title"
-          :name="metadatasContent[pinnedId].name"
-          :subtitle="metadatasContent[pinnedId].notes"
-          :tags="metadatasContent[pinnedId].tags"
-          :titleImg="metadatasContent[pinnedId].titleImg"
-          :restricted="hasRestrictedResources(metadatasContent[pinnedId])"
-          :resourceCount="metadatasContent[pinnedId].num_resources"
-          :resources="metadatasContent[pinnedId].resources"
-          :dark="false"
-          :flatLayout="listView"
-          :fileIconString="fileIconString"
-          :lockedIconString="lockedIconString"
-          :unlockedIconString="unlockedIconString"
-          @clickedEvent="metaDataClicked"
-          @clickedTag="catchTagClicked"
-        />
+        <metadata-card :id="metadatasContent[pinnedId].id"
+                        :ref="metadatasContent[pinnedId].id"
+                        class="highlighted"
+                        :title="metadatasContent[pinnedId].title"
+                        :name="metadatasContent[pinnedId].name"
+                        :subtitle="metadatasContent[pinnedId].notes"
+                        :tags="metadatasContent[pinnedId].tags"
+                        :titleImg="metadatasContent[pinnedId].titleImg"
+                        :restricted="hasRestrictedResources(metadatasContent[pinnedId])"
+                        :resourceCount="metadatasContent[pinnedId].num_resources"
+                        :resources="metadatasContent[pinnedId].resources"
+                        :dark="false"
+                        :flatLayout="listView"
+                        :fileIconString="fileIconString"
+                        :lockedIconString="lockedIconString"
+                        :unlockedIconString="unlockedIconString"
+                        @clickedEvent="metaDataClicked"
+                        @clickedTag="catchTagClicked" />
       </v-flex>
 
-      <v-flex
-        v-for="(n, index) in placeHolderAmount"
-        v-if="loading"
-        :key="'filtered_' + index"
-        v-bind="cardGridClass"
-      >
+      <v-flex v-for="(n, index) in placeHolderAmount"
+              v-if="loading"
+              :key="'filtered_' + index"
+              v-bind="cardGridClass" >
+
         <metadata-card-placeholder :dark="false" />
       </v-flex>
 
-      <v-flex
-        v-for="(metadata, index) in virtualListContent"
-        v-if="!loading && !isPinned(metadata.id)"
-        :key="'filtered_' + index"
-        v-bind="cardGridClass"
-      >
-        <metadata-card
-          :id="metadata.id"
-          :ref="metadata.id"
-          :title="metadata.title"
-          :name="metadata.name"
-          :subtitle="metadata.notes"
-          :tags="metadata.tags"
-          :titleImg="metadata.titleImg"
-          :restricted="hasRestrictedResources(metadata)"
-          :resourceCount="metadata.num_resources"
-          :resources="metadata.resources"
-          :dark="false"
-          :flatLayout="listView"
-          :fileIconString="fileIconString"
-          :lockedIconString="lockedIconString"
-          :unlockedIconString="unlockedIconString"
-          @clickedEvent="metaDataClicked"
-          @clickedTag="catchTagClicked"
-        />
+      <v-flex v-for="(metadata, index) in virtualListContent"
+              v-if="!loading && !isPinned(metadata.id)"
+              :key="'filtered_' + index"
+              v-bind="cardGridClass" >
+
+        <metadata-card :id="metadata.id"
+                      :ref="metadata.id"
+                      :title="metadata.title"
+                      :name="metadata.name"
+                      :subtitle="metadata.notes"
+                      :tags="metadata.tags"
+                      :titleImg="metadata.titleImg"
+                      :restricted="hasRestrictedResources(metadata)"
+                      :resourceCount="metadata.num_resources"
+                      :resources="metadata.resources"
+                      :dark="false"
+                      :flatLayout="listView"
+                      :fileIconString="fileIconString"
+                      :lockedIconString="lockedIconString"
+                      :unlockedIconString="unlockedIconString"
+                      @clickedEvent="metaDataClicked"
+                      @clickedTag="catchTagClicked" />
       </v-flex>
 
-      <v-flex key="infiniteLoader" xs12 mx-2>
-        <infinite-loading
-          spinner="waveDots"
-          :identifier="infiniteId"
-          :distance="preloadingDistance"
-          @infinite="infiniteHandler"
-        >
+      <v-flex key="infiniteLoader"
+              xs12 mx-2>
+        <infinite-loading spinner="waveDots"
+                          :identifier="infiniteId"
+                          :distance="preloadingDistance"
+                          @infinite="infiniteHandler" >
           <div slot="no-results">
             <!-- for the case of a back Navigation -->
-            <BaseRectangleButton
-              v-if="vIndex > 0 && vIndex > vReloadAmount"
-              :buttonText="scrollTopButtonText"
-              :isSmall="true"
-              :isFlat="true"
-              @clicked="mixinMethods_setScrollPosition(0);"
-            />
+            <BaseRectangleButton v-if="vIndex > 0 && vIndex > vReloadAmount"
+                                  :buttonText="scrollTopButtonText"
+                                  :isSmall="true"
+                                  :isFlat="true"
+                                  @clicked="mixinMethods_setScrollPosition(0);"
+                                  />
           </div>
           <div slot="no-more">
-            <BaseRectangleButton
-              :buttonText="scrollTopButtonText"
-              :isSmall="true"
-              :isFlat="true"
-              @clicked="mixinMethods_setScrollPosition(0);"
-            />
+            <BaseRectangleButton :buttonText="scrollTopButtonText"
+                                :isSmall="true"
+                                :isFlat="true"
+                                @clicked="mixinMethods_setScrollPosition(0);"
+                                />
           </div>
         </infinite-loading>
       </v-flex>
 
-      <v-flex v-if="!loading && filteredContentSize <= 0" key="noSearchResultsView" xs12 mx-2>
-        <no-search-results-view
-          :no-result-text="noResultText"
-          :suggestion-text="suggestionText"
-          @clicked="catchCategoryClicked"
-        />
+      <v-flex v-if="!loading && contentSize <= 0"
+              key="noSearchResultsView"
+              xs12 mx-2 >
+        <no-search-results-view :no-result-text="noResultText"
+                                :suggestion-text="suggestionText"
+                                @clicked="catchCategoryClicked"
+                                />
       </v-flex>
+
     </transition-group>
   </v-container>
 </template>
@@ -133,6 +120,7 @@ import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 
 export default {
   props: {
+    listContent: Array,
     listView: Boolean,
     showMapFilter: Boolean,
     mapFilteringPossible: Boolean,
@@ -166,7 +154,6 @@ export default {
       searchingMetadatasContent: 'metadata/searchingMetadatasContent',
       searchingMetadatasContentOK: 'metadata/searchingMetadatasContentOK',
       loadingMetadatasContent: 'metadata/loadingMetadatasContent',
-      filteredContent: 'metadata/filteredContent',
       vIndex: 'metadata/vIndex',
       vReloadAmount: 'metadata/vReloadAmount',
       vReloadDelay: 'metadata/vReloadDelay',
@@ -181,9 +168,6 @@ export default {
             || this.isFilteringContent
             || this.searchingMetadatasContent
       );
-    },
-    filteredContentSize: function filteredContentSize() {
-      return this.contentSize(this.filteredContent);
     },
     cardGridClass: function cardGridClass() {
       if (this.mapFilteringPossible && this.showMapFilter) {
@@ -208,6 +192,9 @@ export default {
 
       return fullSize;
     },
+    contentSize: function contentSize() {
+      return this.listContent !== undefined ? Object.keys(this.listContent).length : 0;
+    },
   },
   methods: {
     infiniteHandler($state) {
@@ -215,7 +202,7 @@ export default {
       that.vLoading = true;
       // console.log('loading list from ' + that.vIndex + ' to ' + (that.vIndex + that.vReloadAmount) );
 
-      if (that.filteredContentSize <= 0 && $state) {
+      if (that.contentSize <= 0 && $state) {
         $state.complete();
         return;
       }
@@ -231,14 +218,14 @@ export default {
 
         for (
           ;
-          i < that.vIndex + that.vReloadAmount && i < that.filteredContentSize;
+          i < that.vIndex + that.vReloadAmount && i < that.contentSize;
           i++
         ) {
-          that.virtualListContent.push(that.filteredContent[i]);
+          that.virtualListContent.push(that.listContent[i]);
         }
 
         if ($state) {
-          if (that.virtualListContent.length >= that.filteredContentSize) {
+          if (that.virtualListContent.length >= that.contentSize) {
             $state.complete();
           } else {
             $state.loaded();
@@ -250,9 +237,6 @@ export default {
         that.vLoading = false;
         // console.log('loaded to ' + that.vIndex );
       }, this.vReloadDelay);
-    },
-    contentSize: function contentSize(content) {
-      return content !== undefined ? Object.keys(content).length : 0;
     },
     catchTagClicked: function catchTagClicked(tagName) {
       this.$emit('clickedTag', tagName);
@@ -297,7 +281,7 @@ export default {
     },
   },
   watch: {
-    filteredContentSize: function resetVirtualContent() {
+    contentSize: function resetVirtualContent() {
       this.$store.commit(`metadata/${SET_VIRTUAL_LIST_INDEX}`, 0);
       this.virtualListContent = [];
       this.infiniteId += 1;

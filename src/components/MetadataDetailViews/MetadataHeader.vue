@@ -1,49 +1,39 @@
 <template>
-    <v-card
-      :class="{
-        'pa-4': $vuetify.breakpoint.smAndUp,
-        'pa-3': $vuetify.breakpoint.xsOnly,
-      }"
-      :dark="dark"
-      color="primary"
-      v-bind="{['style'] : dynamicCardBackground }"
-    >
-      <base-icon-button
-        style="position: absolute; top: 0px; right: 0px;"
-        material-icon-name="close"
-        icon-color="primary"
-        :color="(showPlaceholder || !metadataTitle) ? 'white' : 'primary'"
-        :outlined="!showPlaceholder"
-        tool-tip-text="Close Metadata"
-        :tool-tip-bottom="true"
-        @clicked="catchBackClicked"
-      />
+    <v-card :class="{
+              'pa-4': $vuetify.breakpoint.smAndUp,
+              'pa-3': $vuetify.breakpoint.xsOnly,
+            }"
+            :dark="dark"
+            color="primary"
+            v-bind="{['style'] : dynamicCardBackground }" >
 
+      <base-icon-button style="position: absolute; top: 0px; right: 0px;"
+                        material-icon-name="close"
+                        icon-color="primary"
+                        :color="(showPlaceholder || (!showPlaceholder && !metadataTitle)) ? 'white' : 'primary'"
+                        :outlined="(!showPlaceholder && metadataTitle)"
+                        tool-tip-text="Close Metadata"
+                        :tool-tip-bottom="true"
+                        @clicked="catchBackClicked" />
 
       <!--h1 class="py-3" >{{ metadataTitle }} id: {{ $route.params.id }}</h1-->
-      <div
-        v-if="metadataTitle"
-        class="headerTitle py-3"
-        :class="{ 'display-2': $vuetify.breakpoint.lgAndUp,
-                  'display-1': $vuetify.breakpoint.mdAndDown,
-                  'headline': $vuetify.breakpoint.smAndDown,
-        }"
-      >
+      <div v-if="metadataTitle"
+            class="headerTitle py-3"
+            :class="{ 'display-2': $vuetify.breakpoint.lgAndUp,
+                      'display-1': $vuetify.breakpoint.mdAndDown,
+                      'headline': $vuetify.breakpoint.smAndDown,
+            }" >
         {{ metadataTitle }}
       </div>
 
-      <div
-        v-if="!metadataTitle && showPlaceholder"
-        class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-shimmer"
-      >
+      <div v-if="!metadataTitle && showPlaceholder"
+            class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-shimmer" >
         <div class="bone bone-type-multiline bone-style-steps" />
       </div>
 
-      <v-divider
-        :dark="dark"
-        :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
-                  'my-2': $vuetify.breakpoint.smAndUp }"
-      />
+      <v-divider :dark="dark"
+                :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
+                          'my-2': $vuetify.breakpoint.smAndUp }" />
 
       <v-layout v-if="authors"
                 row wrap

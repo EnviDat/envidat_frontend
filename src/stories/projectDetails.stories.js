@@ -47,11 +47,6 @@ import ProjectBody from "@/components/ProjectDetailViews/ProjectBody.vue";
 // import App from "@/App.vue";
 // import MetadataDetailPage from "@/components/Pages/MetadataDetailPage.vue";
 
-import doiIcon from "@/assets/icons/doi.png";
-import mailIcon from "@/assets/icons/mail.png";
-import contactIcon from "@/assets/icons/contact2.png";
-import licenseIcon from "@/assets/icons/license.png";
-
 // get Project test data and enhance it
 import projectJSON from "@/testdata/projects";
 import projectDataFactory from "@/components/projectsDataFactory";
@@ -83,10 +78,12 @@ storiesOf("7 Project | Detail Views", module)
     components: { ProjectHeader },
     template: `
     <v-layout row wrap>
-      <v-flex x12 py-3>
-        <project-header
-          :showPlaceholder="true"
-        />
+      <v-flex xs12 py-3>
+        <project-header />
+      </v-flex>
+
+      <v-flex xs12 py-3>
+        <project-header :showPlaceholder="true" />
       </v-flex>
 
       <v-flex xs12 py-3>
@@ -127,7 +124,11 @@ storiesOf("7 Project | Detail Views", module)
     components: { ProjectBody },
     template: `
     <v-layout row wrap>
-      <v-flex x12 py-3>
+      <v-flex xs12 py-3>
+        <project-body />
+      </v-flex>
+
+      <v-flex xs12 py-3>
         <project-body
           :showPlaceholder="true"
         />
