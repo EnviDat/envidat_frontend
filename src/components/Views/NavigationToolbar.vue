@@ -2,62 +2,29 @@
   <v-toolbar app
               color="white"
               height="36"
-              :extended="expanded">
-    <!-- <v-toolbar-side-icon @click.native="menuClick"></v-toolbar-side-icon> -->
+              :extended="expanded"
+              :extension-height="80">
+
     <v-btn v-if="$vuetify.breakpoint.mdAndUp"
             icon @click.native="menuClick">
       <v-icon>menu</v-icon>
     </v-btn>
 
-    <!-- <v-toolbar-title>
-      <v-btn icon href="./" class="ma-0">
-        <img :src="Logo" alt="envidat_logo" />
-      </v-btn>
-
-      <div class="headline envidatLogoText envidatNavbarTitleSmall">{{ logoText }}</div>
-    </v-toolbar-title>-->
 
     <v-spacer></v-spacer>
 
     <small-search-bar-view :compactLayout="$vuetify.breakpoint.smAndDown"
+                            class="elevation-0 flex xs12 sm6"
                             :searchTerm="searchTerm"
-                            searchCount="0"
+                            :showSearchCount="showSearchCount"
+                            :searchCount="searchCount"
+                            isFlat
+                            :fixedHeight="36"
                             :labelText="searchBarPlaceholder"
                             style="align-items: center;"
                             @clicked="catchSearchClicked"
                             @searchCleared="catchSearchCleared" />
 
-    <v-btn icon @click.native="searchClick">
-      <v-icon>search</v-icon>
-    </v-btn>
-
-    <!-- <v-btn icon @click.native="loginClick">
-      <v-icon>login</v-icon>
-    </v-btn> -->
-
-    <!-- <v-btn icon>
-      <v-icon>refresh</v-icon>
-    </v-btn> -->
-
-    <!-- <v-btn icon>
-      <v-icon>more_vert</v-icon>
-    </v-btn> -->
-    <base-icon-button materialIconName="more_vert"
-                      marginClass="ma-0"
-                      iconColor="accent"
-                      color="transparent"
-                      :isToggled="expanded"
-                      :rotateOnClick="true"
-                      :rotateToggle="expanded"
-                      @clicked="expanded = !expanded"
-      >
-
-    </base-icon-button>
-
-    <template v-if="expanded"
-              v-slot:extension>
-      <div style="background-color: red; width: 100%; height: 30px;"></div>
-    </template>
 
   </v-toolbar>
 </template>
@@ -65,16 +32,18 @@
 <script>
 import { mapGetters } from 'vuex';
 import Logo from '@/assets/logo/EnviDat_logo_32.png';
-import baseIconButton from '@/components/BaseElements/BaseIconButton';
 import SmallSearchBarView from '@/components/Filtering/SmallSearchBarView';
 
 export default {
   components: {
-    baseIconButton,
     SmallSearchBarView,
   },
   props: {
     searchTerm: String,
+    allTags: Array,
+    selectedTags: Array,
+    showSearchCount: Boolean,
+    searchCount: Number,
   },
   data: () => ({
     Logo,
@@ -90,13 +59,19 @@ export default {
     searchBarPlaceholder() {
       return this.$vuetify.breakpoint.mdAndUp ? this.searchPlaceholderText : this.searchPlaceholderTextSmall;
     },
+    filterIconColor() {
+      return !this.selectedTags || this.selectedTags.length <= 0 ? 'grey' : 'primary';
+    },
   },
   methods: {
     menuClick() {
       this.$emit('menuClick');
     },
-    searchClick() {
-      this.$emit('searchClick');
+    catchSearchClicked(search) {
+      this.$emit('searchClick', search);
+    },
+    catchSearchCleared() {
+      this.$emit('searchCleared');
     },
     loginClick() {
       this.$emit('loginClick');

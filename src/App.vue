@@ -13,7 +13,10 @@
                     class="elevation-3" />
 
     <navigation-toolbar :searchTerm="searchTerm"
-                        @menuClick="menuClick()" />
+                        :showSearchCount="showSearchCount"
+                        :searchCount="searchCount"
+                        @searchClick="catchSearchClicked"
+                        @searchCleared="catchSearchCleared" />
 
     <v-content>
       <v-container fluid
@@ -68,13 +71,13 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { BROWSE_PATH } from '@/router/routeConsts';
 import { BULK_LOAD_METADATAS_CONTENT } from '@/store/metadataMutationsConsts';
 import {
   ADD_CARD_IMAGES,
   ADD_ICON_IMAGE,
   SET_CONFIG,
 } from '@/store/mutationsConsts';
-import TheNavBarView from '@/components/Views/TheNavbarView';
 import Navigation from '@/components/Views/Navigation';
 import NavigationMini from '@/components/Views/NavigationMini';
 import NavigationToolbar from '@/components/Views/NavigationToolbar';
@@ -108,6 +111,15 @@ export default {
   methods: {
     menuClick() {
       this.menuItem.active = !this.menuItem.active;
+    },
+    catchSearchClicked(search) {
+      this.$router.push({
+        path: BROWSE_PATH,
+        query: { search },
+      });
+    },
+    catchSearchCleared() {
+      this.searchTerm = '';
     },
     reloadApp() {
       window.location.reload();
@@ -181,10 +193,17 @@ export default {
       popularTags: 'metadata/popularTags',
       loadingPopularTags: 'metadata/loadingPopularTags',
       currentPage: 'currentPage',
+      filteredContent: 'metadata/filteredContent',
       appBGImage: 'appBGImage',
       showVersionModal: 'showVersionModal',
       newVersion: 'newVersion',
     }),
+    showSearchCount() {
+      return this.currentPage === 'browsePage';
+    },
+    searchCount() {
+      return this.filteredContent !== undefined ? Object.keys(this.filteredContent).length : 0;
+    },
     menuItem() {
       let menuItem = { active: true };
 
@@ -232,7 +251,6 @@ export default {
     },
   },
   components: {
-    TheNavBarView,
     Navigation,
     NavigationMini,
     NavigationToolbar,

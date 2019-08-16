@@ -4,44 +4,30 @@
     :class="$vuetify.breakpoint.smAndDown ? 'pa-1' : 'pa-2'"
   >
     <v-layout column>
-      <title-view
-        :title="envidatTitle"
-        :slogan="envidatSlogan"
-        :sub-slogan="envidatSubSlogan"
-        :button-text="sloganButtonText"
-        :button-callback="catchBrowseClicked"
-      />
+      <title-view :title="envidatTitle"
+                  :slogan="envidatSlogan"
+                  :sub-slogan="envidatSubSlogan"
+                  :button-text="sloganButtonText"
+                  :button-callback="catchBrowseClicked" />
 
-      <v-flex
-        mt-5
-        offset-md6
-      >
-        <search-bar-view
-          :labelText="labelText"
-          :buttonText="buttonlText"
-          :hasButton="true"
-          @clicked="catchSearchClicked"
-        />
+      <v-flex mt-5 offset-md6 >
+        <search-bar-view :labelText="labelText"
+                          :buttonText="buttonlText"
+                          :hasButton="true"
+                          @clicked="catchSearchClicked"
+                        />
       </v-flex>
 
-      <v-flex
-        mt-5
-        offset-md6
-      >
-        <v-container
-          fluid
-          grid-list-md
-          pa-0
-        >
-          <v-layout
-            row
-            wrap
-          >
+      <v-flex mt-5 offset-md6 >
+        <v-container fluid
+                      grid-list-md
+                      pa-0 >
+          <v-layout row wrap >
+
             <v-flex
               v-for="card in categorycards"
               :key="card.title"
-              my-1
-              xs6
+              my-1 xs6
             >
               <base-click-card
                 :title="card.title"
