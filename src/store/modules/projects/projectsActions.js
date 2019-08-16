@@ -29,7 +29,7 @@ export default {
     commit(GET_PROJECTS);
 
     const url = urlRewrite(
-      'group_list&all_fields=true&include_groups=true&include_extras=true',
+      'group_list&all_fields=true&include_groups=true&include_extras=true&include_datasets=true',
       API_BASE,
       ENVIDAT_PROXY,
     );

@@ -18,25 +18,6 @@
                       @clicked="catchBackClicked" />
 
 
-  <!-- <v-layout row
-            style="background-color: white;"
-            class="fullWidthImg elevation-2"
-  >
-    <v-flex xs6>
-      <v-img height="100%" cover :src="titleImage.src" />
-    </v-flex>
-
-
-    <v-flex xs6 px-2 pt-4>
-      <div class="headline mb-0"
-            :class="this.dark ? 'white--text' : 'black--text'"
-      >
-        {{ title }}
-      </div>
-    </v-flex>
-
-  </v-layout> -->
-
     <div v-if="title"
           :style="`position: absolute; top: 0px; right: 0px;
                   height: ${height}px; width: 100%;
@@ -53,10 +34,8 @@
 
     </div>
 
-    <div
-      v-if="!title && showPlaceholder"
-      class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-shimmer"
-    >
+    <div v-if="!title && showPlaceholder"
+          class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-shimmer" >
       <div class="bone bone-type-multiline bone-style-steps" />
     </div>
 
@@ -80,13 +59,13 @@ export default {
   },
   computed: {
     titleImage() {
-      let img = new Image();
+      const img = new Image();
       let imgSrc = this.defaultImg;
 
       if (this.titleImg) {
         imgSrc = this.titleImg;
         if (!imgSrc.includes('http')) {
-          imgSrc = `https://www.envidat.ch/uploads/group/${imgSrc}`
+          imgSrc = `https://www.envidat.ch/uploads/group/${imgSrc}`;
         }
       }
 

@@ -26,7 +26,7 @@
             >
               <project-card :id="project.id"
                             :title="project.title"
-                            :img="project.image_url"
+                            :img="project.image_display_url"
                             :defaultImg="defaultImg"
                             :description="project.description"
                             :subProjects="project.subProjects"

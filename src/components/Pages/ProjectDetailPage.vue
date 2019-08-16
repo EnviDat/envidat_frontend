@@ -6,9 +6,55 @@
     <v-layout row wrap>
 
       <v-flex xs12 lg10 offset-lg1
-        elevation-5
-        style="z-index: 1;"
-      >
+              elevation-5
+              style="z-index: 1;" >
+
+        <project-header :title="currentProject.title"
+                        :titleImg="currentProject.image_display_url"
+                        :defaultImg="missionImg"
+                        :showPlaceholder="!currentProject"
+                        @clickedBack="catchBackClicked"
+                        />
+      </v-flex>
+
+      <v-flex xs12 lg10 offset-lg1
+              px-3
+              style="z-index: 0;" >
+
+        <project-body :description="currentProject.description"
+                      :subProjects="currentProject.subProjects"
+                      :metadatas="currentProject.packages"
+                       />
+      </v-flex>
+
+
+      <v-flex xs12 lg10 offset-lg1
+              py-2 px-3 >
+        <window-view :subProjects="currentProject.subProjects" />
+      </v-flex>
+
+      <v-flex v-if="hasMetadatas"
+              xs12 lg10 offset-lg1 >
+
+        <v-card-title class="metadataList_title title">Metadatas</v-card-title>
+      </v-flex>
+
+      <v-flex v-if="hasMetadatas"
+              xs12 lg10 offset-lg1
+              py-2 px-3 >
+
+        <metadata-list-view :listContent="currentProject.packages"
+                            :showMapFilter="false"
+                            :mapFilteringPossible="mapFilteringPossible"
+                            :placeHolderAmount="placeHolderAmount"
+                            />
+
+      </v-flex>
+
+      <v-flex v-if="!hasMetadatas"
+              xs12 lg10 offset-lg1 >
+
+        <v-card-title class="metadataList_title title">{{ currentProject.title }} has no Metadata connected</v-card-title>
       </v-flex>
 
     </v-layout>
@@ -26,12 +72,17 @@ import {
   SET_CURRENT_PAGE,
 } from '@/store/mutationsConsts';
 import {
+  GET_PROJECTS,
   PROJECTS_NAMESPACE,
   PROJECTS_DETAIL_PAGE,
 } from '@/store/projectsMutationsConsts';
 
 import ProjectHeader from '@/components/ProjectDetailViews/ProjectHeader';
 import ProjectBody from '@/components/ProjectDetailViews/ProjectBody';
+import MetadataListView from '@/components/Views/MetadataListView';
+import WindowView from '@/components/ProjectDetailViews/WindowView';
+
+import missionImg from '@/assets/about/mission.jpg';
 
 
 export default {
@@ -46,7 +97,9 @@ export default {
     });
   },
   beforeMount() {
-
+    if (this.projects.length <= 0) {
+      this.$store.dispatch(`${PROJECTS_NAMESPACE}/${GET_PROJECTS}`);
+    }
   },
   /**
    * @description reset the scrolling to the top,
@@ -73,6 +126,12 @@ export default {
       }
 
       return null;
+    },
+    mapFilteringPossible: function mapFilteringPossible() {
+      return this.$vuetify.breakpoint.smAndUp;
+    },
+    hasMetadatas() {
+      return this.currentProject.packages && this.currentProject.packages.length > 0;
     },
   },
   methods: {
@@ -109,9 +168,20 @@ export default {
   components: {
     ProjectHeader,
     ProjectBody,
+    MetadataListView,
+    WindowView,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
+    missionImg,
+    placeHolderAmount: 6,
   }),
 };
 </script>
+
+<style >
+  .metadataList_title {
+    font-family: 'Libre Baskerville', serif !important;
+    font-weight: 700 !important;
+  }
+</style>
