@@ -1,7 +1,11 @@
 <template>
-  <v-toolbar color="white" height="36" :extended="expanded">
+  <v-toolbar app
+              color="white"
+              height="36"
+              :extended="expanded">
     <!-- <v-toolbar-side-icon @click.native="menuClick"></v-toolbar-side-icon> -->
-    <v-btn icon @click.native="menuClick">
+    <v-btn v-if="$vuetify.breakpoint.mdAndUp"
+            icon @click.native="menuClick">
       <v-icon>menu</v-icon>
     </v-btn>
 
@@ -15,7 +19,13 @@
 
     <v-spacer></v-spacer>
 
-    <v-text-field></v-text-field>
+    <small-search-bar-view :compactLayout="$vuetify.breakpoint.smAndDown"
+                            :searchTerm="searchTerm"
+                            searchCount="0"
+                            :labelText="searchBarPlaceholder"
+                            style="align-items: center;"
+                            @clicked="catchSearchClicked"
+                            @searchCleared="catchSearchCleared" />
 
     <v-btn icon @click.native="searchClick">
       <v-icon>search</v-icon>
@@ -53,19 +63,34 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import Logo from '@/assets/logo/EnviDat_logo_32.png';
 import baseIconButton from '@/components/BaseElements/BaseIconButton';
+import SmallSearchBarView from '@/components/Filtering/SmallSearchBarView';
 
 export default {
-  components: { baseIconButton },
-  props: {},
+  components: {
+    baseIconButton,
+    SmallSearchBarView,
+  },
+  props: {
+    searchTerm: String,
+  },
   data: () => ({
     Logo,
     logoText: 'EnviDat',
     searchFocused: false,
     expanded: false,
   }),
-  computed: {},
+  computed: {
+    ...mapGetters({
+      searchPlaceholderText: 'metadata/searchPlaceholderText',
+      searchPlaceholderTextSmall: 'metadata/searchPlaceholderTextSmall',
+    }),
+    searchBarPlaceholder() {
+      return this.$vuetify.breakpoint.mdAndUp ? this.searchPlaceholderText : this.searchPlaceholderTextSmall;
+    },
+  },
   methods: {
     menuClick() {
       this.$emit('menuClick');

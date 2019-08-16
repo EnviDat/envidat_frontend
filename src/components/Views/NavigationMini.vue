@@ -1,10 +1,12 @@
 <template>
   <v-navigation-drawer permanent
-                        floating
+                        stateless
+                        fixed
                         right
-                        mini-variant-width="60"
+                        :mini-variant-width="menuItem.active ? 60 : 48"
                         mini-variant
-                        :height=" menuItem.active ? navItems.length * 44 : 50"
+                        :height="menuItem.active ? navItems.length * 44 : 48"
+                        :style="!menuItem.active ? 'border-radius: 50%;' :  'border-radius: 2px;'"
   >
 
     <v-list dense
@@ -28,7 +30,7 @@
           </v-list-tile-action>
 
           <v-list-tile-action v-if="item.icon !== 'envidat'"
-            class="v-list__group__header__prepend-icon"
+                              class="v-list__group__header__prepend-icon"
           >
               <base-icon-button
                 marginClass="ma-0"

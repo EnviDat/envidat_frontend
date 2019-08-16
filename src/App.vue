@@ -1,19 +1,28 @@
 <template>
   <v-app class="application" :style="dynamicBackground">
-    <!-- <navigation /> -->
-    <!-- <navigation-toolbar /> -->
+
+    <navigation v-if="$vuetify.breakpoint.mdAndUp"
+                :mini="this.menuItem.active"
+                :navItems="navItems"
+                @menuClick="menuClick()"
+                />
+
+    <navigation-mini v-if="$vuetify.breakpoint.smAndDown"
+                    :navItems="navItems"
+                    style="position: fixed; top: auto; right: 10px; bottom: 10px;"
+                    class="elevation-3" />
+
+    <navigation-toolbar :searchTerm="searchTerm"
+                        @menuClick="menuClick()" />
 
     <v-content>
-      <v-container
-        fluid
-        v-bind="{ [`px-1`]: this.$vuetify.breakpoint.smAndDown,
-                  [`px-2`]: this.$vuetify.breakpoint.mdAndUp,
-                  [`py-1`]: this.$vuetify.breakpoint.mdAndUp,
-                  [`py-0`]: this.$vuetify.breakpoint.smAndDown }"
-      >
+      <v-container fluid
+                  v-bind="{ [`px-1`]: this.$vuetify.breakpoint.smAndDown,
+                            [`px-2`]: this.$vuetify.breakpoint.mdAndUp,
+                            [`py-1`]: this.$vuetify.breakpoint.mdAndUp,
+                            [`py-0`]: this.$vuetify.breakpoint.smAndDown }" >
         <v-layout column>
-          <v-flex
-            v-if="currentPage != 'landingPage'"
+          <!-- <v-flex v-if="currentPage != 'landingPage'"
             xs12
             v-bind="{ [`mx-0`]: this.$vuetify.breakpoint.smAndDown,
                       [`mx-3`]: this.$vuetify.breakpoint.mdAndUp,
@@ -24,20 +33,19 @@
             :class="{ 'small': this.$vuetify.breakpoint.smAndDown }"
           >
             <the-nav-bar-view />
-          </v-flex>
+          </v-flex> -->
 
-          <v-flex
-            xs12
-            v-bind="{ [`mx-0`]: this.$vuetify.breakpoint.smAndDown,
-                      [`mx-3`]: this.$vuetify.breakpoint.mdAndUp }"
+          <v-flex xs12
+                  mx-0
           >
+            <!-- v-bind="{ [`mx-0`]: this.$vuetify.breakpoint.smAndDown,
+                      [`mx-3`]: this.$vuetify.breakpoint.mdAndUp }" -->
             <transition name="fade" mode="out-in">
               <router-view />
             </transition>
           </v-flex>
 
-          <v-flex
-            xs12
+          <v-flex xs12
             style="position: absolute; right: 5px; bottom: 2px; font-size: 5px !important;"
           >Verison: {{ appVersion }}</v-flex>
         </v-layout>
@@ -68,6 +76,7 @@ import {
 } from '@/store/mutationsConsts';
 import TheNavBarView from '@/components/Views/TheNavbarView';
 import Navigation from '@/components/Views/Navigation';
+import NavigationMini from '@/components/Views/NavigationMini';
 import NavigationToolbar from '@/components/Views/NavigationToolbar';
 import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
 
@@ -97,6 +106,9 @@ export default {
     this.importIcons();
   },
   methods: {
+    menuClick() {
+      this.menuItem.active = !this.menuItem.active;
+    },
     reloadApp() {
       window.location.reload();
     },
@@ -173,6 +185,18 @@ export default {
       showVersionModal: 'showVersionModal',
       newVersion: 'newVersion',
     }),
+    menuItem() {
+      let menuItem = { active: true };
+
+      this.navItems.forEach((el) => {
+        if (el.icon === 'menu') {
+          menuItem = el;
+        }
+      });
+
+      // return default with active true so all items will be shown
+      return menuItem;
+    },
     metadatasContentSize: function metadatasContentSize() {
       return this.metadatasContent !== undefined
         ? Object.keys(this.metadatasContent).length
@@ -210,13 +234,29 @@ export default {
   components: {
     TheNavBarView,
     Navigation,
+    NavigationMini,
     NavigationToolbar,
   },
+  /* eslint-disable object-curly-newline */
   data: () => ({
     appBGImages: {},
     prevHeight: 0,
     dialogCanceled: false,
     appVersion: process.env.VUE_APP_VERSION,
+    showMenu: true,
+    searchTerm: '',
+    navItems: [
+      { title: 'Home', icon: 'envidat', toolTip: 'Back to the start page', active: false },
+      { title: 'Explore', icon: 'search', toolTip: 'Explore research data', active: false },
+      { title: 'Login', icon: 'person', toolTip: 'Login to upload data', active: false },
+      { title: 'Organizations', icon: 'account_tree', toolTip: 'Explore research data', active: false },
+      { title: 'Projects', icon: 'library_books', toolTip: 'Explore research data', active: false },
+      { title: 'Guidelines', icon: 'local_library', toolTip: 'Guidlines about the creation of metadata', active: false },
+      { title: 'Policies', icon: 'policy', toolTip: 'The rules of EnviDat', active: false },
+      { title: 'About', icon: 'info', toolTip: 'What is EnviDat? How is behind EnviDat?', active: false },
+      { title: 'Contact', icon: 'contact_support', toolTip: 'Do you need support?', active: false },
+      { title: 'Menu', icon: 'menu', active: false },
+    ],
   }),
 };
 </script>

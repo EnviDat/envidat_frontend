@@ -7,6 +7,11 @@ import tags from './tags';
 
 const initialState = {
   /**
+   * The placeholder text for the search bars
+   */
+  searchPlaceholderTextSmall: 'Enter search term',
+  searchPlaceholderText: 'Enter research term, topic or author name',
+  /**
    * metadataIds properties are used for step by step loading all the metadata
    */
   loadingMetadataIds: false,
@@ -74,6 +79,8 @@ export const metadata = {
   namespaced: true,
   state: initialState,
   getters: {
+    searchPlaceholderTextSmall: state => state.searchPlaceholderTextSmall,
+    searchPlaceholderText: state => state.searchPlaceholderText,
     loadingMetadataIds: state => state.loadingMetadataIds,
     loadingMetadatasContent: state => state.loadingMetadatasContent,
     metadataIds: state => state.metadataIds,

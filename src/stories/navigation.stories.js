@@ -78,7 +78,7 @@ export const methods = {
   onLoginClick: action("clicked on login")
 };
 
-export const navItems = [
+const navItems = [
   { title: "Home", icon: "envidat", toolTip: "Back to the start page", active: false },
   { title: "Explore", icon: "search", toolTip: "Explore research data", active: false },
   { title: "Login", icon: "person", toolTip: "Login to upload data", active: false },

@@ -1,80 +1,69 @@
 <template>
-  <v-container
-    grid-list-xs
-    fluid
-    tag="article"
-    pa-0
+  <v-container grid-list-xs
+              fluid
+              tag="article"
+              pa-0
   >
-    <v-layout
-      row
-      wrap
+    <v-layout row wrap
     >
-      <v-flex
-        xs12
-        :class="{ 'stickyFilterBar': $vuetify.breakpoint.smAndUp }"
-        :style="$vuetify.breakpoint.sm ? 'top: 42px !important;' : ''"
-      >
-        <filter-bar-view
-          :show-filtering="true"
-          :search-view-label-text="searchBarPlaceholder"
-          :controlsLabel="controlsLabel"
-          :search-term="searchTerm"
-          :search-count="searchCount"
-          :search-view-has-button="false"
-          :all-tags="allTags"
-          :selected-tag-names="selectedTagNames"
-          :popular-tags="popularTags"
-          :show-map-filter="showMapFilter"
-          :map-filtering-possible="mapFilteringPossible"
-          :map-filter-height="mapFilterHeight"
-          @clickedSearch="catchSearchClicked"
-          :show-placeholder="keywordsPlaceholder"
-          @clearedSearch="catchSearchCleared"
-          @clickedTag="catchTagClicked"
-          @clickedTagClose="catchTagCloseClicked"
-          @clickedClear="catchTagCleared"
-          @clickedMapExpand="toggleMapExpand"
-          @mapFilterChanged="catchMapFilterChanged"
-          @controlsChanged="controlsChanged"
+      <v-flex xs12
+              :class="{ 'stickyFilterBar': $vuetify.breakpoint.smAndUp }"
+              :style="$vuetify.breakpoint.sm ? 'top: 42px !important;' : ''" >
+
+        <filter-bar-view :showFiltering="true"
+                          :searchViewLabelText="searchBarPlaceholder"
+                          :controlsLabel="controlsLabel"
+                          :searchTerm="searchTerm"
+                          :searchCount="searchCount"
+                          :searchViewHasButton="false"
+                          :allTags="allTags"
+                          :showPlaceholder="keywordsPlaceholder"
+                          :selectedTagNames="selectedTagNames"
+                          :popularTags="popularTags"
+                          :showMapFilter="showMapFilter"
+                          :mapFilteringPossible="mapFilteringPossible"
+                          :mapFilterHeight="mapFilterHeight"
+                          @clickedSearch="catchSearchClicked"
+                          @clearedSearch="catchSearchCleared"
+                          @clickedTag="catchTagClicked"
+                          @clickedTagClose="catchTagCloseClicked"
+                          @clickedClear="catchTagCleared"
+                          @clickedMapExpand="toggleMapExpand"
+                          @mapFilterChanged="catchMapFilterChanged"
+                          @controlsChanged="controlsChanged"
         />
       </v-flex>
 
-      <v-flex
-        py-2
-        style="z-index: 1;"
-        v-bind="{ ['mx-0']: $vuetify.breakpoint.mdAndUp,
-                  ['xs8']: showMapFilter & $vuetify.breakpoint.mdAndUp,
-                  ['xs6']: showMapFilter & $vuetify.breakpoint.sm,
-                  ['pr-3']: showMapFilter & $vuetify.breakpoint.sm,
-                  ['xs12']: !showMapFilter,
-                  metadataListStyling }"
+      <v-flex py-2 style="z-index: 1;"
+              v-bind="{ ['mx-0']: $vuetify.breakpoint.mdAndUp,
+                        ['xs8']: showMapFilter & $vuetify.breakpoint.mdAndUp,
+                        ['xs6']: showMapFilter & $vuetify.breakpoint.sm,
+                        ['pr-3']: showMapFilter & $vuetify.breakpoint.sm,
+                        ['xs12']: !showMapFilter,
+                        metadataListStyling }"
       >
-        <metadata-list-view
-          :list-view="listViewActive"
-          :show-map-filter="showMapFilter"
-          :map-filtering-possible="mapFilteringPossible"
-          :place-holder-amount="placeHolderAmount"
-          @clickedTag="catchTagClicked"
-        />
+        <metadata-list-view :listView="listViewActive"
+                            :showMapFilter="showMapFilter"
+                            :mapFilteringPossible="mapFilteringPossible"
+                            :placeHolderAmount="placeHolderAmount"
+                            @clickedTag="catchTagClicked" />
       </v-flex>
 
-      <v-flex
-        v-if="mapFilteringPossible && showMapFilter"
-        py-3
-        v-bind="{ ['pr-3']: showMapFilter & $vuetify.breakpoint.mdAndUp,
-                  ['xs4']: showMapFilter & $vuetify.breakpoint.mdAndUp,
-                  ['xs6']: showMapFilter & $vuetify.breakpoint.sm,
-                  ['pl-2']: showMapFilter & $vuetify.breakpoint.sm,
-        }"
-        style="position: fixed; top: 135px; right: 10px;"
-      >
-        <filter-map-view
-          :total-height="mapFilterHeight"
-          :total-width="mapFilterWidth"
-          :expanded="showMapFilter"
-          @pointClicked="catchPointClicked"
-          @clearButtonClicked="catchClearButtonClick"
-        />
+      <v-flex v-if="mapFilteringPossible && showMapFilter"
+              py-3
+              v-bind="{
+                        ['xs4']: showMapFilter & $vuetify.breakpoint.mdAndUp,
+                        ['xs6']: showMapFilter & $vuetify.breakpoint.sm,
+              }"
+              style="position: fixed; top: 135px; right: 10px;" >
+                  <!-- ['pr-3']: showMapFilter & $vuetify.breakpoint.mdAndUp,
+                  ['pl-2']: showMapFilter & $vuetify.breakpoint.sm, -->
+        <filter-map-view :totalHeight="mapFilterHeight"
+                        :totalWidth="mapFilterWidth"
+                        :expanded="showMapFilter"
+                        @pointClicked="catchPointClicked"
+                        @clearButtonClicked="catchClearButtonClick" />
+
       </v-flex>
     </v-layout>
   </v-container>
@@ -353,12 +342,14 @@ export default {
       aboutPageBackRoute: 'metadata/aboutPageBackRoute',
       updatingTags: 'metadata/updatingTags',
       scrollPositionDelay: 'metadata/scrollPositionDelay',
+      searchPlaceholderText: 'metadata/searchPlaceholderText',
+      searchPlaceholderTextSmall: 'metadata/searchPlaceholderTextSmall',
       browseScrollPosition: 'browseScrollPosition',
       controls: 'controls',
       cardBGImages: 'cardBGImages',
     }),
     searchBarPlaceholder() {
-      return this.$vuetify.breakpoint.smAndUp ? this.searchLabelText : this.searchLabelTextSmall;
+      return this.$vuetify.breakpoint.mdAndUp ? this.searchPlaceholderText : this.searchPlaceholderTextSmall;
     },
     keywordsPlaceholder: function keywordsPlaceholder() {
       return this.searchingMetadatasContent || this.updatingTags;
@@ -451,8 +442,6 @@ export default {
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
     searchTerm: '',
-    searchLabelText: 'Enter search term',
-    searchLabelTextSmall: 'Enter research term, topic or author name',
     controlsLabel: 'List Controls',
     placeHolderAmount: 6,
     suggestionText: 'Try one of these categories',
