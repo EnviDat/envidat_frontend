@@ -1,124 +1,75 @@
 <template>
   <v-layout>
-    <v-flex
-      xs12
-      md6
-      offset-md6
-    >
+    <v-flex xs12 md6 offset-md6 >
+
       <v-layout column>
+
         <v-flex xs12>
-          <v-layout
-            row
-            align-center
-          >
-            <v-flex
-              xs4
-              lg3
-              hidden-md-and-down
-            >
-              <img
-                style="width: 200px;"
-                :src="lgLogo"
-                :alt="alternativeText"
-              >
+          <v-layout row align-center >
+
+            <!-- <v-flex xs4 lg3
+                    hidden-lg-and-down >
+              <img style="width: 200px;"
+                    :src="lgLogo"
+                    :alt="alternativeText" >
+            </v-flex> -->
+
+            <v-flex hidden-sm-and-down
+                    xs3 >
+              <img :src="mdLogo" :alt="alternativeText">
             </v-flex>
 
-            <v-flex
-              hidden-sm-and-down
-              hidden-lg-and-up
-              xs3
-            >
-              <img
-                :src="mdLogo"
-                :alt="alternativeText"
-              >
+            <v-flex hidden-xs-only
+                    hidden-md-and-up
+                    xs1 >
+              <img :src="smLogo"
+                    :alt="alternativeText" >
             </v-flex>
 
-            <v-flex
-              hidden-xs-only
-              hidden-md-and-up
-              xs1
-            >
-              <img
-                :src="smLogo"
-                :alt="alternativeText"
-              >
+            <v-flex xs3 hidden-sm-and-up >
+              <img :src="smLogo"
+                    :alt="alternativeText" >
             </v-flex>
 
-            <v-flex
-              xs3
-              hidden-sm-and-up
-            >
-              <img
-                :src="smLogo"
-                :alt="alternativeText"
-              >
-            </v-flex>
-
-            <v-flex
-              xs8
-              lg9
-              pl-5
-              hidden-md-and-down
-              class="envidatTitle display-4"
-              style="font-size: 100px !important;"
-            >
+            <v-flex xs8 lg9
+                    pl-5
+                    hidden-md-and-down
+                    class="envidatTitle display-4"
+                    style="font-size: 80px !important;" >
               {{ title }}
             </v-flex>
 
-            <v-flex
-              xs8
-              pl-2
-              hidden-sm-and-down
-              hidden-lg-and-up
-              class="envidatTitle display-3"
-            >
+            <v-flex xs8
+                    pl-2
+                    hidden-sm-and-down
+                    hidden-lg-and-up
+                    class="envidatTitle display-3" >
               {{ title }}
             </v-flex>
 
-            <v-flex
-              xs8
-              pl-2
-              hidden-xs-only
-              hidden-md-and-up
-              class="envidatTitle display-2"
-            >
+            <v-flex xs8
+                    pl-2
+                    hidden-xs-only
+                    hidden-md-and-up
+                    class="envidatTitle display-2" >
               {{ title }}
             </v-flex>
 
-            <v-flex
-              xs9
-              hidden-sm-and-up
-              class="envidatTitle display-3"
-            >
+            <v-flex xs9
+                    hidden-sm-and-up
+                    class="envidatTitle display-3" >
               {{ title }}
             </v-flex>
           </v-layout>
         </v-flex>
 
         <v-flex pt-5>
-          <slogan-card
-            :slogan="slogan"
-            :sub-slogan="subSlogan"
-            :button-text="buttonText"
-            :button-callback="buttonCallback"
-          />
+          <slogan-card :slogan="slogan"
+                        :sub-slogan="subSlogan"
+                        :button-text="buttonText"
+                        :button-callback="buttonCallback" />
         </v-flex>
 
-        <!-- <v-flex hidden-sm-and-down pt-5
-                  class="envidatSlogan display-1">
-            {{ slogan }}
-          </v-flex>
-
-          <v-flex hidden-xs-only hidden-md-and-up pt-3
-                  class="envidatSlogan headline">
-            {{ slogan }}
-          </v-flex>
-
-          <v-flex hidden-sm-and-up pt-3
-                  class="envidatSlogan headline">
-            {{ slogan }}
-          </v-flex> -->
       </v-layout>
     </v-flex>
   </v-layout>

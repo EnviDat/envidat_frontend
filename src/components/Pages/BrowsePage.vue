@@ -10,7 +10,7 @@
               :class="{ 'stickyFilterBar': $vuetify.breakpoint.smAndUp }"
               :style="$vuetify.breakpoint.sm ? 'top: 42px !important;' : ''" >
 
-        <filter-bar-view :showFiltering="true"
+        <!-- <filter-bar-view :showFiltering="true"
                           :searchViewLabelText="searchBarPlaceholder"
                           :controlsLabel="controlsLabel"
                           :searchTerm="searchTerm"
@@ -31,6 +31,21 @@
                           @clickedMapExpand="toggleMapExpand"
                           @mapFilterChanged="catchMapFilterChanged"
                           @controlsChanged="controlsChanged"
+        /> -->
+
+        <filter-keywords-view
+          :compactLayout="$vuetify.breakpoint.smAndDown"
+          :allTags="allTags"
+          :selectedTagNames="selectedTagNames"
+          :popularTags="popularTags"
+          :expanded="filterExpanded"
+          :expandButtonText="filterExpandButtonText"
+          :expandedButtonText="filterExpandedButtonText"
+          :showPlaceholder="keywordsPlaceholder"
+          @clickedExpand="catchFilterExpandClicked"
+          @clickedTag="catchTagClicked"
+          @clickedTagClose="catchTagCloseClicked"
+          @clickedClear="catchTagCleared"
         />
       </v-flex>
 
@@ -72,8 +87,8 @@
 <script>
 import { mapGetters } from 'vuex';
 import { BROWSE_PATH } from '@/router/routeConsts';
-import FilterBarView from '@/components/Filtering/FilterBarView';
 import FilterMapView from '@/components/Filtering/FilterMapView';
+import FilterKeywordsView from '@/components/Filtering/FilterKeywordsView';
 import MetadataListView from '@/components/Views/MetadataListView';
 import {
   SEARCH_METADATA,
@@ -196,6 +211,9 @@ export default {
     },
     catchClearButtonClick: function catchClearButtonClick() {
       this.$store.commit(`metadata/${CLEAR_PINNED_METADATA}`);
+    },
+    catchFilterExpandClicked: function catchFilterExpandClicked() {
+      this.filterExpanded = !this.filterExpanded;
     },
     controlsChanged: function controlsChanged(controlsActive) {
       // 0-entry: listView, 1-entry: mapActive
@@ -435,8 +453,8 @@ export default {
     },
   },
   components: {
-    FilterBarView,
     FilterMapView,
+    FilterKeywordsView,
     MetadataListView,
   },
   data: () => ({
@@ -451,6 +469,9 @@ export default {
     maxMapFilterHeight: 725,
     mapFilterVisibleIds: [],
     listViewActive: false,
+    filterExpanded: false,
+    filterExpandButtonText: 'Show all tags',
+    filterExpandedButtonText: 'Hide all tags',
   }),
 };
 </script>

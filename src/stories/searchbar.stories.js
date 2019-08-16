@@ -32,11 +32,6 @@ Vue.component('v-layout', VLayout);
 Vue.component('v-flex', VFlex);
 
 
-export const methods = {
-  onClick: action('clicked'),
-  onClear: action('clicked on clear'),
-};
-
 storiesOf("4 Filtering | SearchBarView", module)
   .add("basic", () => ({
     components: { SearchBarView },
@@ -47,7 +42,17 @@ storiesOf("4 Filtering | SearchBarView", module)
           @clicked="onClick"
           @searchCleared="onClear"
           />`,
-    methods,
+    methods: {
+      onClick(searchTerm) {
+        action('clicked search for "' + searchTerm + '"');
+      },
+      onClear() {
+        action('cleared Search')(this.searchTerm = '');
+      },
+    },
+    data: () => ({
+      searchTerm: '',
+    }),
   }))
   .add('small', () => ({
     components: { SmallSearchBarView },
@@ -56,6 +61,7 @@ storiesOf("4 Filtering | SearchBarView", module)
         <v-flex py-1>
             <small-search-bar-view
                         labelText="Search for something"
+                        :searchTerm="searchTerm"
                         buttonText="SEARCH"
                         hasButton
                         :searchCount='0'
@@ -67,6 +73,7 @@ storiesOf("4 Filtering | SearchBarView", module)
         <v-flex py-1>
             <small-search-bar-view
                         labelText="Search for something"
+                        :searchTerm="searchTerm"
                         buttonText="SEARCH"
                         :searchCount='0'
                         compactLayout
@@ -80,11 +87,15 @@ storiesOf("4 Filtering | SearchBarView", module)
             <v-flex xs6>
                 <small-search-bar-view
                             labelText="xs6 optimal for button search"
+                            :searchTerm="searchTerm"
                             buttonText="SEARCH"
                             hasButton
+                            showSearchCount
                             :searchCount='0'
                             compactLayout
-                />
+                            @clicked="onClick"
+                            @searchCleared="onClear"
+                              />
             </v-flex>
             </v-layout>
         </v-flex>
@@ -94,24 +105,36 @@ storiesOf("4 Filtering | SearchBarView", module)
             <v-flex xs4 px-1>
                 <small-search-bar-view
                             labelText="xs4 no button"
-                            :searchCount='0'
+                            :searchTerm="searchTerm"
+                            showSearchCount
+                            :searchCount='123'
                             compactLayout
-                />
+                            @clicked="onClick"
+                            @searchCleared="onClear"
+                              />
             </v-flex>
 
             <v-flex xs3 px-1>
                 <small-search-bar-view
                             labelText="xs3 with compactLayout"
-                            :searchCount='0'
+                            :searchTerm="searchTerm"
+                            showSearchCount
+                            :searchCount='12'
                             compactLayout
-                />
+                            @clicked="onClick"
+                            @searchCleared="onClear"
+                            />
             </v-flex>
 
             <v-flex xs3 px-1>
                 <small-search-bar-view
                             labelText="xs3 no compactLayout"
+                            :searchTerm="searchTerm"
+                            showSearchCount
                             :searchCount='0'
-                />
+                            @clicked="onClick"
+                            @searchCleared="onClear"
+                              />
             </v-flex>
             
             </v-layout>
@@ -119,12 +142,12 @@ storiesOf("4 Filtering | SearchBarView", module)
 
       </v-layout>`,
     methods: {
-      onClick() {
-        action('clicked search');
+      onClick(search) {
+        action('clicked search for "' + search + '"');
       },
       onClear() {
-        action('cleared Search')(this.searchTerm);
-      }
+        action('cleared Search')(this.searchTerm = '');
+      },
     },
     data: () => ({
       searchTerm: '',
