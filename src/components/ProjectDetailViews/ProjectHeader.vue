@@ -69,7 +69,9 @@ export default {
         }
       }
 
-      img.src = imgSrc;
+      if (imgSrc !== undefined) {
+        img.src = imgSrc;
+      }
       // img.onload = this.setHeightAndWidth;
 
       return img;
@@ -77,16 +79,18 @@ export default {
     dynamicCardBackground: function dynamicCardBackground() {
       const gradient = this.dark ? this.blackTopToBottom : this.whiteTopToBottom;
 
-      if (this.titleImage) {
-        return `background-image: linear-gradient(0deg, ${gradient}), url(${this.titleImage.src});
+      let style = `position: absolute; top: 0px; right: 0px;
+                  height: ${this.height}px; width: 100%;
+        background-image: linear-gradient(0deg, ${gradient});
         background-position: center, center; background-size: cover;
-        background-repeat: initial;
-        
-        position: absolute; top: 0px; right: 0px;
-        height: ${this.height}px; width: 100%;`;
+        background-repeat: initial;`;
+
+      if (this.titleImage.src !== '') {
+        style += `background-image: linear-gradient(0deg, ${gradient}), url(${this.titleImage.src});
+        filter: blur(2px);`;
       }
 
-      return '';
+      return style;
     },
   },
   methods: {
