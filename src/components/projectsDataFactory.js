@@ -24,7 +24,19 @@ export default {
           }
 
           if (extra.key === 'parent') {
-            el.parent = extra.value;
+            if (extra.value.trim() === '(RACLETS)') {
+
+              for (let l = 0; l < projects.length; l++) {
+                const p = projects[l];
+                if (p.title === 'RACLETS Field Campaign'){
+                  el.parent = p;
+                  break;
+                }
+              }
+              
+            } else {
+              el.parent = extra.value;
+            }
           }
         }
       }
