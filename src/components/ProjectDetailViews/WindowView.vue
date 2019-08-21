@@ -1,5 +1,5 @@
 <template>
-<v-card tile >
+<v-card tile min-height="200">
 
 <!-- <v-card color="black"
         dark
@@ -33,30 +33,67 @@
 
     <v-flex>
       <v-window v-model="window"
-                class="elevation-1"
                 vertical
       >
+        <v-window-item v-if="!subProjects && showPlaceholder"
+                        class="ma-3">
+
+          <v-card height="200" class="pa-3">
+            <div class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-shimmer">
+              <div class="bone bone-type-heading " />
+            </div>
+
+            <div class="pt-4 skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-shimmer">
+              <div class="bone bone-type-multiline bone-style-steps" />
+            </div>
+
+          </v-card>
+
+        </v-window-item>
+
         <v-window-item v-for="(sub, index) in subProjects"
                         :key="'window_' + index" >
 
           <v-card height="200">
+            <v-card-title>
+              <strong class="title">{{ sub.title }}</strong>
+            </v-card-title>
+
             <v-card-text>
-              <v-layout align-center
+              <v-layout row wrap
+                        align-center
                         justify-center
                         fill-height
-                        mb-3 >
-                <strong class="title">{{ sub.title }}</strong>
+                        >
+                <!-- <strong class="title">{{ sub.title }}</strong> -->
 
-                <v-spacer></v-spacer>
+                <!-- <v-spacer></v-spacer>
                 <v-btn icon>
                   <v-icon>find_in_page</v-icon>
-                </v-btn>
+                </v-btn> -->
+                <v-flex xs11>
+                  {{ sub.description }}
+                </v-flex>
 
-                <m-markdown-preview :markdown="sub.description"
+                <v-flex xs1>
+                  <v-btn icon>
+                    <v-icon>find_in_page</v-icon>
+                  </v-btn>
+                </v-flex>
+
+                <!-- <m-markdown-preview :markdown="sub.description"
                                     :options="{ html: true,
                                                 xhtmlOut: true,
                                                 linkify: true,
-                                                breaks: true }" />
+                                                breaks: true }" /> -->
+                <v-flex xs12>Metadata</v-flex>
+
+                <v-flex xs12
+                        v-for="(meta, index) in metadatas"
+                        :key="index">
+                  {{ meta.id }}
+                </v-flex>
+
               </v-layout>
             </v-card-text>
           </v-card>
@@ -105,6 +142,7 @@ export default {
   },
   props: {
     subProjects: Array,
+    metadatas: Array,
     showPlaceholder: Boolean,
   },
   computed: {
