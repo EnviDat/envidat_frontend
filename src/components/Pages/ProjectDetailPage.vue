@@ -27,11 +27,44 @@
                        />
       </v-flex>
 
+      <div v-if="currentProject.subProjects" >
 
-      <v-flex xs12 lg10 offset-lg1
-              py-2 px-3 >
-        <window-view :subProjects="currentProject.subProjects" />
-      </v-flex>
+        <v-flex xs12 lg10 offset-lg1
+                py-2 px-3 >
+          <div class="bodytitle title">Subprojects</div>
+        </v-flex>
+
+        <v-flex xs12 lg10 offset-lg1
+                py-2 px-3 >
+          <window-vertical-view :subProjects="currentProject.subProjects" />
+        </v-flex>
+
+        <v-flex xs12 lg10 offset-lg1
+                py-2 px-3 >
+          Subprojects
+        </v-flex>
+
+        <v-flex xs12 lg10 offset-lg1
+                py-2 px-3 >
+          <v-container pa-0 grid-list-lg fluid>
+          <v-layout row wrap>
+
+            <v-flex v-for="(project, index) in currentProject.subProjects" :key="'sub_' + index">
+              <project-card :id="project.id"
+                            :title="project.title"
+                            :img="project.image_display_url"
+                            :defaultImg="defaultImg"
+                            :description="project.description"
+                            :subProjects="project.subProjects"
+                            @cardClick="onCardClick"
+                            @subprojectClick="onSubprojectClick" />
+            </v-flex>
+
+          </v-layout>
+          </v-container>
+        </v-flex>
+
+      </div>
 
       <v-flex v-if="hasMetadatas"
               xs12 lg10 offset-lg1 >
@@ -79,7 +112,9 @@ import {
 
 import ProjectHeader from '@/components/ProjectDetailViews/ProjectHeader';
 import ProjectBody from '@/components/ProjectDetailViews/ProjectBody';
+import ProjectCard from '@/components/Cards/ProjectCard';
 import MetadataListView from '@/components/Views/MetadataListView';
+import WindowVerticalView from '@/components/ProjectDetailViews/WindowVerticalView';
 import WindowView from '@/components/ProjectDetailViews/WindowView';
 
 import missionImg from '@/assets/about/mission.jpg';
@@ -117,15 +152,18 @@ export default {
       return this.$route.params.id;
     },
     currentProject() {
+      let current = null;
+
       for (let i = 0; i < this.projects.length; i++) {
         const el = this.projects[i];
 
         if (el.id === this.projectId) {
-          return el;
+          current = el;
+          break;
         }
       }
 
-      return null;
+      return current;
     },
     mapFilteringPossible: function mapFilteringPossible() {
       return this.$vuetify.breakpoint.smAndUp;
@@ -168,7 +206,9 @@ export default {
   components: {
     ProjectHeader,
     ProjectBody,
+    ProjectCard,
     MetadataListView,
+    WindowVerticalView,
     WindowView,
   },
   data: () => ({

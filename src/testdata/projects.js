@@ -4,7 +4,7 @@ export default {
     "result": [
         {
             "display_name": "Aerosols (RACLETS)",
-            "description": "",
+            "description": "Subproject of RACLETS: Aerosols",
             "image_display_url": "",
             "package_count": 0,
             "created": "2019-07-11T14:03:37.443395",
@@ -33,7 +33,7 @@ export default {
         },
         {
             "display_name": "Clouds in-situ (RACLETS)",
-            "description": "",
+            "description": "Subproject of RACLETS: Clouds in-situ",
             "image_display_url": "",
             "package_count": 0,
             "created": "2019-07-11T14:04:00.259360",
@@ -332,7 +332,7 @@ export default {
         },
         {
             "display_name": "Meteorology (RACLETS)",
-            "description": "",
+            "description": "Subproject of RACLETS: Meteorology",
             "image_display_url": "",
             "package_count": 0,
             "created": "2019-07-11T14:04:31.578927",
@@ -361,7 +361,7 @@ export default {
         },
         {
             "display_name": "Modeling (RACLETS)",
-            "description": "",
+            "description": "Subproject of RACLETS: Modeling",
             "image_display_url": "",
             "package_count": 0,
             "created": "2019-07-11T14:05:04.589082",
@@ -390,7 +390,7 @@ export default {
         },
         {
             "display_name": "Precipitation (RACLETS)",
-            "description": "",
+            "description": "Subproject of RACLETS: Precipitation",
             "image_display_url": "",
             "package_count": 0,
             "created": "2019-07-11T14:05:23.424465",
@@ -448,7 +448,7 @@ export default {
         },
         {
             "display_name": "Remote Sensing (RACLETS)",
-            "description": "",
+            "description": "Subproject of RACLETS: Remote Sensing",
             "image_display_url": "",
             "package_count": 0,
             "created": "2019-07-11T14:05:54.911019",
@@ -547,7 +547,7 @@ export default {
         },
         {
             "display_name": "Snow (RACLETS)",
-            "description": "",
+            "description": "Subproject of RACLETS: Snow",
             "image_display_url": "",
             "package_count": 0,
             "created": "2019-07-11T14:06:09.290756",
