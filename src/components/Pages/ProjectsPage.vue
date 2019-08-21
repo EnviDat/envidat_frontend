@@ -133,7 +133,7 @@ export default {
     ProjectCard,
   },
   data: () => ({
-    PageBGImage: "./app_b_browsepage.jpg",
+    PageBGImage: './app_b_browsepage.jpg',
     mission,
     missionSmall,
   }),

@@ -15,7 +15,10 @@
 
         <v-flex v-if="cardImg.src"
                 xs6 pa-0 >
-          <v-img height="100%" cover :src="cardImg.src" />
+          <v-img height="100%"
+                  :cover="imgWidth < 200"
+                  :contain="imgWidth > 200"
+                  :src="cardImg.src" />
         </v-flex>
 
         <!-- <v-flex xs8 ml-3>
@@ -24,8 +27,8 @@
           </div>
         </v-flex> -->
 
-        <v-flex xs6 px-2 pt-4>
-          <div class="headline mb-0"
+        <v-flex xs6 ma-auto>
+          <div class="headline"
                 :class="this.dark ? 'white--text' : 'black--text'"
           >
             {{ truncatedTitle }}
@@ -86,7 +89,7 @@ export default {
       if (imgSrc !== undefined) {
         img.src = imgSrc;
       }
-      // img.onload = this.setHeightAndWidth;
+      img.onload = this.setHeightAndWidth;
 
       return img;
     },
@@ -129,15 +132,15 @@ export default {
     subprojectClick(sub) {
       this.$emit('subprojectClick', sub.id);
     },
-    // setHeightAndWidth() {
-    //   this.imgWidth = this.cardImg.width;
-    //   this.imgHeight = this.cardImg.height;
-    // },
+    setHeightAndWidth() {
+      this.imgWidth = this.cardImg.width;
+      this.imgHeight = this.cardImg.height;
+    },
   },
   data: () => ({
     // headerImgWidth: 400,
-    // imgWidth: 0,
-    // imgHeight: 0,
+    imgWidth: 0,
+    imgHeight: 0,
     maxDescriptionLength: 290,
     maxTitleLength: 100,
     // maxTags: 3,

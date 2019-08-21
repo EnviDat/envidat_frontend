@@ -28,46 +28,14 @@
       </v-flex>
 
       <div v-if="currentProject.subProjects" >
-
         <v-flex xs12 lg10 offset-lg1
                 py-2 px-3 >
-          <div class="bodytitle title">Subprojects</div>
+          <project-subprojects :defaultImg="missionImg"
+                                :subProjects="currentProject.subProjects"
+                                @projectClick="catchProjectClick"
+                                @subprojectClick="catchSubprojectClick"
+                                />
         </v-flex>
-
-        <v-flex xs12 lg10 offset-lg1
-                py-2 px-3 >
-          <window-vertical-view :subProjects="currentProject.subProjects" />
-        </v-flex>
-
-        <v-flex xs12 lg10 offset-lg1
-                py-2 px-3 >
-          Subprojects
-        </v-flex>
-
-        <v-flex xs12 lg10 offset-lg1
-                py-2 px-3 >
-          <v-container pa-0 grid-list-lg fluid>
-          <v-layout row wrap>
-
-            <v-flex v-for="(project, index) in currentProject.subProjects"
-                    :key="'sub_' + index"
-                    xs4 sm3
-                    pa-3>
-
-              <project-card :id="project.id"
-                            :title="project.title"
-                            :img="project.image_url"
-                            :defaultImg="defaultImg"
-                            :description="project.description"
-                            :subProjects="project.subProjects"
-                            @cardClick="onCardClick"
-                            @subprojectClick="onSubprojectClick" />
-            </v-flex>
-
-          </v-layout>
-          </v-container>
-        </v-flex>
-
       </div>
 
       <v-flex v-if="hasMetadatas"
@@ -103,7 +71,7 @@
    * The projects page lists all the projects and their subprojects.
    */
 import { mapGetters } from 'vuex';
-import { PROJECTS_PATH } from '@/router/routeConsts';
+import { PROJECTS_PATH, PROJECT_DETAIL_NAME } from '@/router/routeConsts';
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
@@ -112,14 +80,13 @@ import {
   GET_PROJECTS,
   PROJECTS_NAMESPACE,
   PROJECTS_DETAIL_PAGE,
+  SET_PROJECTDETAIL_PAGE_BACK_URL,
 } from '@/store/projectsMutationsConsts';
 
 import ProjectHeader from '@/components/ProjectDetailViews/ProjectHeader';
 import ProjectBody from '@/components/ProjectDetailViews/ProjectBody';
-import ProjectCard from '@/components/Cards/ProjectCard';
+import ProjectSubprojects from '@/components/ProjectDetailViews/ProjectSubprojects';
 import MetadataListView from '@/components/Views/MetadataListView';
-import WindowVerticalView from '@/components/ProjectDetailViews/WindowVerticalView';
-import WindowView from '@/components/ProjectDetailViews/WindowView';
 
 import missionImg from '@/assets/about/mission.jpg';
 
@@ -129,11 +96,36 @@ export default {
      * @description beforeRouteEnter is used to change background image of this page.
      * It's called via vue-router.
      */
-  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+  beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.commit(SET_CURRENT_PAGE, PROJECTS_DETAIL_PAGE);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
+
+      let backRoute = { path: PROJECTS_PATH };
+
+      if (vm.currentProject.parent) {
+        backRoute = {
+          name: PROJECT_DETAIL_NAME,
+          params: { id: vm.currentProject.parent.id },
+        };
+      }
+
+      vm.$store.commit(`${PROJECTS_NAMESPACE}/${SET_PROJECTDETAIL_PAGE_BACK_URL}`, backRoute);
     });
+  },
+  beforeRouteUpdate(to, from, next) {
+    const toProject = this.getProject(to.params.id);
+    let backRoute = { path: PROJECTS_PATH };
+
+    if (toProject.parent) {
+      backRoute = {
+        name: PROJECT_DETAIL_NAME,
+        params: { id: toProject.parent.id },
+      };
+    }
+    this.$store.commit(`${PROJECTS_NAMESPACE}/${SET_PROJECTDETAIL_PAGE_BACK_URL}`, backRoute);
+
+    next();
   },
   beforeMount() {
     if (this.projects.length <= 0) {
@@ -156,18 +148,7 @@ export default {
       return this.$route.params.id;
     },
     currentProject() {
-      let current = null;
-
-      for (let i = 0; i < this.projects.length; i++) {
-        const el = this.projects[i];
-
-        if (el.id === this.projectId) {
-          current = el;
-          break;
-        }
-      }
-
-      return current;
+      return this.getProject(this.projectId);
     },
     mapFilteringPossible: function mapFilteringPossible() {
       return this.$vuetify.breakpoint.smAndUp;
@@ -177,6 +158,20 @@ export default {
     },
   },
   methods: {
+    getProject(id) {
+      let current = null;
+
+      for (let i = 0; i < this.projects.length; i++) {
+        const el = this.projects[i];
+
+        if (el.id === id) {
+          current = el;
+          break;
+        }
+      }
+
+      return current;
+    },
     projectsCardsParents() {
       const noSubs = [];
 
@@ -206,14 +201,28 @@ export default {
 
       this.$router.push({ path: PROJECTS_PATH });
     },
+    catchProjectClick(projectId) {
+      this.$store.commit(`${PROJECTS_NAMESPACE}/${SET_PROJECTDETAIL_PAGE_BACK_URL}`, this.$route);
+
+      this.$router.push({
+        name: PROJECT_DETAIL_NAME,
+        params: { id: projectId },
+      });
+    },
+    catchSubprojectClick(subprojectId) {
+      this.$store.commit(`${PROJECTS_NAMESPACE}/${SET_PROJECTDETAIL_PAGE_BACK_URL}`, this.$route);
+
+      this.$router.push({
+        name: PROJECT_DETAIL_NAME,
+        params: { id: subprojectId },
+      });
+    },
   },
   components: {
     ProjectHeader,
     ProjectBody,
-    ProjectCard,
+    ProjectSubprojects,
     MetadataListView,
-    WindowVerticalView,
-    WindowView,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
