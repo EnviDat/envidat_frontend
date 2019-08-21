@@ -41,6 +41,7 @@ Vue.component("v-img", VImg);
 Vue.component("v-layout", VLayout);
 Vue.component("v-flex", VFlex);
 
+import WindowVerticalView from "@/components/ProjectDetailViews/WindowVerticalView.vue";
 import WindowView from "@/components/ProjectDetailViews/WindowView.vue";
 
 import projectJSON from "@/testdata/projects";
@@ -56,10 +57,43 @@ export const methods = {
 };
 
 storiesOf("7 Project | Detail Views", module)
+  .add("Window Vertical View", () => ({
+    components: { WindowVerticalView },
+    template: `
+    <v-layout row wrap>
+
+      <v-flex xs12 py-2 >
+        <window-vertical-view :showPlaceholder="false" />
+      </v-flex>
+
+      <v-flex xs12 py-2 >
+        <window-vertical-view :showPlaceholder="true" />
+      </v-flex>
+
+      <v-flex xs12 py-2 >
+        <window-vertical-view :subProjects="projectDetail1.subProjects" :metadatas="projectDetail1.packages" />
+      </v-flex>
+
+      <v-flex xs12 py-2 >
+        <window-vertical-view :subProjects="projectDetail2.subProjects" :metadatas="projectDetail2.packages" />
+      </v-flex>
+      
+    </v-layout>
+    `,
+    methods,
+    data: () => ({
+      projectDetail1,
+      projectDetail2,
+    })
+  }))
   .add("Window View", () => ({
     components: { WindowView },
     template: `
     <v-layout row wrap>
+
+      <v-flex xs12 py-2 >
+        <window-view :showPlaceholder="false" />
+      </v-flex>
 
       <v-flex xs12 py-2 >
         <window-view :showPlaceholder="true" />
@@ -72,10 +106,6 @@ storiesOf("7 Project | Detail Views", module)
       <v-flex xs12 py-2 >
         <window-view :subProjects="projectDetail2.subProjects" :metadatas="projectDetail2.packages" />
       </v-flex>
-
-      <v-flex xs12 py-2 >
-        <window-view :showPlaceholder="false" />
-      </v-flex>
       
     </v-layout>
     `,
@@ -85,3 +115,4 @@ storiesOf("7 Project | Detail Views", module)
       projectDetail2,
     })
   }));
+

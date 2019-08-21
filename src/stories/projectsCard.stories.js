@@ -81,6 +81,7 @@ storiesOf("3 Cards | Projects Cards", module)
   .add("collection of Parents", () => ({
     components: { ProjectCard },
     template: `
+    <v-container grid-list-lg fluid fill-height pa-0>
     <v-layout row wrap>
 
       <v-flex xs3 pa-3
@@ -99,6 +100,7 @@ storiesOf("3 Cards | Projects Cards", module)
       </v-flex>
 
     </v-layout>
+    </v-container>
     `,
     methods,
     data: () => ({
@@ -109,6 +111,7 @@ storiesOf("3 Cards | Projects Cards", module)
   .add("collection of Children", () => ({
     components: { ProjectCard },
     template: `
+    <v-container grid-list-lg fluid fill-height pa-0>
     <v-layout row wrap>
 
       <v-flex xs3 pa-3
@@ -127,6 +130,7 @@ storiesOf("3 Cards | Projects Cards", module)
       </v-flex>
 
     </v-layout>
+    </v-container>
     `,
     methods,
     data: () => ({

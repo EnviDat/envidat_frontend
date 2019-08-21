@@ -1,7 +1,7 @@
 <template>
   <v-card tile min-height="200">
 
-    <!-- <v-layout align-center>
+    <v-layout align-center>
       <v-item-group v-model="window"
                     mandatory
                     class="shrink mr-2"
@@ -83,6 +83,11 @@
                     </v-btn>
                   </v-flex>
 
+                  <!-- <m-markdown-preview :markdown="sub.description"
+                                      :options="{ html: true,
+                                                  xhtmlOut: true,
+                                                  linkify: true,
+                                                  breaks: true }" /> -->
                   <v-flex xs12>Metadata</v-flex>
 
                   <v-flex xs12
@@ -98,23 +103,6 @@
           </v-window-item>
         </v-window>
       </v-flex>
-    </v-layout> -->
-
-    <v-card-title>Subprojects</v-card-title>
-
-    <v-layout row wrap>
-
-      <v-flex v-for="(project, index) in subProjects" :key="'sub_' + index">
-        <project-card :id="project.id"
-                      :title="project.title"
-                      :img="project.image_display_url"
-                      :defaultImg="defaultImg"
-                      :description="project.description"
-                      :subProjects="project.subProjects"
-                      @cardClick="onCardClick"
-                      @subprojectClick="onSubprojectClick" />
-      </v-flex>
-
     </v-layout>
 
   </v-card>
@@ -123,11 +111,10 @@
 <script>
 import MMarkdownPreview from 'm-markdown-preview';
 // import BaseIconButton from '@/components/BaseElements/BaseIconButton';
-import ProjectCard from '@/components/Cards/ProjectCard';
 
 export default {
   components: {
-    ProjectCard,
+    // BaseIconButton,
     MMarkdownPreview,
   },
   props: {
