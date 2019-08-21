@@ -49,10 +49,14 @@
           <v-container pa-0 grid-list-lg fluid>
           <v-layout row wrap>
 
-            <v-flex v-for="(project, index) in currentProject.subProjects" :key="'sub_' + index">
+            <v-flex v-for="(project, index) in currentProject.subProjects"
+                    :key="'sub_' + index"
+                    xs4 sm3
+                    pa-3>
+
               <project-card :id="project.id"
                             :title="project.title"
-                            :img="project.image_display_url"
+                            :img="project.image_url"
                             :defaultImg="defaultImg"
                             :description="project.description"
                             :subProjects="project.subProjects"

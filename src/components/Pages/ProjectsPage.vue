@@ -16,7 +16,7 @@
         </img-and-text-layout>
       </v-flex>
 
-      <v-flex xs12 lg10 offset-lg1 px-3 mt-5>
+      <v-flex xs12 lg10 offset-lg1 mt-5>
         <v-container grid-list-lg pa-0>
           <v-layout row wrap>
 

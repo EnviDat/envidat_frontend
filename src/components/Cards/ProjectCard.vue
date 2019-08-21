@@ -2,32 +2,39 @@
   <v-card ripple
           hover
           height="100%"
-          style="max-width: 350px"
+          style=" /* max-width: 350px */"
           @click.native="cardClick" >
 
-    <v-layout row
-              style="background-color: white;"
-              class="fullWidthImg elevation-2" >
+    <v-card-title class="pa-0" style="height: 150px;">
+      <v-container grid-list-lg fill-height pa-0 >
+        <!-- grid-list-lg is needed for the negative margin on the v-layout
+              fill-heigth is needed if the v-card-title is a fixed height -->
+      <v-layout row
+                style="background-color: white;"
+                class="elevation-2" >
 
-      <v-flex xs6 pa-0>
-        <v-img height="100%" cover :src="cardImg.src" />
-      </v-flex>
+        <v-flex v-if="cardImg.src"
+                xs6 pa-0 >
+          <v-img height="100%" cover :src="cardImg.src" />
+        </v-flex>
 
-      <!-- <v-flex xs8 ml-3>
-        <div class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-shimmer">
-          <div class="bone bone-type-multiline bone-style-steps" />
-        </div>
-      </v-flex> -->
+        <!-- <v-flex xs8 ml-3>
+          <div class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-shimmer">
+            <div class="bone bone-type-multiline bone-style-steps" />
+          </div>
+        </v-flex> -->
 
-      <v-flex xs6 px-2 pt-4>
-        <div class="headline mb-0"
-              :class="this.dark ? 'white--text' : 'black--text'"
-        >
-          {{ truncatedTitle }}
-        </div>
-      </v-flex>
+        <v-flex xs6 px-2 pt-4>
+          <div class="headline mb-0"
+                :class="this.dark ? 'white--text' : 'black--text'"
+          >
+            {{ truncatedTitle }}
+          </div>
+        </v-flex>
 
-    </v-layout>
+      </v-layout>
+      </v-container>
+    </v-card-title>
 
     <v-card-text  >
       {{ truncatedDescription }}
@@ -76,8 +83,10 @@ export default {
         }
       }
 
-      img.src = imgSrc;
-      img.onload = this.setHeightAndWidth;
+      if (imgSrc !== undefined) {
+        img.src = imgSrc;
+      }
+      // img.onload = this.setHeightAndWidth;
 
       return img;
     },
@@ -120,15 +129,15 @@ export default {
     subprojectClick(sub) {
       this.$emit('subprojectClick', sub.id);
     },
-    setHeightAndWidth() {
-      this.imgWidth = this.cardImg.width;
-      this.imgHeight = this.cardImg.height;
-    },
+    // setHeightAndWidth() {
+    //   this.imgWidth = this.cardImg.width;
+    //   this.imgHeight = this.cardImg.height;
+    // },
   },
   data: () => ({
-    headerImgWidth: 400,
-    imgWidth: 0,
-    imgHeight: 0,
+    // headerImgWidth: 400,
+    // imgWidth: 0,
+    // imgHeight: 0,
     maxDescriptionLength: 290,
     maxTitleLength: 100,
     // maxTags: 3,
@@ -142,25 +151,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-  .fullWidthImg,
-  .sideImg {
-    position: relative;
-    left: -4px;
-    height: 130px;
-    border-radius: 2px;
-  }
-
-  .fullWidthImg > .flex >.v-image {
-    border-radius: 2px;
-  }
-
-  .fullWidthImg {
-    width: 375px;
-  }
-
-  .sideImg {
-    width: 200px;
-  }
   .placeholder .black_title {
     background-color: rgba(0,0,0,.87) !important;
   }
