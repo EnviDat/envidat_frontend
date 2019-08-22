@@ -50,6 +50,7 @@
                   metadataListStyling }"
       >
         <metadata-list-view
+          :listContent="filterContent"
           :list-view="listViewActive"
           :show-map-filter="showMapFilter"
           :map-filtering-possible="mapFilteringPossible"
