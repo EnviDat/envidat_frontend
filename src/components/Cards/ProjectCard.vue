@@ -46,25 +46,30 @@
     </v-card-text>
 
 
-    <v-card-text v-if="subProjects" >
-      <!-- <v-card class="py-1"> -->
+    <strong v-if="subProjects"
+            class="px-3 py-0">Subprojects</strong>
+
+    <v-card-text v-if="subProjects">
+
       <v-layout v-for="sub in subProjects"
                 :key="sub.id"
                 row wrap
-                align-center>
-        <v-flex xs10 py-0>
-          SubProject: {{ sub.title }}
-        </v-flex>
-        <v-flex xs2 py-0>
+                align-center
+                pr-2>
+
+        <v-flex xs11 py-0>{{ sub.title }}</v-flex>
+
+        <v-flex xs1 py-0>
           <base-icon-button materialIconName="find_in_page"
                           color="transparent"
-                          iconColor="primary"
+                          iconColor="secondary"
                           :toolTipText="`Open Subproject ${sub.title}`"
-                          :toolTipBottom="true"
+                          toolTipBottom
+                          :isSmall="true"
                           @clicked="subprojectClick(sub.id)" />
         </v-flex>
       </v-layout>
-      <!-- </v-card> -->
+
     </v-card-text>
 
   </v-card>
