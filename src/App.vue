@@ -2,28 +2,32 @@
   <v-app class="application" :style="dynamicBackground">
 
     <navigation v-if="$vuetify.breakpoint.mdAndUp"
-                :mini="this.menuItem.active"
+                :mini="!this.menuItem.active"
                 :navItems="navItems"
-                @menuClick="menuClick()"
-                />
+                @menuClick="catchMenuClicked"
+                @itemClick="catchItemClicked" />
 
     <navigation-mini v-if="$vuetify.breakpoint.smAndDown"
                     :navItems="navItems"
                     style="position: fixed; top: auto; right: 10px; bottom: 10px;"
-                    class="elevation-3" />
+                    class="elevation-3"
+                    @itemClick="catchItemClicked" />
 
     <navigation-toolbar :searchTerm="searchTerm"
                         :showSearchCount="showSearchCount"
                         :searchCount="searchCount"
+                        @menuClick="catchMenuClicked"
                         @searchClick="catchSearchClicked"
                         @searchCleared="catchSearchCleared" />
 
     <v-content>
       <v-container fluid
-                  v-bind="{ [`px-1`]: this.$vuetify.breakpoint.smAndDown,
+                    px-0 py-1>
+
+                  <!-- v-bind="{ [`px-1`]: this.$vuetify.breakpoint.smAndDown,
                             [`px-2`]: this.$vuetify.breakpoint.mdAndUp,
                             [`py-1`]: this.$vuetify.breakpoint.mdAndUp,
-                            [`py-0`]: this.$vuetify.breakpoint.smAndDown }" >
+                            [`py-0`]: this.$vuetify.breakpoint.smAndDown }"          -->
         <v-layout column>
           <!-- <v-flex v-if="currentPage != 'landingPage'"
             xs12
@@ -71,7 +75,13 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { BROWSE_PATH } from '@/router/routeConsts';
+import {
+  BROWSE_PATH,
+  PROJECTS_PATH,
+  GUIDELINES_PATH,
+  POLICIES_PATH,
+  ABOUT_PATH,
+} from '@/router/routeConsts';
 import { BULK_LOAD_METADATAS_CONTENT } from '@/store/metadataMutationsConsts';
 import {
   ADD_CARD_IMAGES,
@@ -109,8 +119,11 @@ export default {
     this.importIcons();
   },
   methods: {
-    menuClick() {
+    catchMenuClicked() {
       this.menuItem.active = !this.menuItem.active;
+    },
+    catchItemClicked(item) {
+      this.$router.push({ path: item.path });
     },
     catchSearchClicked(search) {
       this.$router.push({
@@ -261,15 +274,15 @@ export default {
     showMenu: true,
     searchTerm: '',
     navItems: [
-      { title: 'Home', icon: 'envidat', toolTip: 'Back to the start page', active: false },
-      { title: 'Explore', icon: 'search', toolTip: 'Explore research data', active: false },
-      { title: 'Login', icon: 'person', toolTip: 'Login to upload data', active: false },
-      { title: 'Organizations', icon: 'account_tree', toolTip: 'Explore research data', active: false },
-      { title: 'Projects', icon: 'library_books', toolTip: 'Explore research data', active: false },
-      { title: 'Guidelines', icon: 'local_library', toolTip: 'Guidlines about the creation of metadata', active: false },
-      { title: 'Policies', icon: 'policy', toolTip: 'The rules of EnviDat', active: false },
-      { title: 'About', icon: 'info', toolTip: 'What is EnviDat? How is behind EnviDat?', active: false },
-      { title: 'Contact', icon: 'contact_support', toolTip: 'Do you need support?', active: false },
+      { title: 'Home', icon: 'envidat', toolTip: 'Back to the start page', path: './', active: false },
+      { title: 'Explore', icon: 'search', toolTip: 'Explore research data', path: BROWSE_PATH, active: false },
+      // { title: 'Login', icon: 'person', toolTip: 'Login to upload data', path: 'https://www.envidat.ch/user/reset', active: false },
+      // { title: 'Organizations', icon: 'account_tree', toolTip: 'Overview of the different organizations', path: , active: false },
+      { title: 'Projects', icon: 'library_books', toolTip: 'Overview of the research projects on envidat', path: PROJECTS_PATH, active: false },
+      { title: 'Guidelines', icon: 'local_library', toolTip: 'Guidlines about the creation of metadata', path: GUIDELINES_PATH, active: false },
+      { title: 'Policies', icon: 'policy', toolTip: 'The rules of EnviDat', path: POLICIES_PATH, active: false },
+      { title: 'About', icon: 'info', toolTip: 'What is EnviDat? How is behind EnviDat?', path: ABOUT_PATH, active: false },
+      // { title: 'Contact', icon: 'contact_support', toolTip: 'Do you need support?', active: false },
       { title: 'Menu', icon: 'menu', active: false },
     ],
   }),

@@ -101,6 +101,8 @@ export default {
           el.active = false;
         }
       });
+
+      this.$emit('itemClick', item);
     },
   },
   components: {
