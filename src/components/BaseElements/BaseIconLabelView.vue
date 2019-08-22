@@ -1,9 +1,5 @@
 <template>
-  <v-layout
-    row
-    ma-1
-    pa-0
-  >
+  <v-layout row ma-0 pa-0 >
     <v-tooltip
       bottom
       :disabled="$vuetify.breakpoint.xsOnly"

@@ -28,7 +28,7 @@ storiesOf("2 Buttons | Icon buttons", module)
   .add("icon buttons with envidat icons", () => ({
     components: { BaseIconButton },
     template: `
-    <v-layout row wrap>
+    <v-layout row wrap style="border: solid 1px;">
 
       <v-flex xs1>
         <base-icon-button
@@ -78,10 +78,10 @@ storiesOf("2 Buttons | Icon buttons", module)
   .add("envidat icons with count badge", () => ({
     components: { BaseIconCountView },
     template: `
-    <v-layout row wrap>
+    <v-layout row wrap style="border: solid 1px;">
 
       <v-flex xs1>
-        <div style="position: absolute; top: 10px; left: 20px;" >
+        <div style="position: absolute;" >
           <base-icon-count-view
             class="mr-2"
             :iconString="fileIcon"
@@ -92,7 +92,7 @@ storiesOf("2 Buttons | Icon buttons", module)
       </v-flex>
 
       <v-flex xs1>
-        <div style="position: absolute; top: 10px; left: 80px;" >
+        <div style="position: absolute;" >
           <base-icon-count-view
             class="mr-2"
             :iconString="contact2Icon"

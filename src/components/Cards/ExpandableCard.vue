@@ -45,16 +45,15 @@
       class="ma-0 pa-2"
       style="position: absolute; bottom: 5px; right: 5px;"
     >
-      <base-icon-button
-        material-icon-name="expand_more"
-        :outlined="false"
-        color="transparent"
-        icon-color="grey"
-        :is-toggled="expanded"
-        :rotate-on-click="true"
-        :tool-tip-text="expanded ? 'Hide info' : 'Show info'"
-        @clicked="clicked"
-      />
+      <base-icon-button materialIconName="expand_more"
+                        :outlined="false"
+                        color="transparent"
+                        iconColor="grey"
+                        :isToggled="expanded"
+                        :rotateOnClick="true"
+                        :rotateToggle="expanded"
+                        :toolTipText="expanded ? 'Hide info' : 'Show info'"
+                        @clicked="clicked" />
     </v-card-actions>
 
     <v-slide-y-transition>
