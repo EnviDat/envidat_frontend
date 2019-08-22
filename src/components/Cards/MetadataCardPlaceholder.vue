@@ -1,30 +1,23 @@
 <template>
-  <v-card
-    ripple
-    hover
-    style="height: 100%; max-height: 375px !important;"
+  <v-card ripple
+          hover
+          style="height: 100%; max-height: 375px !important;"
   >
-    <v-img
-      background-color="primary"
-      :style="!flatLayout ? dynamicCardBackground : ''"
-      :height="flatLayout ? '65px' : $vuetify.breakpoint.smAndDown ? '100px' : '125px'"
+    <v-img background-color="primary"
+            :style="!flatLayout ? dynamicCardBackground : ''"
+            :height="flatLayout ? '65px' : $vuetify.breakpoint.smAndDown ? '100px' : '125px'"
     >
       <!-- <img :src="landImg" /> -->
 
-      <v-container
-        style="position: absolute;"
-        fill-height
-        grid-list-xs
-        pb-0
+      <v-container style="position: absolute;"
+                  fill-height
+                  grid-list-xs
+                  pb-0
       >
         <v-layout column>
-          <v-flex
-            xs12
-            py-0
+          <v-flex xs12 py-0
           >
-            <v-layout
-              row
-              align-start
+            <v-layout row align-start
             >
               <v-flex xs12>
                 <div class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-shimmer">
@@ -34,21 +27,17 @@
             </v-layout>
           </v-flex>
 
-          <v-flex
-            xs12
-            py-0
-            mx-1
+          <v-flex xs12 py-0 mx-1
           >
             <v-layout
               row
               fill-height
               align-end
             >
-              <tag-chip-placeholder
-                v-for="n in 3"
-                :key="n"
-                py-0
-                class="card_tag_placeholder"
+              <tag-chip-placeholder v-for="n in 3"
+                                    :key="n"
+                                    py-0
+                                    class="card_tag_placeholder"
               />
             </v-layout>
           </v-flex>
@@ -56,13 +45,11 @@
       </v-container>
     </v-img>
 
-    <v-card-title
-      v-if="!show"
-      primary-title
+    <v-card-title v-if="!show"
+                  primary-title
     >
-      <div
-        class="skeleton skeleton-color-silver skeleton-animation-shimmer"
-        style="width: 100%;"
+      <div class="skeleton skeleton-color-silver skeleton-animation-shimmer"
+            style="width: 100%;"
       >
         <div class="bone bone-type-multiline" />
         <div class="bone bone-type-multiline bone-style-paragraph" />
