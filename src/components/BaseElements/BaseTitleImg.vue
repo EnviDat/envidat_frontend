@@ -20,17 +20,15 @@
       :style="blur ? 'opacity: 0.8' : ''"
     />
 
-    <v-layout
-      align-center
-      column
-      justify-center
-      mx-2
-      :style="`position: relative; top: -${ height * 0.5 }px; text-align: center;`"
+    <v-layout align-center justify-center column fill-height
+              mx-2
+              :style="`position: relative; top: -${ height }px; text-align: center;`"
     >
+              <!-- :style="`position: relative; top: 0;`" -->
       <div style="background-color: white;" />
 
       <div
-        class="envidatTitle mb-3"
+        class="envidatTitle"
         :class="{
           'black--text': dark,
           'white--text': !dark,

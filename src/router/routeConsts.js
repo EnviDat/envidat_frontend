@@ -7,3 +7,7 @@ export const GCMD_PATH = '/gcmd';
 export const ABOUT_PATH = '/about';
 export const POLICIES_PATH = '/policies';
 export const GUIDELINES_PATH = '/guidelines';
+export const PROJECTS_PATH = '/projects';
+export const PROJECTS_NAME = 'ProjectsPage';
+export const PROJECT_DETAIL_PATH = '/projectDetail';
+export const PROJECT_DETAIL_NAME = 'ProjectDetailPage';

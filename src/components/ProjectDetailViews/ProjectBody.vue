@@ -1,11 +1,12 @@
 <template>
-  <v-card :class="{ ['pt-2']: this.isOnTop }">
-    <v-card-title class="metadata_title title">Description</v-card-title>
+  <v-card :dark="dark" >
+
+    <v-card-title class="bodyTitle title">Description</v-card-title>
 
     <v-card-text v-if="fullDescription"
                   ref="description"
-                  class="heightAndScroll pb-4"
-    >
+                  class="heightAndScroll pb-4" >
+
       <m-markdown-preview :markdown="fullDescription"
                           :options="{ html: true,
                                       xhtmlOut: true,
@@ -13,18 +14,17 @@
                                       breaks: true }" />
     </v-card-text>
 
-    <v-card-text v-if="showPlaceholder && !fullDescription" >      
+    <v-card-text v-if="showPlaceholder && !fullDescription" >
       <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer">
         <div class="bone bone-type-multiline bone-style-paragraph" />
       </div>
     </v-card-text>
 
-    <v-card-text
-      v-if="!showPlaceholder && !fullDescription"
-      style="color: red;"
-    >
+    <v-card-text v-if="!showPlaceholder && !fullDescription"
+                  style="color: red;" >
       {{ emptyText }}
     </v-card-text>
+
 
     <v-card-actions v-if="maxDescriptionLengthReached"
                     class="ma-0 pa-2"
@@ -42,22 +42,7 @@
 
     </v-card-actions>
 
-    <!-- <v-card-actions
-      v-show="maxDescriptionLengthReached"
-      :style="`position: absolute; bottom: 0; right: 0px;`"
-    >
-      <v-spacer />
 
-      <v-btn icon
-        @click.native="readMore()"
-      >
-        <v-icon color="accent"
-          :style="this.showFullDescription ? 'transform: rotate(-180deg); font-size: 30px !important;' : 'transform: rotate(0deg); font-size: 30px !important;'"
-        >
-          expand_more
-        </v-icon>
-      </v-btn>
-    </v-card-actions> -->
   </v-card>
 </template>
 
@@ -67,40 +52,17 @@ import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 export default {
   components: {
-    MMarkdownPreview,
     BaseIconButton,
+    MMarkdownPreview,
   },
   props: {
-    genericProps: Object,
+    description: String,
+    subProjects: Array,
+    metadatas: Array,
+    dark: Boolean,
     showPlaceholder: Boolean,
   },
-  // updated: function updated() {
-  //   if (this.genericProps && !this.checkedGenericProps) {
-  //     Object.assign(this, 'props', this.genericProps);
-
-  //     this.checkedGenericProps = true;
-  //   }
-  // },
-  data: () => ({
-    isOnTop: false,
-    showFullDescription: false,
-    checkedGenericProps: false,
-    maxTextLength: 1000,
-    emptyText: 'No description found for this dataset.',
-  }),
   computed: {
-    // doi() {
-    //   return this.mixinMethods_getGenericProp('doi');
-    // },
-    // title() {
-    //   return this.mixinMethods_getGenericProp('title');
-    // },
-    // id() {
-    //   return this.mixinMethods_getGenericProp('id');
-    // },
-    description() {
-      return this.mixinMethods_getGenericProp('description');
-    },
     fullDescription: function fullDescription() {
       if (this.description) {
         if (this.maxDescriptionLengthReached) {
@@ -116,23 +78,26 @@ export default {
       return this.description && this.description.length > this.maxTextLength;
     },
   },
-  mounted: function mounted() {
-  },
   methods: {
-    readMore: function readMore() {
-      this.showFullDescription = !this.showFullDescription;
-    },
-    rightPos() {
-      return this.$refs.description && this.$refs.description.clientHeight >= 500 ? '10px' : '0';
-    },
   },
+  data: () => ({
+    showFullDescription: false,
+    maxTextLength: 1000,
+    emptyText: 'No description found for this project.',
+  }),
 };
 </script>
 
 <style scoped>
 
-.heightAndScroll {
-  max-height: 500px;
-  overflow-y: auto !important;
-}
+  .bodyTitle {
+    font-family: 'Libre Baskerville', serif !important;
+    font-weight: 700 !important;
+  }
+
+  .heightAndScroll {
+    max-height: 500px;
+    overflow-y: auto !important;
+  }
+
 </style>
