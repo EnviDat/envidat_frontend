@@ -13,10 +13,10 @@ export default {
             "state": "active",
             "extras": [
                 {
-                    "value": " (RACLETS)",
+                    "value": "RACLETS Field Campaign",
                     "state": "active",
                     "key": "parent",
-                    "revision_id": "4d1575cb-26c1-4ac2-9b7b-e25c054b6a2e",
+                    "revision_id": "d5f5974d-b407-464b-9b20-d6b37a8653c5",
                     "group_id": "7e071c09-4ec0-4ebf-bf3c-a41755cd566d",
                     "id": "a816750b-efce-4d9b-876a-f692732ea212"
                 }
@@ -42,10 +42,10 @@ export default {
             "state": "active",
             "extras": [
                 {
-                    "value": " (RACLETS)",
+                    "value": "RACLETS Field Campaign",
                     "state": "active",
                     "key": "parent",
-                    "revision_id": "ed96a379-8aca-43f6-bdcc-763581007ce7",
+                    "revision_id": "d30267cb-a19f-457c-aaee-23037c7a9d66",
                     "group_id": "0bb4f4d3-5d71-4fe0-829a-b63d5c76020b",
                     "id": "f3471b54-e412-41a8-9cf7-1adfb1636768"
                 }
@@ -361,10 +361,10 @@ export default {
             "state": "active",
             "extras": [
                 {
-                    "value": "(RACLETS)",
+                    "value": "RACLETS Field Campaign",
                     "state": "active",
                     "key": "parent",
-                    "revision_id": "da305c60-3bde-4876-b71b-7fa1b95970b7",
+                    "revision_id": "e0e66916-a877-4cf9-93e3-9b4174d131bb",
                     "group_id": "14176f90-0058-4679-b328-0c14b513cf22",
                     "id": "fd9ad5ba-b9b0-48f8-a519-761863bc04aa"
                 }
@@ -390,10 +390,10 @@ export default {
             "state": "active",
             "extras": [
                 {
-                    "value": "(RACLETS)",
+                    "value": "RACLETS Field Campaign",
                     "state": "active",
                     "key": "parent",
-                    "revision_id": "e9021267-648b-4090-8383-c2bd8b0d4d99",
+                    "revision_id": "401b3229-f1f2-4167-82be-ac14eda062c0",
                     "group_id": "5e515677-99b1-4de2-bc51-4750069c6aeb",
                     "id": "4101a784-8d4c-43ab-ad31-2168f6717b1e"
                 }
@@ -419,10 +419,10 @@ export default {
             "state": "active",
             "extras": [
                 {
-                    "value": "(RACLETS)",
+                    "value": "RACLETS Field Campaign",
                     "state": "active",
                     "key": "parent",
-                    "revision_id": "c7ac2561-00ac-4706-abc5-78ab0c031b6c",
+                    "revision_id": "062ae3c4-e0f8-43e9-9ef8-e08ad5ea249c",
                     "group_id": "487c2713-7754-41b9-bf54-226c35c0a6ea",
                     "id": "029f3107-36d2-4bd9-968b-2c5b11148d1a"
                 }
@@ -477,10 +477,10 @@ export default {
             "state": "active",
             "extras": [
                 {
-                    "value": "(RACLETS)",
+                    "value": "RACLETS Field Campaign",
                     "state": "active",
                     "key": "parent",
-                    "revision_id": "1af8b5eb-1680-4605-b5aa-9254964a24dd",
+                    "revision_id": "b088efe3-ec86-4e55-9725-9cb2628b7850",
                     "group_id": "6c2fd969-d2ef-4e5a-939b-1a6e42c7bbe7",
                     "id": "5fc77534-556d-4069-9266-a43b12f8d7fe"
                 }
@@ -576,10 +576,10 @@ export default {
             "state": "active",
             "extras": [
                 {
-                    "value": "(RACLETS)",
+                    "value": "RACLETS Field Campaign",
                     "state": "active",
                     "key": "parent",
-                    "revision_id": "33331f4a-4512-4f1a-8d43-9a3cd0a23c6b",
+                    "revision_id": "a87610d8-0aa4-488a-83bc-c3707e350ce3",
                     "group_id": "323fdb70-959b-4bfc-bff4-e16b6907161e",
                     "id": "6e537540-5d9e-4ddc-93a2-ee1e47aee6f1"
                 }

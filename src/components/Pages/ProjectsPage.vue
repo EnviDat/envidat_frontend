@@ -133,8 +133,13 @@ export default {
         params: { id: projectId },
       });
     },
-    onSubprojectClick(sub) {
-      this.$emit('subprojectClick', sub.id);
+    onSubprojectClick(subprojectId) {
+      this.$store.commit(`${PROJECTS_NAMESPACE}/${SET_PROJECTDETAIL_PAGE_BACK_URL}`, this.$route);
+
+      this.$router.push({
+        name: PROJECT_DETAIL_NAME,
+        params: { id: subprojectId },
+      });
     },
   },
   components: {

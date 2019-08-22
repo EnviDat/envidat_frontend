@@ -8,7 +8,12 @@
           :color="showPlaceholder ? 'primary' : 'white'" >
           <!-- v-bind="{['style'] : dynamicCardBackground }" > -->
 
-    <base-icon-button style="position: absolute; top: 0px; right: 0px; z-index: 2;"
+    <div v-bind="{['style'] : dynamicCardBackground }" >
+      <!-- this loads the background image -->
+    </div>
+
+    <base-icon-button class="ma-2"
+                      style="position: absolute; top: 0px; right: 0px; z-index: 2;"
                       material-icon-name="close"
                       icon-color="primary"
                       color="primary"
@@ -30,9 +35,6 @@
       {{ title }}
     </div>
 
-    <div v-bind="{['style'] : dynamicCardBackground }" >
-
-    </div>
 
     <div v-if="!title && showPlaceholder"
           class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-shimmer" >
@@ -81,9 +83,10 @@ export default {
 
       let style = `position: absolute; top: 0px; right: 0px;
                   height: ${this.height}px; width: 100%;
-        background-image: linear-gradient(0deg, ${gradient});
-        background-position: center, center; background-size: cover;
-        background-repeat: initial;`;
+                  background-image: linear-gradient(0deg, ${gradient});
+                  background-position: center, center; background-size: cover;
+                  background-repeat: initial;
+                  z-index: 0;`;
 
       if (this.titleImage.src !== '') {
         style += `background-image: linear-gradient(0deg, ${gradient}), url(${this.titleImage.src});

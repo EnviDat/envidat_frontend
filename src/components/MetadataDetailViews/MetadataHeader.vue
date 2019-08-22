@@ -10,7 +10,8 @@
         <!-- this loads the background image -->
       </div>
 
-      <base-icon-button style="position: absolute; top: 0px; right: 0px; z-index: 2;"
+      <base-icon-button class="ma-2"
+                        style="position: absolute; top: 0px; right: 0px; z-index: 2;"
                         material-icon-name="close"
                         icon-color="primary"
                         :color="(showPlaceholder || (!showPlaceholder && !metadataTitle)) ? 'white' : 'primary'"
@@ -153,16 +154,16 @@
       </v-layout>
 
       <v-card-actions v-if="maxTagsReached"
-                      style="position: absolute; bottom: 0px; right: 0px;" >
-        <base-icon-button material-icon-name="expand_more"
+                      style="position: absolute; bottom: 0px; right: 0px;">
+        <base-icon-button materialIconName="expand_more"
                           :outlined="true"
                           color="primary"
-                          icon-color="accent"
-                          :is-toggled="showTagsExpanded"
-                          :rotate-on-click="true"
-                          :rotate-toggle="showTagsExpanded"
-                          :tool-tip-text="showTagsExpanded ? 'Hide all tags' : 'Show all tags'"
-                          :tool-tip-bottom="true"
+                          iconColor="accent"
+                          :isToggled="showTagsExpanded"
+                          :rotateOnClick="true"
+                          :rotateToggle="showTagsExpanded"
+                          :toolTipText="showTagsExpanded ? 'Hide all tags' : 'Show all tags'"
+                          :toolTipBottom="true"
                           @clicked="showTagsExpanded = !showTagsExpanded" />
       </v-card-actions>
     </v-card>
@@ -264,6 +265,7 @@ export default {
     font-family: 'Libre Baskerville', serif !important;
     font-weight: 400;
     opacity: 1;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
   }
 
   .headerInfo {
