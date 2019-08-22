@@ -55,12 +55,12 @@
                         ['xs6']: showMapFilter & $vuetify.breakpoint.sm,
                         ['pr-3']: showMapFilter & $vuetify.breakpoint.sm,
                         ['xs12']: !showMapFilter,
-                        metadataListStyling }"
-      >
-        <metadata-list-view :listView="listViewActive"
-                            :showMapFilter="showMapFilter"
-                            :mapFilteringPossible="mapFilteringPossible"
-                            :placeHolderAmount="placeHolderAmount"
+                        metadataListStyling }" >
+        <metadata-list-view :listContent="filterContent"
+                            :list-view="listViewActive"
+                            :show-map-filter="showMapFilter"
+                            :map-filtering-possible="mapFilteringPossible"
+                            :place-holder-amount="placeHolderAmount"
                             @clickedTag="catchTagClicked" />
       </v-flex>
 
