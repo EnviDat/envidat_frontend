@@ -10,7 +10,7 @@
 
             <v-flex v-for="(project, index) in subProjects"
                     :key="'sub_' + index"
-                    xs4 sm3
+                    xs12 sm6 md4 xl3
                     pa-3>
 
               <project-card :id="project.id"

@@ -18,7 +18,8 @@
           <v-img height="100%"
                   :cover="imgWidth < 200"
                   :contain="imgWidth > 200"
-                  :src="cardImg.src" />
+                  :src="fallbackImg ? fallbackImg : cardImg.src"
+                  />
         </v-flex>
 
         <!-- <v-flex xs8 ml-3>
@@ -90,6 +91,7 @@ export default {
         img.src = imgSrc;
       }
       img.onload = this.setHeightAndWidth;
+      img.onerror = this.setDefaultImg;
 
       return img;
     },
@@ -136,9 +138,13 @@ export default {
       this.imgWidth = this.cardImg.width;
       this.imgHeight = this.cardImg.height;
     },
+    setDefaultImg() {
+      this.fallbackImg = this.defaultImg;
+    },
   },
   data: () => ({
     // headerImgWidth: 400,
+    fallbackImg: null,
     imgWidth: 0,
     imgHeight: 0,
     maxDescriptionLength: 290,

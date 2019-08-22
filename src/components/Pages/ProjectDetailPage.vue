@@ -30,7 +30,7 @@
       <div v-if="currentProject.subProjects" >
         <v-flex xs12 lg10 offset-lg1
                 py-2 px-3 >
-          <project-subprojects :defaultImg="missionImg"
+          <project-subprojects :defaultImg="creatorImg"
                                 :subProjects="currentProject.subProjects"
                                 @projectClick="catchProjectClick"
                                 @subprojectClick="catchSubprojectClick"
@@ -38,28 +38,26 @@
         </v-flex>
       </div>
 
-      <v-flex v-if="hasMetadatas"
-              xs12 lg10 offset-lg1 >
-
-        <v-card-title class="metadataList_title title">Metadatas</v-card-title>
-      </v-flex>
-
-      <v-flex v-if="hasMetadatas"
-              xs12 lg10 offset-lg1
+      <v-flex xs12 lg10 offset-lg1
               py-2 px-3 >
+        <v-card>
+          <div v-if="hasMetadatas" >
 
-        <metadata-list-view :listContent="currentProject.packages"
-                            :showMapFilter="false"
-                            :mapFilteringPossible="mapFilteringPossible"
-                            :placeHolderAmount="placeHolderAmount"
-                            />
+            <v-card-title class="metadataList_title title">Metadatas</v-card-title>
 
-      </v-flex>
+            <metadata-list-view class="px-3"
+                                :listContent="currentProject.packages"
+                                :showMapFilter="false"
+                                :mapFilteringPossible="mapFilteringPossible"
+                                :placeHolderAmount="placeHolderAmount"
+                                />
 
-      <v-flex v-if="!hasMetadatas"
-              xs12 lg10 offset-lg1 >
+          </div>
 
-        <v-card-title class="metadataList_title title">{{ currentProject.title }} has no Metadata connected</v-card-title>
+          <div v-if="!hasMetadatas" >
+            <v-card-title class="metadataList_title title">{{ currentProject.title }} has no Metadata connected</v-card-title>
+          </div>
+        </v-card>
       </v-flex>
 
     </v-layout>
@@ -89,6 +87,8 @@ import ProjectSubprojects from '@/components/ProjectDetailViews/ProjectSubprojec
 import MetadataListView from '@/components/Views/MetadataListView';
 
 import missionImg from '@/assets/about/mission.jpg';
+import creator from '@/assets/cards/data_creator.jpg';
+import creatorSmall from '@/assets/cards/data_creator_small.jpg';
 
 
 export default {
@@ -155,6 +155,13 @@ export default {
     },
     hasMetadatas() {
       return this.currentProject.packages && this.currentProject.packages.length > 0;
+    },
+    creatorImg() {
+      if (this.$vuetify.breakpoint.mdAndUp) {
+        return creator;
+      }
+
+      return creatorSmall;
     },
   },
   methods: {
@@ -227,6 +234,8 @@ export default {
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
     missionImg,
+    creator,
+    creatorSmall,
     placeHolderAmount: 6,
   }),
 };

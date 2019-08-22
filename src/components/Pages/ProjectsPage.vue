@@ -22,12 +22,12 @@
 
             <v-flex v-for="(project, index) in projectsCardsParents()"
                     :key="index"
-                    xs3 pa-3
-            >
+                    xs12 sm6 md4 xl3
+                    pa-3 >
               <project-card :id="project.id"
                             :title="project.title"
                             :img="project.image_display_url"
-                            :defaultImg="defaultImg"
+                            :defaultImg="creatorImg"
                             :description="project.description"
                             :subProjects="project.subProjects"
                             @cardClick="onCardClick"
@@ -62,6 +62,8 @@ import ProjectCard from '@/components/Cards/ProjectCard';
 
 import mission from '@/assets/about/mission.jpg';
 import missionSmall from '@/assets/about/mission_small.jpg';
+import creator from '@/assets/cards/data_creator.jpg';
+import creatorSmall from '@/assets/cards/data_creator_small.jpg';
 
 export default {
   /**
@@ -98,6 +100,13 @@ export default {
       }
 
       return missionSmall;
+    },
+    creatorImg() {
+      if (this.$vuetify.breakpoint.mdAndUp) {
+        return creator;
+      }
+
+      return creatorSmall;
     },
     defaultImg() {
       return this.cardBGImages['./c_b_forest_texture_bark2.jpg'];
@@ -136,6 +145,8 @@ export default {
     PageBGImage: './app_b_browsepage.jpg',
     mission,
     missionSmall,
+    creator,
+    creatorSmall,
   }),
 };
 </script>
