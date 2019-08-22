@@ -24,16 +24,18 @@ export default {
           }
 
           if (extra.key === 'parent') {
-            if (extra.value.trim() === '(RACLETS)') {
+            let parentTitle = extra.value.trim();
+            let parent = null;
 
               for (let l = 0; l < projects.length; l++) {
                 const p = projects[l];
-                if (p.title === 'RACLETS Field Campaign'){
-                  el.parent = p;
+                if (p.title === parentTitle){
+                  parent = p;
                   break;
                 }
               }
-              
+            if (parent) {
+              el.parent = parent;
             } else {
               el.parent = extra.value;
             }

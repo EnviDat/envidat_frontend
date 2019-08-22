@@ -8,6 +8,7 @@
               :disabled="$vuetify.breakpoint.xsOnly || toolTipText === ''" >
 
       <v-btn slot="activator"
+            style="margin: 0 !important;"
             :icon="!isElevated"
             :fab="isElevated"
             :small="isSmall || isElevated"

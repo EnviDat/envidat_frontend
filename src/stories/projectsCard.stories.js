@@ -137,4 +137,4 @@ storiesOf("3 Cards | Projects Cards", module)
       projectsCards,
       defaultImg,
     })
-  }))  ;
+  }));
