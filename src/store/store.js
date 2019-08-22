@@ -6,6 +6,7 @@ import createPersist from 'vuex-localstorage';
 import { metadata } from '@/store/modules/metadata/metadata';
 import { policies } from '@/store/modules/policies/policies';
 import { guidelines } from '@/store/modules/guidelines/guidelines';
+import { projects } from '@/store/modules/projects/projects';
 import mutations from '@/store/appMutations';
 import actions from '@/store/appActions';
 
@@ -15,8 +16,6 @@ const store = new Vuex.Store({
   strict: true,
   state: {
     currentPage: '',
-    organizations: [],
-    projects: [],
     // use a './' before the img for the img name for the local path
     appBGImage: './app_b_landingpage.jpg',
     cardBGImages: {},
@@ -25,7 +24,7 @@ const store = new Vuex.Store({
     controls: [1],
     browseScrollPosition: 0,
     showVersionModal: false,
-    newVersion: process.env.VERSION,
+    newVersion: process.env.VUE_APP_VERSION,
     config: null,
     error: null,
   },
@@ -48,6 +47,7 @@ const store = new Vuex.Store({
     metadata,
     policies,
     guidelines,
+    projects,
   },
 });
 

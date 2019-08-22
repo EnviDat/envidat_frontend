@@ -1,9 +1,8 @@
 <template>
-  <v-card
-    color="primary"
-    class="metadataResourceCard white--text"
-    style="height: 100%;"
-  >
+  <v-card color="primary"
+          class="metadataResourceCard white--text"
+          style="height: 100%;" >
+
     <v-card-title>
       <div class="headline">
         {{ name }}
@@ -134,53 +133,42 @@
       </v-container>
     </v-card-text>
 
-    <v-card-actions
-      class="ma-0 pa-2 "
-      style="position: absolute; bottom: 5px; right: 50px;"
+    <v-card-actions class="ma-0 pa-2"
+                    style="position: absolute; bottom: 5px; right: 50px;"
     >
       <v-spacer />
 
-      <base-icon-button
-        v-if="maxDescriptionLengthReached"
-        class="mr-2"
-        material-icon-name="expand_more"
-        icon-color="accent"
-        color="transparent"
-        :isToggled="showFullDescription"
-        :rotateOnClick="true"
-        :rotateToggle="showFullDescription"
-        :toolTipText="showFullDescription ? 'Hide full description' : 'Show full description'"
-        @clicked="showFullDescription = !showFullDescription"
+      <base-icon-button v-if="maxDescriptionLengthReached"
+                        class="mr-2"
+                        material-icon-name="expand_more"
+                        icon-color="accent"
+                        color="transparent"
+                        :isToggled="showFullDescription"
+                        :rotateOnClick="true"
+                        :rotateToggle="showFullDescription"
+                        :toolTipText="showFullDescription ? 'Hide full description' : 'Show full description'"
+                        @clicked="showFullDescription = !showFullDescription"
       />
     </v-card-actions>
 
-    <div
-      class="ma-0 py-3"
-      style="position: absolute; bottom: 0px; right: 0px; height: 90%"
-    >
-      <div
-        v-if="isProtected"
-        class="fabMenu fabPosition elevation-2 ma-2 pl-2 pt-2"
-      >
-        <v-icon class="pl-1 pt-1">
-          shield
-        </v-icon>
-        <p
-          class="pt-2 lockedText black--text resourceCardText"
+    <div class="ma-0 py-3"
+          style="position: absolute; bottom: 0px; right: 0px;" >
+      <div v-if="isProtected"
+            class="fabMenu fabPosition elevation-2 ma-2 pl-2 pt-2" >
+        <v-icon class="pl-1 pt-1">shield</v-icon>
+        <p class="pt-2 lockedText black--text resourceCardText"
           v-html="protectedText"
-        />
+        ></p>
       </div>
 
-      <base-icon-button
-        v-if="!isProtected"
-        class="fabPosition ma-3"
-        style="height: 40px; width: 40px;"
-        :customIcon="isFile ? downloadIcon : linkIcon"
-        color="accent"
-        :isElevated="true"
-        :toolTipText="isFile ? 'Download file' : 'Open link'"
-        :url="url"
-      />
+      <base-icon-button v-if="!isProtected"
+                        class="fabPosition ma-3"
+                        style="height: 40px; width: 40px;"
+                        :customIcon="isFile ? downloadIcon : linkIcon"
+                        color="accent"
+                        :isElevated="true"
+                        :toolTipText="isFile ? 'Download file' : 'Open link'"
+                        :url="url" />
     </div>
   </v-card>
 </template>
@@ -217,6 +205,7 @@ export default {
     lastModifiedIcon: String,
     isProtected: Boolean,
     fileExtensionIcon: Map,
+    metadataContact: String,
   },
   data: () => ({
     defaultTexture,
@@ -260,7 +249,7 @@ export default {
         return `This resource is protected <a href="${this.url}" target="_blank" >login via the old UI to get access</a>.`;
       }
 
-      return 'Could not load the resource, please contact envidat@wsl.ch for support.';
+      return `Could not load the resource, please contact ${this.metadataContact} for getting access or envidat@wsl.ch for support.`;
     },
   },
   methods: {
@@ -287,18 +276,18 @@ export default {
 
         // alert('icon ' + icon);
         return icon;
-      } else {
-        if (this.audioFormats.includes(this.format)) {
-          return this.mixinMethods_getIcon('Audio');
-        }
-
-        const extIcon = this.mixinMethods_getIconFileExtension(this.format);
-        if (extIcon) {
-          return extIcon;
-        }
-
-        return this.mixinMethods_getIcon('file');
       }
+
+      if (this.audioFormats.includes(this.format)) {
+        return this.mixinMethods_getIcon('Audio');
+      }
+
+      const extIcon = this.mixinMethods_getIconFileExtension(this.format);
+      if (extIcon) {
+        return extIcon;
+      }
+
+      return this.mixinMethods_getIcon('file');
     },
     formatedDate: function formatedDate(value) {
       return this.mixinMethods_formatDate(value);

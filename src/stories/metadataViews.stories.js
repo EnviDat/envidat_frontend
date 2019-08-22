@@ -114,15 +114,26 @@ export const methods = {
   onTagClick: action("clicked on tag")
 };
 
-storiesOf("6 Metadata Detail | DetailViews", module)
+storiesOf("6 Metadata | Detail Views", module)
   .add("Header", () => ({
     components: { MetadataHeader },
     template: `
     <v-layout row wrap>
-      <v-flex x12 py-3>
-        <metadata-header
-          :showPlaceholder="true"
-        />
+
+      <v-flex xs12 >
+        Empty Metadata Header
+      </v-flex>
+
+      <v-flex xs12 py-3 >
+        <metadata-header />
+      </v-flex>
+
+      <v-flex xs12 >
+        Metadata Header with showPlaceholder
+      </v-flex>
+
+      <v-flex xs12 py-3 >
+        <metadata-header :showPlaceholder="true" />
       </v-flex>
 
       <v-flex xs12 py-3>

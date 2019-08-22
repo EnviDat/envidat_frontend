@@ -128,21 +128,22 @@ export default {
   /**
      * @description
      */
-  beforeDestroy: function beforeDestroy() {
-    // clean current metadata to make be empty for the next to load up
-    this.$store.commit(`metadata/${CLEAN_CURRENT_METADATA}`);
-  },
-  computed: {
-    ...mapGetters({
-      metadatasContent: 'metadata/metadatasContent',
-      loadingMetadatasContent: 'metadata/loadingMetadatasContent',
-      loadingCurrentMetadataContent: 'metadata/loadingCurrentMetadataContent',
-      currentMetadataContent: 'metadata/currentMetadataContent',
-      detailPageBackRoute: 'metadata/detailPageBackRoute',
-      iconImages: 'iconImages',
-      cardBGImages: 'cardBGImages',
-    }),
-    /**
+    beforeDestroy: function beforeDestroy() {
+      // clean current metadata to make be empty for the next to load up
+      this.$store.commit(`metadata/${CLEAN_CURRENT_METADATA}`);
+    },
+    computed: {
+      ...mapGetters({
+        metadatasContent: 'metadata/metadatasContent',
+        loadingMetadatasContent: 'metadata/loadingMetadatasContent',
+        loadingCurrentMetadataContent: 'metadata/loadingCurrentMetadataContent',
+        currentMetadataContent: 'metadata/currentMetadataContent',
+        detailPageBackRoute: 'metadata/detailPageBackRoute',
+        idRemapping: 'metadata/idRemapping',
+        iconImages: 'iconImages',
+        cardBGImages: 'cardBGImages',
+      }),
+      /**
        * @returns {Number} Size of the metadatasContent
        */
     metadatasContentSize: function metadatasContentSize() {
@@ -151,10 +152,16 @@ export default {
     /**
        * @returns {String} the metadataId from the route
        */
-    metadataId: function metadataId() {
-      return this.$route.params.metadataid;
-    },
-    /**
+      metadataId: function metadataId() {
+        let id = this.$route.params.metadataid;
+        
+        if (this.idRemapping.has(id)){
+          id = this.idRemapping.get(id);
+        }
+
+        return id;
+      },
+      /**
        * @returns {Boolean} if the placeHolders should be shown be somethings are still loading
        */
     showPlaceholder: function showPlaceholder() {
@@ -175,10 +182,9 @@ export default {
       let currentContent = this.currentMetadataContent;
       const { components } = this.$options;
 
-      currentContent = this.mixinMethods_enhanceMetadataEntry(currentContent, this.cardBGImages);
-
       if (currentContent && currentContent.title !== undefined) {
-        // console.log("create content " + currentContent.spatial + " " + this.header);
+        currentContent = this.mixinMethods_enhanceMetadataEntry(currentContent, this.cardBGImages);
+
         this.header = metaDataFactory.createHeader(currentContent, this.$vuetify.breakpoint.smAndDown);
         this.$set(components.MetadataHeader, 'genericProps', this.header);
 

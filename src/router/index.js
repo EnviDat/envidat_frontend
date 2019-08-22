@@ -17,6 +17,10 @@ import {
   ABOUT_PATH,
   POLICIES_PATH,
   GUIDELINES_PATH,
+  PROJECTS_PATH,
+  PROJECTS_NAME,
+  PROJECT_DETAIL_PATH,
+  PROJECT_DETAIL_NAME,
 } from '@/router/routeConsts';
 
 Vue.use(Router);
@@ -66,6 +70,16 @@ export default new Router({
       path: GUIDELINES_PATH,
       name: 'GuidelinesPage',
       component: () => import(/* webpackChunkName: "guidelinesPage" */ '@/components/Pages/GuidelinesPage'),
+    },
+    {
+      path: PROJECTS_PATH,
+      name: PROJECTS_NAME,
+      component: () => import(/* webpackChunkName: "projectsPage" */ '@/components/Pages/ProjectsPage'),
+    },
+    {
+      path: `${PROJECT_DETAIL_PATH}/:id`,
+      name: PROJECT_DETAIL_NAME,
+      component: () => import(/* webpackChunkName: "projectDetailPage" */ '@/components/Pages/ProjectDetailPage'),
     },
   ],
   scrollBehavior(to, from, savedPosition) {
