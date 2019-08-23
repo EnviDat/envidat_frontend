@@ -4,6 +4,7 @@
     <navigation v-if="$vuetify.breakpoint.mdAndUp"
                 :mini="!this.menuItem.active"
                 :navItems="navItems"
+                :version="appVersion"
                 @menuClick="catchMenuClicked"
                 @itemClick="catchItemClicked" />
 
@@ -21,13 +22,9 @@
                         @searchCleared="catchSearchCleared" />
 
     <v-content>
-      <v-container fluid
-                    px-0 py-1>
-
-                  <!-- v-bind="{ [`px-1`]: this.$vuetify.breakpoint.smAndDown,
-                            [`px-2`]: this.$vuetify.breakpoint.mdAndUp,
-                            [`py-1`]: this.$vuetify.breakpoint.mdAndUp,
-                            [`py-0`]: this.$vuetify.breakpoint.smAndDown }"          -->
+      <v-container fluid py-1
+                  v-bind="{ [`px-1`]: this.$vuetify.breakpoint.smAndDown,
+                            [`px-2`]: this.$vuetify.breakpoint.mdAndUp, }" >
         <v-layout column>
           <!-- <v-flex v-if="currentPage != 'landingPage'"
             xs12
@@ -53,7 +50,7 @@
           </v-flex>
 
           <v-flex xs12
-            style="position: absolute; right: 5px; bottom: 2px; font-size: 5px !important;"
+            style="position: absolute; right: 5px; bottom: 2px; font-size: 6px !important;"
           >Verison: {{ appVersion }}</v-flex>
         </v-layout>
       </v-container>
@@ -123,6 +120,11 @@ export default {
       this.menuItem.active = !this.menuItem.active;
     },
     catchItemClicked(item) {
+      if (item.title === 'Login') {
+        window.open(item.path, '_blank');
+        return;
+      }
+
       this.$router.push({ path: item.path });
     },
     catchSearchClicked(search) {
@@ -276,7 +278,7 @@ export default {
     navItems: [
       { title: 'Home', icon: 'envidat', toolTip: 'Back to the start page', path: './', active: false },
       { title: 'Explore', icon: 'search', toolTip: 'Explore research data', path: BROWSE_PATH, active: false },
-      // { title: 'Login', icon: 'person', toolTip: 'Login to upload data', path: 'https://www.envidat.ch/user/reset', active: false },
+      { title: 'Login', icon: 'person', toolTip: 'Login to upload data', path: 'https://www.envidat.ch/user/reset', active: false },
       // { title: 'Organizations', icon: 'account_tree', toolTip: 'Overview of the different organizations', path: , active: false },
       { title: 'Projects', icon: 'library_books', toolTip: 'Overview of the research projects on envidat', path: PROJECTS_PATH, active: false },
       { title: 'Guidelines', icon: 'local_library', toolTip: 'Guidlines about the creation of metadata', path: GUIDELINES_PATH, active: false },

@@ -1,61 +1,96 @@
 <template>
   <v-navigation-drawer app
                         permanent
-                        stateless
+                        clipped
                         :mini-variant.sync="mini"
                         mini-variant-width="60"
                         width="190"
   >
-                        <!-- :permanent="permanent" -->
 
     <v-list class="pt-0"
             :class="{ 'narrowNavigation': mini }"
-            dense>
+            dense >
 
-      <v-list-tile v-for="(item, index) in navItemsMenuExcluded" :key="index">
+      <v-list-tile v-for="(item, index) in navItemsMenuExcluded"
+                  :key="index">
 
-        <v-list-tile-action v-if="item.icon === 'envidat'"
-                            class="v-list__group__header__prepend-icon"
-        >
-          <div style="position: relative; right: -1px;">
-            <v-btn icon href="./" class="ma-0">
-              <img :src="Logo" alt="envidat_logo" />
-            </v-btn>
+        <div v-if="mini" style="width: 100%; height: 100%;">
 
-            <div class="pl-1 headline envidatLogoText envidatNavbarTitleSmall">
-              {{ mini ? '' : logoText }}
-            </div>
-          </div>
-        </v-list-tile-action>
+          <v-list-tile-action v-if="item.icon === 'envidat'" >
+              <v-btn icon class="ma-0"
+                    @click="itemClick(item)" >
+                <img :src="Logo" alt="envidat_logo" />
+              </v-btn>
+          </v-list-tile-action>
 
-        <v-list-tile-action v-if="mini && item.icon !== 'envidat'"
-                            class="v-list__group__header__prepend-icon"
-        >
-          <base-icon-button
-            marginClass="ma-0"
-            :toolTipText="item.title"
-            :materialIconName="item.icon"
-            :iconColor="item.active ? 'accent' : 'secondary'"
-            color="transparent"
-            @clicked="item.icon === 'menu' ? item.active = !item.active : itemClick(item)"
-          />
-        </v-list-tile-action>
+          <v-list-tile-action v-if="item.icon !== 'envidat'"
+                              class="v-list__group__header__prepend-icon px-2" >
 
-        <v-list-tile-content v-if="!mini && item.icon !== 'envidat'"
-                            class="px-2"
-        >
-          <base-rectangle-button
-            marginClass="ma-0 pa-0"
-            isSmall
-            isFlat
-            :buttonText="item.title"
-            :toolTipText="item.toolTip"
-            :materialIconName="item.icon"
-            :iconColor="item.active ? 'accent' : 'grey'"
-            color="secondary"
-            @clicked="item.icon === 'menu' ? item.active = !item.active : itemClick(item)"
-          />
-        </v-list-tile-content>
+            <base-icon-button marginClass="ma-0 pa-0"
+                              :toolTipText="item.title"
+                              :materialIconName="item.icon"
+                              :iconColor="item.active ? 'accent' : 'secondary'"
+                              color="transparent"
+                              @clicked="item.icon === 'menu' ? item.active = !item.active : itemClick(item)"
+                            />
+          </v-list-tile-action>
+        </div>
+
+        <div v-if="!mini" style="width: 100%; height: 100%;">
+
+          <v-list-tile-action v-if="item.icon === 'envidat'">
+                              <!-- class="v-list__group__header__prepend-icon"
+                              style="position: relative; right: -1px;" > -->
+            <v-layout row wrap>
+              <v-flex xs3>
+                <v-btn icon class="ma-0"
+                      @click="itemClick(item)" >
+                  <img :src="Logo" alt="envidat_logo" />
+                </v-btn>
+              </v-flex>
+              <v-flex xs9>
+                <v-layout column fill-height align-start justify-end >
+                  <v-flex xs4></v-flex>
+                  <v-flex xs4
+                          class="headline envidatNavbarTitleSmall">
+                    {{ logoText }}
+                  </v-flex>
+                  <v-flex v-if="version"
+                          xs4
+                          style="font-size: 5px; position: relative; left: 2px;">
+                    Version {{ version }}
+                  </v-flex>
+                </v-layout>
+              </v-flex>
+            </v-layout>
+          <!-- </v-list-tile-action> -->
+
+          <!-- <v-list-tile-action v-if="item.icon === 'envidat'" > -->
+
+              <!-- <div class="pl-1 headline envidatLogoText envidatNavbarTitleSmall">
+                {{ logoText }}
+              </div>
+
+              <div v-if="version"
+                    style="font-size: 5px; position: relative; top: -7px; text-align: end;">
+                    Version {{ version }}
+              </div> -->
+          </v-list-tile-action>
+
+          <v-list-tile-content v-if="item.icon !== 'envidat'" >
+
+            <base-rectangle-button marginClass="ma-0 px-2 py-0"
+                                    isSmall
+                                    isFlat
+                                    :buttonText="item.title"
+                                    :toolTipText="item.toolTip"
+                                    :materialIconName="item.icon"
+                                    :iconColor="item.active ? 'accent' : 'grey'"
+                                    color="secondary"
+                                    @clicked="item.icon === 'menu' ? item.active = !item.active : itemClick(item)" />
+          </v-list-tile-content>
+        </div>
+
       </v-list-tile>
     </v-list>
 
@@ -69,9 +104,9 @@ import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 export default {
   props: {
-    show: Boolean,
     navItems: Array,
     mini: Boolean,
+    version: String,
   },
   data: () => ({
     Logo,
@@ -88,6 +123,18 @@ export default {
       });
 
       return actives;
+    },
+    menuItem() {
+      let menuItem = { active: true };
+
+      this.navItems.forEach((el) => {
+        if (el.icon === 'menu') {
+          menuItem = el;
+        }
+      });
+
+      // return default with active true so all items will be shown
+      return menuItem;
     },
   },
   methods: {

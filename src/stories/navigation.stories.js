@@ -77,6 +77,7 @@ export const methods = {
   onSearchClick: action("clicked on search"),
   onLoginClick: action("clicked on login")
 };
+const appVersion = process.env.VUE_APP_VERSION;
 
 const navItems = [
   { title: "Home", icon: "envidat", toolTip: "Back to the start page", active: false },
@@ -96,7 +97,7 @@ storiesOf("5 Navigation | Redesigned Navigation", module)
   components: { Navigation },
   template: `
     <v-container>
-      <navigation :navItems="navItems" />
+      <navigation :navItems="navItems" :version="appVersion" />
 
       <p v-for="(item, index) in navItems" :key="index" 
           v-show="item.active"
@@ -105,7 +106,10 @@ storiesOf("5 Navigation | Redesigned Navigation", module)
       </p>
     </v-container>
   `,
-  data: () => ({ navItems }),
+  data: () => ({
+    navItems,
+    appVersion,
+  }),
   methods
 }))
 .add("Menu Mini", () => ({
