@@ -1,6 +1,5 @@
 <template>
   <v-navigation-drawer permanent
-                        stateless
                         fixed
                         right
                         :mini-variant-width="menuItem.active ? 60 : 48"

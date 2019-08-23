@@ -1,5 +1,6 @@
 <template>
   <v-toolbar app
+              clipped-left
               color="white"
               height="36"
               :extended="expanded"
