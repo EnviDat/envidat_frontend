@@ -33,20 +33,18 @@
                           @controlsChanged="controlsChanged"
         /> -->
 
-        <filter-keywords-view
-          :compactLayout="$vuetify.breakpoint.smAndDown"
-          :allTags="allTags"
-          :selectedTagNames="selectedTagNames"
-          :popularTags="popularTags"
-          :expanded="filterExpanded"
-          :expandButtonText="filterExpandButtonText"
-          :expandedButtonText="filterExpandedButtonText"
-          :showPlaceholder="keywordsPlaceholder"
-          @clickedExpand="catchFilterExpandClicked"
-          @clickedTag="catchTagClicked"
-          @clickedTagClose="catchTagCloseClicked"
-          @clickedClear="catchTagCleared"
-        />
+        <filter-keywords-view :compactLayout="$vuetify.breakpoint.smAndDown"
+                              :allTags="allTags"
+                              :selectedTagNames="selectedTagNames"
+                              :popularTags="popularTags"
+                              :expanded="filterExpanded"
+                              :expandButtonText="filterExpandButtonText"
+                              :expandedButtonText="filterExpandedButtonText"
+                              :showPlaceholder="keywordsPlaceholder"
+                              @clickedExpand="catchFilterExpandClicked"
+                              @clickedTag="catchTagClicked"
+                              @clickedTagClose="catchTagCloseClicked"
+                              @clickedClear="catchTagCleared" />
       </v-flex>
 
       <v-flex py-2 style="z-index: 1;"
@@ -56,7 +54,8 @@
                         ['pr-3']: showMapFilter & $vuetify.breakpoint.sm,
                         ['xs12']: !showMapFilter,
                         metadataListStyling }" >
-        <metadata-list-view :listContent="filterContent"
+
+        <metadata-list-view :listContent="filteredContent"
                             :list-view="listViewActive"
                             :show-map-filter="showMapFilter"
                             :map-filtering-possible="mapFilteringPossible"
@@ -86,7 +85,10 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { BROWSE_PATH } from '@/router/routeConsts';
+import {
+  BROWSE_PAGENAME,
+  BROWSE_PATH,
+} from '@/router/routeConsts';
 import FilterMapView from '@/components/Filtering/FilterMapView';
 import FilterKeywordsView from '@/components/Filtering/FilterKeywordsView';
 import MetadataListView from '@/components/Views/MetadataListView';
@@ -108,7 +110,7 @@ import {
 export default {
   beforeRouteEnter: function beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.$store.commit(SET_CURRENT_PAGE, 'browsePage');
+      vm.$store.commit(SET_CURRENT_PAGE, BROWSE_PAGENAME);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
     });
   },

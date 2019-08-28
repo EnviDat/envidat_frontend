@@ -105,12 +105,13 @@ export default {
   watch: {
     searchTerm: function searchTerm(val) {
       // watcher to overtake the property value to the v-model value
+      alert('got new searchTerm ' + val);
       this.searchText = val;
     },
   },
   updated: function updated() {
     if (!this.searchText && this.lastSearch) {
-      this.$emit('searchCleared');
+      this.clearClicked();
       this.lastSearch = '';
     }
   },
@@ -120,7 +121,9 @@ export default {
       this.lastSearch = this.searchText;
     },
     clearClicked: function clearClicked() {
-      this.$emit('searchCleared');
+      // this.$emit('searchCleared');
+      this.searchText = '';
+      this.$emit('clicked', this.searchText);
     },
     focusChanged: function focusChanged() {
       if (!this.searchText) {

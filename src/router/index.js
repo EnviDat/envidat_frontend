@@ -10,17 +10,17 @@ import Router from 'vue-router';
 import {
   LANDING_PATH,
   BROWSE_PATH,
-  BROWSE_NAME,
+  BROWSE_PAGENAME,
   METADATADETAIL_PATH,
-  METADATADETAIL_NAME,
+  METADATADETAIL_PAGENAME,
   GCMD_PATH,
   ABOUT_PATH,
   POLICIES_PATH,
   GUIDELINES_PATH,
   PROJECTS_PATH,
-  PROJECTS_NAME,
+  PROJECTS_PAGENAME,
   PROJECT_DETAIL_PATH,
-  PROJECT_DETAIL_NAME,
+  PROJECT_DETAIL_PAGENAME,
 } from '@/router/routeConsts';
 
 Vue.use(Router);
@@ -38,12 +38,12 @@ export default new Router({
     },
     {
       path: BROWSE_PATH,
-      name: BROWSE_NAME,
+      name: BROWSE_PAGENAME,
       component: () => import(/* webpackChunkName: "browsePage" */ '@/components/Pages/BrowsePage'),
     },
     {
       path: `${METADATADETAIL_PATH}/:metadataid`,
-      name: METADATADETAIL_NAME,
+      name: METADATADETAIL_PAGENAME,
       component: () => import(/* webpackChunkName: "metadataDetailPage" */ '@/components/Pages/MetadataDetailPage'),
     },
     // {
@@ -73,12 +73,12 @@ export default new Router({
     },
     {
       path: PROJECTS_PATH,
-      name: PROJECTS_NAME,
+      name: PROJECTS_PAGENAME,
       component: () => import(/* webpackChunkName: "projectsPage" */ '@/components/Pages/ProjectsPage'),
     },
     {
       path: `${PROJECT_DETAIL_PATH}/:id`,
-      name: PROJECT_DETAIL_NAME,
+      name: PROJECT_DETAIL_PAGENAME,
       component: () => import(/* webpackChunkName: "projectDetailPage" */ '@/components/Pages/ProjectDetailPage'),
     },
   ],

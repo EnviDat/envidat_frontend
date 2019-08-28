@@ -17,6 +17,7 @@
     <navigation-toolbar :searchTerm="searchTerm"
                         :showSearchCount="showSearchCount"
                         :searchCount="searchCount"
+                        :showSearch="showToolbarSearch"
                         @menuClick="catchMenuClicked"
                         @searchClick="catchSearchClicked"
                         @searchCleared="catchSearchCleared" />
@@ -73,11 +74,17 @@
 <script>
 import { mapGetters } from 'vuex';
 import {
+  LANDING_PAGENAME,
   BROWSE_PATH,
+  BROWSE_PAGENAME,
   PROJECTS_PATH,
+  PROJECTS_PAGENAME,
   GUIDELINES_PATH,
+  GUIDELINES_PAGENAME,
   POLICIES_PATH,
+  POLICIES_PAGENAME,
   ABOUT_PATH,
+  ABOUT_PAGENAME,
 } from '@/router/routeConsts';
 import { BULK_LOAD_METADATAS_CONTENT } from '@/store/metadataMutationsConsts';
 import {
@@ -106,7 +113,7 @@ export default {
     //   console.log("applicationCache.onnoupdate");
     // };
   },
-  created: function created() {
+  created() {
     this.loadAllMetadata();
 
     const bgImgs = require.context('./assets/', false, /\.jpg$/);
@@ -115,11 +122,32 @@ export default {
     this.importCardBackgrounds();
     this.importIcons();
   },
+  updated() {
+    this.updateActiveStateOnNavItems();
+  },
   methods: {
+    updateActiveStateOnNavItems() {
+      for (let i = 0; i < this.navItems.length; i++) {
+        const item = this.navItems[i];
+        if (item.icon !== 'menu') {
+          item.active = this.currentPage === item.pageName;
+        }
+      }
+    },
     catchMenuClicked() {
       this.menuItem.active = !this.menuItem.active;
     },
     catchItemClicked(item) {
+      // item.active = true;
+
+      // this.navItems.forEach((el) => {
+      //   if (el.icon !== 'menu'
+      //    && item.active
+      //    && el.title !== item.title) {
+      //     el.active = false;
+      //   }
+      // });
+
       if (item.title === 'Login') {
         window.open(item.path, '_blank');
         return;
@@ -211,7 +239,10 @@ export default {
       newVersion: 'newVersion',
     }),
     showSearchCount() {
-      return this.currentPage === 'browsePage';
+      return this.currentPage === BROWSE_PAGENAME;
+    },
+    showToolbarSearch() {
+      return this.currentPage !== LANDING_PAGENAME;
     },
     searchCount() {
       return this.filteredContent !== undefined ? Object.keys(this.filteredContent).length : 0;
@@ -276,14 +307,14 @@ export default {
     showMenu: true,
     searchTerm: '',
     navItems: [
-      { title: 'Home', icon: 'envidat', toolTip: 'Back to the start page', path: './', active: false },
-      { title: 'Explore', icon: 'search', toolTip: 'Explore research data', path: BROWSE_PATH, active: false },
-      { title: 'Login', icon: 'person', toolTip: 'Login to upload data', path: 'https://www.envidat.ch/user/reset', active: false },
+      { title: 'Home', icon: 'envidat', toolTip: 'Back to the start page', active: false, path: './', pageName: LANDING_PAGENAME },
+      { title: 'Explore', icon: 'search', toolTip: 'Explore research data', active: false, path: BROWSE_PATH, pageName: BROWSE_PAGENAME },
+      { title: 'Login', icon: 'person', toolTip: 'Login to upload data', path: 'https://www.envidat.ch/user/reset', active: false, pageName: 'external' },
       // { title: 'Organizations', icon: 'account_tree', toolTip: 'Overview of the different organizations', path: , active: false },
-      { title: 'Projects', icon: 'library_books', toolTip: 'Overview of the research projects on envidat', path: PROJECTS_PATH, active: false },
-      { title: 'Guidelines', icon: 'local_library', toolTip: 'Guidlines about the creation of metadata', path: GUIDELINES_PATH, active: false },
-      { title: 'Policies', icon: 'policy', toolTip: 'The rules of EnviDat', path: POLICIES_PATH, active: false },
-      { title: 'About', icon: 'info', toolTip: 'What is EnviDat? How is behind EnviDat?', path: ABOUT_PATH, active: false },
+      { title: 'Projects', icon: 'library_books', toolTip: 'Overview of the research projects on envidat', active: false, path: PROJECTS_PATH, pageName: PROJECTS_PAGENAME },
+      { title: 'Guidelines', icon: 'local_library', toolTip: 'Guidlines about the creation of metadata', active: false, path: GUIDELINES_PATH, pageName: GUIDELINES_PAGENAME },
+      { title: 'Policies', icon: 'policy', toolTip: 'The rules of EnviDat', active: false, path: POLICIES_PATH, pageName: POLICIES_PAGENAME },
+      { title: 'About', icon: 'info', toolTip: 'What is EnviDat? How is behind EnviDat?', active: false, path: ABOUT_PATH, pageName: ABOUT_PAGENAME },
       // { title: 'Contact', icon: 'contact_support', toolTip: 'Do you need support?', active: false },
       { title: 'Menu', icon: 'menu', active: false },
     ],
