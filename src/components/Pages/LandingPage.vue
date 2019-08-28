@@ -44,7 +44,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { BROWSE_PATH } from '@/router/routeConsts';
+import { LANDING_PAGENAME, BROWSE_PATH } from '@/router/routeConsts';
 import BaseClickCard from '@/components/BaseElements/BaseClickCard';
 import TitleView from '@/components/Views/TitleView';
 import SearchBarView from '@/components/Filtering/SearchBarView';
@@ -67,7 +67,7 @@ export default {
   beforeRouteEnter: function beforeRouteEnter(to, from, next) {
     next((vm) => {
       // console.log("landing beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
-      vm.$store.commit(SET_CURRENT_PAGE, 'landingPage');
+      vm.$store.commit(SET_CURRENT_PAGE, LANDING_PAGENAME);
       const bgimg = vm.$vuetify.breakpoint.smAndDown ? vm.MobileBGImage : vm.PageBGImage;
       vm.$store.commit(SET_APP_BACKGROUND, bgimg);
     });

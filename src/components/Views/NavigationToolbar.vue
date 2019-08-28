@@ -14,7 +14,8 @@
 
     <v-spacer></v-spacer>
 
-    <small-search-bar-view :compactLayout="$vuetify.breakpoint.smAndDown"
+    <small-search-bar-view v-if="showSearch"
+                            :compactLayout="$vuetify.breakpoint.smAndDown"
                             class="elevation-0 flex xs12 sm6"
                             :searchTerm="searchTerm"
                             :showSearchCount="showSearchCount"
@@ -45,6 +46,7 @@ export default {
     selectedTags: Array,
     showSearchCount: Boolean,
     searchCount: Number,
+    showSearch: Boolean,
   },
   data: () => ({
     Logo,

@@ -48,7 +48,7 @@
  * The projects page lists all the projects and their subprojects.
  */
 import { mapGetters } from 'vuex';
-import { PROJECT_DETAIL_NAME } from '@/router/routeConsts';
+import { PROJECT_DETAIL_PAGENAME } from '@/router/routeConsts';
 import { SET_APP_BACKGROUND, SET_CURRENT_PAGE } from '@/store/mutationsConsts';
 import {
   GET_PROJECTS,
@@ -129,7 +129,7 @@ export default {
       this.$store.commit(`${PROJECTS_NAMESPACE}/${SET_PROJECTDETAIL_PAGE_BACK_URL}`, this.$route);
 
       this.$router.push({
-        name: PROJECT_DETAIL_NAME,
+        name: PROJECT_DETAIL_PAGENAME,
         params: { id: projectId },
       });
     },
@@ -137,7 +137,7 @@ export default {
       this.$store.commit(`${PROJECTS_NAMESPACE}/${SET_PROJECTDETAIL_PAGE_BACK_URL}`, this.$route);
 
       this.$router.push({
-        name: PROJECT_DETAIL_NAME,
+        name: PROJECT_DETAIL_PAGENAME,
         params: { id: subprojectId },
       });
     },

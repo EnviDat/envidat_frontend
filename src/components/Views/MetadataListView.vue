@@ -107,7 +107,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { BROWSE_PATH, METADATADETAIL_NAME } from '@/router/routeConsts';
+import { BROWSE_PATH, METADATADETAIL_PAGENAME } from '@/router/routeConsts';
 import MetadataCard from '@/components/Cards/MetadataCard';
 import MetadataCardPlaceholder from '@/components/Cards/MetadataCardPlaceholder';
 import NoSearchResultsView from '@/components/Filtering/NoSearchResultsView';
@@ -251,7 +251,7 @@ export default {
       this.$store.commit(`metadata/${SET_DETAIL_PAGE_BACK_URL}`, this.$route);
 
       this.$router.push({
-        name: METADATADETAIL_NAME,
+        name: METADATADETAIL_PAGENAME,
         params: {
           metadataid: datasetname,
         },

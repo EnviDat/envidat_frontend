@@ -90,16 +90,6 @@ export default {
   },
   methods: {
     itemClick(item) {
-      item.active = true;
-
-      this.navItems.forEach((el) => {
-        if (el.icon !== 'menu'
-         && item.active
-         && el.title !== item.title) {
-          el.active = false;
-        }
-      });
-
       this.$emit('itemClick', item);
     },
   },

@@ -52,12 +52,14 @@
    * - Different Card with infomation about some about topics (ExpandableCard)
    */
 import { mapGetters } from 'vuex';
-import { BROWSE_PATH } from '@/router/routeConsts';
+import {
+  BROWSE_PATH,
+  ABOUT_PAGENAME,
+} from '@/router/routeConsts';
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
 } from '@/store/mutationsConsts';
-import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
 
@@ -83,7 +85,7 @@ export default {
      */
   beforeRouteEnter: function beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.$store.commit(SET_CURRENT_PAGE, 'aboutPage');
+      vm.$store.commit(SET_CURRENT_PAGE, ABOUT_PAGENAME);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
     });
   },
@@ -185,7 +187,6 @@ export default {
   components: {
     ImgAndTextLayout,
     ExpandableCard,
-    BaseIconButton,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
