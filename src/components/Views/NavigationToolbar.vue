@@ -1,55 +1,80 @@
 <template>
-  <v-toolbar color="white" height="36">
-    <v-toolbar-side-icon @click.native="menuClick"></v-toolbar-side-icon>
+  <v-toolbar app
+              clipped-left
+              color="white"
+              height="36"
+              :extended="expanded"
+              :extension-height="80">
 
-    <!-- <v-toolbar-title>
-      <v-btn icon href="./" class="ma-0">
-        <img :src="Logo" alt="envidat_logo" />
-      </v-btn>
+    <v-btn v-if="$vuetify.breakpoint.mdAndUp"
+            icon @click.native="menuClick">
+      <v-icon>menu</v-icon>
+    </v-btn>
 
-      <div class="headline envidatLogoText envidatNavbarTitleSmall">{{ logoText }}</div>
-    </v-toolbar-title>-->
 
     <v-spacer></v-spacer>
 
-    <v-text-field></v-text-field>
+    <small-search-bar-view v-if="showSearch"
+                            :compactLayout="$vuetify.breakpoint.smAndDown"
+                            class="elevation-0 flex xs12 sm6"
+                            :searchTerm="searchTerm"
+                            :showSearchCount="showSearchCount"
+                            :searchCount="searchCount"
+                            isFlat
+                            :fixedHeight="36"
+                            :labelText="searchBarPlaceholder"
+                            style="align-items: center;"
+                            @clicked="catchSearchClicked"
+                            @searchCleared="catchSearchCleared" />
 
-    <v-btn icon @click.native="searchClick">
-      <v-icon>search</v-icon>
-    </v-btn>
 
-    <v-btn icon @click.native="loginClick">
-      <v-icon>login</v-icon>
-    </v-btn>
-
-    <!-- <v-btn icon>
-      <v-icon>refresh</v-icon>
-    </v-btn>
-
-    <v-btn icon>
-      <v-icon>more_vert</v-icon>
-    </v-btn>-->
   </v-toolbar>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import Logo from '@/assets/logo/EnviDat_logo_32.png';
+import SmallSearchBarView from '@/components/Filtering/SmallSearchBarView';
 
 export default {
-  components: {},
-  props: {},
+  components: {
+    SmallSearchBarView,
+  },
+  props: {
+    searchTerm: String,
+    allTags: Array,
+    selectedTags: Array,
+    showSearchCount: Boolean,
+    searchCount: Number,
+    showSearch: Boolean,
+  },
   data: () => ({
     Logo,
     logoText: 'EnviDat',
     searchFocused: false,
+    expanded: false,
   }),
-  computed: {},
+  computed: {
+    ...mapGetters({
+      searchPlaceholderText: 'metadata/searchPlaceholderText',
+      searchPlaceholderTextSmall: 'metadata/searchPlaceholderTextSmall',
+    }),
+    searchBarPlaceholder() {
+      return this.$vuetify.breakpoint.mdAndUp ? this.searchPlaceholderText : this.searchPlaceholderTextSmall;
+    },
+    filterIconColor() {
+      return !this.selectedTags || this.selectedTags.length <= 0 ? 'grey' : 'primary';
+    },
+  },
   methods: {
     menuClick() {
       this.$emit('menuClick');
     },
-    searchClick() {
-      this.$emit('searchClick');
+    catchSearchClicked(search) {
+      this.$emit('searchClick', search);
+    },
+    catchSearchCleared() {
+      this.$emit('searchCleared');
     },
     loginClick() {
       this.$emit('loginClick');

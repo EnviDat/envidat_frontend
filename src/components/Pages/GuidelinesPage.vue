@@ -39,7 +39,10 @@
    */
 import { mapGetters } from 'vuex';
 import MMarkdownPreview from 'm-markdown-preview';
-import { BROWSE_PATH } from '@/router/routeConsts';
+import {
+  BROWSE_PATH,
+  GUIDELINES_PAGENAME,
+} from '@/router/routeConsts';
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
@@ -50,7 +53,7 @@ import { GET_GUIDELINES } from '@/store/guidelinesMutationsConsts';
 export default {
   beforeRouteEnter: function beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.$store.commit(SET_CURRENT_PAGE, 'guidelinesPage');
+      vm.$store.commit(SET_CURRENT_PAGE, GUIDELINES_PAGENAME);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
     });
   },

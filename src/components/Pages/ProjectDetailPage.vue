@@ -69,7 +69,7 @@
    * The projects page lists all the projects and their subprojects.
    */
 import { mapGetters } from 'vuex';
-import { PROJECTS_PATH, PROJECT_DETAIL_NAME } from '@/router/routeConsts';
+import { PROJECTS_PATH, PROJECT_DETAIL_PAGENAME } from '@/router/routeConsts';
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
@@ -77,7 +77,6 @@ import {
 import {
   GET_PROJECTS,
   PROJECTS_NAMESPACE,
-  PROJECTS_DETAIL_PAGE,
   SET_PROJECTDETAIL_PAGE_BACK_URL,
 } from '@/store/projectsMutationsConsts';
 
@@ -98,14 +97,14 @@ export default {
      */
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.$store.commit(SET_CURRENT_PAGE, PROJECTS_DETAIL_PAGE);
+      vm.$store.commit(SET_CURRENT_PAGE, PROJECT_DETAIL_PAGENAME);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
 
       let backRoute = { path: PROJECTS_PATH };
 
       if (vm.currentProject.parent) {
         backRoute = {
-          name: PROJECT_DETAIL_NAME,
+          name: PROJECT_DETAIL_PAGENAME,
           params: { id: vm.currentProject.parent.id },
         };
       }
@@ -119,7 +118,7 @@ export default {
 
     if (toProject.parent) {
       backRoute = {
-        name: PROJECT_DETAIL_NAME,
+        name: PROJECT_DETAIL_PAGENAME,
         params: { id: toProject.parent.id },
       };
     }
@@ -212,7 +211,7 @@ export default {
       this.$store.commit(`${PROJECTS_NAMESPACE}/${SET_PROJECTDETAIL_PAGE_BACK_URL}`, this.$route);
 
       this.$router.push({
-        name: PROJECT_DETAIL_NAME,
+        name: PROJECT_DETAIL_PAGENAME,
         params: { id: projectId },
       });
     },
@@ -220,7 +219,7 @@ export default {
       this.$store.commit(`${PROJECTS_NAMESPACE}/${SET_PROJECTDETAIL_PAGE_BACK_URL}`, this.$route);
 
       this.$router.push({
-        name: PROJECT_DETAIL_NAME,
+        name: PROJECT_DETAIL_PAGENAME,
         params: { id: subprojectId },
       });
     },

@@ -1,8 +1,9 @@
 <template>
-  <v-card raised :height="compactLayout ? $vuetify.breakpoint.sm ? 38 : 32 : 40">
+  <v-card :height="height">
+
     <v-layout row align-center fill-height justify-space-between>
 
-      <v-flex grow py-0 pl-2>
+      <v-flex grow py-0 px-2>
         <v-tooltip bottom :disabled="$vuetify.breakpoint.xsOnly || !searchToolTipText">
           <div slot="activator">
             <v-text-field
@@ -12,11 +13,8 @@
               v-model="searchText"
               single-line
               hide-details
-              solo
-              flat
+              :flat="isFlat"
               :placeholder="labelText"
-              append-outer-icon="search"
-              @click:append-outer="clicked"
               @keyup.enter="clicked"
               append-icon="clear"
               @click:append="clearClicked"
@@ -27,14 +25,15 @@
         </v-tooltip>
       </v-flex>
 
-      <v-flex shrink
-              :class="hasButton ? 'pa-0' : 'py-0 pl-0 pr-2'"
+      <v-flex v-if="showSearchCount"
+              shrink py-0 px-1
               style="text-align: center;">
+
         <v-tooltip bottom :disabled="$vuetify.breakpoint.xsOnly">
           <tag-chip
             slot="activator"
             :style="$vuetify.breakpoint.xsOnly ? 'font-size: 0.65rem !important;' : 'font-size: 0.8rem !important;'"
-            :name="searchCount.toString()"
+            :name="searchCount ? searchCount.toString() : '0'"
             :selectable="false"
             :highlighted="searchCount > 0"
             :closeable="false"
@@ -46,12 +45,16 @@
 
       <v-flex v-if="hasButton" shrink>
         <base-rectangle-button :button-text="buttonText" :is-small="true" @clicked="clicked" />
+      </v-flex>
 
-        <!-- <v-btn
-          color="primary"
-          v-bind="{ [`large`]: this.$vuetify.breakpoint.mdAndUp}"
-          @click.native="clicked"
-        >{{ buttonText }}</v-btn>-->
+      <v-flex v-if="!hasButton" shrink
+              >
+        <base-icon-button materialIconName="search"
+                          marginClass="ma-0"
+                          color="transparent"
+                          :isToggled="!searchTerm"
+                          @clicked="clicked"
+        />
       </v-flex>
     </v-layout>
   </v-card>
@@ -60,19 +63,24 @@
 <script>
 import TagChip from '@/components/Cards/TagChip';
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
+import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 export default {
   components: {
     TagChip,
     BaseRectangleButton,
+    BaseIconButton,
   },
   props: {
     labelText: String,
     searchTerm: String,
+    showSearchCount: Boolean,
     searchCount: Number,
     hasButton: Boolean,
     buttonText: String,
     compactLayout: Boolean,
+    isFlat: Boolean,
+    fixedHeight: Number,
   },
   data: () => ({
     searchText: '',
@@ -81,15 +89,29 @@ export default {
     searchToolTipText:
       'The full text search works for research terms, topics or authors',
   }),
+  computed: {
+    height() {
+      let height = this.fixedHeight;
+
+      if (this.fixedHeight) {
+        return height;
+      }
+
+      height = this.compactLayout ? this.$vuetify.breakpoint.sm ? 38 : 32 : 40;
+
+      return height;
+    },
+  },
   watch: {
     searchTerm: function searchTerm(val) {
       // watcher to overtake the property value to the v-model value
+      alert('got new searchTerm ' + val);
       this.searchText = val;
     },
   },
   updated: function updated() {
     if (!this.searchText && this.lastSearch) {
-      this.$emit('searchCleared');
+      this.clearClicked();
       this.lastSearch = '';
     }
   },
@@ -99,7 +121,9 @@ export default {
       this.lastSearch = this.searchText;
     },
     clearClicked: function clearClicked() {
-      this.$emit('searchCleared');
+      // this.$emit('searchCleared');
+      this.searchText = '';
+      this.$emit('clicked', this.searchText);
     },
     focusChanged: function focusChanged() {
       if (!this.searchText) {
@@ -124,12 +148,23 @@ export default {
   min-height: 0px !important;
 }
 
+.envidatSmallSearch {
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
 .envidatSmallSearch > .v-input__control {
-  min-height: 40px !important;
+  max-height: 40px !important;
+  margin-bottom: 2px !important;
+}
+
+.envidatSmallSearch > .v-input__control > .v-input__slot > .v-text-field__slot > input {
+  padding: 0;
 }
 
 .envidatSmallSearch.small > .v-input__control {
-  min-height: 32px !important;
+  margin-bottom: 2px !important;
+  /* min-height: 32px !important; */
   font-size: 12px !important;
 }
 

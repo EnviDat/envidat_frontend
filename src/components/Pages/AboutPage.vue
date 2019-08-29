@@ -1,74 +1,46 @@
 <template>
-  <v-container
-    tag="article"
-    fluid
-    fill-height
-    pa-0
-  >
-    <v-layout
-      row
-      wrap
-    >
-      <v-flex
-        xs12
-        lg10
-        offset-lg1
-      >
-        <img-and-text-layout
-          :dark="true"
-          :blur="true"
-          :img="missionImg"
-          :height="300"
-          :text-font-size="16"
-          :parallax="true"
-          title="About EnviDat"
-        >
-          <base-icon-button
-            style="position: absolute; top: 0px; right: 0px; z-index: 10;"
-            material-icon-name="close"
-            :outlined="true"
-            color="white"
-            icon-color="white"
-            tool-tip-text="Close About Page"
-            :tool-tip-bottom="true"
-            @clicked="catchBackClicked"
-          />
-        </img-and-text-layout>
+  <v-container tag="article"
+                fluid fill-height
+                pa-0 >
+    <v-layout row wrap >
+      <v-flex xs12 lg10
+              offset-lg1 >
+
+        <img-and-text-layout :dark="true"
+                              :blur="true"
+                              :img="missionImg"
+                              :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
+                              :text-font-size="16"
+                              :parallax="true"
+                              title="About EnviDat" />
+
       </v-flex>
 
-      <v-flex
-        xs12
-        lg10
-        offset-lg1
-        px-3
-        mt-5
-      >
-        <v-container
-          grid-list-lg
-          pa-0
-        >
-          <v-layout
-            row
-            wrap
-          >
-            <v-flex
-              v-for="(card, index) in AboutCardInfos()"
-              :key="index"
-              my-2
-              :class="card.widthClass"
-            >
-              <expandable-card
-                :title="card.title"
-                :text="card.text"
-                :img="card.img"
-                :min-height="100"
-                :max-height="150"
-                :contain="card.title === 'WSL'"
-              />
+      <v-flex xs12 lg10
+              offset-lg1
+              px-3 mt-5 >
+
+        <v-container grid-list-lg
+                      pa-0 >
+          <v-layout row wrap >
+
+            <v-flex v-for="(card, index) in AboutCardInfos()"
+                    :key="index"
+                    my-2
+                    :class="card.widthClass" >
+
+              <expandable-card :title="card.title"
+                                :text="card.text"
+                                :img="card.img"
+                                :min-height="100"
+                                :max-height="150"
+                                :contain="card.title === 'WSL'" />
             </v-flex>
           </v-layout>
+
         </v-container>
       </v-flex>
+
     </v-layout>
   </v-container>
 </template>
@@ -80,12 +52,14 @@
    * - Different Card with infomation about some about topics (ExpandableCard)
    */
 import { mapGetters } from 'vuex';
-import { BROWSE_PATH } from '@/router/routeConsts';
+import {
+  BROWSE_PATH,
+  ABOUT_PAGENAME,
+} from '@/router/routeConsts';
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
 } from '@/store/mutationsConsts';
-import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
 
@@ -111,7 +85,7 @@ export default {
      */
   beforeRouteEnter: function beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.$store.commit(SET_CURRENT_PAGE, 'aboutPage');
+      vm.$store.commit(SET_CURRENT_PAGE, ABOUT_PAGENAME);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
     });
   },
@@ -213,7 +187,6 @@ export default {
   components: {
     ImgAndTextLayout,
     ExpandableCard,
-    BaseIconButton,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',

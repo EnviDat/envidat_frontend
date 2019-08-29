@@ -93,6 +93,7 @@ export default {
     isElevated: Boolean,
     disabled: Boolean,
     count: Number,
+    marginClass: String,
   },
   data: () => ({
     showTagsExpanded: false,
