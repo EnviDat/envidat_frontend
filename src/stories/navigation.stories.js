@@ -67,9 +67,9 @@ Vue.component('v-list-tile-content', VListTileContent);
 Vue.component('v-list-tile-sub-title', VListTileSubTitle);
 Vue.component('v-list-tile-title', VListTileTitle);
 
-import Navigation from "@/components/Views/Navigation.vue";
-import NavigationMini from "@/components/Views/NavigationMini.vue";
-import NavigationToolbar from "@/components/Views/NavigationToolbar.vue";
+import Navigation from "@/components/Navigation/Navigation.vue";
+import NavigationMini from "@/components/Navigation/NavigationMini.vue";
+import NavigationToolbar from "@/components/Navigation/NavigationToolbar.vue";
 // import BaseRectangleButton from "@/components/BaseElements/BaseRectangleButton.vue";
 
 export const methods = {

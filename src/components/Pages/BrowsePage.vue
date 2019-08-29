@@ -55,7 +55,7 @@
                         ['xs12']: !showMapFilter,
                         metadataListStyling }" >
 
-        <metadata-list-view :listContent="filteredContent"
+        <metadata-list-layout :listContent="filteredContent"
                             :list-view="listViewActive"
                             :show-map-filter="showMapFilter"
                             :map-filtering-possible="mapFilteringPossible"
@@ -91,7 +91,7 @@ import {
 } from '@/router/routeConsts';
 import FilterMapView from '@/components/Filtering/FilterMapView';
 import FilterKeywordsView from '@/components/Filtering/FilterKeywordsView';
-import MetadataListView from '@/components/Views/MetadataListView';
+import MetadataListLayout from '@/components/Layouts/MetadataListLayout';
 import {
   SEARCH_METADATA,
   CLEAR_SEARCH_METADATA,
@@ -457,7 +457,7 @@ export default {
   components: {
     FilterMapView,
     FilterKeywordsView,
-    MetadataListView,
+    MetadataListLayout,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',

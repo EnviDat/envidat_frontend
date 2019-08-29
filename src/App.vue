@@ -27,27 +27,14 @@
                   v-bind="{ [`px-1`]: this.$vuetify.breakpoint.smAndDown,
                             [`px-2`]: this.$vuetify.breakpoint.mdAndUp, }" >
         <v-layout column>
-          <!-- <v-flex v-if="currentPage != 'landingPage'"
-            xs12
-            v-bind="{ [`mx-0`]: this.$vuetify.breakpoint.smAndDown,
-                      [`mx-3`]: this.$vuetify.breakpoint.mdAndUp,
-                      [`mb-1`]: this.$vuetify.breakpoint.smAndDown,
-                      [`my-1`]: this.$vuetify.breakpoint.mdAndUp,
-            }"
-            class="envidatNavbar"
-            :class="{ 'small': this.$vuetify.breakpoint.smAndDown }"
-          >
-            <the-nav-bar-view />
-          </v-flex> -->
 
           <v-flex xs12
-                  mx-0
-          >
-            <!-- v-bind="{ [`mx-0`]: this.$vuetify.breakpoint.smAndDown,
-                      [`mx-3`]: this.$vuetify.breakpoint.mdAndUp }" -->
+                  mx-0 >
+
             <transition name="fade" mode="out-in">
               <router-view />
             </transition>
+
           </v-flex>
 
           <v-flex xs12
@@ -93,9 +80,9 @@ import {
   ADD_ICON_IMAGE,
   SET_CONFIG,
 } from '@/store/mutationsConsts';
-import Navigation from '@/components/Views/Navigation';
-import NavigationMini from '@/components/Views/NavigationMini';
-import NavigationToolbar from '@/components/Views/NavigationToolbar';
+import Navigation from '@/components/Navigation/Navigation';
+import NavigationMini from '@/components/Navigation/NavigationMini';
+import NavigationToolbar from '@/components/Navigation/NavigationToolbar';
 import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
 
 export default {
