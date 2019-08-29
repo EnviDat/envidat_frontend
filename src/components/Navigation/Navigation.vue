@@ -65,7 +65,7 @@
                   </v-flex>
                   <v-flex v-if="version"
                           xs4
-                          style="font-size: 5px; position: relative; left: 2px;">
+                          style="font-size: 6px; position: relative; left: 2px;">
                     Version {{ version }}
                   </v-flex>
                 </v-layout>
