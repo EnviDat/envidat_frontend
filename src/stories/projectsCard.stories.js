@@ -86,7 +86,7 @@ storiesOf("3 Cards | Projects Cards", module)
     <v-container grid-list-lg fluid pa-0>
     <v-layout row wrap>
 
-      <v-flex xs3 pa-3
+      <v-flex xs3
         v-for="(project, index) in projectsCardsParents()"
         :key="index"
       >
@@ -116,7 +116,7 @@ storiesOf("3 Cards | Projects Cards", module)
     <v-container grid-list-lg fluid pa-0>
     <v-layout row wrap>
 
-      <v-flex xs3 pa-3
+      <v-flex xs3
         v-for="(project, index) in projectsCardsChilds()"
         :key="index"
       >
