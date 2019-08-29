@@ -17,13 +17,17 @@
       </v-flex>
 
       <v-flex xs12 lg10 offset-lg1 mt-5>
-        <v-container grid-list-lg pa-0>
+        <v-container fluid grid-list-lg
+                      pa-1 >
           <v-layout row wrap>
 
             <v-flex v-for="(project, index) in projectsCardsParents()"
                     :key="index"
                     xs12 sm6 md4 xl3
-                    pa-3 >
+                     >
+                    <!-- v-bind="{['pa-3'] : $vuetify.breakpoint.smAndUp,
+                             ['pa-0'] : $vuetify.breakpoint.xsOnly,
+                             ['ma-0'] : $vuetify.breakpoint.xsOnly,}" -->
               <project-card :id="project.id"
                             :title="project.title"
                             :img="project.image_display_url"

@@ -3,15 +3,18 @@
 
     <v-card-title class="bodyTitle title">Subprojects</v-card-title>
 
-    <v-card-text v-if="subProjects" >
+    <v-card-text v-if="subProjects"
+                  :class="{ 'px-2' : $vuetify.breakpoint.xsOnly,
+                            'px-3' : $vuetify.breakpoint.smAndUp, }"
+                  class="py-0">
 
-          <v-container pa-0 grid-list-lg fluid>
+          <v-container grid-list-lg fluid
+                        pa-1 >
           <v-layout row wrap>
 
             <v-flex v-for="(project, index) in subProjects"
                     :key="'sub_' + index"
-                    xs12 sm6 md4 xl3
-                    pa-3>
+                    xs12 sm6 md4 xl3 >
 
               <project-card :id="project.id"
                             :title="project.title"
