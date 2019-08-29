@@ -48,12 +48,11 @@
  * The projects page lists all the projects and their subprojects.
  */
 import { mapGetters } from 'vuex';
-import { PROJECT_DETAIL_PAGENAME } from '@/router/routeConsts';
+import { PROJECTS_PAGENAME, PROJECT_DETAIL_PAGENAME } from '@/router/routeConsts';
 import { SET_APP_BACKGROUND, SET_CURRENT_PAGE } from '@/store/mutationsConsts';
 import {
   GET_PROJECTS,
   PROJECTS_NAMESPACE,
-  PROJECTS_PAGE,
   SET_PROJECTDETAIL_PAGE_BACK_URL,
 } from '@/store/projectsMutationsConsts';
 
@@ -72,7 +71,7 @@ export default {
    */
   beforeRouteEnter: function beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.$store.commit(SET_CURRENT_PAGE, PROJECTS_PAGE);
+      vm.$store.commit(SET_CURRENT_PAGE, PROJECTS_PAGENAME);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
     });
   },
