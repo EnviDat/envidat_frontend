@@ -1,64 +1,157 @@
 <template>
-  <v-navigation-drawer app permanent>
-    <v-list class="pt-0" dense>
-      <v-list-tile v-for="(item, index) in navItems" :key="index">
-        <v-list-tile-action v-if="item.icon === 'envidat'">
-          <div>
-            <v-btn icon href="./" class="ma-0">
+  <v-navigation-drawer app
+                        permanent
+                        clipped
+                        :mini-variant.sync="mini"
+                        mini-variant-width="60"
+                        width="190"
+                        @click.native.stop=""
+  >
+
+    <v-list class="pt-0"
+            :class="{ 'narrowNavigation': mini }"
+                        @click.native.stop=""
+            dense >
+
+      <v-list-tile v-for="(item, index) in navItemsMenuExcluded"
+                  :key="index"
+                        @click.native.stop=""
+                  >
+
+        <div v-if="mini" style="width: 100%; height: 100%;">
+
+          <v-list-tile-action v-if="item.icon === 'envidat'" >
+            <v-btn icon class="ma-0"
+                  :color="item.active ? 'accent' : 'trasparent'"
+                  @click.stop="itemClick(item)" >
               <img :src="Logo" alt="envidat_logo" />
             </v-btn>
+          </v-list-tile-action>
 
-            <div class="headline envidatLogoText envidatNavbarTitleSmall">{{ logoText }}</div>
-          </div>
-        </v-list-tile-action>
+          <v-list-tile-action v-if="item.icon !== 'envidat'"
+                              class="v-list__group__header__prepend-icon px-2" >
 
-        <!-- <v-list-tile-action
-          v-if="item.icon !== 'envidat'"
-          class="v-list__group__header__prepend-icon"
-        >
-          <v-icon>{{ item.icon }}</v-icon>
-        </v-list-tile-action>-->
+            <base-icon-button marginClass="ma-0 pa-0"
+                              :toolTipText="item.title"
+                              :materialIconName="item.icon"
+                              :iconColor="item.active ? 'accent' : 'secondary'"
+                              color="transparent"
+                              @clicked="item.icon === 'menu' ? item.active = !item.active : itemClick(item)"
+                            />
+          </v-list-tile-action>
+        </div>
 
-        <v-list-tile-content v-if="item.icon !== 'envidat'">
-          <!-- <v-list-tile-title> -->
+        <div v-if="!mini" style="width: 100%; height: 100%;">
 
-          <base-rectangle-button
-            isSmall
-            isFlat
-            :buttonText="item.title"
-            :toolTipText="item.toolTip"
-            :materialIconName="item.icon"
-            color="secondary"
-          />
-          <!-- </v-list-tile-title> -->
-        </v-list-tile-content>
+          <v-list-tile-action v-if="item.icon === 'envidat'">
+                              <!-- class="v-list__group__header__prepend-icon"
+                              style="position: relative; right: -1px;" > -->
+            <v-layout row wrap>
+
+              <v-flex xs3>
+                <v-btn icon class="ma-0"
+                      :color="item.active ? 'accent' : 'trasparent'"
+                      @click.stop="itemClick(item)" >
+                  <img :src="Logo" alt="envidat_logo" />
+                </v-btn>
+              </v-flex>
+
+              <v-flex xs9>
+                <v-layout column fill-height align-start justify-end >
+                  <v-flex xs4></v-flex>
+                  <v-flex xs4
+                          class="headline envidatNavbarTitleSmall">
+                    {{ logoText }}
+                  </v-flex>
+                  <v-flex v-if="version"
+                          xs4
+                          style="font-size: 5px; position: relative; left: 2px;">
+                    Version {{ version }}
+                  </v-flex>
+                </v-layout>
+              </v-flex>
+            </v-layout>
+          </v-list-tile-action>
+
+          <v-list-tile-content v-if="item.icon !== 'envidat'" >
+
+            <base-rectangle-button marginClass="ma-0 px-2 py-0"
+                                    isSmall
+                                    isFlat
+                                    :buttonText="item.title"
+                                    :toolTipText="item.toolTip"
+                                    :materialIconName="item.icon"
+                                    :iconColor="item.active ? 'accent' : 'grey'"
+                                    color="secondary"
+                                    @clicked="item.icon === 'menu' ? item.active = !item.active : itemClick(item)" />
+          </v-list-tile-content>
+        </div>
+
       </v-list-tile>
     </v-list>
+
   </v-navigation-drawer>
 </template>
 
 <script>
 import Logo from '@/assets/logo/EnviDat_logo_32.png';
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
+import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 export default {
   props: {
-    mini: Boolean,
     navItems: Array,
+    mini: Boolean,
+    version: String,
   },
   data: () => ({
     Logo,
     logoText: 'EnviDat',
   }),
-  computed: {},
-  methods: {},
+  computed: {
+    navItemsMenuExcluded() {
+      const actives = [];
+
+      this.navItems.forEach((el) => {
+        if (el.icon !== 'menu') {
+          actives.push(el);
+        }
+      });
+
+      return actives;
+    },
+    menuItem() {
+      let menuItem = { active: true };
+
+      this.navItems.forEach((el) => {
+        if (el.icon === 'menu') {
+          menuItem = el;
+        }
+      });
+
+      // return default with active true so all items will be shown
+      return menuItem;
+    },
+  },
+  methods: {
+    itemClick(item) {
+      this.$emit('itemClick', item);
+    },
+  },
   components: {
     BaseRectangleButton,
+    BaseIconButton,
   },
 };
 </script>
 
 <style>
+
+.narrowNavigation > div[role="listitem"] > div {
+  padding: 0;
+  margin: 0;
+}
+
 .envidatLogoText {
   display: inline;
   vertical-align: middle;
@@ -73,4 +166,5 @@ export default {
 .envidatNavbarTitleSmall {
   font-size: 18px !important;
 }
+
 </style>

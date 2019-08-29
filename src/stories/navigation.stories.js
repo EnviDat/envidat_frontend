@@ -68,6 +68,7 @@ Vue.component('v-list-tile-sub-title', VListTileSubTitle);
 Vue.component('v-list-tile-title', VListTileTitle);
 
 import Navigation from "@/components/Views/Navigation.vue";
+import NavigationMini from "@/components/Views/NavigationMini.vue";
 import NavigationToolbar from "@/components/Views/NavigationToolbar.vue";
 // import BaseRectangleButton from "@/components/BaseElements/BaseRectangleButton.vue";
 
@@ -76,32 +77,83 @@ export const methods = {
   onSearchClick: action("clicked on search"),
   onLoginClick: action("clicked on login")
 };
+const appVersion = process.env.VUE_APP_VERSION;
 
-export const navItems = [
-  { title: "Home", icon: "envidat", toolTip: "Back to the start page" },
-  { title: "Login", icon: "dashboard", toolTip: "Login to upload data" },
-  { title: "Guidelines", icon: "map", toolTip: "Guidlines about the creation of metadata" },
-  { title: "About", icon: "info", toolTip: "What is EnviDat? How is behind EnviDat?" },
-  { title: "Policies", icon: "list", toolTip: "The rules of EnviDat" },
-  { title: "Contact", icon: "info", toolTip: "What is EnviDat? How is behind EnviDat?" }
+const navItems = [
+  { title: "Home", icon: "envidat", toolTip: "Back to the start page", active: false },
+  { title: "Explore", icon: "search", toolTip: "Explore research data", active: false },
+  { title: "Login", icon: "person", toolTip: "Login to upload data", active: false },
+  { title: "Organizations", icon: "account_tree", toolTip: "Explore research data", active: false },
+  { title: "Projects", icon: "library_books", toolTip: "Explore research data", active: false },
+  { title: "Guidelines", icon: "local_library", toolTip: "Guidlines about the creation of metadata", active: false },
+  { title: "Policies", icon: "policy", toolTip: "The rules of EnviDat", active: false },
+  { title: "About", icon: "info", toolTip: "What is EnviDat? How is behind EnviDat?", active: false },
+  { title: "Contact", icon: "contact_support", toolTip: "Do you need support?", active: false },
+  { title: "Menu", icon: "menu", active: true }
 ];
 
-storiesOf("5 Navigation | Redesigned Navigation", module).add("Menu", () => ({
+storiesOf("5 Navigation | Redesigned Navigation", module)
+.add("Menu", () => ({
   components: { Navigation },
   template: `
-    <navigation
-                :navItems="navItems"
-          />`,
+    <v-container>
+      <navigation :navItems="navItems" :version="appVersion" />
+
+      <p v-for="(item, index) in navItems" :key="index" 
+          v-show="item.active"
+          style="margin: 100px;" >
+        {{ item.title }}
+      </p>
+    </v-container>
+  `,
+  data: () => ({
+    navItems,
+    appVersion,
+  }),
+  methods
+}))
+.add("Menu Mini", () => ({
+  components: { NavigationMini },
+  template: `
+    <v-container>
+      <navigation-mini :navItems="navItems"
+                        style="position: fixed; top: auto; left: auto; bottom: 25px; right: 25px;"
+                        class="elevation-2"
+                        />
+      <p v-for="(item, index) in navItems" :key="index" 
+          v-show="item.active">
+        {{ item.title }}
+      </p>
+
+    </v-container>    
+  `,
   data: () => ({ navItems }),
   methods
-})).add("Toolbar", () => ({
+}))
+.add("Toolbar", () => ({
   components: { NavigationToolbar },
   template: `
+      <navigation-toolbar
+                  labelText="Search for something"
+            v-on:menuClick="onMenuClick"
+            v-on:searchClick="onSearchClick"
+            v-on:loginClick="onLoginClick"
+            />`,
+  methods
+})).add("Menu & Toolbar", () => ({
+  components: { Navigation, NavigationToolbar },
+  template: `
+      <navigation
+        :navItems="navItems"
+      />  
       <navigation-toolbar
                   labelText="Search for something"
             @menuClick="onMenuClick"
             @searchClick="onSearchClick"
             @loginClick="onLoginClick"
-            />`,
+            />
+  `,
+  data: () => ({ navItems }),
   methods
 }));
+

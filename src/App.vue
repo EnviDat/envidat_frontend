@@ -1,19 +1,33 @@
 <template>
   <v-app class="application" :style="dynamicBackground">
-    <!-- <navigation /> -->
-    <!-- <navigation-toolbar /> -->
+
+    <navigation v-if="$vuetify.breakpoint.mdAndUp"
+                :mini="!this.menuItem.active"
+                :navItems="navItems"
+                :version="appVersion"
+                @menuClick="catchMenuClicked"
+                @itemClick="catchItemClicked" />
+
+    <navigation-mini v-if="$vuetify.breakpoint.smAndDown"
+                    :navItems="navItems"
+                    style="position: fixed; top: auto; right: 10px; bottom: 10px;"
+                    class="elevation-3"
+                    @itemClick="catchItemClicked" />
+
+    <navigation-toolbar :searchTerm="searchTerm"
+                        :showSearchCount="showSearchCount"
+                        :searchCount="searchCount"
+                        :showSearch="showToolbarSearch"
+                        @menuClick="catchMenuClicked"
+                        @searchClick="catchSearchClicked"
+                        @searchCleared="catchSearchCleared" />
 
     <v-content>
-      <v-container
-        fluid
-        v-bind="{ [`px-1`]: this.$vuetify.breakpoint.smAndDown,
-                  [`px-2`]: this.$vuetify.breakpoint.mdAndUp,
-                  [`py-1`]: this.$vuetify.breakpoint.mdAndUp,
-                  [`py-0`]: this.$vuetify.breakpoint.smAndDown }"
-      >
+      <v-container fluid py-1
+                  v-bind="{ [`px-1`]: this.$vuetify.breakpoint.smAndDown,
+                            [`px-2`]: this.$vuetify.breakpoint.mdAndUp, }" >
         <v-layout column>
-          <v-flex
-            v-if="currentPage != 'landingPage'"
+          <!-- <v-flex v-if="currentPage != 'landingPage'"
             xs12
             v-bind="{ [`mx-0`]: this.$vuetify.breakpoint.smAndDown,
                       [`mx-3`]: this.$vuetify.breakpoint.mdAndUp,
@@ -24,21 +38,20 @@
             :class="{ 'small': this.$vuetify.breakpoint.smAndDown }"
           >
             <the-nav-bar-view />
-          </v-flex>
+          </v-flex> -->
 
-          <v-flex
-            xs12
-            v-bind="{ [`mx-0`]: this.$vuetify.breakpoint.smAndDown,
-                      [`mx-3`]: this.$vuetify.breakpoint.mdAndUp }"
+          <v-flex xs12
+                  mx-0
           >
+            <!-- v-bind="{ [`mx-0`]: this.$vuetify.breakpoint.smAndDown,
+                      [`mx-3`]: this.$vuetify.breakpoint.mdAndUp }" -->
             <transition name="fade" mode="out-in">
               <router-view />
             </transition>
           </v-flex>
 
-          <v-flex
-            xs12
-            style="position: absolute; right: 5px; bottom: 2px; font-size: 5px !important;"
+          <v-flex xs12
+            style="position: absolute; right: 5px; bottom: 2px; font-size: 6px !important;"
           >Verison: {{ appVersion }}</v-flex>
         </v-layout>
       </v-container>
@@ -60,14 +73,28 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import {
+  LANDING_PAGENAME,
+  BROWSE_PATH,
+  BROWSE_PAGENAME,
+  PROJECTS_PATH,
+  PROJECTS_PAGENAME,
+  PROJECT_DETAIL_PAGENAME,
+  GUIDELINES_PATH,
+  GUIDELINES_PAGENAME,
+  POLICIES_PATH,
+  POLICIES_PAGENAME,
+  ABOUT_PATH,
+  ABOUT_PAGENAME,
+} from '@/router/routeConsts';
 import { BULK_LOAD_METADATAS_CONTENT } from '@/store/metadataMutationsConsts';
 import {
   ADD_CARD_IMAGES,
   ADD_ICON_IMAGE,
   SET_CONFIG,
 } from '@/store/mutationsConsts';
-import TheNavBarView from '@/components/Views/TheNavbarView';
 import Navigation from '@/components/Views/Navigation';
+import NavigationMini from '@/components/Views/NavigationMini';
 import NavigationToolbar from '@/components/Views/NavigationToolbar';
 import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
 
@@ -87,7 +114,7 @@ export default {
     //   console.log("applicationCache.onnoupdate");
     // };
   },
-  created: function created() {
+  created() {
     this.loadAllMetadata();
 
     const bgImgs = require.context('./assets/', false, /\.jpg$/);
@@ -96,7 +123,57 @@ export default {
     this.importCardBackgrounds();
     this.importIcons();
   },
+  updated() {
+    this.updateActiveStateOnNavItems();
+  },
   methods: {
+    updateActiveStateOnNavItems() {
+      if (!this.currentPage) {
+        return;
+      }
+
+      for (let i = 0; i < this.navItems.length; i++) {
+        const item = this.navItems[i];
+
+        if (item.icon !== 'menu') {
+          const isActive = this.currentPage === item.pageName;
+
+          if (item.subpages && item.subpages instanceof Array) {
+            let subIsActive = false;
+
+            item.subpages.forEach((sub) => {
+              if (!subIsActive) {
+                subIsActive = this.currentPage === sub;
+              }
+            });
+
+            item.active = isActive || subIsActive;
+          } else {
+            item.active = isActive;
+          }
+        }
+      }
+    },
+    catchMenuClicked() {
+      this.menuItem.active = !this.menuItem.active;
+    },
+    catchItemClicked(item) {
+      if (item.title === 'Login') {
+        window.open(item.path, '_blank');
+        return;
+      }
+
+      this.$router.push({ path: item.path });
+    },
+    catchSearchClicked(search) {
+      this.$router.push({
+        path: BROWSE_PATH,
+        query: { search },
+      });
+    },
+    catchSearchCleared() {
+      this.searchTerm = '';
+    },
     reloadApp() {
       window.location.reload();
     },
@@ -166,10 +243,32 @@ export default {
       popularTags: 'metadata/popularTags',
       loadingPopularTags: 'metadata/loadingPopularTags',
       currentPage: 'currentPage',
+      filteredContent: 'metadata/filteredContent',
       appBGImage: 'appBGImage',
       showVersionModal: 'showVersionModal',
       newVersion: 'newVersion',
     }),
+    showSearchCount() {
+      return this.currentPage === BROWSE_PAGENAME;
+    },
+    showToolbarSearch() {
+      return this.currentPage !== LANDING_PAGENAME;
+    },
+    searchCount() {
+      return this.filteredContent !== undefined ? Object.keys(this.filteredContent).length : 0;
+    },
+    menuItem() {
+      let menuItem = { active: true };
+
+      this.navItems.forEach((el) => {
+        if (el.icon === 'menu') {
+          menuItem = el;
+        }
+      });
+
+      // return default with active true so all items will be shown
+      return menuItem;
+    },
     metadatasContentSize: function metadatasContentSize() {
       return this.metadatasContent !== undefined
         ? Object.keys(this.metadatasContent).length
@@ -205,15 +304,30 @@ export default {
     },
   },
   components: {
-    TheNavBarView,
     Navigation,
+    NavigationMini,
     NavigationToolbar,
   },
+  /* eslint-disable object-curly-newline */
   data: () => ({
     appBGImages: {},
     prevHeight: 0,
     dialogCanceled: false,
     appVersion: process.env.VUE_APP_VERSION,
+    showMenu: true,
+    searchTerm: '',
+    navItems: [
+      { title: 'Home', icon: 'envidat', toolTip: 'Back to the start page', active: false, path: './', pageName: LANDING_PAGENAME },
+      { title: 'Explore', icon: 'search', toolTip: 'Explore research data', active: false, path: BROWSE_PATH, pageName: BROWSE_PAGENAME },
+      { title: 'Login', icon: 'person', toolTip: 'Login to upload data', path: 'https://www.envidat.ch/user/reset', active: false, pageName: 'external' },
+      // { title: 'Organizations', icon: 'account_tree', toolTip: 'Overview of the different organizations', path: , active: false },
+      { title: 'Projects', icon: 'library_books', toolTip: 'Overview of the research projects on envidat', active: false, path: PROJECTS_PATH, pageName: PROJECTS_PAGENAME, subpages: [PROJECT_DETAIL_PAGENAME] },
+      { title: 'Guidelines', icon: 'local_library', toolTip: 'Guidlines about the creation of metadata', active: false, path: GUIDELINES_PATH, pageName: GUIDELINES_PAGENAME },
+      { title: 'Policies', icon: 'policy', toolTip: 'The rules of EnviDat', active: false, path: POLICIES_PATH, pageName: POLICIES_PAGENAME },
+      { title: 'About', icon: 'info', toolTip: 'What is EnviDat? How is behind EnviDat?', active: false, path: ABOUT_PATH, pageName: ABOUT_PAGENAME },
+      // { title: 'Contact', icon: 'contact_support', toolTip: 'Do you need support?', active: false },
+      { title: 'Menu', icon: 'menu', active: false },
+    ],
   }),
 };
 </script>

@@ -17,13 +17,17 @@
       </v-flex>
 
       <v-flex xs12 lg10 offset-lg1 mt-5>
-        <v-container grid-list-lg pa-0>
+        <v-container fluid grid-list-lg
+                      pa-1 >
           <v-layout row wrap>
 
             <v-flex v-for="(project, index) in projectsCardsParents()"
                     :key="index"
                     xs12 sm6 md4 xl3
-                    pa-3 >
+                     >
+                    <!-- v-bind="{['pa-3'] : $vuetify.breakpoint.smAndUp,
+                             ['pa-0'] : $vuetify.breakpoint.xsOnly,
+                             ['ma-0'] : $vuetify.breakpoint.xsOnly,}" -->
               <project-card :id="project.id"
                             :title="project.title"
                             :img="project.image_display_url"
@@ -48,12 +52,11 @@
  * The projects page lists all the projects and their subprojects.
  */
 import { mapGetters } from 'vuex';
-import { PROJECT_DETAIL_NAME } from '@/router/routeConsts';
+import { PROJECTS_PAGENAME, PROJECT_DETAIL_PAGENAME } from '@/router/routeConsts';
 import { SET_APP_BACKGROUND, SET_CURRENT_PAGE } from '@/store/mutationsConsts';
 import {
   GET_PROJECTS,
   PROJECTS_NAMESPACE,
-  PROJECTS_PAGE,
   SET_PROJECTDETAIL_PAGE_BACK_URL,
 } from '@/store/projectsMutationsConsts';
 
@@ -72,7 +75,7 @@ export default {
    */
   beforeRouteEnter: function beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.$store.commit(SET_CURRENT_PAGE, PROJECTS_PAGE);
+      vm.$store.commit(SET_CURRENT_PAGE, PROJECTS_PAGENAME);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
     });
   },
@@ -129,7 +132,7 @@ export default {
       this.$store.commit(`${PROJECTS_NAMESPACE}/${SET_PROJECTDETAIL_PAGE_BACK_URL}`, this.$route);
 
       this.$router.push({
-        name: PROJECT_DETAIL_NAME,
+        name: PROJECT_DETAIL_PAGENAME,
         params: { id: projectId },
       });
     },
@@ -137,7 +140,7 @@ export default {
       this.$store.commit(`${PROJECTS_NAMESPACE}/${SET_PROJECTDETAIL_PAGE_BACK_URL}`, this.$route);
 
       this.$router.push({
-        name: PROJECT_DETAIL_NAME,
+        name: PROJECT_DETAIL_PAGENAME,
         params: { id: subprojectId },
       });
     },

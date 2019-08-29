@@ -19,6 +19,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { GCMD_PAGENAME } from '@/router/routeConsts';
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
@@ -28,7 +29,7 @@ export default {
   beforeRouteEnter: function beforeRouteEnter(to, from, next) {
     next((vm) => {
       // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
-      vm.$store.commit(SET_CURRENT_PAGE, 'gcmdPage');
+      vm.$store.commit(SET_CURRENT_PAGE, GCMD_PAGENAME);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
     });
   },

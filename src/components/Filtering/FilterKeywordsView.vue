@@ -126,23 +126,19 @@
       </v-flex>
     </v-layout>
 
-    <v-card-actions
-      v-if="$vuetify.breakpoint.xsOnly"
-      class="ma-0 pa-1"
-      style="position: absolute; bottom: 0px; right: 0px;"
+    <v-card-actions v-if="$vuetify.breakpoint.xsOnly"
+                    class="ma-0 pa-1"
+                    style="position: absolute; bottom: 0px; right: 0px;"
     >
-      <v-spacer />
-
-      <base-icon-button
-        :count="selectedTags.length"
-        material-icon-name="expand_more"
-        color="secondary"
-        icon-color="secondary"
-        :outlined="true"
-        :is-small="true"
-        :rotate-on-click="true"
-        :rotate-toggle="filterExpanded"
-        @clicked="catchExpandClicked"
+      <base-icon-button :count="selectedTags.length"
+                        material-icon-name="expand_more"
+                        color="secondary"
+                        icon-color="secondary"
+                        :outlined="true"
+                        :is-small="true"
+                        :rotate-on-click="true"
+                        :rotate-toggle="filterExpanded"
+                        @clicked="catchExpandClicked"
       />
     </v-card-actions>
   </v-card>
@@ -153,7 +149,6 @@ import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import TagChip from '@/components/Cards/TagChip';
 import TagChipPlaceholder from '@/components/Cards/TagChipPlaceholder';
-import FilterViewButtons from '@/components/Filtering/FilterViewButtons';
 
 export default {
   components: {
@@ -161,7 +156,6 @@ export default {
     BaseIconButton,
     TagChip,
     TagChipPlaceholder,
-    FilterViewButtons,
   },
   props: {
     selectedTagNames: Array,
@@ -171,9 +165,6 @@ export default {
     expandButtonText: String,
     expandedButtonText: String,
     showPlaceholder: Boolean,
-    mapExpanded: Boolean,
-    mapExpandButtonText: String,
-    mapExpandedButtonText: String,
     isHighlighted: Boolean,
     compactLayout: Boolean,
   },
@@ -282,9 +273,6 @@ export default {
     catchExpandClicked: function catchExpandClicked() {
       this.filterExpanded = !this.filterExpanded;
       this.$emit('clickedExpand');
-    },
-    catchMapExpandClicked: function catchMapExpandClicked() {
-      this.$emit('clickedMapExpand');
     },
     catchTagClicked: function catchTagClicked(tagId) {
       this.$emit('clickedTag', tagId);
