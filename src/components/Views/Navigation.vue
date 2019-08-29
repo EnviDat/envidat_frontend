@@ -5,22 +5,27 @@
                         :mini-variant.sync="mini"
                         mini-variant-width="60"
                         width="190"
+                        @click.native.stop=""
   >
 
     <v-list class="pt-0"
             :class="{ 'narrowNavigation': mini }"
+                        @click.native.stop=""
             dense >
 
       <v-list-tile v-for="(item, index) in navItemsMenuExcluded"
-                  :key="index">
+                  :key="index"
+                        @click.native.stop=""
+                  >
 
         <div v-if="mini" style="width: 100%; height: 100%;">
 
           <v-list-tile-action v-if="item.icon === 'envidat'" >
-              <v-btn icon class="ma-0"
-                    @click="itemClick(item)" >
-                <img :src="Logo" alt="envidat_logo" />
-              </v-btn>
+            <v-btn icon class="ma-0"
+                  :color="item.active ? 'accent' : 'trasparent'"
+                  @click.stop="itemClick(item)" >
+              <img :src="Logo" alt="envidat_logo" />
+            </v-btn>
           </v-list-tile-action>
 
           <v-list-tile-action v-if="item.icon !== 'envidat'"
@@ -42,12 +47,15 @@
                               <!-- class="v-list__group__header__prepend-icon"
                               style="position: relative; right: -1px;" > -->
             <v-layout row wrap>
+
               <v-flex xs3>
                 <v-btn icon class="ma-0"
-                      @click="itemClick(item)" >
+                      :color="item.active ? 'accent' : 'trasparent'"
+                      @click.stop="itemClick(item)" >
                   <img :src="Logo" alt="envidat_logo" />
                 </v-btn>
               </v-flex>
+
               <v-flex xs9>
                 <v-layout column fill-height align-start justify-end >
                   <v-flex xs4></v-flex>
@@ -63,18 +71,6 @@
                 </v-layout>
               </v-flex>
             </v-layout>
-          <!-- </v-list-tile-action> -->
-
-          <!-- <v-list-tile-action v-if="item.icon === 'envidat'" > -->
-
-              <!-- <div class="pl-1 headline envidatLogoText envidatNavbarTitleSmall">
-                {{ logoText }}
-              </div>
-
-              <div v-if="version"
-                    style="font-size: 5px; position: relative; top: -7px; text-align: end;">
-                    Version {{ version }}
-              </div> -->
           </v-list-tile-action>
 
           <v-list-tile-content v-if="item.icon !== 'envidat'" >
