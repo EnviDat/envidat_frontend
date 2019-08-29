@@ -68,7 +68,7 @@ Vue.component('v-list-tile-sub-title', VListTileSubTitle);
 Vue.component('v-list-tile-title', VListTileTitle);
 
 import Navigation from "@/components/Navigation/Navigation.vue";
-import NavigationMini from "@/components/Navigation/NavigationMini.vue";
+import NavigationMobile from "@/components/Navigation/NavigationMobile.vue";
 import NavigationToolbar from "@/components/Navigation/NavigationToolbar.vue";
 // import BaseRectangleButton from "@/components/BaseElements/BaseRectangleButton.vue";
 
@@ -113,7 +113,7 @@ storiesOf("5 Navigation | Redesigned Navigation", module)
   methods
 }))
 .add("Menu Mini", () => ({
-  components: { NavigationMini },
+  components: { NavigationMobile },
   template: `
     <v-container>
       <navigation-mini :navItems="navItems"
