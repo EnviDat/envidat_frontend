@@ -3,7 +3,7 @@
         @mouseleave="hovered = false" >
     <v-card ripple
             height="150px"
-            :class="`elevation-${hovered ? 7 : 3}`"
+            :class="`elevation-${hovered ? 5 : 3}`"
             style="z-index: 1;"
             @click.native="cardClick" >
 
