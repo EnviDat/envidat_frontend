@@ -41,7 +41,7 @@ const initialState = {
    */
   currentMetadataContent: {},
   /**
-   * virtual List properties for MetaDataCards of the BrowsePage via MetadataListView
+   * virtual List properties for MetaDataCards of the BrowsePage via MetadataListLayout
    */
   vIndex: 0,
   vReloadAmount: 12,

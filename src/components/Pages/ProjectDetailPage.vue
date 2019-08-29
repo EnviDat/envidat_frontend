@@ -45,7 +45,7 @@
 
             <v-card-title class="metadataList_title title">Metadatas</v-card-title>
 
-            <metadata-list-view class="px-3"
+            <metadata-list-layout class="px-3"
                                 :listContent="currentProject.packages"
                                 :showMapFilter="false"
                                 :mapFilteringPossible="mapFilteringPossible"
@@ -83,7 +83,7 @@ import {
 import ProjectHeader from '@/components/ProjectDetailViews/ProjectHeader';
 import ProjectBody from '@/components/ProjectDetailViews/ProjectBody';
 import ProjectSubprojects from '@/components/ProjectDetailViews/ProjectSubprojects';
-import MetadataListView from '@/components/Views/MetadataListView';
+import MetadataListLayout from '@/components/Layouts/MetadataListLayout';
 
 import missionImg from '@/assets/about/mission.jpg';
 import creator from '@/assets/cards/data_creator.jpg';
@@ -228,7 +228,7 @@ export default {
     ProjectHeader,
     ProjectBody,
     ProjectSubprojects,
-    MetadataListView,
+    MetadataListLayout,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
