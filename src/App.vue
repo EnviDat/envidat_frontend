@@ -79,6 +79,7 @@ import {
   BROWSE_PAGENAME,
   PROJECTS_PATH,
   PROJECTS_PAGENAME,
+  PROJECT_DETAIL_PAGENAME,
   GUIDELINES_PATH,
   GUIDELINES_PAGENAME,
   POLICIES_PATH,
@@ -127,10 +128,29 @@ export default {
   },
   methods: {
     updateActiveStateOnNavItems() {
+      if (!this.currentPage) {
+        return;
+      }
+
       for (let i = 0; i < this.navItems.length; i++) {
         const item = this.navItems[i];
+
         if (item.icon !== 'menu') {
-          item.active = this.currentPage === item.pageName;
+          const isActive = this.currentPage === item.pageName;
+
+          if (item.subpages && item.subpages instanceof Array) {
+            let subIsActive = false;
+
+            item.subpages.forEach((sub) => {
+              if (!subIsActive) {
+                subIsActive = this.currentPage === sub;
+              }
+            });
+
+            item.active = isActive || subIsActive;
+          } else {
+            item.active = isActive;
+          }
         }
       }
     },
@@ -311,7 +331,7 @@ export default {
       { title: 'Explore', icon: 'search', toolTip: 'Explore research data', active: false, path: BROWSE_PATH, pageName: BROWSE_PAGENAME },
       { title: 'Login', icon: 'person', toolTip: 'Login to upload data', path: 'https://www.envidat.ch/user/reset', active: false, pageName: 'external' },
       // { title: 'Organizations', icon: 'account_tree', toolTip: 'Overview of the different organizations', path: , active: false },
-      { title: 'Projects', icon: 'library_books', toolTip: 'Overview of the research projects on envidat', active: false, path: PROJECTS_PATH, pageName: PROJECTS_PAGENAME },
+      { title: 'Projects', icon: 'library_books', toolTip: 'Overview of the research projects on envidat', active: false, path: PROJECTS_PATH, pageName: PROJECTS_PAGENAME, subpages: [PROJECT_DETAIL_PAGENAME] },
       { title: 'Guidelines', icon: 'local_library', toolTip: 'Guidlines about the creation of metadata', active: false, path: GUIDELINES_PATH, pageName: GUIDELINES_PAGENAME },
       { title: 'Policies', icon: 'policy', toolTip: 'The rules of EnviDat', active: false, path: POLICIES_PATH, pageName: POLICIES_PAGENAME },
       { title: 'About', icon: 'info', toolTip: 'What is EnviDat? How is behind EnviDat?', active: false, path: ABOUT_PATH, pageName: ABOUT_PAGENAME },

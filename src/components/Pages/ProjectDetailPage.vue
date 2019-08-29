@@ -77,7 +77,6 @@ import {
 import {
   GET_PROJECTS,
   PROJECTS_NAMESPACE,
-  PROJECTS_DETAIL_PAGE,
   SET_PROJECTDETAIL_PAGE_BACK_URL,
 } from '@/store/projectsMutationsConsts';
 
@@ -98,7 +97,7 @@ export default {
      */
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.$store.commit(SET_CURRENT_PAGE, PROJECTS_DETAIL_PAGE);
+      vm.$store.commit(SET_CURRENT_PAGE, PROJECT_DETAIL_PAGENAME);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
 
       let backRoute = { path: PROJECTS_PATH };
