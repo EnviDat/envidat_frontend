@@ -8,7 +8,7 @@
                 @menuClick="catchMenuClicked"
                 @itemClick="catchItemClicked" />
 
-    <navigation-mini v-if="$vuetify.breakpoint.smAndDown"
+    <navigation-mobile v-if="$vuetify.breakpoint.smAndDown"
                     :navItems="navItems"
                     style="position: fixed; top: auto; right: 10px; bottom: 10px;"
                     class="elevation-3"
@@ -81,7 +81,7 @@ import {
   SET_CONFIG,
 } from '@/store/mutationsConsts';
 import Navigation from '@/components/Navigation/Navigation';
-import NavigationMini from '@/components/Navigation/NavigationMini';
+import NavigationMobile from '@/components/Navigation/NavigationMobile';
 import NavigationToolbar from '@/components/Navigation/NavigationToolbar';
 import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
 
@@ -145,7 +145,7 @@ export default {
       this.menuItem.active = !this.menuItem.active;
     },
     catchItemClicked(item) {
-      if (item.title === 'Login') {
+      if (item.pageName === 'external') {
         window.open(item.path, '_blank');
         return;
       }
@@ -292,7 +292,7 @@ export default {
   },
   components: {
     Navigation,
-    NavigationMini,
+    NavigationMobile,
     NavigationToolbar,
   },
   /* eslint-disable object-curly-newline */
@@ -306,9 +306,9 @@ export default {
     navItems: [
       { title: 'Home', icon: 'envidat', toolTip: 'Back to the start page', active: false, path: './', pageName: LANDING_PAGENAME },
       { title: 'Explore', icon: 'search', toolTip: 'Explore research data', active: false, path: BROWSE_PATH, pageName: BROWSE_PAGENAME },
-      { title: 'Login', icon: 'person', toolTip: 'Login to upload data', path: 'https://www.envidat.ch/user/reset', active: false, pageName: 'external' },
-      // { title: 'Organizations', icon: 'account_tree', toolTip: 'Overview of the different organizations', path: , active: false },
       { title: 'Projects', icon: 'library_books', toolTip: 'Overview of the research projects on envidat', active: false, path: PROJECTS_PATH, pageName: PROJECTS_PAGENAME, subpages: [PROJECT_DETAIL_PAGENAME] },
+      { title: 'Login', icon: 'person', toolTip: 'Login to upload data', active: false, path: 'https://www.envidat.ch/user/reset', pageName: 'external' },
+      { title: 'Organizations', icon: 'account_tree', toolTip: 'Overview of the different organizations', active: false, path: 'https://www.envidat.ch/organization', pageName: 'external' },
       { title: 'Guidelines', icon: 'local_library', toolTip: 'Guidlines about the creation of metadata', active: false, path: GUIDELINES_PATH, pageName: GUIDELINES_PAGENAME },
       { title: 'Policies', icon: 'policy', toolTip: 'The rules of EnviDat', active: false, path: POLICIES_PATH, pageName: POLICIES_PAGENAME },
       { title: 'About', icon: 'info', toolTip: 'What is EnviDat? How is behind EnviDat?', active: false, path: ABOUT_PATH, pageName: ABOUT_PAGENAME },
