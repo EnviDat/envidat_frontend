@@ -16,9 +16,11 @@ import {
   VCardTitle,
   VCardMedia,
   VChip,
-  VSpacer
+  VSpacer,
+  VHover
 } from "vuetify/lib";
 
+Vue.component("v-hover", VHover);
 Vue.component("v-card", VCard);
 Vue.component("v-card-text", VCardText);
 Vue.component("v-card-actions", VCardActions);
