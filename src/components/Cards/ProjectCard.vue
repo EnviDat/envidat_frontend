@@ -13,13 +13,14 @@
                   style="background-color: white; border-radius: 2px;"
                   class="elevation-2" >
 
-          <v-flex v-if="cardImg.src"
+          <v-flex v-if="img"
                   xs6 pa-0 >
 
             <v-img style="height: 100%; border-radius: 2px 0px 0px 2px;"
-                    :cover="imgWidth < 200"
-                    :contain="imgWidth > 200"
-                    :src="fallbackImg ? fallbackImg : cardImg.src"
+                    :cover="img ? img.width < 200 : true"
+                    :contain="img ? img.width > 200 : false"
+                    :src="img"
+                    :lazy-src="defaultImg"
                     />
           </v-flex>
 
@@ -97,25 +98,6 @@ export default {
     dark: Boolean,
   },
   computed: {
-    cardImg() {
-      const img = new Image();
-      let imgSrc = this.defaultImg;
-
-      if (this.img) {
-        imgSrc = this.img;
-        if (!imgSrc.includes('http')) {
-          imgSrc = `https://www.envidat.ch/uploads/group/${imgSrc}`;
-        }
-      }
-
-      if (imgSrc !== undefined) {
-        img.src = imgSrc;
-      }
-      img.onload = this.setHeightAndWidth;
-      img.onerror = this.setDefaultImg;
-
-      return img;
-    },
     maxTitleLengthReached() {
       return this.title.length > this.maxTitleLength;
     },
@@ -155,19 +137,9 @@ export default {
     subprojectClick(subprojectId) {
       this.$emit('subprojectClick', subprojectId);
     },
-    setHeightAndWidth() {
-      this.imgWidth = this.cardImg.width;
-      this.imgHeight = this.cardImg.height;
-    },
-    setDefaultImg() {
-      this.fallbackImg = this.defaultImg;
-    },
   },
   data: () => ({
     // headerImgWidth: 400,
-    fallbackImg: null,
-    imgWidth: 0,
-    imgHeight: 0,
     maxDescriptionLength: 290,
     maxTitleLength: 100,
     // maxTags: 3,
