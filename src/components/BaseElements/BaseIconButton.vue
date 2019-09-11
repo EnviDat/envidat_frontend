@@ -104,11 +104,8 @@ export default {
     hoverBadge: false,
   }),
   methods: {
-    /**
-     * @description emits 'clicked' event
-     */
-    clicked: function clicked() {
-      this.$emit('clicked');
+    clicked() {
+      this.$emit('click');
     },
   },
 };
