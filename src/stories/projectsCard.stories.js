@@ -4,8 +4,6 @@ import { action } from "@storybook/addon-actions";
 import './js/vuetify-components';
 
 import ProjectCard from "@/components/Cards/ProjectCard.vue";
-import MetadataCardPlaceholder from "@/components/Cards/MetadataCardPlaceholder.vue";
-import App from "@/App.vue";
 
 // get Project test data and enhance it
 import projectJSON from "@/testdata/projects";
