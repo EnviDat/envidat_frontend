@@ -10,17 +10,15 @@
         </v-flex>
 
         <v-flex xs7 pa-2>
-          <div class="hidden-sm-and-down envidatSlogan display-1">
-            {{slogan}}
+          <div class="hidden-sm-and-down envidatSlogan display-1" v-html="slogan">
           </div>
-          <div class="hidden-xs-only hidden-md-and-up envidatSlogan headline px-2">
-            {{slogan}}
+          <div class="hidden-xs-only hidden-md-and-up envidatSlogan headline px-2" v-html="slogan">
           </div>
           <div
             class="hidden-sm-and-up envidatSlogan headline x"
             style="text-align: center;"
+            v-html="slogan"
           >
-            {{slogan}}
           </div>
           <div
             class="pt-3 pb-5"
