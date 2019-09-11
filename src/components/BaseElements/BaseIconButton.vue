@@ -2,49 +2,49 @@
   <div :style="isSmall ? 'height: 28px;' : 'height: 36px;'"
         @mouseover="hoverBadge = true"
         @mouseleave="hoverBadge = false"
-        @click.stop="clicked" >
-
+  >
     <v-tooltip v-bind="{ top: !toolTipBottom, bottom: toolTipBottom }"
               :disabled="$vuetify.breakpoint.xsOnly || toolTipText === ''" >
 
-      <v-btn slot="activator"
-            style="margin: 0 !important;"
-            :icon="!isElevated"
-            :fab="isElevated"
-            :small="isSmall || isElevated"
-            :outline="outlined && !isToggled"
-            :color="color ? color : disabled ? '' : 'primary'"
-            :href="url"
-            :disabled="disabled"
-            v-bind="{['target'] : '_blank' }"
-            @click.stop="clicked" >
+      <template v-slot:activator="{ on }">
+        <v-btn
+          style="margin: 0 !important;"
+          :icon="!isElevated"
+          :fab="isElevated"
+          :small="isSmall || isElevated"
+          :outline="outlined && !isToggled"
+          :color="color ? color : disabled ? '' : 'primary'"
+          :href="url"
+          :disabled="disabled"
+          v-bind="{['target'] : '_blank' }"
+          @click.stop="clicked"
+        >
 
-        <div v-if="customIcon"
-              class="iconCentering" >
+          <div v-if="customIcon"
+                class="iconCentering" >
 
-          <img class="envidatIcon"
-              :src="customIcon" >
-        </div>
+            <img class="envidatIcon"
+                :src="customIcon" >
+          </div>
 
-        <v-icon v-if="materialIconName"
-                :color="iconColor ? iconColor : 'primary'"
-                :style="rotateOnClick && rotateToggle ? 'transform: rotate(-180deg);' : ''" >
-          {{ materialIconName }}
-        </v-icon>
-      </v-btn>
+          <v-icon v-if="materialIconName"
+                  :color="iconColor ? iconColor : 'primary'"
+                  :style="rotateOnClick && rotateToggle ? 'transform: rotate(-180deg);' : ''" >
+            {{ materialIconName }}
+          </v-icon>
+        </v-btn>
+      </template>
       <span>{{ toolTipText }}</span>
     </v-tooltip>
 
-    <div v-if="count > 0"
-          style="position: relative; right: -7px; top: -25px;" >
+    <div v-if="count > 0" style="position: relative; right: -7px; top: -25px;" >
 
       <v-badge overlap
               :style="(hoverBadge && $vuetify.breakpoint.smAndUp) || $vuetify.breakpoint.xsOnly ? 'right: 5px;' : ''"
               color="highlight"
               :class="{ envidatBadgeBigNumber : count > 9,
                         envidatBadge: count <= 9 }" >
-        <span slot="badge"
-              class="black--text" >
+        <span slot="badge" class="black--text" >
           {{ count }}
         </span>
       </v-badge>
