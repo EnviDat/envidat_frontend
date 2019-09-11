@@ -18,7 +18,7 @@ storiesOf('3 Cards | Base Click Cards ', module).add('CategoryCard Collection', 
             <base-click-card
               :title="card.title"
               :img="card.img"
-              @clicked="onClick"
+              @click="onClick"
             />
       </v-flex>
 
@@ -27,7 +27,7 @@ storiesOf('3 Cards | Base Click Cards ', module).add('CategoryCard Collection', 
             <base-click-card
               :title="card.title"
               :img="card.img"
-              @clicked="onClick"
+              @click="onClick"
             />
       </v-flex>
 
@@ -36,7 +36,7 @@ storiesOf('3 Cards | Base Click Cards ', module).add('CategoryCard Collection', 
             <base-click-card
               :title="card.title"
               :img="card.img"
-              @clicked="onClick"
+              @click="onClick"
             />
       </v-flex>
 

@@ -33,7 +33,7 @@
               <base-click-card
                 :title="card.title"
                 :img="card.img"
-                @clicked="catchCategoryClicked"
+                @click="catchCategoryClicked"
               />
             </v-flex>
           </v-layout>

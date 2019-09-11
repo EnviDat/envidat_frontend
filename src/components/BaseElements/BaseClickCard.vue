@@ -1,12 +1,12 @@
 <template>
-  <v-card ripple hover @click.native="clicked">
+  <v-card ripple hover @click.native="click">
     <v-container grid-list-md pa-0>
       <v-layout row align-center>
 
         <!-- Image -->
         <v-flex xs5 py-0>
           <v-img
-            :height=" $vuetify.breakpoint.smAndDown ? '65px' : '100px' "
+            :height="$vuetify.breakpoint.smAndDown ? '65px' : '100px'"
             :src="img"
           />
         </v-flex>
@@ -15,7 +15,7 @@
         <v-flex xs7 px-1 mt-1>
           <div
             class="headline"
-            :class="{ 'compactTitle' : this.$vuetify.breakpoint.smAndDown }"
+            :class="{ 'compactTitle' : $vuetify.breakpoint.smAndDown }"
           >
             {{ title }}
           </div>
@@ -25,26 +25,24 @@
   </v-card>
 </template>
 
-
 <script>
-
 // un blurry zooming
 // https://stackoverflow.com/questions/36143337/how-to-prevent-blur-from-css-transform
 
 export default {
+  name: 'BaseClickCard',
   props: {
     title: String,
     img: String,
   },
   methods: {
-    clicked: function clicked() {
-      this.$emit('clicked', this.title.toLowerCase());
+    click() {
+      this.$emit('click', this.title.toLowerCase());
     },
   },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
   .card .headline {

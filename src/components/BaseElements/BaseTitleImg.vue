@@ -1,5 +1,5 @@
 <template>
-  <div :style="`height: ${ height }px;`">
+  <v-sheet :height="height">
     <!-- use slot for the content and make a component for only the layouting -->
 
     <v-parallax v-if="parallax"
@@ -20,7 +20,6 @@
               mx-2
               :style="`position: relative; top: -${ height }px;
                       text-align: center;`" >
-              <!-- :style="`position: relative; top: 0;`" -->
       <div style="background-color: white;" />
 
       <div class="envidatTitle"
@@ -49,7 +48,7 @@
         </span>
       </div>
     </v-layout>
-  </div>
+  </v-sheet>
 </template>
 
 <script>
@@ -69,6 +68,7 @@
  * and readability of the text.
  */
 export default {
+  name: 'BaseTitleImg',
   props: {
     parallax: Boolean,
     height: Number,

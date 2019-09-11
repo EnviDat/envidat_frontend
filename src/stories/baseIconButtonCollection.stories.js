@@ -32,7 +32,7 @@ storiesOf('2 Buttons | Icon buttons', module)
 
       <v-flex xs1>
         <base-icon-button
-        toolTipText="Example Text"
+        tooltipText="Example Text"
           class="mr-2"
           materialIconName="expand_more"
           color="transparent"
@@ -74,7 +74,7 @@ storiesOf('2 Buttons | Icon buttons', module)
             class="mr-2"
             :iconString="fileIcon"
             :count="counter"
-            :tooltip="tooltip"
+            :tooltipText="tooltip"
           />
         </div>
       </v-flex>
@@ -85,7 +85,7 @@ storiesOf('2 Buttons | Icon buttons', module)
             class="mr-2"
             :iconString="contact2Icon"
             :count="counter"
-            :tooltip="tooltip"
+            :tooltipText="tooltip"
           />
         </div>
       </v-flex>

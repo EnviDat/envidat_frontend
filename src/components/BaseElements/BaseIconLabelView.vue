@@ -4,12 +4,7 @@
       bottom
       :disabled="$vuetify.breakpoint.xsOnly"
     >
-      <div
-        slot="activator"
-        class="layout row align-center"
-      >
-        <!-- <v-layout row align-center> -->
-
+      <div slot="activator" class="layout row align-center">
         <div
           v-if="icon && iconTooltip"
           :class="alignClass"
@@ -60,8 +55,6 @@
             <div class="bone bone-type-text bone-style-steps" />
           </div>
         </v-flex>
-
-        <!-- </v-layout> -->
       </div>
 
       <span>{{ iconTooltip }}</span>
@@ -71,6 +64,7 @@
 
 <script>
 export default {
+  name: 'BaseIconLabelView',
   props: {
     icon: String,
     iconTooltip: String,
@@ -83,7 +77,10 @@ export default {
     compactLayout: Boolean,
   },
   computed: {
-    alignClass: function alignClass() {
+      /**
+       * TODO Sehr schwer verstädnlich was das macht
+       */
+    alignClass() {
       return {
         flex: !this.alignLeft,
         xs3: !this.alignLeft,
@@ -93,7 +90,7 @@ export default {
         'py-0': true,
       };
     },
-    textStyle: function textStyle() {
+    textStyle() {
       let style = '';
 
       if (this.bold) {

@@ -45,7 +45,7 @@
         :custom-icon="eyeIcon"
         color="highlight"
         :outlined="true"
-        tool-tip-text="Focus on all elements on the map"
+        tooltip-text="Focus on all elements on the map"
         @clicked="focusOnLayers()"
       />
 
@@ -57,7 +57,7 @@
         color="secondary"
         :outlined="true"
         :is-toggled="pinEnabled"
-        :tool-tip-text="pinEnabled ? 'Hide single markers' : 'Show single markers'"
+        :tooltip-text="pinEnabled ? 'Hide single markers' : 'Show single markers'"
         @clicked="pinEnabled = !pinEnabled; updatePins()"
       />
 
@@ -69,14 +69,14 @@
         color="secondary"
         :outlined="true"
         :is-toggled="multiPinEnabled"
-        :tool-tip-text="multiPinEnabled ? 'Hide multi markers' : 'Show multi markers'"
+        :tooltip-text="multiPinEnabled ? 'Hide multi markers' : 'Show multi markers'"
         @clicked="multiPinEnabled = !multiPinEnabled; updateMultiPins()"
       />
 
       <!-- <base-icon-button class="px-1"
                     :customIcon="polygonIcon"
                     :disabled="true"
-                    toolTipText="Polygon filtering is in development"
+                    tooltipText="Polygon filtering is in development"
                     /> -->
 
       <base-icon-button
@@ -87,7 +87,7 @@
         color="secondary"
         :is-toggled="polygonEnabled"
         :outlined="true"
-        :tool-tip-text="polygonEnabled ? 'Hide polygons' : 'Show polygons'"
+        :tooltip-text="polygonEnabled ? 'Hide polygons' : 'Show polygons'"
         @clicked="polygonEnabled = !polygonEnabled; updatePolygons()"
       />
 
@@ -95,13 +95,13 @@
       <base-rectangle-button
         class="pl-3"
         :button-text="clearButtonText"
-        tool-tip-text="Clear all pinned Metadata"
+        tooltip-text="Clear all pinned Metadata"
         :is-small="true"
         :is-flat="true"
         icon-color="red"
         :disabled="this.pinnedIds.length <= 0"
         material-icon-name="close"
-        @clicked="catchClearButtonClicked"
+        @click="catchClearButtonClicked"
       />
     </v-card-actions>
   </v-card>

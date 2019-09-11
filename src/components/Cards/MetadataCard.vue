@@ -122,7 +122,7 @@
       <base-icon-count-view
         :count="resourceAmount"
         :icon-string="fileIconString"
-        :tooltip="`Metadata with ${resourceAmount} resources`"
+        :tooltipText="`Metadata with ${resourceAmount} resources`"
       />
     </v-card-actions>
   </v-card>

@@ -25,7 +25,7 @@
       {{ name }}
     </v-chip>
 
-    <span>{{ toolTipText }}</span>
+    <span>{{ tooltipText }}</span>
   </v-tooltip>
 </template>
 
@@ -33,7 +33,7 @@
 export default {
   props: {
     name: String,
-    toolTipText: String,
+    tooltipText: String,
     highlighted: Boolean,
   },
   computed: {

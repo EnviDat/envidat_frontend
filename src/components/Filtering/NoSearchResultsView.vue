@@ -20,7 +20,7 @@
             <base-click-card
               :title="card.title"
               :img="card.img"
-              @clicked="clickedCategory"
+              @click="clickedCategory"
             />
           </v-flex>
         </v-layout>

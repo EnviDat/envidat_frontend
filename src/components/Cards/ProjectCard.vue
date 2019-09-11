@@ -65,8 +65,8 @@
             <base-icon-button materialIconName="find_in_page"
                             color="transparent"
                             iconColor="secondary"
-                            :toolTipText="`Open Subproject ${sub.title}`"
-                            toolTipBottom
+                            :tooltipText="`Open Subproject ${sub.title}`"
+                            tooltipBottom
                             :isSmall="true"
                             @clicked="subprojectClick(sub.id)" />
           </v-flex>

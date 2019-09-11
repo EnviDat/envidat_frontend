@@ -3,8 +3,8 @@
         @mouseover="hoverBadge = true"
         @mouseleave="hoverBadge = false"
   >
-    <v-tooltip v-bind="{ top: !toolTipBottom, bottom: toolTipBottom }"
-              :disabled="$vuetify.breakpoint.xsOnly || toolTipText === ''" >
+    <v-tooltip v-bind="{ top: !tooltipBottom, bottom: tooltipBottom }"
+              :disabled="$vuetify.breakpoint.xsOnly || tooltipText === ''" >
 
       <template v-slot:activator="{ on }">
         <v-btn
@@ -17,7 +17,7 @@
           :href="url"
           :disabled="disabled"
           v-bind="{['target'] : '_blank' }"
-          @click.stop="clicked"
+          @click.stop="onClick"
         >
 
           <div v-if="customIcon"
@@ -34,7 +34,7 @@
           </v-icon>
         </v-btn>
       </template>
-      <span>{{ toolTipText }}</span>
+      <span>{{ tooltipText }}</span>
     </v-tooltip>
 
     <div v-if="count > 0" style="position: relative; right: -7px; top: -25px;" >
@@ -58,8 +58,8 @@
  * Similar to @class RectangleButton
  * React on the 'clicked' event or pass an @prop url to create a href-link.
  *
- * Fill the @prop toolTipText for a toolTip when hovering over the Button.
- * Use the @prop toolTipBottom to set it to appear beneath the button.
+ * Fill the @prop tooltipText for a tooltip when hovering over the Button.
+ * Use the @prop tooltipBottom to set it to appear beneath the button.
  *
  * When the @prop isToggled is true the background is filled with the @prop color.
  * If @prop outlined is true the button only has an outline in the @prop color,
@@ -77,11 +77,12 @@
  */
 
 export default {
+  name: 'BaseIconButton',
   props: {
     customIcon: String,
     materialIconName: String,
-    toolTipText: String,
-    toolTipBottom: Boolean,
+    tooltipText: String,
+    tooltipBottom: Boolean,
     outlined: Boolean,
     color: String,
     iconColor: String,
@@ -104,7 +105,7 @@ export default {
     hoverBadge: false,
   }),
   methods: {
-    clicked() {
+    onClick() {
       this.$emit('click');
     },
   },
