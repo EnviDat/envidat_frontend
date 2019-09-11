@@ -41,6 +41,12 @@
 
 
 <script>
+/* Review David
+ - base-rectangle-button tooltip has no value
+ - Slogan 3x ? für responsive evtl einfacher verständliche Lösung?
+
+*/
+
 import fingertipsImg from '@/assets/cards/fingertips_small.jpg';
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 
