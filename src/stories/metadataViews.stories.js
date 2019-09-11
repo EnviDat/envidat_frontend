@@ -20,7 +20,7 @@ import licenseIcon from "@/assets/icons/license.png";
 
 import metaDataFactory from "@/components/metaDataFactory";
 // metadata gets enhance in the storybook config
-import metadata from "@/stories/metadata";
+import metadata from "./js/metadata";
 
 const smallHeader = metaDataFactory.createHeader(metadata[0], true);
 const largeHeader = metaDataFactory.createHeader(metadata[1], false);

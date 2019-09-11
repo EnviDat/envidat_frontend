@@ -2,10 +2,11 @@
 import { storiesOf } from '@storybook/vue';
 
 import BaseTitleImg from '../components/BaseElements/BaseTitleImg';
-import categorycards from '@/store/modules/categorycards';
+import mission from '@/assets/about/mission.jpg';
+import missionSmall from '@/assets/about/mission_small.jpg';
 import './js/vuetify-components';
 
-storiesOf('7 Unknown | TitleImage ', module).add('CategoryCard Collection', () => ({
+storiesOf('7 Project | TitleImage ', module).add('CategoryCard Collection', () => ({
   components: { BaseTitleImg },
   template: `
     <v-layout row wrap>
@@ -13,8 +14,8 @@ storiesOf('7 Unknown | TitleImage ', module).add('CategoryCard Collection', () =
             <base-title-img :parallax="true"
                             :dark="true"
                             :blur="false"
-                            :img="categorycards[1].img"
-                            :height="20"
+                            :img="mission"
+                            :height="100"
                             :title="'This is the title'"
                             :sub-title="subTitle"
                             :text-background-color="textBackgroundColor"
@@ -23,6 +24,6 @@ storiesOf('7 Unknown | TitleImage ', module).add('CategoryCard Collection', () =
     </v-layout>
     `,
   data: () => ({
-    categorycards,
+    mission,
   }),
 }));

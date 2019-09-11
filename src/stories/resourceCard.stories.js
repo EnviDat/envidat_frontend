@@ -34,7 +34,7 @@ const iconFiles = getIcons();
 
 // alert('icons ' + str);
 
-import unFormatedMetadataCards from "@/stories/metadata";
+import unFormatedMetadataCards from "@/stories/js/metadata";
 let metadataCards = [];
 
 unFormatedMetadataCards.forEach(el => {
