@@ -95,10 +95,11 @@
       <v-flex v-if="!loading && contentSize <= 0"
               key="noSearchResultsView"
               xs12 mx-2 >
-        <no-search-results-view :no-result-text="noResultText"
-                                :suggestion-text="suggestionText"
-                                @clicked="catchCategoryClicked"
-                                />
+        <no-search-results-view
+          :no-result-text="noResultText"
+          :suggestion-text="suggestionText"
+          @clickedCategory="clickedCategory"
+        />
       </v-flex>
 
     </transition-group>
@@ -241,7 +242,7 @@ export default {
     catchTagClicked: function catchTagClicked(tagName) {
       this.$emit('clickedTag', tagName);
     },
-    catchCategoryClicked: function catchCategoryClicked(cardTitle) {
+    clickedCategory(cardTitle) {
       this.$router.push({
         path: BROWSE_PATH,
         query: { search: cardTitle },

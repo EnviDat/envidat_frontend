@@ -1,8 +1,6 @@
 <template>
   <v-layout column>
-    <v-flex xs12 py-4
-      :style="`font-weight: 700; background-color: ${$vuetify.theme.errorHighlight}`"
-    >
+    <v-flex xs12 py-4 class="error">
       <h2>{{ noResultText }}</h2>
     </v-flex>
 
@@ -22,7 +20,7 @@
             <base-click-card
               :title="card.title"
               :img="card.img"
-              @clicked="catchCategoryClicked"
+              @clicked="clickedCategory"
             />
           </v-flex>
         </v-layout>
@@ -36,7 +34,13 @@
 import { mapGetters } from 'vuex';
 import BaseClickCard from '@/components/BaseElements/BaseClickCard';
 
+/*
+Review David
+- props nötig? --> lokal lösen
+ */
+
 export default {
+  name: 'NoSearchResultView',
   props: {
     noResultText: String,
     suggestionText: String,
@@ -47,8 +51,8 @@ export default {
     }),
   },
   methods: {
-    catchCategoryClicked: function catchCategoryClicked(cardTitle) {
-      this.$emit('clicked', cardTitle);
+    clickedCategory(cardTitle) {
+      this.$emit('clickedCategory', cardTitle);
     },
   },
   components: {
