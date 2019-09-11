@@ -8,7 +8,8 @@
                   :slogan="envidatSlogan"
                   :sub-slogan="envidatSubSlogan"
                   :button-text="sloganButtonText"
-                  :button-callback="catchBrowseClicked" />
+                  @sloganClicked="gotToBrowsePath"
+      />
 
       <v-flex mt-5 offset-md6 >
         <search-bar-view :labelText="labelText"
@@ -100,12 +101,11 @@ export default {
         query: { search },
       });
     },
-    catchBrowseClicked: function catchBrowseClicked() {
-      this.$router.push({
-        path: BROWSE_PATH,
-        // query: { '' },
-      });
-    },
+      gotToBrowsePath () {
+        this.$router.push({
+            path: BROWSE_PATH
+        })
+      },
     catchEnterclick: function catchEnterclick() {
       this.redirectToDashboard();
     },

@@ -7,28 +7,17 @@
         <v-flex xs12>
           <v-layout row align-center >
 
-            <!-- <v-flex xs4 lg3
-                    hidden-lg-and-down >
-              <img style="width: 200px;"
-                    :src="lgLogo"
-                    :alt="alternativeText" >
-            </v-flex> -->
-
             <v-flex hidden-sm-and-down
                     xs3 >
               <img :src="mdLogo" :alt="alternativeText">
             </v-flex>
 
-            <v-flex hidden-xs-only
-                    hidden-md-and-up
-                    xs1 >
-              <img :src="smLogo"
-                    :alt="alternativeText" >
+            <v-flex hidden-xs-only hidden-md-and-up xs1 >
+              <img :src="smLogo" :alt="alternativeText" >
             </v-flex>
 
             <v-flex xs3 hidden-sm-and-up >
-              <img :src="smLogo"
-                    :alt="alternativeText" >
+              <img :src="smLogo" :alt="alternativeText" >
             </v-flex>
 
             <v-flex xs8 lg9
@@ -67,7 +56,7 @@
           <slogan-card :slogan="slogan"
                         :sub-slogan="subSlogan"
                         :button-text="buttonText"
-                        :button-callback="buttonCallback" />
+                        @click="onSloganClicked" />
         </v-flex>
 
       </v-layout>
@@ -100,7 +89,10 @@ export default {
     lgLogo,
     alternativeText: 'EnviDat logo',
   }),
-  computed: {
+  methods: {
+    onSloganClicked() {
+      this.$emit('sloganClicked');
+    },
   },
 };
 </script>
