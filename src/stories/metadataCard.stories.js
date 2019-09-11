@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from "@storybook/vue";
 import { action } from "@storybook/addon-actions";
-import './js/vuetify-components'
+import './js/vuetify-components';
 
 import MetadataCard from "@/components/Cards/MetadataCard.vue";
 import MetadataCardPlaceholder from "@/components/Cards/MetadataCardPlaceholder.vue";
@@ -11,7 +11,7 @@ import lockedIcon from "@/assets/icons/lockClosed.png";
 import unlockedIcon from "@/assets/icons/lockOpen.png";
 
 // metadata gets enhance in the storybook config
-import metadataCards from "@/stories/metadata";
+import metadataCards from "./js/metadata";
 
 export const methods = {
   hasRestrictedResources: function hasRestrictedResources(metadata) {
