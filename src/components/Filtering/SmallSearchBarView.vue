@@ -44,7 +44,7 @@
       </v-flex>
 
       <v-flex v-if="hasButton" shrink>
-        <base-rectangle-button :button-text="buttonText" :is-small="true" @clicked="clicked" />
+        <base-rectangle-button :button-text="buttonText" :is-small="true" @click="clicked" />
       </v-flex>
 
       <v-flex v-if="!hasButton" shrink

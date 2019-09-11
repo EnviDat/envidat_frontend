@@ -1,20 +1,10 @@
 <template>
-  <v-tooltip
-    bottom
-    :disabled="$vuetify.breakpoint.xsOnly"
-  >
-    <div
-      slot="activator"
-      class="metadataInfoIcon"
-    >
-      <v-layout
-        row
-        @mouseover="hoverBadge = true"
-        @mouseleave="hoverBadge = false"
-      >
+  <v-tooltip bottom :disabled="$vuetify.breakpoint.xsOnly">
+    <div slot="activator" class="metadataInfoIcon">
+      <v-layout @mouseover="hovered=true" @mouseleave="hovered=false">
         <v-flex pa-0>
           <v-badge
-            v-bind="{ left: !hoverBadge }"
+            :left="!hovered"
             overlap
             color="secondary"
             :class="{ envidatBadgeBigNumber : count > 9,
@@ -25,36 +15,40 @@
         </v-flex>
 
         <v-flex pa-0>
-          <img
-            class="envidatIcon"
-            :src="iconString"
-          >
+          <img class="envidatIcon" :src="iconString">
         </v-flex>
       </v-layout>
     </div>
-
-    <span>{{ tooltip }}</span>
+    <span>{{ tooltipText }}</span>
   </v-tooltip>
 </template>
 
 <script>
+/** Review
+     * css Klassen lokal wo nur lokal gebraucht
+     * Wieso 2x envidatBadge? --> in BasIconButton
+     * Wieso -View im Namen?
+     */
+
 export default {
+  name: 'BaseIconCountView',
   props: {
     iconString: String,
     count: Number,
-    tooltip: String,
+    tooltipText: String,
   },
   data: () => ({
-    hoverBadge: false,
+    hovered: false,
   }),
-  computed: {
-  },
 };
 </script>
 
-<style>
-  .iconCentering {
-    position: relative;
-    top: 2px;
+<style scoped>
+  .envidatBadge span {
+    font-size: 0.95em !important;
+  }
+
+  .envidatBadgeBigNumber span {
+    font-size: 0.9em !important;
   }
 </style>

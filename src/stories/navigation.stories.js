@@ -16,34 +16,34 @@ const appVersion = process.env.VUE_APP_VERSION;
 
 const navItems = [
   {
-    title: 'Home', icon: 'envidat', toolTip: 'Back to the start page', active: false,
+    title: 'Home', icon: 'envidat', tooltip: 'Back to the start page', active: false,
   },
   {
-    title: 'Explore', icon: 'search', toolTip: 'Explore research data', active: false,
+    title: 'Explore', icon: 'search', tooltip: 'Explore research data', active: false,
   },
   {
-    title: 'Login', icon: 'person', toolTip: 'Login to upload data', active: false,
+    title: 'Login', icon: 'person', tooltip: 'Login to upload data', active: false,
   },
   {
-    title: 'Organizations', icon: 'account_tree', toolTip: 'Explore research data', active: false,
+    title: 'Organizations', icon: 'account_tree', tooltip: 'Explore research data', active: false,
   },
   {
-    title: 'Projects', icon: 'library_books', toolTip: 'Explore research data', active: false,
+    title: 'Projects', icon: 'library_books', tooltip: 'Explore research data', active: false,
   },
   {
     title: 'Guidelines',
     icon: 'local_library',
-    toolTip: 'Guidlines about the creation of metadata',
+    tooltip: 'Guidlines about the creation of metadata',
     active: false,
   },
   {
-    title: 'Policies', icon: 'policy', toolTip: 'The rules of EnviDat', active: false,
+    title: 'Policies', icon: 'policy', tooltip: 'The rules of EnviDat', active: false,
   },
   {
-    title: 'About', icon: 'info', toolTip: 'What is EnviDat? How is behind EnviDat?', active: false,
+    title: 'About', icon: 'info', tooltip: 'What is EnviDat? How is behind EnviDat?', active: false,
   },
   {
-    title: 'Contact', icon: 'contact_support', toolTip: 'Do you need support?', active: false,
+    title: 'Contact', icon: 'contact_support', tooltip: 'Do you need support?', active: false,
   },
   {title: 'Menu', icon: 'menu', active: true},
 ];

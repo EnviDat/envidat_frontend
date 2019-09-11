@@ -2,8 +2,7 @@
   <v-container pa-0 style="position: relative;">
     <slot />
 
-    <v-layout v-if="!leftAlign && !rightAlign"
-              column>
+    <v-layout v-if="!leftAlign && !rightAlign" column>
       <v-flex>
         <base-title-img :parallax="parallax"
                         :dark="dark"
@@ -101,6 +100,7 @@ import MMarkdownPreview from 'm-markdown-preview';
 import BaseTitleImg from '@/components/BaseElements/BaseTitleImg';
 
 export default {
+    name: "ImgAndTextLayout",
   components: {
     BaseTitleImg,
     MMarkdownPreview,

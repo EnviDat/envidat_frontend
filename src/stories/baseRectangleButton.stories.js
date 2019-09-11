@@ -17,7 +17,7 @@ storiesOf("2 Buttons | Rectangle", module)
       <v-flex>      
         <base-rectangle-button
           buttonText="SEARCH"
-          toolTipText="Text for the tool tip"
+          tooltipText="Text for the tool tip"
           @click="onClick"/>
       </v-flex>      
 
@@ -33,7 +33,7 @@ storiesOf("2 Buttons | Rectangle", module)
           materialIconName="mdi-settings"
           iconColor="white"
           buttonText="With Icon"
-          toolTipText="Text for the tool tip"
+          tooltipText="Text for the tool tip"
           @click="onClick"/>
       </v-flex>      
       
