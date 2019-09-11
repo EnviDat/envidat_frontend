@@ -1,25 +1,16 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { storiesOf } from "@storybook/vue";
-import { action } from "@storybook/addon-actions";
+import { storiesOf } from '@storybook/vue';
+import { action } from '@storybook/addon-actions';
+import './js/vuetify-components';
 
-import Vue from "vue";
-import { VBtn, VTooltip, VIcon, VImg, VLayout, VFlex } from "vuetify/lib";
-
-Vue.component("v-btn", VBtn);
-Vue.component("v-tooltip", VTooltip);
-Vue.component("v-icon", VIcon);
-Vue.component("v-img", VImg);
-Vue.component("v-layout", VLayout);
-Vue.component("v-flex", VFlex);
-
-import BaseClickCard from "@/components/BaseElements/BaseClickCard.vue";
-import categorycards from "@/store/modules/categorycards";
+import BaseClickCard from '@/components/BaseElements/BaseClickCard.vue';
+import categorycards from '@/store/modules/categorycards';
 
 export const methods = {
-  onClick: action("clicked")
+  onClick: action('clicked'),
 };
 
-storiesOf("3 Cards | Click Cards ", module).add("CategoryCcard Collection", () => ({
+storiesOf('3 Cards | Base Click Cards ', module).add('CategoryCard Collection', () => ({
   components: { BaseClickCard },
   template: `
     <v-layout row wrap>
@@ -54,6 +45,6 @@ storiesOf("3 Cards | Click Cards ", module).add("CategoryCcard Collection", () =
     </v-layout>`,
   methods,
   data: () => ({
-    categorycards
-  })
+    categorycards,
+  }),
 }));

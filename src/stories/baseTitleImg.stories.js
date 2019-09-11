@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/vue';
 
 import BaseTitleImg from '../components/BaseElements/BaseTitleImg';
 import categorycards from '@/store/modules/categorycards';
-import './vuetify-components';
+import './js/vuetify-components';
 
 storiesOf('7 Unknown | TitleImage ', module).add('CategoryCard Collection', () => ({
   components: { BaseTitleImg },

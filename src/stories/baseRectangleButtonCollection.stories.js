@@ -1,16 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from "@storybook/vue";
 import { action } from "@storybook/addon-actions";
-
-import Vue from "vue";
-import { VBtn, VTooltip, VIcon, VImg, VLayout, VFlex } from "vuetify/lib";
-
-Vue.component("v-btn", VBtn);
-Vue.component("v-tooltip", VTooltip);
-Vue.component("v-icon", VIcon);
-Vue.component("v-img", VImg);
-Vue.component("v-layout", VLayout);
-Vue.component("v-flex", VFlex);
+import './js/vuetify-components';
 
 import BaseRectangleButton from "@/components/BaseElements/BaseRectangleButton.vue";
 
