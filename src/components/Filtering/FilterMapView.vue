@@ -1,107 +1,89 @@
 <template>
-  <v-card
-    raised
-    :height="totalHeight"
-    :width="totalWidth"
-  >
+  <v-card :height="totalHeight" :width="totalWidth" raised>
     <v-card-title>
       <div class="headline mb-0">
         Cartographic Filtering
       </div>
     </v-card-title>
 
-    <div
-      class="mb-2"
-      :style="`background-color: ${this.$vuetify.theme.highlight};`"
-    >
+    <div :style="`background-color: ${this.$vuetify.theme.highlight};`" class="mb-2">
       <p class="px-3 py-0 my-0 body-2">
         {{ highlightedText }}
       </p>
     </div>
 
     <div
-      v-if="expanded && !errorLoadingLeaflet"
       id="map"
       ref="map"
       v-bind="mapViewHeight"
+      v-if="expanded && !errorLoadingLeaflet"
     />
 
-    <div
-      v-if="expanded && errorLoadingLeaflet"
-      v-bind="mapViewHeight"
-    >
+    <div v-bind="mapViewHeight" v-if="expanded && errorLoadingLeaflet">
       Error loading leaflet
     </div>
 
     <v-card-actions class="pr-2">
-      <div :style="`color:${this.pinnedIds.length > 0 ? this.$vuetify.theme.primary : 'rgba(0,0,0,.47)'};`">
+      <div
+        :style="`color:${this.pinnedIds.length > 0 ? this.$vuetify.theme.primary : 'rgba(0,0,0,.47)'};`">
         {{ this.filterText + this.pinnedIds.length }}
       </div>
 
-      <v-spacer />
+      <v-spacer/>
 
       <base-icon-button
-        class="px-2"
         :custom-icon="eyeIcon"
-        color="highlight"
         :outlined="true"
-        tooltip-text="Focus on all elements on the map"
         @clicked="focusOnLayers()"
+        class="px-2"
+        color="highlight"
+        tooltip-text="Focus on all elements on the map"
       />
 
       <base-icon-button
-        v-if="hasPins"
-        class="px-2"
         :count="pinLayerGroup.length"
         :custom-icon="pinIcon"
-        color="secondary"
-        :outlined="true"
         :is-toggled="pinEnabled"
+        :outlined="true"
         :tooltip-text="pinEnabled ? 'Hide single markers' : 'Show single markers'"
         @clicked="pinEnabled = !pinEnabled; updatePins()"
+        class="px-2"
+        color="secondary"
+        v-if="hasPins"
       />
 
       <base-icon-button
-        v-if="hasMultiPins"
-        class="px-2"
         :count="multiPinLayerGroup.length"
         :custom-icon="multiPinIcon"
-        color="secondary"
-        :outlined="true"
         :is-toggled="multiPinEnabled"
+        :outlined="true"
         :tooltip-text="multiPinEnabled ? 'Hide multi markers' : 'Show multi markers'"
         @clicked="multiPinEnabled = !multiPinEnabled; updateMultiPins()"
-      />
-
-      <!-- <base-icon-button class="px-1"
-                    :customIcon="polygonIcon"
-                    :disabled="true"
-                    tooltipText="Polygon filtering is in development"
-                    /> -->
-
-      <base-icon-button
-        v-if="hasPolygons"
         class="px-2"
+        color="secondary"
+        v-if="hasMultiPins"
+      />
+      <base-icon-button
         :count="polygonLayerGroup.length"
         :custom-icon="polygonIcon"
-        color="secondary"
         :is-toggled="polygonEnabled"
         :outlined="true"
         :tooltip-text="polygonEnabled ? 'Hide polygons' : 'Show polygons'"
         @clicked="polygonEnabled = !polygonEnabled; updatePolygons()"
+        class="px-2"
+        color="secondary"
+        v-if="hasPolygons"
       />
-
-
       <base-rectangle-button
-        class="pl-3"
         :button-text="clearButtonText"
-        tooltip-text="Clear all pinned Metadata"
-        :is-small="true"
-        :is-flat="true"
-        icon-color="red"
         :disabled="this.pinnedIds.length <= 0"
-        material-icon-name="close"
+        :is-flat="true"
+        :is-small="true"
         @click="catchClearButtonClicked"
+        class="pl-3"
+        icon-color="red"
+        material-icon-name="close"
+        tooltip-text="Clear all pinned Metadata"
       />
     </v-card-actions>
   </v-card>
@@ -114,7 +96,6 @@ import 'leaflet/dist/leaflet.css';
 import metaDataFactory from '@/components/metaDataFactory';
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
-
 // HACK start
 /* eslint-disable import/first */
 // Solution to loading in the imgs correctly via webpack
@@ -135,16 +116,16 @@ export default {
     totalWidth: Number,
     expanded: Boolean,
   },
-  beforeMount: function beforeMount() {
+  beforeMount() {
     this.pinIcon = this.mixinMethods_getIcon('marker');
     this.multiPinIcon = this.mixinMethods_getIcon('markerMulti');
     this.polygonIcon = this.mixinMethods_getIcon('polygons');
     this.eyeIcon = this.mixinMethods_getIcon('eye');
   },
-  mounted: function mounted() {
+  mounted() {
     this.setupMap();
   },
-  beforeDestroy: function beforeDestroy() {
+  beforeDestroy() {
     if (this.map) {
       this.map.remove();
     }
@@ -160,51 +141,46 @@ export default {
       loadingMetadataIds: 'metadata/loadingMetadataIds',
       loadingMetadatasContent: 'metadata/loadingMetadatasContent',
     }),
-    loading: function loading() {
+    loading() {
       return this.loadingMetadataIds || this.loadingMetadatasContent;
     },
-    mapViewHeight: function mapViewHeight() {
+    mapViewHeight() {
       return {
         style: `height: ${this.mapHeight}px;`,
       };
     },
-    mapHeight: function mapHeight() {
+    mapHeight() {
       return this.totalHeight - this.buttonHeight;
     },
-    hasPins: function hasPins() {
+    hasPins() {
       return this.pinLayerGroup && this.pinLayerGroup.length > 0;
     },
-    hasMultiPins: function hasMultiPins() {
+    hasMultiPins() {
       return this.multiPinLayerGroup && this.multiPinLayerGroup.length > 0;
     },
-    hasPolygons: function hasPolygons() {
+    hasPolygons() {
       return this.polygonLayerGroup && this.polygonLayerGroup.length > 0;
     },
   },
   methods: {
-    checkError: function checkError() {
-    // checkError: function checkError(e) {
-      // console.log(`got leaflet error ${e}`);
-      this.errorLoadingLeaflet = true;
-    },
-    catchPointClick: function catchPointClick(e) {
+    pointClick(e) {
       this.$emit('pointClicked', e.target.id);
     },
-    catchPointHover: function catchPointHover(e) {
+    pointMouseover(e) {
       e.target.bindPopup(`<p>${e.target.title}</p>`).openPopup();
       this.$emit('pointHover', e.target.id);
     },
-    catchPointHoverLeave: function catchPointHoverLeave(e) {
+    pointMouseout(e) {
       e.target.closePopup();
       this.$emit('pointHoverLeave', e.target.id);
     },
-    catchClearButtonClicked: function catchClearButtonClicked() {
+    catchClearButtonClicked() {
       this.$emit('clearButtonClicked');
     },
-    toggleMapExpand: function toggleMapExpand() {
+    toggleMapExpand() {
       return this.$emit('toggleMapFilterExpand');
     },
-    setupMap: function setupMap() {
+    setupMap() {
       if (this.mapIsSetup) {
         return;
       }
@@ -213,12 +189,9 @@ export default {
       this.markerCount = 0;
 
       if (this.map) {
-        this.map.on('locationerror', () => {
-          this.checkError();
-        });
+        this.map.on('locationerror', () => this.errorLoadingLeaflet = true);
 
         this.addOpenStreetMapLayer(this.map);
-
         this.updateMap();
 
         this.map.on('zoomend', () => {
@@ -232,7 +205,7 @@ export default {
         this.mapIsSetup = true;
       }
     },
-    initLeaflet: function initLeaflet(mapElement) {
+    initLeaflet(mapElement) {
       const map = L.map(mapElement, {
         scrollWheelZoom: false,
         center: this.setupCenterCoords,
@@ -244,15 +217,14 @@ export default {
 
       return map;
     },
-    parseGeoJSON: function parseGeoJSON(geoJsonString) {
+    parseGeoJSON(geoJsonString) {
       try {
         return L.geoJSON(geoJsonString);
       } catch (error) {
-        // console.log(`Tried to parse GeoJSON ${geoJsonString} failed with ${error}`);
         return undefined;
       }
     },
-    addOpenStreetMapLayer: function addOpenStreetMapLayer(map) {
+    addOpenStreetMapLayer(map) {
       const baseMap = L.tileLayer(
         'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' },
@@ -260,7 +232,7 @@ export default {
       this.mapLayerGroup = L.layerGroup([baseMap]);
       this.mapLayerGroup.addTo(map);
     },
-    getPoint: function getPoint(coords, id, title, selected) {
+    getPoint(coords, id, title, selected) {
       const iconOptions = L.Icon.Default.prototype.options;
       delete iconOptions.mixinMethods_getIconUrl;
       // use the defaultoptions to ensure that all untouched defaults stay in place
@@ -279,14 +251,12 @@ export default {
 
       point.id = id;
       point.title = title;
-      point.on({ click: this.catchPointClick });
-      point.on({ mouseover: this.catchPointHover });
-      point.on({ mouseout: this.catchPointHoverLeave });
-
-
+      point.on({ click: this.pointClick });
+      point.on({ mouseover: this.pointMouseover });
+      point.on({ mouseout: this.pointMouseout });
       return point;
     },
-    getPolygon: function getPolygon(coords, id, title, selected) {
+    getPolygon(coords, id, title, selected) {
       // create a polygon from an array of LatLng points
       // var latlngs = [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]];
       const polygon = L.polygon(coords, {
@@ -295,13 +265,13 @@ export default {
         fillOpacity: 0,
       });
 
-      polygon.on({ click: this.catchPointClick });
+      polygon.on({ click: this.pointClick });
       polygon.id = id;
       polygon.title = title;
 
       return polygon;
     },
-    getMultiPoint: function getMultiPoint(coords, id, title, selected) {
+    getMultiPoint(coords, id, title, selected) {
       const points = [];
       for (let i = 0; i < coords.length; i++) {
         const pointCoord = coords[i];
@@ -311,7 +281,7 @@ export default {
 
       return points;
     },
-    createMapElements: function createMapElements(locationDataSet) {
+    createMapElements(locationDataSet) {
       const pins = [];
       const multiPins = [];
       const polys = [];
@@ -364,14 +334,14 @@ export default {
         this.multiPinLayerGroup = [];
       }
     },
-    addElementsToMap: function addElementsToMap(elements, enabled, checkBounds) {
+    addElementsToMap(elements, enabled, checkBounds) {
       if (!enabled || !elements || elements.length <= 0) {
         return;
       }
 
       this.showMapElements(elements, true, checkBounds);
     },
-    focusOnLayers: function focusOnLayers() {
+    focusOnLayers() {
       const allLayers = [];
 
       if (this.pinEnabled) {
@@ -395,15 +365,10 @@ export default {
       if (allLayers.length > 0) {
         const feat = L.featureGroup(allLayers);
         const featBounds = feat.getBounds();
-
-        // if (featBounds.contains(this.initialBounds)) {
-        //   this.map.fitBounds(this.initialBounds);
-        // } else {
         this.map.fitBounds(featBounds, { maxZoom: 8 });
-        // }
       }
     },
-    clearLayers: function clearLayers(map, specificClear) {
+    clearLayers(map, specificClear) {
       if (!map) {
         return;
       }
@@ -434,31 +399,16 @@ export default {
           try {
             el.addTo(this.map);
           } catch (error) {
-            // console.log(`showMapElements error: ${error} on element ${el.title}`);
           }
         } else {
           try {
             this.map.removeLayer(el);
           } catch (error) {
-            // console.log(`showMapElements error: ${error} on element ${el.title}`);
           }
         }
       });
     },
-    addControls: function addControls() {
-      const baseLayers = {
-        Map: this.mapLayerGroup,
-      };
-
-      const overlays = {
-        Pins: this.pinLayerGroup,
-        MultiPins: this.multiPinLayerGroup,
-        Polygons: this.polygonLayerGroup,
-      };
-
-      L.control.layers(baseLayers, overlays).addTo(this.map);
-    },
-    mergePinnedAndFiltered: function mergePinnedAndFiltered() {
+    mergePinnedAndFiltered() {
       const pinnedContent = [];
 
       this.pinnedIds.forEach((pinId) => {
@@ -467,7 +417,7 @@ export default {
 
       return [...pinnedContent, ...this.filteredContent];
     },
-    updateMap: function updateMap() {
+    updateMap() {
       this.clearLayers(this.map);
       const pinnedAndFilteredContent = this.mergePinnedAndFiltered();
 
@@ -477,31 +427,21 @@ export default {
       this.addElementsToMap(this.pinLayerGroup, this.pinEnabled);
       this.addElementsToMap(this.multiPinLayerGroup, this.multiPinEnabled);
       this.addElementsToMap(this.polygonLayerGroup, this.polygonEnabled, true);
-
-      // this.addGeoJSONToMap();
     },
-    updatePins: function updatePins() {
+    updatePins() {
       this.clearLayers(this.map, 'pins');
 
       this.addElementsToMap(this.pinLayerGroup, this.pinEnabled);
     },
-    updateMultiPins: function updateMultiPins() {
+    updateMultiPins() {
       this.clearLayers(this.map, 'multiPins');
 
       this.addElementsToMap(this.multiPinLayerGroup, this.multiPinEnabled);
     },
-    updatePolygons: function updatePolygons() {
+    updatePolygons() {
       this.clearLayers(this.map, 'polygons');
 
       this.addElementsToMap(this.polygonLayerGroup, this.polygonEnabled, true);
-    },
-  },
-  watch: {
-    pinnedIds: function updateMapPinnedIds() {
-      this.updateMap();
-    },
-    filteredContent: function updateMetadatasContent() {
-      this.updateMap();
     },
   },
   data: () => ({
@@ -545,18 +485,22 @@ export default {
 
 <style>
 
-.rotating {
-  animation: rotateturn 1s steps(8, end) infinite;
-}
-
-@keyframes rotateturn {
-  to {
-    transform: rotate(360deg);
+  .rotating {
+    animation: rotateturn 1s steps(8, end) infinite;
   }
-}
 
-@keyframes rotate {
-    from {transform: rotate(0deg);}
-    to {transform: rotate(360deg);}
-}
+  @keyframes rotateturn {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
 </style>

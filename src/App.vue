@@ -89,17 +89,6 @@ export default {
   beforeCreate() {
     // check for the backend version
     this.$store.dispatch(SET_CONFIG);
-    // window.applicationCache.onupdateready = function (e) {
-    //   console.log("applicationCache.onupdateready");
-    // };
-
-    // window.applicationCache.onerror = function (e) {
-    //   console.log("applicationCache.onerror");
-    // };
-
-    // window.applicationCache.onnoupdate = function (e) {
-    //   console.log("applicationCache.onnoupdate");
-    // };
   },
   created() {
     this.loadAllMetadata();
