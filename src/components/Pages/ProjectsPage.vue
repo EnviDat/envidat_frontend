@@ -3,15 +3,12 @@
     <v-layout wrap>
       <v-flex xs12 lg10 offset-lg1>
 
-        <img-and-text-layout dark
-                            :blur="true"
-                            :img="missionImg"
-                            :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
-                            :textFontSize="16"
-                            :parallax="true"
-                            title="Research Projects"
-        >
-        </img-and-text-layout>
+        <img-and-text-layout
+          :img="missionImg"
+          :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
+          title="Research Projects"
+        />
+
       </v-flex>
 
       <v-flex xs12 lg10 offset-lg1 mt-5>

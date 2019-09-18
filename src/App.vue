@@ -2,34 +2,32 @@
   <v-app class="application" :style="dynamicBackground">
 
     <navigation v-if="$vuetify.breakpoint.mdAndUp"
-                :mini="!this.menuItem.active"
+                :mini="!showMenu"
                 :navItems="navItems"
                 :version="appVersion"
-                @menuClick="catchMenuClicked"
-                @itemClick="catchItemClicked" />
+                @menuClick="toggleShowMenu"
+                @itemClick="navigateTo" />
 
     <navigation-mobile v-if="$vuetify.breakpoint.smAndDown"
                     :navItems="navItems"
                     style="position: fixed; top: auto; right: 10px; bottom: 10px;"
                     class="elevation-3"
-                    @itemClick="catchItemClicked" />
+                    @itemClick="navigateTo" />
 
     <navigation-toolbar :searchTerm="searchTerm"
                         :showSearchCount="showSearchCount"
                         :searchCount="searchCount"
                         :showSearch="showToolbarSearch"
-                        @menuClick="catchMenuClicked"
-                        @searchClick="catchSearchClicked"
-                        @searchCleared="catchSearchCleared" />
+                        @menuClick="toggleShowMenu"
+                        @searchClick="navigateToSearch"
+                        @searchCleared="clearSearchTerm" />
 
     <v-content>
       <v-container fluid py-1
                   v-bind="{ [`px-1`]: this.$vuetify.breakpoint.smAndDown,
                             [`px-2`]: this.$vuetify.breakpoint.mdAndUp, }" >
         <v-layout column>
-
-          <v-flex xs12
-                  mx-0 >
+          <v-flex xs12 mx-0 >
 
             <transition name="fade" mode="out-in">
               <router-view />
@@ -37,20 +35,20 @@
 
           </v-flex>
 
-          <v-flex xs12
-            style="position: absolute; right: 5px; bottom: 2px; font-size: 6px !important;"
-          >Verison: {{ appVersion }}</v-flex>
+          <v-flex xs12 style="position: absolute; right: 5px; bottom: 2px; font-size: 6px !important;">
+            Verison: {{ appVersion }}
+          </v-flex>
         </v-layout>
       </v-container>
 
       <v-dialog v-model="showReloadDialog" persistent max-width="290">
         <v-card>
           <v-card-title class="headline">New Version Available!</v-card-title>
-          <v-card-text>{{ dialogVersionText() }}</v-card-text>
+          <v-card-text>{{ dialogVersionText }}</v-card-text>
           <v-card-actions>
             <v-spacer />
-            <v-btn color="green darken-1" flat @click="reloadApp();">Reload</v-btn>
-            <v-btn color="green darken-1" flat @click="dialogCanceled = true">Cancel</v-btn>
+            <v-btn color="green darken-1" flat @click="reloadApp()">Reload</v-btn>
+            <v-btn color="green darken-1" flat @click="reloadDialogCanceled = true">Cancel</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -104,9 +102,7 @@ export default {
   },
   methods: {
     updateActiveStateOnNavItems() {
-      if (!this.currentPage) {
-        return;
-      }
+      console.log(this.currentPage);
 
       for (let i = 0; i < this.navItems.length; i++) {
         const item = this.navItems[i];
@@ -130,35 +126,31 @@ export default {
         }
       }
     },
-    catchMenuClicked() {
-      this.menuItem.active = !this.menuItem.active;
+    toggleShowMenu() {
+      this.showMenu = !this.showMenu;
     },
-    catchItemClicked(item) {
-      if (item.pageName === 'external') {
-        window.open(item.path, '_blank');
-        return;
+    navigateTo(navItem) {
+      if (navItem.pageName === 'external') {
+        window.open(navItem.path, '_blank');
+      } else {
+        this.$router.push(navItem.path);
       }
-
-      this.$router.push({ path: item.path });
     },
-    catchSearchClicked(search) {
-      this.$router.push({
-        path: BROWSE_PATH,
-        query: { search },
-      });
+    navigateToSearch(searchString) {
+      this.$router.push({ path: BROWSE_PATH, query: { searchString } });
     },
-    catchSearchCleared() {
+    clearSearchTerm() {
       this.searchTerm = '';
     },
     reloadApp() {
       window.location.reload();
     },
-    loadAllMetadata: function loadAllMetadata() {
+    loadAllMetadata() {
       if (!this.loadingMetadatasContent && this.metadatasContentSize <= 0) {
         this.$store.dispatch(`metadata/${BULK_LOAD_METADATAS_CONTENT}`);
       }
     },
-    importCardBackgrounds: function importCardBackgrounds() {
+    importCardBackgrounds() {
       const imgs = this.$store.getters.cardBGImages;
 
       if (imgs && Object.keys(imgs).length > 0) {
@@ -187,7 +179,7 @@ export default {
       images = this.mixinMethods_importImages(imgPaths);
       this.$store.commit(ADD_CARD_IMAGES, { key: 'hazard', value: images });
     },
-    importIcons: function importIcons() {
+    importIcons() {
       const imgs = this.$store.getters.iconImages;
 
       if (imgs && Object.keys(imgs).length > 0) {
@@ -200,12 +192,8 @@ export default {
 
       const keys = Object.keys(images);
       keys.forEach((key) => {
-        // console.log('icon ' + key + ' value ' + images[key]);
         this.$store.commit(ADD_ICON_IMAGE, { key, value: images[key] });
       });
-    },
-    dialogVersionText() {
-      return `You are using the version ${process.env.VUE_APP_VERSION}, but there is are newer version available (${this.newVersion}). Please reload to get the latest verison of EnviDat.`;
     },
   },
   computed: {
@@ -221,9 +209,12 @@ export default {
       currentPage: 'currentPage',
       filteredContent: 'metadata/filteredContent',
       appBGImage: 'appBGImage',
-      showVersionModal: 'showVersionModal',
+      outdatedVersion: 'outdatedVersion',
       newVersion: 'newVersion',
     }),
+    dialogVersionText() {
+      return `You are using the version ${process.env.VUE_APP_VERSION}, but there is are newer version available (${this.newVersion}). Please reload to get the latest verison of EnviDat.`;
+    },
     showSearchCount() {
       return this.currentPage === BROWSE_PAGENAME;
     },
@@ -233,34 +224,20 @@ export default {
     searchCount() {
       return this.filteredContent !== undefined ? Object.keys(this.filteredContent).length : 0;
     },
-    menuItem() {
-      let menuItem = { active: true };
-
-      this.navItems.forEach((el) => {
-        if (el.icon === 'menu') {
-          menuItem = el;
-        }
-      });
-
-      // return default with active true so all items will be shown
-      return menuItem;
-    },
     metadatasContentSize: function metadatasContentSize() {
       return this.metadatasContent !== undefined
         ? Object.keys(this.metadatasContent).length
         : 0;
     },
     showReloadDialog() {
-      return this.showVersionModal && !this.dialogCanceled;
+      return this.outdatedVersion && !this.reloadDialogCanceled;
     },
-    dynamicBackground: function dynamicBackground() {
+    dynamicBackground() {
       const imageKey = this.appBGImage;
       const bgImg = this.appBGImages[imageKey];
-      // console.log(imageKey + " bgImg " + bgImg);
       let bgStyle = '';
 
       if (bgImg) {
-        // bgStyle = `background-image: url(${bgImg}) !important;`;
         bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.25) 100%), url(${bgImg}) !important;`;
 
         bgStyle += `background-position: center top !important;
@@ -268,14 +245,12 @@ export default {
                       background-size: cover !important; `;
 
         if (bgImg.includes('browsepage')) {
-          // bgStyle = `background-image: url(${bgImg}) !important;`;
           bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
 
           bgStyle += `background-position: center top !important;
                         background-repeat: repeat !important; `;
         }
       }
-
       return bgStyle;
     },
   },
@@ -284,24 +259,37 @@ export default {
     NavigationMobile,
     NavigationToolbar,
   },
-  /* eslint-disable object-curly-newline */
   data: () => ({
     appBGImages: {},
-    prevHeight: 0,
-    dialogCanceled: false,
+    reloadDialogCanceled: false,
     appVersion: process.env.VUE_APP_VERSION,
     showMenu: true,
     searchTerm: '',
     navItems: [
-      { title: 'Home', icon: 'envidat', tooltip: 'Back to the start page', active: false, path: './', pageName: LANDING_PAGENAME },
-      { title: 'Explore', icon: 'search', tooltip: 'Explore research data', active: false, path: BROWSE_PATH, pageName: BROWSE_PAGENAME },
-      { title: 'Login', icon: 'person', tooltip: 'Login to upload data', active: false, path: 'https://www.envidat.ch/user/reset', pageName: 'external' },
-      { title: 'Organizations', icon: 'account_tree', tooltip: 'Overview of the different organizations', active: false, path: 'https://www.envidat.ch/organization', pageName: 'external' },
-      { title: 'Projects', icon: 'library_books', tooltip: 'Overview of the research projects on envidat', active: false, path: PROJECTS_PATH, pageName: PROJECTS_PAGENAME, subpages: [PROJECT_DETAIL_PAGENAME] },
-      { title: 'Guidelines', icon: 'local_library', tooltip: 'Guidlines about the creation of metadata', active: false, path: GUIDELINES_PATH, pageName: GUIDELINES_PAGENAME },
-      { title: 'Policies', icon: 'policy', tooltip: 'The rules of EnviDat', active: false, path: POLICIES_PATH, pageName: POLICIES_PAGENAME },
-      { title: 'About', icon: 'info', tooltip: 'What is EnviDat? How is behind EnviDat?', active: false, path: ABOUT_PATH, pageName: ABOUT_PAGENAME },
-      // { title: 'Contact', icon: 'contact_support', tooltip: 'Do you need support?', active: false },
+      {
+        title: 'Home', icon: 'envidat', tooltip: 'Back to the start page', active: false, path: './', pageName: LANDING_PAGENAME,
+      },
+      {
+        title: 'Explore', icon: 'search', tooltip: 'Explore research data', active: false, path: BROWSE_PATH, pageName: BROWSE_PAGENAME,
+      },
+      {
+        title: 'Login', icon: 'person', tooltip: 'Login to upload data', active: false, path: 'https://www.envidat.ch/user/reset', pageName: 'external',
+      },
+      {
+        title: 'Organizations', icon: 'account_tree', tooltip: 'Overview of the different organizations', active: false, path: 'https://www.envidat.ch/organization', pageName: 'external',
+      },
+      {
+        title: 'Projects', icon: 'library_books', tooltip: 'Overview of the research projects on envidat', active: false, path: PROJECTS_PATH, pageName: PROJECTS_PAGENAME, subpages: [PROJECT_DETAIL_PAGENAME],
+      },
+      {
+        title: 'Guidelines', icon: 'local_library', tooltip: 'Guidlines about the creation of metadata', active: false, path: GUIDELINES_PATH, pageName: GUIDELINES_PAGENAME,
+      },
+      {
+        title: 'Policies', icon: 'policy', tooltip: 'The rules of EnviDat', active: false, path: POLICIES_PATH, pageName: POLICIES_PAGENAME,
+      },
+      {
+        title: 'About', icon: 'info', tooltip: 'What is EnviDat? How is behind EnviDat?', active: false, path: ABOUT_PATH, pageName: ABOUT_PAGENAME,
+      },
       { title: 'Menu', icon: 'menu', active: false },
     ],
   }),
