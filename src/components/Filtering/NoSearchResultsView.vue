@@ -34,16 +34,13 @@
 import { mapGetters } from 'vuex';
 import BaseClickCard from '@/components/BaseElements/BaseClickCard';
 
-/*
-Review David
-- props nötig? --> lokal lösen
- */
-
 export default {
   name: 'NoSearchResultView',
-  props: {
-    noResultText: String,
-    suggestionText: String,
+  data() {
+    return {
+      noResultText: 'Nothing found for these search criteria.',
+      suggestionText: 'Change the criteria or try one of these categories',
+    };
   },
   computed: {
     ...mapGetters({
