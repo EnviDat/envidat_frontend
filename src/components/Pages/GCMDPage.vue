@@ -26,7 +26,7 @@ import {
 } from '@/store/mutationsConsts';
 
 export default {
-  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+  beforeRouteEnter(to, from, next) {
     next((vm) => {
       // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
       vm.$store.commit(SET_CURRENT_PAGE, GCMD_PAGENAME);
@@ -39,7 +39,7 @@ export default {
     }),
   },
   methods: {
-    gcdmLink: function gcdmLink(metadata) {
+    gcdmLink(metadata) {
       return `https://www.envidat.ch/dataset/${metadata.name}/export/gcmd_dif.xml`;
     },
   },

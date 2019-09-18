@@ -65,7 +65,7 @@ import {
 // https://codepen.io/suez/pen/dPqxoM
 
 export default {
-  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+  beforeRouteEnter(to, from, next) {
     next((vm) => {
       // console.log("landing beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
       vm.$store.commit(SET_CURRENT_PAGE, LANDING_PAGENAME);
@@ -79,10 +79,7 @@ export default {
     }),
   },
   methods: {
-    catchCategoryClicked: function catchCategoryClicked(cardTitle) {
-      // sleep(500);
-      // setTimeout(this.$router.push({ name: 'BrowsePage', params: { cardTitle }}), 1000);
-
+    catchCategoryClicked(cardTitle) {
       if (cardTitle.includes('login')) {
         this.catchLoginclick();
         return;
@@ -95,7 +92,7 @@ export default {
         },
       });
     },
-    catchSearchClicked: function catchSearchClicked(search) {
+    catchSearchClicked(search) {
       this.$router.push({
         path: BROWSE_PATH,
         query: { search },
@@ -106,16 +103,16 @@ export default {
             path: BROWSE_PATH
         })
       },
-    catchEnterclick: function catchEnterclick() {
+    catchEnterclick() {
       this.redirectToDashboard();
     },
-    catchSingupclick: function catchSingupclick() {
+    catchSingupclick() {
       this.redirectToDashboard();
     },
-    catchLoginclick: function catchLoginclick() {
+    catchLoginclick() {
       this.redirectToDashboard();
     },
-    redirectToDashboard: function redirectToDashboard() {
+    redirectToDashboard() {
       window.open('https://www.envidat.ch/user/reset', '_blank');
       // window.location.href = 'https://www.envidat.ch/user/reset';
       // this.$router.push('https://www.envidat.ch/user/reset');

@@ -82,7 +82,7 @@ import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
 // https://paper-leaf.com/blog/2016/01/creating-blurred-background-using-only-css/
 
 export default {
-  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+  beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.commit(SET_CURRENT_PAGE, METADATADETAIL_PAGENAME);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
@@ -91,7 +91,7 @@ export default {
   /**
      * @description load all the icons once before the first component's rendering.
      */
-  beforeMount: function beforeMount() {
+  beforeMount() {
     this.downloadIcon = this.mixinMethods_getIcon('download');
     this.linkIcon = this.mixinMethods_getIcon('link');
     this.doiIcon = this.mixinMethods_getIcon('doi');
@@ -102,17 +102,11 @@ export default {
     this.mailIcon = this.mixinMethods_getIcon('mail');
     this.licenseIcon = this.mixinMethods_getIcon('license');
   },
-  /**
-     * @description reset the scrolling to the top.
-     */
-  mounted: function mounted() {
+  mounted() {
     this.loadMetaDataContent();
     window.scrollTo(0, 0);
   },
-  /**
-   * @description
-   */
-  beforeDestroy: function beforeDestroy() {
+  beforeDestroy() {
     // clean current metadata to make be empty for the next to load up
     this.$store.commit(`metadata/${CLEAN_CURRENT_METADATA}`);
   },
@@ -127,16 +121,13 @@ export default {
       iconImages: 'iconImages',
       cardBGImages: 'cardBGImages',
     }),
-    /**
-     * @returns {Number} Size of the metadatasContent
-     */
-    metadatasContentSize: function metadatasContentSize() {
+    metadatasContentSize() {
       return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
     },
     /**
      * @returns {String} the metadataId from the route
      */
-    metadataId: function metadataId() {
+    metadataId() {
       let id = this.$route.params.metadataid;
 
       if (this.idRemapping.has(id)) {
@@ -148,21 +139,18 @@ export default {
     /**
      * @returns {Boolean} if the placeHolders should be shown be somethings are still loading
      */
-    showPlaceholder: function showPlaceholder() {
+    showPlaceholder() {
       return this.loadingMetadatasContent || this.loadingCurrentMetadataContent;
     },
-    firstColumn: function firstColumn() {
+    firstColumn() {
       return this.$vuetify.breakpoint.mdAndUp ? this.firstCol : this.singleCol;
     },
-    secondColumn: function secondColumn() {
+    secondColumn() {
       return this.$vuetify.breakpoint.mdAndUp ? this.secondCol : [];
     },
   },
   methods: {
-    /**
-     * @description
-     */
-    createMetadataContent: function createMetadataContent() {
+    createMetadataContent() {
       let currentContent = this.currentMetadataContent;
       const { components } = this.$options;
 
@@ -215,19 +203,10 @@ export default {
         this.$forceUpdate();
       }
     },
-    /**
-       * @description
-       * @param {any} idOrName
-       * @returns {any}
-       */
-    isCurrentIdOrName: function isCurrentIdOrName(idOrName) {
+    isCurrentIdOrName(idOrName) {
       return this.currentMetadataContent.id === idOrName || this.currentMetadataContent.name === idOrName;
     },
-    /**
-       * @description
-       * @param {any} tagName
-       */
-    catchTagClicked: function catchTagClicked(tagName) {
+    catchTagClicked(tagName) {
       const tagNames = [];
       tagNames.push(tagName);
 
@@ -240,11 +219,7 @@ export default {
         query,
       });
     },
-    /**
-       * @description
-       * @param {any} authorName
-       */
-    catchAuthorClicked: function catchAuthorClicked(authorName) {
+    catchAuthorClicked(authorName) {
       const query = {};
       query.search = authorName;
 
@@ -253,10 +228,7 @@ export default {
         query,
       });
     },
-    /**
-       * @description
-       */
-    catchBackClicked: function catchBackClicked() {
+    catchBackClicked() {
       // console.log(this.$router);
       const backRoute = this.detailPageBackRoute;
 
@@ -277,7 +249,7 @@ export default {
        * @description loads the content of this metadata entry (metadataid) from the URL.
        * Either loads it from the backend via action or creates it from the localStorage.
        */
-    loadMetaDataContent: function loadMetaDataContent() {
+    loadMetaDataContent() {
       if (!this.loadingMetadatasContent
         && (this.currentMetadataContent.title === undefined
             || !this.isCurrentIdOrName(this.metadataId))) {
@@ -303,13 +275,13 @@ export default {
     /**
        * @description
        */
-    currentMetadataContent: function updateContent() {
+    currentMetadataContent() {
       this.createMetadataContent();
     },
     /**
        * @description
        */
-    metadatasContent: function updateContent() {
+    metadatasContent() {
       // in case all the metadataContents are already loaded take it from there
       // if EnviDat is called via MetadataDetailPage URL directly
 
