@@ -23,7 +23,7 @@
                         @searchCleared="catchSearchCleared" />
 
     <v-content>
-      <v-container fluid py-1
+      <v-container fluid py-2
                   v-bind="{ [`px-1`]: this.$vuetify.breakpoint.smAndDown,
                             [`px-2`]: this.$vuetify.breakpoint.mdAndUp, }" >
         <v-layout column>
@@ -227,8 +227,6 @@ export default {
       loadingMetadatasContent: 'metadata/loadingMetadatasContent',
       loadingCurrentMetadataContent: 'metadata/loadingCurrentMetadataContent',
       currentMetadataContent: 'metadata/currentMetadataContent',
-      popularTags: 'metadata/popularTags',
-      loadingPopularTags: 'metadata/loadingPopularTags',
       currentPage: 'currentPage',
       filteredContent: 'metadata/filteredContent',
       appBGImage: 'appBGImage',

@@ -265,7 +265,7 @@ export default {
 
         for (let i = 0; i < allTags.length; i++) {
           const tag = allTags[i];
-          let found = false;
+          let found = tag.enabled;
 
           for (let j = 0; j < filteredContent.length; j++) {
             const el = filteredContent[j];

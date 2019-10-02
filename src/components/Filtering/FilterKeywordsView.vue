@@ -1,127 +1,82 @@
 <template>
-  <v-card
-    raised
-    :style="this.compactLayout ? '' : 'height: 85px'"
-  >
-    <v-layout
-      column
-    >
-      <v-flex
-        v-if="!expanded"
-        xs12
-        hidden-sm-and-up
-        px-2
-        py-2
-      >
+  <v-card raised
+          class="pa-2"
+          :style="this.compactLayout ? '' : 'height: 85px'" >
+    <v-layout column >
+      <v-flex v-if="!filterExpanded"
+              xs12 hidden-sm-and-up px-2 py-2 >
         <div class="mx-3">
           Filter for Keywords
         </div>
       </v-flex>
 
+      <v-flex v-if="filterExpanded || $vuetify.breakpoint.smAndUp"
+              xs12 px-2 mt-1 >
+        <v-layout row
+                  fill-height
+                  v-bind="{
+                    ['align-center']: this.$vuetify.breakpoint.smAndUp,
+                    ['align-content-center']: this.$vuetify.breakpoint.smAndUp,
+                  }" >
 
-      <v-flex
-        v-if="expanded || $vuetify.breakpoint.smAndUp"
-        xs12
-        px-2
-        mt-1
-      >
-        <v-layout
-          row
-          fill-height
-          v-bind="{
-            ['align-center']: this.$vuetify.breakpoint.smAndUp,
-            ['align-content-center']: this.$vuetify.breakpoint.smAndUp,
-          }"
-        >
-          <v-flex
-            pl-2
-            class="metadataInfoIcon"
-          >
-            <base-icon-label-view
-              :icon="tagsIcon"
-              :compact-layout="compactLayout"
-              icon-tooltip="Possible Keywords"
-            />
+          <v-flex pl-2
+                  class="metadataInfoIcon" >
+            <base-icon-label-view :icon="tagsIcon"
+                                  :compact-layout="compactLayout"
+                                  icon-tooltip="Possible Keywords" />
           </v-flex>
 
-          <v-flex
-            v-if="showPlaceholder"
-            xs12
-            py-0
-            px-2
-          >
-            <tag-chip-placeholder
-              v-for="n in 6"
-              :key="n"
-              py-0
-              class="card_tag_placeholder"
-            />
+          <v-flex v-if="showPlaceholder"
+                  xs12 py-0 px-2 >
+            <tag-chip-placeholder v-for="n in 6"
+                                  :key="n"
+                                  py-0 class="card_tag_placeholder" />
           </v-flex>
 
-          <v-flex
-            v-if="!showPlaceholder && showPopularTags"
-            xs12
-            py-0
-            px-2
-          >
-            <tag-chip
-              v-for="tag in showPopularTags"
-              :key="tag.name"
-              :name="tag.name"
-              :selectable="tag.enabled"
-              :highlighted="false"
-              :closeable="false"
-              class="filterTag"
-              @clicked="catchTagClicked($event, tag.name)"
-            />
+          <v-flex v-if="!showPlaceholder"
+                  xs12 py-0 px-2 >
+            <tag-chip v-for="tag in unselectedTags"
+                      :key="tag.name"
+                      :name="tag.name"
+                      :selectable="tag.enabled"
+                      :highlighted="false"
+                      :closeable="false"
+                      class="filterTag"
+                      @clicked="catchTagClicked($event, tag.name)" />
           </v-flex>
         </v-layout>
       </v-flex>
 
 
-      <v-flex
-        v-if="expanded || $vuetify.breakpoint.smAndUp"
-        xs12
-        px-2
-        mt-1
-      >
-        <v-layout
-          row
-          fill-height
-          v-bind="{
-            ['align-center']: this.$vuetify.breakpoint.smAndUp,
-            ['align-content-center']: this.$vuetify.breakpoint.smAndUp,
-          }"
-        >
-          <v-flex
-            pl-2
-            class="metadataInfoIcon"
-          >
-            <base-icon-label-view
-              :icon="tagIcon"
-              :compact-layout="compactLayout"
-              icon-tooltip="Active Keyword filter"
-            />
+      <v-flex v-if="filterExpanded || $vuetify.breakpoint.smAndUp"
+              xs12 px-2 mt-1 >
+        <v-layout row
+                  fill-height
+                  v-bind="{
+                    ['align-center']: this.$vuetify.breakpoint.smAndUp,
+                    ['align-content-center']: this.$vuetify.breakpoint.smAndUp,
+                  }" >
+
+          <v-flex pl-2 class="metadataInfoIcon" >
+            <base-icon-label-view :icon="tagIcon"
+                                  :compact-layout="compactLayout"
+                                  icon-tooltip="Active Keyword filter" />
           </v-flex>
 
-          <v-flex
-            v-if="selectedTags.length > 0"
-            xs12
-            py-0
-            px-2
-          >
-            <tag-chip
-              v-for="tag in selectedTags"
-              :key="tag.name"
-              :name="tag.name"
-              :selectable="true"
-              :highlighted="true"
-              :closeable="true"
-              class="filterTag"
-              @clickedClose="catchTagCloseClicked($event, tag.name)"
-              @clicked="catchTagCloseClicked($event, tag.name)"
-            />
+          <v-flex v-if="selectedTags.length > 0"
+                  xs12 py-0 px-2 >
+
+            <tag-chip v-for="tag in selectedTags"
+                      :key="tag.name"
+                      :name="tag.name"
+                      :selectable="true"
+                      :highlighted="true"
+                      :closeable="true"
+                      class="filterTag"
+                      @clickedClose="catchTagCloseClicked($event, tag.name)"
+                      @clicked="catchTagCloseClicked($event, tag.name)" />
           </v-flex>
+
         </v-layout>
       </v-flex>
     </v-layout>
@@ -159,18 +114,16 @@ export default {
   },
   props: {
     selectedTagNames: Array,
-    popularTags: Array,
     allTags: Array,
-    expanded: Boolean,
-    expandButtonText: String,
-    expandedButtonText: String,
+    // expanded: Boolean,
+    // expandButtonText: String,
+    // expandedButtonText: String,
     showPlaceholder: Boolean,
-    isHighlighted: Boolean,
     compactLayout: Boolean,
   },
   data: () => ({
     maxSelectedTagsTextLength: 25,
-    maxPopularTagsTextLength: 250,
+    maxUnselectedTagsTextLength: 250,
     xsTextLength: 25,
     smTextLength: 50,
     mdTextLength: 65,
@@ -179,6 +132,17 @@ export default {
     filterExpanded: false,
   }),
   computed: {
+    unselectedTags(){
+      const unselectedTags = [];
+
+      this.allTags.forEach((element) => {
+        if (element.enabled && !this.isTagSelected(element.name)) {
+          unselectedTags.push(element);
+        }
+      });
+
+      return unselectedTags;
+    },
     selectedTags: function selectedTags() {
       // always get the selected as a subset of the allTags because they are the full
       // tag JSON object
@@ -194,23 +158,11 @@ export default {
 
       return selecteds;
     },
-    showPopularTags: function showPopularTags() {
-      // use this computed property to make the diff between popular and selected
-      const popTags = [];
-
-      this.popularTags.forEach((element) => {
-        if (element.enabled && !this.isTagSelected(element.name)) {
-          popTags.push(element);
-        }
-      });
-
-      return popTags;
-    },
     maxTagNumber: function maxTagNumber() {
       return this.getTagMaxAmout(this.selectedTags, this.maxSelectedTagsTextLength);
     },
-    maxPopularTagNumber: function maxPopularTagNumber() {
-      let maxTextLength = this.maxPopularTagsTextLength;
+    maxUnselectedTagNumber() {
+      let maxTextLength = this.maxUnselectedTagsTextLength;
 
       if (this.$vuetify.breakpoint.xsOnly) {
         maxTextLength = this.xsTextLength;
@@ -222,7 +174,7 @@ export default {
         maxTextLength = this.mdTextLength;
       }
 
-      const maxNumber = this.getTagMaxAmout(this.popularTags, maxTextLength);
+      const maxNumber = this.getTagMaxAmout(this.allTags, maxTextLength);
       const combinedMax = maxNumber - this.selectedTags.length;
 
       return combinedMax >= 0 ? combinedMax : 0;
@@ -272,7 +224,7 @@ export default {
     },
     catchExpandClicked: function catchExpandClicked() {
       this.filterExpanded = !this.filterExpanded;
-      this.$emit('clickedExpand');
+      // this.$emit('clickedExpand');
     },
     catchTagClicked: function catchTagClicked(tagId) {
       this.$emit('clickedTag', tagId);
@@ -286,13 +238,6 @@ export default {
       }
 
       return this.selectedTagNames.indexOf(tagName) >= 0;
-    },
-    isPopluarTag: function isPopluarTag(tagName) {
-      if (!tagName || this.popularTags === undefined) {
-        return false;
-      }
-
-      return this.popularTags.findIndex(obj => obj.name === tagName) >= 0;
     },
     isSelected: function isSelected(tagId) {
       return this.selectedTags.indexOf(tagId) >= 0;

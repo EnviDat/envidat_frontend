@@ -4,11 +4,30 @@
                 :class="{ ['grid-list-sm'] : listView,
                           ['grid-list-lg'] : !listView }"
                 pa-0 >
+
     <transition-group name="itemfade"
                       class="layout"
                       :class="{ ['column'] : listView,
                                 ['row'] : !listView,
                                 ['wrap'] : !listView }" >
+
+      <v-flex xs12 
+              key="filterKeywords" >
+
+        <filter-keywords-view :compactLayout="$vuetify.breakpoint.smAndDown"
+                              :allTags="allTags"
+                              :selectedTagNames="selectedTagNames"
+                              :showPlaceholder="loading"
+                              @clickedTag="catchTagClicked"
+                              @clickedTagClose="catchTagCloseClicked"
+                              @clickedClear="catchTagCleared" />
+      </v-flex>
+
+                              <!-- @clickedExpand="catchFilterExpandClicked"
+                              :expanded="filterExpanded"
+                              :expandButtonText="filterExpandButtonText"
+                              :expandedButtonText="filterExpandedButtonText" -->
+
       <v-flex v-for="(pinnedId, index) in pinnedIds"
               v-if="showPinnedElements"
               :key="'pinned_' + index"
@@ -108,6 +127,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { BROWSE_PATH, METADATADETAIL_PAGENAME } from '@/router/routeConsts';
+import FilterKeywordsView from '@/components/Filtering/FilterKeywordsView';
 import MetadataCard from '@/components/Cards/MetadataCard';
 import MetadataCardPlaceholder from '@/components/Cards/MetadataCardPlaceholder';
 import NoSearchResultsView from '@/components/Filtering/NoSearchResultsView';
@@ -125,6 +145,8 @@ export default {
     showMapFilter: Boolean,
     mapFilteringPossible: Boolean,
     placeHolderAmount: Number,
+    selectedTagNames: Array,
+    allTags: Array,
   },
   data: () => ({
     noResultText: 'Nothing found for these search criterias.',
@@ -132,6 +154,7 @@ export default {
     fileIconString: null,
     lockedIconString: null,
     unlockedIconString: null,
+    localTags: [],
     virtualListContent: [],
     vLoading: false,
     infiniteId: +new Date(),
@@ -238,8 +261,18 @@ export default {
         // console.log('loaded to ' + that.vIndex );
       }, this.vReloadDelay);
     },
-    catchTagClicked: function catchTagClicked(tagName) {
+    catchTagClicked(tagName) {
       this.$emit('clickedTag', tagName);
+    },
+    // catchExpandClicked() {
+    //   this.filterExpanded = !this.filterExpanded;
+    //   this.$emit('clickedExpand');
+    // },
+    catchTagCloseClicked(tagId) {
+      this.$emit('clickedTagClose', tagId);
+    },
+    catchTagCleared() {
+      this.$emit('clickedClear');
     },
     catchCategoryClicked: function catchCategoryClicked(cardTitle) {
       this.$router.push({
@@ -289,6 +322,7 @@ export default {
     },
   },
   components: {
+    FilterKeywordsView,
     NoSearchResultsView,
     MetadataCard,
     MetadataCardPlaceholder,

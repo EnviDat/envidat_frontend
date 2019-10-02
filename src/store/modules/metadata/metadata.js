@@ -58,8 +58,6 @@ const initialState = {
   allTags: tags,
   loadingAllTags: false,
   updatingTags: false,
-  popularTags: [],
-  loadingPopularTags: false,
   /**
    * Route properties
    */
@@ -108,8 +106,6 @@ export const metadata = {
     allTags: state => state.allTags,
     loadingAllTags: state => state.loadingAllTags,
     updatingTags: state => state.updatingTags,
-    popularTags: state => state.popularTags,
-    loadingPopularTags: state => state.loadingPopularTags,
     detailPageBackRoute: state => state.detailPageBackRoute,
     aboutPageBackRoute: state => state.aboutPageBackRoute,
     categorycards: state => state.categorycards,

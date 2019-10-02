@@ -50,6 +50,11 @@
                                 :showMapFilter="false"
                                 :mapFilteringPossible="mapFilteringPossible"
                                 :placeHolderAmount="placeHolderAmount"
+                                @clickedTag="catchTagClicked"
+                                :allTags="allMetadataTags"
+                                :selectedTagNames="selectedTagNames"
+                                @clickedTagClose="catchTagCloseClicked"
+                                @clickedClear="catchTagCleared"                             />
                                 />
 
           </div>
@@ -77,6 +82,7 @@ import {
 import {
   GET_PROJECTS,
   PROJECTS_NAMESPACE,
+  METADATA_NAMESPACE,
   SET_PROJECTDETAIL_PAGE_BACK_URL,
 } from '@/store/projectsMutationsConsts';
 
@@ -142,6 +148,7 @@ export default {
     ...mapGetters({
       projects: `${PROJECTS_NAMESPACE}/projects`,
       projectsPageBackRoute: `${PROJECTS_NAMESPACE}/projectsPageBackRoute`,
+      metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
     }),
     projectId() {
       return this.$route.params.id;
@@ -162,8 +169,45 @@ export default {
 
       return creatorSmall;
     },
+    allMetadataTags() {
+      const allTags = [];
+
+      if (this.hasMetadatas) {
+        for (let i = 0; i < this.currentProject.packages.length; i++) {
+          const el = this.currentProject.packages[i];
+          const dataset = this.getMetadataContent(el.id);
+          const tags = dataset.tags;
+
+          if (tags && tags.length > 0){
+            tags.forEach(tag => {
+              const index = this.allTags.indexOf(tag.name);
+              if (index < 0){
+                this.allTags.push( { name: tag.name, enabled: true } );
+              }
+            });
+          }
+        }
+      }
+
+      return allTags;
+    },
   },
   methods: {
+    getMetadataContent(id) {
+      if (!this.metadatasContent) {
+        return null;
+      }
+
+      for (let i = 0; i < this.metadatasContent.length; i++) {
+        const el = this.metadatasContent[i];
+
+        if (el.id === id) {
+          return el;
+        }
+      }
+
+      return null;
+    },
     getProject(id) {
       let current = null;
 
@@ -223,6 +267,31 @@ export default {
         params: { id: subprojectId },
       });
     },
+    isTagSelected(tagName) {
+      if (!tagName || this.selectedTagNames === undefined) {
+        return false;
+      }
+
+      return this.selectedTagNames.indexOf(tagName) >= 0;
+    },
+    catchTagClicked(tagName) {
+      if (!this.isTagSelected(tagName)) {
+        this.selectedTagNames.push(tagName);
+      }
+    },
+    catchTagCloseClicked(tagId) {
+      if (this.selectedTagNames === undefined) {
+        return;
+      }
+
+      if (this.isTagSelected(tagName)) {
+        const index = this.selectedTagNames.indexOf(tagName);
+        this.selectedTagNames = this.selectedTagNames.filter(tag => tag !== tagId);
+      }
+    },
+    catchTagCleared() {
+      this.selectedTagNames = [];
+    },
   },
   components: {
     ProjectHeader,
@@ -235,7 +304,8 @@ export default {
     missionImg,
     creator,
     creatorSmall,
-    placeHolderAmount: 6,
+    placeHolderAmount: 3,
+    selectedTagNames: [],
   }),
 };
 </script>
