@@ -8,7 +8,7 @@
                         @click.native.stop=""
   >
 
-    <v-list class="pt-0"
+    <v-list class="pt-1"
             :class="{ 'narrowNavigation': mini }"
                         @click.native.stop=""
             dense >

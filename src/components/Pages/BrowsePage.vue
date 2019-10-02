@@ -6,47 +6,6 @@
   >
     <v-layout row wrap
     >
-      <v-flex xs12
-              :class="{ 'stickyFilterBar': $vuetify.breakpoint.smAndUp }"
-              :style="$vuetify.breakpoint.sm ? 'top: 42px !important;' : ''" >
-
-        <!-- <filter-bar-view :showFiltering="true"
-                          :searchViewLabelText="searchBarPlaceholder"
-                          :controlsLabel="controlsLabel"
-                          :searchTerm="searchTerm"
-                          :searchCount="searchCount"
-                          :searchViewHasButton="false"
-                          :allTags="allTags"
-                          :showPlaceholder="keywordsPlaceholder"
-                          :selectedTagNames="selectedTagNames"
-                          :popularTags="popularTags"
-                          :showMapFilter="showMapFilter"
-                          :mapFilteringPossible="mapFilteringPossible"
-                          :mapFilterHeight="mapFilterHeight"
-                          @clickedSearch="catchSearchClicked"
-                          @clearedSearch="catchSearchCleared"
-                          @clickedTag="catchTagClicked"
-                          @clickedTagClose="catchTagCloseClicked"
-                          @clickedClear="catchTagCleared"
-                          @clickedMapExpand="toggleMapExpand"
-                          @mapFilterChanged="catchMapFilterChanged"
-                          @controlsChanged="controlsChanged"
-        /> -->
-
-        <filter-keywords-view :compactLayout="$vuetify.breakpoint.smAndDown"
-                              :allTags="allTags"
-                              :selectedTagNames="selectedTagNames"
-                              :popularTags="popularTags"
-                              :expanded="filterExpanded"
-                              :expandButtonText="filterExpandButtonText"
-                              :expandedButtonText="filterExpandedButtonText"
-                              :showPlaceholder="keywordsPlaceholder"
-                              @clickedExpand="catchFilterExpandClicked"
-                              @clickedTag="catchTagClicked"
-                              @clickedTagClose="catchTagCloseClicked"
-                              @clickedClear="catchTagCleared" />
-      </v-flex>
-
       <v-flex py-2 style="z-index: 1;"
               v-bind="{ ['mx-0']: $vuetify.breakpoint.mdAndUp,
                         ['xs8']: showMapFilter & $vuetify.breakpoint.mdAndUp,
@@ -60,7 +19,13 @@
                             :show-map-filter="showMapFilter"
                             :map-filtering-possible="mapFilteringPossible"
                             :place-holder-amount="placeHolderAmount"
-                            @clickedTag="catchTagClicked" />
+                            @clickedTag="catchTagClicked"
+                            :allTags="allTags"
+                            :selectedTagNames="selectedTagNames"
+                            :showPlaceholder="keywordsPlaceholder"
+                            @clickedExpand="catchFilterExpandClicked"
+                            @clickedTagClose="catchTagCloseClicked"
+                            @clickedClear="catchTagCleared"                             />
       </v-flex>
 
       <v-flex v-if="mapFilteringPossible && showMapFilter"
@@ -404,19 +369,6 @@ export default {
 
       return sWidth;
     },
-    popularTags: function popularTags() {
-      const popTags = [];
-
-      if (this.allTags) {
-        for (let i = 0; i < this.allTags.length; i++) {
-          const tag = this.allTags[i];
-
-          popTags.push(tag);
-        }
-      }
-
-      return popTags;
-    },
     metadataListStyling: function metadataListStyling() {
       const json = {
         xs8: this.mapFilteringPossible && this.showMapFilter,
@@ -471,9 +423,6 @@ export default {
     maxMapFilterHeight: 725,
     mapFilterVisibleIds: [],
     listViewActive: false,
-    filterExpanded: false,
-    filterExpandButtonText: 'Show all tags',
-    filterExpandedButtonText: 'Hide all tags',
   }),
 };
 </script>
