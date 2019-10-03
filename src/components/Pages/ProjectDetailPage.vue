@@ -46,7 +46,7 @@
             <v-card-title class="metadataList_title title">Metadatas</v-card-title>
 
             <metadata-list-layout class="px-3"
-                                :listContent="currentProject.packages"
+                                :listContent="filteredListContent"
                                 :showMapFilter="false"
                                 :mapFilteringPossible="mapFilteringPossible"
                                 :placeHolderAmount="placeHolderAmount"
@@ -54,8 +54,7 @@
                                 :allTags="allMetadataTags"
                                 :selectedTagNames="selectedTagNames"
                                 @clickedTagClose="catchTagCloseClicked"
-                                @clickedClear="catchTagCleared"                             />
-                                />
+                                @clickedClear="catchTagCleared" />
 
           </div>
 
@@ -82,9 +81,9 @@ import {
 import {
   GET_PROJECTS,
   PROJECTS_NAMESPACE,
-  METADATA_NAMESPACE,
   SET_PROJECTDETAIL_PAGE_BACK_URL,
 } from '@/store/projectsMutationsConsts';
+import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
 
 import ProjectHeader from '@/components/ProjectDetailViews/ProjectHeader';
 import ProjectBody from '@/components/ProjectDetailViews/ProjectBody';
@@ -95,6 +94,8 @@ import missionImg from '@/assets/about/mission.jpg';
 import creator from '@/assets/cards/data_creator.jpg';
 import creatorSmall from '@/assets/cards/data_creator_small.jpg';
 
+import { tagsIncludedInSelectedTags } from '@/components/metadataFilterMethods';
+// const filtermethods = require('@/components/metadataFilterMethods');
 
 export default {
   /**
@@ -149,6 +150,7 @@ export default {
       projects: `${PROJECTS_NAMESPACE}/projects`,
       projectsPageBackRoute: `${PROJECTS_NAMESPACE}/projectsPageBackRoute`,
       metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
+      allTags: `${METADATA_NAMESPACE}/allTags`,
     }),
     projectId() {
       return this.$route.params.id;
@@ -170,26 +172,53 @@ export default {
       return creatorSmall;
     },
     allMetadataTags() {
-      const allTags = [];
+      const projectDatasetsTags = [];
+
+      for (let i = 0; i < this.allTags.length; i++) {
+        const tag = this.allTags[i];
+        let found = false;
+
+        for (let j = 0; j < this.filteredListContent.length; j++) {
+          const dataset = this.filteredListContent[j];
+          const fullDataset = this.getMetadataContent(dataset.id);
+
+          if (fullDataset) {
+            // the tags of each dataset has to be looked up in the metadataContents
+            // because the backend call doesn't deliver the packages with the tags
+            // it can only delivery the tags for the projects, which is no use for this
+            // case
+            const tags = fullDataset.tags;
+
+            if (tags && tags.length > 0) {
+              const index = tags.findIndex(obj => obj.name.includes(tag.name));
+
+              if (index >= 0) {
+                found = true;
+                break;
+              }
+            }
+          }
+        }
+
+        projectDatasetsTags.push({ name: tag.name, enabled: found });
+      }
+
+      return projectDatasetsTags;
+    },
+    filteredListContent() {
+      const projectDatasets = [];
 
       if (this.hasMetadatas) {
         for (let i = 0; i < this.currentProject.packages.length; i++) {
           const el = this.currentProject.packages[i];
-          const dataset = this.getMetadataContent(el.id);
-          const tags = dataset.tags;
-
-          if (tags && tags.length > 0){
-            tags.forEach(tag => {
-              const index = this.allTags.indexOf(tag.name);
-              if (index < 0){
-                this.allTags.push( { name: tag.name, enabled: true } );
-              }
-            });
+          // const index = el.tags.findIndex(obj => obj.name.includes(tag.name));
+          if (tagsIncludedInSelectedTags(el.tags, this.selectedTagNames)) {
+            projectDatasets.push(el);
           }
         }
       }
 
-      return allTags;
+      return projectDatasets;
     },
   },
   methods: {
@@ -198,15 +227,17 @@ export default {
         return null;
       }
 
-      for (let i = 0; i < this.metadatasContent.length; i++) {
-        const el = this.metadatasContent[i];
+      return this.metadatasContent[id];
 
-        if (el.id === id) {
-          return el;
-        }
-      }
+      // for (let i = 0; i < this.metadatasContent.length; i++) {
+      //   const el = this.metadatasContent[i];
 
-      return null;
+      //   if (el.id === id) {
+      //     return el;
+      //   }
+      // }
+
+      // return null;
     },
     getProject(id) {
       let current = null;
@@ -284,8 +315,7 @@ export default {
         return;
       }
 
-      if (this.isTagSelected(tagName)) {
-        const index = this.selectedTagNames.indexOf(tagName);
+      if (this.isTagSelected(tagId)) {
         this.selectedTagNames = this.selectedTagNames.filter(tag => tag !== tagId);
       }
     },

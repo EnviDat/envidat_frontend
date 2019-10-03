@@ -46,7 +46,7 @@ import WindowView from "@/components/ProjectDetailViews/WindowView.vue";
 
 import projectJSON from "@/testdata/projects";
 import projectDataFactory from "@/components/projectsDataFactory";
-const enhancedProjects = projectDataFactory.enhanceSubprojects(projectJSON.result);
+const enhancedProjects = projectDataFactory.enhanceSubprojectsFromExtras(projectJSON.result);
 const projects = enhancedProjects;
 
 const projectDetail1 = projects[6];

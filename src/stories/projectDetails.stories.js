@@ -50,7 +50,7 @@ import ProjectBody from "@/components/ProjectDetailViews/ProjectBody.vue";
 // get Project test data and enhance it
 import projectJSON from "@/testdata/projects";
 import projectDataFactory from "@/components/projectsDataFactory";
-const enhancedProjects = projectDataFactory.enhanceSubprojects(projectJSON.result);
+const enhancedProjects = projectDataFactory.enhanceSubprojectsFromExtras(projectJSON.result);
 const projects = enhancedProjects;
 
 import globalMethods from "@/components/globalMethods";

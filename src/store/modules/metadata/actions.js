@@ -16,15 +16,18 @@ import {
   FILTER_METADATA,
   FILTER_METADATA_SUCCESS,
   FILTER_METADATA_ERROR,
+  METADATA_NAMESPACE,
 } from '@/store/metadataMutationsConsts';
 
 const globalMethods = require('@/components/globalMethods');
+import { tagsIncludedInSelectedTags } from '@/components/metadataFilterMethods';
 
 /* eslint-disable no-unused-vars  */
 const ENVIDAT_PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
 const SOLR_PROXY = process.env.VUE_APP_SOLR_PROXY;
 // const API_BASE = '/api/3/action/';
 const SOLR_API_BASE = '/solr/ckan_default/';
+const useTestData = process.env.VUE_APP_USE_TESTDATA;
 
 function urlRewrite(url, baseUrl, proxyUrl) {
   url = url.replace('?', '&');
@@ -105,24 +108,6 @@ function contentFilterAccessibility(value) {
   // return true;
 }
 
-function tagsIncludedInSelectedTags(tags, selectedTagNames) {
-  let selectedTagFound = 0;
-
-  for (let j = 0; j < selectedTagNames.length; j++) {
-    const el = selectedTagNames[j];
-
-    for (let k = 0; k < tags.length; k++) {
-      const tag = tags[k];
-
-      if (tag.name.includes(el)) {
-        selectedTagFound++;
-        break;
-      }
-    }
-  }
-
-  return selectedTagFound === selectedTagNames.length;
-}
 
 function contentFilteredByTags(value, selectedTagNames) {
   if (value.tags && tagsIncludedInSelectedTags(value.tags, selectedTagNames)) {
@@ -176,7 +161,7 @@ export default {
   async [LOAD_METADATA_CONTENT_BY_ID]({ commit }, metadataId) {
     commit(LOAD_METADATA_CONTENT_BY_ID);
 
-    const metadatasContent = this.getters['metadata/metadatasContent'];
+    const metadatasContent = this.getters[`${METADATA_NAMESPACE}/metadatasContent`];
     const contents = Object.values(metadatasContent);
 
     // contents.forEach((element) => {
@@ -232,8 +217,14 @@ export default {
       ENVIDAT_PROXY,
     );
 
-    axios
-      .get(url)
+    if (typeof useTestData === 'string' && useTestData.toLowerCase() === 'true'){
+      const projectJSON = require('@/testdata/packagelist.js');
+      commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, projectJSON.default.result);
+      dispatch(FILTER_METADATA, []);
+      return;
+    }
+
+    axios.get(url)
       .then((response) => {
         // commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, response.data.response.docs, showRestrictedContent);
         commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, response.data.result);
@@ -246,12 +237,12 @@ export default {
       });
   },
   [UPDATE_TAGS]({ commit }) {
-    if (this.getters['metadata/updatingTags']) {
+    if (this.getters[`${METADATA_NAMESPACE}/updatingTags`]) {
       return;
     }
 
-    const filteredContent = this.getters['metadata/filteredContent'];
-    const allTags = this.getters['metadata/allTags'];
+    const filteredContent = this.getters[`${METADATA_NAMESPACE}/filteredContent`];
+    const allTags = this.getters[`${METADATA_NAMESPACE}/allTags`];
 
     if (!filteredContent || !allTags) {
       return;
@@ -265,7 +256,7 @@ export default {
 
         for (let i = 0; i < allTags.length; i++) {
           const tag = allTags[i];
-          let found = tag.enabled;
+          let found = false;
 
           for (let j = 0; j < filteredContent.length; j++) {
             const el = filteredContent[j];
@@ -297,21 +288,21 @@ export default {
       let content = [];
       // console.log("filteredMetadataContent");
 
-      const isSearchResultContent = this.getters['metadata/searchingMetadatasContentOK'];
+      const isSearchResultContent = this.getters[`${METADATA_NAMESPACE}/searchingMetadatasContentOK`];
 
       try {
         if (isSearchResultContent) {
-          const searchContent = this.getters['metadata/searchedMetadatasContent'];
+          const searchContent = this.getters[`${METADATA_NAMESPACE}/searchedMetadatasContent`];
           const searchContentSize = contentSize(searchContent);
 
           if (searchContentSize > 0) {
-            const allTags = this.getters['metadata/allTags'];
+            const allTags = this.getters[`${METADATA_NAMESPACE}/allTags`];
 
             content = Object.values(searchContent);
             content = enhanceSearchWithTags(allTags, content);
           }
         } else {
-          const metadatasContent = this.getters['metadata/metadatasContent'];
+          const metadatasContent = this.getters[`${METADATA_NAMESPACE}/metadatasContent`];
           content = Object.values(metadatasContent);
         }
 
