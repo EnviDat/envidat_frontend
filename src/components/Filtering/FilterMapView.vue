@@ -1,35 +1,28 @@
 <template>
-  <v-card
-    raised
-    :height="totalHeight"
-    :width="totalWidth"
-  >
+  <v-card raised
+          :height="totalHeight"
+          >
+    <!-- :width="totalWidth"  -->
     <v-card-title>
       <div class="headline mb-0">
         Cartographic Filtering
       </div>
     </v-card-title>
 
-    <div
-      class="mb-2"
-      :style="`background-color: ${this.$vuetify.theme.highlight};`"
-    >
+    <div class="mb-2"
+        :style="`background-color: ${this.$vuetify.theme.highlight};`" >
       <p class="px-3 py-0 my-0 body-2">
         {{ highlightedText }}
       </p>
     </div>
 
-    <div
-      v-if="expanded && !errorLoadingLeaflet"
-      id="map"
-      ref="map"
-      v-bind="mapViewHeight"
-    />
+    <div v-if="!errorLoadingLeaflet"
+          id="map"
+          ref="map"
+          v-bind="mapViewHeight" />
 
-    <div
-      v-if="expanded && errorLoadingLeaflet"
-      v-bind="mapViewHeight"
-    >
+    <div v-if="errorLoadingLeaflet"
+          v-bind="mapViewHeight" >
       Error loading leaflet
     </div>
 
@@ -130,10 +123,10 @@ import markerShadow from '@/assets/map/marker-shadow.png';
 
 export default {
   props: {
-    locations: Array,
+    content: Array,
     totalHeight: Number,
     totalWidth: Number,
-    expanded: Boolean,
+    pinnedIds: Array,
   },
   beforeMount: function beforeMount() {
     this.pinIcon = this.mixinMethods_getIcon('marker');
@@ -153,7 +146,6 @@ export default {
     ...mapGetters({
       filteredContent: 'metadata/filteredContent',
       metadataIds: 'metadata/metadataIds',
-      pinnedIds: 'metadata/pinnedIds',
       metadatasContent: 'metadata/metadatasContent',
       searchedMetadatasContent: 'metadata/searchedMetadatasContent',
       searchingMetadatasContent: 'metadata/searchingMetadatasContent',
@@ -204,7 +196,7 @@ export default {
     toggleMapExpand: function toggleMapExpand() {
       return this.$emit('toggleMapFilterExpand');
     },
-    setupMap: function setupMap() {
+    setupMap() {
       if (this.mapIsSetup) {
         return;
       }
@@ -458,21 +450,11 @@ export default {
 
       L.control.layers(baseLayers, overlays).addTo(this.map);
     },
-    mergePinnedAndFiltered: function mergePinnedAndFiltered() {
-      const pinnedContent = [];
-
-      this.pinnedIds.forEach((pinId) => {
-        pinnedContent.push(this.metadatasContent[pinId]);
-      });
-
-      return [...pinnedContent, ...this.filteredContent];
-    },
-    updateMap: function updateMap() {
+    updateMap() {
       this.clearLayers(this.map);
-      const pinnedAndFilteredContent = this.mergePinnedAndFiltered();
 
       // fills this.pinLayerGroup, this.multiPinLayerGroup, this.polygonLayerGroup
-      this.createMapElements(pinnedAndFilteredContent);
+      this.createMapElements(this.content);
 
       this.addElementsToMap(this.pinLayerGroup, this.pinEnabled);
       this.addElementsToMap(this.multiPinLayerGroup, this.multiPinEnabled);
@@ -497,12 +479,15 @@ export default {
     },
   },
   watch: {
-    pinnedIds: function updateMapPinnedIds() {
+    content() {
       this.updateMap();
     },
-    filteredContent: function updateMetadatasContent() {
-      this.updateMap();
-    },
+    // pinnedIds: function updateMapPinnedIds() {
+    //   this.updateMap();
+    // },
+    // filteredContent: function updateMetadatasContent() {
+    //   this.updateMap();
+    // },
   },
   data: () => ({
     map: null,

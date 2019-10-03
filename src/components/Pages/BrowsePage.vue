@@ -382,7 +382,7 @@ export default {
     selectedTagNames: [],
     popularTagAmount: 10,
     showMapFilter: false,
-    maxMapFilterHeight: 725,
+    maxMapFilterHeight: 525,
     mapFilterVisibleIds: [],
     listViewActive: false,
   }),
