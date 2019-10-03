@@ -25,25 +25,26 @@
                             :showPlaceholder="keywordsPlaceholder"
                             @clickedExpand="catchFilterExpandClicked"
                             @clickedTagClose="catchTagCloseClicked"
-                            @clickedClear="catchTagCleared"                             />
+                            @clickedClear="catchTagCleared"
+                            :mapHeight="mapFilterHeight"
+                            :mapWidth="mapFilterWidth"
+                            :defaultListControls="controls" />
       </v-flex>
 
-      <v-flex v-if="mapFilteringPossible && showMapFilter"
+      <!-- <v-flex v-if="mapFilteringPossible && showMapFilter"
               py-3
               v-bind="{
                         ['xs4']: showMapFilter & $vuetify.breakpoint.mdAndUp,
                         ['xs6']: showMapFilter & $vuetify.breakpoint.sm,
               }"
               style="position: fixed; top: 135px; right: 10px;" >
-                  <!-- ['pr-3']: showMapFilter & $vuetify.breakpoint.mdAndUp,
-                  ['pl-2']: showMapFilter & $vuetify.breakpoint.sm, -->
         <filter-map-view :totalHeight="mapFilterHeight"
                         :totalWidth="mapFilterWidth"
                         :expanded="showMapFilter"
                         @pointClicked="catchPointClicked"
                         @clearButtonClicked="catchClearButtonClick" />
+      </v-flex> -->
 
-      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -54,20 +55,15 @@ import {
   BROWSE_PAGENAME,
   BROWSE_PATH,
 } from '@/router/routeConsts';
-import FilterMapView from '@/components/Filtering/FilterMapView';
-import FilterKeywordsView from '@/components/Filtering/FilterKeywordsView';
 import MetadataListLayout from '@/components/Layouts/MetadataListLayout';
 import {
   SEARCH_METADATA,
   CLEAR_SEARCH_METADATA,
   FILTER_METADATA,
-  PIN_METADATA,
-  CLEAR_PINNED_METADATA,
 } from '@/store/metadataMutationsConsts';
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
-  SET_CONTROLS,
   SET_BROWSE_SCROLL_POSITION,
 } from '@/store/mutationsConsts';
 
@@ -170,39 +166,8 @@ export default {
     catchMapFilterChanged: function catchMapFilterChanged(visibleIds) {
       this.mapFilterVisibleIds = visibleIds;
     },
-    catchPointClicked: function catchPointClicked(id) {
-      // bring to top
-      // highlight entry
-
-      this.$store.commit(`metadata/${PIN_METADATA}`, id);
-    },
-    catchClearButtonClick: function catchClearButtonClick() {
-      this.$store.commit(`metadata/${CLEAR_PINNED_METADATA}`);
-    },
     catchFilterExpandClicked: function catchFilterExpandClicked() {
       this.filterExpanded = !this.filterExpanded;
-    },
-    controlsChanged: function controlsChanged(controlsActive) {
-      // 0-entry: listView, 1-entry: mapActive
-
-      let listActive = false;
-      let mapToggled = false;
-
-      for (let index = 0; index < controlsActive.length; index++) {
-        const el = controlsActive[index];
-
-        if (el === 0) {
-          listActive = true;
-        }
-        if (el === 1) {
-          mapToggled = true;
-        }
-      }
-
-      this.listViewActive = listActive;
-      this.showMapFilter = mapToggled;
-
-      this.$store.commit(SET_CONTROLS, controlsActive);
     },
     toggleMapExpand: function toggleMapExpand() {
       this.showMapFilter = !this.showMapFilter;
@@ -345,7 +310,7 @@ export default {
     searchMetadatasContentSize: function searchMetadatasContentSize() {
       return this.searchedMetadatasContent !== undefined ? Object.keys(this.searchedMetadatasContent).length : 0;
     },
-    mapFilterHeight: function mapFilterHeight() {
+    mapFilterHeight() {
       const sHeight = document.documentElement.clientHeight;
 
       let height = this.maxMapFilterHeight;
@@ -356,7 +321,7 @@ export default {
 
       return height;
     },
-    mapFilterWidth: function mapFilterWidth() {
+    mapFilterWidth() {
       const sWidth = document.documentElement.clientWidth;
 
       if (this.$vuetify.breakpoint.mdAndUp) {
@@ -407,14 +372,11 @@ export default {
     },
   },
   components: {
-    FilterMapView,
-    FilterKeywordsView,
     MetadataListLayout,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
     searchTerm: '',
-    controlsLabel: 'List Controls',
     placeHolderAmount: 6,
     suggestionText: 'Try one of these categories',
     selectedTagNames: [],
