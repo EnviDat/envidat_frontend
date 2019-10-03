@@ -54,7 +54,8 @@
                                 :allTags="allMetadataTags"
                                 :selectedTagNames="selectedTagNames"
                                 @clickedTagClose="catchTagCloseClicked"
-                                @clickedClear="catchTagCleared" />
+                                @clickedClear="catchTagCleared"
+                                :defaultListControls="controls" />
 
           </div>
 
@@ -336,6 +337,7 @@ export default {
     creatorSmall,
     placeHolderAmount: 3,
     selectedTagNames: [],
+    controls: [1],
   }),
 };
 </script>
