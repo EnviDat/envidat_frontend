@@ -43,7 +43,7 @@
         <v-card>
           <div v-if="hasMetadatas" >
 
-            <v-card-title class="metadataList_title title">Metadatas</v-card-title>
+            <v-card-title class="metadataList_title title">{{ metadataListTitle }}</v-card-title>
 
             <metadata-list-layout class="px-3"
                                 :listContent="filteredListContent"
@@ -55,7 +55,8 @@
                                 :selectedTagNames="selectedTagNames"
                                 @clickedTagClose="catchTagCloseClicked"
                                 @clickedClear="catchTagCleared"
-                                :defaultListControls="controls" />
+                                :defaultListControls="controls"
+                                :mapHeight="mapFilterHeight" />
 
           </div>
 
@@ -338,6 +339,8 @@ export default {
     placeHolderAmount: 3,
     selectedTagNames: [],
     controls: [1],
+    mapFilterHeight: 400,
+    metadataListTitle: 'Datasets',
   }),
 };
 </script>

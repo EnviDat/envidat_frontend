@@ -1,9 +1,9 @@
 <template>
-  <v-container id="metadataListLayout"
+<div>
+  <v-container id="metadataListLayoutFiltering"
                 fluid
-                :class="{ ['grid-list-sm'] : listView,
-                          ['grid-list-lg'] : !listView }"
-                pa-0 >
+                pa-0 pb-2
+                grid-list-lg>
 
     <v-layout row wrap >
 
@@ -29,20 +29,29 @@
       </v-flex>
 
 
-      <v-flex xs12
+      <v-flex v-if="showMapFilter"
+              xs12
               key="filterMap" >
                   <!--
                     style="position: fixed; top: 135px; right: 10px;" 
                     ['pr-3']: showMapFilter & $vuetify.breakpoint.mdAndUp,
                   ['pl-2']: showMapFilter & $vuetify.breakpoint.sm, -->
-        <!-- <filter-map-view :totalHeight="mapHeight"
+        <filter-map-view :content="mergePinnedAndFiltered"
+                          :totalHeight="mapHeight"
                           :totalWidth="mapWidth"
-                          :expanded="showMapFilter"
+                          :pinnedIds="pinnedIds"
                           @pointClicked="catchPointClicked"
                           @clearButtonClicked="catchClearButtonClick" />
- -->
+
       </v-flex>
     </v-layout>
+  </v-container>
+
+  <v-container id="metadataListLayout"
+                fluid
+                :class="{ ['grid-list-sm'] : listView,
+                          ['grid-list-lg'] : !listView }"
+                pa-0 >
 
     <transition-group name="itemfade"
                       class="layout"
@@ -145,6 +154,7 @@
 
     </transition-group>
   </v-container>
+</div>
 </template>
 
 <script>
@@ -163,7 +173,6 @@ import {
   CLEAR_PINNED_METADATA,
   METADATA_NAMESPACE,
 } from '@/store/metadataMutationsConsts';
-import { SET_CONTROLS } from '@/store/mutationsConsts';
 
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 // check filtering in detail https://www.npmjs.com/package/vue2-filters
@@ -197,6 +206,7 @@ export default {
     controlsActive: [],
     listView: false,
     showMapFilter: false,
+    pinnedIds: [],
   }),
   beforeMount() {
     this.fileIconString = this.mixinMethods_getIcon('file');
@@ -225,10 +235,19 @@ export default {
       vReloadAmount: 'metadata/vReloadAmount',
       vReloadDelay: 'metadata/vReloadDelay',
       isFilteringContent: 'metadata/isFilteringContent',
-      pinnedIds: 'metadata/pinnedIds',
+      // pinnedIds: 'metadata/pinnedIds',
     }),
     showPinnedElements() {
       return !this.loading && this.showMapFilter && this.pinnedIds.length > 0;
+    },
+    mergePinnedAndFiltered() {
+      const pinnedContent = [];
+
+      this.pinnedIds.forEach((pinId) => {
+        pinnedContent.push(this.metadatasContent[pinId]);
+      });
+
+      return [...pinnedContent, ...this.listContent];
     },
     loading() {
       return (this.loadingMetadatasContent
@@ -415,7 +434,6 @@ export default {
       this.listView = listActive;
       this.showMapFilter = mapToggled;
 
-      // this.$store.commit(SET_CONTROLS, controlsActive);
       this.controlsActive = controlsActive;
     },
   },
