@@ -41,7 +41,7 @@ import App from "@/App.vue";
 // get Project test data and enhance it
 import projectJSON from "@/testdata/projects";
 import projectDataFactory from "@/components/projectsDataFactory";
-const enhancedProjects = projectDataFactory.enhanceSubprojects(projectJSON.result);
+const enhancedProjects = projectDataFactory.enhanceSubprojectsFromExtras(projectJSON.result);
 const projectsCards = enhancedProjects;
 
 import globalMethods from "@/components/globalMethods";

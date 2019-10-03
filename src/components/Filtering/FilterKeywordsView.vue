@@ -1,7 +1,6 @@
 <template>
   <v-card raised
-          class="pa-2"
-          :style="this.compactLayout ? '' : 'height: 85px'" >
+          class="pa-2" >
     <v-layout column >
       <v-flex v-if="!filterExpanded"
               xs12 hidden-sm-and-up px-2 py-2 >
@@ -132,7 +131,7 @@ export default {
     filterExpanded: false,
   }),
   computed: {
-    unselectedTags(){
+    unselectedTags() {
       const unselectedTags = [];
 
       this.allTags.forEach((element) => {
@@ -143,7 +142,7 @@ export default {
 
       return unselectedTags;
     },
-    selectedTags: function selectedTags() {
+    selectedTags() {
       // always get the selected as a subset of the allTags because they are the full
       // tag JSON object
       const selecteds = [];

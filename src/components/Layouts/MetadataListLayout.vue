@@ -11,7 +11,7 @@
                                 ['row'] : !listView,
                                 ['wrap'] : !listView }" >
 
-      <v-flex xs12 
+      <v-flex xs12
               key="filterKeywords" >
 
         <filter-keywords-view :compactLayout="$vuetify.breakpoint.smAndDown"
@@ -239,11 +239,7 @@ export default {
           i = that.vIndex;
         }
 
-        for (
-          ;
-          i < that.vIndex + that.vReloadAmount && i < that.contentSize;
-          i++
-        ) {
+        for (;i < that.vIndex + that.vReloadAmount && i < that.contentSize; i++) {
           that.virtualListContent.push(that.listContent[i]);
         }
 
