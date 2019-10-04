@@ -24,16 +24,13 @@
                       pa-0 >
           <v-layout row wrap >
 
-            <v-flex
-              v-for="card in categorycards"
-              :key="card.title"
-              my-1 xs6
-            >
-              <base-click-card
-                :title="card.title"
-                :img="card.img"
-                @clicked="catchCategoryClicked"
-              />
+            <v-flex v-for="card in categoryCards"
+                    :key="card.title"
+                    my-1 xs6 >
+              <base-click-card :title="card.title"
+                                :img="card.img"
+                                :color="card.color"
+                                @clicked="catchCategoryClicked" />
             </v-flex>
           </v-layout>
         </v-container>
@@ -74,7 +71,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      categorycards: 'metadata/categorycards',
+      categoryCards: 'metadata/categoryCards',
     }),
   },
   methods: {

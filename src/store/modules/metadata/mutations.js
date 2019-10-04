@@ -24,9 +24,11 @@ import {
   SET_DETAIL_PAGE_BACK_URL,
   SET_ABOUT_PAGE_BACK_URL,
   SET_VIRTUAL_LIST_INDEX,
+  METADATA_NAMESPACE,
 } from '@/store/metadataMutationsConsts';
 
 const conversion = require('./conversion');
+const globalMethods = require('@/components/globalMethods');
 
 export default {
   [SEARCH_METADATA](state) {
@@ -102,11 +104,14 @@ export default {
   },
   [BULK_LOAD_METADATAS_CONTENT_SUCCESS](state, payload) {
     /* eslint-disable no-underscore-dangle */
-    for (let i = 0; i < payload.length; i++) {
-      const element = payload[i];
-      // const ckanJSON = conversion.solrResultToCKANJSON(element);
+    const { cardBGImages } = this.getters;
+    const categoryCards = this.getters[`${METADATA_NAMESPACE}/categoryCards`];
 
-      this._vm.$set(state.metadatasContent, element.id, element);
+    for (let i = 0; i < payload.length; i++) {
+      let el = payload[i];
+      el = globalMethods.default.methods.mixinMethods_enhanceTitleImg(el, cardBGImages, categoryCards);
+
+      this._vm.$set(state.metadatasContent, el.id, el);
     }
 
     state.metadatasContentOK = true;

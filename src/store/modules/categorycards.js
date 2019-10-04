@@ -8,21 +8,21 @@ import dataCreatorImg from '@/assets/cards/data_creator_small.jpg';
 
 export default [
   {
-    title: 'Creator Login', type: 'login', img: dataCreatorImg,
+    title: 'Creator Login', type: 'login', img: dataCreatorImg, color: '#e0f2f1',
   },
   {
-    title: 'Forest', type: 'forest', img: woodImg,
+    title: 'Forest', type: 'forest', img: woodImg,  color: '#e8f5e9',
   },
   {
-    title: 'Snow', type: 'snow', img: snowImg,
+    title: 'Snow', type: 'snow', img: snowImg, color: '#e0f7fa',
   },
   {
-    title: 'Landscape', type: 'landscape', img: landImg,
+    title: 'Landscape', type: 'landscape', img: landImg, color: '#f1f8e9',
   },
   {
-    title: 'Natural disasters', type: 'hazard', img: hazardImg,
+    title: 'Natural disasters', type: 'hazard', img: hazardImg, color: '#fbe9e7',
   },
   {
-    title: 'Diversity', type: 'diversity', img: diversityImg,
+    title: 'Diversity', type: 'diversity', img: diversityImg, color: '#ede7f6',
   },
 ];

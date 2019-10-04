@@ -1,7 +1,8 @@
 <template>
   <v-card :class="flat ? 'elevation-0' : ''">
     <!-- :height="compactLayout ? $vuetify.breakpoint.sm ? 38 : 32 : 40" -->
-    <v-card-actions class="ma-0 py-0 px-1">
+    <v-card-actions class="ma-0 py-0 px-1"
+                    :class="flat ? '' : 'fill-height'" >
 
       <v-text-field v-if="$vuetify.breakpoint.mdAndUp"
                     class="fill-height envidatControlInfos"

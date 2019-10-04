@@ -91,12 +91,41 @@ storiesOf("3 Cards | Metadata Cards", module)
           :fileIconString="fileIcon"
           :lockedIconString="lockedIcon"
           :unlockedIconString="lockedIcon"
+          :categoryColor="metadata.categoryColor"
           @clickedEvent="onCardClick"
           @clickedTag="onTagClick"
         />
       </v-flex>
 
     </v-layout>
+
+    <v-layout row wrap>
+
+      <v-flex xs3 pa-2
+        v-for="(metadata, index) in metadataCards"
+        :key="index"
+      >
+        <metadata-card
+          :id="metadata.id"
+          :ref="metadata.id"
+          :title="metadata.title"
+          :name="metadata.name"
+          :subtitle="metadata.notes"
+          :tags="metadata.tags"
+          :restricted="hasRestrictedResources(metadata)"
+          :resourceCount="metadata.num_resources || metadata.res_name.length"
+          :resources="metadata.resources"
+          :fileIconString="fileIcon"
+          :lockedIconString="lockedIcon"
+          :unlockedIconString="lockedIcon"
+          :categoryColor="metadata.categoryColor"
+          @clickedEvent="onCardClick"
+          @clickedTag="onTagClick"
+        />
+      </v-flex>
+
+    </v-layout>
+
   </v-flex>
   <v-flex>
     <v-layout row wrap>
@@ -119,6 +148,7 @@ storiesOf("3 Cards | Metadata Cards", module)
           :fileIconString="fileIcon"
           :lockedIconString="lockedIcon"
           :unlockedIconString="lockedIcon"
+          :categoryColor="metadata.categoryColor"
           @clickedEvent="onCardClick"
           @clickedTag="onTagClick"
         />
@@ -147,6 +177,7 @@ storiesOf("3 Cards | Metadata Cards", module)
           :fileIconString="fileIcon"
           :lockedIconString="lockedIcon"
           :unlockedIconString="lockedIcon"
+          :categoryColor="metadata.categoryColor"
           @clickedEvent="onCardClick"
           @clickedTag="onTagClick"
         />
@@ -188,6 +219,7 @@ storiesOf("3 Cards | Metadata Cards", module)
           :fileIconString="fileIcon"
           :lockedIconString="lockedIcon"
           :unlockedIconString="lockedIcon"
+          :categoryColor="metadata.categoryColor"
           @clickedEvent="onCardClick"
           @clickedTag="onTagClick"
         />
@@ -205,44 +237,44 @@ storiesOf("3 Cards | Metadata Cards", module)
   .add("Placeholder / Loading collection", () => ({
     components: { MetadataCardPlaceholder },
     template: `
-<v-layout column>
-  <v-flex>
-    <v-layout row wrap>
+    <v-layout column>
+      <v-flex>
+        <v-layout row wrap>
 
-      <v-flex xs3 pa-2
-        v-for="index in 3"
-        :key="index"
-      >
-        <metadata-card-placeholder />
+          <v-flex xs3 pa-2
+            v-for="index in 3"
+            :key="index"
+          >
+            <metadata-card-placeholder />
+          </v-flex>
+
+        </v-layout>
       </v-flex>
+      <v-flex>
+        <v-layout row wrap>
 
-    </v-layout>
-  </v-flex>
-  <v-flex>
-    <v-layout row wrap>
+          <v-flex xs4 pa-2
+            v-for="index in 3"
+            :key="index"
+          >
+            <metadata-card-placeholder />
+          </v-flex>
 
-      <v-flex xs4 pa-2
-        v-for="index in 3"
-        :key="index"
-      >
-        <metadata-card-placeholder />
+        </v-layout>
       </v-flex>
+      <v-flex>
+        <v-layout row wrap>
 
-    </v-layout>
-  </v-flex>
-  <v-flex>
-    <v-layout row wrap>
+          <v-flex xs6 pa-2
+            v-for="index in 3"
+            :key="index"
+          >
+            <metadata-card-placeholder />
+          </v-flex>
 
-      <v-flex xs6 pa-2
-        v-for="index in 3"
-        :key="index"
-      >
-        <metadata-card-placeholder />
+        </v-layout>
       </v-flex>
-
     </v-layout>
-  </v-flex>
-</v-layout>
     `,
     methods,
     data: () => ({})

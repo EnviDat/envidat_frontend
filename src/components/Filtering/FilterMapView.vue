@@ -11,29 +11,36 @@
 
     <div v-if="!errorLoadingLeaflet" >
 
-      <filter-map-widget :style="`width: ${widgetWidth}px;
-                                position: absolute;
-                                top: 10px; right: 10px;
-                                z-index: 900;`"
-                          :pinnedIds="pinnedIds"
-                          :hasPins="hasPins"
-                          :pinEnabled="pinEnabled"
-                          :pinNumber="hasPins ? pinLayerGroup.length : 0"
-                          :hasMultiPins="hasMultiPins"
-                          :multiPinEnabled="multiPinEnabled"
-                          :multiPinNumber="hasMultiPins ? multiPinLayerGroup.length : 0"
-                          :hasPolygons="hasPolygons"
-                          :polygonEnabled="polygonEnabled"
-                          :polygonNumber="hasPolygons ? polygonLayerGroup.length : 0"
-                          @clickedFocus="focusOnLayers"
-                          @clickedPin="catchPinClicked"
-                          @clickedMultipin="catchMultipinClicked"
-                          @clickedPolygon="catchPolygonClicked"
-                          @clickedClear="catchClearClicked" />
+      <v-layout row>
 
-      <div id="map"
-            ref="map"
-            v-bind="mapViewHeight" />
+        <v-flex py-0 pr-0>
+          <div id="map"
+                ref="map"
+                v-bind="mapViewHeight" />
+        </v-flex>
+
+        <v-flex xs2 py-0 pl-0>
+
+          <filter-map-widget style="height: 100%"
+                              :pinnedIds="pinnedIds"
+                              :hasPins="hasPins"
+                              :pinEnabled="pinEnabled"
+                              :pinNumber="hasPins ? pinLayerGroup.length : 0"
+                              :hasMultiPins="hasMultiPins"
+                              :multiPinEnabled="multiPinEnabled"
+                              :multiPinNumber="hasMultiPins ? multiPinLayerGroup.length : 0"
+                              :hasPolygons="hasPolygons"
+                              :polygonEnabled="polygonEnabled"
+                              :polygonNumber="hasPolygons ? polygonLayerGroup.length : 0"
+                              @clickedFocus="focusOnLayers"
+                              @clickedPin="catchPinClicked"
+                              @clickedMultipin="catchMultipinClicked"
+                              @clickedPolygon="catchPolygonClicked"
+                              @clickedClear="catchClearClicked" />
+
+        </v-flex>
+
+      </v-layout>
 
     </div>
 

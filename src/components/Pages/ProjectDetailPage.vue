@@ -182,22 +182,14 @@ export default {
 
         for (let j = 0; j < this.filteredListContent.length; j++) {
           const dataset = this.filteredListContent[j];
-          const fullDataset = this.getMetadataContent(dataset.id);
+          const tags = dataset.tags;
 
-          if (fullDataset) {
-            // the tags of each dataset has to be looked up in the metadataContents
-            // because the backend call doesn't deliver the packages with the tags
-            // it can only delivery the tags for the projects, which is no use for this
-            // case
-            const tags = fullDataset.tags;
+          if (tags && tags.length > 0) {
+            const index = tags.findIndex(obj => obj.name.includes(tag.name));
 
-            if (tags && tags.length > 0) {
-              const index = tags.findIndex(obj => obj.name.includes(tag.name));
-
-              if (index >= 0) {
-                found = true;
-                break;
-              }
+            if (index >= 0) {
+              found = true;
+              break;
             }
           }
         }
@@ -215,7 +207,17 @@ export default {
           const el = this.currentProject.packages[i];
           // const index = el.tags.findIndex(obj => obj.name.includes(tag.name));
           if (tagsIncludedInSelectedTags(el.tags, this.selectedTagNames)) {
-            projectDatasets.push(el);
+            const fullDataset = this.getMetadataContent(el.id);
+
+            if (fullDataset) {
+              // the tags of each dataset has to be looked up in the metadataContents
+              // because the backend call doesn't deliver the packages with the tags
+              // it can only delivery the tags for the projects, which is no use for this
+              // case
+              projectDatasets.push(fullDataset);
+            } else {
+              projectDatasets.push(el);
+            }
           }
         }
       }
