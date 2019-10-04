@@ -30,13 +30,13 @@ import marker2x from '@/assets/map/marker-icon-2x.png';
 import markerShadow from '@/assets/map/marker-shadow.png';
 
 /* eslint-disable no-underscore-dangle */
-delete L.Icon.Default.prototype.mixinMethods_getIconUrl;
+// delete L.Icon.Default.prototype.mixinMethods_getIconUrl;
 
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: marker2x,
-  iconUrl: marker,
-  shadowUrl: markerShadow,
-});
+// L.Icon.Default.mergeOptions({
+//   iconRetinaUrl: marker2x,
+//   iconUrl: marker,
+//   shadowUrl: markerShadow,
+// });
 
 // HACK end
 
@@ -50,6 +50,9 @@ export default {
     mediumSize: 500,
     largeSize: 725,
     fullWidthSize: 875,
+    marker,
+    marker2x,
+    markerShadow,
     map: null,
     mapIsSetup: false,
     checkedGenericProps: false,
@@ -111,16 +114,16 @@ export default {
       }
     },
   },
-  mounted: function mounted() {
+  mounted() {
     this.setupMap();
   },
-  beforeDestroy: function beforeDestroy() {
+  beforeDestroy() {
     if (this.map) {
       this.map.remove();
     }
   },
   methods: {
-    setupMap: function setupMap() {
+    setupMap() {
       if (this.mapIsSetup) {
         return;
       }
@@ -192,7 +195,21 @@ export default {
       }).addTo(map);
     },
     addPoint: function addPoint(map, coords) {
-      const point = L.marker(coords).addTo(map);
+      const iconOptions = L.Icon.Default.prototype.options;
+      delete iconOptions.mixinMethods_getIconUrl;
+      // use the defaultoptions to ensure that all untouched defaults stay in place
+
+      iconOptions.iconUrl = this.marker;
+      iconOptions.iconRetinaUrl = this.marker2x;
+      iconOptions.shadowUrl = this.markerShadow;
+
+      const icon = L.icon(iconOptions);
+
+      const point = L.marker(coords, {
+        icon,
+        opacity: 0.65,
+        riseOnHover: true,
+      }).addTo(map);
 
       point.id = this.title;
       point.on({ mouseover: this.catchHover });
