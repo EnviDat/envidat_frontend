@@ -1,8 +1,10 @@
 <template>
-  <v-card raised >
+  <v-card :class="flat ? 'elevation-0' : ''">
     <!-- :height="compactLayout ? $vuetify.breakpoint.sm ? 38 : 32 : 40" -->
-    <v-card-actions class="fill-height ma-0 py-0 px-1">
-      <v-text-field class="fill-height envidatControlInfos"
+    <v-card-actions class="ma-0 py-0 px-1">
+
+      <v-text-field v-if="$vuetify.breakpoint.mdAndUp"
+                    class="fill-height envidatControlInfos"
                     style="align-items: center;"
                     :class="{'small' : compactLayout }"
                     :label="label"
@@ -15,7 +17,7 @@
 
       <!-- <div class="pl-2">Controls</div> -->
 
-      <v-spacer />
+      <v-spacer v-if="$vuetify.breakpoint.mdAndUp" />
 
       <v-btn-toggle v-model="controlsActive"
                     multiple >
@@ -48,6 +50,7 @@ export default {
     compactLayout: Boolean,
     label: String,
     controls: Array,
+    flat: Boolean,
   },
   data: () => ({
     mapFilterActivateText: 'Activate Mapfiltering',
