@@ -5,12 +5,20 @@ import {
   SET_PROJECTDETAIL_PAGE_BACK_URL
 } from '@/store/projectsMutationsConsts';
 
+import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
+import projectDataFactory from "@/components/projectsDataFactory";
+
 export default {
   [GET_PROJECTS](state) {
     state.loading = true;
   },
   [GET_PROJECTS_SUCCESS](state, payload) {
-    state.projects = payload;
+
+    const enhancedProjects = projectDataFactory.enhanceSubprojectsFromExtras(payload);
+    const metadatasContent = this.getters[`${METADATA_NAMESPACE}/metadatasContent`];
+    const enhancedWithTags = projectDataFactory.enhanceProjectsDatasets(enhancedProjects, metadatasContent);
+
+    state.projects = enhancedWithTags;
     state.loading = false;
   },
   [GET_PROJECTS_ERROR](state, reason) {
