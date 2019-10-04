@@ -23,7 +23,7 @@
         <v-layout row wrap
         >
           <v-flex
-            v-for="card in categorycards"
+            v-for="card in categoryCards"
             :key="card.title"
             my-2 px-1
             xs6 md4
@@ -52,7 +52,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      categorycards: 'metadata/categorycards',
+      categoryCards: 'metadata/categoryCards',
     }),
   },
   methods: {

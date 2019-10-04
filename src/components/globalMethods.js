@@ -144,7 +144,7 @@ export default {
       return imgCache;
     },
     /**
-     * Create a psyeudo random integer based on a given seed using the "seedrandom" lib.
+     * Create a psyeudo random integer based on a given seed using the 'seedrandom' lib.
      *
      * @param {Number} min
      * @param {Number} max
@@ -169,9 +169,9 @@ export default {
      *
      * @return {Object} metadataEntry enhanced with a title image based on the entrys tags
      */
-    mixinMethods_enhanceMetadataEntry: function mixinMethods_enhanceMetadataEntry(metadataEntry, cardBGImages) {
+    mixinMethods_enhanceMetadataEntry: function mixinMethods_enhanceMetadataEntry(metadataEntry, cardBGImages, categoryCards) {
       if (!metadataEntry.titleImg) {
-        this.mixinMethods_enhanceTitleImg(metadataEntry, cardBGImages);
+        this.mixinMethods_enhanceTitleImg(metadataEntry, cardBGImages, categoryCards);
       }
 
       return metadataEntry;
@@ -185,7 +185,7 @@ export default {
      *
      * @return {Array} metadatas enhanced with a title image based on the metadatas tags
      */
-    mixinMethods_enhanceMetadatas: function mixinMethods_enhanceMetadatas(metadatas, cardBGImages) {
+    mixinMethods_enhanceMetadatas: function mixinMethods_enhanceMetadatas(metadatas, cardBGImages, categoryCards) {
       if (metadatas === undefined && metadatas.length <= 0) {
         return undefined;
       }
@@ -195,7 +195,7 @@ export default {
           const el = metadatas[i];
 
           if (!el.titleImg) {
-            this.mixinMethods_enhanceTitleImg(el, cardBGImages);
+            el = this.mixinMethods_enhanceTitleImg(el, cardBGImages, categoryCards);
           }
         }
       }
@@ -208,16 +208,32 @@ export default {
      *
      * @return {Object} metadata entry enhanced with a title image based on its tags
      */
-    mixinMethods_enhanceTitleImg: function mixinMethods_enhanceTitleImg(metadata, cardBGImages) {
+    mixinMethods_enhanceTitleImg: function mixinMethods_enhanceTitleImg(metadata, cardBGImages, categoryCards) {
       /* eslint-disable no-param-reassign */
       const category = this.mixinMethods_guessTagCategory(metadata.tags);
 
-      const categoryImgs = cardBGImages[category];
-      const max = Object.keys(categoryImgs).length - 1;
-      const randomIndex = this.mixinMethods_randomInt(0, max, metadata.title);
-      const cardImg = randomIndex >= 0 ? Object.values(categoryImgs)[randomIndex] : 0;
+      if (cardBGImages) {
+        const categoryImgs = cardBGImages[category];
+        const max = Object.keys(categoryImgs).length - 1;
+        const randomIndex = this.mixinMethods_randomInt(0, max, metadata.title);
+        const cardImg = randomIndex >= 0 ? Object.values(categoryImgs)[randomIndex] : 0;
 
-      metadata.titleImg = cardImg;
+        metadata.titleImg = cardImg;
+      }
+
+      metadata.categoryColor = this.mixinMethods_getCategoryColor(categoryCards, category);
+
+      return metadata;
+    },
+    mixinMethods_getCategoryColor(categoryCards, categoryName) {
+      for (let i = 0; i < categoryCards.length; i++) {
+        const cat = categoryCards[i];
+        if (cat.type === categoryName) {
+          return cat.color;
+        }
+      }
+
+      return null;
     },
     /**
      * @param {Array} tags
@@ -254,19 +270,21 @@ export default {
       return category;
     },
     /**
-     * 
+     *
      * for details: https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
-     * @param {*} a 
-     * @param {*} b 
+     * @param {*} a
+     * @param {*} b
      */
-    mixinMethods_formatBytes: function mixinMethods_formatBytes(a,b) {
-      if(0==a) return "0 Bytes";
+    mixinMethods_formatBytes: function mixinMethods_formatBytes(a, b) {
+      if (0 === a) return '0 Bytes';
 
-      const c=1024, d=b||2,
-      e=["Bytes","KB","MB","GB","TB","PB","EB","ZB","YB"],
-      f=Math.floor(Math.log(a)/Math.log(c));
+      const c = 1024;
+      const d = b || 2;
 
-      return parseFloat((a/Math.pow(c,f)).toFixed(d))+" "+e[f];
+      const e = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+      const f = Math.floor(Math.log(a) / Math.log(c));
+
+      return parseFloat((a / Math.pow(c, f)).toFixed(d)) + ' ' + e[f];
     },
     /**
      * @param {Number} pos Sets the position to the main scroll position of the main

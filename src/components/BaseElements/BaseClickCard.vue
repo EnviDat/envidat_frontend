@@ -1,36 +1,38 @@
 <template>
-  <v-card
-    ripple
-    hover
-    @click.native="clicked"
-  >
+  <v-card ripple
+          hover
+          @click.native="clicked" >
     <v-container grid-list-md
-                  pa-0
-    >
-      <v-layout row align-center
-      >
+                  pa-0 >
+      <v-layout row align-center >
         <v-flex xs5
-          py-0
-        >
-          <v-img
-            class="imagezoom"
-            :height=" $vuetify.breakpoint.smAndDown ? '65px' : '100px' "
-            :src="img"
-          />
+                py-0 >
+          <v-img class="imagezoom"
+                  :height=" $vuetify.breakpoint.smAndDown ? '65px' : '100px' "
+                  :src="img" />
         </v-flex>
 
         <v-flex xs7
-          px-1 mt-1
-        >
-          <div
-            class="headline"
-            :class="{ 'compactTitle' : this.$vuetify.breakpoint.smAndDown }"
-          >
+          px-0 mt-1 >
+          <div class="px-2 headline"
+                :class="{ 'compactTitle' : this.$vuetify.breakpoint.smAndDown }" >
             {{ title }}
           </div>
+
+          <div v-if="color"
+                class="py-0 mr-1 my-0 "
+                :style="`height: 5px; background-color: ${color}; margin-left: -5px;`" >
+          </div>
+
         </v-flex>
       </v-layout>
     </v-container>
+
+    <!-- <div v-if="color"
+          class="py-0 my-0 "
+          :style="`height: 5px; background-color: ${color};`" >
+    </div> -->
+
   </v-card>
 </template>
 
@@ -44,6 +46,7 @@ export default {
   props: {
     title: String,
     img: String,
+    color: String,
   },
   methods: {
     clicked: function clicked() {

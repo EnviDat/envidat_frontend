@@ -10,6 +10,8 @@ import { projects } from '@/store/modules/projects/projects';
 import mutations from '@/store/appMutations';
 import actions from '@/store/appActions';
 
+const globalMethods = require('@/components/globalMethods');
+
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -63,5 +65,33 @@ const persistPlugin = createPersist({
 });
 
 store.plugins = [persistPlugin];
+
+function importCardBackgrounds(store) {
+  setImages(store, 'landscape', require.context('@/assets/cards/landscape/', false, /\.jpg$/));
+  setImages(store, 'forest', require.context('@/assets/cards/forest/', false, /\.jpg$/));
+  setImages(store, 'snow', require.context('@/assets/cards/snow/', false, /\.jpg$/));
+  setImages(store, 'diversity', require.context('@/assets/cards/diversity/', false, /\.jpg$/));
+  setImages(store, 'hazard', require.context('@/assets/cards/hazard/', false, /\.jpg$/));
+}
+
+function setImages(store, categoryName, imgPaths){
+  const images = globalMethods.default.methods.mixinMethods_importImages(imgPaths);
+  store.state.cardBGImages[categoryName] = images;
+  // this._vm(store.state.cardBGImages, categoryName, images);
+}
+
+function importIcons(store) {
+  const imgPaths = require.context('../assets/icons/', false, /\.png$/);
+  const images = globalMethods.default.methods.mixinMethods_importImages(imgPaths);
+
+  const keys = Object.keys(images);
+  keys.forEach((key) => {
+    // console.log('icon ' + key + ' value ' + images[key]);
+    store.state.iconImages[key] = images[key];
+  });
+}
+
+importCardBackgrounds(store);
+importIcons(store);
 
 export default store;

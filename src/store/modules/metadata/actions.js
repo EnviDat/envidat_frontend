@@ -82,13 +82,15 @@ function enhanceSearchWithTags(allTags, searchResult) {
 //   return metadatas;
 // }
 
-function enhanceContent(metadatas, cardBGImages) {
-  if (metadatas && metadatas.length > 0) {
-    return globalMethods.default.methods.mixinMethods_enhanceMetadatas(metadatas, cardBGImages);
-  }
+// function enhanceContent(metadatas) {
+//   const { cardBGImages, categoryCards } = this.getters;
 
-  return [];
-}
+//   if (metadatas && metadatas.length > 0) {
+//     return globalMethods.default.methods.mixinMethods_enhanceMetadatas(metadatas, cardBGImages, categoryCards);
+//   }
+
+//   return [];
+// }
 
 function contentSize(content) {
   return content !== undefined ? Object.keys(content).length : 0;
@@ -322,11 +324,9 @@ export default {
           }
         }
 
-        const { cardBGImages } = this.getters;
-        enhanceContent(filteredContent, cardBGImages);
-        content = filteredContent;
+        // content = enhanceContent(filteredContent);
 
-        commit(FILTER_METADATA_SUCCESS, content);
+        commit(FILTER_METADATA_SUCCESS, filteredContent);
 
         dispatch(UPDATE_TAGS);
       } catch (error) {

@@ -33,10 +33,7 @@
       <v-flex v-if="showMapFilter"
               xs12
               key="filterMap" >
-                  <!--
-                    style="position: fixed; top: 135px; right: 10px;" 
-                    ['pr-3']: showMapFilter & $vuetify.breakpoint.mdAndUp,
-                  ['pl-2']: showMapFilter & $vuetify.breakpoint.sm, -->
+
         <filter-map-view :content="mergePinnedAndFiltered"
                           :totalHeight="mapHeight"
                           :totalWidth="mapWidth"
@@ -77,12 +74,12 @@
                         :titleImg="metadatasContent[pinnedId].titleImg"
                         :restricted="hasRestrictedResources(metadatasContent[pinnedId])"
                         :resourceCount="metadatasContent[pinnedId].num_resources"
-                        :resources="metadatasContent[pinnedId].resources"
                         :dark="false"
                         :flatLayout="listView"
                         :fileIconString="fileIconString"
                         :lockedIconString="lockedIconString"
                         :unlockedIconString="unlockedIconString"
+                        :categoryColor="metadatasContent[pinnedId].categoryColor"
                         @clickedEvent="metaDataClicked"
                         @clickedTag="catchTagClicked" />
       </v-flex>
@@ -109,12 +106,12 @@
                       :titleImg="metadata.titleImg"
                       :restricted="hasRestrictedResources(metadata)"
                       :resourceCount="metadata.num_resources"
-                      :resources="metadata.resources"
                       :dark="false"
                       :flatLayout="listView"
                       :fileIconString="fileIconString"
                       :lockedIconString="lockedIconString"
                       :unlockedIconString="unlockedIconString"
+                      :categoryColor="metadata.categoryColor"
                       @clickedEvent="metaDataClicked"
                       @clickedTag="catchTagClicked" />
       </v-flex>
@@ -445,7 +442,7 @@ export default {
     virtualListContent: [],
     vLoading: false,
     infiniteId: +new Date(),
-    preloadingDistance: 200,
+    preloadingDistance: 150,
     scrollTopButtonText: 'Scroll to the top',
     controlsLabel: 'List Controls',
     controlsActive: [],

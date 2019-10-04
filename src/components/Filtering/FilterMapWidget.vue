@@ -1,9 +1,9 @@
 <template>
-  <v-card raised >
+  <v-card class="elevation-0" >
 
     <v-card-title :class="smScreen ? 'pa-2' : ''" >
       <div class="mb-0"
-          :class="smScreen ? 'body-2 font-weight-bold' : 'headline '" >
+          :class="smScreen ? 'body-2 font-weight-bold' : 'title '" >
         Cartographic Filtering</div>
     </v-card-title>
 
@@ -55,7 +55,7 @@
         {{ focusText }}
       </v-flex>
 
-      <v-flex sm12 md3>
+      <v-flex sm12 md3 py-1>
         <base-icon-button :customIcon="eyeIcon"
                           color="highlight"
                           :outlined="true"
@@ -67,7 +67,7 @@
         {{ pinText }}
       </v-flex>
 
-      <v-flex sm12 md3 v-if="hasPins" >
+      <v-flex sm12 md3 py-1 v-if="hasPins" >
         <base-icon-button :count="pinNumber"
                           :customIcon="pinIcon"
                           color="secondary"
@@ -81,7 +81,7 @@
         {{ multiPinText }}
       </v-flex>
 
-      <v-flex sm12 md3 v-if="hasMultiPins">
+      <v-flex sm12 md3 py-1 v-if="hasMultiPins">
         <base-icon-button :count="multiPinNumber"
                           :customIcon="multiPinIcon"
                           color="secondary"
@@ -95,7 +95,7 @@
         {{ polygonText }}
       </v-flex>
 
-      <v-flex sm12 md3 v-if="hasPolygons">
+      <v-flex sm12 md3 py-1 v-if="hasPolygons">
         <base-icon-button :count="polygonNumber"
                           :custom-icon="polygonIcon"
                           color="secondary"

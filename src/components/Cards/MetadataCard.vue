@@ -1,19 +1,16 @@
 <template>
-  <v-card
-    ripple
-    hover
-    style="height: 100%;"
-    @click.native="cardClick"
-  >
-    <v-img
-      background-color="primary"
-      :style="!flatLayout ? dynamicCardBackground : ''"
-      :height="flatLayout ? '65px' : $vuetify.breakpoint.smAndDown ? '100px' : '125px'"
-    >
+  <v-card ripple
+          hover
+          style="height: 100%;"
+          @click.native="cardClick" >
+
+    <v-img :style="!flatLayout ? dynamicCardBackground : `background-color: ${this.categoryColor}`"
+            :height="flatLayout ? '55px' : $vuetify.breakpoint.smAndDown ? '90px' : '115px'" >
+
       <v-container grid-list-xs fluid fill-height
-                    px-3 pt-3 pb-0
-      >
+                    px-3 pt-3 pb-0 >
         <v-layout column>
+
           <v-flex xs12
                   py-0 >
             <v-layout row>
@@ -43,87 +40,73 @@
             </v-layout>
           </v-flex>
 
-          <v-flex xs12
-                  py-0 mx-1 >
-            <v-layout v-if="tags"
-                      row fill-height align-end
-            >
-              <tag-chip py-0
-                        v-for="(tag, index) in tags.slice (0, maxTagNumber)"
-                        :key="index"
-                        :name="tag.name"
-                        :selectable="true"
-                        @clicked="catchTagClicked($event, tag.name)"
-              />
-
-              <tag-chip v-if="maxTagsReached"
-                        py-0
-                        name="..."
-              />
-            </v-layout>
-          </v-flex>
         </v-layout>
       </v-container>
     </v-img>
 
-    <v-card-text
-      :class="{['cardText'] : $vuetify.breakpoint.mdAndUp,
-               ['compactText'] : flatLayout || $vuetify.breakpoint.smAndDown,
-               ['py-2'] : flatLayout,
-               ['pr-5'] : flatLayout,
-               ['pb-4'] : !flatLayout,
-      }"
-    >
+    <v-card-text :class="{['cardText'] : $vuetify.breakpoint.mdAndUp,
+                        ['compactText'] : flatLayout || $vuetify.breakpoint.smAndDown,
+                        ['py-2'] : flatLayout,
+                        ['pr-5'] : flatLayout,
+                        ['pr-4'] : !flatLayout,
+                        ['py-2'] : !flatLayout,
+                  }" >
       <!-- TODO: need to strip the markdown characters from the desc -->
-      {{ truncatedSubtitle }}
+      <v-layout row wrap>
+        <v-flex xs12 >
+          {{ truncatedSubtitle }}
+        </v-flex>
+        <v-flex xs12 >
+          <!-- <v-layout v-if="tags"
+                    row fill-height align-end
+          > -->
+            <tag-chip py-0
+                      v-for="(tag, index) in tags.slice (0, maxTagNumber)"
+                      :key="index"
+                      :name="tag.name"
+                      :selectable="true"
+                      @clicked="catchTagClicked($event, tag.name)"
+            />
+
+            <tag-chip v-if="maxTagsReached"
+                      py-0
+                      name="..."
+            />
+          <!-- </v-layout> -->
+        </v-flex>
+      </v-layout>
     </v-card-text>
 
 
-    <v-card-actions
-      class="ma-0 pa-2"
-      style="position: absolute; bottom: 5px; right: 5px;"
-    >
+    <v-card-actions class="ma-0 pa-2"
+                    style="position: absolute; bottom: 5px; right: 5px;" >
       <v-spacer />
 
-      <v-tooltip
-        v-if="isRestricted"
-        bottom
-        :disabled="$vuetify.breakpoint.xsOnly"
-      >
-        <v-icon
-          slot="activator"
-          color="black"
-        >
+      <v-tooltip v-if="isRestricted"
+                  bottom
+                  :disabled="$vuetify.breakpoint.xsOnly" >
+        <v-icon slot="activator"
+                color="black" >
           lock
         </v-icon>
-        <div
-          v-if="userHasAccess"
-          class="iconCentering"
-        >
-          <img
-            class="envidatIcon"
-            :src="unlockedIconString"
-          >
+        <div v-if="userHasAccess"
+              class="iconCentering" >
+          <img class="envidatIcon"
+                :src="unlockedIconString" >
           <span>The data of this entry is only accessible with permission.</span>
         </div>
 
-        <div
-          v-if="userHasAccess"
-          class="iconCentering"
-        >
-          <img
-            class="envidatIcon"
-            :src="lockedIconString"
-          >
+        <div v-if="userHasAccess"
+              class="iconCentering" >
+          <img class="envidatIcon"
+                :src="lockedIconString" >
           <span>The data of this entry is only accessible with permission.</span>
         </div>
       </v-tooltip>
 
-      <base-icon-count-view
-        :count="resourceAmount"
-        :icon-string="fileIconString"
-        :tooltip="`Metadata with ${resourceAmount} resources`"
-      />
+      <base-icon-count-view :count="resourceAmount"
+                            :icon-string="fileIconString"
+                            :tooltip="`Metadata with ${resourceAmount} resources`" />
     </v-card-actions>
   </v-card>
 </template>
@@ -170,49 +153,44 @@ export default {
     titleImg: String,
     dark: Boolean,
     resourceCount: Number,
-    resources: Array,
     flatLayout: Boolean,
     fileIconString: String,
     lockedIconString: String,
     unlockedIconString: String,
+    categoryColor: String,
   },
   data: () => ({
     show: false,
     showDataText: 'SHOW DATA',
-    maxTitleLength: 80,
-    compactTitleLength: 100,
-    maxSubtitleLength: 280,
-    compactSubtitleLength: 140,
+    // maxTitleLength: 80,
+    maxTitleLength: 150,
+    compactTitleLength: 150,
+    maxDescriptionLength: 280,
+    compactDescriptionLength: 450,
     // maxTags: 3,
-    maxTagtextLength: 40,
+    // maxTagtextLength: 40,
+    maxTagtextLength: 100,
     maxCompactTagtextLength: 170,
+    // maxCompactTagtextLength: 320,
     blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
     whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
-    imageDefaults: {
-      snow: 'c_b_snow_icy2',
-      landscape: 'c_b_landscape_lake2', // or c_b_landscape_view ! c_b_landscape_long_lake
-      forest: 'c_b_forest_texture_bark', // maybe c_b_forest_texture_bark2
-      diversity: 'b_c_diversity_meadow',
-      hazard: 'c_b_hazard_cloud_road', // maybe c_b_hazard_cloud
-    },
-    hoverBadge: false,
   }),
   computed: {
-    dynamicCardBackground: function dynamicCardBackground() {
+    dynamicCardBackground() {
       const gradient = this.dark ? this.blackTopToBottom : this.whiteTopToBottom;
 
-      if (this.titleImg) {
+      if (this.titleImg && this.$vuetify.breakpoint.mdAndUp) {
         return `background-image: linear-gradient(0deg, ${gradient}), url(${this.titleImg});
                 background-position: center, center;
                 background-size: cover; background-repeat: initial; `;
       }
 
-      return '';
+      return `background-color: ${this.categoryColor}`;
     },
-    maxTagsReached: function maxTagsReached() {
+    maxTagsReached() {
       return this.tags !== undefined && this.tags.length > this.maxTagNumber;
     },
-    maxTagNumber: function maxTagNumber() {
+    maxTagNumber() {
       // if (this.flatLayout) {
       //   return 10;
       // }
@@ -236,11 +214,11 @@ export default {
 
       return numberOfTags;
     },
-    maxTitleLengthReached: function maxTitleLengthReached() {
+    maxTitleLengthReached() {
       return (!this.flatLayout && this.title.length > this.maxTitleLength)
           || (this.flatLayout && this.title.length > this.compactTitleLength);
     },
-    truncatedTitle: function truncatedTitle() {
+    truncatedTitle() {
       let maxLength = this.maxTitleLength;
 
       if (this.flatLayout) {
@@ -253,11 +231,11 @@ export default {
 
       return this.title;
     },
-    truncatedSubtitle: function truncatedSubtitle() {
-      let maxLength = this.maxSubtitleLength;
+    truncatedSubtitle() {
+      let maxLength = this.maxDescriptionLength;
 
       if (this.flatLayout) {
-        maxLength = this.compactSubtitleLength;
+        maxLength = this.compactDescriptionLength;
       }
 
       if (this.subtitle !== undefined) {
@@ -266,12 +244,12 @@ export default {
 
       return '';
     },
-    isRestricted: function isRestricted() {
+    isRestricted() {
       return this.restricted;
       // return this.restricted &&
       // (this.restricted.allowed_users !== undefined || this.restricted.level !== 'public');
     },
-    userHasAccess: function userHasAccess() {
+    userHasAccess() {
       if (!this.isRestricted) {
         return false;
       }
@@ -281,18 +259,14 @@ export default {
 
       return userAccess || accessLvl;
     },
-    resourceAmount: function resourceAmount() {
+    resourceAmount() {
       if (this.resourceCount) {
         return this.resourceCount;
       }
 
-      if (this.resources) {
-        return this.resources.length;
-      }
-
       return 0;
     },
-    titleClass: function titleClass() {
+    titleClass() {
       return {
         black_title: !this.dark,
         white_title: this.dark,
@@ -301,20 +275,20 @@ export default {
       };
     },
   },
-  created: function created() {
+  created() {
   },
   methods: {
-    cardClick: function cardClick() {
+    cardClick() {
       let detailParam = this.name;
       if (!detailParam) {
         detailParam = this.id; // fallback id in url isn't too nice
       }
       this.$emit('clickedEvent', detailParam);
     },
-    favouritClicked: function favouritClicked() {
+    favouritClicked() {
       this.$emit('clickedFavourit', this.id);
     },
-    catchTagClicked: function catchTagClicked(tagId) {
+    catchTagClicked(tagId) {
       this.$emit('clickedTag', tagId);
     },
   },

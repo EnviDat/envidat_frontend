@@ -13,7 +13,7 @@ Vue.component("v-layout", VLayout);
 Vue.component("v-flex", VFlex);
 
 import BaseClickCard from "@/components/BaseElements/BaseClickCard.vue";
-import categorycards from "@/store/modules/categorycards";
+import categoryCards from "@/store/modules/categoryCards";
 
 export const methods = {
   onClick: action("clicked")
@@ -25,28 +25,31 @@ storiesOf("3 Cards | Click Cards ", module).add("CategoryCcard Collection", () =
     <v-layout row wrap>
 
       <v-flex xs6 pa-2
-        v-for="card in categorycards" :key="card.title">
+        v-for="card in categoryCards" :key="card.title">
             <base-click-card
               :title="card.title"
               :img="card.img"
+              :color="card.color"
               @clicked="onClick"
             />
       </v-flex>
 
       <v-flex xs4 pa-2
-        v-for="card in categorycards" :key="card.title">
+        v-for="card in categoryCards" :key="card.title">
             <base-click-card
               :title="card.title"
               :img="card.img"
+              :color="card.color"
               @clicked="onClick"
             />
       </v-flex>
 
       <v-flex xs3 pa-2
-        v-for="card in categorycards" :key="card.title">
+        v-for="card in categoryCards" :key="card.title">
             <base-click-card
               :title="card.title"
               :img="card.img"
+              :color="card.color"
               @clicked="onClick"
             />
       </v-flex>
@@ -54,6 +57,6 @@ storiesOf("3 Cards | Click Cards ", module).add("CategoryCcard Collection", () =
     </v-layout>`,
   methods,
   data: () => ({
-    categorycards
+    categoryCards
   })
 }));

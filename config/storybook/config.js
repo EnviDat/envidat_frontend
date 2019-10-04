@@ -10,12 +10,13 @@ import metaDataFactory from "@/components/metaDataFactory";
 
 const cardImages = getCardImages(globalMethods);
 import metadataCards from "@/stories/metadata";
+import categoryCards from "@/store/modules/categoryCards";
 
 metadataCards.forEach(element => {
   element.tags = metaDataFactory.convertTags(element.tags, true);
 });
 
-globalMethods.methods.mixinMethods_enhanceMetadatas(metadataCards, cardImages);
+globalMethods.methods.mixinMethods_enhanceMetadatas(metadataCards, cardImages, categoryCards);
 
 import { configureViewport, INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
 
