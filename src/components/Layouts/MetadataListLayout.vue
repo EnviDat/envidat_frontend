@@ -25,6 +25,7 @@
                             :controls="controlsActive"
                             :compactLayout="$vuetify.breakpoint.smAndDown"
                             :label="controlsLabel"
+                            :flat="$route.name !== BROWSE_PAGENAME"
                             @controlsChanged="controlsChanged" />
       </v-flex>
 
@@ -159,7 +160,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { BROWSE_PATH, METADATADETAIL_PAGENAME } from '@/router/routeConsts';
+import { BROWSE_PATH, BROWSE_PAGENAME, METADATADETAIL_PAGENAME } from '@/router/routeConsts';
 import FilterKeywordsView from '@/components/Filtering/FilterKeywordsView';
 import FilterMapView from '@/components/Filtering/FilterMapView';
 import ControlPanelView from '@/components/Filtering/ControlPanelView';
@@ -169,8 +170,6 @@ import NoSearchResultsView from '@/components/Filtering/NoSearchResultsView';
 import {
   SET_DETAIL_PAGE_BACK_URL,
   SET_VIRTUAL_LIST_INDEX,
-  PIN_METADATA,
-  CLEAR_PINNED_METADATA,
   METADATA_NAMESPACE,
 } from '@/store/metadataMutationsConsts';
 
@@ -453,6 +452,7 @@ export default {
     listView: false,
     showMapFilter: false,
     pinnedIds: [],
+    BROWSE_PAGENAME,
   }),
   components: {
     FilterKeywordsView,

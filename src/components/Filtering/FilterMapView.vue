@@ -14,7 +14,7 @@
       <filter-map-widget :style="`width: ${widgetWidth}px;
                                 position: absolute;
                                 top: 10px; right: 10px;
-                                z-index: 500;`"
+                                z-index: 900;`"
                           :pinnedIds="pinnedIds"
                           :hasPins="hasPins"
                           :pinEnabled="pinEnabled"
