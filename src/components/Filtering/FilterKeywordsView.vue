@@ -1,39 +1,46 @@
 <template>
   <v-card raised
           class="pa-2" >
+
     <v-layout column >
+
       <v-flex v-if="!filterExpanded"
-              xs12 hidden-sm-and-up px-2 py-2 >
+              hidden-sm-and-up
+              xs12 px-2 py-2 >
         <div class="mx-3">
           Filter for Keywords
         </div>
       </v-flex>
 
       <v-flex v-if="filterExpanded || $vuetify.breakpoint.smAndUp"
-              xs12 px-2 mt-1 >
+              xs12 mt-1
+                  :class="$vuetify.breakpoint.smAndDown ? 'px-0 pl-1' : 'px-2'" >
         <v-layout row
                   fill-height
-                  v-bind="{
-                    ['align-center']: this.$vuetify.breakpoint.smAndUp,
-                    ['align-content-center']: this.$vuetify.breakpoint.smAndUp,
-                  }" >
+                  v-bind="{ ['align-center']: $vuetify.breakpoint.smAndUp,
+                            ['align-content-center']: $vuetify.breakpoint.smAndUp,
+                          }" >
 
-          <v-flex pl-2
-                  class="metadataInfoIcon" >
+          <v-flex class="metadataInfoIcon"
+                  :class="$vuetify.breakpoint.smAndDown ? '' : 'pl-2'" >
             <base-icon-label-view :icon="tagsIcon"
                                   :compact-layout="compactLayout"
                                   icon-tooltip="Possible Keywords" />
           </v-flex>
 
           <v-flex v-if="showPlaceholder"
-                  xs12 py-0 px-2 >
+                  xs12 py-0
+                  :class="$vuetify.breakpoint.smAndDown ? 'px-0' : 'px-2'" >
+
             <tag-chip-placeholder v-for="n in 6"
                                   :key="n"
                                   py-0 class="card_tag_placeholder" />
           </v-flex>
 
           <v-flex v-if="!showPlaceholder"
-                  xs12 py-0 px-2 >
+                  xs12 py-0
+                  :class="$vuetify.breakpoint.smAndDown ? 'px-0' : 'px-2'" >
+
             <tag-chip v-for="tag in unselectedTags"
                       :key="tag.name"
                       :name="tag.name"
@@ -48,13 +55,13 @@
 
 
       <v-flex v-if="filterExpanded || $vuetify.breakpoint.smAndUp"
-              xs12 px-2 mt-1 >
+              xs12 mt-1
+                  :class="$vuetify.breakpoint.smAndDown ? 'px-0 pl-1' : 'px-2'" >
         <v-layout row
                   fill-height
-                  v-bind="{
-                    ['align-center']: this.$vuetify.breakpoint.smAndUp,
-                    ['align-content-center']: this.$vuetify.breakpoint.smAndUp,
-                  }" >
+                  v-bind="{ ['align-center']: $vuetify.breakpoint.smAndUp,
+                            ['align-content-center']: $vuetify.breakpoint.smAndUp,
+                          }" >
 
           <v-flex pl-2 class="metadataInfoIcon" >
             <base-icon-label-view :icon="tagIcon"
@@ -63,7 +70,8 @@
           </v-flex>
 
           <v-flex v-if="selectedTags.length > 0"
-                  xs12 py-0 px-2 >
+                  xs12 py-0
+                  :class="$vuetify.breakpoint.smAndDown ? 'px-0' : 'px-2'" >
 
             <tag-chip v-for="tag in selectedTags"
                       :key="tag.name"

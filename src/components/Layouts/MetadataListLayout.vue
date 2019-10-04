@@ -190,24 +190,6 @@ export default {
     mapHeight: Number,
     defaultListControls: Array,
   },
-  data: () => ({
-    noResultText: 'Nothing found for these search criterias.',
-    suggestionText: 'Change the criterias or try one of these categories',
-    fileIconString: null,
-    lockedIconString: null,
-    unlockedIconString: null,
-    localTags: [],
-    virtualListContent: [],
-    vLoading: false,
-    infiniteId: +new Date(),
-    preloadingDistance: 200,
-    scrollTopButtonText: 'Scroll to the top',
-    controlsLabel: 'List Controls',
-    controlsActive: [],
-    listView: false,
-    showMapFilter: false,
-    pinnedIds: [],
-  }),
   beforeMount() {
     this.fileIconString = this.mixinMethods_getIcon('file');
     this.lockedIconString = this.mixinMethods_getIcon('lock2Closed');
@@ -215,7 +197,6 @@ export default {
   },
   mounted() {
     if (this.defaultListControls && this.defaultListControls.length) {
-      // this.controlsActive = this.defaultListControls;
       this.defaultListControls.forEach((n) => {
         this.controlsChanged(n);
       });
@@ -256,17 +237,17 @@ export default {
       );
     },
     cardGridClass() {
-      if (this.mapFilteringPossible && this.showMapFilter) {
-        const twoThridsSize = {
-          xs12: true,
-          sm12: true,
-          md6: true,
-          lg4: true,
-          xl3: true,
-        };
+      // if (this.mapFilteringPossible && this.showMapFilter) {
+      //   const twoThridsSize = {
+      //     xs12: true,
+      //     sm12: true,
+      //     md6: true,
+      //     lg4: true,
+      //     xl3: true,
+      //   };
 
-        return twoThridsSize;
-      }
+      //   return twoThridsSize;
+      // }
 
       const fullSize = {
         xs12: true,
@@ -352,11 +333,21 @@ export default {
     catchPointClicked(id) {
       // bring to top
       // highlight entry
+      let newPins = this.pinnedIds;
 
-      this.$store.commit(`${METADATA_NAMESPACE}/${PIN_METADATA}`, id);
+      if (this.pinnedIds.includes(id)) {
+        newPins = this.pinnedIds.filter(i => i !== id);
+      } else {
+        newPins.push(id);
+      }
+
+      this.pinnedIds = newPins;
+
+      // this.$store.commit(`${METADATA_NAMESPACE}/${PIN_METADATA}`, id);
     },
     catchClearButtonClick() {
-      this.$store.commit(`${METADATA_NAMESPACE}/${CLEAR_PINNED_METADATA}`);
+      this.pinnedIds = [];
+      // this.$store.commit(`${METADATA_NAMESPACE}/${CLEAR_PINNED_METADATA}`);
     },
     hasRestrictedResources(metadata) {
       if (!metadata || !metadata.resources || metadata.resources.length <= 0) {
@@ -445,6 +436,24 @@ export default {
       this.infiniteHandler();
     },
   },
+  data: () => ({
+    noResultText: 'Nothing found for these search criterias.',
+    suggestionText: 'Change the criterias or try one of these categories',
+    fileIconString: null,
+    lockedIconString: null,
+    unlockedIconString: null,
+    localTags: [],
+    virtualListContent: [],
+    vLoading: false,
+    infiniteId: +new Date(),
+    preloadingDistance: 200,
+    scrollTopButtonText: 'Scroll to the top',
+    controlsLabel: 'List Controls',
+    controlsActive: [],
+    listView: false,
+    showMapFilter: false,
+    pinnedIds: [],
+  }),
   components: {
     FilterKeywordsView,
     FilterMapView,

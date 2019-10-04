@@ -1,31 +1,32 @@
 <template>
   <v-tooltip bottom :disabled="$vuetify.breakpoint.xsOnly || toolTipText === ''">
-    <v-btn
-      slot="activator"
-      :small="isSmall"
-      :class="marginClass"
-      :outline="isOutlined"
-      :flat="isFlat"
-      :color="color ? color : 'primary'"
-      :disabled="disabled"
-      :href="url"
-      v-bind="{['target'] : '_blank' }"
-      @click.native="clicked"
-    >
+    <v-btn slot="activator"
+            :small="isSmall"
+            :class="marginClass"
+            :outline="isOutlined"
+            :flat="isFlat"
+            :color="color ? color : 'primary'"
+            :disabled="disabled"
+            :href="url"
+            v-bind="{['target'] : '_blank' }"
+            @click.native="clicked" >
+
       <div v-if="customIcon" class="iconCentering">
         <img class="envidatIcon" :src="customIcon" />
       </div>
 
-      <v-icon
-        left
-        v-if="materialIconName"
-        :color="iconColor ? iconColor : 'primary'"
-      >{{ materialIconName }}</v-icon>
+      <v-icon v-if="materialIconName"
+              left
+              :color="iconColor ? iconColor : 'primary'" >
+        {{ materialIconName }}
+      </v-icon>
+
       {{ buttonText }}
     </v-btn>
 
     <span>{{ toolTipText }}</span>
   </v-tooltip>
+
 </template>
 
 <script>
@@ -44,7 +45,7 @@
  * Set the @prop rotateOnClick to true for the icon to rotate 180° once clicked
  * works together with the @prop isToggled
  *
- * Use @prop marginClass to apply any css-class to the button
+ * Use @prop marginClass to apply any css-class to the button, because it's wrapped in the tooltip element.
  *
  * When @prop disabled is true clicks won't do anything.
  */
