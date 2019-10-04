@@ -104,9 +104,6 @@ export default {
 
     const bgImgs = require.context('./assets/', false, /\.jpg$/);
     this.appBGImages = this.mixinMethods_importImages(bgImgs, 'app_b');
-
-    // this.importCardBackgrounds();
-    // this.importIcons();
   },
   updated() {
     this.updateActiveStateOnNavItems();
@@ -167,52 +164,6 @@ export default {
         this.$store.dispatch(`metadata/${BULK_LOAD_METADATAS_CONTENT}`);
       }
     },
-    // importCardBackgrounds() {
-    //   const imgs = this.$store.getters.cardBGImages;
-
-    //   if (imgs && Object.keys(imgs).length > 0) {
-    //     // already loaded in localStorage
-    //     return;
-    //   }
-
-    //   let imgPaths = require.context('./assets/cards/landscape/', false, /\.jpg$/);
-
-    //   let images = this.mixinMethods_importImages(imgPaths);
-    //   this.$store.commit(ADD_CARD_IMAGES, { key: 'landscape', value: images });
-
-    //   imgPaths = require.context('./assets/cards/forest/', false, /\.jpg$/);
-    //   images = this.mixinMethods_importImages(imgPaths);
-    //   this.$store.commit(ADD_CARD_IMAGES, { key: 'forest', value: images });
-
-    //   imgPaths = require.context('./assets/cards/snow/', false, /\.jpg$/);
-    //   images = this.mixinMethods_importImages(imgPaths);
-    //   this.$store.commit(ADD_CARD_IMAGES, { key: 'snow', value: images });
-
-    //   imgPaths = require.context('./assets/cards/diversity/', false, /\.jpg$/);
-    //   images = this.mixinMethods_importImages(imgPaths);
-    //   this.$store.commit(ADD_CARD_IMAGES, { key: 'diversity', value: images });
-
-    //   imgPaths = require.context('./assets/cards/hazard/', false, /\.jpg$/);
-    //   images = this.mixinMethods_importImages(imgPaths);
-    //   this.$store.commit(ADD_CARD_IMAGES, { key: 'hazard', value: images });
-    // },
-    // importIcons: function importIcons() {
-    //   const imgs = this.$store.getters.iconImages;
-
-    //   if (imgs && Object.keys(imgs).length > 0) {
-    //     // already loaded in localStorage
-    //     return;
-    //   }
-
-    //   const imgPaths = require.context('./assets/icons/', false, /\.png$/);
-    //   const images = this.mixinMethods_importImages(imgPaths);
-
-    //   const keys = Object.keys(images);
-    //   keys.forEach((key) => {
-    //     // console.log('icon ' + key + ' value ' + images[key]);
-    //     this.$store.commit(ADD_ICON_IMAGE, { key, value: images[key] });
-    //   });
-    // },
     dialogVersionText() {
       return `You are using the version ${process.env.VUE_APP_VERSION}, but there is are newer version available (${this.newVersion}). Please reload to get the latest verison of EnviDat.`;
     },
