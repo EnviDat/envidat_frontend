@@ -6,10 +6,6 @@ import {
   GET_PROJECTS_ERROR,
 } from '@/store/projectsMutationsConsts';
 
-import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
-
-import projectDataFactory from "@/components/projectsDataFactory";
-
 const API_BASE = '/api/action/';
 const ENVIDAT_PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
 const useTestData = process.env.VUE_APP_USE_TESTDATA;
@@ -38,21 +34,13 @@ export default {
 
     if (typeof useTestData === 'string' && useTestData.toLowerCase() === 'true'){
         const projectJSON = require('@/testdata/projects.js');
-        const projectsData = projectJSON.default.result;
-        const enhancedProjects = projectDataFactory.enhanceSubprojectsFromExtras(projectsData);
-        const metadatasContent = this.getters[`${METADATA_NAMESPACE}/metadatasContent`];
-        const enhancedWithTags = projectDataFactory.enhanceProjectsDatasets(enhancedProjects, metadatasContent);
-        commit(GET_PROJECTS_SUCCESS, enhancedWithTags);
+        commit(GET_PROJECTS_SUCCESS, projectJSON.default.result);
         return;
     }
 
     axios.get(url)
       .then((response) => {
-        const projectsData = response.data;
-        const enhancedProjects = projectDataFactory.enhanceSubprojectsFromExtras(projectsData);
-        const metadatasContent = this.getters[`${METADATA_NAMESPACE}/metadatasContent`];
-        const enhancedWithTags = projectDataFactory.enhanceProjectsDatasets(enhancedProjects, metadatasContent);
-        commit(GET_PROJECTS_SUCCESS, enhancedWithTags);
+        commit(GET_PROJECTS_SUCCESS, response.data);
       })
       .catch((reason) => {
         commit(GET_PROJECTS_ERROR, reason);
