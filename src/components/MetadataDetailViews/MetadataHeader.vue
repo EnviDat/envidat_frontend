@@ -15,7 +15,7 @@
                         material-icon-name="close"
                         icon-color="primary"
                         :color="(showPlaceholder || (!showPlaceholder && !metadataTitle)) ? 'white' : 'primary'"
-                        :outlined="(!showPlaceholder && metadataTitle)"
+                        :outlined="(!showPlaceholder && (metadataTitle &&  metadataTitle.length > 0))"
                         tool-tip-text="Close Metadata"
                         :tool-tip-bottom="true"
                         @clicked="catchBackClicked" />
