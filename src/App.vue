@@ -2,6 +2,7 @@
   <v-app class="application" :style="dynamicBackground">
 
     <navigation v-if="$vuetify.breakpoint.mdAndUp"
+                :style="`z-index: ${NavigationZIndex}`"
                 :mini="!this.menuItem.active"
                 :navItems="navItems"
                 :version="appVersion"
@@ -10,11 +11,12 @@
 
     <navigation-mobile v-if="$vuetify.breakpoint.smAndDown"
                     :navItems="navItems"
-                    style="position: fixed; top: auto; right: 10px; bottom: 10px;"
+                    :style="`position: fixed; top: auto; right: 10px; bottom: 10px; z-index: ${NavigationZIndex}`"
                     class="elevation-3"
                     @itemClick="catchItemClicked" />
 
-    <navigation-toolbar :searchTerm="searchTerm"
+    <navigation-toolbar :style="`z-index: ${NavToolbarZIndex}`"
+                        :searchTerm="searchTerm"
                         :showSearchCount="showSearchCount"
                         :searchCount="searchCount"
                         :showSearch="showToolbarSearch"
@@ -301,6 +303,8 @@ export default {
     appVersion: process.env.VUE_APP_VERSION,
     showMenu: true,
     searchTerm: '',
+    NavToolbarZIndex: 1150,
+    NavigationZIndex: 1100,
     navItems: [
       { title: 'Home', icon: 'envidat', toolTip: 'Back to the start page', active: false, path: './', pageName: LANDING_PAGENAME },
       { title: 'Explore', icon: 'search', toolTip: 'Explore research data', active: false, path: BROWSE_PATH, pageName: BROWSE_PAGENAME },
