@@ -8,7 +8,7 @@ import {
   HAZARD,
   DIVERSITY,
   METEO,
-} from "@/store/categoriesConsts";
+} from '@/store/categoriesConsts';
 
 export default {
   methods: {
@@ -204,7 +204,7 @@ export default {
           const el = metadatas[i];
 
           if (!el.titleImg) {
-            el = this.mixinMethods_enhanceTitleImg(el, cardBGImages, categoryCards);
+            metadatas[i] = this.mixinMethods_enhanceTitleImg(el, cardBGImages, categoryCards);
           }
         }
       }
@@ -245,7 +245,7 @@ export default {
       return null;
     },
     mixinMethods_getTagColor(categoryCards, tagName) {
-      if (!tagName){
+      if (!tagName) {
         return '';
       }
 
@@ -302,7 +302,7 @@ export default {
      * @param {*} b
      */
     mixinMethods_formatBytes: function mixinMethods_formatBytes(a, b) {
-      if (0 === a) return '0 Bytes';
+      if (a === 0) return '0 Bytes';
 
       const c = 1024;
       const d = b || 2;

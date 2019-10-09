@@ -1,5 +1,5 @@
 export default {
-  createHeader: function createHeader(dataset, smallScreen) {
+  createHeader(dataset, smallScreen) {
     let { maintainer } = dataset;
 
     if (typeof dataset.maintainer === 'string') {
@@ -27,11 +27,11 @@ export default {
       license: license.title,
       tags: dataset.tags,
       titleImg: dataset.titleImg,
-      maxTags: smallScreen ? 5 : 12 ,
+      maxTags: smallScreen ? 5 : 12,
       authors,
     };
   },
-  createBody: function createBody(dataset) {
+  createBody(dataset) {
     return {
       id: dataset.id,
       title: dataset.title,
@@ -39,7 +39,7 @@ export default {
       description: dataset.notes,
     };
   },
-  getAuthorsString: function getAuthorsString(dataset) {
+  getAuthorsString(dataset) {
     let authors = '';
 
     if (dataset.author !== undefined) {
@@ -61,7 +61,7 @@ export default {
 
     return authors;
   },
-  createCitation: function createCitation(dataset) {
+  createCitation(dataset) {
     const authors = this.getAuthorsString(dataset);
 
     let { publication } = dataset;
@@ -96,7 +96,7 @@ export default {
       citationRisXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/ris.ris`,
     };
   },
-  createResources: function createResources(dataset) {
+  createResources(dataset) {
     const resources = [];
 
     let { maintainer } = dataset;
@@ -177,7 +177,7 @@ export default {
       resources,
     };
   },
-  createDetails: function createDetails(dataset) {
+  createDetails(dataset) {
     const details = [];
 
     details.push({ label: 'Title', text: dataset.title });
@@ -198,7 +198,7 @@ export default {
 
     return details;
   },
-  createLicense: function createLicense(dataset) {
+  createLicense(dataset) {
     const license = {};
 
     license.id = dataset.license_id;
@@ -207,7 +207,11 @@ export default {
 
     return license;
   },
-  createLocation: function createLocation(dataset) {
+  createLocation(dataset) {
+    if (typeof dataset.location === 'object') {
+      return dataset.location;
+    }
+
     const location = {};
     location.id = dataset.id;
     location.name = dataset.name;
@@ -257,13 +261,13 @@ export default {
 
     return location;
   },
-  convertTags(tagsStringArray, tagsEnabled){
+  convertTags(tagsStringArray, tagsEnabled) {
     const tagObjs = [];
 
-    tagsStringArray.forEach(element => {
+    tagsStringArray.forEach((element) => {
       tagObjs.push({ name: element, enabled: tagsEnabled });
     });
 
     return tagObjs;
-  }
+  },
 };

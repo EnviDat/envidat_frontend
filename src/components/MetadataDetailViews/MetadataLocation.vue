@@ -194,9 +194,9 @@ export default {
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(map);
     },
-    addPoint: function addPoint(map, coords) {
+    addPoint(map, coords) {
       const iconOptions = L.Icon.Default.prototype.options;
-      delete iconOptions.mixinMethods_getIconUrl;
+      // delete iconOptions.mixinMethods_getIconUrl;
       // use the defaultoptions to ensure that all untouched defaults stay in place
 
       iconOptions.iconUrl = this.marker;

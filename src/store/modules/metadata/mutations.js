@@ -27,8 +27,12 @@ import {
   METADATA_NAMESPACE,
 } from '@/store/metadataMutationsConsts';
 
+import metaDataFactory from '@/components/metaDataFactory';
+import globalMethods from '@/components/globalMethods';
+
 const conversion = require('./conversion');
-const globalMethods = require('@/components/globalMethods');
+// const globalMethods = require('@/components/globalMethods');
+// const metaDataFactory = require('@/components/metaDataFactory');
 
 export default {
   [SEARCH_METADATA](state) {
@@ -108,10 +112,13 @@ export default {
     const categoryCards = this.getters[`${METADATA_NAMESPACE}/categoryCards`];
 
     for (let i = 0; i < payload.length; i++) {
-      let el = payload[i];
-      el = globalMethods.default.methods.mixinMethods_enhanceTitleImg(el, cardBGImages, categoryCards);
+      let dataset = payload[i];
+      dataset = globalMethods.methods.mixinMethods_enhanceTitleImg(dataset, cardBGImages, categoryCards);
 
-      this._vm.$set(state.metadatasContent, el.id, el);
+      dataset.location = metaDataFactory.createLocation(dataset);
+
+      // this._vm.$set(state.metadatasContent, el.id, el);
+      state.metadatasContent[dataset.id] = dataset;
     }
 
     state.metadatasContentOK = true;
