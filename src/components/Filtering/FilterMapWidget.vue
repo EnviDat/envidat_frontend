@@ -56,7 +56,8 @@
       </v-flex>
 
       <v-flex sm12 md3 py-1>
-        <base-icon-button :customIcon="eyeIcon"
+        <base-icon-button materialIconName="remove_red_eye"
+                          iconColor="black"
                           color="highlight"
                           :outlined="true"
                           :toolTipText="focusText"
@@ -97,7 +98,8 @@
 
       <v-flex sm12 md3 py-1 v-if="hasPolygons">
         <base-icon-button :count="polygonNumber"
-                          :custom-icon="polygonIcon"
+                          materialIconName="layers"
+                          iconColor="black"
                           color="secondary"
                           :isToggled="polygonEnabled"
                           :outlined="true"
@@ -141,8 +143,8 @@ export default {
   beforeMount() {
     this.pinIcon = this.mixinMethods_getIcon('marker');
     this.multiPinIcon = this.mixinMethods_getIcon('markerMulti');
-    this.polygonIcon = this.mixinMethods_getIcon('polygons');
-    this.eyeIcon = this.mixinMethods_getIcon('eye');
+    // this.polygonIcon = this.mixinMethods_getIcon('polygons');
+    // this.eyeIcon = this.mixinMethods_getIcon('eye');
   },
   computed: {
     smScreen() {
