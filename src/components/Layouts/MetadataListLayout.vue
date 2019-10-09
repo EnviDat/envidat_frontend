@@ -95,10 +95,7 @@
       <v-flex v-if="!loading && contentSize <= 0"
               key="noSearchResultsView"
               xs12 mx-2 >
-        <no-search-results-view :no-result-text="noResultText"
-                                :suggestion-text="suggestionText"
-                                @clicked="catchCategoryClicked"
-                                />
+        <no-search-results-view @clickedCategory="clickedCategory" />
       </v-flex>
 
     </transition-group>
@@ -119,6 +116,7 @@ import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
 export default {
+  name: 'MetadataListLayout',
   props: {
     listContent: Array,
     listView: Boolean,
@@ -127,8 +125,6 @@ export default {
     placeHolderAmount: Number,
   },
   data: () => ({
-    noResultText: 'Nothing found for these search criterias.',
-    suggestionText: 'Change the criterias or try one of these categories',
     fileIconString: null,
     lockedIconString: null,
     unlockedIconString: null,
@@ -138,12 +134,12 @@ export default {
     preloadingDistance: 200,
     scrollTopButtonText: 'Scroll to the top',
   }),
-  beforeMount: function beforeMount() {
+  beforeMount() {
     this.fileIconString = this.mixinMethods_getIcon('file');
     this.lockedIconString = this.mixinMethods_getIcon('lock2Closed');
     this.unlockedIconString = this.mixinMethods_getIcon('lock2Open');
   },
-  mounted: function mounted() {
+  mounted() {
     this.infiniteHandler();
   },
   computed: {
@@ -163,13 +159,13 @@ export default {
     showPinnedElements: function showPinnedElements() {
       return !this.loading && this.showMapFilter && this.pinnedIds.length > 0;
     },
-    loading: function loading() {
+    loading() {
       return (this.loadingMetadatasContent
             || this.isFilteringContent
             || this.searchingMetadatasContent
       );
     },
-    cardGridClass: function cardGridClass() {
+    cardGridClass() {
       if (this.mapFilteringPossible && this.showMapFilter) {
         const twoThridsSize = {
           xs12: true,
@@ -192,15 +188,14 @@ export default {
 
       return fullSize;
     },
-    contentSize: function contentSize() {
-      return this.listContent !== undefined ? Object.keys(this.listContent).length : 0;
+    contentSize() {
+      return this.listContent === undefined ? 0 : Object.keys(this.listContent).length;
     },
   },
   methods: {
     infiniteHandler($state) {
       const that = this;
       that.vLoading = true;
-      // console.log('loading list from ' + that.vIndex + ' to ' + (that.vIndex + that.vReloadAmount) );
 
       if (that.contentSize <= 0 && $state) {
         $state.complete();
@@ -238,16 +233,16 @@ export default {
         // console.log('loaded to ' + that.vIndex );
       }, this.vReloadDelay);
     },
-    catchTagClicked: function catchTagClicked(tagName) {
+    catchTagClicked(tagName) {
       this.$emit('clickedTag', tagName);
     },
-    catchCategoryClicked: function catchCategoryClicked(cardTitle) {
+    clickedCategory(cardTitle) {
       this.$router.push({
         path: BROWSE_PATH,
         query: { search: cardTitle },
       });
     },
-    metaDataClicked: function metaDataClicked(datasetname) {
+    metaDataClicked(datasetname) {
       this.$store.commit(`metadata/${SET_DETAIL_PAGE_BACK_URL}`, this.$route);
 
       this.$router.push({
@@ -257,7 +252,7 @@ export default {
         },
       });
     },
-    hasRestrictedResources: function hasRestrictedResources(metadata) {
+    hasRestrictedResources(metadata) {
       if (!metadata || !metadata.resources || metadata.resources.length <= 0) {
         return false;
       }
@@ -276,12 +271,12 @@ export default {
 
       return false;
     },
-    isPinned: function isPinned(id) {
+    isPinned(id) {
       return this.pinnedIds.includes(id);
     },
   },
   watch: {
-    contentSize: function resetVirtualContent() {
+    contentSize() {
       this.$store.commit(`metadata/${SET_VIRTUAL_LIST_INDEX}`, 0);
       this.virtualListContent = [];
       this.infiniteId += 1;
@@ -296,7 +291,6 @@ export default {
   },
 };
 </script>
-
 
 <style scoped>
 .itemfade-enter-active,

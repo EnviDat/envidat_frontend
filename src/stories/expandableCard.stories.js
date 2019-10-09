@@ -1,66 +1,20 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import { storiesOf } from "@storybook/vue";
-import { action } from "@storybook/addon-actions";
-
-import Vue from "vue";
-import {
-  VBtn,
-  VIcon,
-  VImg,
-  VLayout,
-  VFlex,
-  VCard,
-  VCardText,
-  VCardActions,
-  VCardTitle,
-  VCardMedia,
-  VChip,
-  VSpacer,
-  VSlideYTransition
-} from "vuetify/lib";
-
-Vue.component("v-card", VCard);
-Vue.component("v-card-text", VCardText);
-Vue.component("v-card-actions", VCardActions);
-Vue.component("v-card-title", VCardTitle);
-Vue.component("v-card-media", VCardMedia);
-Vue.component("v-slide-y-transition", VSlideYTransition);
-Vue.component("v-chip", VChip);
-Vue.component("v-spacer", VSpacer);
-Vue.component("v-btn", VBtn);
-Vue.component("v-icon", VIcon);
-Vue.component("v-img", VImg);
-Vue.component("v-layout", VLayout);
-Vue.component("v-flex", VFlex);
-
-import ExpandableCard from "@/components/Cards/ResourceCard.vue";
-import BaseIconButton from "@/components/BaseElements/BaseIconButton.vue";
-import App from "@/App.vue";
-import MMarkdownPreview from 'm-markdown-preview';
-
-// const conversion = require("@/store/modules/metadata/conversion");
-
-// const iconFiles = getIcons();
+import { storiesOf } from '@storybook/vue';
+import './js/vuetify-components';
+import ExpandableCard from '@/components/Cards/ExpandableCard.vue';
 
 import teamSmall from '@/assets/about/team_small.jpg';
 import mission from '@/assets/about/mission.jpg';
 import missionSmall from '@/assets/about/mission_small.jpg';
 import handsSmall from '@/assets/about/hands_small.jpg';
 import orga from '@/assets/about/EnviDat_organigram.png';
-
 import conceptSmall from '@/assets/about/concept_small.jpg';
 import communitySmall from '@/assets/about/community_small.jpg';
 
-export const methods = {
-  onCardClick: action("clicked on card"),
-  missionImg: function teamImg() {
-    if (this.$vuetify.breakpoint.mdAndUp) {
-      return mission;
-    }
-
-    return missionSmall;
+export const computed = {
+  missionImg() {
+    return this.$vuetify.breakpoint.mdAndUp ? mission : missionSmall;
   },
-  AboutCardInfos: function AboutCardInfos() {
+  aboutCardInfo() {
     return [
       {
         title: 'Our Mission',
@@ -97,8 +51,8 @@ export const methods = {
   },
 };
 
-storiesOf("3 Cards | Expandable Cards", module)
-  .add("Expandable card collection", () => ({
+storiesOf('3 Cards | Expandable Cards', module)
+  .add('Expandable card Collection', () => ({
     components: { ExpandableCard },
     template: `
 <v-layout column>
@@ -106,46 +60,8 @@ storiesOf("3 Cards | Expandable Cards", module)
     <v-layout row wrap>
 
       <v-flex xs3 pa-2
-        v-for="(card, index) in AboutCardInfos()"
+        v-for="(card, index) in aboutCardInfo"
         :key="index"
-      >
-        <expandable-card
-          :title="card.title"
-          :text="card.text"
-          :img="card.img"
-          :min-height="100"
-          :max-height="150"
-          :contain="card.title === 'WSL'"
-          />
-      </v-flex>
-
-    </v-layout>
-  </v-flex>
-  <v-flex>
-    <v-layout row wrap>
-
-      <v-flex xs4 pa-2
-      v-for="(card, index) in AboutCardInfos()"
-      :key="index"
-      >
-        <expandable-card
-          :title="card.title"
-          :text="card.text"
-          :img="card.img"
-          :min-height="100"
-          :max-height="150"
-          :contain="card.title === 'WSL'"
-          />
-      </v-flex>
-
-    </v-layout>
-  </v-flex>
-  <v-flex>
-    <v-layout row wrap>
-
-      <v-flex xs6 pa-2
-      v-for="(card, index) in AboutCardInfos()"
-      :key="index"
       >
         <expandable-card
           :title="card.title"
@@ -161,7 +77,7 @@ storiesOf("3 Cards | Expandable Cards", module)
   </v-flex>
 </v-layout>
     `,
-    methods,
+    computed,
     data: () => ({
       teamSmall,
       mission,
@@ -170,5 +86,5 @@ storiesOf("3 Cards | Expandable Cards", module)
       orga,
       conceptSmall,
       communitySmall,
-    })
+    }),
   }));
