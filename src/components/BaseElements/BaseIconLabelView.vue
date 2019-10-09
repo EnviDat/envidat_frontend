@@ -2,7 +2,7 @@
   <v-layout row ma-0 pa-0 >
     <v-tooltip
       bottom
-      :disabled="$vuetify.breakpoint.xsOnly"
+      :disabled="$vuetify.breakpoint.xsOnly || !iconTooltip"
     >
       <div
         slot="activator"
