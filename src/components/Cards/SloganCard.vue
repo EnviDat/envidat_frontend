@@ -2,7 +2,7 @@
   <v-card
     ripple
     hover
-    @click.native="buttonCallback"
+    @click="buttonCallback"
   >
     <!-- v-bind="{['style'] : dynamicCardBackground }"
         height="150px" -->
@@ -63,10 +63,19 @@
       style="position: absolute; bottom: 0; right: 0;"
     >
       <base-rectangle-button
+        class="mr-3"
+        :buttonText="moreButtonText"
+        :isSmall="true"
+        :isFlat="true"
+        @clicked="moreButtonCallback"
+      />
+
+      <base-rectangle-button
         :button-text="buttonText"
         :is-small="true"
         @clicked="buttonCallback"
       />
+
     </v-card-actions>
   </v-card>
 </template>
@@ -85,6 +94,8 @@ export default {
     subSlogan: String,
     buttonText: String,
     buttonCallback: Function,
+    moreButtonText: String,
+    moreButtonCallback: Function,
   },
   data: () => ({
     fingertipsImg,

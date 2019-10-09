@@ -9,7 +9,7 @@
             :disabled="disabled"
             :href="url"
             v-bind="{['target'] : '_blank' }"
-            @click.native="clicked" >
+            @click.stop="clicked" >
 
       <div v-if="customIcon" class="iconCentering">
         <img class="envidatIcon" :src="customIcon" />
