@@ -19,7 +19,7 @@ const store = new Vuex.Store({
   state: {
     currentPage: '',
     // use a './' before the img for the img name for the local path
-    appBGImage: './app_b_landingpage.jpg',
+    appBGImage: '',
     cardBGImages: {},
     iconImages: {},
     // controls default: [1] means the second [0,1] is active -> map filtering is active per default
