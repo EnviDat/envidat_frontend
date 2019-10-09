@@ -48,6 +48,7 @@
                       :highlighted="false"
                       :closeable="false"
                       class="filterTag"
+                      :color="getTagColor(tag.name)"
                       @clicked="catchTagClicked($event, tag.name)" />
           </v-flex>
         </v-layout>
@@ -107,6 +108,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
 import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import TagChip from '@/components/Cards/TagChip';
@@ -139,6 +142,9 @@ export default {
     filterExpanded: false,
   }),
   computed: {
+    ...mapGetters({
+      categoryCards: `${METADATA_NAMESPACE}/categoryCards`,
+    }),
     unselectedTags() {
       const unselectedTags = [];
 
@@ -165,7 +171,7 @@ export default {
 
       return selecteds;
     },
-    maxTagNumber: function maxTagNumber() {
+    maxTagNumber() {
       return this.getTagMaxAmout(this.selectedTags, this.maxSelectedTagsTextLength);
     },
     maxUnselectedTagNumber() {
@@ -192,10 +198,10 @@ export default {
     this.tagsIcon = this.mixinMethods_getIcon('tags');
   },
   methods: {
-    clearTags: function clearTags() {
+    clearTags() {
       this.$emit('clickedClear');
     },
-    isCleanTag: function isCleanTag(tagName) {
+    isCleanTag(tagName) {
       let maxWordsPerTag = 3;
 
       if (this.$vuetify.breakpoint.xsOnly) {
@@ -206,7 +212,7 @@ export default {
 
       return tagName.split(' ').length <= maxWordsPerTag;
     },
-    getTagMaxAmout: function getTagMaxAmout(list, maxTextLength) {
+    getTagMaxAmout(list, maxTextLength) {
       let textLength = 0;
       let numberOfTags = 0;
 
@@ -229,27 +235,30 @@ export default {
       // console.log("numberOfTags " + numberOfTags + " " + textLength);
       return numberOfTags;
     },
-    catchExpandClicked: function catchExpandClicked() {
+    getTagColor(tagName) {
+      return this.mixinMethods_getTagColor(this.categoryCards, tagName);
+    },
+    catchExpandClicked() {
       this.filterExpanded = !this.filterExpanded;
       // this.$emit('clickedExpand');
     },
-    catchTagClicked: function catchTagClicked(tagId) {
+    catchTagClicked(tagId) {
       this.$emit('clickedTag', tagId);
     },
-    catchTagCloseClicked: function catchTagCloseClicked(tagId) {
+    catchTagCloseClicked(tagId) {
       this.$emit('clickedTagClose', tagId);
     },
-    isTagSelected: function isTagSelected(tagName) {
+    isTagSelected(tagName) {
       if (!tagName || this.selectedTagNames === undefined) {
         return false;
       }
 
       return this.selectedTagNames.indexOf(tagName) >= 0;
     },
-    isSelected: function isSelected(tagId) {
+    isSelected(tagId) {
       return this.selectedTags.indexOf(tagId) >= 0;
     },
-    minTagCountToBeVisible: function minTagCountToBeVisible() {
+    minTagCountToBeVisible() {
       let minCount = 5;
 
       if (this.$vuetify.breakpoint.xsOnly) {

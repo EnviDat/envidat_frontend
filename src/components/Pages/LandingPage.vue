@@ -31,8 +31,8 @@
                     my-1 xs6 >
               <base-click-card :title="card.title"
                                 :img="card.img"
-                                :color="card.color"
-                                @clicked="catchCategoryClicked" />
+                                :color="card.darkColor"
+                                @clicked="catchCategoryClicked(card.type)" />
             </v-flex>
           </v-layout>
         </v-container>
@@ -81,21 +81,14 @@ export default {
     }),
   },
   methods: {
-    catchCategoryClicked: function catchCategoryClicked(cardTitle) {
-      // sleep(500);
-      // setTimeout(this.$router.push({ name: 'BrowsePage', params: { cardTitle }}), 1000);
-
-      if (cardTitle.includes('login')) {
+    catchCategoryClicked(cardType) {
+      if (cardType.includes('login')) {
         this.catchLoginclick();
         return;
       }
 
-      this.$router.push({
-        path: BROWSE_PATH,
-        query: {
-          search: cardTitle,
-        },
-      });
+      const tagsEncoded = this.mixinMethods_encodeTagForUrl([cardType.toUpperCase()]);
+      this.mixinMethods_additiveChangeRoute(BROWSE_PATH, undefined, tagsEncoded);
     },
     catchSearchClicked: function catchSearchClicked(search) {
       this.$router.push({

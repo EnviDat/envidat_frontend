@@ -13,7 +13,7 @@ Vue.component("v-layout", VLayout);
 Vue.component("v-flex", VFlex);
 
 import BaseClickCard from "@/components/BaseElements/BaseClickCard.vue";
-import categoryCards from "@/store/modules/categoryCards";
+import categoryCards from "@/store/modules/metadata/categoryCards";
 
 export const methods = {
   onClick: action("clicked")

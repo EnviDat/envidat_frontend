@@ -10,6 +10,15 @@ import { projects } from '@/store/modules/projects/projects';
 import mutations from '@/store/appMutations';
 import actions from '@/store/appActions';
 
+import {
+  FOREST,
+  SNOW,
+  LAND,
+  HAZARD,
+  DIVERSITY,
+  METEO,
+} from '@/store/categoriesConsts';
+
 const globalMethods = require('@/components/globalMethods');
 
 Vue.use(Vuex);
@@ -66,21 +75,22 @@ const persistPlugin = createPersist({
 
 store.plugins = [persistPlugin];
 
-function importCardBackgrounds(store) {
-  setImages(store, 'landscape', require.context('@/assets/cards/landscape/', false, /\.jpg$/));
-  setImages(store, 'forest', require.context('@/assets/cards/forest/', false, /\.jpg$/));
-  setImages(store, 'snow', require.context('@/assets/cards/snow/', false, /\.jpg$/));
-  setImages(store, 'diversity', require.context('@/assets/cards/diversity/', false, /\.jpg$/));
-  setImages(store, 'hazard', require.context('@/assets/cards/hazard/', false, /\.jpg$/));
-}
-
-function setImages(store, categoryName, imgPaths){
+function setImages(categoryName, imgPaths) {
   const images = globalMethods.default.methods.mixinMethods_importImages(imgPaths);
   store.state.cardBGImages[categoryName] = images;
   // this._vm(store.state.cardBGImages, categoryName, images);
 }
 
-function importIcons(store) {
+function importCardBackgrounds() {
+  setImages(LAND, require.context('@/assets/cards/landscape/', false, /\.jpg$/));
+  setImages(FOREST, require.context('@/assets/cards/forest/', false, /\.jpg$/));
+  setImages(SNOW, require.context('@/assets/cards/snow/', false, /\.jpg$/));
+  setImages(DIVERSITY, require.context('@/assets/cards/diversity/', false, /\.jpg$/));
+  setImages(HAZARD, require.context('@/assets/cards/hazard/', false, /\.jpg$/));
+  setImages(METEO, require.context('@/assets/cards/meteo/', false, /\.jpg$/));
+}
+
+function importIcons() {
   const imgPaths = require.context('../assets/icons/', false, /\.png$/);
   const images = globalMethods.default.methods.mixinMethods_importImages(imgPaths);
 
@@ -91,7 +101,7 @@ function importIcons(store) {
   });
 }
 
-importCardBackgrounds(store);
-importIcons(store);
+importCardBackgrounds();
+importIcons();
 
 export default store;

@@ -65,6 +65,7 @@
                       :key="index"
                       :name="tag.name"
                       :selectable="true"
+                      :color="getTagColor(tag.name)"
                       @clicked="catchTagClicked($event, tag.name)"
             />
 
@@ -113,6 +114,8 @@
 
 
 <script>
+import { mapGetters } from 'vuex';
+import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
 import TagChip from '@/components/Cards/TagChip';
 import BaseIconCountView from '@/components/BaseElements/BaseIconCountView';
 
@@ -176,6 +179,9 @@ export default {
     whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
   }),
   computed: {
+    ...mapGetters({
+      categoryCards: `${METADATA_NAMESPACE}/categoryCards`,
+    }),
     dynamicCardBackground() {
       const gradient = this.dark ? this.blackTopToBottom : this.whiteTopToBottom;
 
@@ -290,6 +296,9 @@ export default {
     },
     catchTagClicked(tagId) {
       this.$emit('clickedTag', tagId);
+    },
+    getTagColor(tagName) {
+      return this.mixinMethods_getTagColor(this.categoryCards, tagName);
     },
   },
 };
