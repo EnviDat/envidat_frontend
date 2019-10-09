@@ -1,14 +1,7 @@
 <template>
-  <v-container tag="article"
-                fluid fill-height
-                pa-0 >
-
-    <v-layout row wrap>
-
-      <v-flex xs12 lg10 offset-lg1
-              elevation-5
-              style="z-index: 1;" >
-
+  <v-container tag="article" fluid fill-height pa-0 >
+    <v-layout wrap>
+      <v-flex xs12 lg10 offset-lg1 elevation-5 style="z-index: 1;" >
         <project-header :title="currentProject.title"
                         :titleImg="currentProject.image_display_url"
                         :defaultImg="missionImg"
@@ -17,19 +10,16 @@
                         />
       </v-flex>
 
-      <v-flex xs12 lg10 offset-lg1
-              px-3
-              style="z-index: 0;" >
-
-        <project-body :description="currentProject.description"
-                      :subProjects="currentProject.subProjects"
-                      :metadatas="currentProject.packages"
-                       />
+      <v-flex xs12 lg10 offset-lg1 px-3 style="z-index: 0;" >
+        <project-body
+          :description="currentProject.description"
+          :subProjects="currentProject.subProjects"
+          :metadatas="currentProject.packages"
+        />
       </v-flex>
 
       <div v-if="currentProject.subProjects" >
-        <v-flex xs12 lg10 offset-lg1
-                py-2 px-3 >
+        <v-flex xs12 lg10 offset-lg1 py-2 px-3 >
           <project-subprojects :defaultImg="creatorImg"
                                 :subProjects="currentProject.subProjects"
                                 @projectClick="catchProjectClick"
@@ -41,7 +31,7 @@
       <v-flex xs12 lg10 offset-lg1
               py-2 px-3 >
         <v-card>
-          <div v-if="hasMetadatas" >
+          <div v-if="hasMetadata" >
 
             <v-card-title class="metadataList_title title">Metadatas</v-card-title>
 
@@ -54,7 +44,7 @@
 
           </div>
 
-          <div v-if="!hasMetadatas" >
+          <div v-if="!hasMetadata" >
             <v-card-title class="metadataList_title title">{{ currentProject.title }} has no Metadata connected</v-card-title>
           </div>
         </v-card>
@@ -95,6 +85,7 @@ export default {
      * @description beforeRouteEnter is used to change background image of this page.
      * It's called via vue-router.
      */
+  name: 'ProjectDetailPage',
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.commit(SET_CURRENT_PAGE, PROJECT_DETAIL_PAGENAME);
@@ -113,7 +104,7 @@ export default {
     });
   },
   beforeRouteUpdate(to, from, next) {
-    const toProject = this.getProject(to.params.id);
+    const toProject = this.projects.find(project => project.id === to.params.id);
     let backRoute = { path: PROJECTS_PATH };
 
     if (toProject.parent) {
@@ -143,24 +134,31 @@ export default {
       projects: `${PROJECTS_NAMESPACE}/projects`,
       projectsPageBackRoute: `${PROJECTS_NAMESPACE}/projectsPageBackRoute`,
     }),
+    projectsCardsParents() {
+      // return this.projects.filter(project => !project.parent);
+      const noSubs = [];
+      for (let i = 0; i < this.projects.length; i++) {
+        const p = this.projects[i];
+        if (!p.parent) {
+          noSubs.push(p);
+        }
+      }
+      return noSubs;
+    },
     projectId() {
       return this.$route.params.id;
     },
     currentProject() {
       return this.getProject(this.projectId);
     },
-    mapFilteringPossible: function mapFilteringPossible() {
+    mapFilteringPossible() {
       return this.$vuetify.breakpoint.smAndUp;
     },
-    hasMetadatas() {
+    hasMetadata() {
       return this.currentProject.packages && this.currentProject.packages.length > 0;
     },
     creatorImg() {
-      if (this.$vuetify.breakpoint.mdAndUp) {
-        return creator;
-      }
-
-      return creatorSmall;
+      return this.$vuetify.breakpoint.mdAndUp ? creator : creatorSmall;
     },
   },
   methods: {
@@ -177,18 +175,6 @@ export default {
       }
 
       return current;
-    },
-    projectsCardsParents() {
-      const noSubs = [];
-
-      for (let i = 0; i < this.projects.length; i++) {
-        const p = this.projects[i];
-        if (!p.parent) {
-          noSubs.push(p);
-        }
-      }
-
-      return noSubs;
     },
     /**
      * @description changes the url to page the user was before. Fallback: PROJECTS_PATH

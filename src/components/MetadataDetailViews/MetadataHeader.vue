@@ -16,8 +16,8 @@
                         icon-color="primary"
                         :color="(showPlaceholder || (!showPlaceholder && !metadataTitle)) ? 'white' : 'primary'"
                         :outlined="(!showPlaceholder && metadataTitle)"
-                        tool-tip-text="Close Metadata"
-                        :tool-tip-bottom="true"
+                        tooltip-text="Close Metadata"
+                        :tooltip-bottom="true"
                         @clicked="catchBackClicked" />
 
       <v-layout row wrap
@@ -54,7 +54,7 @@
               v-for="author in authors"
               :key="author.name"
               :name="author.name.trim()"
-              :tool-tip-text="authorToolTipText"
+              :tooltip-text="authorToolTipText"
               @clicked="catchAuthorClicked($event, author.name.trim())" />
           </v-layout>
         </v-flex>
@@ -162,8 +162,8 @@
                           :isToggled="showTagsExpanded"
                           :rotateOnClick="true"
                           :rotateToggle="showTagsExpanded"
-                          :toolTipText="showTagsExpanded ? 'Hide all tags' : 'Show all tags'"
-                          :toolTipBottom="true"
+                          :tooltipText="showTagsExpanded ? 'Hide all tags' : 'Show all tags'"
+                          :tooltipBottom="true"
                           @clicked="showTagsExpanded = !showTagsExpanded" />
       </v-card-actions>
     </v-card>

@@ -1,23 +1,12 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import { storiesOf } from "@storybook/vue";
-import { action } from "@storybook/addon-actions";
+import { storiesOf } from '@storybook/vue';
+import './js/vuetify-components';
 
-import Vue from "vue";
-import { VBtn, VTooltip, VIcon, VImg } from "vuetify/lib";
-
-Vue.component("v-btn", VBtn);
-Vue.component("v-tooltip", VTooltip);
-Vue.component("v-icon", VIcon);
-Vue.component("v-img", VImg);
-
-import BaseIconLabelView from "@/components/BaseElements/BaseIconLabelView.vue";
-// import App.vue for the envidatIcon & metadataInfoIcon css class
-import App from "@/App.vue";
-import fileIcon from "@/assets/icons/fileAudio.png";
-import contact2Icon from "@/assets/icons/contact2.png";
+import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView.vue';
+import fileIcon from '@/assets/icons/fileAudio.png';
+import contact2Icon from '@/assets/icons/contact2.png';
 
 
-storiesOf("1 Lables | IconLabel Collection", module).add("different labels", () => ({
+storiesOf('1 Lables | IconLabel Collection', module).add('different labels', () => ({
   components: { BaseIconLabelView },
   template: `
     <v-layout row wrap
@@ -53,8 +42,6 @@ storiesOf("1 Lables | IconLabel Collection", module).add("different labels", () 
           wordBreak
           />
       </v-flex>
-
-          
 
       <v-flex xs4>
         <base-icon-label-view
@@ -133,6 +120,6 @@ storiesOf("1 Lables | IconLabel Collection", module).add("different labels", () 
   // methods,
   data: () => ({
     fileIcon,
-    contact2Icon
-  })
+    contact2Icon,
+  }),
 }));

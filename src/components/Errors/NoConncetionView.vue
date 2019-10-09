@@ -10,6 +10,11 @@
 
 
 <script>
+  /*
+  Review:
+  - Difference NoConnectionView / NotFoundView
+  - Why path as prop?
+   */
 export default {
   props: {
     backPath: String,

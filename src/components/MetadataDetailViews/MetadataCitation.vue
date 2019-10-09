@@ -26,7 +26,7 @@
             <base-rectangle-button
               margin-class="mx-1 citationButton"
               :button-text="link.text"
-              :tool-tip-text="link.toolTipText"
+              :tooltip-text="link.toolTipText"
               material-icon-name="assignment"
               :is-small="true"
               icon-color="white"

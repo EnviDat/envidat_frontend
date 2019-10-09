@@ -51,7 +51,7 @@ import { GET_GUIDELINES } from '@/store/guidelinesMutationsConsts';
 
 
 export default {
-  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+  beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.commit(SET_CURRENT_PAGE, GUIDELINES_PAGENAME);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
@@ -64,7 +64,7 @@ export default {
      * @description reset the scrolling to the top,
      * because of the scrolling is set from the browsePage or metaDetailPage
      */
-  mounted: function mounted() {
+  mounted() {
     window.scrollTo(0, 0);
   },
   computed: {
@@ -87,7 +87,7 @@ export default {
     /**
        * @description changes the url to page the user was before. Fallback: BrowsePage
        */
-    catchBackClicked: function catchBackClicked() {
+    catchBackClicked() {
       const backRoute = this.aboutPageBackRoute;
 
       if (backRoute) {

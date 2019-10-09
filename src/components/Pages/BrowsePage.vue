@@ -1,37 +1,9 @@
 <template>
-  <v-container grid-list-xs
-              fluid
-              tag="article"
-              pa-0
-  >
-    <v-layout row wrap
-    >
+  <v-container grid-list-xs fluid tag="article" pa-0>
+    <v-layout row wrap>
       <v-flex xs12
               :class="{ 'stickyFilterBar': $vuetify.breakpoint.smAndUp }"
               :style="$vuetify.breakpoint.sm ? 'top: 42px !important;' : ''" >
-
-        <!-- <filter-bar-view :showFiltering="true"
-                          :searchViewLabelText="searchBarPlaceholder"
-                          :controlsLabel="controlsLabel"
-                          :searchTerm="searchTerm"
-                          :searchCount="searchCount"
-                          :searchViewHasButton="false"
-                          :allTags="allTags"
-                          :showPlaceholder="keywordsPlaceholder"
-                          :selectedTagNames="selectedTagNames"
-                          :popularTags="popularTags"
-                          :showMapFilter="showMapFilter"
-                          :mapFilteringPossible="mapFilteringPossible"
-                          :mapFilterHeight="mapFilterHeight"
-                          @clickedSearch="catchSearchClicked"
-                          @clearedSearch="catchSearchCleared"
-                          @clickedTag="catchTagClicked"
-                          @clickedTagClose="catchTagCloseClicked"
-                          @clickedClear="catchTagCleared"
-                          @clickedMapExpand="toggleMapExpand"
-                          @mapFilterChanged="catchMapFilterChanged"
-                          @controlsChanged="controlsChanged"
-        /> -->
 
         <filter-keywords-view :compactLayout="$vuetify.breakpoint.smAndDown"
                               :allTags="allTags"
@@ -70,8 +42,6 @@
                         ['xs6']: showMapFilter & $vuetify.breakpoint.sm,
               }"
               style="position: fixed; top: 135px; right: 10px;" >
-                  <!-- ['pr-3']: showMapFilter & $vuetify.breakpoint.mdAndUp,
-                  ['pl-2']: showMapFilter & $vuetify.breakpoint.sm, -->
         <filter-map-view :totalHeight="mapFilterHeight"
                         :totalWidth="mapFilterWidth"
                         :expanded="showMapFilter"
@@ -108,13 +78,13 @@ import {
 
 
 export default {
-  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+  beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.commit(SET_CURRENT_PAGE, BROWSE_PAGENAME);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
     });
   },
-  mounted: function mounted() {
+  mounted() {
     const that = this;
     window.onscroll = () => {
       that.storeScroll(window.scrollY);
@@ -122,12 +92,12 @@ export default {
 
     this.checkRouteChanges(null);
   },
-  beforeDestroy: function beforeDestroy() {
+  beforeDestroy() {
     // destory the scrolling hook that it won't use the scroll of another page
     window.onscroll = null;
   },
   methods: {
-    loadRouteTags: function loadRouteTags() {
+    loadRouteTags() {
       const tagsEncoded = this.$route.query.tags ? this.$route.query.tags : '';
       let decodedTags = [];
 
@@ -142,21 +112,7 @@ export default {
 
       return false;
     },
-    triggerSearch: function triggerSearch(search) {
-      if (search === this.searchTerm) {
-        return false;
-      }
-
-      this.searchTerm = search;
-
-      if (this.searchTerm && this.searchTerm.length > 0) {
-        this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm, this.selectedTagNames);
-        return true;
-      }
-
-      return false;
-    },
-    areArrayIdentical: function areArrayIdentical(arr1, arr2) {
+    areArrayIdentical(arr1, arr2) {
       if (arr1.length !== arr2.length) return false;
 
       for (let i = arr1.length; i--;) {
@@ -165,14 +121,14 @@ export default {
 
       return true;
     },
-    storeScroll: function storeScroll(scrollY) {
+    storeScroll(scrollY) {
       this.$store.commit(SET_BROWSE_SCROLL_POSITION, scrollY);
     },
-    resetScrollPosition: function resetScrollPosition() {
+    resetScrollPosition() {
       this.storeScroll(0);
       this.mixinMethods_setScrollPosition(0);
     },
-    catchTagClicked: function catchTagClicked(tagName) {
+    catchTagClicked(tagName) {
       if (!this.isTagSelected(tagName)) {
         const newTags = [...this.selectedTagNames, tagName];
 
@@ -180,7 +136,7 @@ export default {
         this.mixinMethods_additiveChangeRoute(BROWSE_PATH, undefined, tagsEncoded);
       }
     },
-    catchTagCloseClicked: function catchTagCloseClicked(tagId) {
+    catchTagCloseClicked(tagId) {
       if (this.selectedTagNames === undefined) {
         return;
       }
@@ -190,34 +146,30 @@ export default {
       const tagsEncoded = this.mixinMethods_encodeTagForUrl(newTags);
       this.mixinMethods_additiveChangeRoute(BROWSE_PATH, undefined, tagsEncoded);
     },
-    catchTagCleared: function catchTagCleared() {
+    catchTagCleared() {
       this.selectedTagNames = [];
       this.filterContent();
     },
-    catchSearchClicked: function catchSearchClicked(searchTerm) {
+    catchSearchClicked(searchTerm) {
       /* eslint-disable no-param-reassign */
       searchTerm = searchTerm ? searchTerm.trim() : '';
       this.mixinMethods_additiveChangeRoute(BROWSE_PATH, searchTerm, undefined);
     },
-    catchSearchCleared: function catchSearchCleared() {
+    catchSearchCleared() {
       this.mixinMethods_additiveChangeRoute(BROWSE_PATH, '', undefined);
     },
-    catchMapFilterChanged: function catchMapFilterChanged(visibleIds) {
-      this.mapFilterVisibleIds = visibleIds;
-    },
-    catchPointClicked: function catchPointClicked(id) {
+    catchPointClicked(id) {
       // bring to top
       // highlight entry
-
       this.$store.commit(`metadata/${PIN_METADATA}`, id);
     },
-    catchClearButtonClick: function catchClearButtonClick() {
+    catchClearButtonClick() {
       this.$store.commit(`metadata/${CLEAR_PINNED_METADATA}`);
     },
-    catchFilterExpandClicked: function catchFilterExpandClicked() {
+    catchFilterExpandClicked() {
       this.filterExpanded = !this.filterExpanded;
     },
-    controlsChanged: function controlsChanged(controlsActive) {
+    controlsChanged(controlsActive) {
       // 0-entry: listView, 1-entry: mapActive
 
       let listActive = false;
@@ -239,30 +191,17 @@ export default {
 
       this.$store.commit(SET_CONTROLS, controlsActive);
     },
-    toggleMapExpand: function toggleMapExpand() {
+    toggleMapExpand() {
       this.showMapFilter = !this.showMapFilter;
     },
-    isTagSelected: function isTagSelected(tagName) {
+    isTagSelected(tagName) {
       if (!tagName || this.selectedTagNames === undefined) {
         return false;
       }
 
       return this.selectedTagNames.indexOf(tagName) >= 0;
     },
-    contentFilterMapIds: function contentFilterMapIds(contentList) {
-      const visibleContent = [];
-
-      for (let i = 0; i < contentList.length; i++) {
-        const el = contentList[i];
-
-        if (this.mapFilterVisibleIds.includes(el.id)) {
-          visibleContent.push(el);
-        }
-      }
-
-      return visibleContent;
-    },
-    dynamicCardBackground: function dynamicCardBackground() {
+    dynamicCardBackground() {
       const max = Object.keys(this.imagesImports).length;
       const randomIndex = this.mixinMethods_randomInt(0, max);
       const cardImg = Object.values(this.imagesImports)[randomIndex];
@@ -273,7 +212,7 @@ export default {
 
       return '';
     },
-    hasRestrictedResources: function hasRestrictedResources(metadata) {
+    hasRestrictedResources(metadata) {
       if (!metadata || !metadata.resources || metadata.resources.length <= 0) {
         return false;
       }
@@ -289,10 +228,10 @@ export default {
 
       return false;
     },
-    filterContent: function filterContent() {
+    filterContent() {
       this.$store.dispatch(`metadata/${FILTER_METADATA}`, this.selectedTagNames);
     },
-    checkRouteChanges: function checkRouteChanges(fromRoute) {
+    checkRouteChanges(fromRoute) {
       if (!fromRoute) {
         if (this.detailPageBackRoute) {
           fromRoute = this.detailPageBackRoute;
@@ -371,16 +310,16 @@ export default {
     searchBarPlaceholder() {
       return this.$vuetify.breakpoint.mdAndUp ? this.searchPlaceholderText : this.searchPlaceholderTextSmall;
     },
-    keywordsPlaceholder: function keywordsPlaceholder() {
+    keywordsPlaceholder() {
       return this.searchingMetadatasContent || this.updatingTags;
     },
-    metadatasContentSize: function metadatasContentSize() {
+    metadatasContentSize() {
       return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
     },
-    searchMetadatasContentSize: function searchMetadatasContentSize() {
+    searchMetadatasContentSize() {
       return this.searchedMetadatasContent !== undefined ? Object.keys(this.searchedMetadatasContent).length : 0;
     },
-    mapFilterHeight: function mapFilterHeight() {
+    mapFilterHeight() {
       const sHeight = document.documentElement.clientHeight;
 
       let height = this.maxMapFilterHeight;
@@ -391,7 +330,7 @@ export default {
 
       return height;
     },
-    mapFilterWidth: function mapFilterWidth() {
+    mapFilterWidth() {
       const sWidth = document.documentElement.clientWidth;
 
       if (this.$vuetify.breakpoint.mdAndUp) {
@@ -404,7 +343,7 @@ export default {
 
       return sWidth;
     },
-    popularTags: function popularTags() {
+    popularTags() {
       const popTags = [];
 
       if (this.allTags) {
@@ -417,7 +356,7 @@ export default {
 
       return popTags;
     },
-    metadataListStyling: function metadataListStyling() {
+    metadataListStyling() {
       const json = {
         xs8: this.mapFilteringPossible && this.showMapFilter,
         xs12: this.mapFilteringPossible && !this.showMapFilter,
@@ -427,10 +366,10 @@ export default {
 
       return json;
     },
-    mapFilteringPossible: function mapFilteringPossible() {
+    mapFilteringPossible() {
       return this.$vuetify.breakpoint.smAndUp;
     },
-    searchCount: function searchCount() {
+    searchCount() {
       return this.filteredContent !== undefined ? this.filteredContent.length : 0;
     },
   },
@@ -440,15 +379,15 @@ export default {
       // react on changes of the route (browser back / forward click)
       this.checkRouteChanges(from);
     },
-    isFilteringContent: function watchFiltering() {
+    isFilteringContent() {
       if (!this.isFilteringContent) {
         this.mixinMethods_setScrollPosition(this.browseScrollPosition);
       }
     },
-    metadatasContent: function watchFilterContent() {
+    metadatasContent() {
       this.filterContent();
     },
-    searchingMetadatasContentOK: function watchSearchFilterContent() {
+    searchingMetadatasContentOK() {
       if (this.searchingMetadatasContentOK) {
         this.filterContent();
       }
