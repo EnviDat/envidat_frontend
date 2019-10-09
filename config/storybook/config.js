@@ -143,5 +143,8 @@ function getCardImages(globalMethods) {
   imgPaths = require.context('@/assets/cards/hazard/', false, /\.jpg$/);
   cardImages.hazard = globalMethods.methods.mixinMethods_importImages(imgPaths);
 
+  imgPaths = require.context('@/assets/cards/meteo/', false, /\.jpg$/);
+  cardImages.meteo = globalMethods.methods.mixinMethods_importImages(imgPaths);
+
   return cardImages;
 }
