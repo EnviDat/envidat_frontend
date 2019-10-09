@@ -6,9 +6,11 @@
     <v-layout column>
       <title-view :title="envidatTitle"
                   :slogan="envidatSlogan"
-                  :sub-slogan="envidatSubSlogan"
-                  :button-text="sloganButtonText"
-                  :button-callback="catchBrowseClicked" />
+                  :subSlogan="envidatSubSlogan"
+                  :buttonText="sloganButtonText"
+                  :buttonCallback="catchBrowseClicked"
+                  :moreButtonText="sloganMoreButtonText"
+                  :moreButtonCallback="catchMoreClicked" />
 
       <v-flex mt-5 offset-md6 >
         <search-bar-view :labelText="labelText"
@@ -41,7 +43,11 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { LANDING_PAGENAME, BROWSE_PATH } from '@/router/routeConsts';
+import {
+  LANDING_PAGENAME,
+  BROWSE_PATH,
+  ABOUT_PATH,
+} from '@/router/routeConsts';
 import BaseClickCard from '@/components/BaseElements/BaseClickCard';
 import TitleView from '@/components/Views/TitleView';
 import SearchBarView from '@/components/Filtering/SearchBarView';
@@ -97,11 +103,11 @@ export default {
         query: { search },
       });
     },
-    catchBrowseClicked: function catchBrowseClicked() {
-      this.$router.push({
-        path: BROWSE_PATH,
-        // query: { '' },
-      });
+    catchBrowseClicked() {
+      this.$router.push({ path: BROWSE_PATH });
+    },
+    catchMoreClicked() {
+      this.$router.push({ path: ABOUT_PATH });
     },
     catchEnterclick: function catchEnterclick() {
       this.redirectToDashboard();
@@ -136,6 +142,7 @@ export default {
     // envidatSlogan: 'Environmental Research Data at your Fingertips. Provided by the many research units of the Swiss Federal Institute for Forest, Snow and Landscape WSL.',
     envidatSubSlogan: 'The data is being provided by the many research units of the Swiss Federal Institute for Forest, Snow and Landscape WSL.',
     sloganButtonText: 'EXPLORE DATA',
+    sloganMoreButtonText: 'READ MORE',
     loginInfos: {
       titleText: 'Do you create data?',
       loginText: 'Creator Login',
