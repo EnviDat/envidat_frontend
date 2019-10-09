@@ -444,7 +444,7 @@ export default {
     infiniteId: +new Date(),
     preloadingDistance: 150,
     scrollTopButtonText: 'Scroll to the top',
-    controlsLabel: 'List Controls',
+    controlsLabel: 'List controls',
     controlsActive: [],
     listView: false,
     showMapFilter: false,
