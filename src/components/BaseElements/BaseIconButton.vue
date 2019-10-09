@@ -5,7 +5,7 @@
         @click.stop="clicked" >
 
     <v-tooltip v-bind="{ top: !toolTipBottom, bottom: toolTipBottom }"
-              :disabled="$vuetify.breakpoint.xsOnly || toolTipText === ''" >
+              :disabled="$vuetify.breakpoint.smAndDown || !toolTipText" >
 
       <v-btn slot="activator"
             style="margin: 0 !important;"

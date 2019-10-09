@@ -1,5 +1,5 @@
 <template>
-  <v-tooltip bottom :disabled="$vuetify.breakpoint.xsOnly || toolTipText === ''">
+  <v-tooltip bottom :disabled="$vuetify.breakpoint.smAndDown || !toolTipText">
     <v-btn slot="activator"
             :small="isSmall"
             :class="marginClass"
