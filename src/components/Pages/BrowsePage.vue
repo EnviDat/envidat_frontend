@@ -88,7 +88,7 @@ export default {
     window.onscroll = null;
   },
   methods: {
-    loadRouteTags: function loadRouteTags() {
+    loadRouteTags() {
       const tagsEncoded = this.$route.query.tags ? this.$route.query.tags : '';
       let decodedTags = [];
 

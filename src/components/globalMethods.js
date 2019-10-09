@@ -1,6 +1,15 @@
 /* eslint-disable camelcase */
 import seedrandom from 'seedrandom';
 
+import {
+  FOREST,
+  SNOW,
+  LAND,
+  HAZARD,
+  DIVERSITY,
+  METEO,
+} from "@/store/categoriesConsts";
+
 export default {
   methods: {
     /**
@@ -185,7 +194,7 @@ export default {
      *
      * @return {Array} metadatas enhanced with a title image based on the metadatas tags
      */
-    mixinMethods_enhanceMetadatas: function mixinMethods_enhanceMetadatas(metadatas, cardBGImages, categoryCards) {
+    mixinMethods_enhanceMetadatas(metadatas, cardBGImages, categoryCards) {
       if (metadatas === undefined && metadatas.length <= 0) {
         return undefined;
       }
@@ -208,7 +217,7 @@ export default {
      *
      * @return {Object} metadata entry enhanced with a title image based on its tags
      */
-    mixinMethods_enhanceTitleImg: function mixinMethods_enhanceTitleImg(metadata, cardBGImages, categoryCards) {
+    mixinMethods_enhanceTitleImg(metadata, cardBGImages, categoryCards) {
       /* eslint-disable no-param-reassign */
       const category = this.mixinMethods_guessTagCategory(metadata.tags);
 
@@ -235,13 +244,27 @@ export default {
 
       return null;
     },
+    mixinMethods_getTagColor(categoryCards, tagName) {
+      if (!tagName){
+        return '';
+      }
+
+      for (let i = 0; i < categoryCards.length; i++) {
+        const cat = categoryCards[i];
+        if (tagName.toLowerCase().includes(cat.type)) {
+          return cat.darkColor;
+        }
+      }
+
+      return '';
+    },
     /**
      * @param {Array} tags
      *
      * @return {String} category based on tags array
      */
     mixinMethods_guessTagCategory: function mixinMethods_guessTagCategory(tags) {
-      let category = 'landscape';
+      let category = LAND;
 
       if (tags) {
         for (let i = 0; i < tags.length; i++) {
@@ -249,19 +272,22 @@ export default {
 
           if (element.name) {
             if (element.name.includes('HAZARD') || element.name.includes('ACCIDENTS')) {
-              category = 'hazard'; break;
+              category = HAZARD; break;
             }
             if (element.name.includes('DIVERSITY')) {
-              category = 'diversity'; break;
+              category = DIVERSITY; break;
             }
             if (element.name.includes('FOREST')) {
-              category = 'forest'; break;
+              category = FOREST; break;
             }
             if (element.name.includes('SNOW') || element.name.includes('AVALANCHE')) {
-              category = 'snow'; break;
+              category = SNOW; break;
             }
-            if (element.name.includes('LANDSCAPE')) {
-              category = 'landscape'; break;
+            if (element.name.includes('METEO') || element.name.includes('CLIMATE')) {
+              category = METEO; break;
+            }
+            if (element.name.includes('LAND') || element.name.includes('LANDSCAPE')) {
+              category = LAND; break;
             }
           }
         }

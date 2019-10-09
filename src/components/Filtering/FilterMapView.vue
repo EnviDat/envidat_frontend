@@ -90,7 +90,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      filteredContent: 'metadata/filteredContent',
       metadataIds: 'metadata/metadataIds',
       metadatasContent: 'metadata/metadatasContent',
       searchedMetadatasContent: 'metadata/searchedMetadatasContent',
@@ -200,7 +199,7 @@ export default {
 
       return map;
     },
-    parseGeoJSON: function parseGeoJSON(geoJsonString) {
+    parseGeoJSON(geoJsonString) {
       try {
         return L.geoJSON(geoJsonString);
       } catch (error) {
@@ -216,9 +215,8 @@ export default {
       this.mapLayerGroup = L.layerGroup([baseMap]);
       this.mapLayerGroup.addTo(map);
     },
-    getPoint: function getPoint(coords, id, title, selected) {
+    getPoint(coords, id, title, selected) {
       const iconOptions = L.Icon.Default.prototype.options;
-      delete iconOptions.mixinMethods_getIconUrl;
       // use the defaultoptions to ensure that all untouched defaults stay in place
 
       iconOptions.iconUrl = selected ? this.selectedMarker : this.marker;
@@ -242,7 +240,7 @@ export default {
 
       return point;
     },
-    getPolygon: function getPolygon(coords, id, title, selected) {
+    getPolygon(coords, id, title, selected) {
       // create a polygon from an array of LatLng points
       // var latlngs = [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]];
       const polygon = L.polygon(coords, {
@@ -257,7 +255,7 @@ export default {
 
       return polygon;
     },
-    getMultiPoint: function getMultiPoint(coords, id, title, selected) {
+    getMultiPoint(coords, id, title, selected) {
       const points = [];
       for (let i = 0; i < coords.length; i++) {
         const pointCoord = coords[i];
@@ -267,7 +265,7 @@ export default {
 
       return points;
     },
-    createMapElements: function createMapElements(locationDataSet) {
+    createMapElements(locationDataSet) {
       const pins = [];
       const multiPins = [];
       const polys = [];
@@ -401,7 +399,7 @@ export default {
         }
       });
     },
-    addControls: function addControls() {
+    addControls() {
       const baseLayers = {
         Map: this.mapLayerGroup,
       };

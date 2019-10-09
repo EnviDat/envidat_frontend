@@ -6,7 +6,7 @@ export default [
   { name: 'FOREST', enabled: true },
   { name: 'HUMIDITY', enabled: true },
   { name: 'ICE', enabled: true },
-  { name: 'LANDSLIDE', enabled: true },
+  { name: 'LAND', enabled: true },
   // { name: 'LONG-TERM', enabled: true },
   { name: 'METEO', enabled: true },
   { name: 'PRECIPITATION', enabled: true },

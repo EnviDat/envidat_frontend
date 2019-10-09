@@ -5,7 +5,7 @@
               'smallChip': $vuetify.breakpoint.smAndDown ? true : false,
     }"
     v-bind="{['close'] : closeable,
-             ['color']: highlighted ? 'primary' : '',
+             ['color']: highlighted ? 'primary' : color,
              ['disabled'] : !selectable,
     }"
     :style="{'height' : $vuetify.breakpoint.xsOnly ? '15px' : '' }"
@@ -24,6 +24,10 @@ export default {
     selectable: Boolean,
     highlighted: Boolean,
     count: Number,
+    color: {
+      type: String,
+      default: '#e0e0e0',
+    },
   },
   computed: {
   },

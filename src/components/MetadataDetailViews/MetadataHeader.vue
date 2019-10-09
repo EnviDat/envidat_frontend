@@ -50,12 +50,11 @@
         <v-flex v-if="authors"
                 xs12 >
           <v-layout row wrap >
-            <tag-chip-author
-              v-for="author in authors"
-              :key="author.name"
-              :name="author.name.trim()"
-              :tool-tip-text="authorToolTipText"
-              @clicked="catchAuthorClicked($event, author.name.trim())" />
+            <tag-chip-author v-for="author in authors"
+                              :key="author.name"
+                              :name="author.name.trim()"
+                              :toolTipText="authorToolTipText"
+                              @clicked="catchAuthorClicked($event, author.name.trim())" />
           </v-layout>
         </v-flex>
 
@@ -131,6 +130,7 @@
                       :name="tag.name"
                       :selectable="true"
                       class="headerTag"
+                      :color="getTagColor(tag.name)"
                       @clicked="catchTagClicked($event, tag.name)" />
 
             <v-flex v-if="tags && maxTagsReached && !showTagsExpanded"
@@ -170,6 +170,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
 import TagChip from '@/components/Cards/TagChip';
 import TagChipAuthor from '@/components/Cards/TagChipAuthor';
 import TagChipPlaceholder from '@/components/Cards/TagChipPlaceholder';
@@ -209,6 +211,9 @@ export default {
     authorToolTipText: 'Search for more data of this Author',
   }),
   computed: {
+    ...mapGetters({
+      categoryCards: `${METADATA_NAMESPACE}/categoryCards`,
+    }),
     maxTagsReached: function maxTagsReached() {
       return this.tags ? this.tags.length >= this.maxTags : false;
     },
@@ -254,6 +259,9 @@ export default {
     iconFlip: function iconFlip(icon) {
       const iconflip = this.dark ? `${icon}_w` : icon;
       return iconflip;
+    },
+    getTagColor(tagName) {
+      return this.mixinMethods_getTagColor(this.categoryCards, tagName);
     },
   },
 };
