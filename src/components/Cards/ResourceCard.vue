@@ -9,123 +9,89 @@
       </div>
     </v-card-title>
 
-    <v-card-text
-      class="pt-0"
-      :class="{
-        'pb-3': $vuetify.breakpoint.mdAndUp,
-        'pb-5': $vuetify.breakpoint.smAndDown,
-      }"
-    >
-      <v-container
-        grid-list-xs
-        pa-0
-      >
-        <v-layout
-          v-bind="{ ['row']: $vuetify.breakpoint.smAndUp,
-                    ['wrap']: $vuetify.breakpoint.smAndUp,
-                    ['column']: $vuetify.breakpoint.xsOnly,
-          }"
-        >
-          <v-flex
-            v-bind="{ [`xs6`]: !this.twoColumnLayout && !showFullDescription,
-                      [`xs12`]: this.twoColumnLayout || showFullDescription }"
-            order-xs1
-            order-sm3
-          >
+    <v-card-text class="pt-0"
+                :class="{
+                  'pb-3': $vuetify.breakpoint.mdAndUp,
+                  'pb-5': $vuetify.breakpoint.smAndDown,
+                }" >
+      <v-container grid-list-xs
+                    pa-0 >
+        <v-layout v-bind="{ ['row']: $vuetify.breakpoint.smAndUp,
+                            ['wrap']: $vuetify.breakpoint.smAndUp,
+                            ['column']: $vuetify.breakpoint.xsOnly,
+                  }" >
+          <v-flex v-bind="{ [`xs6`]: !this.twoColumnLayout && !showFullDescription,
+                            [`xs12`]: this.twoColumnLayout || showFullDescription }"
+                  order-xs1
+                  order-sm3 >
             <v-layout column>
-              <v-flex
-                v-if="showFullDescription"
-                xs11
-                pb-4
-                class="resourceCardText heightAndScroll"
-              >
+              <v-flex v-if="showFullDescription"
+                      xs11
+                      pb-4
+                      class="resourceCardText heightAndScroll" >
                 {{ description }}
               </v-flex>
 
-              <v-flex
-                v-if="!showFullDescription"
-                xs11
-                class="resourceCardText"
-              >
+              <v-flex v-if="!showFullDescription"
+                      xs11
+                      class="resourceCardText" >
                 {{ description | truncate(maxDescriptionLength) }}
               </v-flex>
             </v-layout>
           </v-flex>
 
-          <v-flex
-            v-if="!showFullDescription"
-            order-xs2
-            hidden-sm-and-up
-          >
-            <v-divider
-              :dark="dark"
-              class="my-1"
-            />
+          <v-flex v-if="!showFullDescription"
+                  order-xs2
+                  hidden-sm-and-up >
+            <v-divider :dark="dark"
+                        class="my-1" />
           </v-flex>
 
-          <v-flex
-            v-if="!showFullDescription"
-            v-bind="{ [`xs6`]: !this.twoColumnLayout ,
-                      [`xs12`]: this.twoColumnLayout,
-                      [`pt-3`]: this.twoColumnLayout }"
-            order-xs3
-            order-sm1
-          >
+          <v-flex v-if="!showFullDescription"
+                  v-bind="{ [`xs6`]: !this.twoColumnLayout ,
+                            [`xs12`]: this.twoColumnLayout,
+                            [`pt-3`]: this.twoColumnLayout }"
+                  order-xs3
+                  order-sm1 >
             <v-layout column>
-              <v-flex
-                v-if="doi"
-                pa-0
-              >
-                <base-icon-label-view
-                  :text="doi"
-                  :icon="doiIcon"
-                  icon-tooltip="Data Object Identifier"
-                  :align-left="twoColumnLayout"
-                />
+              <v-flex v-if="doi"
+                      px-0 py-1 >
+                <base-icon-label-view :text="doi"
+                                      :icon="doiIcon"
+                                      icon-tooltip="Data Object Identifier"
+                                      :align-left="twoColumnLayout" />
               </v-flex>
-              <v-flex
-                v-if="format"
-                pa-0
-              >
-                <base-icon-label-view
-                  :text="format"
-                  :icon="extensionIcon()"
-                  icon-tooltip="Format of the file"
-                  :align-left="twoColumnLayout"
-                />
+
+              <v-flex v-if="format"
+                      px-0 py-1 >
+                <base-icon-label-view :text="format"
+                                      :icon="extensionIcon()"
+                                      icon-tooltip="Format of the file"
+                                      :align-left="twoColumnLayout" />
               </v-flex>
-              <v-flex
-                v-if="size"
-                pa-0
-              >
-                <base-icon-label-view
-                  :text="formatedBytes"
-                  :icon="fileSizeIcon"
-                  icon-tooltip="Filesize"
-                  :align-left="twoColumnLayout"
-                />
+
+              <v-flex v-if="size"
+                      px-0 py-1 >
+                <base-icon-label-view :text="formatedBytes"
+                                      :icon="fileSizeIcon"
+                                      icon-tooltip="Filesize"
+                                      :align-left="twoColumnLayout" />
               </v-flex>
-              <v-flex
-                v-if="created"
-                pa-0
-              >
-                <base-icon-label-view
-                  :text="formatedCreated"
-                  :icon="dateCreatedIcon"
-                  icon-tooltip="Date of file creation"
-                  :align-left="twoColumnLayout"
-                />
+
+              <v-flex v-if="created"
+                      px-0 py-1 >
+                <base-icon-label-view :text="formatedCreated"
+                                      :icon="dateCreatedIcon"
+                                      icon-tooltip="Date of file creation"
+                                      :align-left="twoColumnLayout" />
               </v-flex>
-              <v-flex
-                v-if="lastModified"
-                pa-0
-              >
-                <base-icon-label-view
-                  :text="formatedLastModified"
-                  :icon="lastModifiedIcon"
-                  icon-tooltip="Date of last modification"
-                  :align-left="twoColumnLayout"
-                />
+
+              <v-flex v-if="lastModified"
+                      px-0 py-1 >
+                <base-icon-label-view :text="formatedLastModified"
+                                      :icon="lastModifiedIcon"
+                                      icon-tooltip="Date of last modification"
+                                      :align-left="twoColumnLayout" />
               </v-flex>
             </v-layout>
           </v-flex>
