@@ -3,6 +3,41 @@
 
     <v-layout row align-center fill-height justify-space-between>
 
+      <v-flex v-if="loading"
+      style="min-width: 55px; text-align: center;"
+              shrink >
+        <v-progress-circular indeterminate
+                              size="20"
+                              width="2"
+                              color="primary" />
+      </v-flex>
+
+      <v-flex v-if="showSearchCount && !loading"
+              shrink py-0 px-1
+              style="min-width: 55px; text-align: center;" >
+
+        <v-tooltip bottom :disabled="$vuetify.breakpoint.xsOnly">
+          <tag-chip slot="activator"
+                    :style="$vuetify.breakpoint.xsOnly ? 'font-size: 0.65rem !important;' : 'font-size: 0.8rem !important;'"
+                    :name="searchCount ? searchCount.toString() : '0'"
+                    :selectable="false"
+                    :highlighted="searchCount > 0"
+                    :closeable="false" />
+
+          <span>{{ searchCount }} metadata entries found</span>
+        </v-tooltip>
+      </v-flex>
+
+      <v-flex v-if="!hasButton"
+              shrink >
+        <base-icon-button materialIconName="search"
+                          marginClass="ma-0"
+                          color="transparent"
+                          :isToggled="!searchTerm"
+                          @clicked="clicked"
+        />
+      </v-flex>
+
       <v-flex grow py-0 px-2>
         <v-tooltip bottom :disabled="$vuetify.breakpoint.xsOnly || !searchToolTipText">
           <div slot="activator">
@@ -25,37 +60,11 @@
         </v-tooltip>
       </v-flex>
 
-      <v-flex v-if="showSearchCount"
-              shrink py-0 px-1
-              style="text-align: center;">
-
-        <v-tooltip bottom :disabled="$vuetify.breakpoint.xsOnly">
-          <tag-chip
-            slot="activator"
-            :style="$vuetify.breakpoint.xsOnly ? 'font-size: 0.65rem !important;' : 'font-size: 0.8rem !important;'"
-            :name="searchCount ? searchCount.toString() : '0'"
-            :selectable="false"
-            :highlighted="searchCount > 0"
-            :closeable="false"
-          />
-
-          <span>{{ searchCount }} metadata entries found</span>
-        </v-tooltip>
-      </v-flex>
-
-      <v-flex v-if="hasButton" shrink>
+      <v-flex v-if="hasButton"
+              shrink >
         <base-rectangle-button :button-text="buttonText" :is-small="true" @clicked="clicked" />
       </v-flex>
 
-      <v-flex v-if="!hasButton" shrink
-              >
-        <base-icon-button materialIconName="search"
-                          marginClass="ma-0"
-                          color="transparent"
-                          :isToggled="!searchTerm"
-                          @clicked="clicked"
-        />
-      </v-flex>
     </v-layout>
   </v-card>
 </template>
@@ -81,6 +90,10 @@ export default {
     compactLayout: Boolean,
     isFlat: Boolean,
     fixedHeight: Number,
+    loading: Boolean,
+  },
+  beforeMount() {
+    this.searchText = this.searchTerm;
   },
   data: () => ({
     searchText: '',
@@ -103,29 +116,28 @@ export default {
     },
   },
   watch: {
-    searchTerm: function searchTerm(val) {
+    searchTerm(val) {
       // watcher to overtake the property value to the v-model value
-      alert('got new searchTerm ' + val);
       this.searchText = val;
     },
   },
-  updated: function updated() {
+  updated() {
     if (!this.searchText && this.lastSearch) {
       this.clearClicked();
       this.lastSearch = '';
     }
   },
   methods: {
-    clicked: function clicked() {
+    clicked() {
       this.$emit('clicked', this.searchText);
       this.lastSearch = this.searchText;
     },
-    clearClicked: function clearClicked() {
+    clearClicked() {
       // this.$emit('searchCleared');
       this.searchText = '';
       this.$emit('clicked', this.searchText);
     },
-    focusChanged: function focusChanged() {
+    focusChanged() {
       if (!this.searchText) {
         this.clearClicked();
         this.lastSearch = '';
