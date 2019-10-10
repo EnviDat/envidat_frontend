@@ -4,13 +4,13 @@
     :class="$vuetify.breakpoint.smAndDown ? 'pa-1' : 'pa-2'"
   >
     <v-layout column>
-      <title-view :title="envidatTitle"
-                  :slogan="envidatSlogan"
-                  :subSlogan="envidatSubSlogan"
-                  :buttonText="sloganButtonText"
-                  :buttonCallback="catchBrowseClicked"
-                  :moreButtonText="sloganMoreButtonText"
-                  :moreButtonCallback="catchMoreClicked" />
+      <the-title-screen-layout :title="envidatTitle"
+                                :slogan="envidatSlogan"
+                                :subSlogan="envidatSubSlogan"
+                                :buttonText="sloganButtonText"
+                                :buttonCallback="catchBrowseClicked"
+                                :moreButtonText="sloganMoreButtonText"
+                                :moreButtonCallback="catchMoreClicked" />
 
       <v-flex mt-5 offset-md6 >
         <search-bar-view :labelText="labelText"
@@ -49,7 +49,7 @@ import {
   ABOUT_PATH,
 } from '@/router/routeConsts';
 import BaseClickCard from '@/components/BaseElements/BaseClickCard';
-import TitleView from '@/components/Views/TitleView';
+import TheTitleScreenLayout from '@/components/Layouts/TheTitleScreenLayout';
 import SearchBarView from '@/components/Filtering/SearchBarView';
 import {
   SET_APP_BACKGROUND,
@@ -118,7 +118,7 @@ export default {
     },
   },
   components: {
-    TitleView,
+    TheTitleScreenLayout,
     SearchBarView,
     BaseClickCard,
   },
@@ -131,7 +131,7 @@ export default {
     buttonlText: 'SEARCH DATA',
     envidatTitle: 'EnviDat',
     // envidatSlogan: 'Browse a comprehensive collection of environmental data from Switzerland',
-    envidatSlogan: 'Environmental Research Data<br/>at your Fingertips',
+    envidatSlogan: 'Environmental <br/> Research Data<br/>at your Fingertips',
     // envidatSlogan: 'Environmental Research Data at your Fingertips. Provided by the many research units of the Swiss Federal Institute for Forest, Snow and Landscape WSL.',
     envidatSubSlogan: 'The data is being provided by the many research units of the Swiss Federal Institute for Forest, Snow and Landscape WSL.',
     sloganButtonText: 'EXPLORE DATA',
