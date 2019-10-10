@@ -41,19 +41,18 @@
       <v-flex grow py-0 px-2>
         <v-tooltip bottom :disabled="$vuetify.breakpoint.xsOnly || !searchToolTipText">
           <div slot="activator">
-            <v-text-field
-              class="envidatSmallSearch"
-              style="align-items: center;"
-              :class="compactLayout ? 'small' : ''"
-              v-model="searchText"
-              single-line
-              hide-details
-              :flat="isFlat"
-              :placeholder="labelText"
-              @keyup.enter="clicked"
-              append-icon="clear"
-              @click:append="clearClicked"
-            />
+            <v-text-field class="envidatSmallSearch"
+                          style="align-items: center;"
+                          :class="{'small': compactLayout}"
+                          v-model="searchText"
+                          single-line
+                          hide-details
+                          primary
+                          :flat="isFlat"
+                          :placeholder="labelText"
+                          @keyup.enter="clicked"
+                          append-icon="clear"
+                          @click:append="clearClicked" />
           </div>
 
           <span>{{ searchToolTipText }}</span>
@@ -124,12 +123,6 @@ export default {
       // watcher to overtake the property value to the v-model value
       this.searchText = val;
     },
-  },
-  updated() {
-    if (!this.searchText && this.lastSearch) {
-      this.clearClicked();
-      this.lastSearch = '';
-    }
   },
   methods: {
     clicked() {
