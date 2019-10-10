@@ -69,13 +69,13 @@ import {
 
 
 export default {
-  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+  beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.commit(SET_CURRENT_PAGE, BROWSE_PAGENAME);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
     });
   },
-  mounted: function mounted() {
+  mounted() {
     const that = this;
     window.onscroll = () => {
       that.storeScroll(window.scrollY);
@@ -83,7 +83,7 @@ export default {
 
     this.checkRouteChanges(null);
   },
-  beforeDestroy: function beforeDestroy() {
+  beforeDestroy() {
     // destory the scrolling hook that it won't use the scroll of another page
     window.onscroll = null;
   },

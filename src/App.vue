@@ -193,6 +193,12 @@ export default {
       showVersionModal: 'showVersionModal',
       newVersion: 'newVersion',
     }),
+    loading() {
+      return this.loadingMetadatasContent || this.searchingMetadatasContent || this.isFilteringContent;
+    },
+    searchTerm() {
+      return this.$route.query.search;
+    },
     showSearchCount() {
       return this.currentPage === BROWSE_PAGENAME;
     },
