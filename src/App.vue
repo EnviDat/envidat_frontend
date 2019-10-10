@@ -1,28 +1,29 @@
 <template>
   <v-app class="application" :style="dynamicBackground">
 
-    <navigation v-if="$vuetify.breakpoint.mdAndUp"
-                :style="`z-index: ${NavigationZIndex}`"
-                :mini="!this.menuItem.active"
-                :navItems="navItems"
-                :version="appVersion"
-                @menuClick="catchMenuClicked"
-                @itemClick="catchItemClicked" />
-
-    <navigation-mobile v-if="$vuetify.breakpoint.smAndDown"
+    <the-navigation v-if="$vuetify.breakpoint.mdAndUp"
+                    :style="`z-index: ${NavigationZIndex}`"
+                    :mini="!this.menuItem.active"
                     :navItems="navItems"
-                    :style="`position: fixed; top: auto; right: 10px; bottom: 10px; z-index: ${NavigationZIndex}`"
-                    class="elevation-3"
+                    :version="appVersion"
+                    @menuClick="catchMenuClicked"
                     @itemClick="catchItemClicked" />
 
-    <navigation-toolbar :style="`z-index: ${NavToolbarZIndex}`"
-                        :searchTerm="searchTerm"
-                        :showSearchCount="showSearchCount"
-                        :searchCount="searchCount"
-                        :showSearch="showToolbarSearch"
-                        @menuClick="catchMenuClicked"
-                        @searchClick="catchSearchClicked"
-                        @searchCleared="catchSearchCleared" />
+    <the-navigation-small v-if="$vuetify.breakpoint.smAndDown"
+                          :navItems="navItems"
+                          :style="`position: fixed; top: auto; right: 10px; bottom: 10px; z-index: ${NavigationZIndex}`"
+                          class="elevation-3"
+                          @itemClick="catchItemClicked" />
+
+    <the-navigation-toolbar :style="`z-index: ${NavToolbarZIndex}`"
+                            :searchTerm="searchTerm"
+                            :showSearchCount="showSearchCount"
+                            :searchCount="searchCount"
+                            :showSearch="showToolbarSearch"
+                            :loading="loading"
+                            @menuClick="catchMenuClicked"
+                            @searchClick="catchSearchClicked"
+                            @searchCleared="catchSearchCleared" />
 
     <v-content>
       <v-container fluid py-2
@@ -63,6 +64,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import {
+  LANDING_PATH,
   LANDING_PAGENAME,
   BROWSE_PATH,
   BROWSE_PAGENAME,
@@ -76,11 +78,14 @@ import {
   ABOUT_PATH,
   ABOUT_PAGENAME,
 } from '@/router/routeConsts';
-import { BULK_LOAD_METADATAS_CONTENT } from '@/store/metadataMutationsConsts';
+import {
+  METADATA_NAMESPACE,
+  BULK_LOAD_METADATAS_CONTENT,
+} from '@/store/metadataMutationsConsts';
 import { SET_CONFIG } from '@/store/mutationsConsts';
-import Navigation from '@/components/Navigation/Navigation';
-import NavigationMobile from '@/components/Navigation/NavigationMobile';
-import NavigationToolbar from '@/components/Navigation/NavigationToolbar';
+import TheNavigation from '@/components/Navigation/TheNavigation';
+import TheNavigationSmall from '@/components/Navigation/TheNavigationSmall';
+import TheNavigationToolbar from '@/components/Navigation/TheNavigationToolbar';
 import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
 
 export default {
@@ -145,7 +150,11 @@ export default {
         return;
       }
 
-      this.$router.push({ path: item.path });
+      if (this.$route.name === item.pageName) {
+        return;
+      }
+
+      this.$router.push({ path: item.path, query: '' });
     },
     catchSearchClicked(search) {
       this.$router.push({
@@ -170,14 +179,16 @@ export default {
   },
   computed: {
     ...mapGetters({
-      metadataIds: 'metadata/metadataIds',
-      metadatasContent: 'metadata/metadatasContent',
-      loadingMetadataIds: 'metadata/loadingMetadataIds',
-      loadingMetadatasContent: 'metadata/loadingMetadatasContent',
-      loadingCurrentMetadataContent: 'metadata/loadingCurrentMetadataContent',
-      currentMetadataContent: 'metadata/currentMetadataContent',
+      metadataIds: `${METADATA_NAMESPACE}/metadataIds`,
+      metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
+      loadingMetadataIds: `${METADATA_NAMESPACE}/loadingMetadataIds`,
+      loadingMetadatasContent: `${METADATA_NAMESPACE}/loadingMetadatasContent`,
+      loadingCurrentMetadataContent: `${METADATA_NAMESPACE}/loadingCurrentMetadataContent`,
+      searchingMetadatasContent: `${METADATA_NAMESPACE}/searchingMetadatasContent`,
+      currentMetadataContent: `${METADATA_NAMESPACE}/currentMetadataContent`,
+      filteredContent: `${METADATA_NAMESPACE}/filteredContent`,
+      isFilteringContent: `${METADATA_NAMESPACE}/isFilteringContent`,
       currentPage: 'currentPage',
-      filteredContent: 'metadata/filteredContent',
       appBGImage: 'appBGImage',
       showVersionModal: 'showVersionModal',
       newVersion: 'newVersion',
@@ -238,9 +249,9 @@ export default {
     },
   },
   components: {
-    Navigation,
-    NavigationMobile,
-    NavigationToolbar,
+    TheNavigation,
+    TheNavigationSmall,
+    TheNavigationToolbar,
   },
   /* eslint-disable object-curly-newline */
   data: () => ({
@@ -249,11 +260,10 @@ export default {
     dialogCanceled: false,
     appVersion: process.env.VUE_APP_VERSION,
     showMenu: true,
-    searchTerm: '',
     NavToolbarZIndex: 1150,
     NavigationZIndex: 1100,
     navItems: [
-      { title: 'Home', icon: 'envidat', toolTip: 'Back to the start page', active: false, path: './', pageName: LANDING_PAGENAME },
+      { title: 'Home', icon: 'envidat', toolTip: 'Back to the start page', active: false, path: LANDING_PATH, pageName: LANDING_PAGENAME },
       { title: 'Explore', icon: 'search', toolTip: 'Explore research data', active: false, path: BROWSE_PATH, pageName: BROWSE_PAGENAME },
       { title: 'Login', icon: 'person', toolTip: 'Login to upload data', active: false, path: 'https://www.envidat.ch/user/reset', pageName: 'external' },
       { title: 'Organizations', icon: 'account_tree', toolTip: 'Overview of the different organizations', active: false, path: 'https://www.envidat.ch/organization', pageName: 'external' },

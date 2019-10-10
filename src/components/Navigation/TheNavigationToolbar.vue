@@ -14,18 +14,27 @@
 
     <v-spacer></v-spacer>
 
-    <small-search-bar-view v-if="showSearch"
-                            :compactLayout="$vuetify.breakpoint.smAndDown"
-                            class="elevation-0 flex xs12 sm6"
-                            :searchTerm="searchTerm"
-                            :showSearchCount="showSearchCount"
-                            :searchCount="searchCount"
-                            isFlat
-                            :fixedHeight="36"
-                            :labelText="searchBarPlaceholder"
-                            style="align-items: center;"
-                            @clicked="catchSearchClicked"
-                            @searchCleared="catchSearchCleared" />
+    <v-layout row>
+      <v-flex xs6>
+
+      </v-flex>
+
+      <v-flex xs6>
+        <small-search-bar-view v-if="showSearch"
+                                :compactLayout="$vuetify.breakpoint.smAndDown"
+                                class="elevation-0"
+                                :searchTerm="searchTerm"
+                                :showSearchCount="showSearchCount"
+                                :searchCount="searchCount"
+                                isFlat
+                                :fixedHeight="36"
+                                :labelText="searchBarPlaceholder"
+                                :loading="loading"
+                                style="align-items: center;"
+                                @clicked="catchSearchClicked"
+                                @searchCleared="catchSearchCleared" />
+      </v-flex>
+    </v-layout>
 
 
   </v-toolbar>
@@ -47,6 +56,7 @@ export default {
     showSearchCount: Boolean,
     searchCount: Number,
     showSearch: Boolean,
+    loading: Boolean,
   },
   data: () => ({
     Logo,
