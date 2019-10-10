@@ -12,7 +12,7 @@
 
       <v-flex v-if="filterExpanded || $vuetify.breakpoint.smAndUp"
               xs12 mt-1
-                  :class="$vuetify.breakpoint.smAndDown ? 'px-0 pl-1' : 'px-2'" >
+              :class="$vuetify.breakpoint.smAndDown ? 'px-0 pl-1' : 'px-2'" >
         <v-layout row
                   fill-height
                   v-bind="{ ['align-center']: $vuetify.breakpoint.smAndUp,
