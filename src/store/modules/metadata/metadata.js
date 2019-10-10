@@ -1,9 +1,16 @@
 // import createPersist from 'vuex-localstorage';
 
+import globalMethods from '@/components/globalMethods';
+
 import mutations from './mutations';
 import actions from './actions';
 import categoryCards from '@/store/modules/metadata/categoryCards';
 import tags from './tags';
+
+for (let i = 0; i < tags.length; i++) {
+  const tag = tags[i];
+  tag.color = globalMethods.methods.mixinMethods_getTagColor(categoryCards, tag.name);
+}
 
 const initialState = {
   /**

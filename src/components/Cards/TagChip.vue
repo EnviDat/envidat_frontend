@@ -4,8 +4,7 @@
     :class="{ 'white--text': highlighted ? true : false,
               'smallChip': $vuetify.breakpoint.smAndDown ? true : false,
     }"
-    v-bind="{ //'close': closeable,
-              'color': highlighted ? 'primary' : color,
+    v-bind="{ 'color': highlighted ? 'primary' : color,
               'disabled' : !selectable,
     }"
     :style="{'height' : $vuetify.breakpoint.xsOnly ? '15px' : '' }"

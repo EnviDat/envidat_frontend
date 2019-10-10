@@ -273,7 +273,7 @@ export default {
             }
           }
 
-          updatedTags.push({ name: tag.name, enabled: found });
+          updatedTags.push({ name: tag.name, enabled: found, color: tag.color });
         }
 
         commit(UPDATE_TAGS_SUCCESS, updatedTags);
