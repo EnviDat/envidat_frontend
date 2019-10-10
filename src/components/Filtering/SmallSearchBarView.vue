@@ -110,7 +110,11 @@ export default {
         return height;
       }
 
-      height = this.compactLayout ? this.$vuetify.breakpoint.sm ? 38 : 32 : 40;
+      if (this.compactLayout) {
+        height = this.$vuetify.breakpoint.sm ? 38 : 32;
+      } else {
+        height = 40;
+      }
 
       return height;
     },

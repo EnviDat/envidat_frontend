@@ -12,9 +12,17 @@
                                 :moreButtonText="sloganMoreButtonText"
                                 :moreButtonCallback="catchMoreClicked" />
 
-      <v-flex mt-5 offset-md6 >
+      <v-flex hidden-xs-only mt-5 offset-md6 >
         <search-bar-view :labelText="labelText"
-                          :buttonText="buttonlText"
+                          :buttonText="buttonText"
+                          :hasButton="true"
+                          @clicked="catchSearchClicked"
+                        />
+      </v-flex>
+
+      <v-flex hidden-sm-and-up mt-5 >
+        <small-search-bar-view :labelText="labelText"
+                          :buttonText="buttonText"
                           :hasButton="true"
                           @clicked="catchSearchClicked"
                         />
@@ -51,6 +59,7 @@ import {
 import BaseClickCard from '@/components/BaseElements/BaseClickCard';
 import TheTitleScreenLayout from '@/components/Layouts/TheTitleScreenLayout';
 import SearchBarView from '@/components/Filtering/SearchBarView';
+import SmallSearchBarView from '@/components/Filtering/SmallSearchBarView';
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
@@ -120,6 +129,7 @@ export default {
   components: {
     TheTitleScreenLayout,
     SearchBarView,
+    SmallSearchBarView,
     BaseClickCard,
   },
   data: () => ({
@@ -128,7 +138,7 @@ export default {
     // TODO: create images for 1024px (ipad pro), 768px (ipad) and 420px (phone) height
     MobileBGImage: './app_b_browsepage.jpg',
     labelText: "Search for research data topics ex. 'Avalanche'",
-    buttonlText: 'SEARCH DATA',
+    buttonText: 'SEARCH',
     envidatTitle: 'EnviDat',
     // envidatSlogan: 'Browse a comprehensive collection of environmental data from Switzerland',
     envidatSlogan: 'Environmental Research Data at your Fingertips',

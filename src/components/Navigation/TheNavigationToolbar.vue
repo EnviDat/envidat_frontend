@@ -12,14 +12,14 @@
     </v-btn>
 
 
-    <v-spacer></v-spacer>
+    <v-spacer v-if="$vuetify.breakpoint.mdAndUp"></v-spacer>
 
     <v-layout row>
-      <v-flex xs6>
+      <v-flex hidden-sm-and-down md6>
 
       </v-flex>
 
-      <v-flex xs6>
+      <v-flex xs11 md6>
         <small-search-bar-view v-if="showSearch"
                                 :compactLayout="$vuetify.breakpoint.smAndDown"
                                 class="elevation-0"
