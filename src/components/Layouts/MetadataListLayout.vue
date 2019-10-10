@@ -19,7 +19,7 @@
                               @clickedClear="catchTagCleared" />
       </v-flex>
 
-      <v-flex xs12 sm3
+      <v-flex hidden-xs-only sm3
               key="controlPanel" >
         <control-panel-view class="fill-height"
                             :controls="controlsActive"
@@ -30,7 +30,7 @@
       </v-flex>
 
 
-      <v-flex v-if="showMapFilter"
+      <v-flex v-if="showMapFilter && mapFilteringPossible"
               xs12
               key="filterMap" >
 

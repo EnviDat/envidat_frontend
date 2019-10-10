@@ -15,7 +15,8 @@
                           class="elevation-3"
                           @itemClick="catchItemClicked" />
 
-    <the-navigation-toolbar :style="`z-index: ${NavToolbarZIndex}`"
+    <the-navigation-toolbar v-if="showToolbar"
+                            :style="`z-index: ${NavToolbarZIndex}`"
                             :searchTerm="searchTerm"
                             :showSearchCount="showSearchCount"
                             :searchCount="searchCount"
@@ -204,6 +205,9 @@ export default {
     },
     showToolbarSearch() {
       return this.currentPage !== LANDING_PAGENAME;
+    },
+    showToolbar() {
+      return this.showToolbarSearch || !this.$vuetify.breakpoint.smAndDown;
     },
     searchCount() {
       return this.filteredContent !== undefined ? Object.keys(this.filteredContent).length : 0;

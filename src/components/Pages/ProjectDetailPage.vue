@@ -160,7 +160,7 @@ export default {
     currentProject() {
       return this.getProject(this.projectId);
     },
-    mapFilteringPossible: function mapFilteringPossible() {
+    mapFilteringPossible() {
       return this.$vuetify.breakpoint.smAndUp;
     },
     hasMetadatas() {

@@ -15,10 +15,10 @@
                         metadataListStyling }" >
 
         <metadata-list-layout :listContent="filteredContent"
-                            :list-view="listViewActive"
-                            :show-map-filter="showMapFilter"
-                            :map-filtering-possible="mapFilteringPossible"
-                            :place-holder-amount="placeHolderAmount"
+                            :listView="listViewActive"
+                            :showMapFilter="showMapFilter"
+                            :mapFilteringPossible="mapFilteringPossible"
+                            :placeHolderAmount="placeHolderAmount"
                             @clickedTag="catchTagClicked"
                             :allTags="allTags"
                             :selectedTagNames="selectedTagNames"
@@ -334,7 +334,7 @@ export default {
 
       return sWidth;
     },
-    metadataListStyling: function metadataListStyling() {
+    metadataListStyling() {
       const json = {
         xs8: this.mapFilteringPossible && this.showMapFilter,
         xs12: this.mapFilteringPossible && !this.showMapFilter,
@@ -344,10 +344,10 @@ export default {
 
       return json;
     },
-    mapFilteringPossible: function mapFilteringPossible() {
+    mapFilteringPossible() {
       return this.$vuetify.breakpoint.smAndUp;
     },
-    searchCount: function searchCount() {
+    searchCount() {
       return this.filteredContent !== undefined ? this.filteredContent.length : 0;
     },
   },
