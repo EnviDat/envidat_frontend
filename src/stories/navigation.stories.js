@@ -67,9 +67,9 @@ Vue.component('v-list-tile-content', VListTileContent);
 Vue.component('v-list-tile-sub-title', VListTileSubTitle);
 Vue.component('v-list-tile-title', VListTileTitle);
 
-import Navigation from "@/components/Navigation/Navigation.vue";
-import NavigationMobile from "@/components/Navigation/NavigationMobile.vue";
-import NavigationToolbar from "@/components/Navigation/NavigationToolbar.vue";
+import TheNavigation from "@/components/Navigation/TheNavigation.vue";
+import TheNavigationSmall from "@/components/Navigation/TheNavigationSmall.vue";
+import TheNavigationToolbar from "@/components/Navigation/TheNavigationToolbar.vue";
 // import BaseRectangleButton from "@/components/BaseElements/BaseRectangleButton.vue";
 
 export const methods = {
@@ -113,7 +113,7 @@ storiesOf("5 Navigation | Redesigned Navigation", module)
   methods
 }))
 .add("Menu Mini", () => ({
-  components: { NavigationMobile },
+  components: { TheNavigationSmall },
   template: `
     <v-container>
       <navigation-mini :navItems="navItems"
@@ -131,7 +131,7 @@ storiesOf("5 Navigation | Redesigned Navigation", module)
   methods
 }))
 .add("Toolbar", () => ({
-  components: { NavigationToolbar },
+  components: { TheNavigationToolbar },
   template: `
       <navigation-toolbar
                   labelText="Search for something"
@@ -141,7 +141,7 @@ storiesOf("5 Navigation | Redesigned Navigation", module)
             />`,
   methods
 })).add("Menu & Toolbar", () => ({
-  components: { Navigation, NavigationToolbar },
+  components: { TheNavigation, TheNavigationToolbar },
   template: `
       <navigation
         :navItems="navItems"
