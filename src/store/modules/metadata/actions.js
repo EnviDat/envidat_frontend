@@ -24,9 +24,7 @@ import { tagsIncludedInSelectedTags } from '@/components/metadataFilterMethods';
 
 /* eslint-disable no-unused-vars  */
 const ENVIDAT_PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
-const SOLR_PROXY = process.env.VUE_APP_SOLR_PROXY;
-// const API_BASE = '/api/3/action/';
-const SOLR_API_BASE = '/solr/ckan_default/';
+const API_BASE = '/api/3/action/';
 const useTestData = process.env.VUE_APP_USE_TESTDATA;
 
 function urlRewrite(url, baseUrl, proxyUrl) {
@@ -136,19 +134,22 @@ export default {
       }
     }
 
-    const notesQuery = `{! q.op=OR df=notes}${searchTerm}`;
-    const titleQuery = `{! q.op=OR df=title}${searchTerm}`;
-    const authorQuery = `{! df=author}${searchTerm}`;
+    // const notesQuery = `{! q.op=OR df=notes}${searchTerm}`;
+    // const titleQuery = `{! q.op=OR df=title}${searchTerm}`;
+    // const authorQuery = `{! df=author}${searchTerm}`;
 
     // const url = urlRewrite(`select?q=${titleQuery} OR ${notesQuery} OR ${authorQuery}&wt=json&rows=1000`, SOLR_API_BASE, SOLR_PROXY);
-    const url = urlRewrite(
-      `select?q=title:${searchTerm} OR notes:${searchTerm} OR author:${searchTerm}&wt=json&rows=1000`,
-      SOLR_API_BASE,
-      SOLR_PROXY,
-    );
+    // const url = urlRewrite(
+    //   `?fq=title:${searchTerm} OR notes:${searchTerm} OR author:${searchTerm}&wt=json&rows=1000`,
+    //   SOLR_API_BASE,
+    //   SOLR_PROXY,
+    // );
 
-    // const url = `/api/search/dataset?q=${searchTerm}`;
-    // const url = urlRewrite(`/api/search/dataset?q=${searchTerm}&rows=1000`, '', ENVIDAT_PROXY);
+    const url = urlRewrite(
+      `package_search?q=title:${searchTerm} OR notes:${searchTerm} OR author:${searchTerm}&wt=json&rows=1000`,
+      API_BASE,
+      ENVIDAT_PROXY,
+    );
 
     axios
       .get(url)
@@ -177,45 +178,39 @@ export default {
       return;
     }
 
-    const url = urlRewrite(
-      `select?q=name:${metadataId} OR id:${metadataId} &wt=json&rows=1`,
-      SOLR_API_BASE,
-      SOLR_PROXY,
-    );
-    axios
-      .get(url)
-      .then((response) => {
-        let entry = response.data.response.docs;
-        if (response.data.response.docs instanceof Array) {
-          entry = response.data.response.docs[0];
-        }
+    // const url = urlRewrite(
+    //   `select?q=name:${metadataId} OR id:${metadataId} &wt=json&rows=1`,
+    //   SOLR_API_BASE,
+    //   SOLR_PROXY,
+    // );
+    // axios
+    //   .get(url)
+    //   .then((response) => {
+    //     let entry = response.data.response.docs;
+    //     if (response.data.response.docs instanceof Array) {
+    //       entry = response.data.response.docs[0];
+    //     }
 
-        commit(LOAD_METADATA_CONTENT_BY_ID_SUCCESS, entry);
-      })
-      .catch((reason) => {
-        commit(LOAD_METADATA_CONTENT_BY_ID_ERROR, reason);
-      });
+    //     commit(LOAD_METADATA_CONTENT_BY_ID_SUCCESS, entry);
+    //   })
+    //   .catch((reason) => {
+    //     commit(LOAD_METADATA_CONTENT_BY_ID_ERROR, reason);
+    //   });
 
-    // const url = urlRewrite(`package_show?id=${metadataId}`, API_BASE, ENVIDAT_PROXY);
+    const url = urlRewrite(`package_show?id=${metadataId}`, API_BASE, ENVIDAT_PROXY);
 
-    // axios.get(url).then((response) => {
-    //   commit(LOAD_METADATA_CONTENT_BY_ID_SUCCESS, response.data.result);
-    // }).catch((reason) => {
-    //   commit(LOAD_METADATA_CONTENT_BY_ID_ERROR, reason);
-    // });
+    axios.get(url).then((response) => {
+      commit(LOAD_METADATA_CONTENT_BY_ID_SUCCESS, response.data.result);
+    }).catch((reason) => {
+      commit(LOAD_METADATA_CONTENT_BY_ID_ERROR, reason);
+    });
   },
   async [BULK_LOAD_METADATAS_CONTENT]({ dispatch, commit }) {
     commit(BULK_LOAD_METADATAS_CONTENT);
-    // console.log(BULK_LOAD_METADATAS_CONTENT);
 
-    // const url = urlRewrite('package_search', API_BASE, ENVIDAT_PROXY);
-    // const url = urlRewrite('select?q=title:*&wt=json&rows=1000', SOLR_API_BASE, SOLR_PROXY);
-    // const url = `${SOLR_PROXY}${SOLR_API_BASE}select&q=title:*&wt=json&rows=1000`;
-
-    // const url = '/api/action/current_package_list_with_resources&limit=1000&offset=0';
     const url = urlRewrite(
-      '/api/action/current_package_list_with_resources?limit=1000&offset=0',
-      '',
+      'current_package_list_with_resources?limit=1000&offset=0',
+      API_BASE,
       ENVIDAT_PROXY,
     );
 
