@@ -32,6 +32,24 @@ import globalMethods from '@/components/globalMethods';
 
 const conversion = require('./conversion');
 
+function enhanceMetadatas(store, datasets) {
+  const { cardBGImages } = store.getters;
+  const categoryCards = store.getters[`${METADATA_NAMESPACE}/categoryCards`];
+  const metadatasContent = {};
+
+  for (let i = 0; i < datasets.length; i++) {
+    let dataset = datasets[i];
+    dataset = globalMethods.methods.mixinMethods_enhanceTitleImg(dataset, cardBGImages, categoryCards);
+    dataset = globalMethods.methods.mixinMethods_enhanceTags(dataset, categoryCards);
+
+    dataset.location = metaDataFactory.createLocation(dataset);
+
+    metadatasContent[dataset.id] = dataset;
+  }
+
+  return metadatasContent;
+}
+
 export default {
   [SEARCH_METADATA](state) {
     state.searchingMetadatasContent = true;
@@ -39,14 +57,10 @@ export default {
     state.searchedMetadatasContent = {};
   },
   [SEARCH_METADATA_SUCCESS](state, payload) {
-    /* eslint-disable no-underscore-dangle */
-    for (let i = 0; i < payload.length; i++) {
-      const element = payload[i];
-      const ckanJSON = conversion.solrResultToCKANJSON(element);
 
-      this._vm.$set(state.searchedMetadatasContent, ckanJSON.id, ckanJSON);
-    }
+    state.searchedMetadatasContent = enhanceMetadatas(this, payload)
 
+    // this._vm.$set(state.searchedMetadatasContent, ckanJSON.id, ckanJSON);
     state.searchingMetadatasContentOK = true;
     state.searchingMetadatasContent = false;
   },
@@ -105,20 +119,8 @@ export default {
     state.metadatasContent = {};
   },
   [BULK_LOAD_METADATAS_CONTENT_SUCCESS](state, payload) {
-    /* eslint-disable no-underscore-dangle */
-    const { cardBGImages } = this.getters;
-    const categoryCards = this.getters[`${METADATA_NAMESPACE}/categoryCards`];
 
-    for (let i = 0; i < payload.length; i++) {
-      let dataset = payload[i];
-      dataset = globalMethods.methods.mixinMethods_enhanceTitleImg(dataset, cardBGImages, categoryCards);
-      dataset = globalMethods.methods.mixinMethods_enhanceTags(dataset, categoryCards);
-
-      dataset.location = metaDataFactory.createLocation(dataset);
-
-      // this._vm.$set(state.metadatasContent, el.id, el);
-      state.metadatasContent[dataset.id] = dataset;
-    }
+    state.metadatasContent = enhanceMetadatas(this, payload)
 
     state.metadatasContentOK = true;
     state.loadingMetadatasContent = false;

@@ -160,7 +160,7 @@ export default {
     catchSearchClicked(search) {
       this.$router.push({
         path: BROWSE_PATH,
-        query: { search },
+        query: { tags: this.$route.query.tags, search },
       });
     },
     catchSearchCleared() {
