@@ -80,6 +80,7 @@
                         :lockedIconString="lockedIconString"
                         :unlockedIconString="unlockedIconString"
                         :categoryColor="metadatasContent[pinnedId].categoryColor"
+                        :categoryCards="categoryCards"
                         @clickedEvent="metaDataClicked"
                         @clickedTag="catchTagClicked" />
       </v-flex>
@@ -203,16 +204,16 @@ export default {
   computed: {
     ...mapGetters({
       metadataIds: `${METADATA_NAMESPACE}/metadataIds`,
-      metadatasContent: 'metadata/metadatasContent',
-      searchedMetadatasContent: 'metadata/searchedMetadatasContent',
-      searchingMetadatasContent: 'metadata/searchingMetadatasContent',
-      searchingMetadatasContentOK: 'metadata/searchingMetadatasContentOK',
-      loadingMetadatasContent: 'metadata/loadingMetadatasContent',
-      vIndex: 'metadata/vIndex',
-      vReloadAmount: 'metadata/vReloadAmount',
-      vReloadDelay: 'metadata/vReloadDelay',
-      isFilteringContent: 'metadata/isFilteringContent',
-      // pinnedIds: 'metadata/pinnedIds',
+      metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
+      searchedMetadatasContent: `${METADATA_NAMESPACE}/searchedMetadatasContent`,
+      searchingMetadatasContent: `${METADATA_NAMESPACE}/searchingMetadatasContent`,
+      searchingMetadatasContentOK: `${METADATA_NAMESPACE}/searchingMetadatasContentOK`,
+      loadingMetadatasContent: `${METADATA_NAMESPACE}/loadingMetadatasContent`,
+      vIndex: `${METADATA_NAMESPACE}/vIndex`,
+      vReloadAmount: `${METADATA_NAMESPACE}/vReloadAmount`,
+      vReloadDelay: `${METADATA_NAMESPACE}/vReloadDelay`,
+      isFilteringContent: `${METADATA_NAMESPACE}/isFilteringContent`,
+      categoryCards: `${METADATA_NAMESPACE}/categoryCards`,
     }),
     showPinnedElements() {
       return !this.loading && this.showMapFilter && this.pinnedIds.length > 0;

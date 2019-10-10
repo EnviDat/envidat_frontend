@@ -7,9 +7,7 @@
       <v-flex v-if="!filterExpanded"
               hidden-sm-and-up
               xs12 px-2 py-2 >
-        <div class="mx-3">
-          Filter for Keywords
-        </div>
+        <div class="mx-3">Filter for Keywords</div>
       </v-flex>
 
       <v-flex v-if="filterExpanded || $vuetify.breakpoint.smAndUp"
@@ -48,7 +46,7 @@
                       :highlighted="false"
                       :closeable="false"
                       class="filterTag"
-                      :color="getTagColor(tag.name)"
+                      :color="tag.color"
                       @clicked="catchTagClicked($event, tag.name)" />
           </v-flex>
         </v-layout>
@@ -108,8 +106,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
 import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import TagChip from '@/components/Cards/TagChip';
@@ -142,9 +138,6 @@ export default {
     filterExpanded: false,
   }),
   computed: {
-    ...mapGetters({
-      categoryCards: `${METADATA_NAMESPACE}/categoryCards`,
-    }),
     unselectedTags() {
       const unselectedTags = [];
 
@@ -234,9 +227,6 @@ export default {
 
       // console.log("numberOfTags " + numberOfTags + " " + textLength);
       return numberOfTags;
-    },
-    getTagColor(tagName) {
-      return this.mixinMethods_getTagColor(this.categoryCards, tagName);
     },
     catchExpandClicked() {
       this.filterExpanded = !this.filterExpanded;

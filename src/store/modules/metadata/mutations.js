@@ -31,8 +31,6 @@ import metaDataFactory from '@/components/metaDataFactory';
 import globalMethods from '@/components/globalMethods';
 
 const conversion = require('./conversion');
-// const globalMethods = require('@/components/globalMethods');
-// const metaDataFactory = require('@/components/metaDataFactory');
 
 export default {
   [SEARCH_METADATA](state) {
@@ -114,6 +112,7 @@ export default {
     for (let i = 0; i < payload.length; i++) {
       let dataset = payload[i];
       dataset = globalMethods.methods.mixinMethods_enhanceTitleImg(dataset, cardBGImages, categoryCards);
+      dataset = globalMethods.methods.mixinMethods_enhanceTags(dataset, categoryCards);
 
       dataset.location = metaDataFactory.createLocation(dataset);
 

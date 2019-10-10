@@ -19,7 +19,7 @@ export default {
      * @param {array} jsonTags: array of tagNames
      * @return {String} encoded string usable for urls
      */
-    mixinMethods_encodeTagForUrl: function mixinMethods_encodeTagForUrl(jsonTags) {
+    mixinMethods_encodeTagForUrl(jsonTags) {
       if (jsonTags && jsonTags.length > 0) {
         const jsonString = JSON.stringify(jsonTags);
 
@@ -42,7 +42,7 @@ export default {
      * @param {String} urlquery: encoded string
      * @return {array}: array of tagNames
      */
-    mixinMethods_decodeTagsFromUrl: function mixinMethods_decodeTagsFromUrl(urlquery) {
+    mixinMethods_decodeTagsFromUrl(urlquery) {
       if (urlquery) {
         let jsonConformString = urlquery.replace(/\./g, '+');
         jsonConformString = jsonConformString.replace(/_/g, '/');
@@ -66,7 +66,7 @@ export default {
      * @param {String} search search term
      * @param {String} tags encoded string
      */
-    mixinMethods_additiveChangeRoute: function mixinMethods_additiveChangeRoute(basePath, search, tags) {
+    mixinMethods_additiveChangeRoute(basePath, search, tags) {
       const query = {};
 
       if (search !== undefined) {
@@ -90,7 +90,7 @@ export default {
      * @param {String} date expecting a format like 2017-08-15T15:25:45.175790
      * @return {String} Returns a date string containing the date and hours:minutes:seconds
      */
-    mixinMethods_formatDate: function mixinMethods_formatDate(date) {
+    mixinMethods_formatDate(date) {
       // expecting a format like 2017-08-15T15:25:45.175790
       let formatedDate = '';
 
@@ -117,7 +117,7 @@ export default {
      * @param {String} iconName
      * @return {String} relative file path with extension to the icon image file
      */
-    mixinMethods_getIcon: function mixinMethods_getIcon(iconName) {
+    mixinMethods_getIcon(iconName) {
       const iconKey = `./${iconName}.png`;
       return this.$store.getters.iconImages[iconKey];
     },
@@ -127,7 +127,7 @@ export default {
      * @param {*} iconName
      * @return {string} relative file path to the icon image file
      */
-    mixinMethods_getIconFileExtension: function mixinMethods_getIconFileExtension(fileExtension) {
+    mixinMethods_getIconFileExtension(fileExtension) {
       const ext = fileExtension.toLowerCase();
       const iconKey = `./file${ext}.png`;
 
@@ -141,7 +141,7 @@ export default {
      *
      * @return {Map<string, string>} Image cache
      */
-    mixinMethods_importImages: function mixinMethods_importImages(imgs, checkForString) {
+    mixinMethods_importImages(imgs, checkForString) {
       const imgCache = {};
 
       imgs.keys().forEach((key) => {
@@ -159,7 +159,7 @@ export default {
      * @param {Number} max
      * @param {String} seed
      */
-    mixinMethods_randomInt: function mixinMethods_randomInt(min, max, seed = 'For the Horde!') {
+    mixinMethods_randomInt(min, max, seed = 'For the Horde!') {
       const rng = seedrandom(seed);
       const r = Math.floor(rng() * 10);
 
@@ -178,7 +178,7 @@ export default {
      *
      * @return {Object} metadataEntry enhanced with a title image based on the entrys tags
      */
-    mixinMethods_enhanceMetadataEntry: function mixinMethods_enhanceMetadataEntry(metadataEntry, cardBGImages, categoryCards) {
+    mixinMethods_enhanceMetadataEntry(metadataEntry, cardBGImages, categoryCards) {
       if (!metadataEntry.titleImg) {
         this.mixinMethods_enhanceTitleImg(metadataEntry, cardBGImages, categoryCards);
       }
@@ -256,14 +256,25 @@ export default {
         }
       }
 
-      return '';
+      return '#e0e0e0';
+    },
+    mixinMethods_enhanceTags(dataset, categoryCards) {
+
+      if (dataset && dataset.tags && dataset.tags instanceof Array) {
+        for (let j = 0; j < dataset.tags.length; j++) {
+          const tag = dataset.tags[j];
+          tag.color = this.mixinMethods_getTagColor(categoryCards, tag.name);
+        }
+      }
+
+      return dataset;
     },
     /**
      * @param {Array} tags
      *
      * @return {String} category based on tags array
      */
-    mixinMethods_guessTagCategory: function mixinMethods_guessTagCategory(tags) {
+    mixinMethods_guessTagCategory(tags) {
       let category = LAND;
 
       if (tags) {
@@ -301,7 +312,7 @@ export default {
      * @param {*} a
      * @param {*} b
      */
-    mixinMethods_formatBytes: function mixinMethods_formatBytes(a, b) {
+    mixinMethods_formatBytes(a, b) {
       if (a === 0) return '0 Bytes';
 
       const c = 1024;
@@ -315,7 +326,7 @@ export default {
     /**
      * @param {Number} pos Sets the position to the main scroll position of the main
      */
-    mixinMethods_setScrollPosition: function mixinMethods_setScrollPosition(pos) {
+    mixinMethods_setScrollPosition(pos) {
       window.scrollTo(0, pos);
     },
   },
