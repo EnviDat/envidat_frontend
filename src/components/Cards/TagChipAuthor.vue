@@ -51,6 +51,8 @@ export default {
     opacity: 0.85;
     height: 24px !important;
     background-color: #f8f8f8 !important;
+    margin-top: 0;
+    margin-bottom: 0;
   }
 
   .authorTag > .v-chip__content > .v-avatar {
