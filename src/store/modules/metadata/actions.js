@@ -19,7 +19,6 @@ import {
   METADATA_NAMESPACE,
 } from '@/store/metadataMutationsConsts';
 
-const globalMethods = require('@/factories/globalMethods');
 import { tagsIncludedInSelectedTags } from '@/factories/metadataFilterMethods';
 
 /* eslint-disable no-unused-vars  */
@@ -66,18 +65,6 @@ function contentFilteredByTags(value, selectedTagNames) {
 
   return false;
 }
-
-axios.interceptors.response.use(function (response) {
-  // Any status code that lie within the range of 2xx cause this function to trigger
-  // Do something with response data
-  console.log('interceptor got ' + response.status);
-  return response;
-}, function (error) {
-  console.log('interceptor error ' + error);
-  // Any status codes that falls outside the range of 2xx cause this function to trigger
-  // Do something with response error
-  return Promise.reject(error);
-});
 
 export default {
   async [SEARCH_METADATA]({ commit }, searchTerm) {

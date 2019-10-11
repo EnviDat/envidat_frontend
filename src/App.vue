@@ -3,11 +3,23 @@
 
     <v-snackbar v-if="error"
                 v-model="showSnackbar"
-                :timeout="10000"
-                top
-                color="error"
-                style="z-index: 1500;" >
-      {{ error }}
+                :timeout="error.timeout"
+                :bottom="error.y === 'bottom'"
+                :left="error.x === 'left'"
+                :right="error.x === 'right'"
+                :top="error.y === 'top'"
+                :color="error.color"
+                multi-line
+                :style="`z-index: ${NotificationZIndex};`" >
+      {{ error.message }}
+
+      <div class="caption"> {{ error.details }}</div>
+
+      <v-btn dark
+              color="secondary"
+              @click="catchReportClicked" >
+        Report
+      </v-btn>
       <v-btn dark
               flat
               @click="showSnackbar = false" >
@@ -93,6 +105,7 @@ import {
   POLICIES_PAGENAME,
   ABOUT_PATH,
   ABOUT_PAGENAME,
+  REPORT_PATH,
 } from '@/router/routeConsts';
 import {
   METADATA_NAMESPACE,
@@ -130,6 +143,9 @@ export default {
     this.updateActiveStateOnNavItems();
   },
   methods: {
+    log(msg) {
+      console.log(msg);
+    },
     updateActiveStateOnNavItems() {
       if (!this.currentPage) {
         return;
@@ -180,6 +196,9 @@ export default {
     },
     catchSearchCleared() {
       this.searchTerm = '';
+    },
+    catchReportClicked() {
+      this.$router.push({ path: REPORT_PATH });
     },
     reloadApp() {
       window.location.reload();
@@ -294,6 +313,7 @@ export default {
     showSnackbar: false,
     NavToolbarZIndex: 1150,
     NavigationZIndex: 1100,
+    NotificationZIndex: 1500,
     navItems: [
       { title: 'Home', icon: 'envidat', toolTip: 'Back to the start page', active: false, path: LANDING_PATH, pageName: LANDING_PAGENAME },
       { title: 'Explore', icon: 'search', toolTip: 'Explore research data', active: false, path: BROWSE_PATH, pageName: BROWSE_PAGENAME },
