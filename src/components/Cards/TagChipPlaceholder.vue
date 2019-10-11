@@ -1,11 +1,7 @@
 <template>
-  <v-chip
-    class="placeholder_chip"
-  >
-    <div
-      style="width: 50px;"
-      class="skeleton skeleton-size-small skeleton-color-concrete skeleton-animation-shimmer"
-    >
+  <v-chip class="placeholder_chip" >
+    <div style="width: 35px;"
+          class="skeleton skeleton-size-small skeleton-color-concrete skeleton-animation-shimmer" >
       <div class="bone bone-type-text bone-style-steps" />
     </div>
   </v-chip>
