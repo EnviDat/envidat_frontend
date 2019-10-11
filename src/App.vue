@@ -1,6 +1,20 @@
 <template>
   <v-app class="application" :style="dynamicBackground">
 
+    <v-snackbar v-if="error"
+                v-model="showSnackbar"
+                :timeout="10000"
+                top
+                color="error"
+                style="z-index: 1500;" >
+      {{ error }}
+      <v-btn dark
+              flat
+              @click="showSnackbar = false" >
+        Close
+      </v-btn>
+    </v-snackbar>
+
     <the-navigation v-if="$vuetify.breakpoint.mdAndUp"
                     :style="`z-index: ${NavigationZIndex}`"
                     :mini="!this.menuItem.active"
@@ -59,6 +73,7 @@
         </v-card>
       </v-dialog>
     </v-content>
+
   </v-app>
 </template>
 
@@ -193,6 +208,7 @@ export default {
       appBGImage: 'appBGImage',
       showVersionModal: 'showVersionModal',
       newVersion: 'newVersion',
+      error: 'error',
     }),
     loading() {
       return this.loadingMetadatasContent || this.searchingMetadatasContent || this.isFilteringContent;
@@ -263,6 +279,11 @@ export default {
     TheNavigationSmall,
     TheNavigationToolbar,
   },
+  watch: {
+    error() {
+      this.showSnackbar = true;
+    },
+  },
   /* eslint-disable object-curly-newline */
   data: () => ({
     appBGImages: {},
@@ -270,6 +291,7 @@ export default {
     dialogCanceled: false,
     appVersion: process.env.VUE_APP_VERSION,
     showMenu: true,
+    showSnackbar: false,
     NavToolbarZIndex: 1150,
     NavigationZIndex: 1100,
     navItems: [

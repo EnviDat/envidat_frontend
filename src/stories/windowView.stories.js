@@ -45,7 +45,7 @@ import WindowVerticalView from "@/components/ProjectDetailViews/WindowVerticalVi
 import WindowView from "@/components/ProjectDetailViews/WindowView.vue";
 
 import projectJSON from "@/testdata/projects";
-import projectDataFactory from "@/components/projectsDataFactory";
+import projectDataFactory from "@/factories/projectsDataFactory";
 const enhancedProjects = projectDataFactory.enhanceSubprojectsFromExtras(projectJSON.result);
 const projects = enhancedProjects;
 

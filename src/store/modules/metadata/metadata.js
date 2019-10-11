@@ -1,6 +1,6 @@
 // import createPersist from 'vuex-localstorage';
 
-import globalMethods from '@/components/globalMethods';
+import globalMethods from '@/factories/globalMethods';
 
 import mutations from './mutations';
 import actions from './actions';
@@ -82,10 +82,6 @@ const initialState = {
   idRemapping: new Map([
     ['als‐based‐snow‐depth‐and‐canopy‐height‐maps‐from‐flights‐in‐2017‐grisons‐ch‐and‐grand‐mesa‐co', 'grand-mesa-co']
   ]),
-  /**
-   * Error properties for general Error handling in the app (incomplete)
-   */
-  error: Object,
 };
 
 export const metadata = {

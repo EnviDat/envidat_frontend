@@ -5,8 +5,8 @@ import Vuetify, { VApp, VContainer, VLayout, VFlex } from 'vuetify/lib';
 
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
-import globalMethods from '@/components/globalMethods';
-import metaDataFactory from '@/components/metaDataFactory';
+import globalMethods from '@/factories/globalMethods';
+import metaDataFactory from '@/factories/metaDataFactory';
 
 const cardImages = getCardImages(globalMethods);
 import metadataCards from '@/stories/metadata';
