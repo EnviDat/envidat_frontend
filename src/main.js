@@ -9,7 +9,7 @@ import InfiniteLoading from 'vue-infinite-loading';
 import App from './App';
 import router from './router';
 import store from './store/store';
-import globalMethods from './components/globalMethods';
+import globalMethods from './factories/globalMethods';
 
 
 Vue.use(InfiniteLoading /* , { options } */);

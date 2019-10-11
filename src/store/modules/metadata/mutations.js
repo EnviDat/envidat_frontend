@@ -27,8 +27,8 @@ import {
   METADATA_NAMESPACE,
 } from '@/store/metadataMutationsConsts';
 
-import metaDataFactory from '@/components/metaDataFactory';
-import globalMethods from '@/components/globalMethods';
+import metaDataFactory from '@/factories/metaDataFactory';
+import globalMethods from '@/factories/globalMethods';
 import { Object } from 'core-js';
 
 const conversion = require('./conversion');

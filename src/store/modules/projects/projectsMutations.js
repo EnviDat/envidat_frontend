@@ -6,7 +6,7 @@ import {
 } from '@/store/projectsMutationsConsts';
 
 import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
-import projectDataFactory from "@/components/projectsDataFactory";
+import projectDataFactory from "@/factories/projectsDataFactory";
 
 export default {
   [GET_PROJECTS](state) {

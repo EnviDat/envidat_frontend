@@ -96,8 +96,8 @@ import missionImg from '@/assets/about/mission.jpg';
 import creator from '@/assets/cards/data_creator.jpg';
 import creatorSmall from '@/assets/cards/data_creator_small.jpg';
 
-import { tagsIncludedInSelectedTags } from '@/components/metadataFilterMethods';
-// const filtermethods = require('@/components/metadataFilterMethods');
+import { tagsIncludedInSelectedTags } from '@/factories/metadataFilterMethods';
+// const filtermethods = require('@/factories/metadataFilterMethods');
 
 export default {
   /**

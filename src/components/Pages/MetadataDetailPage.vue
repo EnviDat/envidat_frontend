@@ -72,7 +72,7 @@ import MetadataLocation from '@/components/MetadataDetailViews/MetadataLocation'
 import MetadataDetails from '@/components/MetadataDetailViews/MetadataDetails';
 import MetadataCitation from '@/components/MetadataDetailViews/MetadataCitation';
 import NotFoundView from '@/components/Errors/NotFoundView';
-import metaDataFactory from '@/components/metaDataFactory';
+import metaDataFactory from '@/factories/metaDataFactory';
 import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
 
 // Might want to check https://css-tricks.com/use-cases-fixed-backgrounds-css/

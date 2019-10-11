@@ -19,7 +19,7 @@ import {
   METEO,
 } from '@/store/categoriesConsts';
 
-const globalMethods = require('@/components/globalMethods');
+const globalMethods = require('@/factories/globalMethods');
 
 Vue.use(Vuex);
 

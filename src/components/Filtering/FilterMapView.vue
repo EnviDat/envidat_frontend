@@ -51,7 +51,7 @@
 import { mapGetters } from 'vuex';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import metaDataFactory from '@/components/metaDataFactory';
+import metaDataFactory from '@/factories/metaDataFactory';
 import FilterMapWidget from '@/components/Filtering/FilterMapWidget';
 
 // HACK start
