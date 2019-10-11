@@ -4,7 +4,7 @@
 
     <v-card-text v-if="isEmpty" style="color: red;">{{ emptyText }}</v-card-text>
 
-    <v-card-text>
+    <v-card-text v-if="!isEmpty">
       <!-- can't get it to work with the v-show for now
             because leaflet needs the ref
       to the mapcontainer to correctly initialize-->

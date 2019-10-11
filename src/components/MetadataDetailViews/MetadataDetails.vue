@@ -4,65 +4,48 @@
       Further Information
     </v-card-title>
 
-    <v-card-text
-      v-if="!showPlaceholder && (!details || details.length <= 0)"
-      style="color: red;"
-    >
-      {{ emptyText }}
-    </v-card-text>
-
     <v-card-text v-if="details && details.length > 0">
       <v-form>
-        <div
-          v-for="val in details"
-          :key="val.label"
-        >
+        <div v-for="val in details"
+              :key="val.label" >
           <v-text-field v-if="isSingleText(val.text)"
                         :id="val.label"
                         :label="val.label"
                         :name="val.label"
                         :value="val.text"
-                        readonly
-          />
+                        readonly />
 
           <v-textarea v-if="!isSingleText(val.text)"
                       :id="val.label"
                       :label="val.label"
                       :name="val.label"
                       :value="val.text"
-                      readonly
-          />
-
-          <div
-            v-if="showPlaceholder
-              && !val.text"
-          >
-            <v-layout row>
-              <div
-                style="width: 20%;"
-                class="flex pr-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer"
-              >
-                <div class="bone bone-type-text " />
-              </div>
-
-              <div
-                style="width: 80%;"
-                class="flex pl-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer"
-              >
-                <div class="bone bone-type-text " />
-              </div>
-            </v-layout>
-          </div>
+                      readonly />
         </div>
       </v-form>
     </v-card-text>
 
-    <!--v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn icon @click.native="readMore()">
-        <v-icon color="accent" >{{ showFullDescription ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
-      </v-btn>
-    </v-card-actions-->
+    <v-card-text v-if="!showPlaceholder && (!details || details.length <= 0)"
+                  style="color: red;" >
+      {{ emptyText }}
+    </v-card-text>
+
+
+    <v-card-text v-if="showPlaceholder" >
+      <v-layout row wrap
+                v-for="n in 5"
+                :key="n + 'label'" >
+
+          <div class="flex xs2 pr-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
+            <div class="bone bone-type-text " />
+          </div>
+
+          <div class="flex xs10 pl-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
+            <div class="bone bone-type-text " />
+          </div>
+      </v-layout>
+    </v-card-text>
+
   </v-card>
 </template>
 
