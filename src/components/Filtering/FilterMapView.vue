@@ -189,7 +189,7 @@ export default {
     },
     initLeaflet: function initLeaflet(mapElement) {
       const map = L.map(mapElement, {
-        scrollWheelZoom: false,
+        // scrollWheelZoom: false,
         center: this.setupCenterCoords,
         zoom: 7,
         zoomSnap: 0.5,
