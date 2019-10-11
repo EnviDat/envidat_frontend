@@ -1,5 +1,9 @@
 export default {
   createHeader(dataset, smallScreen) {
+    if (!dataset) {
+      return null;
+    }
+
     let { maintainer } = dataset;
 
     if (typeof dataset.maintainer === 'string') {
@@ -32,6 +36,10 @@ export default {
     };
   },
   createBody(dataset) {
+    if (!dataset) {
+      return null;
+    }
+
     return {
       id: dataset.id,
       title: dataset.title,
@@ -40,6 +48,10 @@ export default {
     };
   },
   getAuthorsString(dataset) {
+    if (!dataset) {
+      return null;
+    }
+
     let authors = '';
 
     if (dataset.author !== undefined) {
@@ -62,6 +74,10 @@ export default {
     return authors;
   },
   createCitation(dataset) {
+    if (!dataset) {
+      return null;
+    }
+
     const authors = this.getAuthorsString(dataset);
 
     let { publication } = dataset;
@@ -97,6 +113,10 @@ export default {
     };
   },
   createResources(dataset) {
+    if (!dataset) {
+      return null;
+    }
+
     const resources = [];
 
     let { maintainer } = dataset;
@@ -178,6 +198,10 @@ export default {
     };
   },
   createDetails(dataset) {
+    if (!dataset) {
+      return null;
+    }
+
     const details = [];
 
     details.push({ label: 'Title', text: dataset.title });
@@ -199,6 +223,10 @@ export default {
     return details;
   },
   createLicense(dataset) {
+    if (!dataset) {
+      return null;
+    }
+
     const license = {};
 
     license.id = dataset.license_id;
@@ -208,6 +236,10 @@ export default {
     return license;
   },
   createLocation(dataset) {
+    if (!dataset) {
+      return null;
+    }
+
     if (typeof dataset.location === 'object') {
       return dataset.location;
     }

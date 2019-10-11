@@ -179,13 +179,17 @@ export default {
      * @return {Object} metadataEntry enhanced with a title image based on the entrys tags
      */
     mixinMethods_enhanceMetadataEntry(metadataEntry, cardBGImages, categoryCards) {
-      if (!metadataEntry.titleImg) {
+      if (metadataEntry && !metadataEntry.titleImg) {
         this.mixinMethods_enhanceTitleImg(metadataEntry, cardBGImages, categoryCards);
       }
 
       return metadataEntry;
     },
     mixinMethods_getGenericProp(propName) {
+      if (!this.genericProps) {
+        return null;
+      }
+
       return this.genericProps[propName] ? this.genericProps[propName] : null;
     },
     /**

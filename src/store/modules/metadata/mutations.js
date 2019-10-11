@@ -29,10 +29,14 @@ import {
 
 import metaDataFactory from '@/components/metaDataFactory';
 import globalMethods from '@/components/globalMethods';
+import { Object } from 'core-js';
 
 const conversion = require('./conversion');
 
 function enhanceMetadatas(store, datasets) {
+  if (!(datasets instanceof Array)) {
+    throw new Error('enhanceMetadatas() expects an array of datasets got ' + typeof datasets);
+  }
   const { cardBGImages } = store.getters;
   const categoryCards = store.getters[`${METADATA_NAMESPACE}/categoryCards`];
   const metadatasContent = {};
@@ -58,7 +62,7 @@ export default {
   },
   [SEARCH_METADATA_SUCCESS](state, payload) {
 
-    state.searchedMetadatasContent = enhanceMetadatas(this, payload)
+    state.searchedMetadatasContent = enhanceMetadatas(this, payload);
 
     // this._vm.$set(state.searchedMetadatasContent, ckanJSON.id, ckanJSON);
     state.searchingMetadatasContentOK = true;
@@ -81,8 +85,8 @@ export default {
   },
   [LOAD_METADATA_CONTENT_BY_ID_SUCCESS](state, payload) {
     state.loadingCurrentMetadataContent = false;
-    state.currentMetadataContent = payload;
-    // this._vm.$set(state.currentMetadataContent, payload);
+    const enhancedPayload = enhanceMetadatas(this, [payload]);
+    state.currentMetadataContent = Object.values(enhancedPayload)[0];
   },
   [LOAD_METADATA_CONTENT_BY_ID_ERROR](state, reason) {
     state.loadingCurrentMetadataContent = false;

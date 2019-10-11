@@ -29,8 +29,20 @@
                 :class="{ 'display-2': $vuetify.breakpoint.lgAndUp,
                           'display-1': $vuetify.breakpoint.mdAndDown,
                           'headline': $vuetify.breakpoint.smAndDown,
-                }" >
+                        }" >
             {{ metadataTitle }}
+          </div>
+        </v-flex>
+
+        <v-flex v-if="!metadataTitle && !showPlaceholder"
+                xs12 >
+          <div class="headerTitle py-3"
+                :style="`color: ${$vuetify.theme.error}`"
+                :class="{ 'display-2': $vuetify.breakpoint.lgAndUp,
+                          'display-1': $vuetify.breakpoint.mdAndDown,
+                          'headline': $vuetify.breakpoint.smAndDown,
+                        }" >
+            {{ `${NotFoundTitle} '${metadataId}'` }}
           </div>
         </v-flex>
 
@@ -41,7 +53,8 @@
           </div>
         </v-flex>
 
-        <v-flex xs12 >
+        <v-flex v-if="authors"
+                xs12 >
           <v-divider :dark="dark"
                     :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
                               'my-2': $vuetify.breakpoint.smAndUp }" />
@@ -185,6 +198,7 @@ export default {
     BaseIconButton,
   },
   props: {
+    metadataId: String,
     metadataTitle: String,
     titleImg: String,
     contactName: String,
@@ -207,6 +221,7 @@ export default {
     // whiteTopToBottom: 'rgba(255,255,255, 0.3) 0%, rgba(255,255,255, 1) 60%',
     whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
     authorToolTipText: 'Search for more data of this Author',
+    NotFoundTitle: 'No metadata found for',
   }),
   computed: {
     maxTagsReached: function maxTagsReached() {
