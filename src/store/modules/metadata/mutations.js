@@ -54,6 +54,7 @@ function enhanceMetadatas(store, datasets) {
   return metadatasContent;
 }
 
+
 export default {
   [SEARCH_METADATA](state) {
     state.searchingMetadatasContent = true;
@@ -123,8 +124,7 @@ export default {
     state.metadatasContent = {};
   },
   [BULK_LOAD_METADATAS_CONTENT_SUCCESS](state, payload) {
-
-    state.metadatasContent = enhanceMetadatas(this, payload)
+    state.metadatasContent = enhanceMetadatas(this, payload);
 
     state.metadatasContentOK = true;
     state.loadingMetadatasContent = false;

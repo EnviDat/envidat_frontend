@@ -8,8 +8,14 @@ import {
   SET_CONFIG_SUCCESS,
   SET_CONFIG_ERROR,
   CHECK_FRONTEND_VERSION,
+  GENERIC_ERROR,
 } from './mutationsConsts';
-// import { stat } from 'fs';
+
+import {
+  successMessage,
+  warningMessage,
+  errorMessage
+} from '@/factories/notificationFactory';
 
 export default {
   [SET_APP_BACKGROUND](state, bgImg) {
@@ -38,12 +44,15 @@ export default {
     state.config = payload;
   },
   [SET_CONFIG_ERROR](state, reason) {
-    state.error = reason;
+    // state.error = reason;
   },
   [CHECK_FRONTEND_VERSION](state, version) {
     if (version > process.env.VUE_APP_VERSION) {
       state.showVersionModal = true;
       state.newVersion = version;
     }
+  },
+  [GENERIC_ERROR](state, reason){
+    state.error = errorMessage(reason.response.message, reason.response.status + ' ' + reason.response.statusText, reason.response.stack);
   },
 };
