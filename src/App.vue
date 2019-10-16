@@ -1,8 +1,9 @@
 <template>
   <v-app class="application" :style="dynamicBackground">
 
-    <v-snackbar v-if="error"
+    <v-snackbar v-if="config.errorReportingEnabled && error"
                 v-model="showSnackbar"
+                class="enviDatSnackbar"
                 :timeout="error.timeout"
                 :bottom="error.y === 'bottom'"
                 :left="error.x === 'left'"
@@ -11,20 +12,11 @@
                 :color="error.color"
                 multi-line
                 :style="`z-index: ${NotificationZIndex};`" >
-      {{ error.message }}
 
-      <div class="caption"> {{ error.details }}</div>
+      <notification-card :error="error" showReportButton
+                          @clickedClose="showSnackbar = false"
+                          @clickedReport="catchReportClicked" />
 
-      <v-btn dark
-              color="secondary"
-              @click="catchReportClicked" >
-        Report
-      </v-btn>
-      <v-btn dark
-              flat
-              @click="showSnackbar = false" >
-        Close
-      </v-btn>
     </v-snackbar>
 
     <the-navigation v-if="$vuetify.breakpoint.mdAndUp"
@@ -115,6 +107,7 @@ import { SET_CONFIG } from '@/store/mutationsConsts';
 import TheNavigation from '@/components/Navigation/TheNavigation';
 import TheNavigationSmall from '@/components/Navigation/TheNavigationSmall';
 import TheNavigationToolbar from '@/components/Navigation/TheNavigationToolbar';
+import NotificationCard from '@/components/Cards/NotificationCard';
 import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
 
 export default {
@@ -143,9 +136,6 @@ export default {
     this.updateActiveStateOnNavItems();
   },
   methods: {
-    log(msg) {
-      console.log(msg);
-    },
     updateActiveStateOnNavItems() {
       if (!this.currentPage) {
         return;
@@ -198,6 +188,9 @@ export default {
       this.searchTerm = '';
     },
     catchReportClicked() {
+      if (this.$route.path === REPORT_PATH) {
+        return;
+      }
       this.$router.push({ path: REPORT_PATH });
     },
     reloadApp() {
@@ -227,6 +220,7 @@ export default {
       appBGImage: 'appBGImage',
       showVersionModal: 'showVersionModal',
       newVersion: 'newVersion',
+      config: 'config',
       error: 'error',
     }),
     loading() {
@@ -297,6 +291,7 @@ export default {
     TheNavigation,
     TheNavigationSmall,
     TheNavigationToolbar,
+    NotificationCard,
   },
   watch: {
     error() {
@@ -310,7 +305,7 @@ export default {
     dialogCanceled: false,
     appVersion: process.env.VUE_APP_VERSION,
     showMenu: true,
-    showSnackbar: false,
+    showSnackbar: true,
     NavToolbarZIndex: 1150,
     NavigationZIndex: 1100,
     NotificationZIndex: 1500,
@@ -470,6 +465,10 @@ export default {
   font-size: 0.65rem !important;
   margin: 1px 2px !important;
   opacity: 0.85 !important;
+}
+
+.enviDatSnackbar > .v-snack__wrapper > .v-snack__content {
+  height: 100%;
 }
 
 .smallChip {

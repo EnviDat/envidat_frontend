@@ -7,9 +7,6 @@ import {
   SEARCH_METADATA_SUCCESS,
   SEARCH_METADATA_ERROR,
   CLEAR_SEARCH_METADATA,
-  LOAD_ALL_TAGS,
-  LOAD_ALL_TAGS_SUCCESS,
-  LOAD_ALL_TAGS_ERROR,
   BULK_LOAD_METADATAS_CONTENT,
   BULK_LOAD_METADATAS_CONTENT_SUCCESS,
   BULK_LOAD_METADATAS_CONTENT_ERROR,
@@ -26,12 +23,18 @@ import {
   SET_VIRTUAL_LIST_INDEX,
   METADATA_NAMESPACE,
 } from '@/store/metadataMutationsConsts';
+import {
+  handleGenericAPIError,
+  // successMessage,
+  warningMessage,
+  errorMessage
+} from '@/factories/notificationFactory';
 
 import metaDataFactory from '@/factories/metaDataFactory';
 import globalMethods from '@/factories/globalMethods';
 import { Object } from 'core-js';
+import { stat } from 'fs';
 
-const conversion = require('./conversion');
 
 function enhanceMetadatas(store, datasets) {
   if (!(datasets instanceof Array)) {
@@ -72,7 +75,7 @@ export default {
   [SEARCH_METADATA_ERROR](state, reason) {
     state.searchingMetadatasContent = false;
     state.searchingMetadatasContentOK = false;
-    state.error = reason;
+    handleGenericAPIError(reson);
   },
   [CLEAR_SEARCH_METADATA](state) {
     state.searchingMetadatasContent = false;
@@ -91,33 +94,13 @@ export default {
   },
   [LOAD_METADATA_CONTENT_BY_ID_ERROR](state, reason) {
     state.loadingCurrentMetadataContent = false;
-    state.error = reason;
+
+    notificationFactory
+    handleGenericAPIError(reson);
   },
   [CLEAN_CURRENT_METADATA](state) {
     state.loadingCurrentMetadataContent = false;
     state.currentMetadataContent = {};
-  },
-  [LOAD_ALL_TAGS](state) {
-    state.loadingAllTags = true;
-    state.allTags = [];
-  },
-  [LOAD_ALL_TAGS_SUCCESS](state, payload) {
-    const tagList = [];
-
-    for (let i = 0; i < payload.length + 1; i += 2) {
-      const tag = { name: payload[i], count: payload[i + 1] };
-
-      if (tag.name) {
-        tagList.push(tag);
-      }
-    }
-
-    state.allTags = tagList;
-    state.loadingAllTags = false;
-  },
-  [LOAD_ALL_TAGS_ERROR](state, reason) {
-    state.loadingAllTags = false;
-    state.error = reason;
   },
   [BULK_LOAD_METADATAS_CONTENT](state) {
     state.loadingMetadatasContent = true;
@@ -132,7 +115,7 @@ export default {
   [BULK_LOAD_METADATAS_CONTENT_ERROR](state, reason) {
     state.loadingMetadatasContent = false;
     state.metadatasContentOK = false;
-    state.error = reason;
+    handleGenericAPIError(reson);
   },
   [UPDATE_TAGS](state) {
     state.updatingTags = true;
