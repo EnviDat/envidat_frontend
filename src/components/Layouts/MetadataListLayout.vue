@@ -2,7 +2,7 @@
 <div>
   <v-container id="metadataListLayoutFiltering"
                 fluid
-                pa-0 pb-2
+                pa-0
                 grid-list-lg>
 
     <v-layout row wrap >
