@@ -8,7 +8,8 @@ import {
   SET_CONFIG_SUCCESS,
   SET_CONFIG_ERROR,
   CHECK_FRONTEND_VERSION,
-  GENERIC_ERROR,
+  GENERIC_API_ERROR,
+  GENERIC_FRONTEND_ERROR,
 } from './mutationsConsts';
 
 import {
@@ -52,7 +53,8 @@ export default {
       state.newVersion = version;
     }
   },
-  [GENERIC_ERROR](state, reason){
-    state.error = errorMessage(reason.response.message, reason.response.status + ' ' + reason.response.statusText, reason.response.stack);
+  [GENERIC_FRONTEND_ERROR](state, errorMessage){
+    state.error = errorMessage;
   },
+  
 };
