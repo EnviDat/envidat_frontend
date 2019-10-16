@@ -6,7 +6,7 @@
   >
     <v-layout row wrap
     >
-      <v-flex py-2 style="z-index: 1;"
+      <v-flex style="z-index: 1;"
               v-bind="{ ['mx-0']: $vuetify.breakpoint.mdAndUp,
                         ['xs8']: showMapFilter & $vuetify.breakpoint.mdAndUp,
                         ['xs6']: showMapFilter & $vuetify.breakpoint.sm,
