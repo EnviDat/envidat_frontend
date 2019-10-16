@@ -1,7 +1,7 @@
 <template>
   <v-app class="application" :style="dynamicBackground">
 
-    <v-snackbar v-if="config.errorReportingEnabled && error"
+    <v-snackbar v-if="error"
                 v-model="showSnackbar"
                 class="enviDatSnackbar"
                 :timeout="error.timeout"
@@ -13,7 +13,7 @@
                 multi-line
                 :style="`z-index: ${NotificationZIndex};`" >
 
-      <notification-card :error="error" showReportButton
+      <notification-card :error="error" :showReportButton="config.errorReportingEnabled"
                           @clickedClose="showSnackbar = false"
                           @clickedReport="catchReportClicked" />
 

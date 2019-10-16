@@ -9,7 +9,6 @@ import { guidelines } from '@/store/modules/guidelines/guidelines';
 import { projects } from '@/store/modules/projects/projects';
 import mutations from '@/store/appMutations';
 import actions from '@/store/appActions';
-
 import {
   FOREST,
   SNOW,
@@ -20,6 +19,13 @@ import {
 } from '@/store/categoriesConsts';
 
 const globalMethods = require('@/factories/globalMethods');
+const errReport = process.env.VUE_APP_ERROR_REPORTING_ENABLED;
+// the check for 'NULL' is needed because simply nothing will not work
+let errorReportingEnabled = false;
+
+if (typeof errReport === 'string') {
+  errorReportingEnabled = errReport.toLowerCase() === 'true';
+}
 
 Vue.use(Vuex);
 
@@ -36,7 +42,8 @@ const store = new Vuex.Store({
     browseScrollPosition: 0,
     showVersionModal: false,
     newVersion: process.env.VUE_APP_VERSION,
-    config: null,
+    // config can be overloaded from the backend
+    config: { errorReportingEnabled },
     error: null,
   },
   getters: {
