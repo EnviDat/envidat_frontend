@@ -4,6 +4,8 @@ import {
   GET_GUIDELINES_ERROR,
 } from '@/store/guidelinesMutationsConsts';
 
+import { errorMessage } from '@/factories/notificationFactory';
+
 export default {
   [GET_GUIDELINES](state) {
     state.loading = true;
@@ -13,11 +15,22 @@ export default {
     state.loading = false;
   },
   [GET_GUIDELINES_ERROR](state, reason) {
-    state.guidelinesMarkdown = `There occured an error while loading the guidelines: ${reason}`;
+    state.loading = false;
+
+    const details = 'An error occured while loading the guidelines';
+    state.guidelinesMarkdown = details + ': ' + reason;
+
     if (process.env.NODE_ENV === 'development') {
       state.guidelinesMarkdown += ' \nThis is normal when developing locally on localhost:8080';
     }
-    state.error = reason;
-    state.loading = false;
+
+    let errObj = errorMessage(reason, details);
+
+    if (reason.response) {
+      const status = reason.response.status + ' ' + reason.response.statusText;
+      errObj = errorMessage(status, details, reason.response.stack);
+    }
+
+    state.error = errObj;
   },
 };

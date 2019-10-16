@@ -24,8 +24,6 @@ import {
   METADATA_NAMESPACE,
 } from '@/store/metadataMutationsConsts';
 import {
-  handleGenericAPIError,
-  // successMessage,
   warningMessage,
   errorMessage
 } from '@/factories/notificationFactory';
