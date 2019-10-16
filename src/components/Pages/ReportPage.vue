@@ -4,38 +4,53 @@
                 pa-0 >
     <v-layout row wrap >
       <v-flex xs12  >
-        <form>
-            <v-text-field
-              v-model="name"
-              :counter="10"
-              label="Name"
-              required
-            ></v-text-field>
+        <v-card>
+          <v-card-title :style="`background-color: ${color}`">
+            <div v-if="error"
+                  class="headline">
+              Report Error
+            </div>
+            <div v-if="feedback"
+                  class="headline">
+              Feedback is always welcome!
+            </div>
+          </v-card-title>
 
-            <v-text-field
-              v-model="email"
-              label="E-mail"
-              required
-            ></v-text-field>
+          <v-divider :color="color" />
 
-            <v-text-field
-              v-model="error.message"
-              label="Error message"
-              required
-            ></v-text-field>
+          <v-card-text>
+            <form>
+              <v-text-field v-model="name"
+                            label="Name"
+                            required />
 
-            <v-text-area v-model="error.details">
+              <v-text-field v-model="email"
+                            label="E-mail"
+                            required />
 
-            </v-text-area>
+              <v-text-field v-if="error"
+                            v-model="error.message"
+                            label="Error message"
+                            required />
 
-            <v-text-area v-model="error.stack">
+              <v-textarea v-if="error && error.details"
+                          label="Error details"
+                          v-model="error.details" disabled />
 
-            </v-text-area>
+              <v-textarea v-if="error && error.stack"
+                          label="Error stack"
+                          v-model="error.stack" disabled />
 
+              <v-textarea v-if="feedback"
+                          label="Feedback"
+                          placeholder="What is nice? What needs improvement?"
+                          v-model="feedbackText" />
 
-            <v-btn @click="submit">submit</v-btn>
-            <v-btn @click="clear">clear</v-btn>
-          </form>
+              <v-btn color="primary" @click="submit">Send</v-btn>
+              <!-- <v-btn @click="clear">clear</v-btn> -->
+            </form>
+          </v-card-text>
+        </v-card>
       </v-flex>
 
     </v-layout>
@@ -75,13 +90,20 @@ export default {
      */
   mounted() {
     window.scrollTo(0, 0);
+    // throw new Error('test error');
   },
   computed: {
     ...mapGetters({
       error: 'error',
     }),
+    color() {
+      return this.error ? this.$vuetify.theme.error : this.$vuetify.theme.highlight;
+    },
   },
   methods: {
+    submit() {
+      console.log('submit clicked');
+    },
   },
   components: {
   },
@@ -89,6 +111,8 @@ export default {
     PageBGImage: './app_b_browsepage.jpg',
     name: '',
     email: '',
+    feedback: false,
+    feedbackText: '',
   }),
 };
 </script>

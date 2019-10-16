@@ -19,6 +19,8 @@ import {
   PROJECTS_PAGENAME,
   PROJECT_DETAIL_PATH,
   PROJECT_DETAIL_PAGENAME,
+  REPORT_PATH,
+  REPORT_PAGENAME,
 } from '@/router/routeConsts';
 
 Vue.use(Router);
@@ -78,6 +80,11 @@ export default new Router({
       path: `${PROJECT_DETAIL_PATH}/:id`,
       name: PROJECT_DETAIL_PAGENAME,
       component: () => import(/* webpackChunkName: "projectDetailPage" */ '@/components/Pages/ProjectDetailPage'),
+    },
+    {
+      path: REPORT_PATH,
+      name: REPORT_PAGENAME,
+      component: () => import(/* webpackChunkName: "guidelinesPage" */ '@/components/Pages/ReportPage'),
     },
   ],
   scrollBehavior(to, from, savedPosition) {
