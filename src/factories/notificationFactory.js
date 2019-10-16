@@ -57,6 +57,8 @@ function genericMessage (status) {
       return "Could not find the requested resource";
     case 405:
       return "Client tried to execute an unkown function";
+    case 408:
+      return "Timeout! Ups no answer from the internet? Check your internet connection and if it persits report this error.";
     default:
       return "An unknown Error occured please report to the envidat team (envidat@wsl.ch)";
   }
@@ -66,10 +68,14 @@ export function handleGenericAPIError (reason) {
   // const errorStatus = error ? error.status : error;
   // const errorMessage = genericMessage(errorStatus);
 
-  const status = reason.response.status + ' ' + reason.response.statusText;
-  const message = genericMessage(reason.response.status);
-  const details = reason.request.responseURL;
-  const errObj = errorMessage(message, status + ' ' + details, reason.response.stack);
+  let errObj = errorMessage(reason);
+
+  if (reason.response) {
+    const status = reason.response.status + ' ' + reason.response.statusText;
+    const message = genericMessage(reason.response.status);
+    const details = reason.request.responseURL;
+    errObj = errorMessage(message, status + ' ' + details, reason.response.stack);
+  }
 
   store.commit(GENERIC_FRONTEND_ERROR, errObj);
 }

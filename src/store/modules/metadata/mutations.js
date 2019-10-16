@@ -75,7 +75,16 @@ export default {
   [SEARCH_METADATA_ERROR](state, reason) {
     state.searchingMetadatasContent = false;
     state.searchingMetadatasContentOK = false;
-    handleGenericAPIError(reson);
+
+    const details = 'The searching cause an error. Try again or use Keywords for filtering. Please report if the error persists!';
+    let errObj = errorMessage(reason, details);
+
+    if (reason.response) {
+      const status = reason.response.status + ' ' + reason.response.statusText;
+      errObj = errorMessage(status, details, reason.response.stack);
+    }
+
+    state.error = errObj;
   },
   [CLEAR_SEARCH_METADATA](state) {
     state.searchingMetadatasContent = false;
@@ -95,8 +104,15 @@ export default {
   [LOAD_METADATA_CONTENT_BY_ID_ERROR](state, reason) {
     state.loadingCurrentMetadataContent = false;
 
-    notificationFactory
-    handleGenericAPIError(reson);
+    const details = 'For this entry no Metadata cloud not be loaded, please report if the error persists!';
+    let errObj = errorMessage(reason, details);
+
+    if (reason.response) {
+      const status = reason.response.status + ' ' + reason.response.statusText;
+      errObj = errorMessage(status, details, reason.response.stack);
+    }
+
+    state.error = errObj;
   },
   [CLEAN_CURRENT_METADATA](state) {
     state.loadingCurrentMetadataContent = false;
@@ -115,7 +131,9 @@ export default {
   [BULK_LOAD_METADATAS_CONTENT_ERROR](state, reason) {
     state.loadingMetadatasContent = false;
     state.metadatasContentOK = false;
-    handleGenericAPIError(reson);
+
+    const status = reason.response.status + ' ' + reason.response.statusText;
+    state.error = errorMessage(status, 'Metadata can not be loaded, please report if the error persists!');
   },
   [UPDATE_TAGS](state) {
     state.updatingTags = true;
@@ -126,7 +144,9 @@ export default {
   },
   [UPDATE_TAGS_ERROR](state, reason) {
     state.updatingTags = false;
-    state.error = reason;
+    
+    state.error = warningMessage('Keyword update error', 'Filtering might not work properly try reloading the page');
+    // state.error = warningMessage('Keyword update did not work', reason);
   },
   [FILTER_METADATA](state) {
     state.isFilteringContent = true;
@@ -137,7 +157,7 @@ export default {
   },
   [FILTER_METADATA_ERROR](state, reason) {
     state.isFilteringContent = false;
-    state.error = reason;
+    state.error = warningMessage('Filtering error', 'Filtering might not work properly try reloading the page');
   },
   [PIN_METADATA](state, payload) {
     if (state.pinnedIds.includes(payload)) {
