@@ -212,8 +212,8 @@ export default {
     // TODO DataCRedit
 
     details.push({ label: 'DOI', text: dataset.doi, url: `https://doi.org/${dataset.doi}` });
-    details.push({ label: 'Created', text: dataset.created });
-    details.push({ label: 'Last Modified', text: dataset.last_modified });
+    details.push({ label: 'Created', text: dataset.metadata_created });
+    details.push({ label: 'Last Modified', text: dataset.metadata_modified });
 
     const license = this.createLicense(dataset);
     details.push({ label: 'License', text: license.title, url: license.url });
