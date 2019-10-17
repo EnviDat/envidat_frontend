@@ -3,7 +3,8 @@
 
       <div v-for="(notification, index) in visibleNotifications()"
           :key="`notification_${index}`"
-          :style="`position: absolute; right: 15px;
+          :style="`position: absolute;
+                  right: ${ $vuetify.breakpoint.xsOnly ? 0 : 15}px;
                   top: ${35 + index * 175}px;
                   z-index: ${NotificationZIndex};`" >
 
@@ -40,9 +41,8 @@
                             @searchCleared="catchSearchCleared" />
 
     <v-content>
-      <v-container fluid py-2
-                  v-bind="{ [`px-1`]: this.$vuetify.breakpoint.smAndDown,
-                            [`px-2`]: this.$vuetify.breakpoint.mdAndUp, }" >
+      <v-container fluid
+                    pa-2 >
         <v-layout column>
 
           <v-flex xs12
