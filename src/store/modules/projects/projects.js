@@ -18,7 +18,6 @@ export const projects = {
     pageError: state => state.pageError,
     projectsPageBackRoute: state => state.projectsPageBackRoute,
     loading: state => state.loading,
-    error: state => state.error,
   },
   mutations,
   actions,

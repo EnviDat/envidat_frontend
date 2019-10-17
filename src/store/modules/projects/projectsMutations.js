@@ -6,6 +6,7 @@ import {
 } from '@/store/projectsMutationsConsts';
 
 import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
+import { ADD_USER_NOTIFICATION } from '@/store/mutationsConsts';
 import projectDataFactory from "@/factories/projectsDataFactory";
 
 export default {
@@ -22,14 +23,23 @@ export default {
     state.loading = false;
   },
   [GET_PROJECTS_ERROR](state, reason) {
-    state.pageError = `There occured an error while loading the projects: ${reason}`;
+    state.loading = false;
+
+    const details = 'An error occured while loading the projects';
+    state.pageError = details + ': ' + reason;
 
     if (process.env.NODE_ENV === 'development') {
       state.pageError += ' \nThis is normal when developing locally on localhost:8080';
     }
 
-    state.error = reason;
-    state.loading = false;
+    let errObj = errorMessage(reason, details);
+
+    if (reason.response) {
+      const status = reason.response.status + ' ' + reason.response.statusText;
+      errObj = errorMessage(status, details, reason.response.stack);
+    }
+
+    this.commit(ADD_USER_NOTIFICATION, errObj);
   },
   [SET_PROJECTDETAIL_PAGE_BACK_URL](state, payload) {
     state.projectsPageBackRoute = payload;

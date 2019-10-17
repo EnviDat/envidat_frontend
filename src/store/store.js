@@ -44,7 +44,8 @@ const store = new Vuex.Store({
     newVersion: process.env.VUE_APP_VERSION,
     // config can be overloaded from the backend
     config: { errorReportingEnabled },
-    error: null,
+    notifications: {},
+    maxNotifications: 6,
   },
   getters: {
     currentPage: state => state.currentPage,
@@ -57,7 +58,8 @@ const store = new Vuex.Store({
     showVersionModal: state => state.showVersionModal,
     newVersion: state => state.newVersion,
     config: state => state.config,
-    error: state => state.error,
+    notifications: state => state.notifications,
+    maxNotifications: state => state.maxNotifications,
   },
   mutations,
   actions,

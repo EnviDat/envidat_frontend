@@ -25,13 +25,14 @@ import {
 } from '@/store/metadataMutationsConsts';
 import {
   warningMessage,
-  errorMessage
+  errorMessage,
+  getSpecificApiError,
 } from '@/factories/notificationFactory';
+import { ADD_USER_NOTIFICATION } from '@/store/mutationsConsts';
 
 import metaDataFactory from '@/factories/metaDataFactory';
 import globalMethods from '@/factories/globalMethods';
 import { Object } from 'core-js';
-import { stat } from 'fs';
 
 
 function enhanceMetadatas(store, datasets) {
@@ -74,15 +75,9 @@ export default {
     state.searchingMetadatasContent = false;
     state.searchingMetadatasContentOK = false;
 
-    const details = 'The searching cause an error. Try again or use Keywords for filtering. Please report if the error persists!';
-    let errObj = errorMessage(reason, details);
+    const errObj = getSpecificApiError('The searching cause an error. Try again or use Keywords for filtering. Please report if the error persists!', reason);
 
-    if (reason.response) {
-      const status = reason.response.status + ' ' + reason.response.statusText;
-      errObj = errorMessage(status, details, reason.response.stack);
-    }
-
-    state.error = errObj;
+    this.commit(ADD_USER_NOTIFICATION, errObj);
   },
   [CLEAR_SEARCH_METADATA](state) {
     state.searchingMetadatasContent = false;
@@ -102,15 +97,9 @@ export default {
   [LOAD_METADATA_CONTENT_BY_ID_ERROR](state, reason) {
     state.loadingCurrentMetadataContent = false;
 
-    const details = 'For this entry no Metadata cloud not be loaded, please report if the error persists!';
-    let errObj = errorMessage(reason, details);
+    const errObj = getSpecificApiError('For this entry no Metadata cloud not be loaded, please report if the error persists!', reason);
 
-    if (reason.response) {
-      const status = reason.response.status + ' ' + reason.response.statusText;
-      errObj = errorMessage(status, details, reason.response.stack);
-    }
-
-    state.error = errObj;
+    this.commit(ADD_USER_NOTIFICATION, errObj);
   },
   [CLEAN_CURRENT_METADATA](state) {
     state.loadingCurrentMetadataContent = false;
@@ -130,8 +119,9 @@ export default {
     state.loadingMetadatasContent = false;
     state.metadatasContentOK = false;
 
-    const status = reason.response.status + ' ' + reason.response.statusText;
-    state.error = errorMessage(status, 'Metadata can not be loaded, please report if the error persists!');
+    const errObj = getSpecificApiError('Metadata can not be loaded, please report if the error persists!', reason);
+
+    this.commit(ADD_USER_NOTIFICATION, errObj);
   },
   [UPDATE_TAGS](state) {
     state.updatingTags = true;
@@ -142,9 +132,9 @@ export default {
   },
   [UPDATE_TAGS_ERROR](state, reason) {
     state.updatingTags = false;
-    
-    state.error = warningMessage('Keyword update error', 'Filtering might not work properly try reloading the page');
-    // state.error = warningMessage('Keyword update did not work', reason);
+
+    const errObj = warningMessage('Keyword update error', 'Filtering might not work properly try reloading the page');
+    this.commit(ADD_USER_NOTIFICATION, errObj);
   },
   [FILTER_METADATA](state) {
     state.isFilteringContent = true;
@@ -155,7 +145,8 @@ export default {
   },
   [FILTER_METADATA_ERROR](state, reason) {
     state.isFilteringContent = false;
-    state.error = warningMessage('Filtering error', 'Filtering might not work properly try reloading the page');
+    const errObj = warningMessage('Filtering error', 'Filtering might not work properly try reloading the page');
+    this.commit(ADD_USER_NOTIFICATION, errObj);
   },
   [PIN_METADATA](state, payload) {
     if (state.pinnedIds.includes(payload)) {

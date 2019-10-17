@@ -3,8 +3,8 @@ import {
   GET_GUIDELINES_SUCCESS,
   GET_GUIDELINES_ERROR,
 } from '@/store/guidelinesMutationsConsts';
-
-import { errorMessage } from '@/factories/notificationFactory';
+import { ADD_USER_NOTIFICATION } from '@/store/mutationsConsts';
+import { getSpecificApiError } from '@/factories/notificationFactory';
 
 export default {
   [GET_GUIDELINES](state) {
@@ -17,20 +17,14 @@ export default {
   [GET_GUIDELINES_ERROR](state, reason) {
     state.loading = false;
 
-    const details = 'An error occured while loading the guidelines';
+    const details = 'An error occured while loading the guidelines!';
+    const errObj = getSpecificApiError(details, reason);
     state.guidelinesMarkdown = details + ': ' + reason;
 
     if (process.env.NODE_ENV === 'development') {
       state.guidelinesMarkdown += ' \nThis is normal when developing locally on localhost:8080';
     }
 
-    let errObj = errorMessage(reason, details);
-
-    if (reason.response) {
-      const status = reason.response.status + ' ' + reason.response.statusText;
-      errObj = errorMessage(status, details, reason.response.stack);
-    }
-
-    state.error = errObj;
+    this.commit(ADD_USER_NOTIFICATION, errObj);
   },
 };

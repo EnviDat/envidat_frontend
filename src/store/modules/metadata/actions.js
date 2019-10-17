@@ -113,7 +113,6 @@ export default {
     });
   },
   async [BULK_LOAD_METADATAS_CONTENT]({ dispatch, commit }) {
-    commit(BULK_LOAD_METADATAS_CONTENT);
 
     const url = urlRewrite('current_package_list_with_resources?limit=1000&offset=0',
                 API_BASE, PROXY );
