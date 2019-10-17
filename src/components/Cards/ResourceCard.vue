@@ -141,7 +141,6 @@
 
 
 <script>
-import defaultTexture from '@/assets/cards/c_b_forest_texture_bark2_small.jpg';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 
@@ -174,37 +173,35 @@ export default {
     metadataContact: String,
   },
   data: () => ({
-    defaultTexture,
     maxDescriptionLength: 175,
     showFullDescription: false,
     audioFormats: ['mp3', 'wav', 'wma', 'ogg'],
   }),
   computed: {
-    dynamicCardBackground: function dynamicCardBackground() {
-      const gradient = this.dark ? this.blackTopToBottom : this.whiteTopToBottom;
-
-      if (this.defaultTexture) {
-        return `background-image: linear-gradient(0deg, ${gradient}), url(${this.defaultTexture}); background-position: center, center;`;
-      }
-
-      return '';
-    },
-    formatedBytes: function formatedBytes() {
+    formatedBytes() {
       if (!this.size) return '';
       const bytesString = this.mixinMethods_formatBytes(this.size);
       return bytesString;
     },
-    formatedCreated: function formatedCreated() {
+    formatedCreated() {
       return this.mixinMethods_formatDate(this.created);
     },
-    formatedLastModified: function formatedLastModified() {
+    formatedLastModified() {
       return this.mixinMethods_formatDate(this.lastModified);
     },
-    isLink: function isLink() {
+    isLink() {
       return this.format && (this.format.toLowerCase() === 'link' || this.format.toLowerCase() === 'url');
     },
-    isFile: function isFile() {
-      return !this.format || !(this.format.toLowerCase() === 'link' || this.format.toLowerCase() === 'url');
+    isFile() {
+      let isFile = (!this.format || !(this.format.toLowerCase() === 'link' || this.format.toLowerCase() === 'url'));
+
+      if (isFile && this.url) {
+        const splits = this.url.split('/');
+        const lastPart = splits[splits.length - 1];
+        isFile = lastPart.includes('.');
+      }
+
+      return isFile;
     },
     maxDescriptionLengthReached: function maxDescriptionLengthReached() {
       return this.description && this.description.length > this.maxDescriptionLength;
