@@ -10,7 +10,7 @@
     "lint": "vue-cli-service lint",
     "storybook:build": "vue-cli-service storybook:build -c config/storybook",
     "storybook": "vue-cli-service storybook:serve -p 6006 -c config/storybook",
-    "count-authors": "node src/node/extractAuthors.js"
+    "extract-authors": "node src/node/extractAuthors.js"
   },
   "dependencies": {
     "axios": "^0.19.0",
