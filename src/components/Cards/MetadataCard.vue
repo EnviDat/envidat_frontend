@@ -7,7 +7,8 @@
     <v-img :style="!flatLayout ? dynamicCardBackground : `background-color: ${this.categoryColor}`"
             :height="flatLayout ? '55px' : $vuetify.breakpoint.smAndDown ? '90px' : '115px'" >
 
-      <v-container grid-list-xs fluid fill-height
+      <v-container fluid
+                    fill-height
                     px-3 pt-3 pb-0 >
         <v-layout column>
 
@@ -53,7 +54,8 @@
                   }" >
       <!-- TODO: need to strip the markdown characters from the desc -->
       <v-layout row wrap>
-        <v-flex xs12 >
+        <v-flex xs12
+                :style="flatLayout ? singleLineCss : ''" >
           {{ truncatedSubtitle }}
         </v-flex>
         <v-flex xs12 >
@@ -160,22 +162,6 @@ export default {
     unlockedIconString: String,
     categoryColor: String,
   },
-  data: () => ({
-    show: false,
-    showDataText: 'SHOW DATA',
-    // maxTitleLength: 80,
-    maxTitleLength: 150,
-    compactTitleLength: 150,
-    maxDescriptionLength: 280,
-    compactDescriptionLength: 450,
-    // maxTags: 3,
-    // maxTagtextLength: 40,
-    maxTagtextLength: 100,
-    maxCompactTagtextLength: 170,
-    // maxCompactTagtextLength: 320,
-    blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
-    whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
-  }),
   computed: {
     dynamicCardBackground() {
       const gradient = this.dark ? this.blackTopToBottom : this.whiteTopToBottom;
@@ -271,8 +257,8 @@ export default {
       return {
         black_title: !this.dark,
         white_title: this.dark,
-        compactTitle: this.$vuetify.breakpoint.smAndDown || this.flatLayout,
-        // compactTitle: true,
+        smallScreenTitle: this.$vuetify.breakpoint.xsOnly,
+        compactTitle: this.$vuetify.breakpoint.smOnly,
       };
     },
   },
@@ -293,6 +279,23 @@ export default {
       this.$emit('clickedTag', tagId);
     },
   },
+  data: () => ({
+    singleLineCss: 'white-space: nowrap; overflow: hidden; text-overflow: ellipsis;',
+    show: false,
+    showDataText: 'SHOW DATA',
+    // maxTitleLength: 80,
+    maxTitleLength: 150,
+    compactTitleLength: 150,
+    maxDescriptionLength: 280,
+    compactDescriptionLength: 450,
+    // maxTags: 3,
+    // maxTagtextLength: 40,
+    maxTagtextLength: 100,
+    maxCompactTagtextLength: 170,
+    // maxCompactTagtextLength: 320,
+    blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
+    whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
+  }),
 };
 </script>
 
@@ -323,7 +326,10 @@ export default {
 
   .compactTitle {
     font-size: 17px !important;
-    /* line-height: 1em !important; */
+  }
+
+  .smallScreenTitle {
+    font-size: 14px !important;
   }
 
   .compactText {

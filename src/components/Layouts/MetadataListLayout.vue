@@ -47,8 +47,7 @@
 
   <v-container id="metadataListLayout"
                 fluid
-                :class="{ ['grid-list-sm'] : listView,
-                          ['grid-list-lg'] : !listView }"
+                grid-list-lg
                 pa-0 >
 
     <transition-group name="itemfade"

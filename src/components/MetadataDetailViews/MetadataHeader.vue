@@ -25,10 +25,13 @@
 
         <v-flex v-if="metadataTitle"
                 xs12 >
-          <div class="headerTitle py-3"
-                :class="{ 'display-2': $vuetify.breakpoint.lgAndUp,
-                          'display-1': $vuetify.breakpoint.mdAndDown,
-                          'headline': $vuetify.breakpoint.smAndDown,
+          <div class="headerTitle"
+                :class="{ 'py-2': $vuetify.breakpoint.mdAndUp,
+                          'py-0': $vuetify.breakpoint.smAndDown,
+                          'display-2': $vuetify.breakpoint.lgAndUp,
+                          'display-1': $vuetify.breakpoint.mdOnly,
+                          'headline': $vuetify.breakpoint.smOnly,
+                          'title': $vuetify.breakpoint.xsOnly,
                         }" >
             {{ metadataTitle }}
           </div>
@@ -123,7 +126,7 @@
                     class="headerInfo" >
               <base-icon-label-view :text="license"
                                     :icon="licenseIcon"
-                                    icon-tooltip="License for Datafiles"
+                                    icon-tooltip="License for the data files"
                                     :align-left="true" />
             </v-flex>
           </v-layout>
