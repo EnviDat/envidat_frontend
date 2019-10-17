@@ -40,15 +40,50 @@ function getDataCredit(author) {
   return dataCredits;
 }
 
-function getAuthors(dataset){ 
-    const header = metaDataFactory.createHeader(dataset, false);
-    const authors = header.authors;
+function getAuthorName(author) {
+
+  let fullName = author.name.trim();
+
+  if (fullName.indexOf('.') >= 0) {
+    // for names like 'Meile R.' usually the lastname comes first then
+    const lookupName = fullNameList[fullName];
+    if (lookupName) {
+      fullName = lookupName;
+    }
+  }
+
+  const nameSpilts = fullName.split(' ');
+
+  let firstName = nameSpilts[0];
+  let lastName = nameSpilts[1];
+
+  if (nameSpilts.length == 3) {
+    // For Names like 'Dude van Dudehood'
+    firstName = nameSpilts[0];
+    lastName = nameSpilts[1] + ' ' + nameSpilts[2];
+  }
+
+  return {
+    fullName,
+    firstName,
+    lastName,
+  };
+}
+
+function getAuthors(dataset) {
+    let authors = null;
+
+    if (typeof dataset.author === 'string') {
+      authors = JSON.parse(dataset.author);
+    }
 
     if (authors && authors instanceof Array) {
       const authorObjs = [];
 
       for (let i = 0; i < authors.length; i++) {
           const author = authors[i];
+
+          const authorName = getAuthorName(author);
 
           const id = {
             type: author.identifier_scheme,
@@ -57,9 +92,14 @@ function getAuthors(dataset){
           
           const dataCredit = getDataCredit(author);
 
-          authorObjs.push({ name: author.name.trim(), datasetCount: 1,
-                            affiliation: author.affiliation, id,
-                            email: author.email, dataCredit });
+          authorObjs.push({ firstName: authorName.firstName,
+                            lastName: authorName.lastName,
+                            fullName: authorName.fullName,
+                            datasetCount: 1,
+                            affiliation: author.affiliation,
+                            id,
+                            email: author.email,
+                            dataCredit });
       }
 
       return authorObjs;
@@ -81,7 +121,7 @@ function extractAuthors() {
       for (let j = 0; j < authors.length; j++) {
         const author = authors[j];
 
-        const authorName = author.name.trim();
+        const authorName = author.fullName;
         const existingAuthor = authorMap[authorName];
 
         if (existingAuthor){
@@ -137,11 +177,17 @@ function writeAuthorsToFile(authorMap) {
         return console.log(err);
     }
 
-    console.log("Authors extracted and saved in " + outputPath + outputFileName + ". Wrote " + authorJson.length);
+    console.log("Authors extracted to " + outputPath + outputFileName + ". Wrote " + authorJson.length + " lines.");
   }); 
   
 }
 
+const fullNameList = {
+  'Meile, R.': 'Rolf Meile',
+};
 
 const authorMap = extractAuthors();
+
 writeAuthorsToFile(authorMap);
+
+
