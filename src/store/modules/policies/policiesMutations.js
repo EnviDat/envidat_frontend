@@ -3,8 +3,8 @@ import {
   GET_POLICIES_SUCCESS,
   GET_POLICIES_ERROR,
 } from '@/store/policiesMutationsConsts';
-
-import { errorMessage } from '@/factories/notificationFactory';
+import { ADD_USER_NOTIFICATION } from '@/store/mutationsConsts';
+import { getSpecificApiError } from '@/factories/notificationFactory';
 
 export default {
   [GET_POLICIES](state) {
@@ -17,7 +17,8 @@ export default {
   [GET_POLICIES_ERROR](state, reason) {
     state.loading = false;
 
-    const details = 'An error occured while loading the policies';
+    const details = 'An error occured while loading the policies!';
+    const errObj = getSpecificApiError(details, reason);
 
     state.policiesMarkdown = details + ': ' + reason;
 
@@ -25,13 +26,6 @@ export default {
       state.policiesMarkdown += ' \nThis is normal when developing locally on localhost:8080';
     }
 
-    let errObj = errorMessage(reason, details);
-
-    if (reason.response) {
-      const status = reason.response.status + ' ' + reason.response.statusText;
-      errObj = errorMessage(status, details, reason.response.stack);
-    }
-
-    state.error = errObj;
+    this.commit(ADD_USER_NOTIFICATION, errObj);
   },
 };

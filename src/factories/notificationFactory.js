@@ -1,6 +1,5 @@
 import {
-  GENERIC_API_ERROR,
-  GENERIC_FRONTEND_ERROR,
+  ADD_USER_NOTIFICATION,
 } from '@/store/mutationsConsts';
 
 import store from '@/store/store';
@@ -12,9 +11,9 @@ function defaultNotification() {
     stack: 'the Stack Trace',
     color: 'success',
     icon: 'check_circle',
+    type: 'info',
     timeout: 4000,
-    y: 'top', // 'top' or 'bottom'
-    x: null, // 'right' or 'left'
+    show: true,
   };
 }
 export function successMessage(message, details) {
@@ -31,6 +30,7 @@ export function errorMessage(message, details, stack) {
   notification.stack = stack;
   notification.color = 'error';
   notification.icon = 'error';
+  notification.type = 'error';
   notification.timeout = 8000;
   return notification;
 }
@@ -41,6 +41,7 @@ export function warningMessage(message, details) {
   notification.details = details;
   notification.color = 'warning';
   notification.icon = 'warning';
+  notification.type = 'warning';
   notification.timeout = 6000;
   return notification;
 }
@@ -66,10 +67,19 @@ function genericMessage (status) {
   }
 }
 
-export function handleGenericAPIError (reason) {
-  // const errorStatus = error ? error.status : error;
-  // const errorMessage = genericMessage(errorStatus);
+export function getSpecificApiError(details, reason) {
+  let errObj = errorMessage(reason, details);
 
+  if (reason.response) {
+    const status = reason.response.status + ' ' + reason.response.statusText;
+    details += '\n' + reason.request.responseURL;
+    errObj = errorMessage(status, details, reason.response.stack);
+  }
+
+  return errObj;
+}
+
+export function getGenericApiError(reason) {
   let errObj = errorMessage(reason);
 
   if (reason.response) {
@@ -79,11 +89,17 @@ export function handleGenericAPIError (reason) {
     errObj = errorMessage(message, status + ' ' + details, reason.response.stack);
   }
 
-  store.commit(GENERIC_FRONTEND_ERROR, errObj);
+  return errObj;
+}
+
+export function handleGenericAPIError (reason) {
+  let errObj = getGenericApiError(reason);
+
+  store.commit(ADD_USER_NOTIFICATION, errObj);
 }
 
 export function handleGenericError (msg, details, stack) {
   const errObj = errorMessage(msg, details, stack);
 
-  store.commit(GENERIC_FRONTEND_ERROR, errObj);
+  store.commit(ADD_USER_NOTIFICATION, errObj);
 }

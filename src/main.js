@@ -34,7 +34,7 @@ Vue.config.errorHandler = function (err, vm, info) {
 // Vue.config.warnHandler = function (msg, vm, trace) {
 //   // `trace` is the component hierarchy trace
 //   console.log('Vue.config.warnHandler vm: ' + vm.$store + ' ' + msg + ' \n\n ' + trace);
-//   // vm.$store.commit(GENERIC_FRONTEND_ERROR, msg + ' ' + trace );
+//   // vm.$store.commit(ADD_USER_NOTIFICATION, msg + ' ' + trace );
 // }
 
 axios.interceptors.response.use(function (response) {
@@ -44,7 +44,9 @@ axios.interceptors.response.use(function (response) {
   return response;
 }, function (error) {
   // console.log('interceptor error ' + error);
-  handleGenericAPIError(error);
+  if (error.status >= 500) {
+    handleGenericAPIError(error);
+  }
   // Any status codes that falls outside the range of 2xx cause this function to trigger
   // Do something with response error
   // throw new Error(error);

@@ -1,23 +1,18 @@
 <template>
   <v-app class="application" :style="dynamicBackground">
 
-    <v-snackbar v-if="error"
-                v-model="showSnackbar"
-                class="enviDatSnackbar"
-                :timeout="error.timeout"
-                :bottom="error.y === 'bottom'"
-                :left="error.x === 'left'"
-                :right="error.x === 'right'"
-                :top="error.y === 'top'"
-                :color="error.color"
-                multi-line
-                :style="`z-index: ${NotificationZIndex};`" >
+      <div v-for="(notification, index) in visibleNotifications()"
+          :key="`notification_${index}`"
+          :style="`position: absolute; right: 15px;
+                  top: ${35 + index * 175}px;
+                  z-index: ${NotificationZIndex};`" >
 
-      <notification-card :error="error" :showReportButton="config.errorReportingEnabled"
-                          @clickedClose="showSnackbar = false"
-                          @clickedReport="catchReportClicked" />
-
-    </v-snackbar>
+        <notification-card v-if="notification.show"
+                            :notification="notification"
+                            :showReportButton="config.errorReportingEnabled && notification.type === 'error'"
+                            @clickedClose="catchCloseClicked(notification.key)"
+                            @clickedReport="catchReportClicked(notification.key)" />
+      </div>
 
     <the-navigation v-if="$vuetify.breakpoint.mdAndUp"
                     :style="`z-index: ${NavigationZIndex}`"
@@ -103,7 +98,11 @@ import {
   METADATA_NAMESPACE,
   BULK_LOAD_METADATAS_CONTENT,
 } from '@/store/metadataMutationsConsts';
-import { SET_CONFIG } from '@/store/mutationsConsts';
+import {
+  SET_CONFIG,
+  TRIM_NOTIFICATIONS,
+  HIDE_NOTIFICATIONS,
+} from '@/store/mutationsConsts';
 import TheNavigation from '@/components/Navigation/TheNavigation';
 import TheNavigationSmall from '@/components/Navigation/TheNavigationSmall';
 import TheNavigationToolbar from '@/components/Navigation/TheNavigationToolbar';
@@ -163,6 +162,10 @@ export default {
         }
       }
     },
+    visibleNotifications() {
+      const notis = Object.values(this.notifications);
+      return notis.filter(n => n.show);
+    },
     catchMenuClicked() {
       this.menuItem.active = !this.menuItem.active;
     },
@@ -187,11 +190,16 @@ export default {
     catchSearchCleared() {
       this.searchTerm = '';
     },
-    catchReportClicked() {
+    catchCloseClicked(key) {
+      if (!this.notifications) return;
+
+      this.$store.commit(HIDE_NOTIFICATIONS, key);
+    },
+    catchReportClicked(index) {
       if (this.$route.path === REPORT_PATH) {
         return;
       }
-      this.$router.push({ path: REPORT_PATH });
+      this.$router.push({ path: REPORT_PATH, query: index });
     },
     reloadApp() {
       window.location.reload();
@@ -221,7 +229,8 @@ export default {
       showVersionModal: 'showVersionModal',
       newVersion: 'newVersion',
       config: 'config',
-      error: 'error',
+      notifications: 'notifications',
+      maxNotifications: 'maxNotifications',
     }),
     loading() {
       return this.loadingMetadatasContent || this.searchingMetadatasContent || this.isFilteringContent;
@@ -294,8 +303,13 @@ export default {
     NotificationCard,
   },
   watch: {
-    error() {
-      this.showSnackbar = true;
+    notifications() {
+      if (!this.notifications) return;
+
+      const keys = Object.keys(this.notifications);
+      if (keys && keys.length > this.maxNotifications) {
+        this.$store.commit(TRIM_NOTIFICATIONS);
+      }
     },
   },
   /* eslint-disable object-curly-newline */
@@ -305,7 +319,6 @@ export default {
     dialogCanceled: false,
     appVersion: process.env.VUE_APP_VERSION,
     showMenu: true,
-    showSnackbar: true,
     NavToolbarZIndex: 1150,
     NavigationZIndex: 1100,
     NotificationZIndex: 1500,
@@ -469,6 +482,7 @@ export default {
 
 .enviDatSnackbar > .v-snack__wrapper > .v-snack__content {
   height: 100%;
+  padding: 12px;
 }
 
 .smallChip {
