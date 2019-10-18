@@ -20,24 +20,13 @@ import {
 } from '@/store/metadataMutationsConsts';
 
 import { tagsIncludedInSelectedTags } from '@/factories/metadataFilterMethods';
+import { urlRewrite } from '@/factories/apiFactory';
 
 /* eslint-disable no-unused-vars  */
 const PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
 const API_BASE = '/api/action/';
 const useTestData = process.env.VUE_APP_USE_TESTDATA;
 
-function urlRewrite(url, baseUrl, proxyUrl, replaceQuestionMark) {
-  if (replaceQuestionMark) {
-    url = url.replace('?', '&');
-  }
-  url = url.replace("'", '%22');
-
-  proxyUrl = proxyUrl.replace('NULL', '');
-
-  url = `${proxyUrl}${baseUrl}${url}`;
-
-  return url;
-}
 
 function contentSize(content) {
   return content !== undefined ? Object.keys(content).length : 0;
@@ -70,14 +59,14 @@ export default {
   async [SEARCH_METADATA]({ commit }, searchTerm) {
     commit(SEARCH_METADATA);
 
-    const splitSpaces = searchTerm.split(' ');
-    if (splitSpaces.length > 1) {
-      searchTerm = splitSpaces[0];
-      for (let i = 1; i < splitSpaces.length; i++) {
-        const el = splitSpaces[i];
-        searchTerm += ` OR ${el}`;
-      }
-    }
+    // const splitSpaces = searchTerm.split(' ');
+    // if (splitSpaces.length > 1) {
+    //   searchTerm = splitSpaces[0];
+    //   for (let i = 1; i < splitSpaces.length; i++) {
+    //     const el = splitSpaces[i];
+    //     searchTerm += ` OR ${el}`;
+    //   }
+    // }
 
     const url = urlRewrite(`package_search?q=title:${searchTerm} OR notes:${searchTerm} OR author:${searchTerm}&wt=json&rows=1000`,
                 API_BASE, PROXY);
@@ -115,12 +104,16 @@ export default {
   async [BULK_LOAD_METADATAS_CONTENT]({ dispatch, commit }) {
 
     const url = urlRewrite('current_package_list_with_resources?limit=1000&offset=0',
-                API_BASE, PROXY );
+                API_BASE, PROXY);
 
-    if (typeof useTestData === 'string' && useTestData.toLowerCase() === 'true'){
-      const projectJSON = require('@/testdata/packagelist.js');
-      commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, projectJSON.default.result);
-      dispatch(FILTER_METADATA, []);
+    if (typeof useTestData === 'string' && useTestData.toLowerCase() === 'true') {
+
+      import('@/testdata/packagelist.js')
+      .then((projectJSON) => {
+        commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, projectJSON.default.result);
+        dispatch(FILTER_METADATA, []);
+      });
+
       return;
     }
 
@@ -178,7 +171,7 @@ export default {
       } catch (error) {
         commit(UPDATE_TAGS_ERROR, error);
       }
-    }, 100);
+    }, 10);
   },
   async [FILTER_METADATA]({ dispatch, commit }, selectedTagNames) {
     commit(FILTER_METADATA);
@@ -225,6 +218,6 @@ export default {
       } catch (error) {
         commit(FILTER_METADATA_ERROR, error);
       }
-    }, 100);
+    }, 10);
   },
 };
