@@ -12,95 +12,109 @@
           :style="`background-color: ${$vuetify.theme.highlight};`" >
 
       <p class="my-0"
-          :class="smScreen ? 'caption' : 'body-2'" >
+          :class="$vuetify.breakpoint.mdAndDown ? 'caption' : 'body-2'" >
         {{ highlightedText }}
       </p>
 
     </div>
 
-    <v-container py-2
-                :class="smScreen ? '' : 'px-3'" >
+    <v-container :class="$vuetify.breakpoint.mdAndDown ? 'py-1 px-3' : 'py-2 px-3'" >
 
-    <v-layout wrap :row="!smScreen" :column="smScreen" align-center>
+    <v-layout :row="!smScreen"
+              :column="smScreen"
+              wrap
+              align-center>
 
-      <v-flex xs12 md7>
+      <v-flex grow
+              py-1>
         <div :style="`color:${pinnedIds.length > 0 ? $vuetify.theme.primary : 'rgba(0,0,0,.47)'};`">
           {{ filterText + pinnedIds.length }}
         </div>
       </v-flex>
 
-      <v-flex hidden-sm-and-down sm12 md5 >
-        <base-rectangle-button :buttonText="clearButtonText"
-                                :toolTipText="clearButtonTooltipText"
-                                :isSmall="true"
-                                :isFlat="true"
-                                iconColor="red"
-                                :disabled="pinnedIds.length <= 0"
-                                materialIconName="close"
-                                marginClass="my-0 mx-0 pa-0"
-                                @clicked="catchClearClicked()" />
-      </v-flex>
-
-      <v-flex hidden-md-and-up sm12>
+      <v-flex py-1
+              :class="smScreen ? 'shrink' : 'md3'">
         <base-icon-button materialIconName="close"
                           iconColor="red"
                           :outlined="true"
+                          :isSmall="$vuetify.breakpoint.mdAndDown"
                           :disabled="pinnedIds.length <= 0"
                           :toolTipText="clearButtonTooltipText"
                           @clicked="catchClearClicked()" />
       </v-flex>
 
 
-      <v-flex hidden-sm-and-down md9>
+      <v-flex hidden-sm-and-down md9
+              py-1 >
         {{ focusText }}
       </v-flex>
 
-      <v-flex sm12 md3 py-1>
+      <v-flex sm12 md3
+              py-1 >
         <base-icon-button materialIconName="remove_red_eye"
                           iconColor="black"
                           color="highlight"
+                          :isSmall="smScreen"
                           :outlined="true"
                           :toolTipText="focusText"
                           @clicked="catchFocusClicked()" />
       </v-flex>
 
-      <v-flex hidden-sm-and-down md9 v-if="hasPins" >
+      <v-flex v-if="hasPins"
+              hidden-sm-and-down
+              md9
+              py-1 >
         {{ pinText }}
       </v-flex>
 
-      <v-flex sm12 md3 py-1 v-if="hasPins" >
+      <v-flex v-if="hasPins"
+              sm12 md3
+              py-1 >
         <base-icon-button :count="pinNumber"
                           :customIcon="pinIcon"
                           color="secondary"
                           :outlined="true"
+                          :isSmall="smScreen"
                           :isToggled="pinEnabled"
                           :toolTipText="pinText"
                           @clicked="catchPinClicked()" />
       </v-flex>
 
-      <v-flex hidden-sm-and-down md9 v-if="hasMultiPins">
+      <v-flex v-if="hasMultiPins"
+              hidden-sm-and-down
+              md9
+              py-1 >
         {{ multiPinText }}
       </v-flex>
 
-      <v-flex sm12 md3 py-1 v-if="hasMultiPins">
+      <v-flex v-if="hasMultiPins"
+              sm12 md3
+              py-1 >
         <base-icon-button :count="multiPinNumber"
                           :customIcon="multiPinIcon"
                           color="secondary"
                           :outlined="true"
+                          :isSmall="smScreen"
                           :isToggled="multiPinEnabled"
                           :toolTipText="multiPinText"
                           @clicked="catchMultipinClicked()" />
       </v-flex>
 
-      <v-flex hidden-sm-and-down md9 v-if="hasPolygons">
+      <v-flex v-if="hasPolygons"
+              hidden-sm-and-down
+              md9
+              py-1 >
         {{ polygonText }}
       </v-flex>
 
-      <v-flex sm12 md3 py-1 v-if="hasPolygons">
+      <v-flex v-if="hasPolygons"
+              sm12 md3
+              py-1 >
         <base-icon-button :count="polygonNumber"
                           materialIconName="layers"
                           iconColor="black"
                           color="secondary"
+                          :isSmall="smScreen"
                           :isToggled="polygonEnabled"
                           :outlined="true"
                           :toolTipText="polygonText"
@@ -115,7 +129,6 @@
 </template>
 
 <script>
-import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 export default {
@@ -185,7 +198,6 @@ export default {
     focusText: 'Focus all elements on the map',
   }),
   components: {
-    BaseRectangleButton,
     BaseIconButton,
   },
 };
