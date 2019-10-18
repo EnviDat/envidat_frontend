@@ -1,3 +1,5 @@
+import globalMethods from '@/factories/globalMethods';
+
 export default {
   createHeader(dataset, smallScreen) {
     if (!dataset) {
@@ -161,6 +163,9 @@ export default {
         let { format } = element;
         format = format.replace('.', '').toLowerCase();
 
+        const created = globalMethods.methods.mixinMethods_formatDate(element.created);
+        const modified = globalMethods.methods.mixinMethods_formatDate(element.last_modified);
+
         const res = {
           // "hash": "",
           description: element.description,
@@ -178,8 +183,8 @@ export default {
           restricted: element.restricted,
           format,
           state: element.state,
-          created: element.created,
-          lastModified: element.last_modified,
+          created,
+          lastModified: modified,
           position: element.position,
           revisionId: element.revision_id,
           isProtected,
@@ -212,8 +217,13 @@ export default {
     // TODO DataCRedit
 
     details.push({ label: 'DOI', text: dataset.doi, url: `https://doi.org/${dataset.doi}` });
-    details.push({ label: 'Created', text: dataset.metadata_created });
-    details.push({ label: 'Last Modified', text: dataset.metadata_modified });
+
+    
+    const created = globalMethods.methods.mixinMethods_formatDate(dataset.metadata_created);
+    details.push({ label: 'Created', text: created });
+
+    const modified = globalMethods.methods.mixinMethods_formatDate(dataset.metadata_modified);
+    details.push({ label: 'Last Modified', text: modified });
 
     const license = this.createLicense(dataset);
     details.push({ label: 'License', text: license.title, url: license.url });
