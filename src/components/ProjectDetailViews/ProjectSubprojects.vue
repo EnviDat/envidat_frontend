@@ -4,12 +4,10 @@
     <v-card-title class="bodyTitle title">Subprojects</v-card-title>
 
     <v-card-text v-if="subProjects"
-                  :class="{ 'px-2' : $vuetify.breakpoint.xsOnly,
-                            'px-3' : $vuetify.breakpoint.smAndUp, }"
-                  class="py-0">
+                  pa-3 >
 
           <v-container grid-list-lg fluid
-                        pa-1 >
+                        pa-0 >
           <v-layout row wrap>
 
             <v-flex v-for="(project, index) in subProjects"

@@ -9,34 +9,30 @@
               elevation-5
               style="z-index: 1;" >
 
-        <project-header :title="currentProject.title"
-                        :titleImg="currentProject.image_display_url"
+        <project-header :title="currentProject ? currentProject.title : null"
+                        :titleImg="currentProject ? currentProject.image_display_url : null"
                         :defaultImg="missionImg"
-                        :showPlaceholder="!currentProject"
-                        @clickedBack="catchBackClicked"
-                        />
+                        :showPlaceholder="loading"
+                        @clickedBack="catchBackClicked" />
       </v-flex>
 
       <v-flex xs12 lg10 offset-lg1
               px-3
               style="z-index: 0;" >
 
-        <project-body :description="currentProject.description"
-                      :subProjects="currentProject.subProjects"
-                      :metadatas="currentProject.packages"
-                       />
+        <project-body v-bind="currentProject"
+                      :showPlaceholder="loading" />
       </v-flex>
 
-      <div v-if="currentProject.subProjects" >
-        <v-flex xs12 lg10 offset-lg1
-                py-2 px-3 >
-          <project-subprojects :defaultImg="creatorImg"
-                                :subProjects="currentProject.subProjects"
-                                @projectClick="catchProjectClick"
-                                @subprojectClick="catchSubprojectClick"
-                                />
-        </v-flex>
-      </div>
+      <v-flex v-if="loading || (!loading && currentProject && currentProject.subProjects)"
+              xs12 lg10 offset-lg1
+              py-2 px-3 >
+        <project-subprojects v-bind="currentProject"
+                              :defaultImg="creatorImg"
+                              :showPlaceholder="loading"
+                              @projectClick="catchProjectClick"
+                              @subprojectClick="catchSubprojectClick" />
+      </v-flex>
 
       <v-flex xs12 lg10 offset-lg1
               py-2 px-3 >
@@ -61,7 +57,7 @@
 
           <div v-if="!hasMetadatas" >
             <v-card-text style="color: red;" >
-              {{ metadataEmptyText }} '{{ currentProject.title }}'
+              {{ metadataEmptyText }} '{{ currentProject ? currentProject.title : '' }}'
             </v-card-text>
           </div>
 
@@ -113,7 +109,7 @@ export default {
 
       let backRoute = { path: PROJECTS_PATH };
 
-      if (vm.currentProject.parent) {
+      if (vm.currentProject && vm.currentProject.parent) {
         backRoute = {
           name: PROJECT_DETAIL_PAGENAME,
           params: { id: vm.currentProject.parent.id },
@@ -151,6 +147,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      loading: `${PROJECTS_NAMESPACE}/loading`,
       projects: `${PROJECTS_NAMESPACE}/projects`,
       projectsPageBackRoute: `${PROJECTS_NAMESPACE}/projectsPageBackRoute`,
       metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
@@ -166,7 +163,7 @@ export default {
       return this.$vuetify.breakpoint.smAndUp;
     },
     hasMetadatas() {
-      return this.currentProject.packages && this.currentProject.packages.length > 0;
+      return this.currentProject && this.currentProject.packages && this.currentProject.packages.length > 0;
     },
     creatorImg() {
       if (this.$vuetify.breakpoint.mdAndUp) {
@@ -234,16 +231,6 @@ export default {
       }
 
       return this.metadatasContent[id];
-
-      // for (let i = 0; i < this.metadatasContent.length; i++) {
-      //   const el = this.metadatasContent[i];
-
-      //   if (el.id === id) {
-      //     return el;
-      //   }
-      // }
-
-      // return null;
     },
     getProject(id) {
       let current = null;
