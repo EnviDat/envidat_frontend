@@ -19,7 +19,7 @@
 
       </v-flex>
 
-      <v-flex xs11 md6>
+      <v-flex xs12 md6>
         <small-search-bar-view v-if="showSearch"
                                 :compactLayout="$vuetify.breakpoint.smAndDown"
                                 class="elevation-0"

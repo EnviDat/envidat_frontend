@@ -44,7 +44,7 @@
         <v-flex v-for="n in 3"
                 :key="n">
           <tag-chip-placeholder py-0
-                                class="card_tag_placeholder" />
+                                class="envidatChip" />
         </v-flex>
       </v-layout>
 
@@ -95,9 +95,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-  .card_tag_placeholder {
-    opacity: 0.75;
-  }
 
 </style>
