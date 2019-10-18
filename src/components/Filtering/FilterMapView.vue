@@ -28,7 +28,7 @@
                               :pinNumber="hasPins ? pinLayerGroup.length : 0"
                               :hasMultiPins="hasMultiPins"
                               :multiPinEnabled="multiPinEnabled"
-                              :multiPinNumber="hasMultiPins ? multiPinLayerGroup.length : 0"
+                              :multiPinNumber="hasMultiPins ? multiPins.length : 0"
                               :hasPolygons="hasPolygons"
                               :polygonEnabled="polygonEnabled"
                               :polygonNumber="hasPolygons ? polygonLayerGroup.length : 0"
@@ -164,7 +164,7 @@ export default {
         return;
       }
 
-      this.map = this.initLeaflet(this.$refs.map, this.pointArray);
+      this.map = this.initLeaflet(this.$refs.map);
       this.markerCount = 0;
 
       if (this.map) {
@@ -313,6 +313,10 @@ export default {
           }
         });
 
+        // store the multiPins in data to get the actual number
+        // the number from the flatMultiPins will be every single pin
+        this.multiPins = multiPins;
+
         this.multiPinLayerGroup = flatMultiPins;
       } else {
         this.multiPinLayerGroup = [];
@@ -399,19 +403,6 @@ export default {
         }
       });
     },
-    addControls() {
-      const baseLayers = {
-        Map: this.mapLayerGroup,
-      };
-
-      const overlays = {
-        Pins: this.pinLayerGroup,
-        MultiPins: this.multiPinLayerGroup,
-        Polygons: this.polygonLayerGroup,
-      };
-
-      L.control.layers(baseLayers, overlays).addTo(this.map);
-    },
     updateMap() {
       this.clearLayers(this.map);
 
@@ -424,17 +415,17 @@ export default {
 
       // this.addGeoJSONToMap();
     },
-    updatePins: function updatePins() {
+    updatePins() {
       this.clearLayers(this.map, 'pins');
 
       this.addElementsToMap(this.pinLayerGroup, this.pinEnabled);
     },
-    updateMultiPins: function updateMultiPins() {
+    updateMultiPins() {
       this.clearLayers(this.map, 'multiPins');
 
       this.addElementsToMap(this.multiPinLayerGroup, this.multiPinEnabled);
     },
-    updatePolygons: function updatePolygons() {
+    updatePolygons() {
       this.clearLayers(this.map, 'polygons');
 
       this.addElementsToMap(this.polygonLayerGroup, this.polygonEnabled, true);
@@ -444,12 +435,6 @@ export default {
     content() {
       this.updateMap();
     },
-    // pinnedIds: function updateMapPinnedIds() {
-    //   this.updateMap();
-    // },
-    // filteredContent: function updateMetadatasContent() {
-    //   this.updateMap();
-    // },
   },
   data: () => ({
     map: null,
@@ -470,6 +455,7 @@ export default {
     pinLayerGroup: null,
     multiPinEnabled: true,
     multiPinLayerGroup: null,
+    multiPins: [],
     pinIcon: null,
     multiPinIcon: null,
     polygonIcon: null,
