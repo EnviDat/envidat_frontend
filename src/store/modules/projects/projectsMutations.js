@@ -7,7 +7,8 @@ import {
 
 import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
 import { ADD_USER_NOTIFICATION } from '@/store/mutationsConsts';
-import projectDataFactory from "@/factories/projectsDataFactory";
+import projectDataFactory from '@/factories/projectsDataFactory';
+import { getSpecificApiError } from '@/factories/notificationFactory';
 
 export default {
   [GET_PROJECTS](state) {
@@ -25,19 +26,8 @@ export default {
   [GET_PROJECTS_ERROR](state, reason) {
     state.loading = false;
 
-    const details = 'An error occured while loading the projects';
-    state.pageError = details + ': ' + reason;
-
-    if (process.env.NODE_ENV === 'development') {
-      state.pageError += ' \nThis is normal when developing locally on localhost:8080';
-    }
-
-    let errObj = errorMessage(reason, details);
-
-    if (reason.response) {
-      const status = reason.response.status + ' ' + reason.response.statusText;
-      errObj = errorMessage(status, details, reason.response.stack);
-    }
+    const details = 'An error occured while loading the policies!';
+    const errObj = getSpecificApiError(details, reason);
 
     this.commit(ADD_USER_NOTIFICATION, errObj);
   },
