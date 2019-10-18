@@ -40,11 +40,11 @@
 
       <v-flex xs12 lg10 offset-lg1
               py-2 px-3 >
+
         <v-card>
+          <v-card-title class="metadataList_title title">{{ metadataListTitle }}</v-card-title>
+
           <div v-if="hasMetadatas" >
-
-            <v-card-title class="metadataList_title title">{{ metadataListTitle }}</v-card-title>
-
             <metadata-list-layout class="px-3"
                                 :listContent="filteredListContent"
                                 :showMapFilter="false"
@@ -57,12 +57,14 @@
                                 @clickedClear="catchTagCleared"
                                 :defaultListControls="controls"
                                 :mapHeight="mapFilterHeight" />
-
           </div>
 
           <div v-if="!hasMetadatas" >
-            <v-card-title class="metadataList_title title">{{ currentProject.title }} has no Metadata connected</v-card-title>
+            <v-card-text style="color: red;" >
+              {{ metadataEmptyText }} '{{ currentProject.title }}'
+            </v-card-text>
           </div>
+
         </v-card>
       </v-flex>
 
@@ -343,6 +345,7 @@ export default {
     controls: [1],
     mapFilterHeight: 400,
     metadataListTitle: 'Datasets',
+    metadataEmptyText: 'There are no datasets connected with the project',
   }),
 };
 </script>
