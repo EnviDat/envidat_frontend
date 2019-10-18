@@ -1,8 +1,8 @@
 <template>
-  <v-tooltip
+  <!-- <v-tooltip
     bottom
     :disabled="$vuetify.breakpoint.xsOnly"
-  >
+  > -->
     <!-- <div slot="activator" class="iconCentering">
         <img class="envidatIcon"
             :class="compactLayout ? 'small' : ''"
@@ -25,8 +25,8 @@
       {{ name }}
     </v-chip>
 
-    <span>{{ toolTipText }}</span>
-  </v-tooltip>
+    <!-- <span>{{ toolTipText }}</span>
+  </v-tooltip> -->
 </template>
 
 <script>
@@ -51,8 +51,7 @@ export default {
     opacity: 0.85;
     height: 24px !important;
     background-color: #f8f8f8 !important;
-    margin-top: 0;
-    margin-bottom: 0;
+    margin: 1px 2px !important;
   }
 
   .authorTag > .v-chip__content > .v-avatar {

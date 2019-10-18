@@ -1,7 +1,8 @@
 <template>
   <v-card raised >
 
-    <v-container pa-2>
+    <v-container fluid
+                  pa-2 >
       <v-layout column >
 
         <v-flex v-if="!filterExpanded"
