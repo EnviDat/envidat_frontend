@@ -36,7 +36,7 @@ export default {
 
     axios.get(url)
       .then((response) => {
-        commit(GET_PROJECTS_SUCCESS, response.data);
+        commit(GET_PROJECTS_SUCCESS, response.data.result);
       })
       .catch((reason) => {
         commit(GET_PROJECTS_ERROR, reason);

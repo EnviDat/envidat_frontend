@@ -80,7 +80,7 @@
 
               <v-flex v-if="created"
                       px-0 py-1 >
-                <base-icon-label-view :text="formatedCreated"
+                <base-icon-label-view :text="created"
                                       :icon="dateCreatedIcon"
                                       icon-tooltip="Date of file creation"
                                       :align-left="twoColumnLayout" />
@@ -88,7 +88,7 @@
 
               <v-flex v-if="lastModified"
                       px-0 py-1 >
-                <base-icon-label-view :text="formatedLastModified"
+                <base-icon-label-view :text="lastModified"
                                       :icon="lastModifiedIcon"
                                       icon-tooltip="Date of last modification"
                                       :align-left="twoColumnLayout" />
@@ -123,7 +123,7 @@
             class="fabMenu fabPosition elevation-2 ma-2 pl-2 pt-2" >
         <v-icon class="pl-1 pt-1">shield</v-icon>
         <p class="pt-2 lockedText black--text resourceCardText"
-          v-html="protectedText"
+            v-html="protectedText"
         ></p>
       </div>
 
@@ -182,12 +182,6 @@ export default {
       if (!this.size) return '';
       const bytesString = this.mixinMethods_formatBytes(this.size);
       return bytesString;
-    },
-    formatedCreated() {
-      return this.mixinMethods_formatDate(this.created);
-    },
-    formatedLastModified() {
-      return this.mixinMethods_formatDate(this.lastModified);
     },
     isLink() {
       return this.format && (this.format.toLowerCase() === 'link' || this.format.toLowerCase() === 'url');
@@ -252,9 +246,6 @@ export default {
 
       return this.mixinMethods_getIcon('file');
     },
-    formatedDate: function formatedDate(value) {
-      return this.mixinMethods_formatDate(value);
-    },
   },
 };
 </script>
@@ -290,9 +281,10 @@ export default {
 
   .fabMenu:hover {
     background: #FFF;
-    width: 150px;
+    min-width: 160px;
+    width: 100%;
     height: 100%;
-    min-height: 110px;
+    min-height: 160px;
     border-radius: 3px 3px;
     visibility: visible;
   }
