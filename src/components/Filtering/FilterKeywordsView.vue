@@ -88,14 +88,12 @@
 </template>
 
 <script>
-import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import TagChip from '@/components/Cards/TagChip';
 import TagChipPlaceholder from '@/components/Cards/TagChipPlaceholder';
 
 export default {
   components: {
-    BaseIconLabelView,
     BaseIconButton,
     TagChip,
     TagChipPlaceholder,

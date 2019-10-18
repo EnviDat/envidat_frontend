@@ -59,17 +59,9 @@ export default {
   async [SEARCH_METADATA]({ commit }, searchTerm) {
     commit(SEARCH_METADATA);
 
-    // const splitSpaces = searchTerm.split(' ');
-    // if (splitSpaces.length > 1) {
-    //   searchTerm = splitSpaces[0];
-    //   for (let i = 1; i < splitSpaces.length; i++) {
-    //     const el = splitSpaces[i];
-    //     searchTerm += ` OR ${el}`;
-    //   }
-    // }
-
-    const url = urlRewrite(`package_search?q=title:${searchTerm} OR notes:${searchTerm} OR author:${searchTerm}&wt=json&rows=1000`,
-                API_BASE, PROXY);
+    searchTerm = searchTerm.trim();
+    const url = urlRewrite(`package_search?q=title:"${searchTerm}" OR notes:"${searchTerm}" OR author:"${searchTerm}"&wt=json&rows=1000`,
+                            API_BASE, PROXY);
 
     axios
       .get(url)
@@ -171,7 +163,7 @@ export default {
       } catch (error) {
         commit(UPDATE_TAGS_ERROR, error);
       }
-    }, 10);
+    }, 100);
   },
   async [FILTER_METADATA]({ dispatch, commit }, selectedTagNames) {
     commit(FILTER_METADATA);
@@ -218,6 +210,6 @@ export default {
       } catch (error) {
         commit(FILTER_METADATA_ERROR, error);
       }
-    }, 10);
+    }, 100);
   },
 };
