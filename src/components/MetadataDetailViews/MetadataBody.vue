@@ -12,7 +12,7 @@
                                       breaks: true }" />
     </v-card-text>
 
-    <v-card-text v-if="showPlaceholder && !fullDescription" >      
+    <v-card-text v-if="showPlaceholder && !fullDescription" >
       <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer">
         <div class="bone bone-type-multiline bone-style-paragraph" />
       </div>

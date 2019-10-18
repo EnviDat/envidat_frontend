@@ -56,7 +56,7 @@ import mailIcon from "@/assets/icons/mail.png";
 import contactIcon from "@/assets/icons/contact2.png";
 import licenseIcon from "@/assets/icons/license.png";
 
-import metaDataFactory from "@/components/metaDataFactory";
+import metaDataFactory from "@/factories/metaDataFactory";
 // metadata gets enhance in the storybook config
 import metadata from "@/stories/metadata";
 
