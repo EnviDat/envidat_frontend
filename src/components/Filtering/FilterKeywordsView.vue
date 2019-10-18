@@ -1,96 +1,78 @@
 <template>
-  <v-card raised
-          class="pa-2" >
+  <v-card raised >
 
-    <v-layout column >
+    <v-container pa-2>
+      <v-layout column >
 
-      <v-flex v-if="!filterExpanded"
-              hidden-sm-and-up
-              xs12 px-2 py-2 >
-        <div class="mx-3">Filter for Keywords</div>
-      </v-flex>
+        <v-flex v-if="!filterExpanded"
+                hidden-sm-and-up
+                xs12 px-2 py-2 >
+          <div class="mx-3">Filter for Keywords</div>
+        </v-flex>
 
-      <v-flex v-if="filterExpanded || $vuetify.breakpoint.smAndUp"
-              xs12 mt-1
-              :class="$vuetify.breakpoint.smAndDown ? 'px-0 pl-1' : 'px-2'" >
-        <v-layout row
-                  fill-height
-                  v-bind="{ ['align-center']: $vuetify.breakpoint.smAndUp,
-                            ['align-content-center']: $vuetify.breakpoint.smAndUp,
-                          }" >
+        <v-flex v-if="filterExpanded || $vuetify.breakpoint.smAndUp"
+                xs12 pb-0>
+          <v-layout row >
 
-          <v-flex class="metadataInfoIcon"
-                  :class="$vuetify.breakpoint.smAndDown ? '' : 'pl-2'" >
-            <base-icon-label-view :icon="tagsIcon"
-                                  :compact-layout="compactLayout"
-                                  icon-tooltip="Possible Keywords" />
-          </v-flex>
+            <v-flex class="metadataInfoIcon" >
+              <v-img :src="tagsIcon" height="24" width="24" />
+            </v-flex>
 
-          <v-flex v-if="showPlaceholder"
-                  xs12 py-0
-                  :class="$vuetify.breakpoint.smAndDown ? 'px-0' : 'px-2'" >
+            <v-flex v-if="showPlaceholder"
+                    xs12 >
 
-            <tag-chip-placeholder v-for="n in 6"
-                                  :key="n"
-                                  py-0 class="card_tag_placeholder" />
-          </v-flex>
+              <tag-chip-placeholder v-for="n in 6"
+                                    :key="n"
+                                    class="envidatChip" />
+            </v-flex>
 
-          <v-flex v-if="!showPlaceholder"
-                  xs12 py-0
-                  :class="$vuetify.breakpoint.smAndDown ? 'px-0' : 'px-2'" >
+            <v-flex v-if="!showPlaceholder"
+                    xs12 >
 
-            <tag-chip v-for="tag in unselectedTags"
-                      :key="tag.name"
-                      :name="tag.name"
-                      :selectable="tag.enabled"
-                      :highlighted="false"
-                      :closeable="false"
-                      class="filterTag"
-                      :color="tag.color"
-                      @clicked="catchTagClicked($event, tag.name)" />
-          </v-flex>
-        </v-layout>
-      </v-flex>
+              <tag-chip v-for="tag in unselectedTags"
+                        :key="tag.name"
+                        :name="tag.name"
+                        :selectable="tag.enabled"
+                        :highlighted="false"
+                        :closeable="false"
+                        class="filterTag"
+                        :color="tag.color"
+                        @clicked="catchTagClicked($event, tag.name)" />
+            </v-flex>
+          </v-layout>
+        </v-flex>
 
+        <v-flex v-if="filterExpanded || $vuetify.breakpoint.smAndUp"
+                xs12 >
+          <v-layout row >
 
-      <v-flex v-if="filterExpanded || $vuetify.breakpoint.smAndUp"
-              xs12 mt-1
-                  :class="$vuetify.breakpoint.smAndDown ? 'px-0 pl-1' : 'px-2'" >
-        <v-layout row
-                  fill-height
-                  v-bind="{ ['align-center']: $vuetify.breakpoint.smAndUp,
-                            ['align-content-center']: $vuetify.breakpoint.smAndUp,
-                          }" >
+            <v-flex pl-2 class="metadataInfoIcon" >
+              <v-img :src="tagIcon" height="24" width="24" />
+            </v-flex>
 
-          <v-flex pl-2 class="metadataInfoIcon" >
-            <base-icon-label-view :icon="tagIcon"
-                                  :compact-layout="compactLayout"
-                                  icon-tooltip="Active Keyword filter" />
-          </v-flex>
+            <v-flex v-if="selectedTags.length > 0"
+                    xs12
+                    :class="$vuetify.breakpoint.smAndDown ? '' : 'px-2'" >
 
-          <v-flex v-if="selectedTags.length > 0"
-                  xs12 py-0
-                  :class="$vuetify.breakpoint.smAndDown ? 'px-0' : 'px-2'" >
+              <tag-chip v-for="tag in selectedTags"
+                        :key="tag.name"
+                        :name="tag.name"
+                        :selectable="true"
+                        :highlighted="true"
+                        :closeable="true"
+                        class="filterTag"
+                        @clickedClose="catchTagCloseClicked($event, tag.name)"
+                        @clicked="catchTagCloseClicked($event, tag.name)" />
+            </v-flex>
 
-            <tag-chip v-for="tag in selectedTags"
-                      :key="tag.name"
-                      :name="tag.name"
-                      :selectable="true"
-                      :highlighted="true"
-                      :closeable="true"
-                      class="filterTag"
-                      @clickedClose="catchTagCloseClicked($event, tag.name)"
-                      @clicked="catchTagCloseClicked($event, tag.name)" />
-          </v-flex>
-
-        </v-layout>
-      </v-flex>
-    </v-layout>
+          </v-layout>
+        </v-flex>
+      </v-layout>
+    </v-container>
 
     <v-card-actions v-if="$vuetify.breakpoint.xsOnly"
                     class="ma-0 pa-1"
-                    style="position: absolute; bottom: 0px; right: 0px;"
-    >
+                    style="position: absolute; bottom: 0px; right: 0px;" >
       <base-icon-button :count="selectedTags.length"
                         material-icon-name="expand_more"
                         color="secondary"
@@ -99,8 +81,7 @@
                         :is-small="true"
                         :rotate-on-click="true"
                         :rotate-toggle="filterExpanded"
-                        @clicked="catchExpandClicked"
-      />
+                        @clicked="catchExpandClicked" />
     </v-card-actions>
   </v-card>
 </template>
