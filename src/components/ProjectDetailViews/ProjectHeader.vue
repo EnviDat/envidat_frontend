@@ -45,12 +45,10 @@
 </template>
 
 <script>
-import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 export default {
   components: {
-    BaseIconLabelView,
     BaseIconButton,
   },
   props: {
