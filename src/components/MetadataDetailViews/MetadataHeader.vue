@@ -132,7 +132,8 @@
           </v-layout>
         </v-flex>
 
-        <v-flex xs12 >
+        <v-flex v-if="!showPlaceholder && tags"
+                xs12 >
           <v-divider :dark="dark"
                     :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
                               'my-2': $vuetify.breakpoint.smAndUp }" />

@@ -2,9 +2,16 @@
   <v-card>
     <v-card-title class="title metadata_title">Location</v-card-title>
 
-    <v-card-text v-if="isEmpty" style="color: red;">{{ emptyText }}</v-card-text>
+    <v-card-text v-if="isEmpty && !showPlaceholder" style="color: red;">{{ emptyText }}</v-card-text>
 
-    <v-card-text v-if="!isEmpty">
+    <v-card-text v-if="showPlaceholder" >
+      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer">
+        <div v-bind="mapSize"
+              class='bone bone-type-image' />
+      </div>
+    </v-card-text>
+
+    <v-card-text v-if="!showPlaceholder && !isEmpty">
       <!-- can't get it to work with the v-show for now
             because leaflet needs the ref
       to the mapcontainer to correctly initialize-->
@@ -12,6 +19,7 @@
         <div id="map" ref="map" v-bind="mapSize" />
       </div>
     </v-card-text>
+
   </v-card>
 </template>
 
@@ -44,6 +52,7 @@ export default {
   components: {},
   props: {
     genericProps: Object,
+    showPlaceholder: Boolean,
   },
   data: () => ({
     smallSize: 300,
@@ -102,19 +111,19 @@ export default {
       };
     },
   },
-  watch: {
-    geoJSON: function updateGeoJSON() {
-      if (this.geoJSON) {
-        this.setupMap();
-      }
-    },
-    pointArray: function updatePointArray() {
-      if (this.pointArray) {
-        this.setupMap();
-      }
-    },
-  },
-  mounted() {
+  // watch: {
+  //   geoJSON: function updateGeoJSON() {
+  //     if (this.geoJSON) {
+  //       this.setupMap();
+  //     }
+  //   },
+  //   pointArray: function updatePointArray() {
+  //     if (this.pointArray) {
+  //       this.setupMap();
+  //     }
+  //   },
+  // },
+  updated() {
     this.setupMap();
   },
   beforeDestroy() {
@@ -124,13 +133,7 @@ export default {
   },
   methods: {
     setupMap() {
-      if (this.mapIsSetup) {
-        return;
-      }
-
-      if (this.isEmpty) {
-        return;
-      }
+      if (this.mapIsSetup || this.isEmpty) return;
 
       this.map = this.initLeaflet(this.$refs.map, this.pointArray);
       this.addOpenStreetMapLayer(this.map);
