@@ -1,59 +1,72 @@
 <template>
   <v-app class="application" :style="dynamicBackground">
 
+      <div v-for="(notification, index) in visibleNotifications()"
+          :key="`notification_${index}`"
+          :style="`position: absolute;
+                  right: ${ $vuetify.breakpoint.xsOnly ? 0 : 15}px;
+                  top: ${35 + index * 175}px;
+                  z-index: ${NotificationZIndex};`" >
+
+        <notification-card v-if="notification.show"
+                            :notification="notification"
+                            :showReportButton="config.errorReportingEnabled && notification.type === 'error'"
+                            @clickedClose="catchCloseClicked(notification.key)"
+                            @clickedReport="catchReportClicked(notification.key)" />
+      </div>
+
+    <the-navigation v-if="$vuetify.breakpoint.mdAndUp"
+                    :style="`z-index: ${NavigationZIndex}`"
+                    :mini="!this.menuItem.active"
+                    :navItems="navItems"
+                    :version="appVersion"
+                    @menuClick="catchMenuClicked"
+                    @itemClick="catchItemClicked" />
+
+    <the-navigation-small v-if="$vuetify.breakpoint.smAndDown"
+                          :navItems="navItems"
+                          :style="`z-index: ${NavigationZIndex}`"
+                          class="envidatSmallNavigation elevation-3"
+                          @itemClick="catchItemClicked" />
+
+    <the-navigation-toolbar v-if="showToolbar"
+                            class="envidatToolbar"
+                            :style="`z-index: ${NavToolbarZIndex}`"
+                            :searchTerm="searchTerm"
+                            :showSearchCount="showSearchCount"
+                            :searchCount="searchCount"
+                            :showSearch="showToolbarSearch"
+                            :loading="loading"
+                            @menuClick="catchMenuClicked"
+                            @searchClick="catchSearchClicked"
+                            @searchCleared="catchSearchCleared" />
+
     <v-content>
       <v-container fluid
-                    v-bind="{ [`px-1`]: this.$vuetify.breakpoint.smAndDown,
-                              [`px-2`]: this.$vuetify.breakpoint.mdAndUp,
-                              [`py-1`]: this.$vuetify.breakpoint.mdAndUp,
-                              [`py-0`]: this.$vuetify.breakpoint.smAndDown }"
-      >
-
+                    pa-2 >
         <v-layout column>
 
           <v-flex xs12
-                  v-bind="{ [`mx-0`]: this.$vuetify.breakpoint.smAndDown,
-                            [`mx-3`]: this.$vuetify.breakpoint.mdAndUp,
-                            [`mb-1`]: this.$vuetify.breakpoint.smAndDown,
-                            [`my-1`]: this.$vuetify.breakpoint.mdAndUp,
-                          }"
-                  class="envidatNavbar"
-                  :class="{ 'small': this.$vuetify.breakpoint.smAndDown }"
-                  v-if="currentPage != 'landingPage'" >
+                  mx-0 >
 
-            <the-nav-bar-view />
-            
-          </v-flex>
-
-
-          <v-flex xs12 
-                  v-bind="{ [`mx-0`]: this.$vuetify.breakpoint.smAndDown,
-                            [`mx-3`]: this.$vuetify.breakpoint.mdAndUp }"
-          >
-            <transition
-              name="fade"
-              mode="out-in"
-            >
+            <transition name="fade" mode="out-in">
               <router-view />
             </transition>
+
           </v-flex>
 
-          <v-flex xs12 
-                  style="position: absolute; right: 5px; bottom: 2px; font-size: 5px !important;"
-          >
-            Verison: {{ appVersion }}
-          </v-flex>
-
+          <v-flex xs12
+            style="position: absolute; right: 5px; bottom: 2px; font-size: 7px !important;"
+          >Verison: {{ appVersion }}</v-flex>
         </v-layout>
-          
       </v-container>
 
       <v-dialog v-model="showReloadDialog" persistent max-width="290">
         <v-card>
           <v-card-title class="headline">New Version Available!</v-card-title>
-          <v-card-text>{{ dialogVersionText() }} </v-card-text>
+          <v-card-text>{{ dialogVersionText() }}</v-card-text>
           <v-card-actions>
-            <v-spacer></v-spacer>
+            <v-spacer />
             <v-btn color="green darken-1" flat @click="reloadApp();">Reload</v-btn>
             <v-btn color="green darken-1" flat @click="dialogCanceled = true">Cancel</v-btn>
           </v-card-actions>
@@ -65,330 +78,456 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
-  import { BULK_LOAD_METADATAS_CONTENT } from '@/store/metadataMutationsConsts';
-  import {
-    ADD_CARD_IMAGES,
-    ADD_ICON_IMAGE,
-    SET_CONFIG,
-  } from '@/store/mutationsConsts';
-  import TheNavBarView from '@/components/Views/TheNavbarView';
-  import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
+import { mapGetters } from 'vuex';
+import {
+  LANDING_PATH,
+  LANDING_PAGENAME,
+  BROWSE_PATH,
+  BROWSE_PAGENAME,
+  PROJECTS_PATH,
+  PROJECTS_PAGENAME,
+  PROJECT_DETAIL_PAGENAME,
+  GUIDELINES_PATH,
+  GUIDELINES_PAGENAME,
+  POLICIES_PATH,
+  POLICIES_PAGENAME,
+  ABOUT_PATH,
+  ABOUT_PAGENAME,
+  REPORT_PATH,
+} from '@/router/routeConsts';
+import {
+  METADATA_NAMESPACE,
+  BULK_LOAD_METADATAS_CONTENT,
+} from '@/store/metadataMutationsConsts';
+import {
+  SET_CONFIG,
+  TRIM_NOTIFICATIONS,
+  HIDE_NOTIFICATIONS,
+} from '@/store/mutationsConsts';
+import TheNavigation from '@/components/Navigation/TheNavigation';
+import TheNavigationSmall from '@/components/Navigation/TheNavigationSmall';
+import TheNavigationToolbar from '@/components/Navigation/TheNavigationToolbar';
+import NotificationCard from '@/components/Cards/NotificationCard';
+import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
 
-  export default {
-    beforeCreate() {
-      // check for the backend version
-      this.$store.dispatch(SET_CONFIG);
-      // window.applicationCache.onupdateready = function (e) {
-      //   console.log("applicationCache.onupdateready");
-      // };
+export default {
+  beforeCreate() {
+    // check for the backend version
+    this.$store.dispatch(SET_CONFIG);
+    // window.applicationCache.onupdateready = function (e) {
+    //   console.log("applicationCache.onupdateready");
+    // };
 
-      // window.applicationCache.onerror = function (e) {
-      //   console.log("applicationCache.onerror");
-      // };
+    // window.applicationCache.onerror = function (e) {
+    //   console.log("applicationCache.onerror");
+    // };
 
-      // window.applicationCache.onnoupdate = function (e) {
-      //   console.log("applicationCache.onnoupdate");
-      // };
-    },
-    created: function created() {
-      this.loadAllMetadata();
+    // window.applicationCache.onnoupdate = function (e) {
+    //   console.log("applicationCache.onnoupdate");
+    // };
+  },
+  created() {
+    this.loadAllMetadata();
 
-      const bgImgs = require.context('./assets/', false, /\.jpg$/);
-      this.appBGImages = this.mixinMethods_importImages(bgImgs, 'app_b');
+    const bgImgs = require.context('./assets/', false, /\.jpg$/);
+    this.appBGImages = this.mixinMethods_importImages(bgImgs, 'app_b');
+  },
+  updated() {
+    this.updateActiveStateOnNavItems();
+  },
+  methods: {
+    updateActiveStateOnNavItems() {
+      if (!this.currentPage) {
+        return;
+      }
 
-      this.importCardBackgrounds();
-      this.importIcons();
-    },
-    methods: {
-      reloadApp(){
-        window.location.reload();
-      },
-      loadAllMetadata: function loadAllMetadata() {
-        if (!this.loadingMetadatasContent && this.metadatasContentSize <= 0) {
-          this.$store.dispatch(`metadata/${BULK_LOAD_METADATAS_CONTENT}`);
+      for (let i = 0; i < this.navItems.length; i++) {
+        const item = this.navItems[i];
+
+        if (item.icon !== 'menu') {
+          const isActive = this.currentPage === item.pageName;
+
+          if (item.subpages && item.subpages instanceof Array) {
+            let subIsActive = false;
+
+            item.subpages.forEach((sub) => {
+              if (!subIsActive) {
+                subIsActive = this.currentPage === sub;
+              }
+            });
+
+            item.active = isActive || subIsActive;
+          } else {
+            item.active = isActive;
+          }
         }
-      },
-      importCardBackgrounds: function importCardBackgrounds() {
-        const imgs = this.$store.getters.cardBGImages;
-
-        if (imgs && Object.keys(imgs).length > 0) {
-          // already loaded in localStorage
-          return;
-        }
-
-        let imgPaths = require.context('./assets/cards/landscape/', false, /\.jpg$/);
-        let images = this.mixinMethods_importImages(imgPaths);
-        this.$store.commit(ADD_CARD_IMAGES, { key: 'landscape', value: images });
-
-        imgPaths = require.context('./assets/cards/forest/', false, /\.jpg$/);
-        images = this.mixinMethods_importImages(imgPaths);
-        this.$store.commit(ADD_CARD_IMAGES, { key: 'forest', value: images });
-
-        imgPaths = require.context('./assets/cards/snow/', false, /\.jpg$/);
-        images = this.mixinMethods_importImages(imgPaths);
-        this.$store.commit(ADD_CARD_IMAGES, { key: 'snow', value: images });
-
-        imgPaths = require.context('./assets/cards/diversity/', false, /\.jpg$/);
-        images = this.mixinMethods_importImages(imgPaths);
-        this.$store.commit(ADD_CARD_IMAGES, { key: 'diversity', value: images });
-
-        imgPaths = require.context('./assets/cards/hazard/', false, /\.jpg$/);
-        images = this.mixinMethods_importImages(imgPaths);
-        this.$store.commit(ADD_CARD_IMAGES, { key: 'hazard', value: images });
-      },
-      importIcons: function importIcons() {
-        const imgs = this.$store.getters.iconImages;
-
-        if (imgs && Object.keys(imgs).length > 0) {
-          // already loaded in localStorage
-          return;
-        }
-
-        const imgPaths = require.context('./assets/icons/', false, /\.png$/);
-        const images = this.mixinMethods_importImages(imgPaths);
-
-        const keys = Object.keys(images);
-        keys.forEach((key) => {
-          // console.log('icon ' + key + ' value ' + images[key]);
-          this.$store.commit(ADD_ICON_IMAGE, { key, value: images[key] });
-        });
-      },
-      dialogVersionText() {
-        return `You are using the version ${process.env.VERSION}, but there is are newer version available (${this.newVersion}). Please reload to get the latest verison of EnviDat.`;
-      },
+      }
     },
-    computed: {
-      ...mapGetters({
-        metadataIds: 'metadata/metadataIds',
-        metadatasContent: 'metadata/metadatasContent',
-        loadingMetadataIds: 'metadata/loadingMetadataIds',
-        loadingMetadatasContent: 'metadata/loadingMetadatasContent',
-        loadingCurrentMetadataContent: 'metadata/loadingCurrentMetadataContent',
-        currentMetadataContent: 'metadata/currentMetadataContent',
-        popularTags: 'metadata/popularTags',
-        loadingPopularTags: 'metadata/loadingPopularTags',
-        currentPage: 'currentPage',
-        appBGImage: 'appBGImage',
-        showVersionModal: 'showVersionModal',
-        newVersion: 'newVersion',
-      }),
-      metadatasContentSize: function metadatasContentSize() {
-        return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
-      },
-      showReloadDialog() {
-        return this.showVersionModal && !this.dialogCanceled;
-      },
-      dynamicBackground: function dynamicBackground() {
-        const imageKey = this.appBGImage;
-        const bgImg = this.appBGImages[imageKey];
-        // console.log(imageKey + " bgImg " + bgImg);
-        let bgStyle = '';
+    visibleNotifications() {
+      const notis = Object.values(this.notifications);
+      return notis.filter(n => n.show);
+    },
+    catchMenuClicked() {
+      this.menuItem.active = !this.menuItem.active;
+    },
+    catchItemClicked(item) {
+      if (item.pageName === 'external') {
+        window.open(item.path, '_blank');
+        return;
+      }
 
-        if (bgImg) {
-          // bgStyle = `background-image: url(${bgImg}) !important;`;
-          bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.25) 100%), url(${bgImg}) !important;`;
+      if (this.$route.name === item.pageName) {
+        return;
+      }
 
-          bgStyle += `background-position: center top !important;
+      this.$router.push({ path: item.path, query: '' });
+    },
+    catchSearchClicked(search) {
+      this.$router.push({
+        path: BROWSE_PATH,
+        query: { tags: this.$route.query.tags, search },
+      });
+    },
+    catchSearchCleared() {
+      this.searchTerm = '';
+    },
+    catchCloseClicked(key) {
+      if (!this.notifications) return;
+
+      this.$store.commit(HIDE_NOTIFICATIONS, key);
+    },
+    catchReportClicked(index) {
+      if (this.$route.path === REPORT_PATH) {
+        return;
+      }
+      this.$router.push({ path: REPORT_PATH, query: index });
+    },
+    reloadApp() {
+      window.location.reload();
+    },
+    loadAllMetadata: function loadAllMetadata() {
+      if (!this.loadingMetadatasContent && this.metadatasContentSize <= 0) {
+        this.$store.dispatch(`metadata/${BULK_LOAD_METADATAS_CONTENT}`);
+      }
+    },
+    dialogVersionText() {
+      return `You are using the version ${process.env.VUE_APP_VERSION}, but there is are newer version available (${this.newVersion}). Please reload to get the latest verison of EnviDat.`;
+    },
+  },
+  computed: {
+    ...mapGetters({
+      metadataIds: `${METADATA_NAMESPACE}/metadataIds`,
+      metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
+      loadingMetadataIds: `${METADATA_NAMESPACE}/loadingMetadataIds`,
+      loadingMetadatasContent: `${METADATA_NAMESPACE}/loadingMetadatasContent`,
+      loadingCurrentMetadataContent: `${METADATA_NAMESPACE}/loadingCurrentMetadataContent`,
+      searchingMetadatasContent: `${METADATA_NAMESPACE}/searchingMetadatasContent`,
+      currentMetadataContent: `${METADATA_NAMESPACE}/currentMetadataContent`,
+      filteredContent: `${METADATA_NAMESPACE}/filteredContent`,
+      isFilteringContent: `${METADATA_NAMESPACE}/isFilteringContent`,
+      currentPage: 'currentPage',
+      appBGImage: 'appBGImage',
+      showVersionModal: 'showVersionModal',
+      newVersion: 'newVersion',
+      config: 'config',
+      notifications: 'notifications',
+      maxNotifications: 'maxNotifications',
+    }),
+    loading() {
+      return this.loadingMetadatasContent || this.searchingMetadatasContent || this.isFilteringContent;
+    },
+    searchTerm() {
+      return this.$route.query.search;
+    },
+    showSearchCount() {
+      return this.currentPage === BROWSE_PAGENAME;
+    },
+    showToolbarSearch() {
+      return this.currentPage !== LANDING_PAGENAME;
+    },
+    showToolbar() {
+      return this.showToolbarSearch || !this.$vuetify.breakpoint.smAndDown;
+    },
+    searchCount() {
+      return this.filteredContent !== undefined ? Object.keys(this.filteredContent).length : 0;
+    },
+    menuItem() {
+      let menuItem = { active: true };
+
+      this.navItems.forEach((el) => {
+        if (el.icon === 'menu') {
+          menuItem = el;
+        }
+      });
+
+      // return default with active true so all items will be shown
+      return menuItem;
+    },
+    metadatasContentSize: function metadatasContentSize() {
+      return this.metadatasContent !== undefined
+        ? Object.keys(this.metadatasContent).length
+        : 0;
+    },
+    showReloadDialog() {
+      return this.showVersionModal && !this.dialogCanceled;
+    },
+    dynamicBackground: function dynamicBackground() {
+      const imageKey = this.appBGImage;
+      const bgImg = this.appBGImages[imageKey];
+      // console.log(imageKey + " bgImg " + bgImg);
+      let bgStyle = '';
+
+      if (bgImg) {
+        // bgStyle = `background-image: url(${bgImg}) !important;`;
+        bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.25) 100%), url(${bgImg}) !important;`;
+
+        bgStyle += `background-position: center top !important;
                       background-repeat: no-repeat !important;
                       background-size: cover !important; `;
 
-          if (bgImg.includes('browsepage')) {
-            // bgStyle = `background-image: url(${bgImg}) !important;`;
-            bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
+        if (bgImg.includes('browsepage')) {
+          // bgStyle = `background-image: url(${bgImg}) !important;`;
+          bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
 
-            bgStyle += `background-position: center top !important;
+          bgStyle += `background-position: center top !important;
                         background-repeat: repeat !important; `;
-          }
         }
+      }
 
-        return bgStyle;
-      },
+      return bgStyle;
     },
-    data: () => ({
-      appBGImages: {},
-      prevHeight: 0,
-      dialogCanceled: false,
-      appVersion: process.env.VERSION,
-    }),
-    components: {
-      TheNavBarView,
+  },
+  components: {
+    TheNavigation,
+    TheNavigationSmall,
+    TheNavigationToolbar,
+    NotificationCard,
+  },
+  watch: {
+    notifications() {
+      if (!this.notifications) return;
+
+      const keys = Object.keys(this.notifications);
+      if (keys && keys.length > this.maxNotifications) {
+        this.$store.commit(TRIM_NOTIFICATIONS);
+      }
     },
-  };
+  },
+  /* eslint-disable object-curly-newline */
+  data: () => ({
+    appBGImages: {},
+    prevHeight: 0,
+    dialogCanceled: false,
+    appVersion: process.env.VUE_APP_VERSION,
+    showMenu: true,
+    NavToolbarZIndex: 1150,
+    NavigationZIndex: 1100,
+    NotificationZIndex: 1500,
+    navItems: [
+      { title: 'Home', icon: 'envidat', toolTip: 'Back to the start page', active: false, path: LANDING_PATH, pageName: LANDING_PAGENAME },
+      { title: 'Explore', icon: 'search', toolTip: 'Explore research data', active: false, path: BROWSE_PATH, pageName: BROWSE_PAGENAME },
+      { title: 'Projects', icon: 'library_books', toolTip: 'Overview of the research projects on envidat', active: false, path: PROJECTS_PATH, pageName: PROJECTS_PAGENAME, subpages: [PROJECT_DETAIL_PAGENAME] },
+      { title: 'Organizations', icon: 'account_tree', toolTip: 'Overview of the different organizations', active: false, path: 'https://www.envidat.ch/organization', pageName: 'external' },
+      { title: 'Guidelines', icon: 'local_library', toolTip: 'Guidlines about the creation of metadata', active: false, path: GUIDELINES_PATH, pageName: GUIDELINES_PAGENAME },
+      { title: 'Policies', icon: 'policy', toolTip: 'The rules of EnviDat', active: false, path: POLICIES_PATH, pageName: POLICIES_PAGENAME },
+      { title: 'Login', icon: 'person', toolTip: 'Login to upload data', active: false, path: 'https://www.envidat.ch/user/reset', pageName: 'external' },
+      { title: 'About', icon: 'info', toolTip: 'What is EnviDat? How is behind EnviDat?', active: false, path: ABOUT_PATH, pageName: ABOUT_PAGENAME },
+      // { title: 'Contact', icon: 'contact_support', toolTip: 'Do you need support?', active: false },
+      { title: 'Menu', icon: 'menu', active: false },
+    ],
+  }),
+};
 </script>
 
-<style>
+<style lang="scss">
+  /* Icons list: https://jossef.github.io/material-design-icons-iconfont/ */
+  $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
 
-  @import '../node_modules/leaflet/dist/leaflet.css';
-  /* import vuetify.css here to be able to overwrite the fonts */
-  @import '../node_modules/vuetify/dist/vuetify.min.css';
+  @import '~material-design-icons-iconfont/src/material-design-icons.scss';
+</style>
+
+
+<style >
+ @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville|Raleway&display=swap');
 
 /* overwrite the applications background https://css-tricks.com/use-cases-fixed-backgrounds-css/ */
-  .application {
-    font-family: 'Raleway', sans-serif !important;
-    font-size: 12px;
-  }  
+.application {
+  font-family: "Raleway", sans-serif !important;
+  font-size: 12px;
+}
 
-  .envidatNavbar {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 8px;
-    z-index: 1000;
-  }
+.envidatNavbar {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 8px;
+  z-index: 1000;
+}
 
-  .envidatNavbar.small {
-    top: 0px;
-  }
+.envidatNavbar.small {
+  top: 0px;
+}
 
+/*** General Card styles ***/
 
-  /*** General Card styles ***/
+.headline {
+  font-family: "Libre Baskerville", serif !important;
+  /* font-weight: 700; */
 
-  .headline {
-    font-family: 'Libre Baskerville', serif !important;
-    /* font-weight: 700; */
-
-    /*
+  /*
     overflow: hidden;
-    text-overflow: ellipsis;    
+    text-overflow: ellipsis;
     max-height: 2.15em;
     */
-    line-height: 1.1em !important;
-  }
+  line-height: 1.1em !important;
+}
 
+.block-with-text {
+  font-family: "Libre Baskerville", serif !important;
 
-  .block-with-text {
-    font-family: 'Libre Baskerville', serif !important;
-    
-    /* styles for '...' */ 
-    /* hide text if it more than N lines  */
-    overflow: hidden;
-    /* for set '...' in absolute position */
-    position: relative; 
-    /* use this value to count block height */
-    line-height: 1.2em !important;
-    /* max-height = line-height (1.2) * lines max number (3) */
-    max-height: 6.7em; 
-    /* fix problem when last visible word doesn't adjoin right side  */
-    text-align: justify;  
-    /* place for '...' */
-    margin-right: -1em;
-    padding-right: 1em;
-  }
-  /* create the ... */
-  .block-with-text:before {
-    /* points in the end */
-    content: '...';
-    /* absolute position */
-    position: absolute;
-    /* set position to right bottom corner of block */
-    right: 0;
-    bottom: 0;
-  }
-  /* hide ... if we have text, which is less than or equal to max lines */
-  .block-with-text:after {
-    /* points in the end */
-    content: '';
-    /* absolute position */
-    position: absolute;
-    /* set position to right bottom corner of text */
-    right: 0;
-    /* set width and height */
-    width: 1em;
-    height: 1em;
-    margin-top: 0.2em;
-    /* bg color = bg color under block */
-    background: white;
-  }
+  /* styles for '...' */
+  /* hide text if it more than N lines  */
+  overflow: hidden;
+  /* for set '...' in absolute position */
+  position: relative;
+  /* use this value to count block height */
+  line-height: 1.2em !important;
+  /* max-height = line-height (1.2) * lines max number (3) */
+  max-height: 6.7em;
+  /* fix problem when last visible word doesn't adjoin right side  */
+  text-align: justify;
+  /* place for '...' */
+  margin-right: -1em;
+  padding-right: 1em;
+}
+/* create the ... */
+.block-with-text:before {
+  /* points in the end */
+  content: "...";
+  /* absolute position */
+  position: absolute;
+  /* set position to right bottom corner of block */
+  right: 0;
+  bottom: 0;
+}
+/* hide ... if we have text, which is less than or equal to max lines */
+.block-with-text:after {
+  /* points in the end */
+  content: "";
+  /* absolute position */
+  position: absolute;
+  /* set position to right bottom corner of text */
+  right: 0;
+  /* set width and height */
+  width: 1em;
+  height: 1em;
+  margin-top: 0.2em;
+  /* bg color = bg color under block */
+  background: white;
+}
 
-  .card .subheading{
-    /* font-family: 'Libre Baskerville', serif; */
-    font-weight: 400;
-    /* color: #555; */
-    opacity: 0.75;
-    line-height: 1.25em;
-  }
+.card .subheading {
+  /* font-family: 'Libre Baskerville', serif; */
+  font-weight: 400;
+  /* color: #555; */
+  opacity: 0.75;
+  line-height: 1.25em;
+}
 
-  .imagezoom,
-  .imagezoom img {
-    transition: all .2s;
-  }
+.imagezoom,
+.imagezoom img {
+  transition: all 0.2s;
+}
 
-  .imagezoom img:hover,
-  .imagezoom img:focus {
-    transform: scale(1.2);
-  }
+.imagezoom img:hover,
+.imagezoom img:focus {
+  transform: scale(1.2);
+}
 
-  .envidatIcon {
-    height: 24px !important;
-    width: 24px !important;
-  }
+.envidatSmallNavigation {
+  position: fixed;
+  top: auto;
+  right: 10px;
+  bottom: 10px;
+}
 
-  .envidatIcon.small {
-    height: 20px !important;
-    width: 20px !important;
-  }
+.envidatToolbar > .v-toolbar__content {
+  padding: 0px 18px !important;
+}
 
-  .envidatTitle {
-    font-family: 'Libre Baskerville', serif !important;
-    letter-spacing: 0em !important;
-  }
+.envidatIcon {
+  height: 24px !important;
+  width: 24px !important;
+}
 
-  .envidatSlogan {
-    font-family: 'Libre Baskerville', serif !important;
-  }
+.envidatIcon.small {
+  height: 20px !important;
+  width: 20px !important;
+}
 
-  .metadataInfoIcon {
-    opacity: 0.75;
-  }
+.envidatTitle {
+  font-family: "Libre Baskerville", serif !important;
+  letter-spacing: 0em !important;
+}
 
-  .envidatBadge span {
-    font-size: 0.95em !important;
-  }
+.envidatSlogan {
+  font-family: "Libre Baskerville", serif !important;
+}
 
-  .envidatBadgeBigNumber span {
-    font-size: 0.9em !important;
-  }
+.metadataInfoIcon {
+  opacity: 0.75;
+}
 
-  .envidatChip {
-    height: 1.3rem;
-    font-size: 0.65rem;
-    margin: 1px 2px;
-    opacity: 0.85;
-  }
+.envidatBadge span {
+  font-size: 0.95em !important;
+}
 
-  .smallChip {
-    height: 1.2rem;
-    font-size: 0.55rem;
-  }
-  .smallChip > .v-chip__content > .v-chip__close > .v-icon {    
-    font-size: 15px !important;
-  }
+.envidatBadgeBigNumber span {
+  font-size: 0.9em !important;
+}
 
-  .authorTag span,
-  .envidatChip span {
-    cursor: pointer !important;
-  }
+.envidatChip {
+  height: 1.3rem !important;
+  font-size: 0.65rem !important;
+  margin: 1px 2px !important;
+  opacity: 0.85 !important;
+}
 
-  .filterTag {
-    opacity: 0.7;
-  }
+.enviDatSnackbar > .v-snack__wrapper > .v-snack__content {
+  height: 100%;
+  padding: 12px;
+}
 
-  .chip__content span {
-    cursor: pointer !important;
-  }
+.smallChip {
+  height: 1.2rem !important;
+  font-size: 0.55rem !important;
+}
+.smallChip > .v-chip__content > .v-chip__close > .v-icon {
+  font-size: 15px !important;
+}
 
+.authorTag span,
+.envidatChip span {
+  cursor: pointer !important;
+}
 
-  .fade-enter-active,
-  .fade-leave-active {
-    transition-duration: 0.1s;
-    transition-property: height, opacity;
-    transition-timing-function: ease;
-    /* overflow: hidden; */
-  }
+.filterTag {
+  opacity: 0.7;
+}
 
-  .fade-enter,
-  .fade-leave-active {
-    opacity: 0
-  }  
+.chip__content span {
+  cursor: pointer !important;
+}
 
+.fade-enter-active,
+.fade-leave-active {
+  transition-duration: 0.1s;
+  transition-property: height, opacity;
+  transition-timing-function: ease;
+  /* overflow: hidden; */
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
+}
 </style>
