@@ -15,7 +15,7 @@
                         material-icon-name="close"
                         icon-color="primary"
                         :color="(showPlaceholder || (!showPlaceholder && !metadataTitle)) ? 'white' : 'primary'"
-                        :outlined="(!showPlaceholder && metadataTitle)"
+                        :outlined="(!showPlaceholder && (metadataTitle &&  metadataTitle.length > 0))"
                         tool-tip-text="Close Metadata"
                         :tool-tip-bottom="true"
                         @clicked="catchBackClicked" />
@@ -25,12 +25,27 @@
 
         <v-flex v-if="metadataTitle"
                 xs12 >
+          <div class="headerTitle"
+                :class="{ 'py-2': $vuetify.breakpoint.mdAndUp,
+                          'py-0': $vuetify.breakpoint.smAndDown,
+                          'display-2': $vuetify.breakpoint.lgAndUp,
+                          'display-1': $vuetify.breakpoint.mdOnly,
+                          'headline': $vuetify.breakpoint.smOnly,
+                          'title': $vuetify.breakpoint.xsOnly,
+                        }" >
+            {{ metadataTitle }}
+          </div>
+        </v-flex>
+
+        <v-flex v-if="!metadataTitle && !showPlaceholder"
+                xs12 >
           <div class="headerTitle py-3"
+                :style="`color: ${$vuetify.theme.error}`"
                 :class="{ 'display-2': $vuetify.breakpoint.lgAndUp,
                           'display-1': $vuetify.breakpoint.mdAndDown,
                           'headline': $vuetify.breakpoint.smAndDown,
-                }" >
-            {{ metadataTitle }}
+                        }" >
+            {{ `${NotFoundTitle} '${metadataId}'` }}
           </div>
         </v-flex>
 
@@ -41,7 +56,8 @@
           </div>
         </v-flex>
 
-        <v-flex xs12 >
+        <v-flex v-if="authors"
+                xs12 >
           <v-divider :dark="dark"
                     :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
                               'my-2': $vuetify.breakpoint.smAndUp }" />
@@ -50,12 +66,11 @@
         <v-flex v-if="authors"
                 xs12 >
           <v-layout row wrap >
-            <tag-chip-author
-              v-for="author in authors"
-              :key="author.name"
-              :name="author.name.trim()"
-              :tool-tip-text="authorToolTipText"
-              @clicked="catchAuthorClicked($event, author.name.trim())" />
+            <tag-chip-author v-for="author in authors"
+                              :key="author.name"
+                              :name="author.name.trim()"
+                              :toolTipText="authorToolTipText"
+                              @clicked="catchAuthorClicked($event, author.name.trim())" />
           </v-layout>
         </v-flex>
 
@@ -111,13 +126,14 @@
                     class="headerInfo" >
               <base-icon-label-view :text="license"
                                     :icon="licenseIcon"
-                                    icon-tooltip="License for Datafiles"
+                                    icon-tooltip="License for the data files"
                                     :align-left="true" />
             </v-flex>
           </v-layout>
         </v-flex>
 
-        <v-flex xs12 >
+        <v-flex v-if="!showPlaceholder && tags"
+                xs12 >
           <v-divider :dark="dark"
                     :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
                               'my-2': $vuetify.breakpoint.smAndUp }" />
@@ -131,6 +147,7 @@
                       :name="tag.name"
                       :selectable="true"
                       class="headerTag"
+                      :color="tag.color"
                       @clicked="catchTagClicked($event, tag.name)" />
 
             <v-flex v-if="tags && maxTagsReached && !showTagsExpanded"
@@ -185,6 +202,7 @@ export default {
     BaseIconButton,
   },
   props: {
+    metadataId: String,
     metadataTitle: String,
     titleImg: String,
     contactName: String,
@@ -207,6 +225,7 @@ export default {
     // whiteTopToBottom: 'rgba(255,255,255, 0.3) 0%, rgba(255,255,255, 1) 60%',
     whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
     authorToolTipText: 'Search for more data of this Author',
+    NotFoundTitle: 'No metadata found for',
   }),
   computed: {
     maxTagsReached: function maxTagsReached() {

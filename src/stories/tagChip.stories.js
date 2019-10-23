@@ -14,6 +14,7 @@ Vue.component("v-layout", VLayout);
 Vue.component("v-flex", VFlex);
 
 import TagChip from "@/components/Cards/TagChip.vue";
+import TagChipPlaceholder from "@/components/Cards/TagChipPlaceholder.vue";
 
 export const methods = {
   onClick: action("clicked")
@@ -21,9 +22,13 @@ export const methods = {
 
 storiesOf("4 Filtering | Keyword Tag", module)
   .add("Tag states", () => ({
-    components: { TagChip },
+    components: { TagChip, TagChipPlaceholder },
     template: `
     <v-layout row wrap>
+
+      <v-flex>
+        <tag-chip-placeholder />
+      </v-flex>
 
       <v-flex>
         <tag-chip name="Snow" />

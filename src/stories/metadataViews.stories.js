@@ -56,7 +56,7 @@ import mailIcon from "@/assets/icons/mail.png";
 import contactIcon from "@/assets/icons/contact2.png";
 import licenseIcon from "@/assets/icons/license.png";
 
-import metaDataFactory from "@/components/metaDataFactory";
+import metaDataFactory from "@/factories/metaDataFactory";
 // metadata gets enhance in the storybook config
 import metadata from "@/stories/metadata";
 
@@ -125,7 +125,7 @@ storiesOf("6 Metadata | Detail Views", module)
       </v-flex>
 
       <v-flex xs12 py-3 >
-        <metadata-header />
+        <metadata-header metadataId="id-which-can-not-be-found" />
       </v-flex>
 
       <v-flex xs12 >
@@ -202,7 +202,8 @@ storiesOf("6 Metadata | Detail Views", module)
     methods,
     data: () => ({
       genericPropsPlaceholder: {
-        showPlaceholder: true,        
+        showPlaceholder: true,
+        description: null,
       },
       genericPropsBody: {
         showPlaceholder: false,        

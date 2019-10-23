@@ -16,3 +16,5 @@ export const PROJECTS_PATH = '/projects';
 export const PROJECTS_PAGENAME = 'ProjectsPage';
 export const PROJECT_DETAIL_PATH = '/projectDetail';
 export const PROJECT_DETAIL_PAGENAME = 'ProjectDetailPage';
+export const REPORT_PATH = '/report';
+export const REPORT_PAGENAME = 'ReportPage';

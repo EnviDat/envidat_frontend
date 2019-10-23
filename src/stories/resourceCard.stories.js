@@ -23,7 +23,7 @@ import Vue2Filters from 'vue2-filters';
 
 Vue.use(Vue2Filters);
 
-import globalMethods from "@/components/globalMethods";
+import globalMethods from "@/factories/globalMethods";
 Vue.mixin(globalMethods);
 
 Vue.component("v-card", VCard);

@@ -1,3 +1,4 @@
+/* eslint-disable */
 export const dataset = {
   help: 'https://www.envidat.ch/api/3/action/help_show?name=package_show',
   success: true,

@@ -43,6 +43,8 @@ module.exports = {
     'prefer-destructuring': 'off',
     'no-param-reassign': 'off',
     'linebreak-style': 0,
+    'padded-blocks': 'off',
+    'indent': 'off',
     // enforce CLRF linebreaks = 'linebreak-style' : ["error", "unix"]
     // windows linebreaks when not in production environment
     // "linebreak-style": ["error", process.env.NODE_ENV === 'prod' ? "unix" : "windows"]

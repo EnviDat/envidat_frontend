@@ -1,5 +1,7 @@
+import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
+
 export default {
-  enhanceSubprojects: function enhanceSubprojects(projects) {
+  enhanceSubprojectsFromExtras(projects) {
 
     for (let i = 0; i < projects.length; i++) {
       const el = projects[i];
@@ -46,4 +48,30 @@ export default {
 
     return projects;
   },
+  enhanceProjectsDatasets(projects, allDatasets) {
+
+    for (let i = 0; i < projects.length; i++) {
+      const proj = projects[i];
+
+      if (proj && proj.packages && proj.packages.length > 0) {
+
+        for (let j = 0; j < proj.packages.length; j++) {
+          const dataset = proj.packages[j];
+
+          const fullDataset = allDatasets[dataset.id];
+
+          if (fullDataset) {
+            // the tags of each dataset has to be looked up in the allDatasets (metadataContents)
+            // because the backend call doesn't deliver the packages with the tags
+            // it can only delivery the tags for the projects, which is no use for this
+            // case
+            dataset.tags = fullDataset.tags;
+          }
+        }
+
+      }
+    }
+
+    return projects;
+  }
 };

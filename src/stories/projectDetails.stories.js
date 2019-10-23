@@ -49,11 +49,11 @@ import ProjectBody from "@/components/ProjectDetailViews/ProjectBody.vue";
 
 // get Project test data and enhance it
 import projectJSON from "@/testdata/projects";
-import projectDataFactory from "@/components/projectsDataFactory";
-const enhancedProjects = projectDataFactory.enhanceSubprojects(projectJSON.result);
+import projectDataFactory from "@/factories/projectsDataFactory";
+const enhancedProjects = projectDataFactory.enhanceSubprojectsFromExtras(projectJSON.result);
 const projects = enhancedProjects;
 
-import globalMethods from "@/components/globalMethods";
+import globalMethods from "@/factories/globalMethods";
 const imgPaths = require.context( '../assets/about/', false, /\.jpg$/);
 const imgName = 'mission';
 const images = globalMethods.methods.mixinMethods_importImages(imgPaths, imgName);

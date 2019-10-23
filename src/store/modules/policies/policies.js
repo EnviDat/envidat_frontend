@@ -5,7 +5,6 @@ const policiesState = {
   policiesPageBackRoute: '',
   policiesMarkdown: null,
   loading: false,
-  error: null,
 };
 
 
@@ -16,7 +15,6 @@ export const policies = {
     policiesMarkdown: state => state.policiesMarkdown,
     policiesPageBackRoute: state => state.policiesPageBackRoute,
     loading: state => state.loading,
-    error: state => state.error,
   },
   mutations,
   actions,
