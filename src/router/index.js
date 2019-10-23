@@ -1,22 +1,26 @@
 /* eslint-disable prefer-template */
 import Vue from 'vue';
 import Router from 'vue-router';
-// import LandingPage from '@/components/Pages/LandingPage';
-// import BrowsePage from '@/components/Pages/BrowsePage';
-// import MetadataDetailPage from '@/components/Pages/MetadataDetailPage';
-// import ResourceDetailPage from '@/components/Pages/ResourceDetailPage';
-// import GCMDPage from '@/components/Pages/GCMDPage';
-// import AboutPage from '@/components/Pages/AboutPage';
 import {
   LANDING_PATH,
   BROWSE_PATH,
-  BROWSE_NAME,
+  BROWSE_PAGENAME,
   METADATADETAIL_PATH,
-  METADATADETAIL_NAME,
+  METADATADETAIL_PAGENAME,
   GCMD_PATH,
+  GCMD_PAGENAME,
   ABOUT_PATH,
+  ABOUT_PAGENAME,
   POLICIES_PATH,
+  POLICIES_PAGENAME,
   GUIDELINES_PATH,
+  GUIDELINES_PAGENAME,
+  PROJECTS_PATH,
+  PROJECTS_PAGENAME,
+  PROJECT_DETAIL_PATH,
+  PROJECT_DETAIL_PAGENAME,
+  REPORT_PATH,
+  REPORT_PAGENAME,
 } from '@/router/routeConsts';
 
 Vue.use(Router);
@@ -34,12 +38,12 @@ export default new Router({
     },
     {
       path: BROWSE_PATH,
-      name: BROWSE_NAME,
+      name: BROWSE_PAGENAME,
       component: () => import(/* webpackChunkName: "browsePage" */ '@/components/Pages/BrowsePage'),
     },
     {
       path: `${METADATADETAIL_PATH}/:metadataid`,
-      name: METADATADETAIL_NAME,
+      name: METADATADETAIL_PAGENAME,
       component: () => import(/* webpackChunkName: "metadataDetailPage" */ '@/components/Pages/MetadataDetailPage'),
     },
     // {
@@ -49,23 +53,38 @@ export default new Router({
     // },
     {
       path: GCMD_PATH,
-      name: 'GCMDPage',
+      name: GCMD_PAGENAME,
       component: () => import(/* webpackChunkName: "gcmdPage" */ '@/components/Pages/GCMDPage'),
     },
     {
       path: ABOUT_PATH,
-      name: 'AboutPage',
+      name: ABOUT_PAGENAME,
       component: () => import(/* webpackChunkName: "aboutPage" */ '@/components/Pages/AboutPage'),
     },
     {
       path: POLICIES_PATH,
-      name: 'PoliciesPage',
+      name: POLICIES_PAGENAME,
       component: () => import(/* webpackChunkName: "policiesPage" */ '@/components/Pages/PoliciesPage'),
     },
     {
       path: GUIDELINES_PATH,
-      name: 'GuidelinesPage',
+      name: GUIDELINES_PAGENAME,
       component: () => import(/* webpackChunkName: "guidelinesPage" */ '@/components/Pages/GuidelinesPage'),
+    },
+    {
+      path: PROJECTS_PATH,
+      name: PROJECTS_PAGENAME,
+      component: () => import(/* webpackChunkName: "projectsPage" */ '@/components/Pages/ProjectsPage'),
+    },
+    {
+      path: `${PROJECT_DETAIL_PATH}/:id`,
+      name: PROJECT_DETAIL_PAGENAME,
+      component: () => import(/* webpackChunkName: "projectDetailPage" */ '@/components/Pages/ProjectDetailPage'),
+    },
+    {
+      path: REPORT_PATH,
+      name: REPORT_PAGENAME,
+      component: () => import(/* webpackChunkName: "guidelinesPage" */ '@/components/Pages/ReportPage'),
     },
   ],
   scrollBehavior(to, from, savedPosition) {
@@ -109,20 +128,20 @@ export default new Router({
   isSameRoute: function isSameRoute(a, b) {
     if (b === START) {
       return a === b;
-    } else if (!b) {
+    } if (!b) {
       return false;
-    } else if (a.path && b.path) {
+    } if (a.path && b.path) {
       return (
-        a.path.replace(trailingSlashRE, '') === b.path.replace(trailingSlashRE, '') &&
-        a.hash === b.hash &&
-        this.isObjectEqual(a.query, b.query)
+        a.path.replace(trailingSlashRE, '') === b.path.replace(trailingSlashRE, '')
+        && a.hash === b.hash
+        && this.isObjectEqual(a.query, b.query)
       );
-    } else if (a.name && b.name) {
+    } if (a.name && b.name) {
       return (
-        a.name === b.name &&
-        a.hash === b.hash &&
-        this.isObjectEqual(a.query, b.query) &&
-        this.isObjectEqual(a.params, b.params)
+        a.name === b.name
+        && a.hash === b.hash
+        && this.isObjectEqual(a.query, b.query)
+        && this.isObjectEqual(a.params, b.params)
       );
     }
     return false;

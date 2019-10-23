@@ -1,24 +1,21 @@
 <template>
-
-    <v-chip
-        small
-        class="placeholder_chip" >
-          <div style="width: 50px;" class="skeleton skeleton-size-small skeleton-color-concrete skeleton-animation-shimmer">
-            <div class='bone bone-type-text bone-style-steps'></div>
-          </div>
-    </v-chip>
-
+  <v-chip class="placeholder_chip" >
+    <div style="width: 35px;"
+          class="skeleton skeleton-size-small skeleton-color-concrete skeleton-animation-shimmer" >
+      <div class="bone bone-type-text bone-style-steps" />
+    </div>
+  </v-chip>
 </template>
 
 <script>
-  export default {
-    props: {
-    },
-    computed: {
-    },
-    methods: {
-    },
-  };
+export default {
+  props: {
+  },
+  computed: {
+  },
+  methods: {
+  },
+};
 </script>
 
 <style scoped>

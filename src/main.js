@@ -2,41 +2,65 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import 'babel-polyfill';
 import Vue from 'vue';
-import Vuetify from 'vuetify';
+
+import './plugins/vuetify';
+import axios from 'axios';
+
 import Vue2Filters from 'vue2-filters';
 import InfiniteLoading from 'vue-infinite-loading';
 import App from './App';
 import router from './router';
-import store from './store/store';
-import globalMethods from './components/globalMethods';
+import store from '@/store/store';
+import globalMethods from './factories/globalMethods';
+import {
+  handleGenericError,
+  handleGenericAPIError,
+} from '@/factories/notificationFactory';
+
 
 Vue.use(InfiniteLoading /* , { options } */);
 Vue.use(Vue2Filters);
+Vue.config.productionTip = false;
+Vue.mixin(globalMethods);
 
-Vue.use(Vuetify, {
-  theme: {
-    primary: '#00897B', // teal darken-1
-    secondary: '#4DB6AC', // teal lighten-2
-    accent: '#FFD740', // amber accent-2
-    highlight: '#B2DFDB', // teal lighten-4
-    error: '#FF5252',
-    errorHighlight: '#FF8A80', // red lighten-4
-    info: '#2196F3',
-    success: '#4CAF50',
-    warning: '#FFC107',
-  },
+
+Vue.config.errorHandler = function (err, vm, info) {
+  // `info` is a Vue-specific error info, e.g. which lifecycle hook
+  // the error was found in. Only available in 2.2.0+
+  console.log('Vue errorHandler ' + err.message + ' \n ' + info + ' \n ' + err.stack);
+  handleGenericError(err.message, info, err.stack);
+}
+
+// Vue.config.warnHandler = function (msg, vm, trace) {
+//   // `trace` is the component hierarchy trace
+//   console.log('Vue.config.warnHandler vm: ' + vm.$store + ' ' + msg + ' \n\n ' + trace);
+//   // vm.$store.commit(ADD_USER_NOTIFICATION, msg + ' ' + trace );
+// }
+
+axios.interceptors.response.use(function (response) {
+  // Any status code that lie within the range of 2xx cause this function to trigger
+  // Do something with response data
+  // console.log('interceptor got ' + response.status);
+  return response;
+}, function (error) {
+  // console.log('interceptor error ' + error);
+  if (error.status >= 500) {
+    handleGenericAPIError(error);
+  }
+  // Any status codes that falls outside the range of 2xx cause this function to trigger
+  // Do something with response error
+  // throw new Error(error);
+  return Promise.reject(error);
 });
 
-Vue.config.productionTip = false;
-
-Vue.mixin(globalMethods);
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  // mixins: [globalMethods],
   router,
   store,
   components: { App },
   template: '<App/>',
 });
+
+

@@ -1,10 +1,20 @@
 export const LANDING_PATH = '/';
+export const LANDING_PAGENAME = 'LandingPage';
 export const BROWSE_PATH = '/browse';
-export const BROWSE_NAME = 'BrowsePage';
+export const BROWSE_PAGENAME = 'BrowsePage';
 export const METADATADETAIL_PATH = '/metadata';
-export const METADATADETAIL_NAME = 'MetadataDetailPage';
+export const METADATADETAIL_PAGENAME = 'MetadataDetailPage';
 export const GCMD_PATH = '/gcmd';
+export const GCMD_PAGENAME = 'GCMDPage';
 export const ABOUT_PATH = '/about';
+export const ABOUT_PAGENAME = 'AboutPage';
 export const POLICIES_PATH = '/policies';
+export const POLICIES_PAGENAME = 'PoliciesPage';
 export const GUIDELINES_PATH = '/guidelines';
-
+export const GUIDELINES_PAGENAME = 'GuidelinesPage';
+export const PROJECTS_PATH = '/projects';
+export const PROJECTS_PAGENAME = 'ProjectsPage';
+export const PROJECT_DETAIL_PATH = '/projectDetail';
+export const PROJECT_DETAIL_PAGENAME = 'ProjectDetailPage';
+export const REPORT_PATH = '/report';
+export const REPORT_PAGENAME = 'ReportPage';

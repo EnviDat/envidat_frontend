@@ -1,0 +1,118 @@
+<template>
+  <v-container tag="article"
+                fluid fill-height
+                pa-0 >
+    <v-layout row wrap >
+      <v-flex xs12  >
+        <v-card>
+          <v-card-title :style="`background-color: ${color}`">
+            <div v-if="error"
+                  class="headline">
+              Report Error
+            </div>
+            <div v-if="feedback"
+                  class="headline">
+              Feedback is always welcome!
+            </div>
+          </v-card-title>
+
+          <v-divider :color="color" />
+
+          <v-card-text>
+            <form>
+              <v-text-field v-model="name"
+                            label="Name"
+                            required />
+
+              <v-text-field v-model="email"
+                            label="E-mail"
+                            required />
+
+              <v-text-field v-if="error"
+                            v-model="error.message"
+                            label="Error message"
+                            required />
+
+              <v-textarea v-if="error && error.details"
+                          label="Error details"
+                          v-model="error.details" disabled />
+
+              <v-textarea v-if="error && error.stack"
+                          label="Error stack"
+                          v-model="error.stack" disabled />
+
+              <v-textarea v-if="feedback"
+                          label="Feedback"
+                          placeholder="What is nice? What needs improvement?"
+                          v-model="feedbackText" />
+
+              <v-btn color="primary" @click="submit">Send</v-btn>
+              <!-- <v-btn @click="clear">clear</v-btn> -->
+            </form>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+
+    </v-layout>
+  </v-container>
+</template>
+
+<script>
+/**
+   * The about page of EnviDat. It consists of:
+   * - TitleImage and Title (ImgAndTextLayout)
+   * - Different Card with infomation about some about topics (ExpandableCard)
+   */
+import { mapGetters } from 'vuex';
+import {
+  REPORT_PAGENAME,
+} from '@/router/routeConsts';
+import {
+  SET_APP_BACKGROUND,
+  SET_CURRENT_PAGE,
+} from '@/store/mutationsConsts';
+
+
+export default {
+  /**
+     * @description beforeRouteEnter is used to change background image of this page.
+     * It's called via vue-router.
+     */
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.$store.commit(SET_CURRENT_PAGE, REPORT_PAGENAME);
+      vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
+    });
+  },
+  /**
+     * @description reset the scrolling to the top,
+     * because of the scrolling is set from the browsePage or metaDetailPage
+     */
+  mounted() {
+    window.scrollTo(0, 0);
+    // throw new Error('test error');
+  },
+  computed: {
+    ...mapGetters({
+      error: 'error',
+    }),
+    color() {
+      return this.error ? this.$vuetify.theme.error : this.$vuetify.theme.highlight;
+    },
+  },
+  methods: {
+    submit() {
+      console.log('submit clicked');
+    },
+  },
+  components: {
+  },
+  data: () => ({
+    PageBGImage: './app_b_browsepage.jpg',
+    name: '',
+    email: '',
+    feedback: false,
+    feedbackText: '',
+  }),
+};
+</script>

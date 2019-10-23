@@ -7,31 +7,35 @@ import {
   CHECK_FRONTEND_VERSION,
 } from '@/store/mutationsConsts';
 
+const configURL = process.env.VUE_APP_CONFIG_URL;
+
 export default {
   [SET_CONFIG]({ commit }) {
-    const url = `./config.json?nocache=${new Date().getTime()}`;
+    if (configURL && configURL !== 'NULL') {
+      const url = `${configURL}?nocache=${new Date().getTime()}`;
 
-    axios.get(url)
-      .then((response) => {
-        try {
-          let config;
-          if (typeof (response.data) === 'string') {
-            config = JSON.parse(response.data);
-          } else {
-            config = response.data;
+      axios.get(url)
+        .then((response) => {
+          try {
+            let config;
+            if (typeof (response.data) === 'string') {
+              config = JSON.parse(response.data);
+            } else {
+              config = response.data;
+            }
+
+            commit(SET_CONFIG_SUCCESS, config);
+
+            if (config.version) {
+              commit(CHECK_FRONTEND_VERSION, config.version);
+            }
+          } catch (error) {
+            console.error(`tried loading config, error: ${error}`);
           }
-
-          commit(SET_CONFIG_SUCCESS, config);
-
-          if (config.version) {
-            commit(CHECK_FRONTEND_VERSION, config.version);
-          }
-        } catch (error) {
-          console.error(`tried loading config, error: ${error}`);
-        }
-      })
-      .catch((reason) => {
-        commit(SET_CONFIG_ERROR, reason);
-      });
+        })
+        .catch((reason) => {
+          commit(SET_CONFIG_ERROR, reason);
+        });
+    }
   },
 };
