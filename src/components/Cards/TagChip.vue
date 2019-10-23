@@ -4,15 +4,21 @@
     :class="{ 'white--text': highlighted ? true : false,
               'smallChip': $vuetify.breakpoint.smAndDown ? true : false,
     }"
-    v-bind="{['close'] : closeable,
-             ['color']: highlighted ? 'primary' : '',
-             ['disabled'] : !selectable,
+    v-bind="{ 'color': highlighted ? 'primary' : color,
+              'disabled' : !selectable,
     }"
     :style="{'height' : $vuetify.breakpoint.xsOnly ? '15px' : '' }"
     @click.stop="clicked"
     @input="clickedClose"
   >
     {{ name }}
+
+    <span v-if="closeable"
+          style="margin: 0 -5px 0 5px;"
+          class="v-chip__close" >
+      <v-icon small >close</v-icon>
+    </span>
+
   </v-chip>
 </template>
 
@@ -24,6 +30,10 @@ export default {
     selectable: Boolean,
     highlighted: Boolean,
     count: Number,
+    color: {
+      type: String,
+      default: '#e0e0e0',
+    },
   },
   computed: {
   },

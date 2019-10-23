@@ -65,9 +65,11 @@
 
         <v-flex pt-5>
           <slogan-card :slogan="slogan"
-                        :sub-slogan="subSlogan"
-                        :button-text="buttonText"
-                        :button-callback="buttonCallback" />
+                        :subSlogan="subSlogan"
+                        :buttonText="buttonText"
+                        :buttonCallback="buttonCallback"
+                        :moreButtonText="moreButtonText"
+                        :moreButtonCallback="moreButtonCallback" />
         </v-flex>
 
       </v-layout>
@@ -92,6 +94,8 @@ export default {
     subSlogan: String,
     buttonText: String,
     buttonCallback: Function,
+    moreButtonText: String,
+    moreButtonCallback: Function,
   },
   data: () => ({
     // xsLogo,

@@ -172,10 +172,6 @@ export default {
     color: rgba(255,255,255,.9) !important;
   }
 
-  .card_tag_placeholder {
-    opacity: 0.75;
-  }
-
   .expand-enter-active, .expand-leave-active {
     transition: all 4s ease;
     background-color: red;

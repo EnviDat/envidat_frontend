@@ -8,8 +8,13 @@ import {
   SET_CONFIG_SUCCESS,
   SET_CONFIG_ERROR,
   CHECK_FRONTEND_VERSION,
+  ADD_USER_NOTIFICATION,
+  TRIM_NOTIFICATIONS,
+  HIDE_NOTIFICATIONS,
 } from './mutationsConsts';
-// import { stat } from 'fs';
+
+import { getSpecificApiError } from '@/factories/notificationFactory';
+import { Object } from 'core-js';
 
 export default {
   [SET_APP_BACKGROUND](state, bgImg) {
@@ -38,12 +43,44 @@ export default {
     state.config = payload;
   },
   [SET_CONFIG_ERROR](state, reason) {
-    state.error = reason;
+    let notificationObj = getSpecificApiError('Config could not ge loaded!', reason);
+    this.commit(ADD_USER_NOTIFICATION, notificationObj);
   },
   [CHECK_FRONTEND_VERSION](state, version) {
     if (version > process.env.VUE_APP_VERSION) {
       state.showVersionModal = true;
       state.newVersion = version;
+    }
+  },
+  [TRIM_NOTIFICATIONS](state) {
+    if (!state.notifications) return;
+
+    const keys = Object.keys(state.notifications);
+    const trimedNots = {};
+
+    for (let i = 0; i < state.maxNotifications; i++) {
+      const k = keys[i];
+      trimedNots[k] = state.notifications[k];
+    }
+
+    state.notifications = trimedNots;
+  },
+  [HIDE_NOTIFICATIONS](state, key) {
+    if (!state.notifications || !state.notifications[key]) return;
+
+    state.notifications[key].show = false;
+  },
+  [ADD_USER_NOTIFICATION](state, notificationObj) {
+    const key = notificationObj.message + '_' + notificationObj.details.length;
+    notificationObj.key = key;
+
+    if (!state.notifications[key]) {
+      this._vm.$set(state.notifications, key, notificationObj);
+    } else {
+      const existingNotification = state.notifications[key];
+      if (existingNotification.details !== notificationObj.details){
+        this._vm.$set(state.notifications, key, notificationObj);
+      }
     }
   },
 };

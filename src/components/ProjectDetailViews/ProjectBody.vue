@@ -57,8 +57,6 @@ export default {
   },
   props: {
     description: String,
-    subProjects: Array,
-    metadatas: Array,
     dark: Boolean,
     showPlaceholder: Boolean,
   },

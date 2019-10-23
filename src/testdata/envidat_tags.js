@@ -1,3 +1,4 @@
+/* eslint-disable */
 "tags": [
     "BIOGEOGRAPHICAL",
     "ECONOMIC",

@@ -1,7 +1,7 @@
 <template>
   <v-tooltip
     bottom
-    :disabled="$vuetify.breakpoint.xsOnly"
+    :disabled="$vuetify.breakpoint.xsOnly || !tooltip"
   >
     <div
       slot="activator"

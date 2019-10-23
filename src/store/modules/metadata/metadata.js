@@ -1,9 +1,16 @@
 // import createPersist from 'vuex-localstorage';
 
+import globalMethods from '@/factories/globalMethods';
+
 import mutations from './mutations';
 import actions from './actions';
-import categorycards from '../categorycards';
+import categoryCards from '@/store/modules/metadata/categoryCards';
 import tags from './tags';
+
+for (let i = 0; i < tags.length; i++) {
+  const tag = tags[i];
+  tag.color = globalMethods.methods.mixinMethods_getTagColor(categoryCards, tag.name);
+}
 
 const initialState = {
   /**
@@ -44,7 +51,7 @@ const initialState = {
    * virtual List properties for MetaDataCards of the BrowsePage via MetadataListLayout
    */
   vIndex: 0,
-  vReloadAmount: 12,
+  vReloadAmount: 16,
   vReloadDelay: 150,
   // scrollPositionDelay has to be more than the vReloadDelay
   scrollPositionDelay: 200,
@@ -58,8 +65,6 @@ const initialState = {
   allTags: tags,
   loadingAllTags: false,
   updatingTags: false,
-  popularTags: [],
-  loadingPopularTags: false,
   /**
    * Route properties
    */
@@ -68,7 +73,7 @@ const initialState = {
   /**
    * static category cards for the suggestions of search categories
    */
-  categorycards,
+  categoryCards,
   /**
    * The idRemapping Map is a key value pair which is used for the metadatadetail page
    * to remap an metadataid (it's the name of the ckan json object) to another one
@@ -77,10 +82,6 @@ const initialState = {
   idRemapping: new Map([
     ['als‐based‐snow‐depth‐and‐canopy‐height‐maps‐from‐flights‐in‐2017‐grisons‐ch‐and‐grand‐mesa‐co', 'grand-mesa-co']
   ]),
-  /**
-   * Error properties for general Error handling in the app (incomplete)
-   */
-  error: Object,
 };
 
 export const metadata = {
@@ -108,11 +109,9 @@ export const metadata = {
     allTags: state => state.allTags,
     loadingAllTags: state => state.loadingAllTags,
     updatingTags: state => state.updatingTags,
-    popularTags: state => state.popularTags,
-    loadingPopularTags: state => state.loadingPopularTags,
     detailPageBackRoute: state => state.detailPageBackRoute,
     aboutPageBackRoute: state => state.aboutPageBackRoute,
-    categorycards: state => state.categorycards,
+    categoryCards: state => state.categoryCards,
     idRemapping: state => state.idRemapping,
   },
   mutations,

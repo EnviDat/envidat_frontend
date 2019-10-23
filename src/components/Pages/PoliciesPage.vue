@@ -47,7 +47,7 @@ import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
 } from '@/store/mutationsConsts';
-import { GET_POLICIES } from '@/store/policiesMutationsConsts';
+import { GET_POLICIES, POLICIES_NAMESPACE } from '@/store/policiesMutationsConsts';
 
 // import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 // import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
@@ -60,7 +60,7 @@ export default {
     });
   },
   beforeMount() {
-    this.$store.dispatch(`policies/${GET_POLICIES}`);
+    this.$store.dispatch(`${POLICIES_NAMESPACE}/${GET_POLICIES}`);
   },
   /**
      * @description reset the scrolling to the top,
@@ -71,10 +71,9 @@ export default {
   },
   computed: {
     ...mapGetters({
-      policiesPageBackRoute: 'policies/policiesPageBackRoute',
-      policiesTitle: 'policies/policiesTitle',
-      policiesMarkdown: 'policies/policiesMarkdown',
-      loading: 'policies/loading',
+      policiesPageBackRoute: `${POLICIES_NAMESPACE}/policiesPageBackRoute`,
+      policiesMarkdown: `${POLICIES_NAMESPACE}/policiesMarkdown`,
+      loading: `${POLICIES_NAMESPACE}/loading`,
     }),
     markdownOptions() {
       return {

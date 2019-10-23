@@ -4,8 +4,7 @@
 
     <v-card-text v-if="fullDescription"
                   ref="description"
-                  class="heightAndScroll pb-4"
-    >
+                  class="heightAndScroll pb-4" >
       <m-markdown-preview :markdown="fullDescription"
                           :options="{ html: true,
                                       xhtmlOut: true,
@@ -13,16 +12,14 @@
                                       breaks: true }" />
     </v-card-text>
 
-    <v-card-text v-if="showPlaceholder && !fullDescription" >      
+    <v-card-text v-if="showPlaceholder && !fullDescription" >
       <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer">
         <div class="bone bone-type-multiline bone-style-paragraph" />
       </div>
     </v-card-text>
 
-    <v-card-text
-      v-if="!showPlaceholder && !fullDescription"
-      style="color: red;"
-    >
+    <v-card-text v-if="!showPlaceholder && !fullDescription"
+                  style="color: red;" >
       {{ emptyText }}
     </v-card-text>
 
@@ -89,19 +86,10 @@ export default {
     emptyText: 'No description found for this dataset.',
   }),
   computed: {
-    // doi() {
-    //   return this.mixinMethods_getGenericProp('doi');
-    // },
-    // title() {
-    //   return this.mixinMethods_getGenericProp('title');
-    // },
-    // id() {
-    //   return this.mixinMethods_getGenericProp('id');
-    // },
     description() {
       return this.mixinMethods_getGenericProp('description');
     },
-    fullDescription: function fullDescription() {
+    fullDescription() {
       if (this.description) {
         if (this.maxDescriptionLengthReached) {
           return this.showFullDescription ? this.description.trim() : `${this.description.trim().substring(0, this.maxTextLength)}...`;
@@ -112,14 +100,14 @@ export default {
 
       return '';
     },
-    maxDescriptionLengthReached: function maxDescriptionLengthReached() {
+    maxDescriptionLengthReached() {
       return this.description && this.description.length > this.maxTextLength;
     },
   },
-  mounted: function mounted() {
+  mounted() {
   },
   methods: {
-    readMore: function readMore() {
+    readMore() {
       this.showFullDescription = !this.showFullDescription;
     },
     rightPos() {

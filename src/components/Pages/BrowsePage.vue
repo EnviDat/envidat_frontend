@@ -6,48 +6,7 @@
   >
     <v-layout row wrap
     >
-      <v-flex xs12
-              :class="{ 'stickyFilterBar': $vuetify.breakpoint.smAndUp }"
-              :style="$vuetify.breakpoint.sm ? 'top: 42px !important;' : ''" >
-
-        <!-- <filter-bar-view :showFiltering="true"
-                          :searchViewLabelText="searchBarPlaceholder"
-                          :controlsLabel="controlsLabel"
-                          :searchTerm="searchTerm"
-                          :searchCount="searchCount"
-                          :searchViewHasButton="false"
-                          :allTags="allTags"
-                          :showPlaceholder="keywordsPlaceholder"
-                          :selectedTagNames="selectedTagNames"
-                          :popularTags="popularTags"
-                          :showMapFilter="showMapFilter"
-                          :mapFilteringPossible="mapFilteringPossible"
-                          :mapFilterHeight="mapFilterHeight"
-                          @clickedSearch="catchSearchClicked"
-                          @clearedSearch="catchSearchCleared"
-                          @clickedTag="catchTagClicked"
-                          @clickedTagClose="catchTagCloseClicked"
-                          @clickedClear="catchTagCleared"
-                          @clickedMapExpand="toggleMapExpand"
-                          @mapFilterChanged="catchMapFilterChanged"
-                          @controlsChanged="controlsChanged"
-        /> -->
-
-        <filter-keywords-view :compactLayout="$vuetify.breakpoint.smAndDown"
-                              :allTags="allTags"
-                              :selectedTagNames="selectedTagNames"
-                              :popularTags="popularTags"
-                              :expanded="filterExpanded"
-                              :expandButtonText="filterExpandButtonText"
-                              :expandedButtonText="filterExpandedButtonText"
-                              :showPlaceholder="keywordsPlaceholder"
-                              @clickedExpand="catchFilterExpandClicked"
-                              @clickedTag="catchTagClicked"
-                              @clickedTagClose="catchTagCloseClicked"
-                              @clickedClear="catchTagCleared" />
-      </v-flex>
-
-      <v-flex py-2 style="z-index: 1;"
+      <v-flex style="z-index: 1;"
               v-bind="{ ['mx-0']: $vuetify.breakpoint.mdAndUp,
                         ['xs8']: showMapFilter & $vuetify.breakpoint.mdAndUp,
                         ['xs6']: showMapFilter & $vuetify.breakpoint.sm,
@@ -56,29 +15,36 @@
                         metadataListStyling }" >
 
         <metadata-list-layout :listContent="filteredContent"
-                            :list-view="listViewActive"
-                            :show-map-filter="showMapFilter"
-                            :map-filtering-possible="mapFilteringPossible"
-                            :place-holder-amount="placeHolderAmount"
-                            @clickedTag="catchTagClicked" />
+                            :listView="listViewActive"
+                            :showMapFilter="showMapFilter"
+                            :mapFilteringPossible="mapFilteringPossible"
+                            :placeHolderAmount="placeHolderAmount"
+                            @clickedTag="catchTagClicked"
+                            :allTags="allTags"
+                            :selectedTagNames="selectedTagNames"
+                            :showPlaceholder="keywordsPlaceholder"
+                            @clickedExpand="catchFilterExpandClicked"
+                            @clickedTagClose="catchTagCloseClicked"
+                            @clickedClear="catchTagCleared"
+                            :mapHeight="mapFilterHeight"
+                            :mapWidth="mapFilterWidth"
+                            :defaultListControls="controls" />
       </v-flex>
 
-      <v-flex v-if="mapFilteringPossible && showMapFilter"
+      <!-- <v-flex v-if="mapFilteringPossible && showMapFilter"
               py-3
               v-bind="{
                         ['xs4']: showMapFilter & $vuetify.breakpoint.mdAndUp,
                         ['xs6']: showMapFilter & $vuetify.breakpoint.sm,
               }"
               style="position: fixed; top: 135px; right: 10px;" >
-                  <!-- ['pr-3']: showMapFilter & $vuetify.breakpoint.mdAndUp,
-                  ['pl-2']: showMapFilter & $vuetify.breakpoint.sm, -->
         <filter-map-view :totalHeight="mapFilterHeight"
                         :totalWidth="mapFilterWidth"
                         :expanded="showMapFilter"
                         @pointClicked="catchPointClicked"
                         @clearButtonClicked="catchClearButtonClick" />
+      </v-flex> -->
 
-      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -89,32 +55,27 @@ import {
   BROWSE_PAGENAME,
   BROWSE_PATH,
 } from '@/router/routeConsts';
-import FilterMapView from '@/components/Filtering/FilterMapView';
-import FilterKeywordsView from '@/components/Filtering/FilterKeywordsView';
 import MetadataListLayout from '@/components/Layouts/MetadataListLayout';
 import {
   SEARCH_METADATA,
   CLEAR_SEARCH_METADATA,
   FILTER_METADATA,
-  PIN_METADATA,
-  CLEAR_PINNED_METADATA,
 } from '@/store/metadataMutationsConsts';
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
-  SET_CONTROLS,
   SET_BROWSE_SCROLL_POSITION,
 } from '@/store/mutationsConsts';
 
 
 export default {
-  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+  beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.commit(SET_CURRENT_PAGE, BROWSE_PAGENAME);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
     });
   },
-  mounted: function mounted() {
+  mounted() {
     const that = this;
     window.onscroll = () => {
       that.storeScroll(window.scrollY);
@@ -122,12 +83,12 @@ export default {
 
     this.checkRouteChanges(null);
   },
-  beforeDestroy: function beforeDestroy() {
+  beforeDestroy() {
     // destory the scrolling hook that it won't use the scroll of another page
     window.onscroll = null;
   },
   methods: {
-    loadRouteTags: function loadRouteTags() {
+    loadRouteTags() {
       const tagsEncoded = this.$route.query.tags ? this.$route.query.tags : '';
       let decodedTags = [];
 
@@ -205,39 +166,8 @@ export default {
     catchMapFilterChanged: function catchMapFilterChanged(visibleIds) {
       this.mapFilterVisibleIds = visibleIds;
     },
-    catchPointClicked: function catchPointClicked(id) {
-      // bring to top
-      // highlight entry
-
-      this.$store.commit(`metadata/${PIN_METADATA}`, id);
-    },
-    catchClearButtonClick: function catchClearButtonClick() {
-      this.$store.commit(`metadata/${CLEAR_PINNED_METADATA}`);
-    },
     catchFilterExpandClicked: function catchFilterExpandClicked() {
       this.filterExpanded = !this.filterExpanded;
-    },
-    controlsChanged: function controlsChanged(controlsActive) {
-      // 0-entry: listView, 1-entry: mapActive
-
-      let listActive = false;
-      let mapToggled = false;
-
-      for (let index = 0; index < controlsActive.length; index++) {
-        const el = controlsActive[index];
-
-        if (el === 0) {
-          listActive = true;
-        }
-        if (el === 1) {
-          mapToggled = true;
-        }
-      }
-
-      this.listViewActive = listActive;
-      this.showMapFilter = mapToggled;
-
-      this.$store.commit(SET_CONTROLS, controlsActive);
     },
     toggleMapExpand: function toggleMapExpand() {
       this.showMapFilter = !this.showMapFilter;
@@ -380,7 +310,7 @@ export default {
     searchMetadatasContentSize: function searchMetadatasContentSize() {
       return this.searchedMetadatasContent !== undefined ? Object.keys(this.searchedMetadatasContent).length : 0;
     },
-    mapFilterHeight: function mapFilterHeight() {
+    mapFilterHeight() {
       const sHeight = document.documentElement.clientHeight;
 
       let height = this.maxMapFilterHeight;
@@ -391,7 +321,7 @@ export default {
 
       return height;
     },
-    mapFilterWidth: function mapFilterWidth() {
+    mapFilterWidth() {
       const sWidth = document.documentElement.clientWidth;
 
       if (this.$vuetify.breakpoint.mdAndUp) {
@@ -404,20 +334,7 @@ export default {
 
       return sWidth;
     },
-    popularTags: function popularTags() {
-      const popTags = [];
-
-      if (this.allTags) {
-        for (let i = 0; i < this.allTags.length; i++) {
-          const tag = this.allTags[i];
-
-          popTags.push(tag);
-        }
-      }
-
-      return popTags;
-    },
-    metadataListStyling: function metadataListStyling() {
+    metadataListStyling() {
       const json = {
         xs8: this.mapFilteringPossible && this.showMapFilter,
         xs12: this.mapFilteringPossible && !this.showMapFilter,
@@ -427,10 +344,10 @@ export default {
 
       return json;
     },
-    mapFilteringPossible: function mapFilteringPossible() {
+    mapFilteringPossible() {
       return this.$vuetify.breakpoint.smAndUp;
     },
-    searchCount: function searchCount() {
+    searchCount() {
       return this.filteredContent !== undefined ? this.filteredContent.length : 0;
     },
   },
@@ -455,25 +372,19 @@ export default {
     },
   },
   components: {
-    FilterMapView,
-    FilterKeywordsView,
     MetadataListLayout,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
     searchTerm: '',
-    controlsLabel: 'List Controls',
     placeHolderAmount: 6,
     suggestionText: 'Try one of these categories',
     selectedTagNames: [],
     popularTagAmount: 10,
     showMapFilter: false,
-    maxMapFilterHeight: 725,
+    maxMapFilterHeight: 325,
     mapFilterVisibleIds: [],
     listViewActive: false,
-    filterExpanded: false,
-    filterExpandButtonText: 'Show all tags',
-    filterExpandedButtonText: 'Hide all tags',
   }),
 };
 </script>

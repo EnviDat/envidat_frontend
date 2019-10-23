@@ -6,22 +6,11 @@ import {
   GET_PROJECTS_ERROR,
 } from '@/store/projectsMutationsConsts';
 
-import projectDataFactory from "@/components/projectsDataFactory";
+import { urlRewrite } from '@/factories/apiFactory';
 
 const API_BASE = '/api/action/';
 const ENVIDAT_PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
 const useTestData = process.env.VUE_APP_USE_TESTDATA;
-
-function urlRewrite(url, baseUrl, proxyUrl) {
-  url = url.replace('?', '&');
-  url = url.replace("'", '%22');
-
-  proxyUrl = proxyUrl.replace('NULL', '');
-
-  url = `${proxyUrl}${baseUrl}${url}`;
-
-  return url;
-}
 
 
 export default {
@@ -29,21 +18,25 @@ export default {
     commit(GET_PROJECTS);
 
     const url = urlRewrite(
-      'group_list&all_fields=true&include_groups=true&include_extras=true&include_datasets=true',
+      'group_list?all_fields=true&include_groups=true&include_extras=true&include_datasets=true',
       API_BASE,
       ENVIDAT_PROXY,
     );
 
-    if (typeof useTestData === 'string' && useTestData.toLowerCase() === 'true'){
-        const projectJSON = require('@/testdata/projects.js');
-        const enhancedProjects = projectDataFactory.enhanceSubprojects(projectJSON.default.result);
-        commit(GET_PROJECTS_SUCCESS, enhancedProjects);
-        return;
+    if (typeof useTestData === 'string' && useTestData.toLowerCase() === 'true') {
+      // const projectJSON = require('@/testdata/projects.js');
+
+      import('@/testdata/projects.js')
+      .then((projects) => {
+        commit(GET_PROJECTS_SUCCESS, projects.default.result);
+      });
+
+      return;
     }
 
     axios.get(url)
       .then((response) => {
-        commit(GET_PROJECTS_SUCCESS, response.data);
+        commit(GET_PROJECTS_SUCCESS, response.data.result);
       })
       .catch((reason) => {
         commit(GET_PROJECTS_ERROR, reason);

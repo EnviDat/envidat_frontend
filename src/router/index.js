@@ -1,12 +1,6 @@
 /* eslint-disable prefer-template */
 import Vue from 'vue';
 import Router from 'vue-router';
-// import LandingPage from '@/components/Pages/LandingPage';
-// import BrowsePage from '@/components/Pages/BrowsePage';
-// import MetadataDetailPage from '@/components/Pages/MetadataDetailPage';
-// import ResourceDetailPage from '@/components/Pages/ResourceDetailPage';
-// import GCMDPage from '@/components/Pages/GCMDPage';
-// import AboutPage from '@/components/Pages/AboutPage';
 import {
   LANDING_PATH,
   BROWSE_PATH,
@@ -14,13 +8,19 @@ import {
   METADATADETAIL_PATH,
   METADATADETAIL_PAGENAME,
   GCMD_PATH,
+  GCMD_PAGENAME,
   ABOUT_PATH,
+  ABOUT_PAGENAME,
   POLICIES_PATH,
+  POLICIES_PAGENAME,
   GUIDELINES_PATH,
+  GUIDELINES_PAGENAME,
   PROJECTS_PATH,
   PROJECTS_PAGENAME,
   PROJECT_DETAIL_PATH,
   PROJECT_DETAIL_PAGENAME,
+  REPORT_PATH,
+  REPORT_PAGENAME,
 } from '@/router/routeConsts';
 
 Vue.use(Router);
@@ -53,22 +53,22 @@ export default new Router({
     // },
     {
       path: GCMD_PATH,
-      name: 'GCMDPage',
+      name: GCMD_PAGENAME,
       component: () => import(/* webpackChunkName: "gcmdPage" */ '@/components/Pages/GCMDPage'),
     },
     {
       path: ABOUT_PATH,
-      name: 'AboutPage',
+      name: ABOUT_PAGENAME,
       component: () => import(/* webpackChunkName: "aboutPage" */ '@/components/Pages/AboutPage'),
     },
     {
       path: POLICIES_PATH,
-      name: 'PoliciesPage',
+      name: POLICIES_PAGENAME,
       component: () => import(/* webpackChunkName: "policiesPage" */ '@/components/Pages/PoliciesPage'),
     },
     {
       path: GUIDELINES_PATH,
-      name: 'GuidelinesPage',
+      name: GUIDELINES_PAGENAME,
       component: () => import(/* webpackChunkName: "guidelinesPage" */ '@/components/Pages/GuidelinesPage'),
     },
     {
@@ -80,6 +80,11 @@ export default new Router({
       path: `${PROJECT_DETAIL_PATH}/:id`,
       name: PROJECT_DETAIL_PAGENAME,
       component: () => import(/* webpackChunkName: "projectDetailPage" */ '@/components/Pages/ProjectDetailPage'),
+    },
+    {
+      path: REPORT_PATH,
+      name: REPORT_PAGENAME,
+      component: () => import(/* webpackChunkName: "guidelinesPage" */ '@/components/Pages/ReportPage'),
     },
   ],
   scrollBehavior(to, from, savedPosition) {

@@ -58,7 +58,6 @@
               :compact-layout="$vuetify.breakpoint.smAndDown"
               :all-tags="allTags"
               :selected-tag-names="selectedTagNames"
-              :popular-tags="popularTags"
               :expanded="expanded"
               :expand-button-text="expandButtonText"
               :expanded-button-text="expandedButtonText"
@@ -100,7 +99,6 @@ export default {
     searchCount: Number,
     isSearchResultContent: Boolean,
     allTags: Array,
-    popularTags: Array,
     selectedTagNames: Array,
     showFiltering: Boolean,
     showPlaceholder: Boolean,
