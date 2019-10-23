@@ -129,6 +129,19 @@
 </template>
 
 <script>
+/**
+ * FilterMapWidget.vue shows the buttons and configurations for the FilterMapView.vue
+ *
+ * @summary view buttons with buttons to show / hide markers on the map
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-02 11:24:00
+ * Last modified  : 2019-10-23 14:49:29
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 export default {

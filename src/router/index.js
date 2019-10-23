@@ -1,3 +1,16 @@
+/**
+ * main vue-router file. it lists all the possible routes.
+ *
+ * @summary list of the routes
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:33:32 
+ * Last modified  : 2019-10-23 17:45:46
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 /* eslint-disable prefer-template */
 import Vue from 'vue';
 import Router from 'vue-router';
@@ -84,7 +97,7 @@ export default new Router({
     {
       path: REPORT_PATH,
       name: REPORT_PAGENAME,
-      component: () => import(/* webpackChunkName: "guidelinesPage" */ '@/components/Pages/ReportPage'),
+      component: () => import(/* webpackChunkName: "guidelinesPage" */ "@/components/Pages/ReportPage"),
     },
   ],
   scrollBehavior(to, from, savedPosition) {

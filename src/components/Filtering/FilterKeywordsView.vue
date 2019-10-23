@@ -88,6 +88,21 @@
 </template>
 
 <script>
+/**
+ * FilterKeywordsView.vue show a two lists of tags for filterting
+ * the metadata list. 1st is the avaiable tags of the current list content.
+ * The 2nd is the currently selected tags for filtering.
+ *
+ * @summary view of two lists of tags
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-02 11:24:00
+ * Last modified  : 2019-10-23 18:16:33
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import TagChip from '@/components/Cards/TagChip';
 import TagChipPlaceholder from '@/components/Cards/TagChipPlaceholder';
@@ -122,7 +137,7 @@ export default {
       const unselectedTags = [];
 
       this.allTags.forEach((element) => {
-        if (element.enabled && !this.isTagSelected(element.name)) {
+        if (element.enabled && !this.mixinMethods_isTagSelected(element.name)) {
           unselectedTags.push(element);
         }
       });
@@ -217,16 +232,6 @@ export default {
     },
     catchTagCloseClicked(tagId) {
       this.$emit('clickedTagClose', tagId);
-    },
-    isTagSelected(tagName) {
-      if (!tagName || this.selectedTagNames === undefined) {
-        return false;
-      }
-
-      return this.selectedTagNames.indexOf(tagName) >= 0;
-    },
-    isSelected(tagId) {
-      return this.selectedTags.indexOf(tagId) >= 0;
     },
     minTagCountToBeVisible() {
       let minCount = 5;

@@ -1,3 +1,14 @@
+/**
+ * @summary main store actions
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:34:51 
+ * Last modified  : 2019-10-23 17:36:56
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import axios from 'axios';
 
 import {
@@ -5,7 +16,7 @@ import {
   SET_CONFIG_SUCCESS,
   SET_CONFIG_ERROR,
   CHECK_FRONTEND_VERSION,
-} from '@/store/mutationsConsts';
+} from '@/store/mainMutationsConsts';
 
 const configURL = process.env.VUE_APP_CONFIG_URL;
 

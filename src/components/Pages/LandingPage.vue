@@ -50,6 +50,23 @@
 </template>
 
 <script>
+/**
+ * The landing page of EnviDat is the root page ("./") first page shown
+ * It consists of:
+ * - TheTitleScreenLayout
+ * - SearchBarView
+ * - and show a list of category cards (baseClickCard)
+ *
+ * @summary landing page
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:12:30
+ * Last modified  : 2019-10-23 16:25:51
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import { mapGetters } from 'vuex';
 import {
   LANDING_PAGENAME,
@@ -63,7 +80,7 @@ import SmallSearchBarView from '@/components/Filtering/SmallSearchBarView';
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
-} from '@/store/mutationsConsts';
+} from '@/store/mainMutationsConsts';
 
 
 // Login & Register form and animation

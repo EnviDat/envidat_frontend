@@ -187,6 +187,20 @@
 </template>
 
 <script>
+/**
+ * MetadataHeader.vue shows the title, authors, keywords,
+ * main contact, doi and license of a metadata entry.
+ *
+ * @summary shows the main infos the a metadata entry
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 14:11:27
+ * Last modified  : 2019-10-23 15:59:39
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
+
 import TagChip from '@/components/Cards/TagChip';
 import TagChipAuthor from '@/components/Cards/TagChipAuthor';
 import TagChipPlaceholder from '@/components/Cards/TagChipPlaceholder';
@@ -228,10 +242,10 @@ export default {
     NotFoundTitle: 'No metadata found for',
   }),
   computed: {
-    maxTagsReached: function maxTagsReached() {
+    maxTagsReached() {
       return this.tags ? this.tags.length >= this.maxTags : false;
     },
-    slicedTags: function slicedTags() {
+    slicedTags() {
       if (!this.tags) {
         return false;
       }
@@ -242,7 +256,7 @@ export default {
 
       return this.tags.slice(0, this.maxTags);
     },
-    dynamicCardBackground: function dynamicCardBackground() {
+    dynamicCardBackground() {
       const gradient = this.dark ? this.blackTopToBottom : this.whiteTopToBottom;
 
       let style = `position: absolute; top: 0px; right: 0px;
@@ -261,16 +275,16 @@ export default {
     },
   },
   methods: {
-    catchTagClicked: function catchTagClicked(tagId) {
+    catchTagClicked(tagId) {
       this.$emit('clickedTag', tagId);
     },
-    catchAuthorClicked: function catchAuthorClicked(authorName) {
+    catchAuthorClicked(authorName) {
       this.$emit('clickedAuthor', authorName);
     },
-    catchBackClicked: function catchBackClicked() {
+    catchBackClicked() {
       this.$emit('clickedBack');
     },
-    iconFlip: function iconFlip(icon) {
+    iconFlip(icon) {
       const iconflip = this.dark ? `${icon}_w` : icon;
       return iconflip;
     },

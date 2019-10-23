@@ -31,11 +31,11 @@
 
 <script>
 /**
- * A rectangle button with an icon, either a custom icon or a material (material design libery) icon.
+ * BaseRectangleButton.vue creates a rectangle button with an icon, either a custom icon or a material (material design libery) icon.
  * Similar to @class IconButton
  * React on the 'clicked' event or pass an @prop url to create a href-link.
  *
- * Use the @prop isSmall to make a
+ * Use the @prop isSmall to make a the button smaller.
  * Fill the @prop toolTipText for a toolTip when hovering over the Button.
  *
  * If @prop outlined is true the button only has an outline in the @prop color.
@@ -48,6 +48,15 @@
  * Use @prop marginClass to apply any css-class to the button, because it's wrapped in the tooltip element.
  *
  * When @prop disabled is true clicks won't do anything.
+ *
+ * @summary the base EnviDat rectangle button
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-02 11:24:00
+ * Last modified  : 2019-10-23 14:36:58
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
  */
 
 export default {
