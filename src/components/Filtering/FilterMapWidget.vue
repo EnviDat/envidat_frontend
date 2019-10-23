@@ -1,27 +1,27 @@
 <template>
   <v-card class="elevation-0" >
 
-    <v-card-title :class="smScreen ? 'pa-2' : ''" >
+    <v-card-title :class="mdScreen ? 'pa-2' : 'pb-2'" >
       <div class="mb-0"
-          :class="smScreen ? 'body-2 font-weight-bold' : 'title '" >
+          :class="mdScreen ? 'body-2 font-weight-bold' : 'title '" >
         Cartographic Filtering</div>
     </v-card-title>
 
     <div class="py-0 my-0 "
-          :class="smScreen ? 'px-1 mb-1' : 'px-3 mb-2'"
+          :class="mdScreen ? 'px-1 mb-1' : 'px-3'"
           :style="`background-color: ${$vuetify.theme.highlight};`" >
 
       <p class="my-0"
-          :class="$vuetify.breakpoint.mdAndDown ? 'caption' : 'body-2'" >
+          :class="mdScreen ? 'caption' : 'body-2'" >
         {{ highlightedText }}
       </p>
 
     </div>
 
-    <v-container :class="$vuetify.breakpoint.mdAndDown ? 'py-1 px-3' : 'py-2 px-3'" >
+    <v-container :class="mdScreen ? 'py-1 px-3' : 'py-2 px-3'" >
 
-    <v-layout :row="!smScreen"
-              :column="smScreen"
+    <v-layout :row="!mdScreen"
+              :column="mdScreen"
               wrap
               align-center>
 
@@ -33,88 +33,88 @@
       </v-flex>
 
       <v-flex py-1
-              :class="smScreen ? 'shrink' : 'md3'">
+              :class="mdScreen ? 'shrink' : 'lg3'">
         <base-icon-button materialIconName="close"
                           iconColor="red"
-                          :outlined="true"
-                          :isSmall="$vuetify.breakpoint.mdAndDown"
+                          :outlined="pinnedIds.length > 0"
+                          :isSmall="mdScreen"
                           :disabled="pinnedIds.length <= 0"
                           :toolTipText="clearButtonTooltipText"
                           @clicked="catchClearClicked()" />
       </v-flex>
 
 
-      <v-flex hidden-sm-and-down md9
+      <v-flex hidden-md-and-down lg9
               py-1 >
         {{ focusText }}
       </v-flex>
 
-      <v-flex sm12 md3
+      <v-flex md12 lg3
               py-1 >
         <base-icon-button materialIconName="remove_red_eye"
                           iconColor="black"
                           color="highlight"
-                          :isSmall="smScreen"
+                          :isSmall="mdScreen"
                           :outlined="true"
                           :toolTipText="focusText"
                           @clicked="catchFocusClicked()" />
       </v-flex>
 
       <v-flex v-if="hasPins"
-              hidden-sm-and-down
-              md9
+              hidden-md-and-down
+              lg9
               py-1 >
         {{ pinText }}
       </v-flex>
 
       <v-flex v-if="hasPins"
-              sm12 md3
+              md12 lg3
               py-1 >
         <base-icon-button :count="pinNumber"
                           :customIcon="pinIcon"
                           color="secondary"
                           :outlined="true"
-                          :isSmall="smScreen"
+                          :isSmall="mdScreen"
                           :isToggled="pinEnabled"
                           :toolTipText="pinText"
                           @clicked="catchPinClicked()" />
       </v-flex>
 
       <v-flex v-if="hasMultiPins"
-              hidden-sm-and-down
-              md9
+              hidden-md-and-down
+              lg9
               py-1 >
         {{ multiPinText }}
       </v-flex>
 
       <v-flex v-if="hasMultiPins"
-              sm12 md3
+              md12 lg3
               py-1 >
         <base-icon-button :count="multiPinNumber"
                           :customIcon="multiPinIcon"
                           color="secondary"
                           :outlined="true"
-                          :isSmall="smScreen"
+                          :isSmall="mdScreen"
                           :isToggled="multiPinEnabled"
                           :toolTipText="multiPinText"
                           @clicked="catchMultipinClicked()" />
       </v-flex>
 
       <v-flex v-if="hasPolygons"
-              hidden-sm-and-down
-              md9
+              hidden-md-and-down
+              lg9
               py-1 >
         {{ polygonText }}
       </v-flex>
 
       <v-flex v-if="hasPolygons"
-              sm12 md3
+              md12 lg3
               py-1 >
         <base-icon-button :count="polygonNumber"
                           materialIconName="layers"
                           iconColor="black"
                           color="secondary"
-                          :isSmall="smScreen"
+                          :isSmall="mdScreen"
                           :isToggled="polygonEnabled"
                           :outlined="true"
                           :toolTipText="polygonText"
@@ -162,6 +162,9 @@ export default {
   computed: {
     smScreen() {
       return this.$vuetify.breakpoint.smAndDown;
+    },
+    mdScreen() {
+      return this.$vuetify.breakpoint.mdAndDown;
     },
     pinText() {
       return this.pinEnabled ? 'Hide single markers' : 'Show single markers';

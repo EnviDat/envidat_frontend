@@ -39,11 +39,14 @@ module.exports = {
   //   // while on idle state
   //   // config.plugins.delete('prefetch')
   // },
-  // configureWebpack: {
-  //   optimization: {
-  //     // splitChunks: false
-  //   }
-  // }
+  configureWebpack:{
+    optimization: {
+      splitChunks: {
+        minSize: 10000,
+        maxSize: 250000,
+      }
+    }
+  }  
   // devServer: {
   //   // assetsSubDirectory: "static",
   //   // assetsPublicPath: "/",
