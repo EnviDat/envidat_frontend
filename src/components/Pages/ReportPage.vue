@@ -59,10 +59,19 @@
 
 <script>
 /**
-   * The about page of EnviDat. It consists of:
-   * - TitleImage and Title (ImgAndTextLayout)
-   * - Different Card with infomation about some about topics (ExpandableCard)
-   */
+ * The ReportPage is UNFINISHED.
+ * It show an form with the error message to send to the backend.
+ *
+ * @summary projects page
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:12:30
+ * Last modified  : 2019-10-23 16:32:02
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import { mapGetters } from 'vuex';
 import {
   REPORT_PAGENAME,
@@ -70,7 +79,7 @@ import {
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
-} from '@/store/mutationsConsts';
+} from '@/store/mainMutationsConsts';
 
 
 export default {

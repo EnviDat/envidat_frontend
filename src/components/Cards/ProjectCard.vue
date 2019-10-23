@@ -80,6 +80,19 @@
 
 
 <script>
+/**
+ * ProjectCard.vue creates a card with a header image, title, keywords and preview description.
+ * When clicked its emits the 'clickedEvent' event, also the clickedTag can be emitted.
+ *
+ * @summary card with img, title, keywords and preview description
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-02 11:24:00
+ * Last modified  : 2019-10-23 14:38:42
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 // checkout skeleton

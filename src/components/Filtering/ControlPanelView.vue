@@ -43,6 +43,19 @@
 </template>
 
 <script>
+/**
+ * ControlPanelView.vue shows controls which users can change
+ * configurations of the metadata list
+ *
+ * @summary controls for list
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 14:11:27
+ * Last modified  : 2019-10-23 14:40:43
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
 
 export default {
   components: {

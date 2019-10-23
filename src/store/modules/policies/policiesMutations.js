@@ -1,9 +1,22 @@
+/**
+ * policies store mutations
+ *
+ * @summary policies store mutations
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:34:51 
+ * Last modified  : 2019-10-23 16:34:51 
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import {
   GET_POLICIES,
   GET_POLICIES_SUCCESS,
   GET_POLICIES_ERROR,
 } from '@/store/policiesMutationsConsts';
-import { ADD_USER_NOTIFICATION } from '@/store/mutationsConsts';
+import { ADD_USER_NOTIFICATION } from '@/store/mainMutationsConsts';
 import { getSpecificApiError } from '@/factories/notificationFactory';
 
 export default {

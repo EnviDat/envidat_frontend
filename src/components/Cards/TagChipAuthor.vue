@@ -30,6 +30,18 @@
 </template>
 
 <script>
+/**
+ * TagChipAuthor.vue creates a chip specific for authors with the name as text.
+ *
+ * @summary tag for authors
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 14:11:27
+ * Last modified  : 2019-10-23 14:16:14
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
 export default {
   props: {
     name: String,

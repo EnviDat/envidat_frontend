@@ -1,3 +1,14 @@
+/**
+ * @summary story of ProjectCard for sandbox testing
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:34:51 
+ * Last modified  : 2019-10-23 16:53:25
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from "@storybook/vue";
 import { action } from "@storybook/addon-actions";
@@ -35,7 +46,6 @@ Vue.component("v-layout", VLayout);
 Vue.component("v-flex", VFlex);
 
 import ProjectCard from "@/components/Cards/ProjectCard.vue";
-import MetadataCardPlaceholder from "@/components/Cards/MetadataCardPlaceholder.vue";
 import App from "@/App.vue";
 
 // get Project test data and enhance it

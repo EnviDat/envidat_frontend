@@ -1,3 +1,4 @@
+
 <template>
   <div :style="isSmall ? 'height: 28px;' : 'height: 36px;'"
         @mouseover="hoverBadge = true"
@@ -54,7 +55,7 @@
 
 <script>
 /**
- * A round button with an icon, either a custom icon or a material (material design libery) icon.
+ * BaseIconButton.vue creates a round button with an icon, either a custom icon or a material (material design libery) icon.
  * Similar to @class RectangleButton
  * React on the 'clicked' event or pass an @prop url to create a href-link.
  *
@@ -74,6 +75,15 @@
  * The @prop isElevated creates a FAB button with high elevation (box-shadows) if true.
  *
  * When @prop disabled is true clicks won't do anything.
+ *
+ * @summary a clickable icon button which emits 'clicked' event
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-02 11:32:12
+ * Last modified  : 2019-10-23 14:04:41
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
  */
 
 export default {
