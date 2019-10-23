@@ -1,3 +1,17 @@
+/**
+ * function factory for global methods, mainly used as a mixin to
+ * provide functions for every vue component.
+ *
+ * @summary function factory for global methods
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:07:03 
+ * Last modified  : 2019-10-23 16:07:03 
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 /* eslint-disable camelcase */
 import seedrandom from 'seedrandom';
 
@@ -12,6 +26,22 @@ import {
 
 export default {
   methods: {
+    mixinMethods_isTagSelected(tagName) {
+      if (!tagName || this.selectedTagNames === undefined) {
+        return false;
+      }
+
+      return this.selectedTagNames.indexOf(tagName) >= 0;
+    },
+    mixinMethods_areArraysIdentical(arr1, arr2) {
+      if (arr1.length !== arr2.length) return false;
+
+      for (let i = arr1.length; i--;) {
+        if (arr1[i] !== arr2[i]) return false;
+      }
+
+      return true;
+    },
     /**
      * Encodes a array of tagNames via btoa() to a string.
      * Also replaces theses characters '.', '_', '-' which cause problems for urls.

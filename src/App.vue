@@ -78,6 +78,19 @@
 </template>
 
 <script>
+/**
+ * The App.vue bootstraps all the other components.
+ *
+ * @summary main component
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:12:30
+ * Last modified  : 2019-10-23 17:33:18
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import { mapGetters } from 'vuex';
 import {
   LANDING_PATH,
@@ -103,7 +116,7 @@ import {
   SET_CONFIG,
   TRIM_NOTIFICATIONS,
   HIDE_NOTIFICATIONS,
-} from '@/store/mutationsConsts';
+} from '@/store/mainMutationsConsts';
 import TheNavigation from '@/components/Navigation/TheNavigation';
 import TheNavigationSmall from '@/components/Navigation/TheNavigationSmall';
 import TheNavigationToolbar from '@/components/Navigation/TheNavigationToolbar';

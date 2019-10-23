@@ -47,6 +47,19 @@
 </template>
 
 <script>
+/**
+ * ProjectBody.vue renders markdown showing the description of the project.
+ *
+ * @summary shows the description of a project entry
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 14:11:27
+ * Last modified  : 2019-10-23 16:02:55
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
+
 import MMarkdownPreview from 'm-markdown-preview';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
@@ -61,7 +74,7 @@ export default {
     showPlaceholder: Boolean,
   },
   computed: {
-    fullDescription: function fullDescription() {
+    fullDescription() {
       if (this.description) {
         if (this.maxDescriptionLengthReached) {
           return this.showFullDescription ? this.description.trim() : `${this.description.trim().substring(0, this.maxTextLength)}...`;
@@ -72,7 +85,7 @@ export default {
 
       return '';
     },
-    maxDescriptionLengthReached: function maxDescriptionLengthReached() {
+    maxDescriptionLengthReached() {
       return this.description && this.description.length > this.maxTextLength;
     },
   },

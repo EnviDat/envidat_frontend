@@ -70,6 +70,20 @@
 </template>
 
 <script>
+/**
+ * BaseIconLabelView.vue creates a field with a label (text or icon) with the given
+ * text as well a tooltip.
+ *
+ * @summary icon as label and text or text as label and text
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-02 11:24:00
+ * Last modified  : 2019-10-02 11:47:20
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 export default {
   props: {
     icon: String,

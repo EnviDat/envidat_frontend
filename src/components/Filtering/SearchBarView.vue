@@ -41,6 +41,19 @@
 </template>
 
 <script>
+/**
+ * SearchBarView.vue is a broad search bar to jump to the browsepage.
+ *
+ * @summary textfield with icon and button
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-02 11:24:00
+ * Last modified  : 2019-10-23 14:52:28
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 
 export default {
@@ -55,13 +68,13 @@ export default {
   data: () => ({
     searchText: '',
   }),
-  updated: function updated() {
+  updated() {
     if (!this.searchText) {
       this.$emit('searchEmpty');
     }
   },
   methods: {
-    clicked: function clicked() {
+    clicked() {
       this.$emit('clicked', this.searchText);
     },
   },

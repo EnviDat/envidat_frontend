@@ -48,6 +48,20 @@
 </template>
 
 <script>
+/**
+ * ProjectCard.vue creates a card with a header image, title, keywords and preview description.
+ * When clicked its emits the 'clickedEvent' event, also the clickedTag can be emitted.
+ *
+ * @summary card with img, title, keywords and preview description
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-02 11:24:00
+ * Last modified  : 2019-10-23 17:42:06
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import { mapGetters } from 'vuex';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -74,16 +88,13 @@ export default {
     totalWidth: Number,
     pinnedIds: Array,
   },
-  beforeMount: function beforeMount() {
+  beforeMount() {
     this.pinIcon = this.mixinMethods_getIcon('marker');
     this.multiPinIcon = this.mixinMethods_getIcon('markerMulti');
     this.polygonIcon = this.mixinMethods_getIcon('polygons');
     this.eyeIcon = this.mixinMethods_getIcon('eye');
   },
-  mounted: function mounted() {
-    this.setupMap();
-  },
-  beforeDestroy: function beforeDestroy() {
+  beforeDestroy() {
     if (this.map) {
       this.map.remove();
     }
@@ -122,23 +133,23 @@ export default {
     },
   },
   methods: {
-    checkError: function checkError() {
+    checkError() {
     // checkError: function checkError(e) {
       // console.log(`got leaflet error ${e}`);
       this.errorLoadingLeaflet = true;
     },
-    catchPointClick: function catchPointClick(e) {
+    catchPointClick(e) {
       this.$emit('pointClicked', e.target.id);
     },
-    catchPointHover: function catchPointHover(e) {
+    catchPointHover(e) {
       e.target.bindPopup(`<p>${e.target.title}</p>`).openPopup();
       this.$emit('pointHover', e.target.id);
     },
-    catchPointHoverLeave: function catchPointHoverLeave(e) {
+    catchPointHoverLeave(e) {
       e.target.closePopup();
       this.$emit('pointHoverLeave', e.target.id);
     },
-    catchClearButtonClicked: function catchClearButtonClicked() {
+    catchClearButtonClicked() {
       this.$emit('clearButtonClicked');
     },
     catchPinClicked() {
@@ -156,7 +167,7 @@ export default {
     catchClearClicked() {
       this.$emit('clearButtonClicked');
     },
-    toggleMapExpand: function toggleMapExpand() {
+    toggleMapExpand() {
       return this.$emit('toggleMapFilterExpand');
     },
     setupMap() {
@@ -187,7 +198,7 @@ export default {
         this.mapIsSetup = true;
       }
     },
-    initLeaflet: function initLeaflet(mapElement) {
+    initLeaflet(mapElement) {
       const map = L.map(mapElement, {
         // scrollWheelZoom: false,
         center: this.setupCenterCoords,
@@ -207,7 +218,7 @@ export default {
         return undefined;
       }
     },
-    addOpenStreetMapLayer: function addOpenStreetMapLayer(map) {
+    addOpenStreetMapLayer(map) {
       const baseMap = L.tileLayer(
         'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' },
@@ -322,14 +333,14 @@ export default {
         this.multiPinLayerGroup = [];
       }
     },
-    addElementsToMap: function addElementsToMap(elements, enabled, checkBounds) {
+    addElementsToMap(elements, enabled, checkBounds) {
       if (!enabled || !elements || elements.length <= 0) {
         return;
       }
 
       this.showMapElements(elements, true, checkBounds);
     },
-    focusOnLayers: function focusOnLayers() {
+    focusOnLayers() {
       const allLayers = [];
 
       if (this.pinEnabled) {
@@ -430,6 +441,9 @@ export default {
 
       this.addElementsToMap(this.polygonLayerGroup, this.polygonEnabled, true);
     },
+  },
+  updated() {
+    this.setupMap();
   },
   watch: {
     content() {

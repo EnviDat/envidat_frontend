@@ -70,14 +70,24 @@
 
 <script>
 /**
-   * The projects page lists all the projects and their subprojects.
-   */
+ * The ProjectDetailPage shows all the ProjectDetailVies for a project.
+ *
+ * @summary project detail page
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:12:30
+ * Last modified  : 2019-10-23 16:29:34
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import { mapGetters } from 'vuex';
 import { PROJECTS_PATH, PROJECT_DETAIL_PAGENAME } from '@/router/routeConsts';
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
-} from '@/store/mutationsConsts';
+} from '@/store/mainMutationsConsts';
 import {
   GET_PROJECTS,
   PROJECTS_NAMESPACE,
@@ -291,15 +301,8 @@ export default {
         params: { id: subprojectId },
       });
     },
-    isTagSelected(tagName) {
-      if (!tagName || this.selectedTagNames === undefined) {
-        return false;
-      }
-
-      return this.selectedTagNames.indexOf(tagName) >= 0;
-    },
     catchTagClicked(tagName) {
-      if (!this.isTagSelected(tagName)) {
+      if (!this.mixinMethods_isTagSelected(tagName)) {
         this.selectedTagNames.push(tagName);
       }
     },
@@ -308,7 +311,7 @@ export default {
         return;
       }
 
-      if (this.isTagSelected(tagId)) {
+      if (this.mixinMethods_isTagSelected(tagId)) {
         this.selectedTagNames = this.selectedTagNames.filter(tag => tag !== tagId);
       }
     },

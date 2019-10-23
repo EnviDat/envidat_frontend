@@ -1,3 +1,14 @@
+/**
+ * @summary main store mutations constants
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:34:51 
+ * Last modified  : 2019-10-23 16:46:40
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 export const SET_APP_BACKGROUND = 'SET_APP_BACKGROUND';
 export const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 export const ADD_CARD_IMAGES = 'ADD_CARD_IMAGES';

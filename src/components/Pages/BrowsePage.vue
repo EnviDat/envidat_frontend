@@ -31,25 +31,25 @@
                             :defaultListControls="controls" />
       </v-flex>
 
-      <!-- <v-flex v-if="mapFilteringPossible && showMapFilter"
-              py-3
-              v-bind="{
-                        ['xs4']: showMapFilter & $vuetify.breakpoint.mdAndUp,
-                        ['xs6']: showMapFilter & $vuetify.breakpoint.sm,
-              }"
-              style="position: fixed; top: 135px; right: 10px;" >
-        <filter-map-view :totalHeight="mapFilterHeight"
-                        :totalWidth="mapFilterWidth"
-                        :expanded="showMapFilter"
-                        @pointClicked="catchPointClicked"
-                        @clearButtonClicked="catchClearButtonClick" />
-      </v-flex> -->
-
     </v-layout>
   </v-container>
 </template>
 
 <script>
+/**
+ * The browse page of EnviDat. It consists of metadataListLayout
+ * but only all the logic for the interaction with the list.
+ *
+ * @summary browse page
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:12:30
+ * Last modified  : 2019-10-23 16:21:31
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import { mapGetters } from 'vuex';
 import {
   BROWSE_PAGENAME,
@@ -65,7 +65,7 @@ import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
   SET_BROWSE_SCROLL_POSITION,
-} from '@/store/mutationsConsts';
+} from '@/store/mainMutationsConsts';
 
 
 export default {
@@ -96,52 +96,29 @@ export default {
         decodedTags = this.mixinMethods_decodeTagsFromUrl(tagsEncoded);
       }
 
-      if (!this.areArrayIdentical(this.selectedTagNames, decodedTags)) {
+      if (!this.mixinMethods_areArraysIdentical(this.selectedTagNames, decodedTags)) {
         this.selectedTagNames = decodedTags;
         return true;
       }
 
       return false;
     },
-    triggerSearch: function triggerSearch(search) {
-      if (search === this.searchTerm) {
-        return false;
-      }
-
-      this.searchTerm = search;
-
-      if (this.searchTerm && this.searchTerm.length > 0) {
-        this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm, this.selectedTagNames);
-        return true;
-      }
-
-      return false;
-    },
-    areArrayIdentical: function areArrayIdentical(arr1, arr2) {
-      if (arr1.length !== arr2.length) return false;
-
-      for (let i = arr1.length; i--;) {
-        if (arr1[i] !== arr2[i]) return false;
-      }
-
-      return true;
-    },
-    storeScroll: function storeScroll(scrollY) {
+    storeScroll(scrollY) {
       this.$store.commit(SET_BROWSE_SCROLL_POSITION, scrollY);
     },
-    resetScrollPosition: function resetScrollPosition() {
+    resetScrollPosition() {
       this.storeScroll(0);
       this.mixinMethods_setScrollPosition(0);
     },
-    catchTagClicked: function catchTagClicked(tagName) {
-      if (!this.isTagSelected(tagName)) {
+    catchTagClicked(tagName) {
+      if (!this.mixinMethods_isTagSelected(tagName)) {
         const newTags = [...this.selectedTagNames, tagName];
 
         const tagsEncoded = this.mixinMethods_encodeTagForUrl(newTags);
         this.mixinMethods_additiveChangeRoute(BROWSE_PATH, undefined, tagsEncoded);
       }
     },
-    catchTagCloseClicked: function catchTagCloseClicked(tagId) {
+    catchTagCloseClicked(tagId) {
       if (this.selectedTagNames === undefined) {
         return;
       }
@@ -151,35 +128,28 @@ export default {
       const tagsEncoded = this.mixinMethods_encodeTagForUrl(newTags);
       this.mixinMethods_additiveChangeRoute(BROWSE_PATH, undefined, tagsEncoded);
     },
-    catchTagCleared: function catchTagCleared() {
+    catchTagCleared() {
       this.selectedTagNames = [];
       this.filterContent();
     },
-    catchSearchClicked: function catchSearchClicked(searchTerm) {
+    catchSearchClicked(searchTerm) {
       /* eslint-disable no-param-reassign */
       searchTerm = searchTerm ? searchTerm.trim() : '';
       this.mixinMethods_additiveChangeRoute(BROWSE_PATH, searchTerm, undefined);
     },
-    catchSearchCleared: function catchSearchCleared() {
+    catchSearchCleared() {
       this.mixinMethods_additiveChangeRoute(BROWSE_PATH, '', undefined);
     },
-    catchMapFilterChanged: function catchMapFilterChanged(visibleIds) {
+    catchMapFilterChanged(visibleIds) {
       this.mapFilterVisibleIds = visibleIds;
     },
-    catchFilterExpandClicked: function catchFilterExpandClicked() {
+    catchFilterExpandClicked() {
       this.filterExpanded = !this.filterExpanded;
     },
-    toggleMapExpand: function toggleMapExpand() {
+    toggleMapExpand() {
       this.showMapFilter = !this.showMapFilter;
     },
-    isTagSelected: function isTagSelected(tagName) {
-      if (!tagName || this.selectedTagNames === undefined) {
-        return false;
-      }
-
-      return this.selectedTagNames.indexOf(tagName) >= 0;
-    },
-    contentFilterMapIds: function contentFilterMapIds(contentList) {
+    contentFilterMapIds(contentList) {
       const visibleContent = [];
 
       for (let i = 0; i < contentList.length; i++) {
@@ -192,7 +162,7 @@ export default {
 
       return visibleContent;
     },
-    dynamicCardBackground: function dynamicCardBackground() {
+    dynamicCardBackground() {
       const max = Object.keys(this.imagesImports).length;
       const randomIndex = this.mixinMethods_randomInt(0, max);
       const cardImg = Object.values(this.imagesImports)[randomIndex];
@@ -203,7 +173,7 @@ export default {
 
       return '';
     },
-    hasRestrictedResources: function hasRestrictedResources(metadata) {
+    hasRestrictedResources(metadata) {
       if (!metadata || !metadata.resources || metadata.resources.length <= 0) {
         return false;
       }
@@ -219,10 +189,10 @@ export default {
 
       return false;
     },
-    filterContent: function filterContent() {
+    filterContent() {
       this.$store.dispatch(`metadata/${FILTER_METADATA}`, this.selectedTagNames);
     },
-    checkRouteChanges: function checkRouteChanges(fromRoute) {
+    checkRouteChanges(fromRoute) {
       if (!fromRoute) {
         if (this.detailPageBackRoute) {
           fromRoute = this.detailPageBackRoute;
@@ -284,30 +254,22 @@ export default {
       loadingMetadatasContent: 'metadata/loadingMetadatasContent',
       filteredContent: 'metadata/filteredContent',
       isFilteringContent: 'metadata/isFilteringContent',
-      pinnedIds: 'metadata/pinnedIds',
       // tag Object structure: { tag: tagName, count: tagCount }
       allTags: 'metadata/allTags',
-      currentMetadataContent: 'metadata/currentMetadataContent',
       detailPageBackRoute: 'metadata/detailPageBackRoute',
       aboutPageBackRoute: 'metadata/aboutPageBackRoute',
       updatingTags: 'metadata/updatingTags',
       scrollPositionDelay: 'metadata/scrollPositionDelay',
-      searchPlaceholderText: 'metadata/searchPlaceholderText',
-      searchPlaceholderTextSmall: 'metadata/searchPlaceholderTextSmall',
       browseScrollPosition: 'browseScrollPosition',
       controls: 'controls',
-      cardBGImages: 'cardBGImages',
     }),
-    searchBarPlaceholder() {
-      return this.$vuetify.breakpoint.mdAndUp ? this.searchPlaceholderText : this.searchPlaceholderTextSmall;
-    },
-    keywordsPlaceholder: function keywordsPlaceholder() {
+    keywordsPlaceholder() {
       return this.searchingMetadatasContent || this.updatingTags;
     },
-    metadatasContentSize: function metadatasContentSize() {
+    metadatasContentSize() {
       return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
     },
-    searchMetadatasContentSize: function searchMetadatasContentSize() {
+    searchMetadatasContentSize() {
       return this.searchedMetadatasContent !== undefined ? Object.keys(this.searchedMetadatasContent).length : 0;
     },
     mapFilterHeight() {
@@ -392,11 +354,11 @@ export default {
 
 <style scoped>
 
-.stickyFilterBar {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 50px;
-  z-index: 1000;
-}
+  .stickyFilterBar {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 50px;
+    z-index: 1000;
+  }
 
 </style>

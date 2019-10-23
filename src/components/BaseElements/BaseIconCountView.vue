@@ -38,6 +38,20 @@
 </template>
 
 <script>
+/**
+ * BaseIconCountView.vue creates a round with an icon with a badge which shows a number
+ * Similar to @class BaseIconButton but without the click event.
+ *
+ * @summary icon with a small number in a circle
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-02 11:24:00
+ * Last modified  : 2019-10-02 11:41:29
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 export default {
   props: {
     iconString: String,
