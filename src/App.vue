@@ -25,11 +25,12 @@
 
     <the-navigation-small v-if="$vuetify.breakpoint.smAndDown"
                           :navItems="navItems"
-                          :style="`position: fixed; top: auto; right: 10px; bottom: 10px; z-index: ${NavigationZIndex}`"
-                          class="elevation-3"
+                          :style="`z-index: ${NavigationZIndex}`"
+                          class="envidatSmallNavigation elevation-3"
                           @itemClick="catchItemClicked" />
 
     <the-navigation-toolbar v-if="showToolbar"
+                            class="envidatToolbar"
                             :style="`z-index: ${NavToolbarZIndex}`"
                             :searchTerm="searchTerm"
                             :showSearchCount="showSearchCount"
@@ -440,6 +441,17 @@ export default {
 .imagezoom img:hover,
 .imagezoom img:focus {
   transform: scale(1.2);
+}
+
+.envidatSmallNavigation {
+  position: fixed;
+  top: auto;
+  right: 10px;
+  bottom: 10px;
+}
+
+.envidatToolbar > .v-toolbar__content {
+  padding: 0px 18px !important;
 }
 
 .envidatIcon {
