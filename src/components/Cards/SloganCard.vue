@@ -82,6 +82,18 @@
 
 
 <script>
+/**
+ * SloganCard.vue is card with an image and a catch phrase and a few details
+ *
+ * @summary catch phrase card
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 14:11:27
+ * Last modified  : 2019-10-23 14:14:33
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
 import fingertipsImg from '@/assets/cards/fingertips_small.jpg';
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 

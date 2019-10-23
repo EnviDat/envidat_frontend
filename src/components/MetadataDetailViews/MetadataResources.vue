@@ -4,45 +4,30 @@
       Data and resources
     </v-card-title>
 
-    <v-container
-      v-if="resources && resources.length > 0"
-      fluid
-      grid-list-xs
-      grid-list-md
-      pa-3
-    >
-      <v-layout
-        row
-        wrap
-      >
-        <v-flex
-          v-for="n in 2"
-          v-if="showPlaceholder"
-          :key="n"
-          xs12
-          sm6
-        >
+    <v-container v-if="resources && resources.length > 0"
+                fluid grid-list-xs grid-list-md
+                pa-3 >
+      <v-layout row wrap >
+        <v-flex v-for="n in 2"
+                  v-if="showPlaceholder"
+                  :key="n"
+                  xs12 sm6 >
           <resource-card-placeholder :two-column-layout="twoColumnLayout" />
         </v-flex>
 
-        <v-flex
-          v-for="res in resources"
-          v-if="!showPlaceholder"
-          :key="res.id"
-          xs12
-          sm6
-        >
-          <resource-card
-            v-bind="res"
-            :doiIcon="doiIcon"
-            :linkIcon="linkIcon"
-            :downloadIcon="downloadIcon"
-            :fileSizeIcon="fileSizeIcon"
-            :dateCreatedIcon="dateCreatedIcon"
-            :lastModifiedIcon="lastModifiedIcon"
-            :twoColumnLayout="twoColumnLayout"
-            @clicked="resClicked(res)"
-          />
+        <v-flex v-for="res in resources"
+                v-if="!showPlaceholder"
+                :key="res.id"
+                xs12 sm6 >
+          <resource-card v-bind="res"
+                          :doiIcon="doiIcon"
+                          :linkIcon="linkIcon"
+                          :downloadIcon="downloadIcon"
+                          :fileSizeIcon="fileSizeIcon"
+                          :dateCreatedIcon="dateCreatedIcon"
+                          :lastModifiedIcon="lastModifiedIcon"
+                          :twoColumnLayout="twoColumnLayout"
+                          @clicked="resClicked(res)" />
         </v-flex>
       </v-layout>
     </v-container>
@@ -54,17 +39,23 @@
       {{ emptyText }}
     </v-card-text>
 
-
-    <!--v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn icon @click.native="readMore()">
-        <v-icon color="primary" >{{ showAllResources ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
-      </v-btn>
-    </v-card-actions-->
   </v-card>
 </template>
 
 <script>
+/**
+ * MetadataResources.vue shows all the resources of a metadata entry in a list.
+ *
+ * @summary shows the resources the a metadata entry
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 14:11:27
+ * Last modified  : 2019-10-23 16:01:41
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
+
 import ResourceCard from '@/components/Cards/ResourceCard';
 import ResourceCardPlaceholder from '@/components/Cards/ResourceCardPlaceholder';
 
@@ -114,13 +105,11 @@ export default {
       return this.mixinMethods_getGenericProp('lastModifiedIcon');
     },
   },
-  updated: function updated() {
-  },
   methods: {
-    readMore: function readMore() {
+    readMore() {
       this.showAllResources = !this.showAllResources;
     },
-    resClicked: function resClicked(res) {
+    resClicked(res) {
       this.$router.push({
         name: 'ResourceDetailPage',
         params: {

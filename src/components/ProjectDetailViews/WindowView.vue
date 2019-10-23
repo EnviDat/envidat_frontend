@@ -121,14 +121,28 @@
 </template>
 
 <script>
-import MMarkdownPreview from 'm-markdown-preview';
+/**
+ * WindowView.vue IS UNFINISHED!
+ * Experimental a horizontal slider for content (instead of images).
+ *
+ * @summary vertical horizontal for content
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 14:11:27
+ * Last modified  : 2019-10-23 16:35:03
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
+
+// import MMarkdownPreview from 'm-markdown-preview';
 // import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import ProjectCard from '@/components/Cards/ProjectCard';
 
 export default {
   components: {
     ProjectCard,
-    MMarkdownPreview,
+    // MMarkdownPreview,
   },
   props: {
     subProjects: Array,

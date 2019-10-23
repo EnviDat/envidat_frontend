@@ -38,6 +38,19 @@
 
 
 <script>
+/**
+ * BaseClickCard.vue creates a small card with a title and an image, it emits the
+ * 'clicked' event with the title a parameter.
+ *
+ * @summary Card with title & img, emits a 'clicked' event
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-02 11:24:00
+ * Last modified  : 2019-10-02 11:37:16
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
 
 // un blurry zooming
 // https://stackoverflow.com/questions/36143337/how-to-prevent-blur-from-css-transform

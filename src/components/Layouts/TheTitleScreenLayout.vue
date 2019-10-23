@@ -78,6 +78,20 @@
 </template>
 
 <script>
+/**
+ * TheTitleScreenLayout.vue shows the EnviDat logo and the SloganCard
+ * with different layouts for the differen screen sizes.
+ *
+ * @summary responsive layout for the title screen with logo and SloganCard
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 14:11:27
+ * Last modified  : 2019-10-23 15:46:35
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
+
 import SloganCard from '@/components/Cards/SloganCard';
 // import xsLogo from '@/assets/logo/EnviDat_logo_32.png';
 import smLogo from '@/assets/logo/EnviDat_logo_64.png';

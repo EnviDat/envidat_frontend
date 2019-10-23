@@ -55,6 +55,19 @@
 
 
 <script>
+/**
+ * DataProducerCard.vue creates a specific card login or signup button
+ * and emits respectie events.
+ *
+ * @summary card with login / signup button
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-02 11:24:00 
+ * Last modified  : 2019-10-02 13:22:27
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package. 
+ */
 import dataCreatorImg from '@/assets/cards/data_creator.jpg';
 
 export default {

@@ -86,10 +86,10 @@ export default {
     geoJSON() {
       return this.mixinMethods_getGenericProp('geoJSON');
     },
-    isEmpty: function isEmpty() {
+    isEmpty() {
       return !this.pointArray && !this.geoJSON;
     },
-    mapSize: function mapSize() {
+    mapSize() {
       let width = this.largeSize;
       let height = this.mediumSize;
 
@@ -111,18 +111,6 @@ export default {
       };
     },
   },
-  // watch: {
-  //   geoJSON: function updateGeoJSON() {
-  //     if (this.geoJSON) {
-  //       this.setupMap();
-  //     }
-  //   },
-  //   pointArray: function updatePointArray() {
-  //     if (this.pointArray) {
-  //       this.setupMap();
-  //     }
-  //   },
-  // },
   updated() {
     this.setupMap();
   },

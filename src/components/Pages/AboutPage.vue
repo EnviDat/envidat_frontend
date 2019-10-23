@@ -47,10 +47,20 @@
 
 <script>
 /**
-   * The about page of EnviDat. It consists of:
-   * - TitleImage and Title (ImgAndTextLayout)
-   * - Different Card with infomation about some about topics (ExpandableCard)
-   */
+ * The about page of EnviDat. It consists of:
+ * - TitleImage and Title (ImgAndTextLayout)
+ * - Different Card with infomation about some about topics (ExpandableCard)
+ *
+ * @summary about page
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:12:30
+ * Last modified  : 2019-10-23 16:25:52
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import { mapGetters } from 'vuex';
 import {
   BROWSE_PATH,
@@ -59,7 +69,7 @@ import {
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
-} from '@/store/mutationsConsts';
+} from '@/store/mainMutationsConsts';
 
 import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
 

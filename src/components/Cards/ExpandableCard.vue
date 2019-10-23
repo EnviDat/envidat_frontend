@@ -72,6 +72,19 @@
 
 
 <script>
+/**
+ * ExpandableCard.vue creates a card with a header image, title, and preview text.
+ * When clicked it expands to show the full text in markdown.
+ *
+ * @summary card with img, title and expandable markdown text
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-02 11:24:00
+ * Last modified  : 2019-10-23 14:37:17
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
 import MMarkdownPreview from 'm-markdown-preview';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 

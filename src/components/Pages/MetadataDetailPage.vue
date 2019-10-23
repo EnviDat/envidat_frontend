@@ -49,8 +49,19 @@
 
 <script>
 /**
-   * The MetadataDetailPage shows all the important information of a metadata entry.
-   */
+ * The MetadataDetailPage shows all the important information of a metadata entry.
+ * It consists of all the MetadataDetailViews.
+ *
+ * @summary metadata detail page
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:12:30
+ * Last modified  : 2019-10-23 17:38:23
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import { mapGetters } from 'vuex';
 import {
   BROWSE_PATH,
@@ -59,7 +70,7 @@ import {
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
-} from '@/store/mutationsConsts';
+} from '@/store/mainMutationsConsts';
 import {
   METADATA_NAMESPACE,
   LOAD_METADATA_CONTENT_BY_ID,
@@ -71,7 +82,6 @@ import MetadataResources from '@/components/MetadataDetailViews/MetadataResource
 import MetadataLocation from '@/components/MetadataDetailViews/MetadataLocation';
 import MetadataDetails from '@/components/MetadataDetailViews/MetadataDetails';
 import MetadataCitation from '@/components/MetadataDetailViews/MetadataCitation';
-import NotFoundView from '@/components/Errors/NotFoundView';
 import metaDataFactory from '@/factories/metaDataFactory';
 import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
 
@@ -335,7 +345,6 @@ export default {
     MetadataLocation,
     MetadataDetails,
     MetadataCitation,
-    NotFoundView,
     TwoColumnLayout,
   },
   data: () => ({

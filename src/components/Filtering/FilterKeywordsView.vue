@@ -88,6 +88,21 @@
 </template>
 
 <script>
+/**
+ * FilterKeywordsView.vue show a two lists of tags for filterting
+ * the metadata list. 1st is the avaiable tags of the current list content.
+ * The 2nd is the currently selected tags for filtering.
+ *
+ * @summary view of two lists of tags
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-02 11:24:00
+ * Last modified  : 2019-10-23 16:17:52
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import TagChip from '@/components/Cards/TagChip';
 import TagChipPlaceholder from '@/components/Cards/TagChipPlaceholder';
@@ -118,18 +133,7 @@ export default {
     filterExpanded: false,
   }),
   computed: {
-    unselectedTags() {
-      const unselectedTags = [];
-
-      this.allTags.forEach((element) => {
-        if (element.enabled && !this.isTagSelected(element.name)) {
-          unselectedTags.push(element);
-        }
-      });
-
-      return unselectedTags;
-    },
-    selectedTags() {
+    selectedTags: function selectedTags() {
       // always get the selected as a subset of the allTags because they are the full
       // tag JSON object
       const selecteds = [];
@@ -218,14 +222,21 @@ export default {
     catchTagCloseClicked(tagId) {
       this.$emit('clickedTagClose', tagId);
     },
-    isTagSelected(tagName) {
+    isTagSelected: function isTagSelected(tagName) {
       if (!tagName || this.selectedTagNames === undefined) {
         return false;
       }
 
       return this.selectedTagNames.indexOf(tagName) >= 0;
     },
-    isSelected(tagId) {
+    isPopluarTag: function isPopluarTag(tagName) {
+      if (!tagName || this.popularTags === undefined) {
+        return false;
+      }
+
+      return this.popularTags.findIndex(obj => obj.name === tagName) >= 0;
+    },
+    isSelected: function isSelected(tagId) {
       return this.selectedTags.indexOf(tagId) >= 0;
     },
     minTagCountToBeVisible() {

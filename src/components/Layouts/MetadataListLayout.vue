@@ -156,6 +156,21 @@
 </template>
 
 <script>
+/**
+ * MetadataListLayout.vue uses the FilterKeywordView, FilterMapView and the ControlPanelView
+ * to create a List of metadata cards which can be filtered via the mentioned
+ * filtering components.
+ *
+ * @summary filterable list of metadata cards
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 14:11:27
+ * Last modified  : 2019-10-23 15:44:28
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
+
 import { mapGetters } from 'vuex';
 import { BROWSE_PATH, BROWSE_PAGENAME, METADATADETAIL_PAGENAME } from '@/router/routeConsts';
 import FilterKeywordsView from '@/components/Filtering/FilterKeywordsView';
