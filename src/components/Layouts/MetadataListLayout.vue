@@ -1,14 +1,62 @@
 <template>
-  <v-container id="metadataListView"
+<div>
+  <v-container id="metadataListLayoutFiltering"
                 fluid
-                :class="{ ['grid-list-sm'] : listView,
-                          ['grid-list-lg'] : !listView }"
+                pa-0
+                grid-list-lg>
+
+    <v-layout row wrap >
+
+      <v-flex xs12 sm9
+              key="filterKeywords" >
+
+        <filter-keywords-view :compactLayout="$vuetify.breakpoint.smAndDown"
+                              :allTags="allTags"
+                              :selectedTagNames="selectedTagNames"
+                              :showPlaceholder="loading"
+                              @clickedTag="catchTagClicked"
+                              @clickedTagClose="catchTagCloseClicked"
+                              @clickedClear="catchTagCleared" />
+      </v-flex>
+
+      <v-flex hidden-xs-only sm3
+              key="controlPanel" >
+        <control-panel-view class="fill-height"
+                            :controls="controlsActive"
+                            :compactLayout="$vuetify.breakpoint.smAndDown"
+                            :label="controlsLabel"
+                            :flat="$route.name !== BROWSE_PAGENAME"
+                            @controlsChanged="controlsChanged" />
+      </v-flex>
+
+
+      <v-flex v-if="showMapFilter && mapFilteringPossible"
+              xs12
+              key="filterMap" >
+
+        <filter-map-view :content="mergePinnedAndFiltered"
+                          :totalHeight="mapHeight"
+                          :totalWidth="mapWidth"
+                          :pinnedIds="pinnedIds"
+                          @pointClicked="catchPointClicked"
+                          @clearButtonClicked="catchClearButtonClick" />
+
+      </v-flex>
+    </v-layout>
+  </v-container>
+
+  <v-container id="metadataListLayout"
+                fluid
+                grid-list-lg
                 pa-0 >
+
     <transition-group name="itemfade"
                       class="layout"
                       :class="{ ['column'] : listView,
                                 ['row'] : !listView,
                                 ['wrap'] : !listView }" >
+
+
       <v-flex v-for="(pinnedId, index) in pinnedIds"
               v-if="showPinnedElements"
               :key="'pinned_' + index"
@@ -25,12 +73,13 @@
                         :titleImg="metadatasContent[pinnedId].titleImg"
                         :restricted="hasRestrictedResources(metadatasContent[pinnedId])"
                         :resourceCount="metadatasContent[pinnedId].num_resources"
-                        :resources="metadatasContent[pinnedId].resources"
                         :dark="false"
                         :flatLayout="listView"
                         :fileIconString="fileIconString"
                         :lockedIconString="lockedIconString"
                         :unlockedIconString="unlockedIconString"
+                        :categoryColor="metadatasContent[pinnedId].categoryColor"
+                        :categoryCards="categoryCards"
                         @clickedEvent="metaDataClicked"
                         @clickedTag="catchTagClicked" />
       </v-flex>
@@ -57,12 +106,12 @@
                       :titleImg="metadata.titleImg"
                       :restricted="hasRestrictedResources(metadata)"
                       :resourceCount="metadata.num_resources"
-                      :resources="metadata.resources"
                       :dark="false"
                       :flatLayout="listView"
                       :fileIconString="fileIconString"
                       :lockedIconString="lockedIconString"
                       :unlockedIconString="unlockedIconString"
+                      :categoryColor="metadata.categoryColor"
                       @clickedEvent="metaDataClicked"
                       @clickedTag="catchTagClicked" />
       </v-flex>
@@ -95,93 +144,109 @@
       <v-flex v-if="!loading && contentSize <= 0"
               key="noSearchResultsView"
               xs12 mx-2 >
-        <no-search-results-view :no-result-text="noResultText"
-                                :suggestion-text="suggestionText"
-                                @clicked="catchCategoryClicked"
-                                />
+        <no-search-results-view :categoryCards="categoryCards"
+                                @clicked="catchCategoryClicked" />
       </v-flex>
 
     </transition-group>
   </v-container>
+</div>
 </template>
 
 <script>
+/**
+ * MetadataListLayout.vue uses the FilterKeywordView, FilterMapView and the ControlPanelView
+ * to create a List of metadata cards which can be filtered via the mentioned
+ * filtering components.
+ *
+ * @summary filterable list of metadata cards
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 14:11:27
+ * Last modified  : 2019-10-24 11:30:47
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
+
 import { mapGetters } from 'vuex';
-import { BROWSE_PATH, METADATADETAIL_NAME } from '@/router/routeConsts';
+import { BROWSE_PATH, BROWSE_PAGENAME, METADATADETAIL_PAGENAME } from '@/router/routeConsts';
+import FilterKeywordsView from '@/components/Filtering/FilterKeywordsView';
+import FilterMapView from '@/components/Filtering/FilterMapView';
+import ControlPanelView from '@/components/Filtering/ControlPanelView';
 import MetadataCard from '@/components/Cards/MetadataCard';
 import MetadataCardPlaceholder from '@/components/Cards/MetadataCardPlaceholder';
 import NoSearchResultsView from '@/components/Filtering/NoSearchResultsView';
 import {
   SET_DETAIL_PAGE_BACK_URL,
   SET_VIRTUAL_LIST_INDEX,
+  METADATA_NAMESPACE,
 } from '@/store/metadataMutationsConsts';
+
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
 export default {
+  name: 'MetadataListLayout',
   props: {
     listContent: Array,
-    listView: Boolean,
-    showMapFilter: Boolean,
+    // listView: Boolean,
+    // showMapFilter: Boolean,
     mapFilteringPossible: Boolean,
     placeHolderAmount: Number,
+    selectedTagNames: Array,
+    allTags: Array,
+    mapWidth: Number,
+    mapHeight: Number,
+    defaultListControls: Array,
   },
-  data: () => ({
-    noResultText: 'Nothing found for these search criterias.',
-    suggestionText: 'Change the criterias or try one of these categories',
-    fileIconString: null,
-    lockedIconString: null,
-    unlockedIconString: null,
-    virtualListContent: [],
-    vLoading: false,
-    infiniteId: +new Date(),
-    preloadingDistance: 200,
-    scrollTopButtonText: 'Scroll to the top',
-  }),
-  beforeMount: function beforeMount() {
+  beforeMount() {
     this.fileIconString = this.mixinMethods_getIcon('file');
     this.lockedIconString = this.mixinMethods_getIcon('lock2Closed');
     this.unlockedIconString = this.mixinMethods_getIcon('lock2Open');
   },
-  mounted: function mounted() {
+  mounted() {
+    if (this.defaultListControls && this.defaultListControls.length) {
+      this.defaultListControls.forEach((n) => {
+        this.controlsChanged(n);
+      });
+    }
+
     this.infiniteHandler();
   },
   computed: {
     ...mapGetters({
-      metadataIds: 'metadata/metadataIds',
-      metadatasContent: 'metadata/metadatasContent',
-      searchedMetadatasContent: 'metadata/searchedMetadatasContent',
-      searchingMetadatasContent: 'metadata/searchingMetadatasContent',
-      searchingMetadatasContentOK: 'metadata/searchingMetadatasContentOK',
-      loadingMetadatasContent: 'metadata/loadingMetadatasContent',
-      vIndex: 'metadata/vIndex',
-      vReloadAmount: 'metadata/vReloadAmount',
-      vReloadDelay: 'metadata/vReloadDelay',
-      isFilteringContent: 'metadata/isFilteringContent',
-      pinnedIds: 'metadata/pinnedIds',
+      metadataIds: `${METADATA_NAMESPACE}/metadataIds`,
+      metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
+      searchedMetadatasContent: `${METADATA_NAMESPACE}/searchedMetadatasContent`,
+      searchingMetadatasContent: `${METADATA_NAMESPACE}/searchingMetadatasContent`,
+      searchingMetadatasContentOK: `${METADATA_NAMESPACE}/searchingMetadatasContentOK`,
+      loadingMetadatasContent: `${METADATA_NAMESPACE}/loadingMetadatasContent`,
+      vIndex: `${METADATA_NAMESPACE}/vIndex`,
+      vReloadAmount: `${METADATA_NAMESPACE}/vReloadAmount`,
+      vReloadDelay: `${METADATA_NAMESPACE}/vReloadDelay`,
+      isFilteringContent: `${METADATA_NAMESPACE}/isFilteringContent`,
+      categoryCards: `${METADATA_NAMESPACE}/categoryCards`,
     }),
-    showPinnedElements: function showPinnedElements() {
+    showPinnedElements() {
       return !this.loading && this.showMapFilter && this.pinnedIds.length > 0;
     },
-    loading: function loading() {
+    mergePinnedAndFiltered() {
+      const pinnedContent = [];
+
+      this.pinnedIds.forEach((pinId) => {
+        pinnedContent.push(this.metadatasContent[pinId]);
+      });
+
+      return [...pinnedContent, ...this.listContent];
+    },
+    loading() {
       return (this.loadingMetadatasContent
             || this.isFilteringContent
             || this.searchingMetadatasContent
       );
     },
-    cardGridClass: function cardGridClass() {
-      if (this.mapFilteringPossible && this.showMapFilter) {
-        const twoThridsSize = {
-          xs12: true,
-          sm12: true,
-          md6: true,
-          lg4: true,
-          xl3: true,
-        };
-
-        return twoThridsSize;
-      }
-
+    cardGridClass() {
       const fullSize = {
         xs12: true,
         sm6: true,
@@ -192,7 +257,7 @@ export default {
 
       return fullSize;
     },
-    contentSize: function contentSize() {
+    contentSize() {
       return this.listContent !== undefined ? Object.keys(this.listContent).length : 0;
     },
   },
@@ -200,7 +265,6 @@ export default {
     infiniteHandler($state) {
       const that = this;
       that.vLoading = true;
-      // console.log('loading list from ' + that.vIndex + ' to ' + (that.vIndex + that.vReloadAmount) );
 
       if (that.contentSize <= 0 && $state) {
         $state.complete();
@@ -216,11 +280,7 @@ export default {
           i = that.vIndex;
         }
 
-        for (
-          ;
-          i < that.vIndex + that.vReloadAmount && i < that.contentSize;
-          i++
-        ) {
+        for (;i < that.vIndex + that.vReloadAmount && i < that.contentSize; i++) {
           that.virtualListContent.push(that.listContent[i]);
         }
 
@@ -238,26 +298,51 @@ export default {
         // console.log('loaded to ' + that.vIndex );
       }, this.vReloadDelay);
     },
-    catchTagClicked: function catchTagClicked(tagName) {
+    catchTagClicked(tagName) {
       this.$emit('clickedTag', tagName);
     },
-    catchCategoryClicked: function catchCategoryClicked(cardTitle) {
+    catchTagCloseClicked(tagId) {
+      this.$emit('clickedTagClose', tagId);
+    },
+    catchTagCleared() {
+      this.$emit('clickedClear');
+    },
+    catchCategoryClicked(cardTitle) {
       this.$router.push({
         path: BROWSE_PATH,
         query: { search: cardTitle },
       });
     },
-    metaDataClicked: function metaDataClicked(datasetname) {
-      this.$store.commit(`metadata/${SET_DETAIL_PAGE_BACK_URL}`, this.$route);
+    metaDataClicked(datasetname) {
+      this.$store.commit(`${METADATA_NAMESPACE}/${SET_DETAIL_PAGE_BACK_URL}`, this.$route);
 
       this.$router.push({
-        name: METADATADETAIL_NAME,
+        name: METADATADETAIL_PAGENAME,
         params: {
           metadataid: datasetname,
         },
       });
     },
-    hasRestrictedResources: function hasRestrictedResources(metadata) {
+    catchPointClicked(id) {
+      // bring to top
+      // highlight entry
+      let newPins = this.pinnedIds;
+
+      if (this.pinnedIds.includes(id)) {
+        newPins = this.pinnedIds.filter(i => i !== id);
+      } else {
+        newPins.push(id);
+      }
+
+      this.pinnedIds = newPins;
+
+      // this.$store.commit(`${METADATA_NAMESPACE}/${PIN_METADATA}`, id);
+    },
+    catchClearButtonClick() {
+      this.pinnedIds = [];
+      // this.$store.commit(`${METADATA_NAMESPACE}/${CLEAR_PINNED_METADATA}`);
+    },
+    hasRestrictedResources(metadata) {
       if (!metadata || !metadata.resources || metadata.resources.length <= 0) {
         return false;
       }
@@ -276,19 +361,97 @@ export default {
 
       return false;
     },
-    isPinned: function isPinned(id) {
+    isPinned(id) {
       return this.pinnedIds.includes(id);
+    },
+    mapFilterHeight() {
+      const sHeight = document.documentElement.clientHeight;
+
+      let height = this.maxMapFilterHeight;
+
+      if (sHeight < this.maxMapFilterHeight) {
+        height = sHeight - 165;
+      }
+
+      return height;
+    },
+    mapFilterWidth() {
+      const sWidth = document.documentElement.clientWidth;
+
+      if (this.$vuetify.breakpoint.mdAndUp) {
+        return sWidth * 0.31;
+      }
+
+      if (this.$vuetify.breakpoint.sm) {
+        return sWidth * 0.5;
+      }
+
+      return sWidth;
+    },
+    isActiveControl(number) {
+      return this.controlsActive.includes(number);
+    },
+    controlsChanged(number) {
+      // 0-entry: listView, 1-entry: mapActive
+      let controlsActive = this.controlsActive;
+
+      if (this.isActiveControl(number)) {
+        controlsActive = controlsActive.filter(n => n !== number);
+      } else {
+        controlsActive.push(number);
+      }
+
+      let listActive = false;
+      let mapToggled = false;
+
+      for (let index = 0; index < controlsActive.length; index++) {
+        const el = controlsActive[index];
+
+        if (el === 0) {
+          listActive = true;
+        }
+        if (el === 1) {
+          mapToggled = true;
+        }
+      }
+
+      this.listView = listActive;
+      this.showMapFilter = mapToggled;
+
+      this.controlsActive = controlsActive;
     },
   },
   watch: {
     contentSize: function resetVirtualContent() {
-      this.$store.commit(`metadata/${SET_VIRTUAL_LIST_INDEX}`, 0);
+      this.$store.commit(`${METADATA_NAMESPACE}/${SET_VIRTUAL_LIST_INDEX}`, 0);
       this.virtualListContent = [];
       this.infiniteId += 1;
       this.infiniteHandler();
     },
   },
+  data: () => ({
+    noResultText: 'Nothing found for these search criterias.',
+    suggestionText: 'Change the criterias or try one of these categories',
+    fileIconString: null,
+    lockedIconString: null,
+    unlockedIconString: null,
+    localTags: [],
+    virtualListContent: [],
+    vLoading: false,
+    infiniteId: +new Date(),
+    preloadingDistance: 150,
+    scrollTopButtonText: 'Scroll to the top',
+    controlsLabel: 'List controls',
+    controlsActive: [],
+    listView: false,
+    showMapFilter: false,
+    pinnedIds: [],
+    BROWSE_PAGENAME,
+  }),
   components: {
+    FilterKeywordsView,
+    FilterMapView,
+    ControlPanelView,
     NoSearchResultsView,
     MetadataCard,
     MetadataCardPlaceholder,
@@ -296,7 +459,6 @@ export default {
   },
 };
 </script>
-
 
 <style scoped>
 .itemfade-enter-active,

@@ -1,101 +1,70 @@
 <template>
-  <v-container
-    tag="article"
-    fluid
-    fill-height
-    pa-0
-  >
-    <v-layout
-      row
-      wrap
-    >
-      <v-flex
-        xs12
-        lg10
-        offset-lg1
-      >
+  <v-container tag="article" fluid fill-height pa-0 >
+    <v-layout row wrap >
+      <v-flex xs12 lg10 offset-lg1 >
         <img-and-text-layout
-          :dark="true"
-          :blur="true"
           :img="missionImg"
-          :height="300"
-          :text-font-size="16"
-          :parallax="true"
+          :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
           title="About EnviDat"
-        >
-          <base-icon-button
-            style="position: absolute; top: 0px; right: 0px; z-index: 10;"
-            material-icon-name="close"
-            :outlined="true"
-            color="white"
-            icon-color="white"
-            tool-tip-text="Close About Page"
-            :tool-tip-bottom="true"
-            @clicked="catchBackClicked"
-          />
-        </img-and-text-layout>
+        />
       </v-flex>
 
-      <v-flex
-        xs12
-        lg10
-        offset-lg1
-        px-3
-        mt-5
-      >
-        <v-container
-          grid-list-lg
-          pa-0
-        >
-          <v-layout
-            row
-            wrap
-          >
-            <v-flex
-              v-for="(card, index) in AboutCardInfos()"
-              :key="index"
-              my-2
-              :class="card.widthClass"
-            >
-              <expandable-card
-                :title="card.title"
-                :text="card.text"
-                :img="card.img"
-                :min-height="100"
-                :max-height="150"
-                :contain="card.title === 'WSL'"
-              />
+      <v-flex xs12 lg10 offset-lg1 px-3 mt-5 >
+        <v-container grid-list-lg pa-0 >
+          <v-layout row wrap >
+            <v-flex v-for="(card, index) in aboutCardInfo"
+                    :key="index"
+                    my-2
+                    :class="card.widthClass" >
+
+              <expandable-card :title="card.title"
+                                :text="card.text"
+                                :img="card.img"
+                                :min-height="100"
+                                :max-height="150"
+                                :contain="card.title === 'WSL'" />
             </v-flex>
           </v-layout>
+
         </v-container>
       </v-flex>
+
     </v-layout>
   </v-container>
 </template>
 
 <script>
 /**
-   * The about page of EnviDat. It consists of:
-   * - TitleImage and Title (ImgAndTextLayout)
-   * - Different Card with infomation about some about topics (ExpandableCard)
-   */
+ * The about page of EnviDat. It consists of:
+ * - TitleImage and Title (ImgAndTextLayout)
+ * - Different Card with infomation about some about topics (ExpandableCard)
+ *
+ * @summary about page
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:12:30
+ * Last modified  : 2019-10-23 16:25:52
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import { mapGetters } from 'vuex';
-import { BROWSE_PATH } from '@/router/routeConsts';
+import {
+  ABOUT_PAGENAME,
+} from '@/router/routeConsts';
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
-} from '@/store/mutationsConsts';
-import BaseIconButton from '@/components/BaseElements/BaseIconButton';
+} from '@/store/mainMutationsConsts';
 
 import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
 
-import team from '@/assets/about/team.jpg';
 import teamSmall from '@/assets/about/team_small.jpg';
 import mission from '@/assets/about/mission.jpg';
 import missionSmall from '@/assets/about/mission_small.jpg';
 import handsSmall from '@/assets/about/hands_small.jpg';
 import orga from '@/assets/about/EnviDat_organigram.png';
-import orgaSmall from '@/assets/about/EnviDat_organigram_small.png';
 
 import conceptSmall from '@/assets/about/concept_small.jpg';
 import communitySmall from '@/assets/about/community_small.jpg';
@@ -105,13 +74,16 @@ import wslLogoSmall from '@/assets/about/wslLogo_small.jpg';
 import ExpandableCard from '@/components/Cards/ExpandableCard';
 
 export default {
+  name: 'AboutPage',
   /**
      * @description beforeRouteEnter is used to change background image of this page.
      * It's called via vue-router.
      */
-  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+  // TODO: Wieso die aktuelle Seite abspeichern? Ist ja im router. + Wenn Bild abhänig von CurrentPage --> im Code so reflektieren
+  beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.$store.commit(SET_CURRENT_PAGE, 'aboutPage');
+      console.log(vm, this, vm === this);
+      vm.$store.commit(SET_CURRENT_PAGE, ABOUT_PAGENAME);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
     });
   },
@@ -119,43 +91,14 @@ export default {
      * @description reset the scrolling to the top,
      * because of the scrolling is set from the browsePage or metaDetailPage
      */
-  mounted: function mounted() {
+  mounted() {
     window.scrollTo(0, 0);
   },
   computed: {
-    ...mapGetters({
-      aboutPageBackRoute: 'metadata/aboutPageBackRoute',
-    }),
-    /**
-       * @returns teamImage based on the screen size
-       */
-    teamImg: function teamImg() {
-      if (this.$vuetify.breakpoint.mdAndUp) {
-        return team;
-      }
-
-      return teamSmall;
+    missionImg() {
+      return this.$vuetify.breakpoint.mdAndUp ? mission : missionSmall;
     },
-    /**
-       * @returns missionImage based on the screen size
-       */
-    missionImg: function teamImg() {
-      if (this.$vuetify.breakpoint.mdAndUp) {
-        return mission;
-      }
-
-      return missionSmall;
-    },
-  },
-  methods: {
-    /**
-       * @returns the infos of the about page topics. consiting of
-       * - title
-       * - text
-       * - img
-       * - widthClass
-       */
-    AboutCardInfos: function AboutCardInfos() {
+    aboutCardInfo() {
       return [
         {
           title: 'Our Mission',
@@ -190,34 +133,13 @@ export default {
         },
       ];
     },
-    /**
-       * @description changes the url to page the user was before. Fallback: BrowsePage
-       */
-    catchBackClicked: function catchBackClicked() {
-      const backRoute = this.aboutPageBackRoute;
-
-      if (backRoute) {
-        this.$router.push({
-          path: backRoute.path,
-          query: backRoute.query,
-          params: backRoute.params,
-        });
-        return;
-      }
-
-      this.$router.push({
-        path: BROWSE_PATH,
-      });
-    },
   },
   components: {
     ImgAndTextLayout,
     ExpandableCard,
-    BaseIconButton,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
-    team,
     teamSmall,
     mission,
     missionSmall,
@@ -227,7 +149,6 @@ export default {
     wslLogo,
     wslLogoSmall,
     orga,
-    orgaSmall,
   }),
 };
 </script>

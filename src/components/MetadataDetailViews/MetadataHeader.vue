@@ -15,7 +15,7 @@
                         material-icon-name="close"
                         icon-color="primary"
                         :color="(showPlaceholder || (!showPlaceholder && !metadataTitle)) ? 'white' : 'primary'"
-                        :outlined="(!showPlaceholder && metadataTitle)"
+                        :outlined="(!showPlaceholder && (metadataTitle &&  metadataTitle.length > 0))"
                         tool-tip-text="Close Metadata"
                         :tool-tip-bottom="true"
                         @clicked="catchBackClicked" />
@@ -25,12 +25,27 @@
 
         <v-flex v-if="metadataTitle"
                 xs12 >
+          <div class="headerTitle"
+                :class="{ 'py-2': $vuetify.breakpoint.mdAndUp,
+                          'py-0': $vuetify.breakpoint.smAndDown,
+                          'display-2': $vuetify.breakpoint.lgAndUp,
+                          'display-1': $vuetify.breakpoint.mdOnly,
+                          'headline': $vuetify.breakpoint.smOnly,
+                          'title': $vuetify.breakpoint.xsOnly,
+                        }" >
+            {{ metadataTitle }}
+          </div>
+        </v-flex>
+
+        <v-flex v-if="!metadataTitle && !showPlaceholder"
+                xs12 >
           <div class="headerTitle py-3"
+                :style="`color: ${$vuetify.theme.error}`"
                 :class="{ 'display-2': $vuetify.breakpoint.lgAndUp,
                           'display-1': $vuetify.breakpoint.mdAndDown,
                           'headline': $vuetify.breakpoint.smAndDown,
-                }" >
-            {{ metadataTitle }}
+                        }" >
+            {{ `${NotFoundTitle} '${metadataId}'` }}
           </div>
         </v-flex>
 
@@ -41,7 +56,8 @@
           </div>
         </v-flex>
 
-        <v-flex xs12 >
+        <v-flex v-if="authors"
+                xs12 >
           <v-divider :dark="dark"
                     :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
                               'my-2': $vuetify.breakpoint.smAndUp }" />
@@ -50,12 +66,11 @@
         <v-flex v-if="authors"
                 xs12 >
           <v-layout row wrap >
-            <tag-chip-author
-              v-for="author in authors"
-              :key="author.name"
-              :name="author.name.trim()"
-              :tool-tip-text="authorToolTipText"
-              @clicked="catchAuthorClicked($event, author.name.trim())" />
+            <tag-chip-author v-for="author in authors"
+                              :key="author.name"
+                              :name="author.name.trim()"
+                              :tooltipText="authorToolTipText"
+                              @clicked="catchAuthorClicked($event, author.name.trim())" />
           </v-layout>
         </v-flex>
 
@@ -111,13 +126,14 @@
                     class="headerInfo" >
               <base-icon-label-view :text="license"
                                     :icon="licenseIcon"
-                                    icon-tooltip="License for Datafiles"
+                                    icon-tooltip="License for the data files"
                                     :align-left="true" />
             </v-flex>
           </v-layout>
         </v-flex>
 
-        <v-flex xs12 >
+        <v-flex v-if="!showPlaceholder && tags"
+                xs12 >
           <v-divider :dark="dark"
                     :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
                               'my-2': $vuetify.breakpoint.smAndUp }" />
@@ -131,6 +147,7 @@
                       :name="tag.name"
                       :selectable="true"
                       class="headerTag"
+                      :color="tag.color"
                       @clicked="catchTagClicked($event, tag.name)" />
 
             <v-flex v-if="tags && maxTagsReached && !showTagsExpanded"
@@ -162,20 +179,33 @@
                           :isToggled="showTagsExpanded"
                           :rotateOnClick="true"
                           :rotateToggle="showTagsExpanded"
-                          :toolTipText="showTagsExpanded ? 'Hide all tags' : 'Show all tags'"
-                          :toolTipBottom="true"
+                          :tooltipText="showTagsExpanded ? 'Hide all tags' : 'Show all tags'"
+                          :tooltipBottom="true"
                           @clicked="showTagsExpanded = !showTagsExpanded" />
       </v-card-actions>
     </v-card>
 </template>
 
 <script>
+/**
+ * MetadataHeader.vue shows the title, authors, keywords,
+ * main contact, doi and license of a metadata entry.
+ *
+ * @summary shows the main infos the a metadata entry
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 14:11:27
+ * Last modified  : 2019-10-23 15:59:39
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
+
 import TagChip from '@/components/Cards/TagChip';
 import TagChipAuthor from '@/components/Cards/TagChipAuthor';
 import TagChipPlaceholder from '@/components/Cards/TagChipPlaceholder';
 import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
-import defaultTexture from '@/assets/cards/forest/c_b_forest_texture_bark2.jpg';
 
 export default {
   components: {
@@ -186,6 +216,7 @@ export default {
     BaseIconButton,
   },
   props: {
+    metadataId: String,
     metadataTitle: String,
     titleImg: String,
     contactName: String,
@@ -208,13 +239,13 @@ export default {
     // whiteTopToBottom: 'rgba(255,255,255, 0.3) 0%, rgba(255,255,255, 1) 60%',
     whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
     authorToolTipText: 'Search for more data of this Author',
-    defaultTexture,
+    NotFoundTitle: 'No metadata found for',
   }),
   computed: {
-    maxTagsReached: function maxTagsReached() {
+    maxTagsReached() {
       return this.tags ? this.tags.length >= this.maxTags : false;
     },
-    slicedTags: function slicedTags() {
+    slicedTags() {
       if (!this.tags) {
         return false;
       }
@@ -225,7 +256,7 @@ export default {
 
       return this.tags.slice(0, this.maxTags);
     },
-    dynamicCardBackground: function dynamicCardBackground() {
+    dynamicCardBackground() {
       const gradient = this.dark ? this.blackTopToBottom : this.whiteTopToBottom;
 
       let style = `position: absolute; top: 0px; right: 0px;
@@ -244,16 +275,16 @@ export default {
     },
   },
   methods: {
-    catchTagClicked: function catchTagClicked(tagId) {
+    catchTagClicked(tagId) {
       this.$emit('clickedTag', tagId);
     },
-    catchAuthorClicked: function catchAuthorClicked(authorName) {
+    catchAuthorClicked(authorName) {
       this.$emit('clickedAuthor', authorName);
     },
-    catchBackClicked: function catchBackClicked() {
+    catchBackClicked() {
       this.$emit('clickedBack');
     },
-    iconFlip: function iconFlip(icon) {
+    iconFlip(icon) {
       const iconflip = this.dark ? `${icon}_w` : icon;
       return iconflip;
     },

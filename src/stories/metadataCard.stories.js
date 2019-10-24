@@ -1,46 +1,28 @@
+/**
+ * @summary story of MetadataCard & MetadataCardPlaceholder for sandbox testing
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:34:51
+ * Last modified  : 2019-10-24 11:04:02
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 /* eslint-disable import/no-extraneous-dependencies */
-import { storiesOf } from "@storybook/vue";
-import { action } from "@storybook/addon-actions";
+import { storiesOf } from '@storybook/vue';
+import { action } from '@storybook/addon-actions';
+import './js/vuetify-components';
 
-import Vue from "vue";
-import {
-  VBtn,
-  VTooltip,
-  VIcon,
-  VImg,
-  VLayout,
-  VFlex,
-  VCard,
-  VCardText,
-  VCardActions,
-  VCardTitle,
-  VCardMedia,
-  VChip,
-  VSpacer
-} from "vuetify/lib";
-
-Vue.component("v-card", VCard);
-Vue.component("v-card-text", VCardText);
-Vue.component("v-card-actions", VCardActions);
-Vue.component("v-card-title", VCardTitle);
-Vue.component("v-card-media", VCardMedia);
-Vue.component("v-chip", VChip);
-Vue.component("v-spacer", VSpacer);
-Vue.component("v-btn", VBtn);
-Vue.component("v-icon", VIcon);
-Vue.component("v-img", VImg);
-Vue.component("v-layout", VLayout);
-Vue.component("v-flex", VFlex);
-
-import MetadataCard from "@/components/Cards/MetadataCard.vue";
-import MetadataCardPlaceholder from "@/components/Cards/MetadataCardPlaceholder.vue";
-import App from "@/App.vue";
-import fileIcon from "@/assets/icons/file.png";
-import lockedIcon from "@/assets/icons/lockClosed.png";
-import unlockedIcon from "@/assets/icons/lockOpen.png";
+import MetadataCard from '@/components/Cards/MetadataCard.vue';
+import MetadataCardPlaceholder from '@/components/Cards/MetadataCardPlaceholder.vue';
+import App from '@/App.vue';
+import fileIcon from '@/assets/icons/file.png';
+import lockedIcon from '@/assets/icons/lockClosed.png';
+import unlockedIcon from '@/assets/icons/lockOpen.png';
 
 // metadata gets enhance in the storybook config
-import metadataCards from "@/stories/metadata";
+import metadataCards from './js/metadata';
 
 export const methods = {
   hasRestrictedResources: function hasRestrictedResources(metadata) {
@@ -53,7 +35,7 @@ export const methods = {
       if (
         res.restricted !== undefined &&
         (res.restricted.allowed_users !== undefined ||
-          (res.restricted.level !== undefined && res.restricted.level !== "public"))
+          (res.restricted.level !== undefined && res.restricted.level !== 'public'))
       ) {
         return true;
       }
@@ -61,12 +43,12 @@ export const methods = {
 
     return false;
   },
-  onCardClick: action("clicked on card"),
-  onTagClick: action("clicked on tag")
+  onCardClick: action('clicked on card'),
+  onTagClick: action('clicked on tag'),
 };
 
-storiesOf("3 Cards | Metadata Cards", module)
-  .add("collection", () => ({
+storiesOf('3 Cards | Metadata Cards', module)
+  .add('collection', () => ({
     components: { MetadataCard },
     template: `
 <v-layout column>
@@ -91,12 +73,41 @@ storiesOf("3 Cards | Metadata Cards", module)
           :fileIconString="fileIcon"
           :lockedIconString="lockedIcon"
           :unlockedIconString="lockedIcon"
+          :categoryColor="metadata.categoryColor"
           @clickedEvent="onCardClick"
           @clickedTag="onTagClick"
         />
       </v-flex>
 
     </v-layout>
+
+    <v-layout row wrap>
+
+      <v-flex xs3 pa-2
+        v-for="(metadata, index) in metadataCards"
+        :key="index"
+      >
+        <metadata-card
+          :id="metadata.id"
+          :ref="metadata.id"
+          :title="metadata.title"
+          :name="metadata.name"
+          :subtitle="metadata.notes"
+          :tags="metadata.tags"
+          :restricted="hasRestrictedResources(metadata)"
+          :resourceCount="metadata.num_resources || metadata.res_name.length"
+          :resources="metadata.resources"
+          :fileIconString="fileIcon"
+          :lockedIconString="lockedIcon"
+          :unlockedIconString="lockedIcon"
+          :categoryColor="metadata.categoryColor"
+          @clickedEvent="onCardClick"
+          @clickedTag="onTagClick"
+        />
+      </v-flex>
+
+    </v-layout>
+
   </v-flex>
   <v-flex>
     <v-layout row wrap>
@@ -119,6 +130,7 @@ storiesOf("3 Cards | Metadata Cards", module)
           :fileIconString="fileIcon"
           :lockedIconString="lockedIcon"
           :unlockedIconString="lockedIcon"
+          :categoryColor="metadata.categoryColor"
           @clickedEvent="onCardClick"
           @clickedTag="onTagClick"
         />
@@ -147,6 +159,7 @@ storiesOf("3 Cards | Metadata Cards", module)
           :fileIconString="fileIcon"
           :lockedIconString="lockedIcon"
           :unlockedIconString="lockedIcon"
+          :categoryColor="metadata.categoryColor"
           @clickedEvent="onCardClick"
           @clickedTag="onTagClick"
         />
@@ -161,10 +174,10 @@ storiesOf("3 Cards | Metadata Cards", module)
       metadataCards,
       fileIcon,
       lockedIcon,
-      unlockedIcon
-    })
+      unlockedIcon,
+    }),
   }))
-  .add("Flat collection", () => ({
+  .add('Flat collection', () => ({
     components: { MetadataCard },
     template: `
     <v-layout row wrap>
@@ -188,6 +201,7 @@ storiesOf("3 Cards | Metadata Cards", module)
           :fileIconString="fileIcon"
           :lockedIconString="lockedIcon"
           :unlockedIconString="lockedIcon"
+          :categoryColor="metadata.categoryColor"
           @clickedEvent="onCardClick"
           @clickedTag="onTagClick"
         />
@@ -199,51 +213,51 @@ storiesOf("3 Cards | Metadata Cards", module)
       metadataCards,
       fileIcon,
       lockedIcon,
-      unlockedIcon
-    })
+      unlockedIcon,
+    }),
   }))
-  .add("Placeholder / Loading collection", () => ({
+  .add('Placeholder / Loading collection', () => ({
     components: { MetadataCardPlaceholder },
     template: `
-<v-layout column>
-  <v-flex>
-    <v-layout row wrap>
+    <v-layout column>
+      <v-flex>
+        <v-layout row wrap>
 
-      <v-flex xs3 pa-2
-        v-for="index in 3"
-        :key="index"
-      >
-        <metadata-card-placeholder />
+          <v-flex xs3 pa-2
+            v-for="index in 3"
+            :key="index"
+          >
+            <metadata-card-placeholder />
+          </v-flex>
+
+        </v-layout>
       </v-flex>
+      <v-flex>
+        <v-layout row wrap>
 
-    </v-layout>
-  </v-flex>
-  <v-flex>
-    <v-layout row wrap>
+          <v-flex xs4 pa-2
+            v-for="index in 3"
+            :key="index"
+          >
+            <metadata-card-placeholder />
+          </v-flex>
 
-      <v-flex xs4 pa-2
-        v-for="index in 3"
-        :key="index"
-      >
-        <metadata-card-placeholder />
+        </v-layout>
       </v-flex>
+      <v-flex>
+        <v-layout row wrap>
 
-    </v-layout>
-  </v-flex>
-  <v-flex>
-    <v-layout row wrap>
+          <v-flex xs6 pa-2
+            v-for="index in 3"
+            :key="index"
+          >
+            <metadata-card-placeholder />
+          </v-flex>
 
-      <v-flex xs6 pa-2
-        v-for="index in 3"
-        :key="index"
-      >
-        <metadata-card-placeholder />
+        </v-layout>
       </v-flex>
-
     </v-layout>
-  </v-flex>
-</v-layout>
     `,
     methods,
-    data: () => ({})
+    data: () => ({}),
   }));

@@ -2,14 +2,9 @@
   <v-layout row ma-0 pa-0 >
     <v-tooltip
       bottom
-      :disabled="$vuetify.breakpoint.xsOnly"
+      :disabled="$vuetify.breakpoint.xsOnly || !iconTooltip"
     >
-      <div
-        slot="activator"
-        class="layout row align-center"
-      >
-        <!-- <v-layout row align-center> -->
-
+      <div slot="activator" class="layout row align-center">
         <div
           v-if="icon && iconTooltip"
           :class="alignClass"
@@ -60,8 +55,6 @@
             <div class="bone bone-type-text bone-style-steps" />
           </div>
         </v-flex>
-
-        <!-- </v-layout> -->
       </div>
 
       <span>{{ iconTooltip }}</span>
@@ -70,7 +63,22 @@
 </template>
 
 <script>
+/**
+ * BaseIconLabelView.vue creates a field with a label (text or icon) with the given
+ * text as well a tooltip.
+ *
+ * @summary icon as label and text or text as label and text
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-02 11:24:00
+ * Last modified  : 2019-10-02 11:47:20
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 export default {
+  name: 'BaseIconLabelView',
   props: {
     icon: String,
     iconTooltip: String,
@@ -83,7 +91,10 @@ export default {
     compactLayout: Boolean,
   },
   computed: {
-    alignClass: function alignClass() {
+      /**
+       * TODO Sehr schwer verstädnlich was das macht
+       */
+    alignClass() {
       return {
         flex: !this.alignLeft,
         xs3: !this.alignLeft,
@@ -93,7 +104,7 @@ export default {
         'py-0': true,
       };
     },
-    textStyle: function textStyle() {
+    textStyle() {
       let style = '';
 
       if (this.bold) {

@@ -1,50 +1,41 @@
 <template>
-  <v-card
-    raised
-    :height="compactLayout ? $vuetify.breakpoint.sm ? 38 : 32 : 40"
-  >
-    <v-card-actions class="fill-height ma-0 py-0 px-1">
-      <v-text-field
-        class="fill-height envidatControlInfos"
-        style="align-items: center;"
-        :class="{'small' : compactLayout }"
-        :label="label"
-        flat
-        single-line
-        readonly
-        solo
-        disabled
-        hide-details
-      />
+  <v-card :class="flat ? 'elevation-0' : ''">
+    <!-- :height="compactLayout ? $vuetify.breakpoint.sm ? 38 : 32 : 40" -->
+    <v-card-actions class="ma-0 py-0 px-2"
+                    :class="flat ? '' : 'fill-height'" >
+
+      <v-text-field v-if="$vuetify.breakpoint.mdAndUp"
+                    class="fill-height envidatControlInfos"
+                    style="align-items: center;"
+                    :class="{'small' : compactLayout }"
+                    :label="label"
+                    flat
+                    single-line
+                    readonly
+                    solo
+                    disabled
+                    hide-details />
 
       <!-- <div class="pl-2">Controls</div> -->
 
-      <v-spacer />
+      <v-spacer v-if="$vuetify.breakpoint.mdAndUp" />
 
-      <v-btn-toggle
-        v-model="controlsActive"
-        multiple
-      >
-        <v-btn
-          flat
-          :class="isActiveControl(0) ? 'highlight' : ''"
-          :style="compactLayout ? 'height: 32px !important' : ''"
-        >
-          <img
-            class="envidatIcon"
-            :src="listViewIcon"
-          >
+      <v-btn-toggle v-model="controlsActive"
+                    multiple >
+        <v-btn flat
+                @click="catchControlClick(0)"
+                :class="isActiveControl(0) ? 'highlight' : ''"
+                :style="compactLayout ? 'height: 32px !important' : ''" >
+          <img class="envidatIcon"
+                :src="listViewIcon" >
         </v-btn>
 
-        <v-btn
-          flat
-          :class="isActiveControl(1) ? 'highlight' : ''"
-          :style="compactLayout ? 'height: 32px !important' : ''"
-        >
-          <img
-            class="envidatIcon"
-            :src="mapIcon"
-          >
+        <v-btn flat
+                @click="catchControlClick(1)"
+                :class="isActiveControl(1) ? 'highlight' : ''"
+                :style="compactLayout ? 'height: 32px !important' : ''" >
+          <img class="envidatIcon"
+                :src="mapIcon" >
         </v-btn>
       </v-btn-toggle>
     </v-card-actions>
@@ -52,6 +43,19 @@
 </template>
 
 <script>
+/**
+ * ControlPanelView.vue shows controls which users can change
+ * configurations of the metadata list
+ *
+ * @summary controls for list
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 14:11:27
+ * Last modified  : 2019-10-23 14:40:43
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
 
 export default {
   components: {
@@ -59,6 +63,8 @@ export default {
   props: {
     compactLayout: Boolean,
     label: String,
+    controls: Array,
+    flat: Boolean,
   },
   data: () => ({
     mapFilterActivateText: 'Activate Mapfiltering',
@@ -73,21 +79,20 @@ export default {
     this.listViewIcon = this.mixinMethods_getIcon('listView');
     this.mapIcon = this.mixinMethods_getIcon('map');
   },
-  mounted: function mounted() {
-    this.controlsActive = this.$store.getters.controls;
+  mounted() {
+    this.controlsActive = this.controls;
   },
-  updated: function updated() {
-    this.$emit('controlsChanged', this.controlsActive);
+  watch: {
+    controls() {
+      this.controlsActive = this.controls;
+    },
   },
   methods: {
     isActiveControl(number) {
       return this.controlsActive.includes(number);
     },
-    catchMapFilterClick: function catchMapFilterClick() {
-      this.$emit('clickedMapFilter');
-    },
-    catchListViewClick: function catchListViewClick() {
-      this.$emit('clickedListViewClick');
+    catchControlClick(number) {
+      this.$emit('controlsChanged', number);
     },
   },
 };

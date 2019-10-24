@@ -1,88 +1,95 @@
 <template>
-  <v-card ripple
-          hover
-          height="100%"
-          style=" /* max-width: 350px */"
-          @click.native="cardClick" >
+  <div @mouseover="hovered = true" @mouseleave="hovered = false" >
 
-    <v-card-title class="pa-0" style="height: 150px;">
-      <v-container grid-list-lg fill-height pa-0 >
-        <!-- grid-list-lg is needed for the negative margin on the v-layout
-              fill-heigth is needed if the v-card-title is a fixed height -->
-        <v-layout row
-                  style="background-color: white; border-radius: 2px;"
-                  class="elevation-2" >
+    <!-- Top of Card -->
+    <v-card ripple
+            height="150"
+            :class="`elevation-${hovered ? 5 : 3}`"
+            style="z-index: 1;"
+            @click.native="cardClick" >
 
-          <v-flex v-if="cardImg.src"
-                  xs6 pa-0 >
-
+      <v-layout fill-height style="max-width: 100%; background-color: white; border-radius: 2px;" class="ma-0" >
+          <v-flex v-if="img" xs6 pa-0 >
             <v-img style="height: 100%; border-radius: 2px 0px 0px 2px;"
-                    :cover="imgWidth < 200"
-                    :contain="imgWidth > 200"
-                    :src="fallbackImg ? fallbackImg : cardImg.src"
+                    :cover="img.width < 200"
+                    :contain="img.width > 200"
+                    :src="img"
+                    :lazy-src="defaultImg"
                     />
           </v-flex>
 
-          <!-- <v-flex xs8 ml-3>
-            <div class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-shimmer">
-              <div class="bone bone-type-multiline bone-style-steps" />
-            </div>
-          </v-flex> -->
-
-          <v-flex xs6 ma-auto>
-            <div class="headline"
-                  :class="this.dark ? 'white--text' : 'black--text'"
-            >
-              {{ truncatedTitle }}
-            </div>
-          </v-flex>
-
-        </v-layout>
-      </v-container>
-    </v-card-title>
-
-    <v-card-text  >
-      {{ truncatedDescription }}
-    </v-card-text>
-
-
-    <strong v-if="subProjects"
-            class="px-3 py-0">Subprojects</strong>
-
-    <v-card-text v-if="subProjects">
-
-      <v-layout v-for="sub in subProjects"
-                :key="sub.id"
-                row wrap
-                align-center
-                pr-2>
-
-        <v-flex xs11 py-0>{{ sub.title }}</v-flex>
-
-        <v-flex xs1 py-0>
-          <base-icon-button materialIconName="find_in_page"
-                          color="transparent"
-                          iconColor="secondary"
-                          :toolTipText="`Open Subproject ${sub.title}`"
-                          toolTipBottom
-                          :isSmall="true"
-                          @clicked="subprojectClick(sub.id)" />
+        <v-flex xs6 ma-auto>
+          <div class="title"
+                style="word-break: break-word;"
+                :class="dark ? 'white--text' : 'black--text'"
+          >
+            {{ truncatedTitle }}
+          </div>
         </v-flex>
+
       </v-layout>
+    </v-card>
 
-    </v-card-text>
+    <!-- Bottom of Card -->
+    <v-card ripple
+            height="100%"
+            style="z-index: 0;"
+            :class="`elevation-${hovered ? 10 : 2}`"
+            class="mx-2"
+            @click.native="cardClick" >
 
-  </v-card>
+      <v-card-text >
+        {{ truncatedDescription }}
+      </v-card-text>
+
+      <v-card-text v-if="subProjects" class="py-0" >
+        <strong>Subprojects</strong>
+      </v-card-text>
+
+      <v-card-text v-if="subProjects" >
+        <v-layout v-for="sub in subProjects" :key="sub.id" wrap align-center pr-2>
+          <v-flex xs11 py-0>{{ sub.title }}</v-flex>
+          <v-flex xs1 py-0>
+            <base-icon-button materialIconName="find_in_page"
+                            color="transparent"
+                            iconColor="secondary"
+                            :tooltipText="`Open Subproject ${sub.title}`"
+                            tooltipBottom
+                            :isSmall="true"
+                            @click="subprojectClick(sub.id)" />
+          </v-flex>
+        </v-layout>
+      </v-card-text>
+    </v-card>
+  </div>
 </template>
 
 
 <script>
+/**
+ * ProjectCard.vue creates a card with a header image, title, keywords and preview description.
+ * When clicked its emits the 'clickedEvent' event, also the clickedTag can be emitted.
+ *
+ * @summary card with img, title, keywords and preview description
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-02 11:24:00
+ * Last modified  : 2019-10-23 14:38:42
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
+
+/**
+ * TODO: Difference defaultImage vs img
+ */
 
 // checkout skeleton
 // https://github.com/ToxicJojo/SkeletonPlaceholder
 
 export default {
+  name: 'ProjectCard',
   components: {
     BaseIconButton,
   },
@@ -97,25 +104,6 @@ export default {
     dark: Boolean,
   },
   computed: {
-    cardImg() {
-      const img = new Image();
-      let imgSrc = this.defaultImg;
-
-      if (this.img) {
-        imgSrc = this.img;
-        if (!imgSrc.includes('http')) {
-          imgSrc = `https://www.envidat.ch/uploads/group/${imgSrc}`;
-        }
-      }
-
-      if (imgSrc !== undefined) {
-        img.src = imgSrc;
-      }
-      img.onload = this.setHeightAndWidth;
-      img.onerror = this.setDefaultImg;
-
-      return img;
-    },
     maxTitleLengthReached() {
       return this.title.length > this.maxTitleLength;
     },
@@ -123,28 +111,22 @@ export default {
       const maxLength = this.maxTitleLength;
 
       if (this.title !== undefined && this.title.length > 0) {
-        let modifiedTitle = this.title;
+        let modifiedTitle = this.title.trim();
         const splits = this.title.split('(');
         if (splits.length > 0) {
-          modifiedTitle = splits[0];
+          modifiedTitle = splits[0].trim();
         }
-
         if (this.maxTitleLengthReached) {
           return `${modifiedTitle.substring(0, maxLength)}...`;
         }
-
         return modifiedTitle;
       }
-
       return '';
     },
     truncatedDescription() {
-      const maxLength = this.maxDescriptionLength;
-
       if (this.description !== undefined && this.description.length > 0) {
-        return `${this.description.substring(0, maxLength)}...`;
+        return `${this.description.substring(0, this.maxDescriptionLength)}...`;
       }
-
       return `No description found for ${this.truncatedTitle}`;
     },
   },
@@ -155,30 +137,15 @@ export default {
     subprojectClick(subprojectId) {
       this.$emit('subprojectClick', subprojectId);
     },
-    setHeightAndWidth() {
-      this.imgWidth = this.cardImg.width;
-      this.imgHeight = this.cardImg.height;
-    },
-    setDefaultImg() {
-      this.fallbackImg = this.defaultImg;
-    },
   },
   data: () => ({
-    // headerImgWidth: 400,
-    fallbackImg: null,
-    imgWidth: 0,
-    imgHeight: 0,
     maxDescriptionLength: 290,
     maxTitleLength: 100,
-    // maxTags: 3,
-    maxTagTextlength: 40,
-    blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
-    whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
+    hovered: false,
   }),
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
   .placeholder .black_title {
