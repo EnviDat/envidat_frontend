@@ -2,8 +2,8 @@
  * @summary story of SearchBarView & SmallSearchBarView for sandbox testing
  * @author Dominik Haas-Artho
  *
- * Created at     : 2019-10-23 16:34:51 
- * Last modified  : 2019-10-23 16:54:14
+ * Created at     : 2019-10-23 16:34:51
+ * Last modified  : 2019-10-24 10:46:15
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -19,8 +19,8 @@ import SmallSearchBarView from '../components/Filtering/SmallSearchBarView.vue';
 
 
 
-storiesOf("4 Filtering | SearchBarView", module)
-  .add("basic", () => ({
+storiesOf('4 Filtering | SearchBarView', module)
+  .add('basic', () => ({
     components: { SearchBarView },
     template: `
     <search-bar-view labelText="Search for something"

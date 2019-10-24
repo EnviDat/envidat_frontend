@@ -9,7 +9,7 @@ import globalMethods from '@/factories/globalMethods';
 import metaDataFactory from '@/factories/metaDataFactory';
 
 const cardImages = getCardImages(globalMethods);
-import metadataCards from '@/stories/metadata';
+import metadataCards from '@/stories/js/metadata';
 import categoryCards from '@/store/modules/metadata/categoryCards';
 
 metadataCards.forEach(element => {

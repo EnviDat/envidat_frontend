@@ -144,7 +144,8 @@
       <v-flex v-if="!loading && contentSize <= 0"
               key="noSearchResultsView"
               xs12 mx-2 >
-        <no-search-results-view @clickedCategory="clickedCategory" />
+        <no-search-results-view :categoryCards="categoryCards"
+                                @clicked="catchCategoryClicked" />
       </v-flex>
 
     </transition-group>
@@ -162,7 +163,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-23 15:44:28
+ * Last modified  : 2019-10-24 11:30:47
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

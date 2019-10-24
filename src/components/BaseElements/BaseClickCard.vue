@@ -47,7 +47,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-02 11:37:16
+ * Last modified  : 2019-10-24 11:37:44
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -64,7 +64,7 @@ export default {
     color: String,
   },
   methods: {
-    click() {
+    clicked() {
       this.$emit('click', this.title.toLowerCase());
     },
   },

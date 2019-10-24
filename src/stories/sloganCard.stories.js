@@ -21,6 +21,7 @@ storiesOf('3 Cards | Slogan Cards', module)
             :slogan="'Random Slogan'"
             :subSlogan="'Subslogan normally longer than the slogan'"
             :buttonText="'Fun button'"
+            :buttonCallback="onClick"
         />
       </v-flex>
     </v-layout>

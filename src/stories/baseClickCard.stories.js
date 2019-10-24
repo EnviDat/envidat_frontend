@@ -2,7 +2,7 @@
  * @summary story of baseClickCard for sandbox testing
  * @author Dominik Haas-Artho
  *
- * Created at     : 2019-10-23 16:34:51 
+ * Created at     : 2019-10-23 16:34:51
  * Last modified  : 2019-10-24 10:18:06
  *
  * This file is subject to the terms and conditions defined in
@@ -31,7 +31,7 @@ storiesOf('3 Cards | Click Cards ', module).add('CategoryCcard Collection', () =
               :title='card.title'
               :img='card.img'
               :color='card.color'
-              @clicked='onClick'
+              @click='onClick'
             />
       </v-flex>
 
@@ -41,7 +41,7 @@ storiesOf('3 Cards | Click Cards ', module).add('CategoryCcard Collection', () =
               :title='card.title'
               :img='card.img'
               :color='card.color'
-              @clicked='onClick'
+              @click='onClick'
             />
       </v-flex>
 
@@ -51,13 +51,13 @@ storiesOf('3 Cards | Click Cards ', module).add('CategoryCcard Collection', () =
               :title='card.title'
               :img='card.img'
               :color='card.color'
-              @clicked='onClick'
+              @click='onClick'
             />
       </v-flex>
 
     </v-layout>`,
   methods,
   data: () => ({
-    categoryCards
-  })
+    categoryCards,
+  }),
 }));

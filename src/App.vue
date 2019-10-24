@@ -84,7 +84,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-23 17:33:18
+ * Last modified  : 2019-10-24 13:32:33
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -138,7 +138,7 @@ export default {
   },
   methods: {
     updateActiveStateOnNavItems() {
-      console.log(this.currentPage);
+      // console.log(this.currentPage);
 
       for (let i = 0; i < this.navItems.length; i++) {
         const item = this.navItems[i];
@@ -169,6 +169,25 @@ export default {
     catchMenuClicked() {
       this.menuItem.active = !this.menuItem.active;
     },
+    catchItemClicked(item) {
+      if (item.pageName === 'external') {
+        window.open(item.path, '_blank');
+        return;
+      }
+      if (this.$route.name === item.pageName) {
+        return;
+      }
+      this.$router.push({ path: item.path, query: '' });
+    },
+    catchSearchClicked(search) {
+      this.$router.push({
+        path: BROWSE_PATH,
+        query: { tags: this.$route.query.tags, search },
+      });
+    },
+    catchSearchCleared() {
+      this.searchTerm = '';
+    },
     navigateTo(navItem) {
       if (navItem.pageName === 'external') {
         window.open(navItem.path, '_blank');
@@ -176,11 +195,11 @@ export default {
         this.$router.push(navItem.path);
       }
 
-      if (this.$route.name === item.pageName) {
+      if (this.$route.name === navItem.pageName) {
         return;
       }
 
-      this.$router.push({ path: item.path, query: '' });
+      this.$router.push({ path: navItem.path, query: '' });
     },
     catchSearchClicked(search) {
       this.$router.push({
@@ -279,6 +298,16 @@ export default {
         }
       }
       return bgStyle;
+    },
+    menuItem() {
+      let menuItem = { active: true };
+      this.navItems.forEach((el) => {
+        if (el.icon === 'menu') {
+          menuItem = el;
+        }
+      });
+      // return default with active true so all items will be shown
+      return menuItem;
     },
   },
   components: {

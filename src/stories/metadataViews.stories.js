@@ -2,36 +2,36 @@
  * @summary story of all the MetadataDetailViews for sandbox testing
  * @author Dominik Haas-Artho
  *
- * Created at     : 2019-10-23 16:34:51 
- * Last modified  : 2019-10-23 16:46:09
+ * Created at     : 2019-10-23 16:34:51
+ * Last modified  : 2019-10-24 10:59:28
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
 /* eslint-disable import/no-extraneous-dependencies */
-import { storiesOf } from "@storybook/vue";
-import { action } from "@storybook/addon-actions";
+import { storiesOf } from '@storybook/vue';
+import { action } from '@storybook/addon-actions';
 import './js/vuetify-components';
 
-import MetadataHeader from "@/components/MetadataDetailViews/MetadataHeader.vue";
-import MetadataBody from "@/components/MetadataDetailViews/MetadataBody.vue";
-import MetadataCitation from "@/components/MetadataDetailViews/MetadataCitation.vue";
-import MetadataDetails from "@/components/MetadataDetailViews/MetadataDetails.vue";
-import MetadataLocation from "@/components/MetadataDetailViews/MetadataLocation.vue";
+import MetadataHeader from '@/components/MetadataDetailViews/MetadataHeader.vue';
+import MetadataBody from '@/components/MetadataDetailViews/MetadataBody.vue';
+import MetadataCitation from '@/components/MetadataDetailViews/MetadataCitation.vue';
+import MetadataDetails from '@/components/MetadataDetailViews/MetadataDetails.vue';
+import MetadataLocation from '@/components/MetadataDetailViews/MetadataLocation.vue';
 
 // import for css classes
-import App from "@/App.vue";
-import MetadataDetailPage from "@/components/Pages/MetadataDetailPage.vue";
+import App from '@/App.vue';
+import MetadataDetailPage from '@/components/Pages/MetadataDetailPage.vue';
 
-import doiIcon from "@/assets/icons/doi.png";
-import mailIcon from "@/assets/icons/mail.png";
-import contactIcon from "@/assets/icons/contact2.png";
-import licenseIcon from "@/assets/icons/license.png";
+import doiIcon from '@/assets/icons/doi.png';
+import mailIcon from '@/assets/icons/mail.png';
+import contactIcon from '@/assets/icons/contact2.png';
+import licenseIcon from '@/assets/icons/license.png';
 
-import metaDataFactory from "@/factories/metaDataFactory";
+import metaDataFactory from '@/factories/metaDataFactory';
 // metadata gets enhance in the storybook config
-import metadata from "./js/metadata";
+import metadata from './js/metadata';
 
 const smallHeader = metaDataFactory.createHeader(metadata[0], true);
 const largeHeader = metaDataFactory.createHeader(metadata[1], false);
@@ -83,12 +83,12 @@ const genericProps4 = {
 };
 
 export const methods = {
-  onCardClick: action("clicked on card"),
-  onTagClick: action("clicked on tag")
+  onCardClick: action('clicked on card'),
+  onTagClick: action('clicked on tag')
 };
 
-storiesOf("6 Metadata | Detail Views", module)
-  .add("Header", () => ({
+storiesOf('6 Detail Views | Metadata', module)
+  .add('Metadata Header', () => ({
     components: { MetadataHeader },
     template: `
     <v-layout row wrap>
@@ -138,9 +138,9 @@ storiesOf("6 Metadata | Detail Views", module)
       doiIcon,
       contactIcon,
       licenseIcon,
-      mailIcon
-    })
-  })).add("Body", () => ({
+      mailIcon,
+    }),
+  })).add('Metadata Body', () => ({
     components: { MetadataBody },
     template: `
     <v-layout row wrap>
@@ -198,7 +198,7 @@ storiesOf("6 Metadata | Detail Views", module)
         `
       },
     })
-  })).add("Citation", () => ({
+  })).add('Metadata Citation', () => ({
     components: { MetadataCitation },
     template: `
     <v-layout row wrap>
@@ -257,8 +257,8 @@ storiesOf("6 Metadata | Detail Views", module)
         showPlaceholder: true,
         fixedHeight: false,
       },
-    })
-  })).add("Details", () => ({
+    }),
+  })).add('Metadata Details', () => ({
     components: { MetadataDetails },
     template: `
     <v-layout row wrap>
@@ -313,8 +313,8 @@ storiesOf("6 Metadata | Detail Views", module)
         showPlaceholder: true,
         fixedHeight: false,
       },
-    })
-  })).add("Location", () => ({
+    }),
+  })).add('Metadata Location', () => ({
     components: { MetadataLocation },
     template: `
     <v-layout row wrap>
@@ -346,7 +346,5 @@ storiesOf("6 Metadata | Detail Views", module)
         showPlaceholder: true,
         fixedHeight: false,
       },
-    })
+    }),
   }));
-
-

@@ -40,7 +40,7 @@
               <base-click-card :title="card.title"
                                 :img="card.img"
                                 :color="card.darkColor"
-                                @clicked="catchCategoryClicked(card.type)" />
+                                @click="catchCategoryClicked(card.type)" />
             </v-flex>
           </v-layout>
         </v-container>
