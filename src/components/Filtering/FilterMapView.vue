@@ -48,6 +48,20 @@
 </template>
 
 <script>
+/**
+ * ProjectCard.vue creates a card with a header image, title, keywords and preview description.
+ * When clicked its emits the 'clickedEvent' event, also the clickedTag can be emitted.
+ *
+ * @summary card with img, title, keywords and preview description
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-02 11:24:00
+ * Last modified  : 2019-10-24 13:47:06
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import { mapGetters } from 'vuex';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -74,16 +88,16 @@ export default {
     totalWidth: Number,
     pinnedIds: Array,
   },
-  beforeMount: function beforeMount() {
+  beforeMount() {
     this.pinIcon = this.mixinMethods_getIcon('marker');
     this.multiPinIcon = this.mixinMethods_getIcon('markerMulti');
     this.polygonIcon = this.mixinMethods_getIcon('polygons');
     this.eyeIcon = this.mixinMethods_getIcon('eye');
   },
-  mounted: function mounted() {
+  mounted() {
     this.setupMap();
   },
-  beforeDestroy: function beforeDestroy() {
+  beforeDestroy() {
     if (this.map) {
       this.map.remove();
     }
@@ -122,23 +136,23 @@ export default {
     },
   },
   methods: {
-    checkError: function checkError() {
+    checkError() {
     // checkError: function checkError(e) {
       // console.log(`got leaflet error ${e}`);
       this.errorLoadingLeaflet = true;
     },
-    catchPointClick: function catchPointClick(e) {
+    catchPointClick(e) {
       this.$emit('pointClicked', e.target.id);
     },
-    catchPointHover: function catchPointHover(e) {
+    catchPointHover(e) {
       e.target.bindPopup(`<p>${e.target.title}</p>`).openPopup();
       this.$emit('pointHover', e.target.id);
     },
-    catchPointHoverLeave: function catchPointHoverLeave(e) {
+    catchPointHoverLeave(e) {
       e.target.closePopup();
       this.$emit('pointHoverLeave', e.target.id);
     },
-    catchClearButtonClicked: function catchClearButtonClicked() {
+    catchClearButtonClicked() {
       this.$emit('clearButtonClicked');
     },
     catchPinClicked() {
@@ -156,7 +170,7 @@ export default {
     catchClearClicked() {
       this.$emit('clearButtonClicked');
     },
-    toggleMapExpand: function toggleMapExpand() {
+    toggleMapExpand() {
       return this.$emit('toggleMapFilterExpand');
     },
     setupMap() {
@@ -168,12 +182,9 @@ export default {
       this.markerCount = 0;
 
       if (this.map) {
-        this.map.on('locationerror', () => {
-          this.checkError();
-        });
+        this.map.on('locationerror', () => this.errorLoadingLeaflet = true);
 
         this.addOpenStreetMapLayer(this.map);
-
         this.updateMap();
 
         this.map.on('zoomend', () => {
@@ -187,7 +198,7 @@ export default {
         this.mapIsSetup = true;
       }
     },
-    initLeaflet: function initLeaflet(mapElement) {
+    initLeaflet(mapElement) {
       const map = L.map(mapElement, {
         // scrollWheelZoom: false,
         center: this.setupCenterCoords,
@@ -203,11 +214,10 @@ export default {
       try {
         return L.geoJSON(geoJsonString);
       } catch (error) {
-        // console.log(`Tried to parse GeoJSON ${geoJsonString} failed with ${error}`);
         return undefined;
       }
     },
-    addOpenStreetMapLayer: function addOpenStreetMapLayer(map) {
+    addOpenStreetMapLayer(map) {
       const baseMap = L.tileLayer(
         'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' },
@@ -236,8 +246,6 @@ export default {
       point.on({ click: this.catchPointClick });
       point.on({ mouseover: this.catchPointHover });
       point.on({ mouseout: this.catchPointHoverLeave });
-
-
       return point;
     },
     getPolygon(coords, id, title, selected) {
@@ -249,7 +257,7 @@ export default {
         fillOpacity: 0,
       });
 
-      polygon.on({ click: this.catchPointClick });
+      polygon.on({ click: this.pointClick });
       polygon.id = id;
       polygon.title = title;
 
@@ -322,14 +330,14 @@ export default {
         this.multiPinLayerGroup = [];
       }
     },
-    addElementsToMap: function addElementsToMap(elements, enabled, checkBounds) {
+    addElementsToMap(elements, enabled, checkBounds) {
       if (!enabled || !elements || elements.length <= 0) {
         return;
       }
 
       this.showMapElements(elements, true, checkBounds);
     },
-    focusOnLayers: function focusOnLayers() {
+    focusOnLayers() {
       const allLayers = [];
 
       if (this.pinEnabled) {
@@ -353,15 +361,10 @@ export default {
       if (allLayers.length > 0) {
         const feat = L.featureGroup(allLayers);
         const featBounds = feat.getBounds();
-
-        // if (featBounds.contains(this.initialBounds)) {
-        //   this.map.fitBounds(this.initialBounds);
-        // } else {
         this.map.fitBounds(featBounds, { maxZoom: 8 });
-        // }
       }
     },
-    clearLayers: function clearLayers(map, specificClear) {
+    clearLayers(map, specificClear) {
       if (!map) {
         return;
       }
@@ -392,13 +395,11 @@ export default {
           try {
             el.addTo(this.map);
           } catch (error) {
-            // console.log(`showMapElements error: ${error} on element ${el.title}`);
           }
         } else {
           try {
             this.map.removeLayer(el);
           } catch (error) {
-            // console.log(`showMapElements error: ${error} on element ${el.title}`);
           }
         }
       });
@@ -412,8 +413,6 @@ export default {
       this.addElementsToMap(this.pinLayerGroup, this.pinEnabled);
       this.addElementsToMap(this.multiPinLayerGroup, this.multiPinEnabled);
       this.addElementsToMap(this.polygonLayerGroup, this.polygonEnabled, true);
-
-      // this.addGeoJSONToMap();
     },
     updatePins() {
       this.clearLayers(this.map, 'pins');
@@ -430,6 +429,9 @@ export default {
 
       this.addElementsToMap(this.polygonLayerGroup, this.polygonEnabled, true);
     },
+  },
+  updated() {
+    this.setupMap();
   },
   watch: {
     content() {
@@ -475,18 +477,22 @@ export default {
 
 <style>
 
-.rotating {
-  animation: rotateturn 1s steps(8, end) infinite;
-}
-
-@keyframes rotateturn {
-  to {
-    transform: rotate(360deg);
+  .rotating {
+    animation: rotateturn 1s steps(8, end) infinite;
   }
-}
 
-@keyframes rotate {
-    from {transform: rotate(0deg);}
-    to {transform: rotate(360deg);}
-}
+  @keyframes rotateturn {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
 </style>

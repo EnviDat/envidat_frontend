@@ -1,3 +1,14 @@
+/**
+ * @summary metadata store mutations constants
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:34:51 
+ * Last modified  : 2019-10-23 16:46:58
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 export const BULK_LOAD_METADATAS_CONTENT = 'BULK_LOAD_METADATAS_CONTENT';
 export const BULK_LOAD_METADATAS_CONTENT_SUCCESS = 'BULK_LOAD_METADATAS_CONTENT_SUCCESS';
 export const BULK_LOAD_METADATAS_CONTENT_ERROR = 'BULK_LOAD_METADATAS_CONTENT_ERROR';

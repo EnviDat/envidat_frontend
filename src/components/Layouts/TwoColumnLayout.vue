@@ -1,30 +1,45 @@
 <template>
-  <v-layout
-    row
-    wrap
-    style="z-index: 0;"
-  >
-    <v-flex
-      v-bind="firstColWidth"
-    >
+  <v-layout row
+            wrap
+            style="z-index: 0;" >
+
+    <v-flex v-bind="firstColWidth" >
+
       <v-layout column>
         <slot name="leftColumn" />
       </v-layout>
+
     </v-flex>
 
 
-    <v-flex
-      v-if="secondColumn"
-      v-bind="secondColWidth"
-    >
+    <v-flex v-if="secondColumn"
+            v-bind="secondColWidth" >
+
       <v-layout column>
         <slot name="rightColumn" />
       </v-layout>
+
     </v-flex>
   </v-layout>
 </template>
 
 <script>
+/**
+ * TwoColumnLayout.vue creates a dynamically a responsive layout
+ * either a two column or a single column layout.
+ * The components are dynamically via slots so it's basically
+ * handling css based on the screen size.
+ *
+ * @summary dynamic two column layout
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 14:11:27
+ * Last modified  : 2019-10-23 15:53:08
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
+
 export default {
   components: {
   },
@@ -34,7 +49,7 @@ export default {
     showPlaceholder: Boolean,
   },
   computed: {
-    firstColWidth: function firstColWidth() {
+    firstColWidth() {
       let bindings = {};
       const colWidth = this.secondColumn && this.secondColumn.length > 0 ? { xs6: true } : { xs12: true };
 
@@ -43,7 +58,7 @@ export default {
 
       return bindings;
     },
-    secondColWidth: function secondColWidth() {
+    secondColWidth() {
       let bindings = {};
       const colWidth = this.secondColumn && this.secondColumn.length > 0 ? { xs6: true } : {};
 
@@ -58,17 +73,11 @@ export default {
     leftOrFullWidth: function leftOrFullWidth() {
       return this.firstColumn && this.firstColumn.length > 0 ? this.halfWidthLeft : this.fullWidthPadding;
     },
-    /**
-       * @returns {Boolean}
-       */
-    rightOrFullWidth: function rightOrFullWidth() {
+    rightOrFullWidth() {
       return this.secondColumn && this.secondColumn.length > 0 ? this.halfWidthRight : this.fullWidthPadding;
     },
-    fullWidthPadding: function fullwidthPadding() {
-      const json = {
-        // xl10: true,
-        // 'offset-xl2': true,
-      };
+    fullwidthPadding() {
+      const json = {};
 
       if (this.$vuetify.breakpoint.xsOnly) {
         json['px-1'] = true;
@@ -81,10 +90,8 @@ export default {
 
       return json;
     },
-    halfWidthLeft: function halfWidthLeft() {
+    halfWidthLeft() {
       const json = {
-        // xl4: true,
-        // 'offset-xl2': true,
         lg5: true,
         'offset-lg1': true,
       };
@@ -102,13 +109,8 @@ export default {
 
       return json;
     },
-    /**
-       * @description
-       * @returns {any}
-       */
-    halfWidthRight: function halfWidthRight() {
+    halfWidthRight() {
       const json = {
-        // xl4: true,
         lg5: true,
       };
 

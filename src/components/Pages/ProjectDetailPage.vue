@@ -70,14 +70,24 @@
 
 <script>
 /**
-   * The projects page lists all the projects and their subprojects.
-   */
+ * The ProjectDetailPage shows all the ProjectDetailVies for a project.
+ *
+ * @summary project detail page
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:12:30
+ * Last modified  : 2019-10-23 16:29:34
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import { mapGetters } from 'vuex';
 import { PROJECTS_PATH, PROJECT_DETAIL_PAGENAME } from '@/router/routeConsts';
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
-} from '@/store/mutationsConsts';
+} from '@/store/mainMutationsConsts';
 import {
   GET_PROJECTS,
   PROJECTS_NAMESPACE,
@@ -102,6 +112,7 @@ export default {
      * @description beforeRouteEnter is used to change background image of this page.
      * It's called via vue-router.
      */
+  name: 'ProjectDetailPage',
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.commit(SET_CURRENT_PAGE, PROJECT_DETAIL_PAGENAME);
@@ -120,7 +131,7 @@ export default {
     });
   },
   beforeRouteUpdate(to, from, next) {
-    const toProject = this.getProject(to.params.id);
+    const toProject = this.projects.find(project => project.id === to.params.id);
     let backRoute = { path: PROJECTS_PATH };
 
     if (toProject.parent) {
@@ -153,6 +164,17 @@ export default {
       metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
       allTags: `${METADATA_NAMESPACE}/allTags`,
     }),
+    projectsCardsParents() {
+      // return this.projects.filter(project => !project.parent);
+      const noSubs = [];
+      for (let i = 0; i < this.projects.length; i++) {
+        const p = this.projects[i];
+        if (!p.parent) {
+          noSubs.push(p);
+        }
+      }
+      return noSubs;
+    },
     projectId() {
       return this.$route.params.id;
     },
@@ -166,11 +188,7 @@ export default {
       return this.currentProject && this.currentProject.packages && this.currentProject.packages.length > 0;
     },
     creatorImg() {
-      if (this.$vuetify.breakpoint.mdAndUp) {
-        return creator;
-      }
-
-      return creatorSmall;
+      return this.$vuetify.breakpoint.mdAndUp ? creator : creatorSmall;
     },
     allMetadataTags() {
       const projectDatasetsTags = [];
@@ -246,18 +264,6 @@ export default {
 
       return current;
     },
-    projectsCardsParents() {
-      const noSubs = [];
-
-      for (let i = 0; i < this.projects.length; i++) {
-        const p = this.projects[i];
-        if (!p.parent) {
-          noSubs.push(p);
-        }
-      }
-
-      return noSubs;
-    },
     /**
      * @description changes the url to page the user was before. Fallback: PROJECTS_PATH
      */
@@ -291,15 +297,8 @@ export default {
         params: { id: subprojectId },
       });
     },
-    isTagSelected(tagName) {
-      if (!tagName || this.selectedTagNames === undefined) {
-        return false;
-      }
-
-      return this.selectedTagNames.indexOf(tagName) >= 0;
-    },
     catchTagClicked(tagName) {
-      if (!this.isTagSelected(tagName)) {
+      if (!this.mixinMethods_isTagSelected(tagName)) {
         this.selectedTagNames.push(tagName);
       }
     },
@@ -308,7 +307,7 @@ export default {
         return;
       }
 
-      if (this.isTagSelected(tagId)) {
+      if (this.mixinMethods_isTagSelected(tagId)) {
         this.selectedTagNames = this.selectedTagNames.filter(tag => tag !== tagId);
       }
     },

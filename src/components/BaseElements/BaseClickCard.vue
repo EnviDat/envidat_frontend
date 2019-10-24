@@ -5,6 +5,7 @@
     <v-container grid-list-md
                   pa-0 >
       <v-layout row align-center >
+        <!-- Image -->
         <v-flex xs5
                 py-0 >
           <v-img class="imagezoom"
@@ -12,6 +13,7 @@
                   :src="img" />
         </v-flex>
 
+        <!-- Text -->
         <v-flex xs7
           px-0 mt-1 >
           <div class="px-2 headline"
@@ -36,27 +38,39 @@
   </v-card>
 </template>
 
-
 <script>
+/**
+ * BaseClickCard.vue creates a small card with a title and an image, it emits the
+ * 'clicked' event with the title a parameter.
+ *
+ * @summary Card with title & img, emits a 'clicked' event
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-02 11:24:00
+ * Last modified  : 2019-10-24 11:37:44
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
 
 // un blurry zooming
 // https://stackoverflow.com/questions/36143337/how-to-prevent-blur-from-css-transform
 
 export default {
+  name: 'BaseClickCard',
   props: {
     title: String,
     img: String,
     color: String,
   },
   methods: {
-    clicked: function clicked() {
-      this.$emit('clicked', this.title.toLowerCase());
+    clicked() {
+      this.$emit('click', this.title.toLowerCase());
     },
   },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
   .card .headline {

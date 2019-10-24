@@ -18,8 +18,8 @@
                       icon-color="primary"
                       color="primary"
                       outlined
-                      tool-tip-text="Close Project Detail"
-                      :tool-tip-bottom="true"
+                      tooltip-text="Close Project Detail"
+                      :tooltip-bottom="true"
                       @clicked="catchBackClicked" />
 
 
@@ -45,6 +45,20 @@
 </template>
 
 <script>
+/**
+ * ProjectHeader.vue shows the title and a background image
+ * of a project entry.
+ *
+ * @summary shows the main infos the a project entry
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 14:11:27
+ * Last modified  : 2019-10-23 16:04:40
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
+
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 export default {
@@ -76,7 +90,7 @@ export default {
 
       return img;
     },
-    dynamicCardBackground: function dynamicCardBackground() {
+    dynamicCardBackground() {
       const gradient = this.dark ? this.blackTopToBottom : this.whiteTopToBottom;
 
       let style = `position: absolute; top: 0px; right: 0px;
@@ -95,7 +109,7 @@ export default {
     },
   },
   methods: {
-    catchBackClicked: function catchBackClicked() {
+    catchBackClicked() {
       this.$emit('clickedBack');
     },
   },

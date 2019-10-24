@@ -1,11 +1,11 @@
 <template>
   <div :style="isSmall ? 'height: 28px;' : 'height: 36px;'"
         @mouseover="hoverBadge = true"
-        @mouseleave="hoverBadge = false"
-        @click.stop="clicked" >
+        @mouseleave="hoverBadge = false" >
 
-    <v-tooltip v-bind="{ top: !toolTipBottom, bottom: toolTipBottom }"
-              :disabled="$vuetify.breakpoint.smAndDown || !toolTipText" >
+    <v-tooltip v-bind="{ top: !tooltipBottom, bottom: tooltipBottom }"
+              :disabled="$vuetify.breakpoint.smAndDown || !tooltipText" >
+
 
       <v-btn slot="activator"
             style="margin: 0 !important;"
@@ -17,34 +17,33 @@
             :href="url"
             :disabled="disabled"
             v-bind="{['target'] : '_blank' }"
-            @click.stop="clicked" >
+            @click.stop="onClick" >
 
-        <div v-if="customIcon"
-              class="iconCentering" >
 
-          <img class="envidatIcon"
-              :src="customIcon" >
-        </div>
+          <div v-if="customIcon"
+                class="iconCentering" >
 
-        <v-icon v-if="materialIconName"
-                :color="iconColor ? iconColor : 'primary'"
-                :style="rotateOnClick && rotateToggle ? 'transform: rotate(-180deg);' : ''" >
-          {{ materialIconName }}
-        </v-icon>
-      </v-btn>
-      <span>{{ toolTipText }}</span>
+            <img class="envidatIcon"
+                :src="customIcon" >
+          </div>
+
+          <v-icon v-if="materialIconName"
+                  :color="iconColor ? iconColor : 'primary'"
+                  :style="rotateOnClick && rotateToggle ? 'transform: rotate(-180deg);' : ''" >
+            {{ materialIconName }}
+          </v-icon>
+        </v-btn>
+      <span>{{ tooltipText }}</span>
     </v-tooltip>
 
-    <div v-if="count > 0"
-          style="position: relative; right: -7px; top: -25px;" >
+    <div v-if="count > 0" style="position: relative; right: -7px; top: -25px;" >
 
       <v-badge overlap
               :style="(hoverBadge && $vuetify.breakpoint.smAndUp) || $vuetify.breakpoint.xsOnly ? 'right: 5px;' : ''"
               color="highlight"
               :class="{ envidatBadgeBigNumber : count > 9,
                         envidatBadge: count <= 9 }" >
-        <span slot="badge"
-              class="black--text" >
+        <span slot="badge" class="black--text" >
           {{ count }}
         </span>
       </v-badge>
@@ -54,12 +53,12 @@
 
 <script>
 /**
- * A round button with an icon, either a custom icon or a material (material design libery) icon.
+ * BaseIconButton.vue creates a round button with an icon, either a custom icon or a material (material design libery) icon.
  * Similar to @class RectangleButton
  * React on the 'clicked' event or pass an @prop url to create a href-link.
  *
- * Fill the @prop toolTipText for a toolTip when hovering over the Button.
- * Use the @prop toolTipBottom to set it to appear beneath the button.
+ * Fill the @prop tooltipText for a tooltip when hovering over the Button.
+ * Use the @prop tooltipBottom to set it to appear beneath the button.
  *
  * When the @prop isToggled is true the background is filled with the @prop color.
  * If @prop outlined is true the button only has an outline in the @prop color,
@@ -74,14 +73,24 @@
  * The @prop isElevated creates a FAB button with high elevation (box-shadows) if true.
  *
  * When @prop disabled is true clicks won't do anything.
+ *
+ * @summary a clickable icon button which emits 'clicked' event
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-02 11:32:12
+ * Last modified  : 2019-10-24 11:23:10
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
  */
 
 export default {
+  name: 'BaseIconButton',
   props: {
     customIcon: String,
     materialIconName: String,
-    toolTipText: String,
-    toolTipBottom: Boolean,
+    tooltipText: String,
+    tooltipBottom: Boolean,
     outlined: Boolean,
     color: String,
     iconColor: String,
@@ -96,18 +105,10 @@ export default {
     marginClass: String,
   },
   data: () => ({
-    showTagsExpanded: false,
-    dark: false,
-    blackTopToBottom: 'rgba(80,80,80, 0.1) 0%, rgba(80,80,80, 0.9) 70%',
-    // whiteTopToBottom: 'rgba(255,255,255, 0.3) 0%, rgba(255,255,255, 1) 60%',
-    whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
     hoverBadge: false,
   }),
   methods: {
-    /**
-     * @description emits 'clicked' event
-     */
-    clicked: function clicked() {
+    onClick() {
       this.$emit('clicked');
     },
   },

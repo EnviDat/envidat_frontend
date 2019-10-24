@@ -1,3 +1,14 @@
+/**
+ * @summary main store mutations
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:34:51 
+ * Last modified  : 2019-10-23 16:42:57
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
@@ -11,7 +22,7 @@ import {
   ADD_USER_NOTIFICATION,
   TRIM_NOTIFICATIONS,
   HIDE_NOTIFICATIONS,
-} from './mutationsConsts';
+} from './mainMutationsConsts';
 
 import { getSpecificApiError } from '@/factories/notificationFactory';
 import { Object } from 'core-js';
@@ -48,7 +59,7 @@ export default {
   },
   [CHECK_FRONTEND_VERSION](state, version) {
     if (version > process.env.VUE_APP_VERSION) {
-      state.showVersionModal = true;
+      state.outdatedVersion = true;
       state.newVersion = version;
     }
   },

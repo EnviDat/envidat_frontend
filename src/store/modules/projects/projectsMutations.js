@@ -1,3 +1,16 @@
+/**
+ * projects store mutations
+ *
+ * @summary projects store mutations
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:34:51 
+ * Last modified  : 2019-10-23 17:37:18
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import {
   GET_PROJECTS,
   GET_PROJECTS_SUCCESS,
@@ -6,7 +19,7 @@ import {
 } from '@/store/projectsMutationsConsts';
 
 import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
-import { ADD_USER_NOTIFICATION } from '@/store/mutationsConsts';
+import { ADD_USER_NOTIFICATION } from '@/store/mainMutationsConsts';
 import projectDataFactory from '@/factories/projectsDataFactory';
 import { getSpecificApiError } from '@/factories/notificationFactory';
 

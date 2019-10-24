@@ -1,3 +1,16 @@
+/**
+ * metadata store mutations
+ *
+ * @summary metadata store mutations
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:34:51
+ * Last modified  : 2019-10-23 16:37:00
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import {
   LOAD_METADATA_CONTENT_BY_ID,
   LOAD_METADATA_CONTENT_BY_ID_SUCCESS,
@@ -28,7 +41,7 @@ import {
   errorMessage,
   getSpecificApiError,
 } from '@/factories/notificationFactory';
-import { ADD_USER_NOTIFICATION } from '@/store/mutationsConsts';
+import { ADD_USER_NOTIFICATION } from '@/store/mainMutationsConsts';
 
 import metaDataFactory from '@/factories/metaDataFactory';
 import globalMethods from '@/factories/globalMethods';

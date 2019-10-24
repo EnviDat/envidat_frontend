@@ -34,9 +34,19 @@
 
 <script>
 /**
-   * The policies page of EnviDat. It consists of:
-   * - TitleImage and Title (ImgAndTextLayout)
-   */
+ * The policies page of EnviDat. It consists of:
+ * - TitleImage and Title (ImgAndTextLayout)
+ *
+ * @summary policies page
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:12:30
+ * Last modified  : 2019-10-23 16:29:11
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import { mapGetters } from 'vuex';
 import MMarkdownPreview from 'm-markdown-preview';
 import {
@@ -46,14 +56,11 @@ import {
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
-} from '@/store/mutationsConsts';
+} from '@/store/mainMutationsConsts';
 import { GET_POLICIES, POLICIES_NAMESPACE } from '@/store/policiesMutationsConsts';
 
-// import BaseIconButton from '@/components/BaseElements/BaseIconButton';
-// import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
-
 export default {
-  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+  beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.commit(SET_CURRENT_PAGE, POLICIES_PAGENAME);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
@@ -66,7 +73,7 @@ export default {
      * @description reset the scrolling to the top,
      * because of the scrolling is set from the browsePage or metaDetailPage
      */
-  mounted: function mounted() {
+  mounted() {
     window.scrollTo(0, 0);
   },
   computed: {
@@ -88,7 +95,7 @@ export default {
     /**
        * @description changes the url to page the user was before. Fallback: BrowsePage
        */
-    catchBackClicked: function catchBackClicked() {
+    catchBackClicked() {
       const backRoute = this.policiesPageBackRoute;
 
       if (backRoute) {

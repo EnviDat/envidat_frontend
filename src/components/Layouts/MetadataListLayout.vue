@@ -144,10 +144,8 @@
       <v-flex v-if="!loading && contentSize <= 0"
               key="noSearchResultsView"
               xs12 mx-2 >
-        <no-search-results-view :no-result-text="noResultText"
-                                :suggestion-text="suggestionText"
-                                @clicked="catchCategoryClicked"
-                                />
+        <no-search-results-view :categoryCards="categoryCards"
+                                @clicked="catchCategoryClicked" />
       </v-flex>
 
     </transition-group>
@@ -156,6 +154,21 @@
 </template>
 
 <script>
+/**
+ * MetadataListLayout.vue uses the FilterKeywordView, FilterMapView and the ControlPanelView
+ * to create a List of metadata cards which can be filtered via the mentioned
+ * filtering components.
+ *
+ * @summary filterable list of metadata cards
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 14:11:27
+ * Last modified  : 2019-10-24 11:30:47
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
+
 import { mapGetters } from 'vuex';
 import { BROWSE_PATH, BROWSE_PAGENAME, METADATADETAIL_PAGENAME } from '@/router/routeConsts';
 import FilterKeywordsView from '@/components/Filtering/FilterKeywordsView';
@@ -174,6 +187,7 @@ import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
 export default {
+  name: 'MetadataListLayout',
   props: {
     listContent: Array,
     // listView: Boolean,
@@ -233,18 +247,6 @@ export default {
       );
     },
     cardGridClass() {
-      // if (this.mapFilteringPossible && this.showMapFilter) {
-      //   const twoThridsSize = {
-      //     xs12: true,
-      //     sm12: true,
-      //     md6: true,
-      //     lg4: true,
-      //     xl3: true,
-      //   };
-
-      //   return twoThridsSize;
-      // }
-
       const fullSize = {
         xs12: true,
         sm6: true,
@@ -263,7 +265,6 @@ export default {
     infiniteHandler($state) {
       const that = this;
       that.vLoading = true;
-      // console.log('loading list from ' + that.vIndex + ' to ' + (that.vIndex + that.vReloadAmount) );
 
       if (that.contentSize <= 0 && $state) {
         $state.complete();
@@ -300,10 +301,6 @@ export default {
     catchTagClicked(tagName) {
       this.$emit('clickedTag', tagName);
     },
-    // catchExpandClicked() {
-    //   this.filterExpanded = !this.filterExpanded;
-    //   this.$emit('clickedExpand');
-    // },
     catchTagCloseClicked(tagId) {
       this.$emit('clickedTagClose', tagId);
     },
@@ -462,7 +459,6 @@ export default {
   },
 };
 </script>
-
 
 <style scoped>
 .itemfade-enter-active,

@@ -1,3 +1,17 @@
+/**
+ * function factory for filtering methods by parsing
+ * the json from the backend.
+ *
+ * @summary function factory for filtering methods
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:07:03 
+ * Last modified  : 2019-10-23 16:07:03 
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 export function tagsIncludedInSelectedTags(tags, selectedTagNames) {
   let selectedTagFound = 0;
 

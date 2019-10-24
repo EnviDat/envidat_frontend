@@ -43,6 +43,20 @@
 </template>
 
 <script>
+/**
+ * ProjectSubprojects.vue shows a list of project cards
+ * for every subproject entry.
+ *
+ * @summary shows a list of (sub)project cards
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 14:11:27
+ * Last modified  : 2019-10-23 16:05:31
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
+
 import ProjectCard from '@/components/Cards/ProjectCard';
 
 export default {
