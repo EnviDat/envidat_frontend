@@ -84,7 +84,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-24 13:32:33
+ * Last modified  : 2019-10-24 13:49:32
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -200,15 +200,6 @@ export default {
       }
 
       this.$router.push({ path: navItem.path, query: '' });
-    },
-    catchSearchClicked(search) {
-      this.$router.push({
-        path: BROWSE_PATH,
-        query: { tags: this.$route.query.tags, search },
-      });
-    },
-    clearSearchTerm() {
-      this.searchTerm = '';
     },
     catchCloseClicked(key) {
       if (!this.notifications) return;
