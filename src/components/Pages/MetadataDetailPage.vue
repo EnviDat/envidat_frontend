@@ -49,8 +49,19 @@
 
 <script>
 /**
-   * The MetadataDetailPage shows all the important information of a metadata entry.
-   */
+ * The MetadataDetailPage shows all the important information of a metadata entry.
+ * It consists of all the MetadataDetailViews.
+ *
+ * @summary metadata detail page
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:12:30
+ * Last modified  : 2019-10-23 18:11:41
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import { mapGetters } from 'vuex';
 import {
   BROWSE_PATH,
@@ -59,7 +70,7 @@ import {
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
-} from '@/store/mutationsConsts';
+} from '@/store/mainMutationsConsts';
 import {
   METADATA_NAMESPACE,
   LOAD_METADATA_CONTENT_BY_ID,
@@ -71,7 +82,6 @@ import MetadataResources from '@/components/MetadataDetailViews/MetadataResource
 import MetadataLocation from '@/components/MetadataDetailViews/MetadataLocation';
 import MetadataDetails from '@/components/MetadataDetailViews/MetadataDetails';
 import MetadataCitation from '@/components/MetadataDetailViews/MetadataCitation';
-import NotFoundView from '@/components/Errors/NotFoundView';
 import metaDataFactory from '@/factories/metaDataFactory';
 import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
 
@@ -82,7 +92,7 @@ import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
 // https://paper-leaf.com/blog/2016/01/creating-blurred-background-using-only-css/
 
 export default {
-  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+  beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.commit(SET_CURRENT_PAGE, METADATADETAIL_PAGENAME);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
@@ -91,7 +101,7 @@ export default {
   /**
      * @description load all the icons once before the first component's rendering.
      */
-  beforeMount: function beforeMount() {
+  beforeMount() {
     this.downloadIcon = this.mixinMethods_getIcon('download');
     this.linkIcon = this.mixinMethods_getIcon('link');
     this.doiIcon = this.mixinMethods_getIcon('doi');
@@ -163,7 +173,7 @@ export default {
      * @description
      */
     createMetadataContent() {
-      let currentContent = this.currentMetadataContent;
+      const currentContent = this.currentMetadataContent;
       const { components } = this.$options;
 
       // always initialize because when changing the url directly the reloading
@@ -176,7 +186,6 @@ export default {
       this.details = null;
 
       if (currentContent && currentContent.title !== undefined) {
-        // currentContent = this.mixinMethods_enhanceMetadataEntry(currentContent, this.cardBGImages);
 
         this.header = metaDataFactory.createHeader(currentContent, this.$vuetify.breakpoint.smAndDown);
 
@@ -313,13 +322,13 @@ export default {
     /**
        * @description
        */
-    currentMetadataContent: function updateContent() {
+    currentMetadataContent() {
       this.createMetadataContent();
     },
     /**
        * @description
        */
-    metadatasContent: function updateContent() {
+    metadatasContent() {
       // in case all the metadataContents are already loaded take it from there
       // if EnviDat is called via MetadataDetailPage URL directly
 
@@ -335,7 +344,6 @@ export default {
     MetadataLocation,
     MetadataDetails,
     MetadataCitation,
-    NotFoundView,
     TwoColumnLayout,
   },
   data: () => ({

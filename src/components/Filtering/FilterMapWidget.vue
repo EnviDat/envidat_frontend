@@ -39,7 +39,7 @@
                           :outlined="pinnedIds.length > 0"
                           :isSmall="mdScreen"
                           :disabled="pinnedIds.length <= 0"
-                          :toolTipText="clearButtonTooltipText"
+                          :tooltipText="clearButtonTooltipText"
                           @clicked="catchClearClicked()" />
       </v-flex>
 
@@ -56,7 +56,7 @@
                           color="highlight"
                           :isSmall="mdScreen"
                           :outlined="true"
-                          :toolTipText="focusText"
+                          :tooltipText="focusText"
                           @clicked="catchFocusClicked()" />
       </v-flex>
 
@@ -76,7 +76,7 @@
                           :outlined="true"
                           :isSmall="mdScreen"
                           :isToggled="pinEnabled"
-                          :toolTipText="pinText"
+                          :tooltipText="pinText"
                           @clicked="catchPinClicked()" />
       </v-flex>
 
@@ -96,7 +96,7 @@
                           :outlined="true"
                           :isSmall="mdScreen"
                           :isToggled="multiPinEnabled"
-                          :toolTipText="multiPinText"
+                          :tooltipText="multiPinText"
                           @clicked="catchMultipinClicked()" />
       </v-flex>
 
@@ -117,7 +117,7 @@
                           :isSmall="mdScreen"
                           :isToggled="polygonEnabled"
                           :outlined="true"
-                          :toolTipText="polygonText"
+                          :tooltipText="polygonText"
                           @clicked="catchPolygonClicked()" />
       </v-flex>
 
@@ -129,6 +129,19 @@
 </template>
 
 <script>
+/**
+ * FilterMapWidget.vue shows the buttons and configurations for the FilterMapView.vue
+ *
+ * @summary view buttons with buttons to show / hide markers on the map
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-02 11:24:00
+ * Last modified  : 2019-10-23 14:49:29
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 export default {

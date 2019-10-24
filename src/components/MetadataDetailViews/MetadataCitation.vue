@@ -20,7 +20,7 @@
                   :key="link.text" >
             <base-rectangle-button margin-class="mx-1 citationButton"
                                     :button-text="link.text"
-                                    :tool-tip-text="link.toolTipText"
+                                    :tool-tip-text="link.tooltipText"
                                     material-icon-name="assignment"
                                     :is-small="true"
                                     icon-color="white"
@@ -56,6 +56,20 @@
 </template>
 
 <script>
+/**
+ * MetadataCitation.vue shows the citation and buttons
+ * to download different xml formatted version of the citation.
+ *
+ * @summary shows the citation of a metadata entry
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 14:11:27
+ * Last modified  : 2019-10-23 15:54:13
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
+
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 
 export default {
@@ -76,27 +90,27 @@ export default {
     citationLinks() {
       return [{
         text: 'DataCite',
-        toolTipText: 'Download DataCite XML citation',
+        tooltipText: 'Download DataCite XML citation',
         url: this.citationXmlLink,
       },
       {
         text: 'ISO 19139',
-        toolTipText: 'Download ISO XML citation',
+        tooltipText: 'Download ISO XML citation',
         url: this.citationIsoXmlLink,
       },
       {
         text: 'GCMD DIF',
-        toolTipText: 'Download GCMD XML citation',
+        tooltipText: 'Download GCMD XML citation',
         url: this.citationGCMDXmlLink,
       },
       {
         text: 'BibTex',
-        toolTipText: 'Download BibTex XML citation',
+        tooltipText: 'Download BibTex XML citation',
         url: this.citationBibtexXmlLink,
       },
       {
         text: 'RIS',
-        toolTipText: 'Download RIS XML citation',
+        tooltipText: 'Download RIS XML citation',
         url: this.citationRisXmlLink,
       },
       ];

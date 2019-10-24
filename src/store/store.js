@@ -1,3 +1,16 @@
+/**
+ * main vuex store module it contains all other store modules.
+ *
+ * @summary main vuex store
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:34:51
+ * Last modified  : 2019-10-23 17:45:07
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import Vue from 'vue';
 import Vuex from 'vuex';
 import createPersist from 'vuex-localstorage';
@@ -7,8 +20,8 @@ import { metadata } from '@/store/modules/metadata/metadata';
 import { policies } from '@/store/modules/policies/policies';
 import { guidelines } from '@/store/modules/guidelines/guidelines';
 import { projects } from '@/store/modules/projects/projects';
-import mutations from '@/store/appMutations';
-import actions from '@/store/appActions';
+import mutations from '@/store/mainMutations';
+import actions from '@/store/mainActions';
 import {
   FOREST,
   SNOW,
@@ -19,6 +32,7 @@ import {
 } from '@/store/categoriesConsts';
 
 const globalMethods = require('@/factories/globalMethods');
+
 const errReport = process.env.VUE_APP_ERROR_REPORTING_ENABLED;
 // the check for 'NULL' is needed because simply nothing will not work
 let errorReportingEnabled = false;
@@ -40,7 +54,7 @@ const store = new Vuex.Store({
     // controls default: [1] means the second [0,1] is active -> map filtering is active per default
     controls: [1],
     browseScrollPosition: 0,
-    showVersionModal: false,
+    outdatedVersion: false,
     newVersion: process.env.VUE_APP_VERSION,
     // config can be overloaded from the backend
     config: { errorReportingEnabled },
@@ -55,7 +69,7 @@ const store = new Vuex.Store({
     aboutText: state => state.aboutText,
     controls: state => state.controls,
     browseScrollPosition: state => state.browseScrollPosition,
-    showVersionModal: state => state.showVersionModal,
+    outdatedVersion: state => state.outdatedVersion,
     newVersion: state => state.newVersion,
     config: state => state.config,
     notifications: state => state.notifications,

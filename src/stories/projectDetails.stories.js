@@ -1,60 +1,36 @@
+/**
+ * @summary story of all the ProjectDetailViews for sandbox testing
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:34:51
+ * Last modified  : 2019-10-24 11:41:37
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 /* eslint-disable import/no-extraneous-dependencies */
-import { storiesOf } from "@storybook/vue";
-import { action } from "@storybook/addon-actions";
+import { storiesOf } from '@storybook/vue';
+import { action } from '@storybook/addon-actions';
+import './js/vuetify-components';
+import globalMethods from '@/factories/globalMethods';
 
-import Vue from "vue";
-
-import {
-  VBtn,
-  VIcon,
-  VImg,
-  VLayout,
-  VFlex,
-  VCard,
-  VCardText,
-  VCardActions,
-  VCardTitle,
-  VCardMedia,
-  VChip,
-  VSpacer,
-  VDivider,
-  VAvatar,
-  VForm,
-  VTextarea
-} from "vuetify/lib";
-
-Vue.component("v-card", VCard);
-Vue.component("v-card-text", VCardText);
-Vue.component("v-card-actions", VCardActions);
-Vue.component("v-card-title", VCardTitle);
-Vue.component("v-card-media", VCardMedia);
-Vue.component("v-chip", VChip);
-Vue.component("v-avatar", VAvatar);
-Vue.component("v-spacer", VSpacer);
-Vue.component("v-divider", VDivider);
-Vue.component("v-form", VForm);
-Vue.component("v-textarea", VTextarea);
-Vue.component("v-btn", VBtn);
-Vue.component("v-icon", VIcon);
-Vue.component("v-img", VImg);
-Vue.component("v-layout", VLayout);
-Vue.component("v-flex", VFlex);
-
-import ProjectHeader from "@/components/ProjectDetailViews/ProjectHeader.vue";
-import ProjectBody from "@/components/ProjectDetailViews/ProjectBody.vue";
+import ProjectHeader from '@/components/ProjectDetailViews/ProjectHeader.vue';
+import ProjectBody from '@/components/ProjectDetailViews/ProjectBody.vue';
 
 // import for css classes
-// import App from "@/App.vue";
-// import MetadataDetailPage from "@/components/Pages/MetadataDetailPage.vue";
+// import App from '@/App.vue';
+// import MetadataDetailPage from '@/components/Pages/MetadataDetailPage.vue';
 
 // get Project test data and enhance it
-import projectJSON from "@/testdata/projects";
-import projectDataFactory from "@/factories/projectsDataFactory";
+import projectJSON from '@/testdata/projects';
+import projectDataFactory from '@/factories/projectsDataFactory';
+
 const enhancedProjects = projectDataFactory.enhanceSubprojectsFromExtras(projectJSON.result);
 const projects = enhancedProjects;
 
-import globalMethods from "@/factories/globalMethods";
-const imgPaths = require.context( '../assets/about/', false, /\.jpg$/);
+
+const imgPaths = require.context('../assets/about/', false, /\.jpg$/);
 const imgName = 'mission';
 const images = globalMethods.methods.mixinMethods_importImages(imgPaths, imgName);
 const defaultImg = images[`./${imgName}.jpg`];
@@ -69,12 +45,12 @@ const body2 = projects[6];
 const body3 = projects[8];
 
 export const methods = {
-  onCardClick: action("clicked on card"),
-  onTagClick: action("clicked on tag")
+  onCardClick: action('clicked on card'),
+  onTagClick: action('clicked on tag'),
 };
 
-storiesOf("7 Project | Detail Views", module)
-  .add("Header", () => ({
+storiesOf('6 Detail Views | Projects', module)
+  .add('Project Header', () => ({
     components: { ProjectHeader },
     template: `
     <v-layout row wrap>
@@ -118,9 +94,9 @@ storiesOf("7 Project | Detail Views", module)
       header2,
       header3,
       defaultImg,
-    })
+    }),
   }))
-  .add("Body", () => ({
+  .add('Project Body', () => ({
     components: { ProjectBody },
     template: `
     <v-layout row wrap>
@@ -162,5 +138,5 @@ storiesOf("7 Project | Detail Views", module)
       body1,
       body2,
       body3,
-    })
-  }));  
+    }),
+  }));

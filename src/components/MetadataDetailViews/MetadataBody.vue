@@ -5,6 +5,7 @@
     <v-card-text v-if="fullDescription"
                   ref="description"
                   class="heightAndScroll pb-4" >
+
       <m-markdown-preview :markdown="fullDescription"
                           :options="{ html: true,
                                       xhtmlOut: true,
@@ -34,31 +35,28 @@
                         outlined
                         :rotateOnClick="true"
                         :rotateToggle="showFullDescription"
-                        :toolTipText="showFullDescription ? 'Hide full description' : 'Show full description'"
+                        :tooltipText="showFullDescription ? 'Hide full description' : 'Show full description'"
                         @clicked="showFullDescription = !showFullDescription" />
 
     </v-card-actions>
 
-    <!-- <v-card-actions
-      v-show="maxDescriptionLengthReached"
-      :style="`position: absolute; bottom: 0; right: 0px;`"
-    >
-      <v-spacer />
-
-      <v-btn icon
-        @click.native="readMore()"
-      >
-        <v-icon color="accent"
-          :style="this.showFullDescription ? 'transform: rotate(-180deg); font-size: 30px !important;' : 'transform: rotate(0deg); font-size: 30px !important;'"
-        >
-          expand_more
-        </v-icon>
-      </v-btn>
-    </v-card-actions> -->
   </v-card>
 </template>
 
 <script>
+/**
+ * MetadataBody.vue renders markdown showing the description of the metadatas.
+ *
+ * @summary shows the description of a metadata entry
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 14:11:27
+ * Last modified  : 2019-10-23 15:57:23
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
+
 import MMarkdownPreview from 'm-markdown-preview';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
@@ -71,20 +69,6 @@ export default {
     genericProps: Object,
     showPlaceholder: Boolean,
   },
-  // updated: function updated() {
-  //   if (this.genericProps && !this.checkedGenericProps) {
-  //     Object.assign(this, 'props', this.genericProps);
-
-  //     this.checkedGenericProps = true;
-  //   }
-  // },
-  data: () => ({
-    isOnTop: false,
-    showFullDescription: false,
-    checkedGenericProps: false,
-    maxTextLength: 1000,
-    emptyText: 'No description found for this dataset.',
-  }),
   computed: {
     description() {
       return this.mixinMethods_getGenericProp('description');
@@ -114,13 +98,20 @@ export default {
       return this.$refs.description && this.$refs.description.clientHeight >= 500 ? '10px' : '0';
     },
   },
+  data: () => ({
+    isOnTop: false,
+    showFullDescription: false,
+    checkedGenericProps: false,
+    maxTextLength: 1000,
+    emptyText: 'No description found for this dataset.',
+  }),
 };
 </script>
 
 <style scoped>
 
-.heightAndScroll {
-  max-height: 500px;
-  overflow-y: auto !important;
-}
+  .heightAndScroll {
+    max-height: 500px;
+    overflow-y: auto !important;
+  }
 </style>

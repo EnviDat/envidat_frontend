@@ -1,23 +1,18 @@
 <template>
-  <div  @mouseover="hovered = true"
-        @mouseleave="hovered = false" >
+  <div @mouseover="hovered = true" @mouseleave="hovered = false" >
+
+    <!-- Top of Card -->
     <v-card ripple
-            height="150px"
+            height="150"
             :class="`elevation-${hovered ? 5 : 3}`"
             style="z-index: 1;"
             @click.native="cardClick" >
 
-      <v-layout row
-                fill-height
-                style="max-width: 100%; background-color: white; border-radius: 2px;"
-                class="ma-0" >
-
-          <v-flex v-if="img"
-                  xs6 pa-0 >
-
+      <v-layout fill-height style="max-width: 100%; background-color: white; border-radius: 2px;" class="ma-0" >
+          <v-flex v-if="img" xs6 pa-0 >
             <v-img style="height: 100%; border-radius: 2px 0px 0px 2px;"
-                    :cover="img ? img.width < 200 : true"
-                    :contain="img ? img.width > 200 : false"
+                    :cover="img.width < 200"
+                    :contain="img.width > 200"
                     :src="img"
                     :lazy-src="defaultImg"
                     />
@@ -26,7 +21,7 @@
         <v-flex xs6 ma-auto>
           <div class="title"
                 style="word-break: break-word;"
-                :class="this.dark ? 'white--text' : 'black--text'"
+                :class="dark ? 'white--text' : 'black--text'"
           >
             {{ truncatedTitle }}
           </div>
@@ -35,6 +30,7 @@
       </v-layout>
     </v-card>
 
+    <!-- Bottom of Card -->
     <v-card ripple
             height="100%"
             style="z-index: 0;"
@@ -46,46 +42,54 @@
         {{ truncatedDescription }}
       </v-card-text>
 
-      <v-card-text v-if="subProjects"
-                  class="py-0" >
+      <v-card-text v-if="subProjects" class="py-0" >
         <strong>Subprojects</strong>
       </v-card-text>
 
       <v-card-text v-if="subProjects" >
-
-        <v-layout v-for="sub in subProjects"
-                  :key="sub.id"
-                  row wrap
-                  align-center
-                  pr-2>
-
+        <v-layout v-for="sub in subProjects" :key="sub.id" wrap align-center pr-2>
           <v-flex xs11 py-0>{{ sub.title }}</v-flex>
-
           <v-flex xs1 py-0>
             <base-icon-button materialIconName="find_in_page"
                             color="transparent"
                             iconColor="secondary"
-                            :toolTipText="`Open Subproject ${sub.title}`"
-                            toolTipBottom
+                            :tooltipText="`Open Subproject ${sub.title}`"
+                            tooltipBottom
                             :isSmall="true"
-                            @clicked="subprojectClick(sub.id)" />
+                            @click="subprojectClick(sub.id)" />
           </v-flex>
         </v-layout>
-
       </v-card-text>
-
     </v-card>
   </div>
 </template>
 
 
 <script>
+/**
+ * ProjectCard.vue creates a card with a header image, title, keywords and preview description.
+ * When clicked its emits the 'clickedEvent' event, also the clickedTag can be emitted.
+ *
+ * @summary card with img, title, keywords and preview description
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-02 11:24:00
+ * Last modified  : 2019-10-23 14:38:42
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
+
+/**
+ * TODO: Difference defaultImage vs img
+ */
 
 // checkout skeleton
 // https://github.com/ToxicJojo/SkeletonPlaceholder
 
 export default {
+  name: 'ProjectCard',
   components: {
     BaseIconButton,
   },
@@ -112,23 +116,17 @@ export default {
         if (splits.length > 0) {
           modifiedTitle = splits[0].trim();
         }
-
         if (this.maxTitleLengthReached) {
           return `${modifiedTitle.substring(0, maxLength)}...`;
         }
-
         return modifiedTitle;
       }
-
       return '';
     },
     truncatedDescription() {
-      const maxLength = this.maxDescriptionLength;
-
       if (this.description !== undefined && this.description.length > 0) {
-        return `${this.description.substring(0, maxLength)}...`;
+        return `${this.description.substring(0, this.maxDescriptionLength)}...`;
       }
-
       return `No description found for ${this.truncatedTitle}`;
     },
   },
@@ -141,19 +139,13 @@ export default {
     },
   },
   data: () => ({
-    // headerImgWidth: 400,
     maxDescriptionLength: 290,
     maxTitleLength: 100,
-    // maxTags: 3,
-    maxTagTextlength: 40,
-    blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
-    whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
     hovered: false,
   }),
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
   .placeholder .black_title {
@@ -170,6 +162,10 @@ export default {
 
   .white_title{
     color: rgba(255,255,255,.9) !important;
+  }
+
+  .card_tag_placeholder {
+    opacity: 0.75;
   }
 
   .expand-enter-active, .expand-leave-active {
