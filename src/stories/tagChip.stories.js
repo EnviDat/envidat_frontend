@@ -2,7 +2,7 @@
  * @summary story of TagChip & TagChipPlaceholder for sandbox testing
  * @author Dominik Haas-Artho
  *
- * Created at     : 2019-10-23 16:34:51 
+ * Created at     : 2019-10-23 16:34:51
  * Last modified  : 2019-10-23 16:54:30
  *
  * This file is subject to the terms and conditions defined in
@@ -10,19 +10,19 @@
  */
 
 /* eslint-disable import/no-extraneous-dependencies */
-import { storiesOf } from "@storybook/vue";
-import { action } from "@storybook/addon-actions";
+import { storiesOf } from '@storybook/vue';
+import { action } from '@storybook/addon-actions';
 import './js/vuetify-components';
 
-import TagChip from "@/components/Cards/TagChip.vue";
-import TagChipPlaceholder from "@/components/Cards/TagChipPlaceholder.vue";
+import TagChip from '@/components/Cards/TagChip.vue';
+import TagChipPlaceholder from '@/components/Cards/TagChipPlaceholder.vue';
 
 export const methods = {
-  onClick: action("clicked")
+  onClick: action('clicked'),
 };
 
-storiesOf("4 Filtering | Keyword Tag", module)
-  .add("Tag states", () => ({
+storiesOf('4 Filtering | Keyword Tag', module)
+  .add('Tag states', () => ({
     components: { TagChip, TagChipPlaceholder },
     template: `
     <v-layout row wrap>
@@ -56,5 +56,5 @@ storiesOf("4 Filtering | Keyword Tag", module)
       </v-flex>
 
     </v-layout>`,
-    methods
+    methods,
   }));

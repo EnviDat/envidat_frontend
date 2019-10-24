@@ -1,11 +1,10 @@
-
 <template>
   <div :style="isSmall ? 'height: 28px;' : 'height: 36px;'"
         @mouseover="hoverBadge = true"
-        @mouseleave="hoverBadge = false"
-  >
+        @mouseleave="hoverBadge = false" >
+
     <v-tooltip v-bind="{ top: !tooltipBottom, bottom: tooltipBottom }"
-              :disabled="$vuetify.breakpoint.smAndDown || !toolTipText" >
+              :disabled="$vuetify.breakpoint.smAndDown || !tooltipText" >
 
 
       <v-btn slot="activator"
@@ -18,7 +17,7 @@
             :href="url"
             :disabled="disabled"
             v-bind="{['target'] : '_blank' }"
-            @click.stop="clicked" >
+            @click.stop="onClick" >
 
 
           <div v-if="customIcon"
@@ -34,7 +33,6 @@
             {{ materialIconName }}
           </v-icon>
         </v-btn>
-      </template>
       <span>{{ tooltipText }}</span>
     </v-tooltip>
 
@@ -80,7 +78,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:32:12
- * Last modified  : 2019-10-23 14:04:41
+ * Last modified  : 2019-10-24 11:23:10
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -111,7 +109,7 @@ export default {
   }),
   methods: {
     onClick() {
-      this.$emit('click');
+      this.$emit('clicked');
     },
   },
 };

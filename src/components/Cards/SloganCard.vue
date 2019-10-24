@@ -37,7 +37,9 @@
 
     <v-card-actions class="ma-0 pa-2"
                     style="position: absolute; bottom: 0; right: 0;" >
-      <base-rectangle-button class="mr-3"
+
+      <base-rectangle-button v-if="moreButtonText & moreButtonCallback"
+                                class="mr-3"
                                 :buttonText="moreButtonText"
                                 :isSmall="true"
                                 :isFlat="true"
@@ -60,7 +62,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-23 14:14:33
+ * Last modified  : 2019-10-24 11:24:40
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -83,9 +85,6 @@ export default {
     moreButtonCallback: Function,
   },
   methods: {
-    onClick() {
-      this.$emit('click');
-    },
   },
 };
 </script>

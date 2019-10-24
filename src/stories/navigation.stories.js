@@ -2,21 +2,21 @@
  * @summary story of all the Navigation components for sandbox testing
  * @author Dominik Haas-Artho
  *
- * Created at     : 2019-10-23 16:34:51 
- * Last modified  : 2019-10-23 16:53:25
+ * Created at     : 2019-10-23 16:34:51
+ * Last modified  : 2019-10-24 11:26:19
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
 // /* eslint-disable import/no-extraneous-dependencies */
-import {storiesOf} from '@storybook/vue';
-import {action} from '@storybook/addon-actions';
+import { storiesOf } from '@storybook/vue';
+import { action } from '@storybook/addon-actions';
 import './js/vuetify-components';
 
-import TheNavigation from "@/components/Navigation/TheNavigation.vue";
-import TheNavigationSmall from "@/components/Navigation/TheNavigationSmall.vue";
-import TheNavigationToolbar from "@/components/Navigation/TheNavigationToolbar.vue";
+import TheNavigation from '@/components/Navigation/TheNavigation.vue';
+import TheNavigationSmall from '@/components/Navigation/TheNavigationSmall.vue';
+import TheNavigationToolbar from '@/components/Navigation/TheNavigationToolbar.vue';
 
 export const methods = {
   onMenuClick: action('clicked on menu'),
@@ -56,7 +56,7 @@ const navItems = [
   {
     title: 'Contact', icon: 'contact_support', tooltip: 'Do you need support?', active: false,
   },
-  {title: 'Menu', icon: 'menu', active: true},
+  { title: 'Menu', icon: 'menu', active: true },
 ];
 
 storiesOf('5 Navigation | Redesigned Navigation', module)
@@ -64,7 +64,7 @@ storiesOf('5 Navigation | Redesigned Navigation', module)
     components: { TheNavigation },
     template: `
     <v-container>
-      <navigation :navItems="navItems" :version="appVersion" />
+      <the-navigation :navItems="navItems" :version="appVersion" />
 
       <p v-for="(item, index) in navItems" :key="index" 
           v-show="item.active"
@@ -77,13 +77,13 @@ storiesOf('5 Navigation | Redesigned Navigation', module)
     navItems,
     appVersion,
   }),
-  methods
+  methods,
 }))
-.add("Menu Mini", () => ({
+.add('Menu small screens', () => ({
   components: { TheNavigationSmall },
   template: `
     <v-container>
-      <navigation-mini :navItems="navItems"
+      <the-navigation-small :navItems="navItems"
                         style="position: fixed; top: auto; left: auto; bottom: 25px; right: 25px;"
                         class="elevation-2"
                         />
@@ -97,23 +97,23 @@ storiesOf('5 Navigation | Redesigned Navigation', module)
   data: () => ({ navItems }),
   methods
 }))
-.add("Toolbar", () => ({
+.add('Toolbar', () => ({
   components: { TheNavigationToolbar },
   template: `
-      <navigation-toolbar
+      <the-navigation-toolbar
                   labelText="Search for something"
             v-on:menuClick="onMenuClick"
             v-on:searchClick="onSearchClick"
             v-on:loginClick="onLoginClick"
             />`,
-  methods
-})).add("Menu & Toolbar", () => ({
+  methods,
+})).add('Menu & Toolbar', () => ({
   components: { TheNavigation, TheNavigationToolbar },
   template: `
-      <navigation
+      <the-navigation
         :navItems="navItems"
       />  
-      <navigation-toolbar
+      <the-navigation-toolbar
                   labelText="Search for something"
             @menuClick="onMenuClick"
             @searchClick="onSearchClick"
@@ -121,5 +121,5 @@ storiesOf('5 Navigation | Redesigned Navigation', module)
             />
   `,
   data: () => ({ navItems }),
-  methods
+  methods,
 }));
