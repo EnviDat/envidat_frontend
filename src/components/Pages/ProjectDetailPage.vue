@@ -112,6 +112,7 @@ export default {
      * @description beforeRouteEnter is used to change background image of this page.
      * It's called via vue-router.
      */
+  name: 'ProjectDetailPage',
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.commit(SET_CURRENT_PAGE, PROJECT_DETAIL_PAGENAME);
@@ -130,7 +131,7 @@ export default {
     });
   },
   beforeRouteUpdate(to, from, next) {
-    const toProject = this.getProject(to.params.id);
+    const toProject = this.projects.find(project => project.id === to.params.id);
     let backRoute = { path: PROJECTS_PATH };
 
     if (toProject.parent) {
@@ -163,6 +164,17 @@ export default {
       metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
       allTags: `${METADATA_NAMESPACE}/allTags`,
     }),
+    projectsCardsParents() {
+      // return this.projects.filter(project => !project.parent);
+      const noSubs = [];
+      for (let i = 0; i < this.projects.length; i++) {
+        const p = this.projects[i];
+        if (!p.parent) {
+          noSubs.push(p);
+        }
+      }
+      return noSubs;
+    },
     projectId() {
       return this.$route.params.id;
     },
@@ -176,11 +188,7 @@ export default {
       return this.currentProject && this.currentProject.packages && this.currentProject.packages.length > 0;
     },
     creatorImg() {
-      if (this.$vuetify.breakpoint.mdAndUp) {
-        return creator;
-      }
-
-      return creatorSmall;
+      return this.$vuetify.breakpoint.mdAndUp ? creator : creatorSmall;
     },
     allMetadataTags() {
       const projectDatasetsTags = [];
@@ -255,18 +263,6 @@ export default {
       }
 
       return current;
-    },
-    projectsCardsParents() {
-      const noSubs = [];
-
-      for (let i = 0; i < this.projects.length; i++) {
-        const p = this.projects[i];
-        if (!p.parent) {
-          noSubs.push(p);
-        }
-      }
-
-      return noSubs;
     },
     /**
      * @description changes the url to page the user was before. Fallback: PROJECTS_PATH

@@ -45,9 +45,7 @@
       <v-container fluid
                     pa-2 >
         <v-layout column>
-
-          <v-flex xs12
-                  mx-0 >
+          <v-flex xs12 mx-0 >
 
             <transition name="fade" mode="out-in">
               <router-view />
@@ -56,19 +54,20 @@
           </v-flex>
 
           <v-flex xs12
-            style="position: absolute; right: 5px; bottom: 2px; font-size: 7px !important;"
-          >Verison: {{ appVersion }}</v-flex>
+                   style="position: absolute; right: 5px; bottom: 2px; font-size: 7px !important;" >
+            Verison: {{ appVersion }}
+          </v-flex>
         </v-layout>
       </v-container>
 
       <v-dialog v-model="showReloadDialog" persistent max-width="290">
         <v-card>
           <v-card-title class="headline">New Version Available!</v-card-title>
-          <v-card-text>{{ dialogVersionText() }}</v-card-text>
+          <v-card-text>{{ dialogVersionText }}</v-card-text>
           <v-card-actions>
             <v-spacer />
-            <v-btn color="green darken-1" flat @click="reloadApp();">Reload</v-btn>
-            <v-btn color="green darken-1" flat @click="dialogCanceled = true">Cancel</v-btn>
+            <v-btn color="green darken-1" flat @click="reloadApp()">Reload</v-btn>
+            <v-btn color="green darken-1" flat @click="reloadDialogCanceled = true">Cancel</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -85,7 +84,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-23 17:33:18
+ * Last modified  : 2019-10-24 13:49:32
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -127,17 +126,6 @@ export default {
   beforeCreate() {
     // check for the backend version
     this.$store.dispatch(SET_CONFIG);
-    // window.applicationCache.onupdateready = function (e) {
-    //   console.log("applicationCache.onupdateready");
-    // };
-
-    // window.applicationCache.onerror = function (e) {
-    //   console.log("applicationCache.onerror");
-    // };
-
-    // window.applicationCache.onnoupdate = function (e) {
-    //   console.log("applicationCache.onnoupdate");
-    // };
   },
   created() {
     this.loadAllMetadata();
@@ -150,9 +138,7 @@ export default {
   },
   methods: {
     updateActiveStateOnNavItems() {
-      if (!this.currentPage) {
-        return;
-      }
+      // console.log(this.currentPage);
 
       for (let i = 0; i < this.navItems.length; i++) {
         const item = this.navItems[i];
@@ -188,11 +174,9 @@ export default {
         window.open(item.path, '_blank');
         return;
       }
-
       if (this.$route.name === item.pageName) {
         return;
       }
-
       this.$router.push({ path: item.path, query: '' });
     },
     catchSearchClicked(search) {
@@ -203,6 +187,19 @@ export default {
     },
     catchSearchCleared() {
       this.searchTerm = '';
+    },
+    navigateTo(navItem) {
+      if (navItem.pageName === 'external') {
+        window.open(navItem.path, '_blank');
+      } else {
+        this.$router.push(navItem.path);
+      }
+
+      if (this.$route.name === navItem.pageName) {
+        return;
+      }
+
+      this.$router.push({ path: navItem.path, query: '' });
     },
     catchCloseClicked(key) {
       if (!this.notifications) return;
@@ -218,7 +215,7 @@ export default {
     reloadApp() {
       window.location.reload();
     },
-    loadAllMetadata: function loadAllMetadata() {
+    loadAllMetadata() {
       if (!this.loadingMetadatasContent && this.metadatasContentSize <= 0) {
         this.$store.dispatch(`metadata/${BULK_LOAD_METADATAS_CONTENT}`);
       }
@@ -240,7 +237,7 @@ export default {
       isFilteringContent: `${METADATA_NAMESPACE}/isFilteringContent`,
       currentPage: 'currentPage',
       appBGImage: 'appBGImage',
-      showVersionModal: 'showVersionModal',
+      outdatedVersion: 'outdatedVersion',
       newVersion: 'newVersion',
       config: 'config',
       notifications: 'notifications',
@@ -264,34 +261,20 @@ export default {
     searchCount() {
       return this.filteredContent !== undefined ? Object.keys(this.filteredContent).length : 0;
     },
-    menuItem() {
-      let menuItem = { active: true };
-
-      this.navItems.forEach((el) => {
-        if (el.icon === 'menu') {
-          menuItem = el;
-        }
-      });
-
-      // return default with active true so all items will be shown
-      return menuItem;
-    },
     metadatasContentSize: function metadatasContentSize() {
       return this.metadatasContent !== undefined
         ? Object.keys(this.metadatasContent).length
         : 0;
     },
     showReloadDialog() {
-      return this.showVersionModal && !this.dialogCanceled;
+      return this.outdatedVersion && !this.reloadDialogCanceled;
     },
-    dynamicBackground: function dynamicBackground() {
+    dynamicBackground() {
       const imageKey = this.appBGImage;
       const bgImg = this.appBGImages[imageKey];
-      // console.log(imageKey + " bgImg " + bgImg);
       let bgStyle = '';
 
       if (bgImg) {
-        // bgStyle = `background-image: url(${bgImg}) !important;`;
         bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.25) 100%), url(${bgImg}) !important;`;
 
         bgStyle += `background-position: center top !important;
@@ -299,15 +282,23 @@ export default {
                       background-size: cover !important; `;
 
         if (bgImg.includes('browsepage')) {
-          // bgStyle = `background-image: url(${bgImg}) !important;`;
           bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
 
           bgStyle += `background-position: center top !important;
                         background-repeat: repeat !important; `;
         }
       }
-
       return bgStyle;
+    },
+    menuItem() {
+      let menuItem = { active: true };
+      this.navItems.forEach((el) => {
+        if (el.icon === 'menu') {
+          menuItem = el;
+        }
+      });
+      // return default with active true so all items will be shown
+      return menuItem;
     },
   },
   components: {
@@ -329,8 +320,7 @@ export default {
   /* eslint-disable object-curly-newline */
   data: () => ({
     appBGImages: {},
-    prevHeight: 0,
-    dialogCanceled: false,
+    reloadDialogCanceled: false,
     appVersion: process.env.VUE_APP_VERSION,
     showMenu: true,
     NavToolbarZIndex: 1150,

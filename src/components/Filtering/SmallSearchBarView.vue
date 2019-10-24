@@ -28,8 +28,13 @@
         </v-tooltip>
       </v-flex>
 
+      <v-flex v-if="hasButton"
+                shrink>
+        <base-rectangle-button :button-text="buttonText" :is-small="true" @click="clicked" />
+      </v-flex>
+
       <v-flex v-if="!hasButton"
-              shrink >
+                shrink >
         <base-icon-button materialIconName="search"
                           marginClass="ma-0"
                           color="transparent"

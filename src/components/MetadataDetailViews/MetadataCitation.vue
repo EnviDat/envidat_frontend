@@ -20,7 +20,7 @@
                   :key="link.text" >
             <base-rectangle-button margin-class="mx-1 citationButton"
                                     :button-text="link.text"
-                                    :tool-tip-text="link.toolTipText"
+                                    :tool-tip-text="link.tooltipText"
                                     material-icon-name="assignment"
                                     :is-small="true"
                                     icon-color="white"
@@ -90,27 +90,27 @@ export default {
     citationLinks() {
       return [{
         text: 'DataCite',
-        toolTipText: 'Download DataCite XML citation',
+        tooltipText: 'Download DataCite XML citation',
         url: this.citationXmlLink,
       },
       {
         text: 'ISO 19139',
-        toolTipText: 'Download ISO XML citation',
+        tooltipText: 'Download ISO XML citation',
         url: this.citationIsoXmlLink,
       },
       {
         text: 'GCMD DIF',
-        toolTipText: 'Download GCMD XML citation',
+        tooltipText: 'Download GCMD XML citation',
         url: this.citationGCMDXmlLink,
       },
       {
         text: 'BibTex',
-        toolTipText: 'Download BibTex XML citation',
+        tooltipText: 'Download BibTex XML citation',
         url: this.citationBibtexXmlLink,
       },
       {
         text: 'RIS',
-        toolTipText: 'Download RIS XML citation',
+        tooltipText: 'Download RIS XML citation',
         url: this.citationRisXmlLink,
       },
       ];

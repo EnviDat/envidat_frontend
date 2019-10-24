@@ -56,7 +56,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-23 18:17:39
+ * Last modified  : 2019-10-24 13:47:06
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -182,12 +182,9 @@ export default {
       this.markerCount = 0;
 
       if (this.map) {
-        this.map.on('locationerror', () => {
-          this.checkError();
-        });
+        this.map.on('locationerror', () => this.errorLoadingLeaflet = true);
 
         this.addOpenStreetMapLayer(this.map);
-
         this.updateMap();
 
         this.map.on('zoomend', () => {
@@ -217,7 +214,6 @@ export default {
       try {
         return L.geoJSON(geoJsonString);
       } catch (error) {
-        // console.log(`Tried to parse GeoJSON ${geoJsonString} failed with ${error}`);
         return undefined;
       }
     },
@@ -250,8 +246,6 @@ export default {
       point.on({ click: this.catchPointClick });
       point.on({ mouseover: this.catchPointHover });
       point.on({ mouseout: this.catchPointHoverLeave });
-
-
       return point;
     },
     getPolygon(coords, id, title, selected) {
@@ -263,7 +257,7 @@ export default {
         fillOpacity: 0,
       });
 
-      polygon.on({ click: this.catchPointClick });
+      polygon.on({ click: this.pointClick });
       polygon.id = id;
       polygon.title = title;
 
@@ -367,15 +361,10 @@ export default {
       if (allLayers.length > 0) {
         const feat = L.featureGroup(allLayers);
         const featBounds = feat.getBounds();
-
-        // if (featBounds.contains(this.initialBounds)) {
-        //   this.map.fitBounds(this.initialBounds);
-        // } else {
         this.map.fitBounds(featBounds, { maxZoom: 8 });
-        // }
       }
     },
-    clearLayers: function clearLayers(map, specificClear) {
+    clearLayers(map, specificClear) {
       if (!map) {
         return;
       }
@@ -406,13 +395,11 @@ export default {
           try {
             el.addTo(this.map);
           } catch (error) {
-            // console.log(`showMapElements error: ${error} on element ${el.title}`);
           }
         } else {
           try {
             this.map.removeLayer(el);
           } catch (error) {
-            // console.log(`showMapElements error: ${error} on element ${el.title}`);
           }
         }
       });
@@ -426,8 +413,6 @@ export default {
       this.addElementsToMap(this.pinLayerGroup, this.pinEnabled);
       this.addElementsToMap(this.multiPinLayerGroup, this.multiPinEnabled);
       this.addElementsToMap(this.polygonLayerGroup, this.polygonEnabled, true);
-
-      // this.addGeoJSONToMap();
     },
     updatePins() {
       this.clearLayers(this.map, 'pins');
@@ -492,18 +477,22 @@ export default {
 
 <style>
 
-.rotating {
-  animation: rotateturn 1s steps(8, end) infinite;
-}
-
-@keyframes rotateturn {
-  to {
-    transform: rotate(360deg);
+  .rotating {
+    animation: rotateturn 1s steps(8, end) infinite;
   }
-}
 
-@keyframes rotate {
-    from {transform: rotate(0deg);}
-    to {transform: rotate(360deg);}
-}
+  @keyframes rotateturn {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
 </style>

@@ -319,15 +319,15 @@ export default {
       // react on changes of the route (browser back / forward click)
       this.checkRouteChanges(from);
     },
-    isFilteringContent: function watchFiltering() {
+    isFilteringContent() {
       if (!this.isFilteringContent) {
         this.mixinMethods_setScrollPosition(this.browseScrollPosition);
       }
     },
-    metadatasContent: function watchFilterContent() {
+    metadatasContent() {
       this.filterContent();
     },
-    searchingMetadatasContentOK: function watchSearchFilterContent() {
+    searchingMetadatasContentOK() {
       if (this.searchingMetadatasContentOK) {
         this.filterContent();
       }

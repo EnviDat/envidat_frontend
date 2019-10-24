@@ -54,7 +54,7 @@ const store = new Vuex.Store({
     // controls default: [1] means the second [0,1] is active -> map filtering is active per default
     controls: [1],
     browseScrollPosition: 0,
-    showVersionModal: false,
+    outdatedVersion: false,
     newVersion: process.env.VUE_APP_VERSION,
     // config can be overloaded from the backend
     config: { errorReportingEnabled },
@@ -69,7 +69,7 @@ const store = new Vuex.Store({
     aboutText: state => state.aboutText,
     controls: state => state.controls,
     browseScrollPosition: state => state.browseScrollPosition,
-    showVersionModal: state => state.showVersionModal,
+    outdatedVersion: state => state.outdatedVersion,
     newVersion: state => state.newVersion,
     config: state => state.config,
     notifications: state => state.notifications,

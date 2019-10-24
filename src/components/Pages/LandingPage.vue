@@ -40,7 +40,7 @@
               <base-click-card :title="card.title"
                                 :img="card.img"
                                 :color="card.darkColor"
-                                @clicked="catchCategoryClicked(card.type)" />
+                                @click="catchCategoryClicked(card.type)" />
             </v-flex>
           </v-layout>
         </v-container>
@@ -93,7 +93,7 @@ import {
 // https://codepen.io/suez/pen/dPqxoM
 
 export default {
-  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+  beforeRouteEnter(to, from, next) {
     next((vm) => {
       // console.log("landing beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
       vm.$store.commit(SET_CURRENT_PAGE, LANDING_PAGENAME);
@@ -116,7 +116,7 @@ export default {
       const tagsEncoded = this.mixinMethods_encodeTagForUrl([cardType.toUpperCase()]);
       this.mixinMethods_additiveChangeRoute(BROWSE_PATH, undefined, tagsEncoded);
     },
-    catchSearchClicked: function catchSearchClicked(search) {
+    catchSearchClicked(search) {
       this.$router.push({
         path: BROWSE_PATH,
         query: { search },
@@ -131,13 +131,13 @@ export default {
     catchEnterclick: function catchEnterclick() {
       this.redirectToDashboard();
     },
-    catchSingupclick: function catchSingupclick() {
+    catchSingupclick() {
       this.redirectToDashboard();
     },
-    catchLoginclick: function catchLoginclick() {
+    catchLoginclick() {
       this.redirectToDashboard();
     },
-    redirectToDashboard: function redirectToDashboard() {
+    redirectToDashboard() {
       window.open('https://www.envidat.ch/user/reset', '_blank');
       // window.location.href = 'https://www.envidat.ch/user/reset';
       // this.$router.push('https://www.envidat.ch/user/reset');

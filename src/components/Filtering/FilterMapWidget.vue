@@ -39,7 +39,7 @@
                           :outlined="pinnedIds.length > 0"
                           :isSmall="mdScreen"
                           :disabled="pinnedIds.length <= 0"
-                          :toolTipText="clearButtonTooltipText"
+                          :tooltipText="clearButtonTooltipText"
                           @clicked="catchClearClicked()" />
       </v-flex>
 
@@ -56,7 +56,7 @@
                           color="highlight"
                           :isSmall="mdScreen"
                           :outlined="true"
-                          :toolTipText="focusText"
+                          :tooltipText="focusText"
                           @clicked="catchFocusClicked()" />
       </v-flex>
 
@@ -76,7 +76,7 @@
                           :outlined="true"
                           :isSmall="mdScreen"
                           :isToggled="pinEnabled"
-                          :toolTipText="pinText"
+                          :tooltipText="pinText"
                           @clicked="catchPinClicked()" />
       </v-flex>
 
@@ -96,7 +96,7 @@
                           :outlined="true"
                           :isSmall="mdScreen"
                           :isToggled="multiPinEnabled"
-                          :toolTipText="multiPinText"
+                          :tooltipText="multiPinText"
                           @clicked="catchMultipinClicked()" />
       </v-flex>
 
@@ -117,7 +117,7 @@
                           :isSmall="mdScreen"
                           :isToggled="polygonEnabled"
                           :outlined="true"
-                          :toolTipText="polygonText"
+                          :tooltipText="polygonText"
                           @clicked="catchPolygonClicked()" />
       </v-flex>
 

@@ -32,7 +32,7 @@
                               class="v-list__group__header__prepend-icon px-2" >
 
             <base-icon-button marginClass="ma-0 pa-0"
-                              :toolTipText="item.title"
+                              :tooltipText="item.title"
                               :materialIconName="item.icon"
                               :iconColor="item.active ? 'accent' : 'secondary'"
                               color="transparent"
@@ -79,11 +79,11 @@
                                     isSmall
                                     isFlat
                                     :buttonText="item.title"
-                                    :toolTipText="item.toolTip"
+                                    :tooltipText="item.tooltip"
                                     :materialIconName="item.icon"
                                     :iconColor="item.active ? 'accent' : 'grey'"
                                     color="secondary"
-                                    @clicked="item.icon === 'menu' ? item.active = !item.active : itemClick(item)" />
+                                    @click="item.icon === 'menu' ? item.active = !item.active : itemClick(item)" />
           </v-list-tile-content>
         </div>
 

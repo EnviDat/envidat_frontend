@@ -1,10 +1,6 @@
 <template>
   <v-layout column>
-    <v-flex
-      xs12
-      py-4
-      :style="`font-weight: 700; background-color: ${$vuetify.theme.errorHighlight}`"
-    >
+    <v-flex xs12 py-4 class="error">
       <h2>{{ noResultText }}</h2>
     </v-flex>
 
@@ -12,27 +8,17 @@
       <h3>{{ suggestionText }}</h3>
     </v-flex>
 
-    <v-flex xs12
-      pt-2
-    >
-      <v-container
-        fluid
-        grid-list-md
-        pa-0
-      >
-        <v-layout row wrap
-        >
-          <v-flex
-            v-for="card in categoryCards"
-            :key="card.title"
-            my-2 px-1
-            xs6 md4
-          >
-            <base-click-card
-              :title="card.title"
-              :img="card.img"
-              @clicked="catchCategoryClicked"
-            />
+    <v-flex xs12 pt-2>
+      <v-container fluid grid-list-md pa-0>
+        <v-layout row wrap>
+
+          <v-flex v-for="card in categoryCards"
+                  :key="card.title"
+                  my-2 px-1
+                  xs6 md4 >
+            <base-click-card :title="card.title"
+                              :img="card.img"
+                              @click="catchCategoryClicked" />
           </v-flex>
         </v-layout>
       </v-container>
@@ -50,24 +36,26 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-23 14:50:41
+ * Last modified  : 2019-10-24 11:33:43
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
-import { mapGetters } from 'vuex';
 import BaseClickCard from '@/components/BaseElements/BaseClickCard';
 
 export default {
+  name: 'NoSearchResultView',
   props: {
-    noResultText: String,
-    suggestionText: String,
+    categoryCards: Array,
+  },
+  data() {
+    return {
+      noResultText: 'Nothing found for these search criteria.',
+      suggestionText: 'Change the criteria or try one of these categories',
+    };
   },
   computed: {
-    ...mapGetters({
-      categoryCards: 'metadata/categoryCards',
-    }),
   },
   methods: {
     catchCategoryClicked(cardTitle) {

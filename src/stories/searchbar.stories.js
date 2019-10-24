@@ -2,8 +2,8 @@
  * @summary story of SearchBarView & SmallSearchBarView for sandbox testing
  * @author Dominik Haas-Artho
  *
- * Created at     : 2019-10-23 16:34:51 
- * Last modified  : 2019-10-23 16:54:14
+ * Created at     : 2019-10-23 16:34:51
+ * Last modified  : 2019-10-24 10:46:15
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -12,39 +12,15 @@
 // /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from '@storybook/vue';
 import { action } from '@storybook/addon-actions';
-
-import Vue from 'vue';
-import {
-  VBtn,
-  VTooltip,
-  VIcon,
-  VImg,
-  VTextField,
-  VCard,
-  VCardActions,
-  VChip,
-  VLayout,
-  VFlex,
-} from 'vuetify/lib';
+import './js/vuetify-components';
 
 import SearchBarView from '../components/Filtering/SearchBarView.vue';
 import SmallSearchBarView from '../components/Filtering/SmallSearchBarView.vue';
 
-Vue.component('v-btn', VBtn);
-Vue.component('v-tooltip', VTooltip);
-Vue.component('v-icon', VIcon);
-Vue.component('v-img', VImg);
-Vue.component('v-text-field', VTextField);
-Vue.component('v-card', VCard);
-Vue.component('v-card-actions', VCardActions);
-Vue.component('v-chip', VChip);
-
-Vue.component('v-layout', VLayout);
-Vue.component('v-flex', VFlex);
 
 
-storiesOf("4 Filtering | SearchBarView", module)
-  .add("basic", () => ({
+storiesOf('4 Filtering | SearchBarView', module)
+  .add('basic', () => ({
     components: { SearchBarView },
     template: `
     <search-bar-view labelText="Search for something"

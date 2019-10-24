@@ -18,8 +18,8 @@
                       icon-color="primary"
                       color="primary"
                       outlined
-                      tool-tip-text="Close Project Detail"
-                      :tool-tip-bottom="true"
+                      tooltip-text="Close Project Detail"
+                      :tooltip-bottom="true"
                       @clicked="catchBackClicked" />
 
 

@@ -2,7 +2,7 @@
  * @summary story of BaseRectangleButton for sandbox testing
  * @author Dominik Haas-Artho
  *
- * Created at     : 2019-10-23 16:34:51 
+ * Created at     : 2019-10-23 16:34:51
  * Last modified  : 2019-10-23 16:46:09
  *
  * This file is subject to the terms and conditions defined in
@@ -12,14 +12,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from '@storybook/vue';
 import { action } from '@storybook/addon-actions';
-
-import Vue from 'vue';
-import {
-  VBtn, VTooltip, VIcon, VImg, VFlex, VLayout
-} from 'vuetify/lib';
-
-Vue.component("v-layout", VLayout);
-Vue.component("v-flex", VFlex);
+import './js/vuetify-components';
 
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton.vue';
 
@@ -35,7 +28,7 @@ storiesOf("2 Buttons | Rectangle", module)
       <v-flex>      
         <base-rectangle-button
           buttonText="SEARCH"
-          toolTipText="Text for the tool tip"
+          tooltipText="Text for the tool tip"
           @click="onClick"/>
       </v-flex>      
 
@@ -51,7 +44,7 @@ storiesOf("2 Buttons | Rectangle", module)
           materialIconName="mdi-settings"
           iconColor="white"
           buttonText="With Icon"
-          toolTipText="Text for the tool tip"
+          tooltipText="Text for the tool tip"
           @click="onClick"/>
       </v-flex>      
       

@@ -91,5 +91,6 @@ typings/
 # envidat frontend
 dist/
 storybook-static/
+/.idea/
 
 .vscode/
