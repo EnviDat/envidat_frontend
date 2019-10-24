@@ -112,7 +112,7 @@
                         :isToggled="showFullDescription"
                         :rotateOnClick="true"
                         :rotateToggle="showFullDescription"
-                        :toolTipText="showFullDescription ? 'Hide full description' : 'Show full description'"
+                        :tooltipText="showFullDescription ? 'Hide full description' : 'Show full description'"
                         @clicked="showFullDescription = !showFullDescription"
       />
     </v-card-actions>
@@ -133,7 +133,7 @@
                         :customIcon="isFile ? downloadIcon : linkIcon"
                         color="accent"
                         :isElevated="true"
-                        :toolTipText="isFile ? 'Download file' : 'Open link'"
+                        :tooltipText="isFile ? 'Download file' : 'Open link'"
                         :url="url" />
     </div>
   </v-card>

@@ -35,7 +35,7 @@
                         outlined
                         :rotateOnClick="true"
                         :rotateToggle="showFullDescription"
-                        :toolTipText="showFullDescription ? 'Hide full description' : 'Show full description'"
+                        :tooltipText="showFullDescription ? 'Hide full description' : 'Show full description'"
                         @clicked="showFullDescription = !showFullDescription" />
 
     </v-card-actions>

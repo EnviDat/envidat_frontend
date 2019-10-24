@@ -92,7 +92,7 @@ import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
 // https://paper-leaf.com/blog/2016/01/creating-blurred-background-using-only-css/
 
 export default {
-  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+  beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.commit(SET_CURRENT_PAGE, METADATADETAIL_PAGENAME);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
@@ -101,7 +101,7 @@ export default {
   /**
      * @description load all the icons once before the first component's rendering.
      */
-  beforeMount: function beforeMount() {
+  beforeMount() {
     this.downloadIcon = this.mixinMethods_getIcon('download');
     this.linkIcon = this.mixinMethods_getIcon('link');
     this.doiIcon = this.mixinMethods_getIcon('doi');
@@ -322,13 +322,13 @@ export default {
     /**
        * @description
        */
-    currentMetadataContent: function updateContent() {
+    currentMetadataContent() {
       this.createMetadataContent();
     },
     /**
        * @description
        */
-    metadatasContent: function updateContent() {
+    metadatasContent() {
       // in case all the metadataContents are already loaded take it from there
       // if EnviDat is called via MetadataDetailPage URL directly
 

@@ -1,30 +1,18 @@
 <template>
-  <v-container tag="article"
-                fluid fill-height
-                pa-0 >
+  <v-container tag="article" fluid fill-height pa-0 >
     <v-layout row wrap >
-      <v-flex xs12 lg10
-              offset-lg1 >
-
-        <img-and-text-layout :dark="true"
-                              :blur="true"
-                              :img="missionImg"
-                              :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
-                              :text-font-size="16"
-                              :parallax="true"
-                              title="About EnviDat" />
-
+      <v-flex xs12 lg10 offset-lg1 >
+        <img-and-text-layout
+          :img="missionImg"
+          :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
+          title="About EnviDat"
+        />
       </v-flex>
 
-      <v-flex xs12 lg10
-              offset-lg1
-              px-3 mt-5 >
-
-        <v-container grid-list-lg
-                      pa-0 >
+      <v-flex xs12 lg10 offset-lg1 px-3 mt-5 >
+        <v-container grid-list-lg pa-0 >
           <v-layout row wrap >
-
-            <v-flex v-for="(card, index) in AboutCardInfos()"
+            <v-flex v-for="(card, index) in aboutCardInfo"
                     :key="index"
                     my-2
                     :class="card.widthClass" >
@@ -63,7 +51,6 @@
 
 import { mapGetters } from 'vuex';
 import {
-  BROWSE_PATH,
   ABOUT_PAGENAME,
 } from '@/router/routeConsts';
 import {
@@ -73,13 +60,11 @@ import {
 
 import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
 
-import team from '@/assets/about/team.jpg';
 import teamSmall from '@/assets/about/team_small.jpg';
 import mission from '@/assets/about/mission.jpg';
 import missionSmall from '@/assets/about/mission_small.jpg';
 import handsSmall from '@/assets/about/hands_small.jpg';
 import orga from '@/assets/about/EnviDat_organigram.png';
-import orgaSmall from '@/assets/about/EnviDat_organigram_small.png';
 
 import conceptSmall from '@/assets/about/concept_small.jpg';
 import communitySmall from '@/assets/about/community_small.jpg';
@@ -89,12 +74,15 @@ import wslLogoSmall from '@/assets/about/wslLogo_small.jpg';
 import ExpandableCard from '@/components/Cards/ExpandableCard';
 
 export default {
+  name: 'AboutPage',
   /**
      * @description beforeRouteEnter is used to change background image of this page.
      * It's called via vue-router.
      */
-  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+  // TODO: Wieso die aktuelle Seite abspeichern? Ist ja im router. + Wenn Bild abhänig von CurrentPage --> im Code so reflektieren
+  beforeRouteEnter(to, from, next) {
     next((vm) => {
+      console.log(vm, this, vm === this);
       vm.$store.commit(SET_CURRENT_PAGE, ABOUT_PAGENAME);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
     });
@@ -103,43 +91,14 @@ export default {
      * @description reset the scrolling to the top,
      * because of the scrolling is set from the browsePage or metaDetailPage
      */
-  mounted: function mounted() {
+  mounted() {
     window.scrollTo(0, 0);
   },
   computed: {
-    ...mapGetters({
-      aboutPageBackRoute: 'metadata/aboutPageBackRoute',
-    }),
-    /**
-       * @returns teamImage based on the screen size
-       */
-    teamImg: function teamImg() {
-      if (this.$vuetify.breakpoint.mdAndUp) {
-        return team;
-      }
-
-      return teamSmall;
+    missionImg() {
+      return this.$vuetify.breakpoint.mdAndUp ? mission : missionSmall;
     },
-    /**
-       * @returns missionImage based on the screen size
-       */
-    missionImg: function teamImg() {
-      if (this.$vuetify.breakpoint.mdAndUp) {
-        return mission;
-      }
-
-      return missionSmall;
-    },
-  },
-  methods: {
-    /**
-       * @returns the infos of the about page topics. consiting of
-       * - title
-       * - text
-       * - img
-       * - widthClass
-       */
-    AboutCardInfos: function AboutCardInfos() {
+    aboutCardInfo() {
       return [
         {
           title: 'Our Mission',
@@ -174,25 +133,6 @@ export default {
         },
       ];
     },
-    /**
-       * @description changes the url to page the user was before. Fallback: BrowsePage
-       */
-    catchBackClicked: function catchBackClicked() {
-      const backRoute = this.aboutPageBackRoute;
-
-      if (backRoute) {
-        this.$router.push({
-          path: backRoute.path,
-          query: backRoute.query,
-          params: backRoute.params,
-        });
-        return;
-      }
-
-      this.$router.push({
-        path: BROWSE_PATH,
-      });
-    },
   },
   components: {
     ImgAndTextLayout,
@@ -200,7 +140,6 @@ export default {
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
-    team,
     teamSmall,
     mission,
     missionSmall,
@@ -210,7 +149,6 @@ export default {
     wslLogo,
     wslLogoSmall,
     orga,
-    orgaSmall,
   }),
 };
 </script>

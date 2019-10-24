@@ -59,11 +59,8 @@ import {
 } from '@/store/mainMutationsConsts';
 import { GET_POLICIES, POLICIES_NAMESPACE } from '@/store/policiesMutationsConsts';
 
-// import BaseIconButton from '@/components/BaseElements/BaseIconButton';
-// import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
-
 export default {
-  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+  beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.commit(SET_CURRENT_PAGE, POLICIES_PAGENAME);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
@@ -76,7 +73,7 @@ export default {
      * @description reset the scrolling to the top,
      * because of the scrolling is set from the browsePage or metaDetailPage
      */
-  mounted: function mounted() {
+  mounted() {
     window.scrollTo(0, 0);
   },
   computed: {
@@ -98,7 +95,7 @@ export default {
     /**
        * @description changes the url to page the user was before. Fallback: BrowsePage
        */
-    catchBackClicked: function catchBackClicked() {
+    catchBackClicked() {
       const backRoute = this.policiesPageBackRoute;
 
       if (backRoute) {

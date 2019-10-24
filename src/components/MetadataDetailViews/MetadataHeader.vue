@@ -69,7 +69,7 @@
             <tag-chip-author v-for="author in authors"
                               :key="author.name"
                               :name="author.name.trim()"
-                              :toolTipText="authorToolTipText"
+                              :tooltipText="authorToolTipText"
                               @clicked="catchAuthorClicked($event, author.name.trim())" />
           </v-layout>
         </v-flex>
@@ -179,8 +179,8 @@
                           :isToggled="showTagsExpanded"
                           :rotateOnClick="true"
                           :rotateToggle="showTagsExpanded"
-                          :toolTipText="showTagsExpanded ? 'Hide all tags' : 'Show all tags'"
-                          :toolTipBottom="true"
+                          :tooltipText="showTagsExpanded ? 'Hide all tags' : 'Show all tags'"
+                          :tooltipBottom="true"
                           @clicked="showTagsExpanded = !showTagsExpanded" />
       </v-card-actions>
     </v-card>

@@ -35,7 +35,7 @@
           >
               <base-icon-button
                 marginClass="ma-0"
-                :toolTipText="item.title"
+                :tooltipText="item.title"
                 :materialIconName="item.icon"
                 :iconColor="item.active ? 'accent' : 'secondary'"
                 color="transparent"
