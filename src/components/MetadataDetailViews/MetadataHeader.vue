@@ -69,7 +69,7 @@
             <tag-chip-author v-for="author in authors"
                               :key="author.name"
                               :name="author.name.trim()"
-                              :toolTipText="authorToolTipText"
+                              :tooltipText="authorToolTipText"
                               @clicked="catchAuthorClicked($event, author.name.trim())" />
           </v-layout>
         </v-flex>

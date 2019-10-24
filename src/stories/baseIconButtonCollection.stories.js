@@ -2,8 +2,8 @@
  * @summary story of BaseIconButton & BaseIconCountView for sandbox testing
  * @author Dominik Haas-Artho
  *
- * Created at     : 2019-10-23 16:34:51 
- * Last modified  : 2019-10-23 16:46:09
+ * Created at     : 2019-10-23 16:34:51
+ * Last modified  : 2019-10-24 11:14:02
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -86,7 +86,8 @@ storiesOf('2 Buttons | Icon buttons', module)
             :iconString="fileIcon"
             :count="counter"
             :tooltipText="tooltip"
-          />
+            @clicked="onClick"
+            />
         </div>
       </v-flex>
 
@@ -97,6 +98,7 @@ storiesOf('2 Buttons | Icon buttons', module)
             :iconString="contact2Icon"
             :count="counter"
             :tooltipText="tooltip"
+            @clicked="onClick"
           />
         </div>
       </v-flex>

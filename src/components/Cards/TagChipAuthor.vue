@@ -25,7 +25,7 @@
       {{ name }}
     </v-chip>
 
-    <!-- <span>{{ toolTipText }}</span>
+    <!-- <span>{{ tooltipText }}</span>
   </v-tooltip> -->
 </template>
 

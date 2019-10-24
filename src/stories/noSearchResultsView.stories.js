@@ -1,17 +1,25 @@
 import { storiesOf } from '@storybook/vue';
+import { action } from '@storybook/addon-actions';
 import './js/vuetify-components';
 
-import NoSearchResultsView from '../components/Filtering/NoSearchResultsView';
+import NoSearchResultsView from '@/components/Filtering/NoSearchResultsView';
+import categoryCards from '@/store/modules/metadata/categoryCards';
 
-// TODO: Import getters to storybook
+export const methods = {
+  onClick: action('clicked on card'),
+};
 
-storiesOf('7 Project | NoSearchResultsView ', module).add('NoSearchResultView', () => ({
+storiesOf('4 Filtering | NoSearchResultsView ', module).add('NoSearchResultView', () => ({
   components: { NoSearchResultsView },
   template: `
     <v-layout row wrap>
       <v-flex xs6 pa-2>
-      <no-search-results-view @clickedCategory="clickedCategory" />
+        <no-search-results-view :categoryCards="categoryCards"
+                                  @clickedCategory="onClick" />
       </v-flex>
-    </v-layout>
-`,
+    </v-layout>`,
+  methods,
+  data: () => ({
+    categoryCards,
+  }),
 }));
