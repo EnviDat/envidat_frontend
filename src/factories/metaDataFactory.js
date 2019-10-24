@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-10-23 16:07:03 
+ * Last modified  : 2019-10-24 13:06:45
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -78,6 +78,10 @@ export default {
       }
 
       author.forEach((element) => {
+        if (element.given_name) {
+          authors += ` ${element.given_name}`;
+        } 
+
         authors += ` ${element.name};`;
       });
 
