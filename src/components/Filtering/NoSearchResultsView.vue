@@ -12,7 +12,7 @@
       <v-container fluid grid-list-md pa-0>
         <v-layout row wrap>
           <v-flex
-            v-for="card in categorycards"
+            v-for="card in categoryCards"
             :key="card.title"
             my-2 px-1
             xs6 md4
@@ -31,6 +31,20 @@
 
 
 <script>
+/**
+ * NoSearchResults.vue is used to communicate to the users
+ * that there aren't any results the used search parameters.
+ *
+ * @summary card with img, title, keywords and preview description
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-02 11:24:00
+ * Last modified  : 2019-10-23 14:50:41
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import { mapGetters } from 'vuex';
 import BaseClickCard from '@/components/BaseElements/BaseClickCard';
 
@@ -44,12 +58,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      categorycards: 'metadata/categorycards',
+      categoryCards: 'metadata/categoryCards',
     }),
   },
   methods: {
-    clickedCategory(cardTitle) {
-      this.$emit('clickedCategory', cardTitle);
+    catchCategoryClicked(cardTitle) {
+      this.$emit('clicked', cardTitle);
     },
   },
   components: {

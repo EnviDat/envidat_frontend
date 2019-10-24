@@ -40,11 +40,22 @@
 
 <script>
 /**
- * The projects page lists all the projects and their subprojects.
+ * The ProjectsPage shows an overview (list of ProjectCards) all the projects
+ * and their subprojects.
+ *
+ * @summary projects page
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:12:30
+ * Last modified  : 2019-10-23 16:32:02
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
  */
+
 import { mapGetters } from 'vuex';
 import { PROJECTS_PAGENAME, PROJECT_DETAIL_PAGENAME } from '@/router/routeConsts';
-import { SET_APP_BACKGROUND, SET_CURRENT_PAGE } from '@/store/mutationsConsts';
+import { SET_APP_BACKGROUND, SET_CURRENT_PAGE } from '@/store/mainMutationsConsts';
 import {
   GET_PROJECTS,
   PROJECTS_NAMESPACE,

@@ -1,3 +1,16 @@
+/**
+ * metadata store actions
+ *
+ * @summary metadata store actions
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:34:51 
+ * Last modified  : 2019-10-23 16:37:28
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import axios from 'axios';
 
 import {
@@ -16,76 +29,17 @@ import {
   FILTER_METADATA,
   FILTER_METADATA_SUCCESS,
   FILTER_METADATA_ERROR,
+  METADATA_NAMESPACE,
 } from '@/store/metadataMutationsConsts';
 
-const globalMethods = require('@/components/globalMethods');
+import { tagsIncludedInSelectedTags } from '@/factories/metadataFilterMethods';
+import { urlRewrite } from '@/factories/apiFactory';
 
 /* eslint-disable no-unused-vars  */
-const ENVIDAT_PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
-const SOLR_PROXY = process.env.VUE_APP_SOLR_PROXY;
-// const API_BASE = '/api/3/action/';
-const SOLR_API_BASE = '/solr/ckan_default/';
+const PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
+const API_BASE = '/api/action/';
+const useTestData = process.env.VUE_APP_USE_TESTDATA;
 
-function urlRewrite(url, baseUrl, proxyUrl) {
-  url = url.replace('?', '&');
-  url = url.replace("'", '%22');
-
-  proxyUrl = proxyUrl.replace('NULL', '');
-
-  url = `${proxyUrl}${baseUrl}${url}`;
-
-  return url;
-}
-
-function enhanceSearchWithTags(allTags, searchResult) {
-  if (searchResult === undefined || searchResult.length <= 0 || allTags === undefined) {
-    return undefined;
-  }
-
-  for (let i = 0; i < searchResult.length; i++) {
-    const el = searchResult[i];
-
-    for (let j = 0; j < el.tags.length; j++) {
-      const element = el.tags[j];
-
-      const index = allTags.findIndex(obj => obj.name === element);
-      const tag = allTags[index];
-
-      if (tag) {
-        /* eslint-disable no-param-reassign */
-        el.tags[j] = tag;
-      }
-    }
-  }
-
-  return searchResult;
-}
-
-// function enhanceMetadata(metadatas, cardBGImages) {
-//   if (metadatas === undefined && metadatas.length <= 0) {
-//     return undefined;
-//   }
-
-//   if (Array.isArray(metadatas)) {
-//     for (let i = 0; i < metadatas.length; i++) {
-//       const el = metadatas[i];
-
-//       if (!el.titleImg) {
-//         globalMethods.default.methods.mixinMethods_enhanceTitleImg(el, cardBGImages);
-//       }
-//     }
-//   }
-
-//   return metadatas;
-// }
-
-function enhanceContent(metadatas, cardBGImages) {
-  if (metadatas && metadatas.length > 0) {
-    return globalMethods.default.methods.mixinMethods_enhanceMetadatas(metadatas, cardBGImages);
-  }
-
-  return [];
-}
 
 function contentSize(content) {
   return content !== undefined ? Object.keys(content).length : 0;
@@ -105,24 +59,6 @@ function contentFilterAccessibility(value) {
   // return true;
 }
 
-function tagsIncludedInSelectedTags(tags, selectedTagNames) {
-  let selectedTagFound = 0;
-
-  for (let j = 0; j < selectedTagNames.length; j++) {
-    const el = selectedTagNames[j];
-
-    for (let k = 0; k < tags.length; k++) {
-      const tag = tags[k];
-
-      if (tag.name.includes(el)) {
-        selectedTagFound++;
-        break;
-      }
-    }
-  }
-
-  return selectedTagFound === selectedTagNames.length;
-}
 
 function contentFilteredByTags(value, selectedTagNames) {
   if (value.tags && tagsIncludedInSelectedTags(value.tags, selectedTagNames)) {
@@ -136,38 +72,14 @@ export default {
   async [SEARCH_METADATA]({ commit }, searchTerm) {
     commit(SEARCH_METADATA);
 
-    // tags:SNOW%20AND%20notes:snow
-    // maybe use notes:"snow avalanche"
-    // select?indent=on&q=tags:${searchTerm}%20AND%20notes:${searchTerm}&wt=json
-
-    const splitSpaces = searchTerm.split(' ');
-    if (splitSpaces.length > 1) {
-      searchTerm = splitSpaces[0];
-      for (let i = 1; i < splitSpaces.length; i++) {
-        const el = splitSpaces[i];
-        searchTerm += ` OR ${el}`;
-      }
-    }
-
-    const notesQuery = `{! q.op=OR df=notes}${searchTerm}`;
-    const titleQuery = `{! q.op=OR df=title}${searchTerm}`;
-    const authorQuery = `{! df=author}${searchTerm}`;
-
-    // const url = urlRewrite(`select?q=${titleQuery} OR ${notesQuery} OR ${authorQuery}&wt=json&rows=1000`, SOLR_API_BASE, SOLR_PROXY);
-    const url = urlRewrite(
-      `select?q=title:${searchTerm} OR notes:${searchTerm} OR author:${searchTerm}&wt=json&rows=1000`,
-      SOLR_API_BASE,
-      SOLR_PROXY,
-    );
-
-    // const url = `/api/search/dataset?q=${searchTerm}`;
-    // const url = urlRewrite(`/api/search/dataset?q=${searchTerm}&rows=1000`, '', ENVIDAT_PROXY);
+    searchTerm = searchTerm.trim();
+    const url = urlRewrite(`package_search?q=title:"${searchTerm}" OR notes:"${searchTerm}" OR author:"${searchTerm}"&wt=json&rows=1000`,
+                            API_BASE, PROXY);
 
     axios
       .get(url)
       .then((response) => {
-        commit(SEARCH_METADATA_SUCCESS, response.data.response.docs);
-        // commit(SEARCH_METADATA_SUCCESS, response.data.results);
+        commit(SEARCH_METADATA_SUCCESS, response.data.result.results);
       })
       .catch((reason) => {
         commit(SEARCH_METADATA_ERROR, reason);
@@ -176,12 +88,8 @@ export default {
   async [LOAD_METADATA_CONTENT_BY_ID]({ commit }, metadataId) {
     commit(LOAD_METADATA_CONTENT_BY_ID);
 
-    const metadatasContent = this.getters['metadata/metadatasContent'];
+    const metadatasContent = this.getters[`${METADATA_NAMESPACE}/metadatasContent`];
     const contents = Object.values(metadatasContent);
-
-    // contents.forEach((element) => {
-    //   console.log(element.id + " name " + element.name);
-    // });
 
     const localEntry = contents.filter(entry => entry.name === metadataId);
     // filter() always return an array
@@ -190,50 +98,31 @@ export default {
       return;
     }
 
-    const url = urlRewrite(
-      `select?q=name:${metadataId} OR id:${metadataId} &wt=json&rows=1`,
-      SOLR_API_BASE,
-      SOLR_PROXY,
-    );
-    axios
-      .get(url)
-      .then((response) => {
-        let entry = response.data.response.docs;
-        if (response.data.response.docs instanceof Array) {
-          entry = response.data.response.docs[0];
-        }
+    const url = urlRewrite(`package_show?id=${metadataId}`, API_BASE, PROXY);
 
-        commit(LOAD_METADATA_CONTENT_BY_ID_SUCCESS, entry);
-      })
-      .catch((reason) => {
-        commit(LOAD_METADATA_CONTENT_BY_ID_ERROR, reason);
-      });
-
-    // const url = urlRewrite(`package_show?id=${metadataId}`, API_BASE, ENVIDAT_PROXY);
-
-    // axios.get(url).then((response) => {
-    //   commit(LOAD_METADATA_CONTENT_BY_ID_SUCCESS, response.data.result);
-    // }).catch((reason) => {
-    //   commit(LOAD_METADATA_CONTENT_BY_ID_ERROR, reason);
-    // });
+    axios.get(url).then((response) => {
+      commit(LOAD_METADATA_CONTENT_BY_ID_SUCCESS, response.data.result);
+    }).catch((reason) => {
+      commit(LOAD_METADATA_CONTENT_BY_ID_ERROR, reason);
+    });
   },
   async [BULK_LOAD_METADATAS_CONTENT]({ dispatch, commit }) {
-    commit(BULK_LOAD_METADATAS_CONTENT);
-    // console.log(BULK_LOAD_METADATAS_CONTENT);
 
-    // const url = urlRewrite('package_search', API_BASE, ENVIDAT_PROXY);
-    // const url = urlRewrite('select?q=title:*&wt=json&rows=1000', SOLR_API_BASE, SOLR_PROXY);
-    // const url = `${SOLR_PROXY}${SOLR_API_BASE}select&q=title:*&wt=json&rows=1000`;
+    const url = urlRewrite('current_package_list_with_resources?limit=1000&offset=0',
+                API_BASE, PROXY);
 
-    // const url = '/api/action/current_package_list_with_resources&limit=1000&offset=0';
-    const url = urlRewrite(
-      '/api/action/current_package_list_with_resources?limit=1000&offset=0',
-      '',
-      ENVIDAT_PROXY,
-    );
+    if (typeof useTestData === 'string' && useTestData.toLowerCase() === 'true') {
 
-    axios
-      .get(url)
+      import('@/testdata/packagelist.js')
+      .then((projectJSON) => {
+        commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, projectJSON.default.result);
+        dispatch(FILTER_METADATA, []);
+      });
+
+      return;
+    }
+
+    axios.get(url)
       .then((response) => {
         // commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, response.data.response.docs, showRestrictedContent);
         commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, response.data.result);
@@ -246,12 +135,12 @@ export default {
       });
   },
   [UPDATE_TAGS]({ commit }) {
-    if (this.getters['metadata/updatingTags']) {
+    if (this.getters[`${METADATA_NAMESPACE}/updatingTags`]) {
       return;
     }
 
-    const filteredContent = this.getters['metadata/filteredContent'];
-    const allTags = this.getters['metadata/allTags'];
+    const filteredContent = this.getters[`${METADATA_NAMESPACE}/filteredContent`];
+    const allTags = this.getters[`${METADATA_NAMESPACE}/allTags`];
 
     if (!filteredContent || !allTags) {
       return;
@@ -280,7 +169,7 @@ export default {
             }
           }
 
-          updatedTags.push({ name: tag.name, enabled: found });
+          updatedTags.push({ name: tag.name, enabled: found, color: tag.color });
         }
 
         commit(UPDATE_TAGS_SUCCESS, updatedTags);
@@ -297,21 +186,18 @@ export default {
       let content = [];
       // console.log("filteredMetadataContent");
 
-      const isSearchResultContent = this.getters['metadata/searchingMetadatasContentOK'];
+      const isSearchResultContent = this.getters[`${METADATA_NAMESPACE}/searchingMetadatasContentOK`];
 
       try {
         if (isSearchResultContent) {
-          const searchContent = this.getters['metadata/searchedMetadatasContent'];
+          const searchContent = this.getters[`${METADATA_NAMESPACE}/searchedMetadatasContent`];
           const searchContentSize = contentSize(searchContent);
 
           if (searchContentSize > 0) {
-            const allTags = this.getters['metadata/allTags'];
-
             content = Object.values(searchContent);
-            content = enhanceSearchWithTags(allTags, content);
           }
         } else {
-          const metadatasContent = this.getters['metadata/metadatasContent'];
+          const metadatasContent = this.getters[`${METADATA_NAMESPACE}/metadatasContent`];
           content = Object.values(metadatasContent);
         }
 
@@ -331,11 +217,7 @@ export default {
           }
         }
 
-        const { cardBGImages } = this.getters;
-        enhanceContent(filteredContent, cardBGImages);
-        content = filteredContent;
-
-        commit(FILTER_METADATA_SUCCESS, content);
+        commit(FILTER_METADATA_SUCCESS, filteredContent);
 
         dispatch(UPDATE_TAGS);
       } catch (error) {

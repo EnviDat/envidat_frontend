@@ -1,6 +1,18 @@
-import { storiesOf } from '@storybook/vue';
+/**
+ * @summary story of ExpandableCard for sandbox testing
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:34:51 
+ * Last modified  : 2019-10-23 16:46:09
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
+/* eslint-disable import/no-extraneous-dependencies */
+import { storiesOf } from "@storybook/vue";
+import { action } from "@storybook/addon-actions";
 import './js/vuetify-components';
-import ExpandableCard from '@/components/Cards/ExpandableCard.vue';
 
 import teamSmall from '@/assets/about/team_small.jpg';
 import mission from '@/assets/about/mission.jpg';

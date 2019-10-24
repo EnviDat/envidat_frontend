@@ -1,3 +1,14 @@
+/**
+ * @summary story of windowView for sandbox testing
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:34:51 
+ * Last modified  : 2019-10-23 16:55:02
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from "@storybook/vue";
 import { action } from "@storybook/addon-actions";
@@ -7,8 +18,8 @@ import WindowVerticalView from "@/components/ProjectDetailViews/WindowVerticalVi
 import WindowView from "@/components/ProjectDetailViews/WindowView.vue";
 
 import projectJSON from "@/testdata/projects";
-import projectDataFactory from "@/components/projectsDataFactory";
-const enhancedProjects = projectDataFactory.enhanceSubprojects(projectJSON.result);
+import projectDataFactory from "@/factories/projectsDataFactory";
+const enhancedProjects = projectDataFactory.enhanceSubprojectsFromExtras(projectJSON.result);
 const projects = enhancedProjects;
 
 const projectDetail1 = projects[6];

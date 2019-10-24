@@ -1,3 +1,14 @@
+/**
+ * @summary story of all the MetadataDetailViews for sandbox testing
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:34:51 
+ * Last modified  : 2019-10-23 16:46:09
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from "@storybook/vue";
 import { action } from "@storybook/addon-actions";
@@ -18,7 +29,7 @@ import mailIcon from "@/assets/icons/mail.png";
 import contactIcon from "@/assets/icons/contact2.png";
 import licenseIcon from "@/assets/icons/license.png";
 
-import metaDataFactory from "@/components/metaDataFactory";
+import metaDataFactory from "@/factories/metaDataFactory";
 // metadata gets enhance in the storybook config
 import metadata from "./js/metadata";
 
@@ -87,7 +98,7 @@ storiesOf("6 Metadata | Detail Views", module)
       </v-flex>
 
       <v-flex xs12 py-3 >
-        <metadata-header />
+        <metadata-header metadataId="id-which-can-not-be-found" />
       </v-flex>
 
       <v-flex xs12 >
@@ -165,6 +176,7 @@ storiesOf("6 Metadata | Detail Views", module)
     data: () => ({
       genericPropsPlaceholder: {
         showPlaceholder: true,
+        description: null,
       },
       genericPropsBody: {
         showPlaceholder: false,

@@ -9,7 +9,7 @@ import Vue2Filters from 'vue2-filters';
 
 Vue.use(Vue2Filters);
 
-import globalMethods from "@/components/globalMethods";
+import globalMethods from "@/factories/globalMethods";
 Vue.mixin(globalMethods);
 
 
@@ -23,7 +23,7 @@ import downloadIcon from "@/assets/icons/download.png";
 import dateCreatedIcon from "@/assets/icons/dateCreated.png";
 import lastModifiedIcon from "@/assets/icons/dateModified.png";
 
-const conversion = require("@/store/modules/metadata/conversion");
+const apiFactory = require("@/factories/apiFactory");
 
 const iconFiles = getIcons();
 
@@ -38,7 +38,7 @@ import unFormatedMetadataCards from "@/stories/js/metadata";
 let metadataCards = [];
 
 unFormatedMetadataCards.forEach(el => {
-  let formatted = conversion.solrResultToCKANJSON(el);
+  let formatted = apiFactory.solrResultToCKANJSON(el);
   // let keys = Object.keys(el.tags[0]);
   // let props = "";
   // keys.forEach(element => {

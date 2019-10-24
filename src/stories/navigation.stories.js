@@ -1,11 +1,22 @@
+/**
+ * @summary story of all the Navigation components for sandbox testing
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:34:51 
+ * Last modified  : 2019-10-23 16:53:25
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 // /* eslint-disable import/no-extraneous-dependencies */
 import {storiesOf} from '@storybook/vue';
 import {action} from '@storybook/addon-actions';
 import './js/vuetify-components';
 
-import Navigation from '@/components/Navigation/Navigation.vue';
-// import NavigationMini from "@/components/Navigation/NavigationMini.vue";
-import NavigationToolbar from '@/components/Navigation/NavigationToolbar.vue';
+import TheNavigation from "@/components/Navigation/TheNavigation.vue";
+import TheNavigationSmall from "@/components/Navigation/TheNavigationSmall.vue";
+import TheNavigationToolbar from "@/components/Navigation/TheNavigationToolbar.vue";
 
 export const methods = {
   onMenuClick: action('clicked on menu'),
@@ -50,7 +61,7 @@ const navItems = [
 
 storiesOf('5 Navigation | Redesigned Navigation', module)
   .add('Menu', () => ({
-    components: {Navigation},
+    components: { TheNavigation },
     template: `
     <v-container>
       <navigation :navItems="navItems" :version="appVersion" />
@@ -69,7 +80,7 @@ storiesOf('5 Navigation | Redesigned Navigation', module)
   methods
 }))
 .add("Menu Mini", () => ({
-  components: { NavigationMobile },
+  components: { TheNavigationSmall },
   template: `
     <v-container>
       <navigation-mini :navItems="navItems"
@@ -87,7 +98,7 @@ storiesOf('5 Navigation | Redesigned Navigation', module)
   methods
 }))
 .add("Toolbar", () => ({
-  components: { NavigationToolbar },
+  components: { TheNavigationToolbar },
   template: `
       <navigation-toolbar
                   labelText="Search for something"
@@ -95,15 +106,20 @@ storiesOf('5 Navigation | Redesigned Navigation', module)
             v-on:searchClick="onSearchClick"
             v-on:loginClick="onLoginClick"
             />`,
-    methods,
-  })).add('Menu & Toolbar', () => ({
-  components: { Navigation, NavigationToolbar },
-  template: `<navigation :navItems="navItems" />
-                <navigation-toolbar
-                    labelText="Search for something"
-                    @menuClick="onMenuClick"
-                    @searchClick="onSearchClick"
-                    @loginClick="onLoginClick" />`,
-  data: () => ({navItems}),
-  methods,
+  methods
+})).add("Menu & Toolbar", () => ({
+  components: { TheNavigation, TheNavigationToolbar },
+  template: `
+      <navigation
+        :navItems="navItems"
+      />  
+      <navigation-toolbar
+                  labelText="Search for something"
+            @menuClick="onMenuClick"
+            @searchClick="onSearchClick"
+            @loginClick="onLoginClick"
+            />
+  `,
+  data: () => ({ navItems }),
+  methods
 }));

@@ -1,3 +1,14 @@
+/**
+ * @summary story of MetadataCard & MetadataCardPlaceholder for sandbox testing
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:34:51 
+ * Last modified  : 2019-10-23 16:46:09
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from "@storybook/vue";
 import { action } from "@storybook/addon-actions";
@@ -62,12 +73,41 @@ storiesOf("3 Cards | Metadata Cards", module)
           :fileIconString="fileIcon"
           :lockedIconString="lockedIcon"
           :unlockedIconString="lockedIcon"
+          :categoryColor="metadata.categoryColor"
           @clickedEvent="onCardClick"
           @clickedTag="onTagClick"
         />
       </v-flex>
 
     </v-layout>
+
+    <v-layout row wrap>
+
+      <v-flex xs3 pa-2
+        v-for="(metadata, index) in metadataCards"
+        :key="index"
+      >
+        <metadata-card
+          :id="metadata.id"
+          :ref="metadata.id"
+          :title="metadata.title"
+          :name="metadata.name"
+          :subtitle="metadata.notes"
+          :tags="metadata.tags"
+          :restricted="hasRestrictedResources(metadata)"
+          :resourceCount="metadata.num_resources || metadata.res_name.length"
+          :resources="metadata.resources"
+          :fileIconString="fileIcon"
+          :lockedIconString="lockedIcon"
+          :unlockedIconString="lockedIcon"
+          :categoryColor="metadata.categoryColor"
+          @clickedEvent="onCardClick"
+          @clickedTag="onTagClick"
+        />
+      </v-flex>
+
+    </v-layout>
+
   </v-flex>
   <v-flex>
     <v-layout row wrap>
@@ -90,6 +130,7 @@ storiesOf("3 Cards | Metadata Cards", module)
           :fileIconString="fileIcon"
           :lockedIconString="lockedIcon"
           :unlockedIconString="lockedIcon"
+          :categoryColor="metadata.categoryColor"
           @clickedEvent="onCardClick"
           @clickedTag="onTagClick"
         />
@@ -118,6 +159,7 @@ storiesOf("3 Cards | Metadata Cards", module)
           :fileIconString="fileIcon"
           :lockedIconString="lockedIcon"
           :unlockedIconString="lockedIcon"
+          :categoryColor="metadata.categoryColor"
           @clickedEvent="onCardClick"
           @clickedTag="onTagClick"
         />
@@ -159,6 +201,7 @@ storiesOf("3 Cards | Metadata Cards", module)
           :fileIconString="fileIcon"
           :lockedIconString="lockedIcon"
           :unlockedIconString="lockedIcon"
+          :categoryColor="metadata.categoryColor"
           @clickedEvent="onCardClick"
           @clickedTag="onTagClick"
         />
@@ -176,44 +219,44 @@ storiesOf("3 Cards | Metadata Cards", module)
   .add("Placeholder / Loading collection", () => ({
     components: { MetadataCardPlaceholder },
     template: `
-<v-layout column>
-  <v-flex>
-    <v-layout row wrap>
+    <v-layout column>
+      <v-flex>
+        <v-layout row wrap>
 
-      <v-flex xs3 pa-2
-        v-for="index in 3"
-        :key="index"
-      >
-        <metadata-card-placeholder />
+          <v-flex xs3 pa-2
+            v-for="index in 3"
+            :key="index"
+          >
+            <metadata-card-placeholder />
+          </v-flex>
+
+        </v-layout>
       </v-flex>
+      <v-flex>
+        <v-layout row wrap>
 
-    </v-layout>
-  </v-flex>
-  <v-flex>
-    <v-layout row wrap>
+          <v-flex xs4 pa-2
+            v-for="index in 3"
+            :key="index"
+          >
+            <metadata-card-placeholder />
+          </v-flex>
 
-      <v-flex xs4 pa-2
-        v-for="index in 3"
-        :key="index"
-      >
-        <metadata-card-placeholder />
+        </v-layout>
       </v-flex>
+      <v-flex>
+        <v-layout row wrap>
 
-    </v-layout>
-  </v-flex>
-  <v-flex>
-    <v-layout row wrap>
+          <v-flex xs6 pa-2
+            v-for="index in 3"
+            :key="index"
+          >
+            <metadata-card-placeholder />
+          </v-flex>
 
-      <v-flex xs6 pa-2
-        v-for="index in 3"
-        :key="index"
-      >
-        <metadata-card-placeholder />
+        </v-layout>
       </v-flex>
-
     </v-layout>
-  </v-flex>
-</v-layout>
     `,
     methods,
     data: () => ({})

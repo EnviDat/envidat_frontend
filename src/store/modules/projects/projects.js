@@ -1,12 +1,23 @@
+/**
+ * projects store module
+ *
+ * @summary projects store
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:34:51 
+ * Last modified  : 2019-10-23 16:41:03
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import actions from '@/store/modules/projects/projectsActions';
 import mutations from '@/store/modules/projects/projectsMutations';
 
 const projectsState = {
   projects: [],
-  pageError: null,
   projectsPageBackRoute: null,
   loading: false,
-  error: null,
 };
 
 
@@ -15,10 +26,8 @@ export const projects = {
   state: projectsState,
   getters: {
     projects: state => state.projects,
-    pageError: state => state.pageError,
     projectsPageBackRoute: state => state.projectsPageBackRoute,
     loading: state => state.loading,
-    error: state => state.error,
   },
   mutations,
   actions,

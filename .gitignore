@@ -92,3 +92,5 @@ typings/
 dist/
 storybook-static/
 /.idea/
+
+.vscode/
