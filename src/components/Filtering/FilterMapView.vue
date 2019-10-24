@@ -56,7 +56,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-24 13:47:06
+ * Last modified  : 2019-10-24 16:18:44
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -121,9 +121,6 @@ export default {
     },
     widgetWidth() {
       return this.$vuetify.breakpoint.smAndDown ? 100 : 350;
-    },
-    mapHeight() {
-      return this.totalHeight - this.buttonHeight;
     },
     hasPins() {
       return this.pinLayerGroup && this.pinLayerGroup.length > 0;
@@ -443,7 +440,6 @@ export default {
     mapIsSetup: false,
     setupCenterCoords: [46.943961, 8.199240],
     initialBounds: null,
-    buttonHeight: 135,
     updatingMap: true,
     addedObjectsKeys: [],
     mapFilteringActive: false,
