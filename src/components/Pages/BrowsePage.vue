@@ -26,7 +26,7 @@
                             @clickedExpand="catchFilterExpandClicked"
                             @clickedTagClose="catchTagCloseClicked"
                             @clickedClear="catchTagCleared"
-                            :mapHeight="mapFilterHeight"
+                            :mapHeight="$vuetify.breakpoint.smAndDown ? smallMapHeight : largeMapHeight"
                             :mapWidth="mapFilterWidth"
                             :defaultListControls="controls" />
       </v-flex>
@@ -44,7 +44,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-23 16:21:31
+ * Last modified  : 2019-10-24 16:25:08
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -344,7 +344,8 @@ export default {
     selectedTagNames: [],
     popularTagAmount: 10,
     showMapFilter: false,
-    maxMapFilterHeight: 325,
+    smallMapHeight: 250,
+    largeMapHeight: 325,
     mapFilterVisibleIds: [],
     listViewActive: false,
   }),
