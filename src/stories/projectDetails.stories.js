@@ -1,3 +1,14 @@
+/**
+ * @summary story of all the ProjectDetailViews for sandbox testing
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:34:51 
+ * Last modified  : 2019-10-23 16:53:10
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from "@storybook/vue";
 import { action } from "@storybook/addon-actions";
@@ -12,11 +23,11 @@ import ProjectBody from "@/components/ProjectDetailViews/ProjectBody.vue";
 
 // get Project test data and enhance it
 import projectJSON from "@/testdata/projects";
-import projectDataFactory from "@/components/projectsDataFactory";
-const enhancedProjects = projectDataFactory.enhanceSubprojects(projectJSON.result);
+import projectDataFactory from "@/factories/projectsDataFactory";
+const enhancedProjects = projectDataFactory.enhanceSubprojectsFromExtras(projectJSON.result);
 const projects = enhancedProjects;
 
-import globalMethods from "@/components/globalMethods";
+import globalMethods from "@/factories/globalMethods";
 const imgPaths = require.context( '../assets/about/', false, /\.jpg$/);
 const imgName = 'mission';
 const images = globalMethods.methods.mixinMethods_importImages(imgPaths, imgName);

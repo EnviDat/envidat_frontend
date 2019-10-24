@@ -7,17 +7,28 @@
         <v-flex xs12>
           <v-layout row align-center >
 
+            <!-- <v-flex xs4 lg3
+                    hidden-lg-and-down >
+              <img style="width: 200px;"
+                    :src="lgLogo"
+                    :alt="alternativeText" >
+            </v-flex> -->
+
             <v-flex hidden-sm-and-down
                     xs3 >
               <img :src="mdLogo" :alt="alternativeText">
             </v-flex>
 
-            <v-flex hidden-xs-only hidden-md-and-up xs1 >
-              <img :src="smLogo" :alt="alternativeText" >
+            <v-flex hidden-xs-only
+                    hidden-md-and-up
+                    xs1 >
+              <img :src="smLogo"
+                    :alt="alternativeText" >
             </v-flex>
 
             <v-flex xs3 hidden-sm-and-up >
-              <img :src="smLogo" :alt="alternativeText" >
+              <img :src="smLogo"
+                    :alt="alternativeText" >
             </v-flex>
 
             <v-flex xs8 lg9
@@ -54,9 +65,11 @@
 
         <v-flex pt-5>
           <slogan-card :slogan="slogan"
-                        :sub-slogan="subSlogan"
-                        :button-text="buttonText"
-                        @click="onSloganClicked" />
+                        :subSlogan="subSlogan"
+                        :buttonText="buttonText"
+                        :buttonCallback="buttonCallback"
+                        :moreButtonText="moreButtonText"
+                        :moreButtonCallback="moreButtonCallback" />
         </v-flex>
 
       </v-layout>
@@ -65,6 +78,20 @@
 </template>
 
 <script>
+/**
+ * TheTitleScreenLayout.vue shows the EnviDat logo and the SloganCard
+ * with different layouts for the differen screen sizes.
+ *
+ * @summary responsive layout for the title screen with logo and SloganCard
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 14:11:27
+ * Last modified  : 2019-10-23 15:46:35
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
+
 import SloganCard from '@/components/Cards/SloganCard';
 // import xsLogo from '@/assets/logo/EnviDat_logo_32.png';
 import smLogo from '@/assets/logo/EnviDat_logo_64.png';
@@ -81,6 +108,8 @@ export default {
     subSlogan: String,
     buttonText: String,
     buttonCallback: Function,
+    moreButtonText: String,
+    moreButtonCallback: Function,
   },
   data: () => ({
     // xsLogo,
@@ -89,10 +118,7 @@ export default {
     lgLogo,
     alternativeText: 'EnviDat logo',
   }),
-  methods: {
-    onSloganClicked() {
-      this.$emit('sloganClicked');
-    },
+  computed: {
   },
 };
 </script>

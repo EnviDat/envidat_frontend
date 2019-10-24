@@ -1,3 +1,14 @@
+/**
+ * @summary metadata store mutations constants
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:34:51 
+ * Last modified  : 2019-10-23 16:46:58
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 export const BULK_LOAD_METADATAS_CONTENT = 'BULK_LOAD_METADATAS_CONTENT';
 export const BULK_LOAD_METADATAS_CONTENT_SUCCESS = 'BULK_LOAD_METADATAS_CONTENT_SUCCESS';
 export const BULK_LOAD_METADATAS_CONTENT_ERROR = 'BULK_LOAD_METADATAS_CONTENT_ERROR';
@@ -12,10 +23,6 @@ export const SEARCH_METADATA_SUCCESS = 'SEARCH_METADATA_SUCCESS';
 export const SEARCH_METADATA_ERROR = 'SEARCH_METADATA_ERROR';
 export const CLEAR_SEARCH_METADATA = 'CLEAR_SEARCH_METADATA';
 
-export const LOAD_ALL_TAGS = 'LOAD_ALL_TAGS';
-export const LOAD_ALL_TAGS_SUCCESS = 'LOAD_ALL_TAGS_SUCCESS';
-export const LOAD_ALL_TAGS_ERROR = 'LOAD_ALL_TAGS_ERROR';
-
 export const UPDATE_TAGS = 'UPDATE_TAGS';
 export const UPDATE_TAGS_SUCCESS = 'UPDATE_TAGS_SUCCESS';
 export const UPDATE_TAGS_ERROR = 'UPDATE_TAGS_ERROR';
@@ -29,3 +36,5 @@ export const CLEAR_PINNED_METADATA = 'CLEAR_PINNED_METADATA';
 export const SET_DETAIL_PAGE_BACK_URL = 'SET_DETAIL_PAGE_BACK_URL';
 export const SET_ABOUT_PAGE_BACK_URL = 'SET_ABOUT_PAGE_BACK_URL';
 export const SET_VIRTUAL_LIST_INDEX = 'SET_VIRTUAL_LIST_INDEX';
+
+export const METADATA_NAMESPACE = 'metadata';

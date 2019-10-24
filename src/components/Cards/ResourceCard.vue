@@ -9,123 +9,89 @@
       </div>
     </v-card-title>
 
-    <v-card-text
-      class="pt-0"
-      :class="{
-        'pb-3': $vuetify.breakpoint.mdAndUp,
-        'pb-5': $vuetify.breakpoint.smAndDown,
-      }"
-    >
-      <v-container
-        grid-list-xs
-        pa-0
-      >
-        <v-layout
-          v-bind="{ ['row']: $vuetify.breakpoint.smAndUp,
-                    ['wrap']: $vuetify.breakpoint.smAndUp,
-                    ['column']: $vuetify.breakpoint.xsOnly,
-          }"
-        >
-          <v-flex
-            v-bind="{ [`xs6`]: !this.twoColumnLayout && !showFullDescription,
-                      [`xs12`]: this.twoColumnLayout || showFullDescription }"
-            order-xs1
-            order-sm3
-          >
+    <v-card-text class="pt-0"
+                :class="{
+                  'pb-3': $vuetify.breakpoint.mdAndUp,
+                  'pb-5': $vuetify.breakpoint.smAndDown,
+                }" >
+      <v-container grid-list-xs
+                    pa-0 >
+        <v-layout v-bind="{ ['row']: $vuetify.breakpoint.smAndUp,
+                            ['wrap']: $vuetify.breakpoint.smAndUp,
+                            ['column']: $vuetify.breakpoint.xsOnly,
+                  }" >
+          <v-flex v-bind="{ [`xs6`]: !this.twoColumnLayout && !showFullDescription,
+                            [`xs12`]: this.twoColumnLayout || showFullDescription }"
+                  order-xs1
+                  order-sm3 >
             <v-layout column>
-              <v-flex
-                v-if="showFullDescription"
-                xs11
-                pb-4
-                class="resourceCardText heightAndScroll"
-              >
+              <v-flex v-if="showFullDescription"
+                      xs11
+                      pb-4
+                      class="resourceCardText heightAndScroll" >
                 {{ description }}
               </v-flex>
 
-              <v-flex
-                v-if="!showFullDescription"
-                xs11
-                class="resourceCardText"
-              >
+              <v-flex v-if="!showFullDescription"
+                      xs11
+                      class="resourceCardText" >
                 {{ description | truncate(maxDescriptionLength) }}
               </v-flex>
             </v-layout>
           </v-flex>
 
-          <v-flex
-            v-if="!showFullDescription"
-            order-xs2
-            hidden-sm-and-up
-          >
-            <v-divider
-              :dark="dark"
-              class="my-1"
-            />
+          <v-flex v-if="!showFullDescription"
+                  order-xs2
+                  hidden-sm-and-up >
+            <v-divider :dark="dark"
+                        class="my-1" />
           </v-flex>
 
-          <v-flex
-            v-if="!showFullDescription"
-            v-bind="{ [`xs6`]: !this.twoColumnLayout ,
-                      [`xs12`]: this.twoColumnLayout,
-                      [`pt-3`]: this.twoColumnLayout }"
-            order-xs3
-            order-sm1
-          >
+          <v-flex v-if="!showFullDescription"
+                  v-bind="{ [`xs6`]: !this.twoColumnLayout ,
+                            [`xs12`]: this.twoColumnLayout,
+                            [`pt-3`]: this.twoColumnLayout }"
+                  order-xs3
+                  order-sm1 >
             <v-layout column>
-              <v-flex
-                v-if="doi"
-                pa-0
-              >
-                <base-icon-label-view
-                  :text="doi"
-                  :icon="doiIcon"
-                  icon-tooltip="Data Object Identifier"
-                  :align-left="twoColumnLayout"
-                />
+              <v-flex v-if="doi"
+                      px-0 py-1 >
+                <base-icon-label-view :text="doi"
+                                      :icon="doiIcon"
+                                      icon-tooltip="Data Object Identifier"
+                                      :align-left="twoColumnLayout" />
               </v-flex>
-              <v-flex
-                v-if="format"
-                pa-0
-              >
-                <base-icon-label-view
-                  :text="format"
-                  :icon="extensionIcon()"
-                  icon-tooltip="Format of the file"
-                  :align-left="twoColumnLayout"
-                />
+
+              <v-flex v-if="format"
+                      px-0 py-1 >
+                <base-icon-label-view :text="format"
+                                      :icon="extensionIcon()"
+                                      icon-tooltip="Format of the file"
+                                      :align-left="twoColumnLayout" />
               </v-flex>
-              <v-flex
-                v-if="size"
-                pa-0
-              >
-                <base-icon-label-view
-                  :text="formatedBytes"
-                  :icon="fileSizeIcon"
-                  icon-tooltip="Filesize"
-                  :align-left="twoColumnLayout"
-                />
+
+              <v-flex v-if="size"
+                      px-0 py-1 >
+                <base-icon-label-view :text="formatedBytes"
+                                      :icon="fileSizeIcon"
+                                      icon-tooltip="Filesize"
+                                      :align-left="twoColumnLayout" />
               </v-flex>
-              <v-flex
-                v-if="created"
-                pa-0
-              >
-                <base-icon-label-view
-                  :text="formatedCreated"
-                  :icon="dateCreatedIcon"
-                  icon-tooltip="Date of file creation"
-                  :align-left="twoColumnLayout"
-                />
+
+              <v-flex v-if="created"
+                      px-0 py-1 >
+                <base-icon-label-view :text="created"
+                                      :icon="dateCreatedIcon"
+                                      icon-tooltip="Date of file creation"
+                                      :align-left="twoColumnLayout" />
               </v-flex>
-              <v-flex
-                v-if="lastModified"
-                pa-0
-              >
-                <base-icon-label-view
-                  :text="formatedLastModified"
-                  :icon="lastModifiedIcon"
-                  icon-tooltip="Date of last modification"
-                  :align-left="twoColumnLayout"
-                />
+
+              <v-flex v-if="lastModified"
+                      px-0 py-1 >
+                <base-icon-label-view :text="lastModified"
+                                      :icon="lastModifiedIcon"
+                                      icon-tooltip="Date of last modification"
+                                      :align-left="twoColumnLayout" />
               </v-flex>
             </v-layout>
           </v-flex>
@@ -157,7 +123,7 @@
             class="fabMenu fabPosition elevation-2 ma-2 pl-2 pt-2" >
         <v-icon class="pl-1 pt-1">shield</v-icon>
         <p class="pt-2 lockedText black--text resourceCardText"
-          v-html="protectedText"
+            v-html="protectedText"
         ></p>
       </div>
 
@@ -175,7 +141,19 @@
 
 
 <script>
-import defaultTexture from '@/assets/cards/c_b_forest_texture_bark2_small.jpg';
+/**
+ * ResourceCard.vue create a card with a download link to a specific resource of a dataset.
+ *
+ * @summary card with download link of file or link to another downlaod
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 14:11:27
+ * Last modified  : 2019-10-23 14:13:05
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
+
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 
@@ -208,37 +186,29 @@ export default {
     metadataContact: String,
   },
   data: () => ({
-    defaultTexture,
     maxDescriptionLength: 175,
     showFullDescription: false,
     audioFormats: ['mp3', 'wav', 'wma', 'ogg'],
   }),
   computed: {
-    dynamicCardBackground: function dynamicCardBackground() {
-      const gradient = this.dark ? this.blackTopToBottom : this.whiteTopToBottom;
-
-      if (this.defaultTexture) {
-        return `background-image: linear-gradient(0deg, ${gradient}), url(${this.defaultTexture}); background-position: center, center;`;
-      }
-
-      return '';
-    },
-    formatedBytes: function formatedBytes() {
+    formatedBytes() {
       if (!this.size) return '';
       const bytesString = this.mixinMethods_formatBytes(this.size);
       return bytesString;
     },
-    formatedCreated: function formatedCreated() {
-      return this.mixinMethods_formatDate(this.created);
-    },
-    formatedLastModified: function formatedLastModified() {
-      return this.mixinMethods_formatDate(this.lastModified);
-    },
-    isLink: function isLink() {
+    isLink() {
       return this.format && (this.format.toLowerCase() === 'link' || this.format.toLowerCase() === 'url');
     },
-    isFile: function isFile() {
-      return !this.format || !(this.format.toLowerCase() === 'link' || this.format.toLowerCase() === 'url');
+    isFile() {
+      let isFile = (!this.format || !(this.format.toLowerCase() === 'link' || this.format.toLowerCase() === 'url'));
+
+      if (isFile && this.url) {
+        const splits = this.url.split('/');
+        const lastPart = splits[splits.length - 1];
+        isFile = lastPart.includes('.');
+      }
+
+      return isFile;
     },
     maxDescriptionLengthReached: function maxDescriptionLengthReached() {
       return this.description && this.description.length > this.maxDescriptionLength;
@@ -246,7 +216,7 @@ export default {
 
     protectedText() {
       if (this.url && this.url.length > 0) {
-        return `This resource is protected <a href="${this.url}" target="_blank" >login via the old UI to get access</a>.`;
+        return `This resource is protected <a href="${this.url}" target="_blank" >login via the ckan UI to get access</a>.`;
       }
 
       return `Could not load the resource, please contact ${this.metadataContact} for getting access or envidat@wsl.ch for support.`;
@@ -289,9 +259,6 @@ export default {
 
       return this.mixinMethods_getIcon('file');
     },
-    formatedDate: function formatedDate(value) {
-      return this.mixinMethods_formatDate(value);
-    },
   },
 };
 </script>
@@ -327,9 +294,10 @@ export default {
 
   .fabMenu:hover {
     background: #FFF;
-    width: 150px;
+    min-width: 160px;
+    width: 100%;
     height: 100%;
-    min-height: 110px;
+    min-height: 160px;
     border-radius: 3px 3px;
     visibility: visible;
   }

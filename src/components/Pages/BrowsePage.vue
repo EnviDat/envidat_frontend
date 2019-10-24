@@ -1,25 +1,12 @@
 <template>
-  <v-container grid-list-xs fluid tag="article" pa-0>
-    <v-layout row wrap>
-      <v-flex xs12
-              :class="{ 'stickyFilterBar': $vuetify.breakpoint.smAndUp }"
-              :style="$vuetify.breakpoint.sm ? 'top: 42px !important;' : ''" >
-
-        <filter-keywords-view :compactLayout="$vuetify.breakpoint.smAndDown"
-                              :allTags="allTags"
-                              :selectedTagNames="selectedTagNames"
-                              :popularTags="popularTags"
-                              :expanded="filterExpanded"
-                              :expandButtonText="filterExpandButtonText"
-                              :expandedButtonText="filterExpandedButtonText"
-                              :showPlaceholder="keywordsPlaceholder"
-                              @clickedExpand="catchFilterExpandClicked"
-                              @clickedTag="catchTagClicked"
-                              @clickedTagClose="catchTagCloseClicked"
-                              @clickedClear="catchTagCleared" />
-      </v-flex>
-
-      <v-flex py-2 style="z-index: 1;"
+  <v-container grid-list-xs
+              fluid
+              tag="article"
+              pa-0
+  >
+    <v-layout row wrap
+    >
+      <v-flex style="z-index: 1;"
               v-bind="{ ['mx-0']: $vuetify.breakpoint.mdAndUp,
                         ['xs8']: showMapFilter & $vuetify.breakpoint.mdAndUp,
                         ['xs6']: showMapFilter & $vuetify.breakpoint.sm,
@@ -28,53 +15,57 @@
                         metadataListStyling }" >
 
         <metadata-list-layout :listContent="filteredContent"
-                            :list-view="listViewActive"
-                            :show-map-filter="showMapFilter"
-                            :map-filtering-possible="mapFilteringPossible"
-                            :place-holder-amount="placeHolderAmount"
-                            @clickedTag="catchTagClicked" />
+                            :listView="listViewActive"
+                            :showMapFilter="showMapFilter"
+                            :mapFilteringPossible="mapFilteringPossible"
+                            :placeHolderAmount="placeHolderAmount"
+                            @clickedTag="catchTagClicked"
+                            :allTags="allTags"
+                            :selectedTagNames="selectedTagNames"
+                            :showPlaceholder="keywordsPlaceholder"
+                            @clickedExpand="catchFilterExpandClicked"
+                            @clickedTagClose="catchTagCloseClicked"
+                            @clickedClear="catchTagCleared"
+                            :mapHeight="mapFilterHeight"
+                            :mapWidth="mapFilterWidth"
+                            :defaultListControls="controls" />
       </v-flex>
 
-      <v-flex v-if="mapFilteringPossible && showMapFilter"
-              py-3
-              v-bind="{
-                        ['xs4']: showMapFilter & $vuetify.breakpoint.mdAndUp,
-                        ['xs6']: showMapFilter & $vuetify.breakpoint.sm,
-              }"
-              style="position: fixed; top: 135px; right: 10px;" >
-        <filter-map-view :totalHeight="mapFilterHeight"
-                        :totalWidth="mapFilterWidth"
-                        :expanded="showMapFilter"
-                        @pointClicked="catchPointClicked"
-                        @clearButtonClicked="catchClearButtonClick" />
-
-      </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
+/**
+ * The browse page of EnviDat. It consists of metadataListLayout
+ * but only all the logic for the interaction with the list.
+ *
+ * @summary browse page
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:12:30
+ * Last modified  : 2019-10-23 16:21:31
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import { mapGetters } from 'vuex';
 import {
   BROWSE_PAGENAME,
   BROWSE_PATH,
 } from '@/router/routeConsts';
-import FilterMapView from '@/components/Filtering/FilterMapView';
-import FilterKeywordsView from '@/components/Filtering/FilterKeywordsView';
 import MetadataListLayout from '@/components/Layouts/MetadataListLayout';
 import {
   SEARCH_METADATA,
   CLEAR_SEARCH_METADATA,
   FILTER_METADATA,
-  PIN_METADATA,
-  CLEAR_PINNED_METADATA,
 } from '@/store/metadataMutationsConsts';
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
-  SET_CONTROLS,
   SET_BROWSE_SCROLL_POSITION,
-} from '@/store/mutationsConsts';
+} from '@/store/mainMutationsConsts';
 
 
 export default {
@@ -105,21 +96,12 @@ export default {
         decodedTags = this.mixinMethods_decodeTagsFromUrl(tagsEncoded);
       }
 
-      if (!this.areArrayIdentical(this.selectedTagNames, decodedTags)) {
+      if (!this.mixinMethods_areArraysIdentical(this.selectedTagNames, decodedTags)) {
         this.selectedTagNames = decodedTags;
         return true;
       }
 
       return false;
-    },
-    areArrayIdentical(arr1, arr2) {
-      if (arr1.length !== arr2.length) return false;
-
-      for (let i = arr1.length; i--;) {
-        if (arr1[i] !== arr2[i]) return false;
-      }
-
-      return true;
     },
     storeScroll(scrollY) {
       this.$store.commit(SET_BROWSE_SCROLL_POSITION, scrollY);
@@ -129,7 +111,7 @@ export default {
       this.mixinMethods_setScrollPosition(0);
     },
     catchTagClicked(tagName) {
-      if (!this.isTagSelected(tagName)) {
+      if (!this.mixinMethods_isTagSelected(tagName)) {
         const newTags = [...this.selectedTagNames, tagName];
 
         const tagsEncoded = this.mixinMethods_encodeTagForUrl(newTags);
@@ -158,48 +140,27 @@ export default {
     catchSearchCleared() {
       this.mixinMethods_additiveChangeRoute(BROWSE_PATH, '', undefined);
     },
-    catchPointClicked(id) {
-      // bring to top
-      // highlight entry
-      this.$store.commit(`metadata/${PIN_METADATA}`, id);
-    },
-    catchClearButtonClick() {
-      this.$store.commit(`metadata/${CLEAR_PINNED_METADATA}`);
+    catchMapFilterChanged(visibleIds) {
+      this.mapFilterVisibleIds = visibleIds;
     },
     catchFilterExpandClicked() {
       this.filterExpanded = !this.filterExpanded;
     },
-    controlsChanged(controlsActive) {
-      // 0-entry: listView, 1-entry: mapActive
-
-      let listActive = false;
-      let mapToggled = false;
-
-      for (let index = 0; index < controlsActive.length; index++) {
-        const el = controlsActive[index];
-
-        if (el === 0) {
-          listActive = true;
-        }
-        if (el === 1) {
-          mapToggled = true;
-        }
-      }
-
-      this.listViewActive = listActive;
-      this.showMapFilter = mapToggled;
-
-      this.$store.commit(SET_CONTROLS, controlsActive);
-    },
     toggleMapExpand() {
       this.showMapFilter = !this.showMapFilter;
     },
-    isTagSelected(tagName) {
-      if (!tagName || this.selectedTagNames === undefined) {
-        return false;
+    contentFilterMapIds(contentList) {
+      const visibleContent = [];
+
+      for (let i = 0; i < contentList.length; i++) {
+        const el = contentList[i];
+
+        if (this.mapFilterVisibleIds.includes(el.id)) {
+          visibleContent.push(el);
+        }
       }
 
-      return this.selectedTagNames.indexOf(tagName) >= 0;
+      return visibleContent;
     },
     dynamicCardBackground() {
       const max = Object.keys(this.imagesImports).length;
@@ -293,23 +254,15 @@ export default {
       loadingMetadatasContent: 'metadata/loadingMetadatasContent',
       filteredContent: 'metadata/filteredContent',
       isFilteringContent: 'metadata/isFilteringContent',
-      pinnedIds: 'metadata/pinnedIds',
       // tag Object structure: { tag: tagName, count: tagCount }
       allTags: 'metadata/allTags',
-      currentMetadataContent: 'metadata/currentMetadataContent',
       detailPageBackRoute: 'metadata/detailPageBackRoute',
       aboutPageBackRoute: 'metadata/aboutPageBackRoute',
       updatingTags: 'metadata/updatingTags',
       scrollPositionDelay: 'metadata/scrollPositionDelay',
-      searchPlaceholderText: 'metadata/searchPlaceholderText',
-      searchPlaceholderTextSmall: 'metadata/searchPlaceholderTextSmall',
       browseScrollPosition: 'browseScrollPosition',
       controls: 'controls',
-      cardBGImages: 'cardBGImages',
     }),
-    searchBarPlaceholder() {
-      return this.$vuetify.breakpoint.mdAndUp ? this.searchPlaceholderText : this.searchPlaceholderTextSmall;
-    },
     keywordsPlaceholder() {
       return this.searchingMetadatasContent || this.updatingTags;
     },
@@ -342,19 +295,6 @@ export default {
       }
 
       return sWidth;
-    },
-    popularTags() {
-      const popTags = [];
-
-      if (this.allTags) {
-        for (let i = 0; i < this.allTags.length; i++) {
-          const tag = this.allTags[i];
-
-          popTags.push(tag);
-        }
-      }
-
-      return popTags;
     },
     metadataListStyling() {
       const json = {
@@ -394,25 +334,19 @@ export default {
     },
   },
   components: {
-    FilterMapView,
-    FilterKeywordsView,
     MetadataListLayout,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
     searchTerm: '',
-    controlsLabel: 'List Controls',
     placeHolderAmount: 6,
     suggestionText: 'Try one of these categories',
     selectedTagNames: [],
     popularTagAmount: 10,
     showMapFilter: false,
-    maxMapFilterHeight: 725,
+    maxMapFilterHeight: 325,
     mapFilterVisibleIds: [],
     listViewActive: false,
-    filterExpanded: false,
-    filterExpandButtonText: 'Show all tags',
-    filterExpandedButtonText: 'Hide all tags',
   }),
 };
 </script>
@@ -420,11 +354,11 @@ export default {
 
 <style scoped>
 
-.stickyFilterBar {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 50px;
-  z-index: 1000;
-}
+  .stickyFilterBar {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 50px;
+    z-index: 1000;
+  }
 
 </style>

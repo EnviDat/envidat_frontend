@@ -4,12 +4,10 @@
     <v-card-title class="bodyTitle title">Subprojects</v-card-title>
 
     <v-card-text v-if="subProjects"
-                  :class="{ 'px-2' : $vuetify.breakpoint.xsOnly,
-                            'px-3' : $vuetify.breakpoint.smAndUp, }"
-                  class="py-0">
+                  pa-3 >
 
           <v-container grid-list-lg fluid
-                        pa-1 >
+                        pa-0 >
           <v-layout row wrap>
 
             <v-flex v-for="(project, index) in subProjects"
@@ -45,6 +43,20 @@
 </template>
 
 <script>
+/**
+ * ProjectSubprojects.vue shows a list of project cards
+ * for every subproject entry.
+ *
+ * @summary shows a list of (sub)project cards
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 14:11:27
+ * Last modified  : 2019-10-23 16:05:31
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
+
 import ProjectCard from '@/components/Cards/ProjectCard';
 
 export default {

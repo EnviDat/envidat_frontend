@@ -2,9 +2,16 @@
   <v-card>
     <v-card-title class="title metadata_title">Location</v-card-title>
 
-    <v-card-text v-if="isEmpty" style="color: red;">{{ emptyText }}</v-card-text>
+    <v-card-text v-if="isEmpty && !showPlaceholder" style="color: red;">{{ emptyText }}</v-card-text>
 
-    <v-card-text>
+    <v-card-text v-if="showPlaceholder" >
+      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer">
+        <div v-bind="mapSize"
+              class='bone bone-type-image' />
+      </div>
+    </v-card-text>
+
+    <v-card-text v-if="!showPlaceholder && !isEmpty">
       <!-- can't get it to work with the v-show for now
             because leaflet needs the ref
       to the mapcontainer to correctly initialize-->
@@ -12,6 +19,7 @@
         <div id="map" ref="map" v-bind="mapSize" />
       </div>
     </v-card-text>
+
   </v-card>
 </template>
 
@@ -30,13 +38,13 @@ import marker2x from '@/assets/map/marker-icon-2x.png';
 import markerShadow from '@/assets/map/marker-shadow.png';
 
 /* eslint-disable no-underscore-dangle */
-delete L.Icon.Default.prototype.mixinMethods_getIconUrl;
+// delete L.Icon.Default.prototype.mixinMethods_getIconUrl;
 
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: marker2x,
-  iconUrl: marker,
-  shadowUrl: markerShadow,
-});
+// L.Icon.Default.mergeOptions({
+//   iconRetinaUrl: marker2x,
+//   iconUrl: marker,
+//   shadowUrl: markerShadow,
+// });
 
 // HACK end
 
@@ -44,12 +52,16 @@ export default {
   components: {},
   props: {
     genericProps: Object,
+    showPlaceholder: Boolean,
   },
   data: () => ({
     smallSize: 300,
     mediumSize: 500,
     largeSize: 725,
     fullWidthSize: 875,
+    marker,
+    marker2x,
+    markerShadow,
     map: null,
     mapIsSetup: false,
     checkedGenericProps: false,
@@ -74,10 +86,10 @@ export default {
     geoJSON() {
       return this.mixinMethods_getGenericProp('geoJSON');
     },
-    isEmpty: function isEmpty() {
+    isEmpty() {
       return !this.pointArray && !this.geoJSON;
     },
-    mapSize: function mapSize() {
+    mapSize() {
       let width = this.largeSize;
       let height = this.mediumSize;
 
@@ -99,35 +111,17 @@ export default {
       };
     },
   },
-  watch: {
-    geoJSON: function updateGeoJSON() {
-      if (this.geoJSON) {
-        this.setupMap();
-      }
-    },
-    pointArray: function updatePointArray() {
-      if (this.pointArray) {
-        this.setupMap();
-      }
-    },
-  },
-  mounted: function mounted() {
+  updated() {
     this.setupMap();
   },
-  beforeDestroy: function beforeDestroy() {
+  beforeDestroy() {
     if (this.map) {
       this.map.remove();
     }
   },
   methods: {
-    setupMap: function setupMap() {
-      if (this.mapIsSetup) {
-        return;
-      }
-
-      if (this.isEmpty) {
-        return;
-      }
+    setupMap() {
+      if (this.mapIsSetup || this.isEmpty) return;
 
       this.map = this.initLeaflet(this.$refs.map, this.pointArray);
       this.addOpenStreetMapLayer(this.map);
@@ -191,8 +185,22 @@ export default {
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(map);
     },
-    addPoint: function addPoint(map, coords) {
-      const point = L.marker(coords).addTo(map);
+    addPoint(map, coords) {
+      const iconOptions = L.Icon.Default.prototype.options;
+      // delete iconOptions.mixinMethods_getIconUrl;
+      // use the defaultoptions to ensure that all untouched defaults stay in place
+
+      iconOptions.iconUrl = this.marker;
+      iconOptions.iconRetinaUrl = this.marker2x;
+      iconOptions.shadowUrl = this.markerShadow;
+
+      const icon = L.icon(iconOptions);
+
+      const point = L.marker(coords, {
+        icon,
+        opacity: 0.65,
+        riseOnHover: true,
+      }).addTo(map);
 
       point.id = this.title;
       point.on({ mouseover: this.catchHover });

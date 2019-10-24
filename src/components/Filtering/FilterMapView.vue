@@ -1,101 +1,73 @@
 <template>
-  <v-card :height="totalHeight" :width="totalWidth" raised>
-    <v-card-title>
-      <div class="headline mb-0">
-        Cartographic Filtering
-      </div>
-    </v-card-title>
+  <v-card raised
+          :height="totalHeight"
+          >
+    <!-- :width="totalWidth"  -->
 
-    <div :style="`background-color: ${this.$vuetify.theme.highlight};`" class="mb-2">
-      <p class="px-3 py-0 my-0 body-2">
-        {{ highlightedText }}
-      </p>
-    </div>
-
-    <div
-      id="map"
-      ref="map"
-      v-bind="mapViewHeight"
-      v-if="expanded && !errorLoadingLeaflet"
-    />
-
-    <div v-bind="mapViewHeight" v-if="expanded && errorLoadingLeaflet">
+    <div v-if="errorLoadingLeaflet"
+          v-bind="mapViewHeight" >
       Error loading leaflet
     </div>
 
-    <v-card-actions class="pr-2">
-      <div
-        :style="`color:${this.pinnedIds.length > 0 ? this.$vuetify.theme.primary : 'rgba(0,0,0,.47)'};`">
-        {{ this.filterText + this.pinnedIds.length }}
-      </div>
+    <div v-if="!errorLoadingLeaflet" >
 
-      <v-spacer/>
+      <v-layout row>
 
-      <base-icon-button
-        :custom-icon="eyeIcon"
-        :outlined="true"
-        @clicked="focusOnLayers()"
-        class="px-2"
-        color="highlight"
-        tooltip-text="Focus on all elements on the map"
-      />
+        <v-flex py-0 pr-0>
+          <div id="map"
+                ref="map"
+                v-bind="mapViewHeight" />
+        </v-flex>
 
-      <base-icon-button
-        :count="pinLayerGroup.length"
-        :custom-icon="pinIcon"
-        :is-toggled="pinEnabled"
-        :outlined="true"
-        :tooltip-text="pinEnabled ? 'Hide single markers' : 'Show single markers'"
-        @clicked="pinEnabled = !pinEnabled; updatePins()"
-        class="px-2"
-        color="secondary"
-        v-if="hasPins"
-      />
+        <v-flex xs2 py-0 pl-0>
 
-      <base-icon-button
-        :count="multiPinLayerGroup.length"
-        :custom-icon="multiPinIcon"
-        :is-toggled="multiPinEnabled"
-        :outlined="true"
-        :tooltip-text="multiPinEnabled ? 'Hide multi markers' : 'Show multi markers'"
-        @clicked="multiPinEnabled = !multiPinEnabled; updateMultiPins()"
-        class="px-2"
-        color="secondary"
-        v-if="hasMultiPins"
-      />
-      <base-icon-button
-        :count="polygonLayerGroup.length"
-        :custom-icon="polygonIcon"
-        :is-toggled="polygonEnabled"
-        :outlined="true"
-        :tooltip-text="polygonEnabled ? 'Hide polygons' : 'Show polygons'"
-        @clicked="polygonEnabled = !polygonEnabled; updatePolygons()"
-        class="px-2"
-        color="secondary"
-        v-if="hasPolygons"
-      />
-      <base-rectangle-button
-        :button-text="clearButtonText"
-        :disabled="this.pinnedIds.length <= 0"
-        :is-flat="true"
-        :is-small="true"
-        @click="catchClearButtonClicked"
-        class="pl-3"
-        icon-color="red"
-        material-icon-name="close"
-        tooltip-text="Clear all pinned Metadata"
-      />
-    </v-card-actions>
+          <filter-map-widget style="height: 100%"
+                              :pinnedIds="pinnedIds"
+                              :hasPins="hasPins"
+                              :pinEnabled="pinEnabled"
+                              :pinNumber="hasPins ? pinLayerGroup.length : 0"
+                              :hasMultiPins="hasMultiPins"
+                              :multiPinEnabled="multiPinEnabled"
+                              :multiPinNumber="hasMultiPins ? multiPins.length : 0"
+                              :hasPolygons="hasPolygons"
+                              :polygonEnabled="polygonEnabled"
+                              :polygonNumber="hasPolygons ? polygonLayerGroup.length : 0"
+                              @clickedFocus="focusOnLayers"
+                              @clickedPin="catchPinClicked"
+                              @clickedMultipin="catchMultipinClicked"
+                              @clickedPolygon="catchPolygonClicked"
+                              @clickedClear="catchClearClicked" />
+
+        </v-flex>
+
+      </v-layout>
+
+    </div>
+
   </v-card>
 </template>
 
 <script>
+/**
+ * ProjectCard.vue creates a card with a header image, title, keywords and preview description.
+ * When clicked its emits the 'clickedEvent' event, also the clickedTag can be emitted.
+ *
+ * @summary card with img, title, keywords and preview description
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-02 11:24:00
+ * Last modified  : 2019-10-23 18:17:39
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import { mapGetters } from 'vuex';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import metaDataFactory from '@/components/metaDataFactory';
-import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
-import BaseIconButton from '@/components/BaseElements/BaseIconButton';
+import metaDataFactory from '@/factories/metaDataFactory';
+import FilterMapWidget from '@/components/Filtering/FilterMapWidget';
+
 // HACK start
 /* eslint-disable import/first */
 // Solution to loading in the imgs correctly via webpack
@@ -111,10 +83,10 @@ import markerShadow from '@/assets/map/marker-shadow.png';
 
 export default {
   props: {
-    locations: Array,
+    content: Array,
     totalHeight: Number,
     totalWidth: Number,
-    expanded: Boolean,
+    pinnedIds: Array,
   },
   beforeMount() {
     this.pinIcon = this.mixinMethods_getIcon('marker');
@@ -132,9 +104,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      filteredContent: 'metadata/filteredContent',
       metadataIds: 'metadata/metadataIds',
-      pinnedIds: 'metadata/pinnedIds',
       metadatasContent: 'metadata/metadatasContent',
       searchedMetadatasContent: 'metadata/searchedMetadatasContent',
       searchingMetadatasContent: 'metadata/searchingMetadatasContent',
@@ -146,8 +116,11 @@ export default {
     },
     mapViewHeight() {
       return {
-        style: `height: ${this.mapHeight}px;`,
+        style: `height: ${this.totalHeight}px;`,
       };
+    },
+    widgetWidth() {
+      return this.$vuetify.breakpoint.smAndDown ? 100 : 350;
     },
     mapHeight() {
       return this.totalHeight - this.buttonHeight;
@@ -163,18 +136,38 @@ export default {
     },
   },
   methods: {
-    pointClick(e) {
+    checkError() {
+    // checkError: function checkError(e) {
+      // console.log(`got leaflet error ${e}`);
+      this.errorLoadingLeaflet = true;
+    },
+    catchPointClick(e) {
       this.$emit('pointClicked', e.target.id);
     },
-    pointMouseover(e) {
+    catchPointHover(e) {
       e.target.bindPopup(`<p>${e.target.title}</p>`).openPopup();
       this.$emit('pointHover', e.target.id);
     },
-    pointMouseout(e) {
+    catchPointHoverLeave(e) {
       e.target.closePopup();
       this.$emit('pointHoverLeave', e.target.id);
     },
     catchClearButtonClicked() {
+      this.$emit('clearButtonClicked');
+    },
+    catchPinClicked() {
+      this.pinEnabled = !this.pinEnabled;
+      this.updatePins();
+    },
+    catchMultipinClicked() {
+      this.multiPinEnabled = !this.multiPinEnabled;
+      this.updateMultiPins();
+    },
+    catchPolygonClicked() {
+      this.polygonEnabled = !this.polygonEnabled;
+      this.updatePolygons();
+    },
+    catchClearClicked() {
       this.$emit('clearButtonClicked');
     },
     toggleMapExpand() {
@@ -185,7 +178,7 @@ export default {
         return;
       }
 
-      this.map = this.initLeaflet(this.$refs.map, this.pointArray);
+      this.map = this.initLeaflet(this.$refs.map);
       this.markerCount = 0;
 
       if (this.map) {
@@ -207,7 +200,7 @@ export default {
     },
     initLeaflet(mapElement) {
       const map = L.map(mapElement, {
-        scrollWheelZoom: false,
+        // scrollWheelZoom: false,
         center: this.setupCenterCoords,
         zoom: 7,
         zoomSnap: 0.5,
@@ -234,7 +227,6 @@ export default {
     },
     getPoint(coords, id, title, selected) {
       const iconOptions = L.Icon.Default.prototype.options;
-      delete iconOptions.mixinMethods_getIconUrl;
       // use the defaultoptions to ensure that all untouched defaults stay in place
 
       iconOptions.iconUrl = selected ? this.selectedMarker : this.marker;
@@ -329,6 +321,10 @@ export default {
           }
         });
 
+        // store the multiPins in data to get the actual number
+        // the number from the flatMultiPins will be every single pin
+        this.multiPins = multiPins;
+
         this.multiPinLayerGroup = flatMultiPins;
       } else {
         this.multiPinLayerGroup = [];
@@ -408,21 +404,11 @@ export default {
         }
       });
     },
-    mergePinnedAndFiltered() {
-      const pinnedContent = [];
-
-      this.pinnedIds.forEach((pinId) => {
-        pinnedContent.push(this.metadatasContent[pinId]);
-      });
-
-      return [...pinnedContent, ...this.filteredContent];
-    },
     updateMap() {
       this.clearLayers(this.map);
-      const pinnedAndFilteredContent = this.mergePinnedAndFiltered();
 
       // fills this.pinLayerGroup, this.multiPinLayerGroup, this.polygonLayerGroup
-      this.createMapElements(pinnedAndFilteredContent);
+      this.createMapElements(this.content);
 
       this.addElementsToMap(this.pinLayerGroup, this.pinEnabled);
       this.addElementsToMap(this.multiPinLayerGroup, this.multiPinEnabled);
@@ -444,6 +430,14 @@ export default {
       this.addElementsToMap(this.polygonLayerGroup, this.polygonEnabled, true);
     },
   },
+  updated() {
+    this.setupMap();
+  },
+  watch: {
+    content() {
+      this.updateMap();
+    },
+  },
   data: () => ({
     map: null,
     mapIsSetup: false,
@@ -463,12 +457,11 @@ export default {
     pinLayerGroup: null,
     multiPinEnabled: true,
     multiPinLayerGroup: null,
+    multiPins: [],
     pinIcon: null,
     multiPinIcon: null,
     polygonIcon: null,
     eyeIcon: null,
-    highlightedText: 'Select markers to pin entries to the top',
-    clearButtonText: 'Clear Pins',
     filterText: 'Pinned: ',
     marker,
     marker2x,
@@ -477,8 +470,7 @@ export default {
     markerShadow,
   }),
   components: {
-    BaseRectangleButton,
-    BaseIconButton,
+    FilterMapWidget,
   },
 };
 </script>

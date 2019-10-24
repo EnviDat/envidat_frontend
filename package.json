@@ -1,6 +1,6 @@
 {
   "name": "envidat.ch",
-  "version": "0.6.0",
+  "version": "0.6.42",
   "private": true,
   "description": "Envidat frontend with vue",
   "author": "Dominik Haas-Artho",
@@ -9,7 +9,8 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "storybook:build": "vue-cli-service storybook:build -c config/storybook",
-    "storybook": "vue-cli-service storybook:serve -p 6006 -c config/storybook"
+    "storybook": "vue-cli-service storybook:serve -p 6006 -c config/storybook",
+    "full-build": "vue-cli-service build && vue-cli-service storybook:build -c config/storybook"
   },
   "dependencies": {
     "axios": "^0.19.0",
@@ -40,10 +41,10 @@
     "@storybook/addon-links": "^4.1.0 || ^5.0.0",
     "@storybook/addon-notes": "^4.1.0 || ^5.0.0",
     "@storybook/addon-viewport": "^5.1.9",
-    "@vue/cli-plugin-babel": "^3.9.0",
-    "@vue/cli-plugin-eslint": "^3.9.2",
-    "@vue/cli-service": "^3.9.0",
-    "@vue/eslint-config-airbnb": "^4.0.0",
+    "@vue/cli-plugin-babel": "^3.11.0",
+    "@vue/cli-plugin-eslint": "^3.11.0",
+    "@vue/cli-service": "^3.11.0",
+    "@vue/eslint-config-airbnb": "^4.0.1",
     "babel-eslint": "^10.0.1",
     "css-loader": "^3.1.0",
     "eslint": "^5.16.0",

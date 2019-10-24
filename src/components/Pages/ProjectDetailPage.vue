@@ -1,52 +1,66 @@
 <template>
-  <v-container tag="article" fluid fill-height pa-0 >
-    <v-layout wrap>
-      <v-flex xs12 lg10 offset-lg1 elevation-5 style="z-index: 1;" >
-        <project-header :title="currentProject.title"
-                        :titleImg="currentProject.image_display_url"
+  <v-container tag="article"
+                fluid fill-height
+                pa-0 >
+
+    <v-layout row wrap>
+
+      <v-flex xs12 lg10 offset-lg1
+              elevation-5
+              style="z-index: 1;" >
+
+        <project-header :title="currentProject ? currentProject.title : null"
+                        :titleImg="currentProject ? currentProject.image_display_url : null"
                         :defaultImg="missionImg"
-                        :showPlaceholder="!currentProject"
-                        @clickedBack="catchBackClicked"
-                        />
+                        :showPlaceholder="loading"
+                        @clickedBack="catchBackClicked" />
       </v-flex>
 
-      <v-flex xs12 lg10 offset-lg1 px-3 style="z-index: 0;" >
-        <project-body
-          :description="currentProject.description"
-          :subProjects="currentProject.subProjects"
-          :metadatas="currentProject.packages"
-        />
+      <v-flex xs12 lg10 offset-lg1
+              px-3
+              style="z-index: 0;" >
+
+        <project-body v-bind="currentProject"
+                      :showPlaceholder="loading" />
       </v-flex>
 
-      <div v-if="currentProject.subProjects" >
-        <v-flex xs12 lg10 offset-lg1 py-2 px-3 >
-          <project-subprojects :defaultImg="creatorImg"
-                                :subProjects="currentProject.subProjects"
-                                @projectClick="catchProjectClick"
-                                @subprojectClick="catchSubprojectClick"
-                                />
-        </v-flex>
-      </div>
+      <v-flex v-if="loading || (!loading && currentProject && currentProject.subProjects)"
+              xs12 lg10 offset-lg1
+              py-2 px-3 >
+        <project-subprojects v-bind="currentProject"
+                              :defaultImg="creatorImg"
+                              :showPlaceholder="loading"
+                              @projectClick="catchProjectClick"
+                              @subprojectClick="catchSubprojectClick" />
+      </v-flex>
 
       <v-flex xs12 lg10 offset-lg1
               py-2 px-3 >
+
         <v-card>
-          <div v-if="hasMetadata" >
+          <v-card-title class="metadataList_title title">{{ metadataListTitle }}</v-card-title>
 
-            <v-card-title class="metadataList_title title">Metadatas</v-card-title>
-
+          <div v-if="hasMetadatas" >
             <metadata-list-layout class="px-3"
-                                :listContent="currentProject.packages"
+                                :listContent="filteredListContent"
                                 :showMapFilter="false"
                                 :mapFilteringPossible="mapFilteringPossible"
                                 :placeHolderAmount="placeHolderAmount"
-                                />
-
+                                @clickedTag="catchTagClicked"
+                                :allTags="allMetadataTags"
+                                :selectedTagNames="selectedTagNames"
+                                @clickedTagClose="catchTagCloseClicked"
+                                @clickedClear="catchTagCleared"
+                                :defaultListControls="controls"
+                                :mapHeight="mapFilterHeight" />
           </div>
 
-          <div v-if="!hasMetadata" >
-            <v-card-title class="metadataList_title title">{{ currentProject.title }} has no Metadata connected</v-card-title>
+          <div v-if="!hasMetadatas" >
+            <v-card-text style="color: red;" >
+              {{ metadataEmptyText }} '{{ currentProject ? currentProject.title : '' }}'
+            </v-card-text>
           </div>
+
         </v-card>
       </v-flex>
 
@@ -56,19 +70,30 @@
 
 <script>
 /**
-   * The projects page lists all the projects and their subprojects.
-   */
+ * The ProjectDetailPage shows all the ProjectDetailVies for a project.
+ *
+ * @summary project detail page
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:12:30
+ * Last modified  : 2019-10-23 16:29:34
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import { mapGetters } from 'vuex';
 import { PROJECTS_PATH, PROJECT_DETAIL_PAGENAME } from '@/router/routeConsts';
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
-} from '@/store/mutationsConsts';
+} from '@/store/mainMutationsConsts';
 import {
   GET_PROJECTS,
   PROJECTS_NAMESPACE,
   SET_PROJECTDETAIL_PAGE_BACK_URL,
 } from '@/store/projectsMutationsConsts';
+import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
 
 import ProjectHeader from '@/components/ProjectDetailViews/ProjectHeader';
 import ProjectBody from '@/components/ProjectDetailViews/ProjectBody';
@@ -79,6 +104,8 @@ import missionImg from '@/assets/about/mission.jpg';
 import creator from '@/assets/cards/data_creator.jpg';
 import creatorSmall from '@/assets/cards/data_creator_small.jpg';
 
+import { tagsIncludedInSelectedTags } from '@/factories/metadataFilterMethods';
+// const filtermethods = require('@/factories/metadataFilterMethods');
 
 export default {
   /**
@@ -93,7 +120,7 @@ export default {
 
       let backRoute = { path: PROJECTS_PATH };
 
-      if (vm.currentProject.parent) {
+      if (vm.currentProject && vm.currentProject.parent) {
         backRoute = {
           name: PROJECT_DETAIL_PAGENAME,
           params: { id: vm.currentProject.parent.id },
@@ -131,8 +158,11 @@ export default {
   },
   computed: {
     ...mapGetters({
+      loading: `${PROJECTS_NAMESPACE}/loading`,
       projects: `${PROJECTS_NAMESPACE}/projects`,
       projectsPageBackRoute: `${PROJECTS_NAMESPACE}/projectsPageBackRoute`,
+      metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
+      allTags: `${METADATA_NAMESPACE}/allTags`,
     }),
     projectsCardsParents() {
       // return this.projects.filter(project => !project.parent);
@@ -154,14 +184,72 @@ export default {
     mapFilteringPossible() {
       return this.$vuetify.breakpoint.smAndUp;
     },
-    hasMetadata() {
-      return this.currentProject.packages && this.currentProject.packages.length > 0;
+    hasMetadatas() {
+      return this.currentProject && this.currentProject.packages && this.currentProject.packages.length > 0;
     },
     creatorImg() {
       return this.$vuetify.breakpoint.mdAndUp ? creator : creatorSmall;
     },
+    allMetadataTags() {
+      const projectDatasetsTags = [];
+
+      for (let i = 0; i < this.allTags.length; i++) {
+        const tag = this.allTags[i];
+        let found = false;
+
+        for (let j = 0; j < this.filteredListContent.length; j++) {
+          const dataset = this.filteredListContent[j];
+          const tags = dataset.tags;
+
+          if (tags && tags.length > 0) {
+            const index = tags.findIndex(obj => obj.name.includes(tag.name));
+
+            if (index >= 0) {
+              found = true;
+              break;
+            }
+          }
+        }
+
+        projectDatasetsTags.push({ name: tag.name, enabled: found });
+      }
+
+      return projectDatasetsTags;
+    },
+    filteredListContent() {
+      const projectDatasets = [];
+
+      if (this.hasMetadatas) {
+        for (let i = 0; i < this.currentProject.packages.length; i++) {
+          const el = this.currentProject.packages[i];
+          // const index = el.tags.findIndex(obj => obj.name.includes(tag.name));
+          if (tagsIncludedInSelectedTags(el.tags, this.selectedTagNames)) {
+            const fullDataset = this.getMetadataContent(el.id);
+
+            if (fullDataset) {
+              // the tags of each dataset has to be looked up in the metadataContents
+              // because the backend call doesn't deliver the packages with the tags
+              // it can only delivery the tags for the projects, which is no use for this
+              // case
+              projectDatasets.push(fullDataset);
+            } else {
+              projectDatasets.push(el);
+            }
+          }
+        }
+      }
+
+      return projectDatasets;
+    },
   },
   methods: {
+    getMetadataContent(id) {
+      if (!this.metadatasContent) {
+        return null;
+      }
+
+      return this.metadatasContent[id];
+    },
     getProject(id) {
       let current = null;
 
@@ -209,6 +297,23 @@ export default {
         params: { id: subprojectId },
       });
     },
+    catchTagClicked(tagName) {
+      if (!this.mixinMethods_isTagSelected(tagName)) {
+        this.selectedTagNames.push(tagName);
+      }
+    },
+    catchTagCloseClicked(tagId) {
+      if (this.selectedTagNames === undefined) {
+        return;
+      }
+
+      if (this.mixinMethods_isTagSelected(tagId)) {
+        this.selectedTagNames = this.selectedTagNames.filter(tag => tag !== tagId);
+      }
+    },
+    catchTagCleared() {
+      this.selectedTagNames = [];
+    },
   },
   components: {
     ProjectHeader,
@@ -221,7 +326,12 @@ export default {
     missionImg,
     creator,
     creatorSmall,
-    placeHolderAmount: 6,
+    placeHolderAmount: 3,
+    selectedTagNames: [],
+    controls: [1],
+    mapFilterHeight: 400,
+    metadataListTitle: 'Datasets',
+    metadataEmptyText: 'There are no datasets connected with the project',
   }),
 };
 </script>

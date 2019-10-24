@@ -1,24 +1,25 @@
+
 <template>
   <div :style="isSmall ? 'height: 28px;' : 'height: 36px;'"
         @mouseover="hoverBadge = true"
         @mouseleave="hoverBadge = false"
   >
     <v-tooltip v-bind="{ top: !tooltipBottom, bottom: tooltipBottom }"
-              :disabled="$vuetify.breakpoint.xsOnly || tooltipText === ''" >
+              :disabled="$vuetify.breakpoint.smAndDown || !toolTipText" >
 
-      <template v-slot:activator="{ on }">
-        <v-btn
-          style="margin: 0 !important;"
-          :icon="!isElevated"
-          :fab="isElevated"
-          :small="isSmall || isElevated"
-          :outline="outlined && !isToggled"
-          :color="color ? color : disabled ? '' : 'primary'"
-          :href="url"
-          :disabled="disabled"
-          v-bind="{['target'] : '_blank' }"
-          @click.stop="onClick"
-        >
+
+      <v-btn slot="activator"
+            style="margin: 0 !important;"
+            :icon="!isElevated"
+            :fab="isElevated"
+            :small="isSmall || isElevated"
+            :outline="outlined && !isToggled"
+            :color="color ? color : disabled ? '' : 'primary'"
+            :href="url"
+            :disabled="disabled"
+            v-bind="{['target'] : '_blank' }"
+            @click.stop="clicked" >
+
 
           <div v-if="customIcon"
                 class="iconCentering" >
@@ -54,7 +55,7 @@
 
 <script>
 /**
- * A round button with an icon, either a custom icon or a material (material design libery) icon.
+ * BaseIconButton.vue creates a round button with an icon, either a custom icon or a material (material design libery) icon.
  * Similar to @class RectangleButton
  * React on the 'clicked' event or pass an @prop url to create a href-link.
  *
@@ -74,6 +75,15 @@
  * The @prop isElevated creates a FAB button with high elevation (box-shadows) if true.
  *
  * When @prop disabled is true clicks won't do anything.
+ *
+ * @summary a clickable icon button which emits 'clicked' event
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-02 11:32:12
+ * Last modified  : 2019-10-23 14:04:41
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
  */
 
 export default {
