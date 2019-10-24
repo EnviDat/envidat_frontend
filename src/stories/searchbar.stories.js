@@ -1,44 +1,26 @@
+/**
+ * @summary story of SearchBarView & SmallSearchBarView for sandbox testing
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:34:51
+ * Last modified  : 2019-10-24 10:46:15
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 // /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from '@storybook/vue';
 import { action } from '@storybook/addon-actions';
-
-import Vue from 'vue';
-import {
-  VBtn,
-  VTooltip,
-  VIcon,
-  VImg,
-  VTextField,
-  VCard,
-  VCardActions,
-  VChip,
-  VLayout,
-  VFlex,
-} from 'vuetify/lib';
+import './js/vuetify-components';
 
 import SearchBarView from '../components/Filtering/SearchBarView.vue';
 import SmallSearchBarView from '../components/Filtering/SmallSearchBarView.vue';
 
-Vue.component('v-btn', VBtn);
-Vue.component('v-tooltip', VTooltip);
-Vue.component('v-icon', VIcon);
-Vue.component('v-img', VImg);
-Vue.component('v-text-field', VTextField);
-Vue.component('v-card', VCard);
-Vue.component('v-card-actions', VCardActions);
-Vue.component('v-chip', VChip);
-
-Vue.component('v-layout', VLayout);
-Vue.component('v-flex', VFlex);
 
 
-export const methods = {
-  onClick: action('clicked'),
-  onClear: action('clicked on clear'),
-};
-
-storiesOf("4 Filtering | SearchBarView", module)
-  .add("basic", () => ({
+storiesOf('4 Filtering | SearchBarView', module)
+  .add('basic', () => ({
     components: { SearchBarView },
     template: `
     <search-bar-view labelText="Search for something"
@@ -47,7 +29,17 @@ storiesOf("4 Filtering | SearchBarView", module)
           @clicked="onClick"
           @searchCleared="onClear"
           />`,
-    methods,
+    methods: {
+      onClick(searchTerm) {
+        action('clicked search for "' + searchTerm + '"');
+      },
+      onClear() {
+        action('cleared Search')(this.searchTerm = '');
+      },
+    },
+    data: () => ({
+      searchTerm: '',
+    }),
   }))
   .add('small', () => ({
     components: { SmallSearchBarView },
@@ -56,6 +48,7 @@ storiesOf("4 Filtering | SearchBarView", module)
         <v-flex py-1>
             <small-search-bar-view
                         labelText="Search for something"
+                        :searchTerm="searchTerm"
                         buttonText="SEARCH"
                         hasButton
                         :searchCount='0'
@@ -67,6 +60,7 @@ storiesOf("4 Filtering | SearchBarView", module)
         <v-flex py-1>
             <small-search-bar-view
                         labelText="Search for something"
+                        :searchTerm="searchTerm"
                         buttonText="SEARCH"
                         :searchCount='0'
                         compactLayout
@@ -80,11 +74,15 @@ storiesOf("4 Filtering | SearchBarView", module)
             <v-flex xs6>
                 <small-search-bar-view
                             labelText="xs6 optimal for button search"
+                            :searchTerm="searchTerm"
                             buttonText="SEARCH"
                             hasButton
+                            showSearchCount
                             :searchCount='0'
                             compactLayout
-                />
+                            @clicked="onClick"
+                            @searchCleared="onClear"
+                              />
             </v-flex>
             </v-layout>
         </v-flex>
@@ -94,24 +92,36 @@ storiesOf("4 Filtering | SearchBarView", module)
             <v-flex xs4 px-1>
                 <small-search-bar-view
                             labelText="xs4 no button"
-                            :searchCount='0'
+                            :searchTerm="searchTerm"
+                            showSearchCount
+                            :searchCount='123'
                             compactLayout
-                />
+                            @clicked="onClick"
+                            @searchCleared="onClear"
+                              />
             </v-flex>
 
             <v-flex xs3 px-1>
                 <small-search-bar-view
                             labelText="xs3 with compactLayout"
-                            :searchCount='0'
+                            :searchTerm="searchTerm"
+                            showSearchCount
+                            :searchCount='12'
                             compactLayout
-                />
+                            @clicked="onClick"
+                            @searchCleared="onClear"
+                            />
             </v-flex>
 
             <v-flex xs3 px-1>
                 <small-search-bar-view
                             labelText="xs3 no compactLayout"
+                            :searchTerm="searchTerm"
+                            showSearchCount
                             :searchCount='0'
-                />
+                            @clicked="onClick"
+                            @searchCleared="onClear"
+                              />
             </v-flex>
             
             </v-layout>
@@ -119,12 +129,12 @@ storiesOf("4 Filtering | SearchBarView", module)
 
       </v-layout>`,
     methods: {
-      onClick() {
-        action('clicked search');
+      onClick(search) {
+        action('clicked search for "' + search + '"');
       },
       onClear() {
-        action('cleared Search')(this.searchTerm);
-      }
+        action('cleared Search')(this.searchTerm = '');
+      },
     },
     data: () => ({
       searchTerm: '',

@@ -1,29 +1,24 @@
 <template>
   <v-container tag="article" fluid fill-height pa-0>
-
-    <v-layout row wrap>
-
+    <v-layout wrap>
       <v-flex xs12 lg10 offset-lg1>
 
-        <img-and-text-layout dark
-                            :blur="true"
-                            :img="missionImg"
-                            :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
-                            :textFontSize="16"
-                            :parallax="true"
-                            title="Research Projects"
-        >
-        </img-and-text-layout>
+        <img-and-text-layout
+          :img="missionImg"
+          :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
+          title="Research Projects"
+        />
+
       </v-flex>
 
       <v-flex xs12 lg10 offset-lg1 mt-5>
-        <v-container grid-list-lg pa-0>
-          <v-layout row wrap>
+        <v-container fluid grid-list-lg pa-1 >
+          <v-layout wrap>
 
-            <v-flex v-for="(project, index) in projectsCardsParents()"
+            <v-flex v-for="(project, index) in projectsCardsParents"
                     :key="index"
                     xs12 sm6 md4 xl3
-                    pa-3 >
+                     >
               <project-card :id="project.id"
                             :title="project.title"
                             :img="project.image_display_url"
@@ -45,15 +40,25 @@
 
 <script>
 /**
- * The projects page lists all the projects and their subprojects.
+ * The ProjectsPage shows an overview (list of ProjectCards) all the projects
+ * and their subprojects.
+ *
+ * @summary projects page
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:12:30
+ * Last modified  : 2019-10-23 16:32:02
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
  */
+
 import { mapGetters } from 'vuex';
-import { PROJECT_DETAIL_NAME } from '@/router/routeConsts';
-import { SET_APP_BACKGROUND, SET_CURRENT_PAGE } from '@/store/mutationsConsts';
+import { PROJECTS_PAGENAME, PROJECT_DETAIL_PAGENAME } from '@/router/routeConsts';
+import { SET_APP_BACKGROUND, SET_CURRENT_PAGE } from '@/store/mainMutationsConsts';
 import {
   GET_PROJECTS,
   PROJECTS_NAMESPACE,
-  PROJECTS_PAGE,
   SET_PROJECTDETAIL_PAGE_BACK_URL,
 } from '@/store/projectsMutationsConsts';
 
@@ -66,13 +71,14 @@ import creator from '@/assets/cards/data_creator.jpg';
 import creatorSmall from '@/assets/cards/data_creator_small.jpg';
 
 export default {
+  name: 'ProjectPage',
   /**
    * @description beforeRouteEnter is used to change background image of this page.
    * It's called via vue-router.
    */
-  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+  beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.$store.commit(SET_CURRENT_PAGE, PROJECTS_PAGE);
+      vm.$store.commit(SET_CURRENT_PAGE, PROJECTS_PAGENAME);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
     });
   },
@@ -83,36 +89,13 @@ export default {
   beforeMount() {
     this.$store.dispatch(`${PROJECTS_NAMESPACE}/${GET_PROJECTS}`);
   },
-  mounted: function mounted() {
+  mounted() {
     window.scrollTo(0, 0);
   },
   computed: {
-    ...mapGetters({
-      projects: `${PROJECTS_NAMESPACE}/projects`,
-      cardBGImages: 'cardBGImages',
-    }),
-    /**
-     * @returns missionImage based on the screen size
-     */
-    missionImg() {
-      if (this.$vuetify.breakpoint.mdAndUp) {
-        return mission;
-      }
-
-      return missionSmall;
-    },
-    creatorImg() {
-      if (this.$vuetify.breakpoint.mdAndUp) {
-        return creator;
-      }
-
-      return creatorSmall;
-    },
-    defaultImg() {
-      return this.cardBGImages['./c_b_forest_texture_bark2.jpg'];
-    },
-  },
-  methods: {
+      /**
+       * TODO: getter in store einbauen? Wieso parents?
+       * */
     projectsCardsParents() {
       const noSubs = [];
 
@@ -122,14 +105,24 @@ export default {
           noSubs.push(p);
         }
       }
-
       return noSubs;
     },
+    ...mapGetters({
+      projects: `${PROJECTS_NAMESPACE}/projects`,
+    }),
+    missionImg() {
+      return this.$vuetify.breakpoint.mdAndUp ? mission : missionSmall;
+    },
+    creatorImg() {
+      return this.$vuetify.breakpoint.mdAndUp ? creator : creatorSmall;
+    },
+  },
+  methods: {
     onCardClick(projectId) {
-      this.$store.commit(`${PROJECTS_NAMESPACE}/${SET_PROJECTDETAIL_PAGE_BACK_URL}`, this.$route);
+      this.$store.commit(`${PROJECTS_NAMESPACE}/${SET_PROJECTDETAIL_PAGE_BACK_URL}`, this.$route); //TODO: Was macht das?
 
       this.$router.push({
-        name: PROJECT_DETAIL_NAME,
+        name: PROJECT_DETAIL_PAGENAME,
         params: { id: projectId },
       });
     },
@@ -137,7 +130,7 @@ export default {
       this.$store.commit(`${PROJECTS_NAMESPACE}/${SET_PROJECTDETAIL_PAGE_BACK_URL}`, this.$route);
 
       this.$router.push({
-        name: PROJECT_DETAIL_NAME,
+        name: PROJECT_DETAIL_PAGENAME,
         params: { id: subprojectId },
       });
     },

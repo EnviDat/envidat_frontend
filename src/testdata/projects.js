@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default {
     "help": "https://www.envidat.ch/api/3/action/help_show?name=group_list",
     "success": true,

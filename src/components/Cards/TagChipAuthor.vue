@@ -1,8 +1,8 @@
 <template>
-  <v-tooltip
+  <!-- <v-tooltip
     bottom
     :disabled="$vuetify.breakpoint.xsOnly"
-  >
+  > -->
     <!-- <div slot="activator" class="iconCentering">
         <img class="envidatIcon"
             :class="compactLayout ? 'small' : ''"
@@ -25,15 +25,27 @@
       {{ name }}
     </v-chip>
 
-    <span>{{ toolTipText }}</span>
-  </v-tooltip>
+    <!-- <span>{{ tooltipText }}</span>
+  </v-tooltip> -->
 </template>
 
 <script>
+/**
+ * TagChipAuthor.vue creates a chip specific for authors with the name as text.
+ *
+ * @summary tag for authors
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 14:11:27
+ * Last modified  : 2019-10-23 14:16:14
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
 export default {
   props: {
     name: String,
-    toolTipText: String,
+    tooltipText: String,
     highlighted: Boolean,
   },
   computed: {
@@ -51,6 +63,7 @@ export default {
     opacity: 0.85;
     height: 24px !important;
     background-color: #f8f8f8 !important;
+    margin: 1px 2px !important;
   }
 
   .authorTag > .v-chip__content > .v-avatar {

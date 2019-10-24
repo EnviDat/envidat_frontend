@@ -3,15 +3,16 @@
 
     <v-card-title class="bodyTitle title">Subprojects</v-card-title>
 
-    <v-card-text v-if="subProjects" >
+    <v-card-text v-if="subProjects"
+                  pa-3 >
 
-          <v-container pa-0 grid-list-lg fluid>
+          <v-container grid-list-lg fluid
+                        pa-0 >
           <v-layout row wrap>
 
             <v-flex v-for="(project, index) in subProjects"
                     :key="'sub_' + index"
-                    xs12 sm6 md4 xl3
-                    pa-3>
+                    xs12 sm6 md4 xl3 >
 
               <project-card :id="project.id"
                             :title="project.title"
@@ -42,6 +43,20 @@
 </template>
 
 <script>
+/**
+ * ProjectSubprojects.vue shows a list of project cards
+ * for every subproject entry.
+ *
+ * @summary shows a list of (sub)project cards
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 14:11:27
+ * Last modified  : 2019-10-23 16:05:31
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
+
 import ProjectCard from '@/components/Cards/ProjectCard';
 
 export default {

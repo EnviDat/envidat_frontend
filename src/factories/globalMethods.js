@@ -1,8 +1,47 @@
+/**
+ * function factory for global methods, mainly used as a mixin to
+ * provide functions for every vue component.
+ *
+ * @summary function factory for global methods
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:07:03 
+ * Last modified  : 2019-10-23 16:07:03 
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 /* eslint-disable camelcase */
 import seedrandom from 'seedrandom';
 
+import {
+  FOREST,
+  SNOW,
+  LAND,
+  HAZARD,
+  DIVERSITY,
+  METEO,
+} from '@/store/categoriesConsts';
+
 export default {
   methods: {
+    mixinMethods_isTagSelected(tagName) {
+      if (!tagName || this.selectedTagNames === undefined) {
+        return false;
+      }
+
+      return this.selectedTagNames.indexOf(tagName) >= 0;
+    },
+    mixinMethods_areArraysIdentical(arr1, arr2) {
+      if (arr1.length !== arr2.length) return false;
+
+      for (let i = arr1.length; i--;) {
+        if (arr1[i] !== arr2[i]) return false;
+      }
+
+      return true;
+    },
     /**
      * Encodes a array of tagNames via btoa() to a string.
      * Also replaces theses characters '.', '_', '-' which cause problems for urls.
@@ -10,7 +49,7 @@ export default {
      * @param {array} jsonTags: array of tagNames
      * @return {String} encoded string usable for urls
      */
-    mixinMethods_encodeTagForUrl: function mixinMethods_encodeTagForUrl(jsonTags) {
+    mixinMethods_encodeTagForUrl(jsonTags) {
       if (jsonTags && jsonTags.length > 0) {
         const jsonString = JSON.stringify(jsonTags);
 
@@ -33,7 +72,7 @@ export default {
      * @param {String} urlquery: encoded string
      * @return {array}: array of tagNames
      */
-    mixinMethods_decodeTagsFromUrl: function mixinMethods_decodeTagsFromUrl(urlquery) {
+    mixinMethods_decodeTagsFromUrl(urlquery) {
       if (urlquery) {
         let jsonConformString = urlquery.replace(/\./g, '+');
         jsonConformString = jsonConformString.replace(/_/g, '/');
@@ -57,7 +96,7 @@ export default {
      * @param {String} search search term
      * @param {String} tags encoded string
      */
-    mixinMethods_additiveChangeRoute: function mixinMethods_additiveChangeRoute(basePath, search, tags) {
+    mixinMethods_additiveChangeRoute(basePath, search, tags) {
       const query = {};
 
       if (search !== undefined) {
@@ -81,7 +120,7 @@ export default {
      * @param {String} date expecting a format like 2017-08-15T15:25:45.175790
      * @return {String} Returns a date string containing the date and hours:minutes:seconds
      */
-    mixinMethods_formatDate: function mixinMethods_formatDate(date) {
+    mixinMethods_formatDate(date) {
       // expecting a format like 2017-08-15T15:25:45.175790
       let formatedDate = '';
 
@@ -108,7 +147,7 @@ export default {
      * @param {String} iconName
      * @return {String} relative file path with extension to the icon image file
      */
-    mixinMethods_getIcon: function mixinMethods_getIcon(iconName) {
+    mixinMethods_getIcon(iconName) {
       const iconKey = `./${iconName}.png`;
       return this.$store.getters.iconImages[iconKey];
     },
@@ -118,7 +157,7 @@ export default {
      * @param {*} iconName
      * @return {string} relative file path to the icon image file
      */
-    mixinMethods_getIconFileExtension: function mixinMethods_getIconFileExtension(fileExtension) {
+    mixinMethods_getIconFileExtension(fileExtension) {
       const ext = fileExtension.toLowerCase();
       const iconKey = `./file${ext}.png`;
 
@@ -132,7 +171,7 @@ export default {
      *
      * @return {Map<string, string>} Image cache
      */
-    mixinMethods_importImages: function mixinMethods_importImages(imgs, checkForString) {
+    mixinMethods_importImages(imgs, checkForString) {
       const imgCache = {};
 
       imgs.keys().forEach((key) => {
@@ -144,13 +183,13 @@ export default {
       return imgCache;
     },
     /**
-     * Create a psyeudo random integer based on a given seed using the "seedrandom" lib.
+     * Create a psyeudo random integer based on a given seed using the 'seedrandom' lib.
      *
      * @param {Number} min
      * @param {Number} max
      * @param {String} seed
      */
-    mixinMethods_randomInt: function mixinMethods_randomInt(min, max, seed = 'For the Horde!') {
+    mixinMethods_randomInt(min, max, seed = 'For the Horde!') {
       const rng = seedrandom(seed);
       const r = Math.floor(rng() * 10);
 
@@ -169,14 +208,18 @@ export default {
      *
      * @return {Object} metadataEntry enhanced with a title image based on the entrys tags
      */
-    mixinMethods_enhanceMetadataEntry: function mixinMethods_enhanceMetadataEntry(metadataEntry, cardBGImages) {
-      if (!metadataEntry.titleImg) {
-        this.mixinMethods_enhanceTitleImg(metadataEntry, cardBGImages);
+    mixinMethods_enhanceMetadataEntry(metadataEntry, cardBGImages, categoryCards) {
+      if (metadataEntry && !metadataEntry.titleImg) {
+        this.mixinMethods_enhanceTitleImg(metadataEntry, cardBGImages, categoryCards);
       }
 
       return metadataEntry;
     },
     mixinMethods_getGenericProp(propName) {
+      if (!this.genericProps) {
+        return null;
+      }
+
       return this.genericProps[propName] ? this.genericProps[propName] : null;
     },
     /**
@@ -185,7 +228,7 @@ export default {
      *
      * @return {Array} metadatas enhanced with a title image based on the metadatas tags
      */
-    mixinMethods_enhanceMetadatas: function mixinMethods_enhanceMetadatas(metadatas, cardBGImages) {
+    mixinMethods_enhanceMetadatas(metadatas, cardBGImages, categoryCards) {
       if (metadatas === undefined && metadatas.length <= 0) {
         return undefined;
       }
@@ -195,7 +238,7 @@ export default {
           const el = metadatas[i];
 
           if (!el.titleImg) {
-            this.mixinMethods_enhanceTitleImg(el, cardBGImages);
+            metadatas[i] = this.mixinMethods_enhanceTitleImg(el, cardBGImages, categoryCards);
           }
         }
       }
@@ -208,24 +251,65 @@ export default {
      *
      * @return {Object} metadata entry enhanced with a title image based on its tags
      */
-    mixinMethods_enhanceTitleImg: function mixinMethods_enhanceTitleImg(metadata, cardBGImages) {
+    mixinMethods_enhanceTitleImg(metadata, cardBGImages, categoryCards) {
       /* eslint-disable no-param-reassign */
       const category = this.mixinMethods_guessTagCategory(metadata.tags);
 
-      const categoryImgs = cardBGImages[category];
-      const max = Object.keys(categoryImgs).length - 1;
-      const randomIndex = this.mixinMethods_randomInt(0, max, metadata.title);
-      const cardImg = randomIndex >= 0 ? Object.values(categoryImgs)[randomIndex] : 0;
+      if (cardBGImages) {
+        const categoryImgs = cardBGImages[category];
+        const max = Object.keys(categoryImgs).length - 1;
+        const randomIndex = this.mixinMethods_randomInt(0, max, metadata.title);
+        const cardImg = randomIndex >= 0 ? Object.values(categoryImgs)[randomIndex] : 0;
 
-      metadata.titleImg = cardImg;
+        metadata.titleImg = cardImg;
+      }
+
+      metadata.categoryColor = this.mixinMethods_getCategoryColor(categoryCards, category);
+
+      return metadata;
+    },
+    mixinMethods_getCategoryColor(categoryCards, categoryName) {
+      for (let i = 0; i < categoryCards.length; i++) {
+        const cat = categoryCards[i];
+        if (cat.type === categoryName) {
+          return cat.color;
+        }
+      }
+
+      return null;
+    },
+    mixinMethods_getTagColor(categoryCards, tagName) {
+      if (!tagName) {
+        return '';
+      }
+
+      for (let i = 0; i < categoryCards.length; i++) {
+        const cat = categoryCards[i];
+        if (tagName.toLowerCase().includes(cat.type)) {
+          return cat.darkColor;
+        }
+      }
+
+      return '#e0e0e0';
+    },
+    mixinMethods_enhanceTags(dataset, categoryCards) {
+
+      if (dataset && dataset.tags && dataset.tags instanceof Array) {
+        for (let j = 0; j < dataset.tags.length; j++) {
+          const tag = dataset.tags[j];
+          tag.color = this.mixinMethods_getTagColor(categoryCards, tag.name);
+        }
+      }
+
+      return dataset;
     },
     /**
      * @param {Array} tags
      *
      * @return {String} category based on tags array
      */
-    mixinMethods_guessTagCategory: function mixinMethods_guessTagCategory(tags) {
-      let category = 'landscape';
+    mixinMethods_guessTagCategory(tags) {
+      let category = LAND;
 
       if (tags) {
         for (let i = 0; i < tags.length; i++) {
@@ -233,19 +317,22 @@ export default {
 
           if (element.name) {
             if (element.name.includes('HAZARD') || element.name.includes('ACCIDENTS')) {
-              category = 'hazard'; break;
+              category = HAZARD; break;
             }
             if (element.name.includes('DIVERSITY')) {
-              category = 'diversity'; break;
+              category = DIVERSITY; break;
             }
             if (element.name.includes('FOREST')) {
-              category = 'forest'; break;
+              category = FOREST; break;
             }
             if (element.name.includes('SNOW') || element.name.includes('AVALANCHE')) {
-              category = 'snow'; break;
+              category = SNOW; break;
             }
-            if (element.name.includes('LANDSCAPE')) {
-              category = 'landscape'; break;
+            if (element.name.includes('METEO') || element.name.includes('CLIMATE')) {
+              category = METEO; break;
+            }
+            if (element.name.includes('LAND') || element.name.includes('LANDSCAPE')) {
+              category = LAND; break;
             }
           }
         }
@@ -254,24 +341,26 @@ export default {
       return category;
     },
     /**
-     * 
+     *
      * for details: https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
-     * @param {*} a 
-     * @param {*} b 
+     * @param {*} a
+     * @param {*} b
      */
-    mixinMethods_formatBytes: function mixinMethods_formatBytes(a,b) {
-      if(0==a) return "0 Bytes";
+    mixinMethods_formatBytes(a, b) {
+      if (a === 0) return '0 Bytes';
 
-      const c=1024, d=b||2,
-      e=["Bytes","KB","MB","GB","TB","PB","EB","ZB","YB"],
-      f=Math.floor(Math.log(a)/Math.log(c));
+      const c = 1024;
+      const d = b || 2;
 
-      return parseFloat((a/Math.pow(c,f)).toFixed(d))+" "+e[f];
+      const e = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+      const f = Math.floor(Math.log(a) / Math.log(c));
+
+      return parseFloat((a / Math.pow(c, f)).toFixed(d)) + ' ' + e[f];
     },
     /**
      * @param {Number} pos Sets the position to the main scroll position of the main
      */
-    mixinMethods_setScrollPosition: function mixinMethods_setScrollPosition(pos) {
+    mixinMethods_setScrollPosition(pos) {
       window.scrollTo(0, pos);
     },
   },

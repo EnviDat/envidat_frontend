@@ -49,9 +49,7 @@
           </v-flex>
 
           <v-flex
-            xs10
-            sm8
-            md9
+            xs12
             v-bind="{
               ['py-1']: this.$vuetify.breakpoint.xsOnly,
             }"
@@ -60,7 +58,6 @@
               :compact-layout="$vuetify.breakpoint.smAndDown"
               :all-tags="allTags"
               :selected-tag-names="selectedTagNames"
-              :popular-tags="popularTags"
               :expanded="expanded"
               :expand-button-text="expandButtonText"
               :expanded-button-text="expandedButtonText"
@@ -79,22 +76,11 @@
       </v-container>
     </v-flex>
 
-    <!-- <v-flex xs4 offset-xs8 py-1 style="pointer-events: none;"
-              v-if="mapFilteringEnabled && showMapFilter" >
-
-        <filter-map-view :totalHeight="mapFilterHeight"
-                          :expanded="showMapFilter"
-                          v-on:toggleMapFilterExpand="catchMapExpandClicked"
-                          v-on:viewChanged="catchViewChanged"
-                          v-on:pointClicked="catchPointClicked" />
-
-      </v-flex> -->
   </v-layout>
 </template>
 
 <script>
 import FilterKeywordsView from '@/components/Filtering/FilterKeywordsView';
-import FilterMapView from '@/components/Filtering/FilterMapView';
 import SmallSearchBarView from '@/components/Filtering/SmallSearchBarView';
 import ControlPanelView from '@/components/Filtering/ControlPanelView';
 import Logo from '@/assets/logo/EnviDat_logo_32.png';
@@ -104,7 +90,6 @@ export default {
     FilterKeywordsView,
     SmallSearchBarView,
     ControlPanelView,
-    FilterMapView,
   },
   props: {
     searchTerm: String,
@@ -114,7 +99,6 @@ export default {
     searchCount: Number,
     isSearchResultContent: Boolean,
     allTags: Array,
-    popularTags: Array,
     selectedTagNames: Array,
     showFiltering: Boolean,
     showPlaceholder: Boolean,

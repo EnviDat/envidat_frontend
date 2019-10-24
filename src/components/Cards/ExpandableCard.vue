@@ -1,23 +1,8 @@
 <template>
-  <v-card
-    ripple
-    hover
-    :expanded="expanded"
-    @click.native="clicked"
-  >
-    <v-container
-      grid-list-md
-      pa-0
-    >
-      <v-layout
-        row
-        align-center
-      >
-
-        <v-flex
-          xs5
-          py-0
-        >
+  <v-card ripple hover :expanded="expanded">
+    <v-container grid-list-md pa-0 @click="toggleExpand">
+      <v-layout row align-center>
+        <v-flex xs5 py-0>
           <v-img
             class="imagezoom"
             :contain="contain"
@@ -26,11 +11,7 @@
           />
         </v-flex>
 
-        <v-flex
-          xs7
-          mx-1
-          mt-1
-        >
+        <v-flex xs7 mx-1 mt-1>
           <div
             class="headline"
             :class="{ 'compactTitle' : this.$vuetify.breakpoint.xsOnly }"
@@ -41,10 +22,7 @@
       </v-layout>
     </v-container>
 
-    <v-card-actions
-      class="ma-0 pa-2"
-      style="position: absolute; bottom: 5px; right: 5px;"
-    >
+    <v-card-actions class="ma-0 pa-2" style="position: absolute; bottom: 5px; right: 5px;">
       <base-icon-button materialIconName="expand_more"
                         :outlined="false"
                         color="transparent"
@@ -52,15 +30,13 @@
                         :isToggled="expanded"
                         :rotateOnClick="true"
                         :rotateToggle="expanded"
-                        :toolTipText="expanded ? 'Hide info' : 'Show info'"
-                        @clicked="clicked" />
+                        :tooltipText="expanded ? 'Hide info' : 'Show info'"
+                        @click="toggleExpand"
+      />
     </v-card-actions>
 
     <v-slide-y-transition>
-      <v-card-text
-        v-show="expanded"
-        class="py-4"
-      >
+      <v-card-text v-show="expanded" class="py-4">
         <m-markdown-preview
           :markdown="text"
           :options="{ html: true, xhtmlOut: true, linkify: true, breaks: true }"
@@ -72,10 +48,29 @@
 
 
 <script>
+/**
+ * ExpandableCard.vue creates a card with a header image, title, and preview text.
+ * When clicked it expands to show the full text in markdown.
+ *
+ * @summary card with img, title and expandable markdown text
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-02 11:24:00
+ * Last modified  : 2019-10-23 14:37:17
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+/*
+  Review David
+  - Min Height / Max Height etwas kompliziert --> intern lösen
+  - Contain als property?
+   */
 import MMarkdownPreview from 'm-markdown-preview';
-import BaseIconButton from '@/components/BaseElements/BaseIconButton';
+import BaseIconButton from '../BaseElements/BaseIconButton';
 
 export default {
+  name: 'ExpandableCard',
   components: {
     BaseIconButton,
     MMarkdownPreview,
@@ -91,17 +86,14 @@ export default {
   data: () => ({
     expanded: false,
   }),
-  computed: {
-  },
   methods: {
-    clicked: function clicked() {
+    toggleExpand() {
       this.expanded = !this.expanded;
     },
   },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
   .card .headline {

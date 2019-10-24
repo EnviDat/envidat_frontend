@@ -18,17 +18,32 @@
 </template>
 
 <script>
+/**
+ * The gcmd page of EnviDat. It's a page not in the navigation
+ * for crawling.
+ *
+ * @summary gcmd page
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:12:30
+ * Last modified  : 2019-10-23 16:23:19
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import { mapGetters } from 'vuex';
+import { GCMD_PAGENAME } from '@/router/routeConsts';
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
-} from '@/store/mutationsConsts';
+} from '@/store/mainMutationsConsts';
 
 export default {
-  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+  beforeRouteEnter(to, from, next) {
     next((vm) => {
       // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
-      vm.$store.commit(SET_CURRENT_PAGE, 'gcmdPage');
+      vm.$store.commit(SET_CURRENT_PAGE, GCMD_PAGENAME);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
     });
   },
@@ -38,7 +53,7 @@ export default {
     }),
   },
   methods: {
-    gcdmLink: function gcdmLink(metadata) {
+    gcdmLink(metadata) {
       return `https://www.envidat.ch/dataset/${metadata.name}/export/gcmd_dif.xml`;
     },
   },
