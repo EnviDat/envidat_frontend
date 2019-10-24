@@ -1,5 +1,5 @@
 <template>
-  <v-tooltip bottom :disabled="$vuetify.breakpoint.smAndDown || !toolTipText">
+  <v-tooltip bottom :disabled="$vuetify.breakpoint.smAndDown || !tooltipText">
     <v-btn slot="activator"
             :small="isSmall"
             :class="marginClass"
@@ -8,8 +8,8 @@
             :color="color ? color : 'primary'"
             :disabled="disabled"
             :href="url"
-            :target="_blank"
-            @click.stop="clicked" >
+            target="_blank"
+            @click.stop="onClick" >
 
       <div v-if="customIcon" class="iconCentering">
         <img class="envidatIcon" :src="customIcon" />
@@ -36,7 +36,7 @@
  * React on the 'clicked' event or pass an @prop url to create a href-link.
  *
  * Use the @prop isSmall to make a the button smaller.
- * Fill the @prop toolTipText for a toolTip when hovering over the Button.
+ * Fill the @prop tooltipText for a toolTip when hovering over the Button.
  *
  * If @prop outlined is true the button only has an outline in the @prop color.
  * Otherwise the whole button as that color.
@@ -53,7 +53,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-24 09:49:18
+ * Last modified  : 2019-10-24 11:23:02
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -77,7 +77,7 @@ export default {
   },
   methods: {
     onClick() {
-      this.$emit('click');
+      this.$emit('clicked');
     },
   },
 };

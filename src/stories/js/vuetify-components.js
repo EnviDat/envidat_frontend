@@ -36,9 +36,11 @@ import {
 } from 'vuetify/lib/components/VList';
 import { VWindow, VWindowItem } from 'vuetify/lib/components/VWindow';
 import { VItem, VItemGroup } from 'vuetify/lib/components/VItemGroup';
+import { VBadge } from 'vuetify/lib';
 
 Vue.component('v-avatar', VAvatar);
 Vue.component('v-btn', VBtn);
+Vue.component('v-badge', VBadge);
 Vue.component('v-card', VCard);
 Vue.component('v-card-actions', VCardActions);
 Vue.component('v-card-media', VCardMedia);

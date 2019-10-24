@@ -2,27 +2,27 @@
  * @summary story of MetadataCard & MetadataCardPlaceholder for sandbox testing
  * @author Dominik Haas-Artho
  *
- * Created at     : 2019-10-23 16:34:51 
- * Last modified  : 2019-10-23 16:46:09
+ * Created at     : 2019-10-23 16:34:51
+ * Last modified  : 2019-10-24 11:04:02
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
 /* eslint-disable import/no-extraneous-dependencies */
-import { storiesOf } from "@storybook/vue";
-import { action } from "@storybook/addon-actions";
+import { storiesOf } from '@storybook/vue';
+import { action } from '@storybook/addon-actions';
 import './js/vuetify-components';
 
-import MetadataCard from "@/components/Cards/MetadataCard.vue";
-import MetadataCardPlaceholder from "@/components/Cards/MetadataCardPlaceholder.vue";
-import App from "@/App.vue";
-import fileIcon from "@/assets/icons/file.png";
-import lockedIcon from "@/assets/icons/lockClosed.png";
-import unlockedIcon from "@/assets/icons/lockOpen.png";
+import MetadataCard from '@/components/Cards/MetadataCard.vue';
+import MetadataCardPlaceholder from '@/components/Cards/MetadataCardPlaceholder.vue';
+import App from '@/App.vue';
+import fileIcon from '@/assets/icons/file.png';
+import lockedIcon from '@/assets/icons/lockClosed.png';
+import unlockedIcon from '@/assets/icons/lockOpen.png';
 
 // metadata gets enhance in the storybook config
-import metadataCards from "./js/metadata";
+import metadataCards from './js/metadata';
 
 export const methods = {
   hasRestrictedResources: function hasRestrictedResources(metadata) {
@@ -35,7 +35,7 @@ export const methods = {
       if (
         res.restricted !== undefined &&
         (res.restricted.allowed_users !== undefined ||
-          (res.restricted.level !== undefined && res.restricted.level !== "public"))
+          (res.restricted.level !== undefined && res.restricted.level !== 'public'))
       ) {
         return true;
       }
@@ -43,12 +43,12 @@ export const methods = {
 
     return false;
   },
-  onCardClick: action("clicked on card"),
-  onTagClick: action("clicked on tag")
+  onCardClick: action('clicked on card'),
+  onTagClick: action('clicked on tag'),
 };
 
-storiesOf("3 Cards | Metadata Cards", module)
-  .add("collection", () => ({
+storiesOf('3 Cards | Metadata Cards', module)
+  .add('collection', () => ({
     components: { MetadataCard },
     template: `
 <v-layout column>
@@ -174,10 +174,10 @@ storiesOf("3 Cards | Metadata Cards", module)
       metadataCards,
       fileIcon,
       lockedIcon,
-      unlockedIcon
-    })
+      unlockedIcon,
+    }),
   }))
-  .add("Flat collection", () => ({
+  .add('Flat collection', () => ({
     components: { MetadataCard },
     template: `
     <v-layout row wrap>
@@ -213,10 +213,10 @@ storiesOf("3 Cards | Metadata Cards", module)
       metadataCards,
       fileIcon,
       lockedIcon,
-      unlockedIcon
-    })
+      unlockedIcon,
+    }),
   }))
-  .add("Placeholder / Loading collection", () => ({
+  .add('Placeholder / Loading collection', () => ({
     components: { MetadataCardPlaceholder },
     template: `
     <v-layout column>
@@ -259,5 +259,5 @@ storiesOf("3 Cards | Metadata Cards", module)
     </v-layout>
     `,
     methods,
-    data: () => ({})
+    data: () => ({}),
   }));
