@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-10-23 16:38:10
+ * Last modified  : 2019-10-25 10:04:43
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -48,6 +48,6 @@ export default [
     title: 'Diversity', type: DIVERSITY, img: diversityImg, color: '#ede7f6', darkColor: '#D1C4E9',
   },
   {
-    title: 'Meteo', type: METEO, img: meteoImg, color: '#ECEFF1', darkColor: '#CFD8DC',
+    title: 'Meteo', type: METEO, img: meteoImg, color: '#E8EAF6', darkColor: '#C5CAE9',
   },
 ];
