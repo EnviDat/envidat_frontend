@@ -28,11 +28,6 @@
         </v-tooltip>
       </v-flex>
 
-      <v-flex v-if="hasButton"
-                shrink>
-        <base-rectangle-button :button-text="buttonText" :is-small="true" @click="clicked" />
-      </v-flex>
-
       <v-flex v-if="!hasButton"
                 shrink >
         <base-icon-button materialIconName="search"
@@ -81,7 +76,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-23 14:52:53
+ * Last modified  : 2019-10-25 10:37:45
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -148,9 +143,8 @@ export default {
       this.lastSearch = this.searchText;
     },
     clearClicked() {
-      // this.$emit('searchCleared');
       this.searchText = '';
-      this.$emit('clicked', this.searchText);
+      this.$emit('searchCleared');
     },
     focusChanged() {
       if (!this.searchText) {
