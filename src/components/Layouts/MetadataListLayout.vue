@@ -50,24 +50,22 @@
     <v-flex :class="useDynamicHeight ? 'metadataListScroll' : ''"
             :style="useDynamicHeight ? `height: calc(100vh - ${ filteringComponentsHeight }px);` : ''" >
       
-      <transition-group name="placeHfade"
-                        ref="metadataListPlaceholder"
-                        class="layout"
-                        :class="{ ['column'] : listView,
-                                  ['row'] : !listView,
-                                  ['wrap'] : !listView }" >
+      <v-layout v-if="loading"
+                ref="metadataListPlaceholder"
+                :class="{ ['column'] : listView,
+                          ['row'] : !listView,
+                          ['wrap'] : !listView }" >
 
         <v-flex v-for="(n, index) in placeHolderAmount"
                 :key="'placeHolder_' + index"
-                v-bind="cardGridClass"
-                v-show="loading" >
+                v-bind="cardGridClass" >
 
           <metadata-card-placeholder :dark="false" />
         </v-flex>
-      </transition-group>
+      </v-layout>
 
       <transition-group v-if="!loading"
-                        name="itemfade"
+                        :name="$vuetify.breakpoint.mdAndUp ? 'itemfade' : ''"
                         ref="metadataListLayout"
                         class="layout"
                         :class="{ ['column'] : listView,
@@ -171,7 +169,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-25 11:52:16
+ * Last modified  : 2019-10-25 13:43:14
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -494,19 +492,10 @@ export default {
 </script>
 
 <style scoped>
-  .placeHfade-enter-active,
-  .placeHfade-leave-active {
-    transition: opacity 0.2s;
-  }
-  .placeHfade-enter,
-  .placeHfade-leave-to {
-    opacity: 0;
-  }
-
   .itemfade-enter-active,
   .itemfade-leave-active {
-    transition: opcaity 0.2s;
-    transition-timing-function: ease;
+    transition: opacity 0.2s;
+    transition-timing-function: linear;
   }
 
   .itemfade-enter,
