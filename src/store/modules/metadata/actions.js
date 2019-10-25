@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-10-23 16:37:28
+ * Last modified  : 2019-10-25 16:52:46
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -29,11 +29,14 @@ import {
   FILTER_METADATA,
   FILTER_METADATA_SUCCESS,
   FILTER_METADATA_ERROR,
+  FILTER_SWISSFL,
   METADATA_NAMESPACE,
 } from '@/store/metadataMutationsConsts';
 
 import { tagsIncludedInSelectedTags } from '@/factories/metadataFilterMethods';
 import { urlRewrite } from '@/factories/apiFactory';
+
+import { swissFLTag } from '@/store/modules/metadata/swissForestLabTags';
 
 /* eslint-disable no-unused-vars  */
 const PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
@@ -46,17 +49,14 @@ function contentSize(content) {
 }
 
 function contentFilterAccessibility(value) {
-  // don't make a check for now
+  if (value.capacity && value.capacity !== 'public') {
+    // unpublished entries have 'private'
+    return false;
+  } else if (value.private && value.private === true) {
+    return false;
+  }
+
   return true;
-
-  // if (value.capacity && value.capacity !== 'public') {
-  //   // unpublished entries have 'private'
-  //   return false;
-  // } else if (value.private && value.private === true) {
-  //   return false;
-  // }
-
-  // return true;
 }
 
 
@@ -135,9 +135,9 @@ export default {
       });
   },
   [UPDATE_TAGS]({ commit }) {
-    if (this.getters[`${METADATA_NAMESPACE}/updatingTags`]) {
-      return;
-    }
+    // if (this.getters[`${METADATA_NAMESPACE}/updatingTags`]) {
+    //   return;
+    // }
 
     const filteredContent = this.getters[`${METADATA_NAMESPACE}/filteredContent`];
     const allTags = this.getters[`${METADATA_NAMESPACE}/allTags`];
@@ -151,6 +151,8 @@ export default {
     setTimeout(() => {
       try {
         const updatedTags = [];
+
+        console.log('update_tag with ' + filteredContent.length);
 
         for (let i = 0; i < allTags.length; i++) {
           const tag = allTags[i];
@@ -201,20 +203,24 @@ export default {
           content = Object.values(metadatasContent);
         }
 
-        const filteredContent = [];
+        let filteredContent = [];
         let keep = false;
 
-        for (let i = 0; i < content.length; i++) {
-          const entry = content[i];
-          keep = contentFilterAccessibility(entry);
+        if (selectedTagNames.length > 0) {
+          for (let i = 0; i < content.length; i++) {
+            const entry = content[i];
+            // keep = contentFilterAccessibility(entry);
 
-          if (keep && selectedTagNames.length > 0) {
+            // if (keep && selectedTagNames.length > 0) {
             keep = contentFilteredByTags(entry, selectedTagNames);
-          }
+            // }
 
-          if (keep) {
-            filteredContent.push(entry);
+            if (keep) {
+              filteredContent.push(entry);
+            }
           }
+        } else {
+          filteredContent = [...content];
         }
 
         commit(FILTER_METADATA_SUCCESS, filteredContent);
@@ -224,5 +230,18 @@ export default {
         commit(FILTER_METADATA_ERROR, error);
       }
     }, 100);
+  },
+  async [FILTER_SWISSFL]({ dispatch, commit }, selectedTagNames) {
+    commit(FILTER_METADATA);
+
+    // create a clone so the added swissFLTag won't show up in the
+    // selectedTags list
+    const secretTags = [...selectedTagNames];
+
+    if (!selectedTagNames.includes(swissFLTag.name)) {
+      secretTags.push(swissFLTag.name);
+    }
+    
+    dispatch(FILTER_METADATA, secretTags);
   },
 };

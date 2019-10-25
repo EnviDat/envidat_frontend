@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-10-23 16:07:03 
+ * Last modified  : 2019-10-25 15:52:30
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -23,6 +23,7 @@ import {
   DIVERSITY,
   METEO,
 } from '@/store/categoriesConsts';
+import { Object } from 'core-js';
 
 export default {
   methods: {
@@ -96,19 +97,26 @@ export default {
      * @param {String} search search term
      * @param {String} tags encoded string
      */
-    mixinMethods_additiveChangeRoute(basePath, search, tags) {
+    mixinMethods_additiveChangeRoute(basePath, search, tags, mode) {
       const query = {};
+      Object.assign(query, this.$route.query);
 
       if (search !== undefined) {
-        query.search = search;
-      } else if (this.$route.query.search) {
-        query.search = this.$route.query.search;
+        query.search = search;;
+      // } else if (this.$route.query.search) {
+      //   query.search = this.$route.query.search;
       }
 
       if (tags !== undefined) {
         query.tags = tags;
-      } else if (this.$route.query.tags) {
-        query.tags = this.$route.query.tags;
+      // } else if (this.$route.query.tags) {
+      //   query.tags = this.$route.query.tags;
+      }
+
+      if (mode !== undefined) {
+        query.mode = mode;
+      // } else if (this.$route.query.mode) {
+      //   query.mode = this.$route.query.mode;
       }
 
       this.$router.push({

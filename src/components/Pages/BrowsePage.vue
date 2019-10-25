@@ -2,10 +2,9 @@
   <v-container grid-list-xs
               fluid
               tag="article"
-              pa-0
-  >
-    <v-layout row wrap
-    >
+              pa-0 >
+    <v-layout row wrap >
+
       <v-flex style="z-index: 1;"
               v-bind="{ ['mx-0']: $vuetify.breakpoint.mdAndUp,
                         ['xs8']: showMapFilter & $vuetify.breakpoint.mdAndUp,
@@ -46,7 +45,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-25 10:35:57
+ * Last modified  : 2019-10-25 17:00:26
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -62,6 +61,8 @@ import {
   SEARCH_METADATA,
   CLEAR_SEARCH_METADATA,
   FILTER_METADATA,
+  SWISSFL_MODE,
+  FILTER_SWISSFL,
 } from '@/store/metadataMutationsConsts';
 import {
   SET_APP_BACKGROUND,
@@ -184,7 +185,13 @@ export default {
       return false;
     },
     filterContent() {
-      this.$store.dispatch(`metadata/${FILTER_METADATA}`, this.selectedTagNames);
+      const mode = this.$route.query.mode ? this.$route.query.mode.toLowerCase() : null;
+
+      if (mode && mode === SWISSFL_MODE) {
+        this.$store.dispatch(`metadata/${FILTER_SWISSFL}`, this.selectedTagNames);
+      } else {
+        this.$store.dispatch(`metadata/${FILTER_METADATA}`, this.selectedTagNames);
+      }
     },
     checkRouteChanges(fromRoute) {
       if (!fromRoute) {
@@ -195,6 +202,7 @@ export default {
         }
       }
 
+      // const isBackNavigation = false;
       const isBackNavigation = this.$router.options.isSameRoute(this.$route, fromRoute);
       const tagsChanged = this.loadRouteTags();
       const searchParameter = this.$route.query.search ? this.$route.query.search : '';
@@ -233,7 +241,8 @@ export default {
           this.resetScrollPosition();
         }
 
-        // filter changes of the url except a change of the search term
+        // always filter changes of the url except a change of the search term
+        // because due to navigation the inital filter might be needed
         this.filterContent();
       }
     },
