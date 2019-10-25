@@ -7,7 +7,8 @@
         Cartographic Filtering</div>
     </v-card-title>
 
-    <div class="py-0 my-0 "
+    <div v-if="!mdScreen"
+          class="py-0 my-0 "
           :class="mdScreen ? 'px-1 mb-1' : 'px-3'"
           :style="`background-color: ${$vuetify.theme.highlight};`" >
 
@@ -18,21 +19,43 @@
 
     </div>
 
-    <v-container :class="mdScreen ? 'py-1 px-3' : 'py-2 px-3'" >
+    <v-container :class="mdScreen ? 'px-3' : 'py-2 px-3'" >
 
     <v-layout :row="!mdScreen"
               :column="mdScreen"
               wrap
               align-center>
 
-      <v-flex grow
+      <v-flex v-if="mdScreen"
+              pa-0 >
+        <v-layout row align-center>
+          <v-flex shrink>
+            <div :style="`color:${pinnedIds.length > 0 ? $vuetify.theme.primary : 'rgba(0,0,0,.47)'};`">
+              {{ filterText + pinnedIds.length }}
+            </div>
+          </v-flex>
+          <v-flex grow>
+            <base-icon-button materialIconName="close"
+                              iconColor="red"
+                              :outlined="pinnedIds.length > 0"
+                              :isSmall="mdScreen"
+                              :disabled="pinnedIds.length <= 0"
+                              :tooltipText="clearButtonTooltipText"
+                              @clicked="catchClearClicked()" />
+          </v-flex>
+        </v-layout>
+      </v-flex>
+
+      <v-flex v-if="!mdScreen"
+              grow
               py-1>
         <div :style="`color:${pinnedIds.length > 0 ? $vuetify.theme.primary : 'rgba(0,0,0,.47)'};`">
           {{ filterText + pinnedIds.length }}
         </div>
       </v-flex>
 
-      <v-flex py-1
+      <v-flex v-if="!mdScreen"
+              py-1
               :class="mdScreen ? 'shrink' : 'lg3'">
         <base-icon-button materialIconName="close"
                           iconColor="red"
@@ -136,7 +159,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-23 14:49:29
+ * Last modified  : 2019-10-24 16:36:18
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
