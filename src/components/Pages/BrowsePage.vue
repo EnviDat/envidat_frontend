@@ -28,7 +28,9 @@
                             @clickedClear="catchTagCleared"
                             :mapHeight="$vuetify.breakpoint.smAndDown ? smallMapHeight : largeMapHeight"
                             :mapWidth="mapFilterWidth"
-                            :defaultListControls="controls" />
+                            :defaultListControls="controls"
+                            :enabledControls="enabledControls"
+                            useDynamicHeight  />
       </v-flex>
 
     </v-layout>
@@ -44,7 +46,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-24 16:25:08
+ * Last modified  : 2019-10-25 10:35:57
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -131,14 +133,6 @@ export default {
     catchTagCleared() {
       this.selectedTagNames = [];
       this.filterContent();
-    },
-    catchSearchClicked(searchTerm) {
-      /* eslint-disable no-param-reassign */
-      searchTerm = searchTerm ? searchTerm.trim() : '';
-      this.mixinMethods_additiveChangeRoute(BROWSE_PATH, searchTerm, undefined);
-    },
-    catchSearchCleared() {
-      this.mixinMethods_additiveChangeRoute(BROWSE_PATH, '', undefined);
     },
     catchMapFilterChanged(visibleIds) {
       this.mapFilterVisibleIds = visibleIds;
@@ -348,6 +342,7 @@ export default {
     largeMapHeight: 325,
     mapFilterVisibleIds: [],
     listViewActive: false,
+    enabledControls: [0, 1, 2],
   }),
 };
 </script>

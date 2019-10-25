@@ -1,156 +1,164 @@
 <template>
-<div>
-  <v-container id="metadataListLayoutFiltering"
-                fluid
-                pa-0
-                grid-list-lg>
+<v-container fluid
+              pa-0
+              grid-list-lg>
+  <v-layout column>
+    <v-flex>
+      
+      <v-layout row wrap
+                ref="metadataListLayoutFiltering" >
 
-    <v-layout row wrap >
+        <v-flex xs12 sm9
+                key="filterKeywords" >
 
-      <v-flex xs12 sm9
-              key="filterKeywords" >
+          <filter-keywords-view :compactLayout="$vuetify.breakpoint.smAndDown"
+                                :allTags="allTags"
+                                :selectedTagNames="selectedTagNames"
+                                :showPlaceholder="loading"
+                                @clickedTag="catchTagClicked"
+                                @clickedTagClose="catchTagCloseClicked"
+                                @clickedClear="catchTagCleared" />
+        </v-flex>
 
-        <filter-keywords-view :compactLayout="$vuetify.breakpoint.smAndDown"
-                              :allTags="allTags"
-                              :selectedTagNames="selectedTagNames"
-                              :showPlaceholder="loading"
-                              @clickedTag="catchTagClicked"
-                              @clickedTagClose="catchTagCloseClicked"
-                              @clickedClear="catchTagCleared" />
-      </v-flex>
-
-      <v-flex hidden-xs-only sm3
-              key="controlPanel" >
-        <control-panel-view class="fill-height"
-                            :controls="controlsActive"
-                            :compactLayout="$vuetify.breakpoint.smAndDown"
-                            :label="controlsLabel"
-                            :flat="$route.name !== BROWSE_PAGENAME"
-                            @controlsChanged="controlsChanged" />
-      </v-flex>
-
-
-      <v-flex v-if="showMapFilter && mapFilteringPossible"
-              xs12
-              key="filterMap" >
-
-        <filter-map-view :content="mergePinnedAndFiltered"
-                          :totalHeight="mapHeight"
-                          :totalWidth="mapWidth"
-                          :pinnedIds="pinnedIds"
-                          @pointClicked="catchPointClicked"
-                          @clearButtonClicked="catchClearButtonClick" />
-
-      </v-flex>
-    </v-layout>
-  </v-container>
-
-  <v-container id="metadataListLayout"
-                fluid
-                grid-list-lg
-                pa-0 >
-
-    <transition-group name="itemfade"
-                      class="layout"
-                      :class="{ ['column'] : listView,
-                                ['row'] : !listView,
-                                ['wrap'] : !listView }" >
+        <v-flex hidden-xs-only sm3
+                key="controlPanel" >
+          <control-panel-view class="fill-height"
+                              :controls="controlsActive"
+                              :enabledControls="enabledControls"
+                              :compactLayout="$vuetify.breakpoint.smAndDown"
+                              :label="controlsLabel"
+                              :flat="$route.name !== BROWSE_PAGENAME"
+                              @controlsChanged="controlsChanged" />
+        </v-flex>
 
 
-      <v-flex v-for="(pinnedId, index) in pinnedIds"
-              v-if="showPinnedElements"
-              :key="'pinned_' + index"
-              v-bind="cardGridClass" >
-        <!-- Map hovering highlighted element -->
+        <v-flex v-if="showMapFilter && mapFilteringPossible"
+                xs12
+                key="filterMap" >
 
-        <metadata-card :id="metadatasContent[pinnedId].id"
-                        :ref="metadatasContent[pinnedId].id"
-                        class="highlighted"
-                        :title="metadatasContent[pinnedId].title"
-                        :name="metadatasContent[pinnedId].name"
-                        :subtitle="metadatasContent[pinnedId].notes"
-                        :tags="metadatasContent[pinnedId].tags"
-                        :titleImg="metadatasContent[pinnedId].titleImg"
-                        :restricted="hasRestrictedResources(metadatasContent[pinnedId])"
-                        :resourceCount="metadatasContent[pinnedId].num_resources"
+          <filter-map-view :content="mergePinnedAndFiltered"
+                            :totalHeight="mapHeight"
+                            :totalWidth="mapWidth"
+                            :pinnedIds="pinnedIds"
+                            @pointClicked="catchPointClicked"
+                            @clearButtonClicked="catchClearButtonClick" />
+
+        </v-flex>
+      </v-layout>
+
+    </v-flex>
+    <v-flex :class="useDynamicHeight ? 'metadataListScroll' : ''"
+            :style="useDynamicHeight ? `height: calc(100vh - ${ filteringComponentsHeight }px);` : ''" >
+      
+      <transition-group name="placeHfade"
+                        ref="metadataListPlaceholder"
+                        class="layout"
+                        :class="{ ['column'] : listView,
+                                  ['row'] : !listView,
+                                  ['wrap'] : !listView }" >
+
+        <v-flex v-for="(n, index) in placeHolderAmount"
+                :key="'placeHolder_' + index"
+                v-bind="cardGridClass"
+                v-show="loading" >
+
+          <metadata-card-placeholder :dark="false" />
+        </v-flex>
+      </transition-group>
+
+      <transition-group v-if="!loading"
+                        name="itemfade"
+                        ref="metadataListLayout"
+                        class="layout"
+                        :class="{ ['column'] : listView,
+                                  ['row'] : !listView,
+                                  ['wrap'] : !listView }" >
+
+        <v-flex v-for="(pinnedId, index) in pinnedIds"
+                v-if="showPinnedElements"
+                :key="'pinned_' + index"
+                v-bind="cardGridClass"
+                >
+
+          <metadata-card :id="metadatasContent[pinnedId].id"
+                          :ref="metadatasContent[pinnedId].id"
+                          class="highlighted"
+                          :title="metadatasContent[pinnedId].title"
+                          :name="metadatasContent[pinnedId].name"
+                          :subtitle="metadatasContent[pinnedId].notes"
+                          :tags="metadatasContent[pinnedId].tags"
+                          :titleImg="metadatasContent[pinnedId].titleImg"
+                          :restricted="hasRestrictedResources(metadatasContent[pinnedId])"
+                          :resourceCount="metadatasContent[pinnedId].num_resources"
+                          :dark="false"
+                          :flatLayout="listView"
+                          :fileIconString="fileIconString"
+                          :lockedIconString="lockedIconString"
+                          :unlockedIconString="unlockedIconString"
+                          :categoryColor="metadatasContent[pinnedId].categoryColor"
+                          :categoryCards="categoryCards"
+                          @clickedEvent="metaDataClicked"
+                          @clickedTag="catchTagClicked" />
+        </v-flex>
+
+        <v-flex v-for="(metadata, index) in virtualListContent"
+                v-if="!isPinned(metadata.id)"
+                :key="'filtered_' + index"
+                v-bind="cardGridClass" >
+
+          <metadata-card :id="metadata.id"
+                        :ref="metadata.id"
+                        :title="metadata.title"
+                        :name="metadata.name"
+                        :subtitle="metadata.notes"
+                        :tags="metadata.tags"
+                        :titleImg="metadata.titleImg"
+                        :restricted="hasRestrictedResources(metadata)"
+                        :resourceCount="metadata.num_resources"
                         :dark="false"
                         :flatLayout="listView"
                         :fileIconString="fileIconString"
                         :lockedIconString="lockedIconString"
                         :unlockedIconString="unlockedIconString"
-                        :categoryColor="metadatasContent[pinnedId].categoryColor"
-                        :categoryCards="categoryCards"
+                        :categoryColor="metadata.categoryColor"
                         @clickedEvent="metaDataClicked"
                         @clickedTag="catchTagClicked" />
-      </v-flex>
+        </v-flex>
 
-      <v-flex v-for="(n, index) in placeHolderAmount"
-              v-if="loading"
-              :key="'filtered_' + index"
-              v-bind="cardGridClass" >
-
-        <metadata-card-placeholder :dark="false" />
-      </v-flex>
-
-      <v-flex v-for="(metadata, index) in virtualListContent"
-              v-if="!loading && !isPinned(metadata.id)"
-              :key="'filtered_' + index"
-              v-bind="cardGridClass" >
-
-        <metadata-card :id="metadata.id"
-                      :ref="metadata.id"
-                      :title="metadata.title"
-                      :name="metadata.name"
-                      :subtitle="metadata.notes"
-                      :tags="metadata.tags"
-                      :titleImg="metadata.titleImg"
-                      :restricted="hasRestrictedResources(metadata)"
-                      :resourceCount="metadata.num_resources"
-                      :dark="false"
-                      :flatLayout="listView"
-                      :fileIconString="fileIconString"
-                      :lockedIconString="lockedIconString"
-                      :unlockedIconString="unlockedIconString"
-                      :categoryColor="metadata.categoryColor"
-                      @clickedEvent="metaDataClicked"
-                      @clickedTag="catchTagClicked" />
-      </v-flex>
-
-      <v-flex key="infiniteLoader"
-              xs12 mx-2>
-        <infinite-loading spinner="waveDots"
-                          :identifier="infiniteId"
-                          :distance="preloadingDistance"
-                          @infinite="infiniteHandler" >
-          <div slot="no-results">
-            <!-- for the case of a back Navigation -->
-            <BaseRectangleButton v-if="vIndex > 0 && vIndex > vReloadAmount"
-                                  :buttonText="scrollTopButtonText"
+        <v-flex key="infiniteLoader"
+                xs12 mx-2>
+          <infinite-loading spinner="waveDots"
+                            :identifier="infiniteId"
+                            :distance="preloadingDistance"
+                            @infinite="infiniteHandler" >
+            <div slot="no-results">
+              <BaseRectangleButton v-if="vIndex > 0 && vIndex > vReloadAmount"
+                                    :buttonText="scrollTopButtonText"
+                                    :isSmall="true"
+                                    :isFlat="true"
+                                    @clicked="setScrollPos(0)" />
+            </div>
+            <div slot="no-more">
+              <BaseRectangleButton :buttonText="scrollTopButtonText"
                                   :isSmall="true"
                                   :isFlat="true"
-                                  @clicked="mixinMethods_setScrollPosition(0);"
-                                  />
-          </div>
-          <div slot="no-more">
-            <BaseRectangleButton :buttonText="scrollTopButtonText"
-                                :isSmall="true"
-                                :isFlat="true"
-                                @clicked="mixinMethods_setScrollPosition(0);"
-                                />
-          </div>
-        </infinite-loading>
-      </v-flex>
+                                  @clicked="setScrollPos(0)" />
+            </div>
+          </infinite-loading>
+        </v-flex>
 
-      <v-flex v-if="!loading && contentSize <= 0"
-              key="noSearchResultsView"
-              xs12 mx-2 >
-        <no-search-results-view :categoryCards="categoryCards"
-                                @clicked="catchCategoryClicked" />
-      </v-flex>
+        <v-flex v-if="!loading && contentSize <= 0"
+                key="noSearchResultsView"
+                xs12 mx-2 >
+          <no-search-results-view :categoryCards="categoryCards"
+                                  @clicked="catchCategoryClicked" />
+        </v-flex>
 
-    </transition-group>
-  </v-container>
-</div>
+      </transition-group>
+
+    </v-flex>
+  </v-layout>
+</v-container>
 </template>
 
 <script>
@@ -163,7 +171,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-24 11:30:47
+ * Last modified  : 2019-10-25 11:52:16
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -190,8 +198,6 @@ export default {
   name: 'MetadataListLayout',
   props: {
     listContent: Array,
-    // listView: Boolean,
-    // showMapFilter: Boolean,
     mapFilteringPossible: Boolean,
     placeHolderAmount: Number,
     selectedTagNames: Array,
@@ -199,6 +205,8 @@ export default {
     mapWidth: Number,
     mapHeight: Number,
     defaultListControls: Array,
+    enabledControls: Array,
+    useDynamicHeight: Boolean,
   },
   beforeMount() {
     this.fileIconString = this.mixinMethods_getIcon('file');
@@ -252,7 +260,7 @@ export default {
         sm6: true,
         md4: true,
         lg3: true,
-        xl3: true,
+        xl2: this.isActiveControl(2),
       };
 
       return fullSize;
@@ -392,7 +400,7 @@ export default {
       return this.controlsActive.includes(number);
     },
     controlsChanged(number) {
-      // 0-entry: listView, 1-entry: mapActive
+      // 0-entry: listView, 1-entry: mapActive, 2-entry compact metadata
       let controlsActive = this.controlsActive;
 
       if (this.isActiveControl(number)) {
@@ -420,6 +428,27 @@ export default {
 
       this.controlsActive = controlsActive;
     },
+    setFilteringComponentsHeight() {
+      const FilterKeywordViewHeight = 88;
+      const TheNavigationToolbar = 36;
+      const padding = 8;
+      let height = FilterKeywordViewHeight;
+
+      if (this.showMapFilter && this.$refs && this.$refs.metadataListLayoutFiltering) {
+        // around 455px
+        height = this.$refs.metadataListLayoutFiltering.clientHeight;
+      }
+
+      this.filteringComponentsHeight = height + TheNavigationToolbar + padding;
+    },
+    setScrollPos(toPos) {
+      if (this.$refs
+       && this.$refs.metadataListLayout
+       && this.$refs.metadataListLayout.parentElement) {
+        // this.$refs.metadataListLayout.scrollTo(0, toPos);
+        this.$refs.metadataListLayout.parentElement.scrollTop = toPos;
+      }
+    },
   },
   watch: {
     contentSize: function resetVirtualContent() {
@@ -429,6 +458,9 @@ export default {
       this.infiniteHandler();
     },
   },
+  updated() {
+    this.setFilteringComponentsHeight();
+  },
   data: () => ({
     noResultText: 'Nothing found for these search criterias.',
     suggestionText: 'Change the criterias or try one of these categories',
@@ -437,6 +469,7 @@ export default {
     unlockedIconString: null,
     localTags: [],
     virtualListContent: [],
+    filteringComponentsHeight: 150,
     vLoading: false,
     infiniteId: +new Date(),
     preloadingDistance: 150,
@@ -461,18 +494,33 @@ export default {
 </script>
 
 <style scoped>
-.itemfade-enter-active,
-.itemfade-leave-active {
-  transition-duration: 0.1s;
-  transition-timing-function: ease;
-}
+  .placeHfade-enter-active,
+  .placeHfade-leave-active {
+    transition: opacity 0.2s;
+  }
+  .placeHfade-enter,
+  .placeHfade-leave-to {
+    opacity: 0;
+  }
 
-.itemfade-enter,
-.itemfade-leave-active {
-  opacity: 0;
-}
+  .itemfade-enter-active,
+  .itemfade-leave-active {
+    transition: opcaity 0.2s;
+    transition-timing-function: ease;
+  }
 
-.highlighted {
-  box-shadow: #4db6ac 0px 0px 5px 5px;
-}
+  .itemfade-enter,
+  .itemfade-leave-to {
+    opacity: 0;
+  }
+
+  .highlighted {
+    box-shadow: #4db6ac 0px 0px 5px 5px;
+  }
+
+  .metadataListScroll {
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
 </style>
