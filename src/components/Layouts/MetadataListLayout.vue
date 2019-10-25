@@ -14,7 +14,7 @@
           <filter-keywords-view :compactLayout="$vuetify.breakpoint.smAndDown"
                                 :allTags="allTags"
                                 :selectedTagNames="selectedTagNames"
-                                :showPlaceholder="loading"
+                                :showPlaceholder="loading || updatingTags"
                                 @clickedTag="catchTagClicked"
                                 @clickedTagClose="catchTagCloseClicked"
                                 @clickedClear="catchTagCleared" />
@@ -169,7 +169,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-25 13:43:14
+ * Last modified  : 2019-10-25 15:56:53
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -228,6 +228,7 @@ export default {
       searchingMetadatasContent: `${METADATA_NAMESPACE}/searchingMetadatasContent`,
       searchingMetadatasContentOK: `${METADATA_NAMESPACE}/searchingMetadatasContentOK`,
       loadingMetadatasContent: `${METADATA_NAMESPACE}/loadingMetadatasContent`,
+      updatingTags: `${METADATA_NAMESPACE}/updatingTags`,
       vIndex: `${METADATA_NAMESPACE}/vIndex`,
       vReloadAmount: `${METADATA_NAMESPACE}/vReloadAmount`,
       vReloadDelay: `${METADATA_NAMESPACE}/vReloadDelay`,
