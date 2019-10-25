@@ -82,7 +82,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-25 10:36:32
+ * Last modified  : 2019-10-25 13:38:33
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -178,13 +178,10 @@ export default {
       this.$router.push({ path: item.path, query: '' });
     },
     catchSearchClicked(search) {
-      this.$router.push({
-        path: BROWSE_PATH,
-        query: { tags: this.$route.query.tags, search },
-      });
+      this.mixinMethods_additiveChangeRoute(BROWSE_PATH, search);
     },
     catchSearchCleared() {
-      this.searchTerm = '';
+      this.mixinMethods_additiveChangeRoute(BROWSE_PATH, '');
     },
     navigateTo(navItem) {
       if (navItem.pageName === 'external') {
