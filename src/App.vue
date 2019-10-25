@@ -30,12 +30,13 @@
                           @itemClick="catchItemClicked" />
 
     <the-navigation-toolbar v-if="showToolbar"
+                            ref="TheNavigationToolbar"
                             class="envidatToolbar"
                             :style="`z-index: ${NavToolbarZIndex}`"
                             :searchTerm="searchTerm"
-                            :showSearchCount="showSearchCount"
+                            :showSearchCount="currentPageIsBrowsePage"
                             :searchCount="searchCount"
-                            :showSearch="showToolbarSearch"
+                            :showSearch="!currentPageIsLandingPage"
                             :loading="loading"
                             @menuClick="catchMenuClicked"
                             @searchClick="catchSearchClicked"
@@ -43,7 +44,8 @@
 
     <v-content>
       <v-container fluid
-                    pa-2 >
+                    pa-2 
+                    :style="currentPageIsBrowsePage ? 'height: 100%;' : 'height: calc(100vh - 36px); overflow: auto;'">
         <v-layout column>
           <v-flex xs12 mx-0 >
 
@@ -53,10 +55,6 @@
 
           </v-flex>
 
-          <v-flex xs12
-                   style="position: absolute; right: 5px; bottom: 2px; font-size: 7px !important;" >
-            Verison: {{ appVersion }}
-          </v-flex>
         </v-layout>
       </v-container>
 
@@ -84,7 +82,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-24 13:49:32
+ * Last modified  : 2019-10-25 10:36:32
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -249,14 +247,14 @@ export default {
     searchTerm() {
       return this.$route.query.search;
     },
-    showSearchCount() {
+    currentPageIsBrowsePage() {
       return this.currentPage === BROWSE_PAGENAME;
     },
-    showToolbarSearch() {
-      return this.currentPage !== LANDING_PAGENAME;
+    currentPageIsLandingPage() {
+      return this.currentPage === LANDING_PAGENAME;
     },
     showToolbar() {
-      return this.showToolbarSearch || !this.$vuetify.breakpoint.smAndDown;
+      return !this.currentPageIsLandingPage || !this.$vuetify.breakpoint.smAndDown;
     },
     searchCount() {
       return this.filteredContent !== undefined ? Object.keys(this.filteredContent).length : 0;
