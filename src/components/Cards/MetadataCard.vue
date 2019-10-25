@@ -58,10 +58,10 @@
                 :style="flatLayout ? singleLineCss : ''" >
           {{ truncatedSubtitle }}
         </v-flex>
-        <v-flex xs12 >
-          <!-- <v-layout v-if="tags"
-                    row fill-height align-end
-          > -->
+        <v-flex xs12
+                px-1
+                style="overflow: hidden;">
+
             <tag-chip py-0
                       v-for="(tag, index) in tags.slice (0, maxTagNumber)"
                       :key="index"
@@ -75,7 +75,7 @@
                       py-0
                       name="..."
             />
-          <!-- </v-layout> -->
+
         </v-flex>
       </v-layout>
     </v-card-text>
@@ -124,7 +124,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-23 14:37:23
+ * Last modified  : 2019-10-24 16:53:00
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -216,7 +216,7 @@ export default {
     },
     maxTitleLengthReached() {
       return (!this.flatLayout && this.title.length > this.maxTitleLength)
-          || (this.flatLayout && this.title.length > this.compactTitleLength);
+          || ((this.flatLayout || this.$vuetify.breakpoint.smAndDown) && this.title.length > this.compactTitleLength);
     },
     truncatedTitle() {
       let maxLength = this.maxTitleLength;
@@ -298,7 +298,7 @@ export default {
     showDataText: 'SHOW DATA',
     // maxTitleLength: 80,
     maxTitleLength: 150,
-    compactTitleLength: 150,
+    compactTitleLength: 120,
     maxDescriptionLength: 280,
     compactDescriptionLength: 450,
     // maxTags: 3,
