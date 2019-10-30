@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-10-23 16:37:28
+ * Last modified  : 2019-10-30 10:59:17
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -33,7 +33,7 @@ import {
 } from '@/store/metadataMutationsConsts';
 
 import { tagsIncludedInSelectedTags } from '@/factories/metadataFilterMethods';
-import { urlRewrite } from '@/factories/apiFactory';
+import { urlRewrite, getEnabledTags } from '@/factories/apiFactory';
 
 /* eslint-disable no-unused-vars  */
 const PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
@@ -73,13 +73,14 @@ export default {
     commit(SEARCH_METADATA);
 
     searchTerm = searchTerm.trim();
-    const url = urlRewrite(`package_search?q=title:"${searchTerm}" OR notes:"${searchTerm}" OR author:"${searchTerm}"&wt=json&rows=1000`,
-                            API_BASE, PROXY);
+    // using the envidat "query" action for performance boost (ckan package_search isn't performant)
+    const url = urlRewrite(`query?q=title:"${searchTerm}" OR notes:"${searchTerm}" OR author:"${searchTerm}"&wt=json&rows=1000`,
+                            '/', PROXY);
 
     axios
       .get(url)
       .then((response) => {
-        commit(SEARCH_METADATA_SUCCESS, response.data.result.results);
+        commit(SEARCH_METADATA_SUCCESS, response.data.response.docs);
       })
       .catch((reason) => {
         commit(SEARCH_METADATA_ERROR, reason);
@@ -150,27 +151,7 @@ export default {
 
     setTimeout(() => {
       try {
-        const updatedTags = [];
-
-        for (let i = 0; i < allTags.length; i++) {
-          const tag = allTags[i];
-          let found = false;
-
-          for (let j = 0; j < filteredContent.length; j++) {
-            const el = filteredContent[j];
-
-            if (el.tags && el.tags.length > 0) {
-              const index = el.tags.findIndex(obj => obj.name.includes(tag.name));
-
-              if (index >= 0) {
-                found = true;
-                break;
-              }
-            }
-          }
-
-          updatedTags.push({ name: tag.name, enabled: found, color: tag.color });
-        }
+        const updatedTags = getEnabledTags(allTags, filteredContent);
 
         commit(UPDATE_TAGS_SUCCESS, updatedTags);
       } catch (error) {
