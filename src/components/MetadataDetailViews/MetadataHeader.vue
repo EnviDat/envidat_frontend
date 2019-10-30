@@ -14,8 +14,8 @@
                         style="position: absolute; top: 0px; right: 0px; z-index: 2;"
                         material-icon-name="close"
                         icon-color="primary"
-                        :color="(showPlaceholder || (!showPlaceholder && !metadataTitle)) ? 'white' : 'primary'"
-                        :outlined="(!showPlaceholder && (metadataTitle &&  metadataTitle.length > 0))"
+                        color="primary"
+                        outlined
                         tool-tip-text="Close Metadata"
                         :tool-tip-bottom="true"
                         @clicked="catchBackClicked" />
@@ -195,7 +195,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-23 15:59:39
+ * Last modified  : 2019-10-30 10:55:50
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
