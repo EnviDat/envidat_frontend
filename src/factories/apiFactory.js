@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-10-23 16:07:03 
+ * Last modified  : 2019-10-30 10:13:56
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -26,6 +26,36 @@ export function urlRewrite(url, baseUrl, proxyUrl, replaceQuestionMark) {
   return url;
 }
 
+/**
+ * Goes through all the tags and checks if they are part of the content list.
+ * @param {array} tags 
+ * @param {array} content 
+ */
+export function getEnabledTags(tags, content) {
+  const updatedTags = [];
+
+  for (let i = 0; i < tags.length; i++) {
+    const tag = tags[i];
+    let found = false;
+
+    for (let j = 0; j < content.length; j++) {
+      const el = content[j];
+
+      if (el.tags && el.tags.length > 0) {
+        const index = el.tags.findIndex(obj => obj.name.includes(tag.name));
+
+        if (index >= 0) {
+          found = true;
+          break;
+        }
+      }
+    }
+
+    updatedTags.push({ name: tag.name, enabled: found, color: tag.color });
+  }
+
+  return updatedTags;
+}
 
 export function solrResultToCKANJSON(solorJSON) {
   const ckanStructure = {};
@@ -35,6 +65,7 @@ export function solrResultToCKANJSON(solorJSON) {
   ckanStructure.maintainer = solorJSON.maintainer;
 
   ckanStructure.metadata_created = solorJSON.metadata_created;
+  ckanStructure.metadata_modified = solorJSON.metadata_modified;
   ckanStructure.license_id = solorJSON.license_id;
 
   let dataDict = null;
@@ -51,8 +82,16 @@ export function solrResultToCKANJSON(solorJSON) {
     ckanStructure.publication = dataDict.publication;
     // TODO decode publication?
 
-    ckanStructure.metadata_modified = dataDict.metadata_modified;
+    // let author = null;
+    // try {
+    //   author = JSON.parse(dataDict.author);
+    // } catch (error) {
+    //   // console.log("error validated_data_dict " + error);
+    // }
+    // ckanStructure.author = author;
+
     ckanStructure.author = dataDict.author;
+
     // TODO decode author?
     ckanStructure.author_email = dataDict.author_email;
     ckanStructure.isopen = dataDict.isopen;

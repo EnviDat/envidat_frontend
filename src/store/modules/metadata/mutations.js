@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-10-23 16:37:00
+ * Last modified  : 2019-10-30 10:03:11
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -44,6 +44,7 @@ import {
 import { ADD_USER_NOTIFICATION } from '@/store/mainMutationsConsts';
 
 import metaDataFactory from '@/factories/metaDataFactory';
+import { solrResultToCKANJSON } from '@/factories/apiFactory';
 import globalMethods from '@/factories/globalMethods';
 import { Object } from 'core-js';
 
@@ -54,7 +55,7 @@ function enhanceMetadatas(store, datasets) {
   }
   const { cardBGImages } = store.getters;
   const categoryCards = store.getters[`${METADATA_NAMESPACE}/categoryCards`];
-  const metadatasContent = {};
+  const enhancedContent = {};
 
   for (let i = 0; i < datasets.length; i++) {
     let dataset = datasets[i];
@@ -63,10 +64,10 @@ function enhanceMetadatas(store, datasets) {
 
     dataset.location = metaDataFactory.createLocation(dataset);
 
-    metadatasContent[dataset.id] = dataset;
+    enhancedContent[dataset.id] = dataset;
   }
 
-  return metadatasContent;
+  return enhancedContent;
 }
 
 
@@ -78,9 +79,14 @@ export default {
   },
   [SEARCH_METADATA_SUCCESS](state, payload) {
 
-    state.searchedMetadatasContent = enhanceMetadatas(this, payload);
+    const convertedPayload = [];
+    for (let i = 0; i < payload.length; i++) {
+      const convertedEntry = solrResultToCKANJSON(payload[i]);
+      convertedPayload.push(convertedEntry)
+    }
 
-    // this._vm.$set(state.searchedMetadatasContent, ckanJSON.id, ckanJSON);
+    state.searchedMetadatasContent = enhanceMetadatas(this, convertedPayload);
+
     state.searchingMetadatasContentOK = true;
     state.searchingMetadatasContent = false;
   },
