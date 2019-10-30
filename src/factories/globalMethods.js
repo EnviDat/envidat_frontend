@@ -294,16 +294,16 @@ export default {
 
       return '#e0e0e0';
     },
-    mixinMethods_enhanceTags(dataset, categoryCards) {
+    mixinMethods_enhanceTags(tags, categoryCards) {
 
-      if (dataset && dataset.tags && dataset.tags instanceof Array) {
-        for (let j = 0; j < dataset.tags.length; j++) {
-          const tag = dataset.tags[j];
+      if (tags && tags instanceof Array) {
+        for (let j = 0; j < tags.length; j++) {
+          const tag = tags[j];
           tag.color = this.mixinMethods_getTagColor(categoryCards, tag.name);
         }
       }
 
-      return dataset;
+      return tags;
     },
     /**
      * @param {Array} tags

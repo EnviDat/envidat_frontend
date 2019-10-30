@@ -45,7 +45,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-25 17:00:26
+ * Last modified  : 2019-10-30 13:58:03
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -63,6 +63,7 @@ import {
   FILTER_METADATA,
   SWISSFL_MODE,
   FILTER_SWISSFL,
+  METADATA_NAMESPACE,
 } from '@/store/metadataMutationsConsts';
 import {
   SET_APP_BACKGROUND,
@@ -186,12 +187,7 @@ export default {
     },
     filterContent() {
       const mode = this.$route.query.mode ? this.$route.query.mode.toLowerCase() : null;
-
-      if (mode && mode === SWISSFL_MODE) {
-        this.$store.dispatch(`metadata/${FILTER_SWISSFL}`, this.selectedTagNames);
-      } else {
-        this.$store.dispatch(`metadata/${FILTER_METADATA}`, this.selectedTagNames);
-      }
+      this.$store.dispatch(`${METADATA_NAMESPACE}/${FILTER_METADATA}`, { selectedTagNames: this.selectedTagNames, mode });
     },
     checkRouteChanges(fromRoute) {
       if (!fromRoute) {
