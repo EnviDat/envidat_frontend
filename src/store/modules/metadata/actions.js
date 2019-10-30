@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-10-30 10:59:17
+ * Last modified  : 2019-10-30 16:34:09
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -30,13 +30,21 @@ import {
   FILTER_METADATA_SUCCESS,
   FILTER_METADATA_ERROR,
   FILTER_SWISSFL,
+  SWISSFL_MODE,
   METADATA_NAMESPACE,
 } from '@/store/metadataMutationsConsts';
 
 import { tagsIncludedInSelectedTags } from '@/factories/metadataFilterMethods';
 import { urlRewrite, getEnabledTags } from '@/factories/apiFactory';
 
-import { swissFLTag } from '@/store/modules/metadata/swissForestLabTags';
+import {
+  getAdditionalTagsFunction,
+  removeModeTags,
+  getHiddenFiltersFunction,
+} from '@/factories/modeFactory';
+
+import metadataTags from '@/store/modules/metadata/tags';
+
 
 /* eslint-disable no-unused-vars  */
 const PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
@@ -117,7 +125,7 @@ export default {
       import('@/testdata/packagelist.js')
       .then((projectJSON) => {
         commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, projectJSON.default.result);
-        dispatch(FILTER_METADATA, []);
+        dispatch(FILTER_METADATA, { selectedTagNames: [] });
       });
 
       return;
@@ -129,17 +137,13 @@ export default {
         commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, response.data.result);
 
         // for the case when loaded up on landingpage
-        dispatch(FILTER_METADATA, []);
+        dispatch(FILTER_METADATA, { selectedTagNames: [] });
       })
       .catch((reason) => {
         commit(BULK_LOAD_METADATAS_CONTENT_ERROR, reason);
       });
   },
-  [UPDATE_TAGS]({ commit }) {
-    // if (this.getters[`${METADATA_NAMESPACE}/updatingTags`]) {
-    //   return;
-    // }
-
+  [UPDATE_TAGS]({ commit }, mode) {
     const filteredContent = this.getters[`${METADATA_NAMESPACE}/filteredContent`];
     const allTags = this.getters[`${METADATA_NAMESPACE}/allTags`];
 
@@ -151,7 +155,16 @@ export default {
 
     setTimeout(() => {
       try {
-        const updatedTags = getEnabledTags(allTags, filteredContent);
+        let allWithExtras = allTags;
+
+        const addExtraTagsFunction = getAdditionalTagsFunction(mode);
+        if (addExtraTagsFunction) {
+          allWithExtras = addExtraTagsFunction(allTags);
+        } else {
+          allWithExtras = metadataTags;
+        }
+    
+        const updatedTags = getEnabledTags(allWithExtras, filteredContent);
 
         commit(UPDATE_TAGS_SUCCESS, updatedTags);
       } catch (error) {
@@ -159,8 +172,13 @@ export default {
       }
     }, 100);
   },
-  async [FILTER_METADATA]({ dispatch, commit }, selectedTagNames) {
+  async [FILTER_METADATA]({ dispatch, commit }, { selectedTagNames, mode }) {
     commit(FILTER_METADATA);
+
+    const extraFilterFunction = getHiddenFiltersFunction(mode);
+    if (extraFilterFunction) {
+      selectedTagNames = extraFilterFunction(selectedTagNames);
+    }
 
     // use timeout to make sure the placeholder as loading indicators will show up
     setTimeout(() => {
@@ -204,7 +222,7 @@ export default {
 
         commit(FILTER_METADATA_SUCCESS, filteredContent);
 
-        dispatch(UPDATE_TAGS);
+        dispatch(UPDATE_TAGS, mode);
       } catch (error) {
         commit(FILTER_METADATA_ERROR, error);
       }
@@ -221,6 +239,6 @@ export default {
       secretTags.push(swissFLTag.name);
     }
     
-    dispatch(FILTER_METADATA, secretTags);
+    dispatch(FILTER_METADATA, { selectedTagNames: secretTags });
   },
 };
