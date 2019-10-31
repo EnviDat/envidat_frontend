@@ -1,7 +1,7 @@
 <template>
   <v-container
     fluid
-    :class="$vuetify.breakpoint.smAndDown ? 'pa-1' : 'pa-2'"
+    :class="$vuetify.breakpoint.smAndDown ? 'pa-1' : 'py-0 px-2'"
   >
     <v-layout column>
       <the-title-screen-layout :title="envidatTitle"
@@ -61,7 +61,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-23 16:25:51
+ * Last modified  : 2019-10-31 08:22:03
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
