@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-10-31 11:16:17
+ * Last modified  : 2019-10-31 15:38:05
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -19,16 +19,20 @@ import {
 } from '@/store/modules/metadata/swissForestLabTags';
 
 import globalMethods from '@/factories/globalMethods';
-const swissflImages = require.context('@/assets/modes/swissfl', false, /\.jpg$/);
+
+const swissflLogo = getSwissflLogo();
+const swissflIcons = getSwissflIcons();
 
 const swissflMode = {
   title: 'Swiss Forest Lab',
   externalUrl: 'https://www.wsl.ch/de/wald/waldentwicklung-und-monitoring/swissforestlab.html',
   mainTag: swissFLTag,
   extraTags: swissFLExtraTags,
+  logo: swissflLogo,
+  icons: swissflIcons,
 }
 
-export function getModeObject(mode) {
+export function getModeData(mode) {
   switch (mode) {
     case SWISSFL_MODE:
       return swissflMode;
@@ -41,7 +45,7 @@ export function getTagsMergedWithExtras(mode, tags) {
   if (!mode) return null;
 
   try {
-    const modeObj = getModeObject(mode);
+    const modeObj = getModeData(mode);
     return mergedExtraTags(modeObj, tags);
   } catch (e) {
     console.error(e);
@@ -60,7 +64,7 @@ export function getSelectedTagsMergedWithHidden(mode, selectedTagNames) {
   if (!mode) return null;
 
   try {
-    const modeObj = getModeObject(mode);
+    const modeObj = getModeData(mode);
     return mergedHiddenFilters(modeObj, selectedTagNames);
   } catch (e) {
     console.error(e);
@@ -78,32 +82,33 @@ function mergedHiddenFilters(modeObj, selectedTagNames) {
   return secretTags;
 }
 
-export function getModeImage(mode, imageName) {
-  if (!mode) return null;
-
-  switch (mode) {
-    case SWISSFL_MODE:
-        if (imageName) {
-          const imgs = globalMethods.methods.mixinMethods_importImages(swissflImages, imageName);
-          const imageNameKey = `./${imageName}.jpg`;
-          return imgs[imageNameKey];
-        }
-        return swissflImages;
-  
-    default:
-      throw new Error('No images for mode: "' + mode + '" added');
-      break;
-  }
-}
-
 export function getModeTitle(mode) {
   if (!mode) return null;
 
   try {
-    const modeObj = getModeObject(mode);
+    const modeObj = getModeData(mode);
     return modeObj.title;
   } catch (e) {
     console.error(e);
     return null;
   }
+}
+
+function getSwissflLogo() {
+  const swissflImages = require.context('@/assets/modes/swissfl', false, /\.jpg$/);
+  const imgLogo = globalMethods.methods.mixinMethods_importImages(swissflImages, 'logo');
+  return imgLogo['./logo.jpg'];  
+}
+
+function getSwissflIcons() {
+  const swissflPngs = require.context('@/assets/modes/swissfl', false, /\.png$/);
+  const iconImgs = globalMethods.methods.mixinMethods_importImages(swissflPngs);
+  const swissflIcons = Object.values(iconImgs);
+  const swissflIconMap = {
+    dataset: swissflIcons[0],
+    infrastructure: swissflIcons[1],
+    model: swissflIcons[2],
+  };
+
+  return swissflIconMap;
 }

@@ -17,7 +17,7 @@
 
     <div v-if="modeLogo"
           class="item"
-          style="height: 36px; width: 36px;">
+          style="height: 34px; width: 34px;">
 
       <a v-if="modeExternalUrl"
           :href="modeExternalUrl"
@@ -45,6 +45,7 @@
                         :tooltipText="`${tooltipText} ${modeTitle}`"
                         tooltipBottom
                         color="transparent"
+                        iconColor="secondary"
                         isSmall />
     </div>
 
@@ -60,16 +61,13 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-31 14:03:34
+ * Last modified  : 2019-10-31 15:29:14
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
-import {
-  getModeObject,
-  getModeImage,
-} from '@/factories/modeFactory';
+import { getModeData } from '@/factories/modeFactory';
 
 export default {
   components: {
@@ -95,20 +93,18 @@ export default {
       return infoText;
     },
     modeTitle() {
-      return this.modeObject ? this.modeObject.title : null;
+      return this.modeData ? this.modeData.title : null;
     },
     modeLogo() {
-      if (!this.mode) return null;
-
-      return getModeImage(this.mode, 'logo');
+      return this.modeData ? this.modeData.logo : null;
     },
     modeExternalUrl() {
-      return this.modeObject ? this.modeObject.externalUrl : null;
+      return this.modeData ? this.modeData.externalUrl : null;
     },
-    modeObject() {
+    modeData() {
       if (!this.mode) return null;
 
-      return getModeObject(this.mode);
+      return getModeData(this.mode);
     },
   },
 };
