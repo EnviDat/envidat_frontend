@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-10-30 16:34:09
+ * Last modified  : 2019-10-31 10:04:07
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -29,8 +29,6 @@ import {
   FILTER_METADATA,
   FILTER_METADATA_SUCCESS,
   FILTER_METADATA_ERROR,
-  FILTER_SWISSFL,
-  SWISSFL_MODE,
   METADATA_NAMESPACE,
 } from '@/store/metadataMutationsConsts';
 
@@ -38,9 +36,8 @@ import { tagsIncludedInSelectedTags } from '@/factories/metadataFilterMethods';
 import { urlRewrite, getEnabledTags } from '@/factories/apiFactory';
 
 import {
-  getAdditionalTagsFunction,
-  removeModeTags,
-  getHiddenFiltersFunction,
+  getTagsMergedWithExtras,
+  getSelectedTagsMergedWithHidden,
 } from '@/factories/modeFactory';
 
 import metadataTags from '@/store/modules/metadata/tags';
@@ -60,7 +57,9 @@ function contentFilterAccessibility(value) {
   if (value.capacity && value.capacity !== 'public') {
     // unpublished entries have 'private'
     return false;
-  } else if (value.private && value.private === true) {
+  }
+  
+  if (value.private && value.private === true) {
     return false;
   }
 
@@ -157,9 +156,9 @@ export default {
       try {
         let allWithExtras = allTags;
 
-        const addExtraTagsFunction = getAdditionalTagsFunction(mode);
-        if (addExtraTagsFunction) {
-          allWithExtras = addExtraTagsFunction(allTags);
+        const mergedExtraTags = getTagsMergedWithExtras(mode, allTags);
+        if (mergedExtraTags) {
+          allWithExtras = mergedExtraTags;
         } else {
           allWithExtras = metadataTags;
         }
@@ -175,9 +174,9 @@ export default {
   async [FILTER_METADATA]({ dispatch, commit }, { selectedTagNames, mode }) {
     commit(FILTER_METADATA);
 
-    const extraFilterFunction = getHiddenFiltersFunction(mode);
-    if (extraFilterFunction) {
-      selectedTagNames = extraFilterFunction(selectedTagNames);
+    const mergedWithHiddenNames = getSelectedTagsMergedWithHidden(mode, selectedTagNames);
+    if (mergedWithHiddenNames) {
+      selectedTagNames = mergedWithHiddenNames;
     }
 
     // use timeout to make sure the placeholder as loading indicators will show up
@@ -227,18 +226,5 @@ export default {
         commit(FILTER_METADATA_ERROR, error);
       }
     }, 100);
-  },
-  async [FILTER_SWISSFL]({ dispatch, commit }, selectedTagNames) {
-    commit(FILTER_METADATA);
-
-    // create a clone so the added swissFLTag won't show up in the
-    // selectedTags list
-    const secretTags = [...selectedTagNames];
-
-    if (!selectedTagNames.includes(swissFLTag.name)) {
-      secretTags.push(swissFLTag.name);
-    }
-    
-    dispatch(FILTER_METADATA, { selectedTagNames: secretTags });
   },
 };

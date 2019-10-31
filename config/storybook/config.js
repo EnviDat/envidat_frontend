@@ -77,7 +77,7 @@ addDecorator(() => ({
   // template: '<v-app><story/></v-app>'
   template: `<v-app>
     <v-container fluid>
-      <v-layout row wrap>
+      <v-layout column fill-height>
         <v-flex>
           <story/>
         </v-flex>
