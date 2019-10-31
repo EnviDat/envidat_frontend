@@ -56,7 +56,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-24 16:18:44
+ * Last modified  : 2019-10-31 15:52:48
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -67,6 +67,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import metaDataFactory from '@/factories/metaDataFactory';
 import FilterMapWidget from '@/components/Filtering/FilterMapWidget';
+import { getModeData } from '@/factories/modeFactory';
 
 // HACK start
 /* eslint-disable import/first */
@@ -87,6 +88,7 @@ export default {
     totalHeight: Number,
     totalWidth: Number,
     pinnedIds: Array,
+    mode: String,
   },
   beforeMount() {
     this.pinIcon = this.mixinMethods_getIcon('marker');
@@ -176,7 +178,6 @@ export default {
       }
 
       this.map = this.initLeaflet(this.$refs.map);
-      this.markerCount = 0;
 
       if (this.map) {
         this.map.on('locationerror', () => this.errorLoadingLeaflet = true);
@@ -440,11 +441,6 @@ export default {
     mapIsSetup: false,
     setupCenterCoords: [46.943961, 8.199240],
     initialBounds: null,
-    updatingMap: true,
-    addedObjectsKeys: [],
-    mapFilteringActive: false,
-    markerCount: 0,
-    hoverBadge: false,
     errorLoadingLeaflet: false,
     mapLayerGroup: null,
     polygonEnabled: false,

@@ -40,6 +40,7 @@
                             :totalHeight="mapHeight"
                             :totalWidth="mapWidth"
                             :pinnedIds="pinnedIds"
+                            :mode="mode"
                             @pointClicked="catchPointClicked"
                             @clearButtonClicked="catchClearButtonClick" />
 
@@ -205,6 +206,7 @@ export default {
     defaultListControls: Array,
     enabledControls: Array,
     useDynamicHeight: Boolean,
+    mode: String,
   },
   beforeMount() {
     this.fileIconString = this.mixinMethods_getIcon('file');

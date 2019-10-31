@@ -29,6 +29,7 @@
                             :mapWidth="mapFilterWidth"
                             :defaultListControls="controls"
                             :enabledControls="enabledControls"
+                            :mode="mode"
                             useDynamicHeight  />
       </v-flex>
 
@@ -308,6 +309,9 @@ export default {
     },
     searchCount() {
       return this.filteredContent !== undefined ? this.filteredContent.length : 0;
+    },
+    mode() {
+      return this.$route.query.mode ? this.$route.query.mode.toLowerCase() : null;
     },
   },
   watch: {
