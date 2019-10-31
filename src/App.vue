@@ -38,6 +38,8 @@
                             :searchCount="searchCount"
                             :showSearch="!currentPageIsLandingPage"
                             :loading="loading"
+                            :mode="mode"
+                            :modeCloseCallback="catchModeClose"
                             @menuClick="catchMenuClicked"
                             @searchClick="catchSearchClicked"
                             @searchCleared="catchSearchCleared" />
@@ -82,7 +84,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-25 13:38:33
+ * Last modified  : 2019-10-31 13:24:26
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -181,7 +183,13 @@ export default {
       this.mixinMethods_additiveChangeRoute(BROWSE_PATH, search);
     },
     catchSearchCleared() {
+      // the search parameter needs to be '' to clear it
       this.mixinMethods_additiveChangeRoute(BROWSE_PATH, '');
+    },
+    catchModeClose() {
+      this.$router.push({
+        path: BROWSE_PATH,
+      });
     },
     navigateTo(navItem) {
       if (navItem.pageName === 'external') {
@@ -294,6 +302,9 @@ export default {
       });
       // return default with active true so all items will be shown
       return menuItem;
+    },
+    mode() {
+      return this.$route.query.mode ? this.$route.query.mode.toLowerCase() : null;
     },
   },
   components: {
@@ -449,7 +460,7 @@ export default {
 }
 
 .envidatToolbar > .v-toolbar__content {
-  padding: 0px 18px !important;
+  padding: 0px 8px !important;
 }
 
 .envidatIcon {

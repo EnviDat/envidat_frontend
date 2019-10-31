@@ -61,8 +61,6 @@ import {
   SEARCH_METADATA,
   CLEAR_SEARCH_METADATA,
   FILTER_METADATA,
-  SWISSFL_MODE,
-  FILTER_SWISSFL,
   METADATA_NAMESPACE,
 } from '@/store/metadataMutationsConsts';
 import {
