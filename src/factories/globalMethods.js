@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-11-01 09:52:34
+ * Last modified  : 2019-11-01 11:24:01
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -24,6 +24,9 @@ import {
   DIVERSITY,
   METEO,
 } from '@/store/categoriesConsts';
+
+import { SWISSFL_MODE } from '@/store/metadataMutationsConsts';
+import { enhanceMetadataFromExtras } from '@/factories/modeFactory';
 
 export default {
   methods: {
@@ -211,9 +214,11 @@ export default {
      * @return {Object} metadataEntry enhanced with a title image based on the entrys tags
      */
     mixinMethods_enhanceMetadataEntry(metadataEntry, cardBGImages, categoryCards) {
-      if (metadataEntry && !metadataEntry.titleImg) {
+      if (metadataEntry && metadataEntry.title && !metadataEntry.titleImg) {
         this.mixinMethods_enhanceTitleImg(metadataEntry, cardBGImages, categoryCards);
       }
+
+      enhanceMetadataFromExtras(SWISSFL_MODE, metadataEntry);
 
       return metadataEntry;
     },
@@ -237,11 +242,9 @@ export default {
 
       if (Array.isArray(metadatas)) {
         for (let i = 0; i < metadatas.length; i++) {
-          const el = metadatas[i];
+          const entry = metadatas[i];
 
-          if (!el.titleImg) {
-            metadatas[i] = this.mixinMethods_enhanceTitleImg(el, cardBGImages, categoryCards);
-          }
+          metadatas[i] = this.mixinMethods_enhanceMetadataEntry(entry, cardBGImages, categoryCards);
         }
       }
 

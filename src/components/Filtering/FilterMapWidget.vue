@@ -4,7 +4,7 @@
     <v-card-title :class="mdScreen ? 'pa-2' : 'pb-2'" >
       <div class="mb-0"
           :class="mdScreen ? 'body-2 font-weight-bold' : 'title '" >
-        Cartographic Filtering</div>
+        {{ title }} </div>
     </v-card-title>
 
     <div v-if="!mdScreen"
@@ -159,7 +159,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-24 16:36:18
+ * Last modified  : 2019-11-01 12:52:50
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -169,6 +169,10 @@ import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 export default {
   props: {
+    title: {
+      type: String,
+      default: 'Cartographic Filtering',
+    },
     pinnedIds: Array,
     hasPins: Boolean,
     pinEnabled: Boolean,
