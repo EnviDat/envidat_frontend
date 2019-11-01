@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-11-01 08:49:30
+ * Last modified  : 2019-11-01 09:54:05
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -36,21 +36,22 @@ import {
   SET_VIRTUAL_LIST_INDEX,
   METADATA_NAMESPACE,
 } from '@/store/metadataMutationsConsts';
+
 import {
   warningMessage,
   getSpecificApiError,
 } from '@/factories/notificationFactory';
+
 import { ADD_USER_NOTIFICATION } from '@/store/mainMutationsConsts';
 
 import metaDataFactory from '@/factories/metaDataFactory';
 import { solrResultToCKANJSON } from '@/factories/apiFactory';
 import globalMethods from '@/factories/globalMethods';
-import { Object } from 'core-js';
 
 
 function enhanceMetadatas(store, datasets) {
   if (!(datasets instanceof Array)) {
-    throw new Error('enhanceMetadatas() expects an array of datasets got ' + typeof datasets);
+    throw new Error(`enhanceMetadatas() expects an array of datasets got ${typeof datasets}`);
   }
   const { cardBGImages } = store.getters;
   const categoryCards = store.getters[`${METADATA_NAMESPACE}/categoryCards`];
@@ -81,7 +82,7 @@ export default {
     const convertedPayload = [];
     for (let i = 0; i < payload.length; i++) {
       const convertedEntry = solrResultToCKANJSON(payload[i]);
-      convertedPayload.push(convertedEntry)
+      convertedPayload.push(convertedEntry);
     }
 
     state.searchedMetadatasContent = enhanceMetadatas(this, convertedPayload);
