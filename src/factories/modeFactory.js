@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-10-31 15:38:05
+ * Last modified  : 2019-11-01 11:25:27
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -24,12 +24,14 @@ const swissflLogo = getSwissflLogo();
 const swissflIcons = getSwissflIcons();
 
 const swissflMode = {
+  name: SWISSFL_MODE,
   title: 'Swiss Forest Lab',
   externalUrl: 'https://www.wsl.ch/de/wald/waldentwicklung-und-monitoring/swissforestlab.html',
   mainTag: swissFLTag,
   extraTags: swissFLExtraTags,
   logo: swissflLogo,
   icons: swissflIcons,
+  extrasKey: 'swissFL_type',
 }
 
 export function getModeData(mode) {
@@ -82,18 +84,6 @@ function mergedHiddenFilters(modeObj, selectedTagNames) {
   return secretTags;
 }
 
-export function getModeTitle(mode) {
-  if (!mode) return null;
-
-  try {
-    const modeObj = getModeData(mode);
-    return modeObj.title;
-  } catch (e) {
-    console.error(e);
-    return null;
-  }
-}
-
 function getSwissflLogo() {
   const swissflImages = require.context('@/assets/modes/swissfl', false, /\.jpg$/);
   const imgLogo = globalMethods.methods.mixinMethods_importImages(swissflImages, 'logo');
@@ -112,3 +102,28 @@ function getSwissflIcons() {
 
   return swissflIconMap;
 }
+
+let tempModeData = null;
+
+export function enhanceMetadataFromExtras(mode, metdataEntry) {
+
+  if (typeof metdataEntry.extras === 'object'
+      && metdataEntry.extras instanceof Array) {
+
+    if (!tempModeData || (tempModeData && tempModeData.name !== mode)) {
+      tempModeData = getModeData(mode);
+    }
+
+    const key = tempModeData.extrasKey;
+
+    for (let i = 0; i < metdataEntry.extras.length; i++) {
+      const extra = metdataEntry.extras[i];
+      
+      if (extra.key === key) {
+        metdataEntry[key] = extra[key];
+      }
+    }
+  }
+
+  return metdataEntry;
+};

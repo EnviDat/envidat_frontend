@@ -22,6 +22,7 @@
         <v-flex xs2 py-0 pl-0>
 
           <filter-map-widget style="height: 100%"
+                              :title="modeTitle"
                               :pinnedIds="pinnedIds"
                               :hasPins="hasPins"
                               :pinEnabled="pinEnabled"
@@ -56,7 +57,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-31 15:52:48
+ * Last modified  : 2019-11-01 13:06:18
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -133,6 +134,24 @@ export default {
     hasPolygons() {
       return this.polygonLayerGroup && this.polygonLayerGroup.length > 0;
     },
+    modeTitle() {
+      // use undefined here so the default value for the title is being used
+      return this.modeData ? this.modeData.title : undefined;
+    },
+    modeIconData() {
+      return this.modeData ? this.modeData.icons[0] : null;
+    },
+    modeIconInfrastructure() {
+      return this.modeData ? this.modeData.icons[1] : null;
+    },
+    modeIconModel() {
+      return this.modeData ? this.modeData.icons[2] : null;
+    },
+    modeData() {
+      if (!this.mode) return null;
+
+      return getModeData(this.mode);
+    },
   },
   methods: {
     checkError() {
@@ -180,7 +199,7 @@ export default {
       this.map = this.initLeaflet(this.$refs.map);
 
       if (this.map) {
-        this.map.on('locationerror', () => this.errorLoadingLeaflet = true);
+        this.map.on('locationerror', () => { this.errorLoadingLeaflet = true; });
 
         this.addOpenStreetMapLayer(this.map);
         this.updateMap();
