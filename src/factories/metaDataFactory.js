@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-10-24 13:06:45
+ * Last modified  : 2019-11-01 14:29:51
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -42,7 +42,7 @@ export default {
     return {
       metadataTitle: dataset.title,
       doi: dataset.doi,
-      contactName: maintainer ? maintainer.name : '',
+      contactName: maintainer ? this.getAuthorName(maintainer) : '',
       contactEmail,
       license: license.title,
       tags: dataset.tags,
@@ -63,6 +63,9 @@ export default {
       description: dataset.notes,
     };
   },
+  getAuthorName(author){
+    return `${author.given_name} ${author.name}`;
+  },
   getAuthorsString(dataset) {
     if (!dataset) {
       return null;
@@ -78,11 +81,7 @@ export default {
       }
 
       author.forEach((element) => {
-        if (element.given_name) {
-          authors += ` ${element.given_name}`;
-        } 
-
-        authors += ` ${element.name};`;
+        authors += ` ${ this.getAuthorName(element) };`;
       });
 
       // cut of the last ';'
@@ -91,7 +90,7 @@ export default {
       }
     }
 
-    return authors;
+    return authors.trim();
   },
   createCitation(dataset) {
     if (!dataset) {
@@ -247,6 +246,10 @@ export default {
     details.push({ label: 'License', text: license.title, url: license.url });
 
     details.push({ label: 'MetadataId', text: dataset.id });
+
+    if (dataset.swissFL_type) {
+      details.push({ label: 'swissFL_type', text: dataset.swissFL_type });
+    }
 
     return details;
   },

@@ -68,9 +68,9 @@
           <v-layout row wrap >
             <tag-chip-author v-for="author in authors"
                               :key="author.name"
-                              :name="author.name.trim()"
+                              :name="`${author.given_name} ${author.name}`"
                               :tooltipText="authorToolTipText"
-                              @clicked="catchAuthorClicked($event, author.name.trim())" />
+                              @clicked="catchAuthorClicked($event, `${author.given_name} ${author.name}`)" />
           </v-layout>
         </v-flex>
 
@@ -195,7 +195,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-30 10:55:50
+ * Last modified  : 2019-11-01 14:29:04
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
