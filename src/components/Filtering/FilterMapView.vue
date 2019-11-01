@@ -299,7 +299,7 @@ export default {
         fillOpacity: 0,
       });
 
-      polygon.on({ click: this.pointClick });
+      polygon.on({ click: this.catchPointClick });
       polygon.id = id;
       polygon.title = title;
 
