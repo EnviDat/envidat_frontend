@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-11-01 11:25:27
+ * Last modified  : 2019-11-01 15:39:15
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -120,7 +120,13 @@ export function enhanceMetadataFromExtras(mode, metdataEntry) {
       const extra = metdataEntry.extras[i];
       
       if (extra.key === key) {
-        metdataEntry[key] = extra[key];
+        metdataEntry[key] = extra.value;
+
+        const extraTag = { name: extra.value.toUpperCase() };
+
+        if (metdataEntry.tags.findIndex(t => t.name === extraTag.name) < 0) {
+          metdataEntry.tags.push(extraTag);
+        }
       }
     }
   }
