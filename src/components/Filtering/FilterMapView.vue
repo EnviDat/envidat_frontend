@@ -57,7 +57,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-11-01 13:06:18
+ * Last modified  : 2019-11-01 15:31:56
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -242,19 +242,44 @@ export default {
       this.mapLayerGroup = L.layerGroup([baseMap]);
       this.mapLayerGroup.addTo(map);
     },
-    getPoint(coords, id, title, selected) {
+    getPoint(dataset, coords, id, title, selected) {
       const iconOptions = L.Icon.Default.prototype.options;
       // use the defaultoptions to ensure that all untouched defaults stay in place
 
-      iconOptions.iconUrl = selected ? this.selectedMarker : this.marker;
+      let iconUrl = null;
+      let iconShadowUrl = null;
+      let opacity = null;
+      const height = 41;
+      let width = 25;
+
+      if (this.modeData && this.modeData.icons) {
+        let extraValue = dataset[this.modeData.extrasKey];
+
+        if (extraValue) {
+          extraValue = extraValue.toLowerCase();
+          iconUrl = this.modeData.icons[extraValue];
+          width = 41;
+        } else {
+          iconUrl = Object.values(this.modeData.icons)[0];
+        }
+
+        opacity = selected ? 0.5 : 0.4;
+      } else {
+        iconUrl = selected ? this.selectedMarker : this.marker;
+        iconShadowUrl = this.markerShadow;
+        opacity = selected ? 0.8 : 0.65;
+      }
+
+      iconOptions.iconUrl = iconUrl;
       iconOptions.iconRetinaUrl = selected ? this.selectedMarker2x : this.marker2x;
-      iconOptions.shadowUrl = this.markerShadow;
+      iconOptions.shadowUrl = iconShadowUrl;
+      iconOptions.iconSize = [width, height];
 
       const icon = L.icon(iconOptions);
 
       const point = L.marker(coords, {
         icon,
-        opacity: selected ? 0.8 : 0.65,
+        opacity,
         riseOnHover: true,
       });
 
@@ -280,11 +305,11 @@ export default {
 
       return polygon;
     },
-    getMultiPoint(coords, id, title, selected) {
+    getMultiPoint(dataset, coords, id, title, selected) {
       const points = [];
       for (let i = 0; i < coords.length; i++) {
         const pointCoord = coords[i];
-        const point = this.getPoint(pointCoord, id, title, selected);
+        const point = this.getPoint(dataset, pointCoord, id, title, selected);
         points.push(point);
       }
 
@@ -302,14 +327,14 @@ export default {
         const selected = this.pinnedIds.includes(location.id);
 
         if (location.isPoint) {
-          const pin = this.getPoint(location.pointArray, location.id, location.title, selected);
+          const pin = this.getPoint(dataset, location.pointArray, location.id, location.title, selected);
           if (pin) {
             pins.push(pin);
           }
         }
 
         if (location.isMultiPoint) {
-          const multiPin = this.getMultiPoint(location.pointArray, location.id, location.title, selected);
+          const multiPin = this.getMultiPoint(dataset, location.pointArray, location.id, location.title, selected);
           if (multiPin) {
             multiPins.push(multiPin);
           }
@@ -486,24 +511,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 
-  .rotating {
-    animation: rotateturn 1s steps(8, end) infinite;
-  }
 
-  @keyframes rotateturn {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  @keyframes rotate {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
 </style>
