@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-10-30 10:03:11
+ * Last modified  : 2019-11-01 08:38:43
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -59,8 +59,8 @@ function enhanceMetadatas(store, datasets) {
 
   for (let i = 0; i < datasets.length; i++) {
     let dataset = datasets[i];
-    dataset = globalMethods.methods.mixinMethods_enhanceTitleImg(dataset, cardBGImages, categoryCards);
-    dataset = globalMethods.methods.mixinMethods_enhanceTags(dataset, categoryCards);
+    dataset = globalMethods.methods.mixinMethods_enhanceMetadataEntry(dataset, cardBGImages, categoryCards);
+    dataset.tags = globalMethods.methods.mixinMethods_enhanceTags(dataset.tags, categoryCards);
 
     dataset.location = metaDataFactory.createLocation(dataset);
 
@@ -152,7 +152,7 @@ export default {
   [UPDATE_TAGS_ERROR](state, reason) {
     state.updatingTags = false;
 
-    const errObj = warningMessage('Keyword update error', 'Filtering might not work properly try reloading the page');
+    const errObj = warningMessage('Keyword update error', `Error: ${reason.message}. \n Filtering might not work properly try reloading the page`, reason.stack);
     this.commit(ADD_USER_NOTIFICATION, errObj);
   },
   [FILTER_METADATA](state) {
@@ -164,7 +164,7 @@ export default {
   },
   [FILTER_METADATA_ERROR](state, reason) {
     state.isFilteringContent = false;
-    const errObj = warningMessage('Filtering error', 'Filtering might not work properly try reloading the page');
+    const errObj = warningMessage('Filtering error', `Error: ${reason.message}. \n Filtering might not work properly try reloading the page`, reason.stack);
     this.commit(ADD_USER_NOTIFICATION, errObj);
   },
   [PIN_METADATA](state, payload) {
