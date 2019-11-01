@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-11-01 08:38:43
+ * Last modified  : 2019-11-01 08:49:30
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -38,7 +38,6 @@ import {
 } from '@/store/metadataMutationsConsts';
 import {
   warningMessage,
-  errorMessage,
   getSpecificApiError,
 } from '@/factories/notificationFactory';
 import { ADD_USER_NOTIFICATION } from '@/store/mainMutationsConsts';

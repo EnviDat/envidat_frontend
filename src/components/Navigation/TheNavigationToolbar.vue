@@ -25,9 +25,9 @@
         </v-btn>
       </v-flex>
 
-      <v-flex v-if="mode && $vuetify.breakpoint.smAndUp"
-                md4 >
-        <mode-view :mode="mode"
+      <v-flex md4 >
+        <mode-view v-if="mode && $vuetify.breakpoint.smAndUp"
+                    :mode="mode"
                     :closeCallback="modeCloseCallback" />
       </v-flex>
 
