@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-10-30 14:54:15
+ * Last modified  : 2019-11-01 08:38:43
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -59,7 +59,7 @@ function enhanceMetadatas(store, datasets) {
 
   for (let i = 0; i < datasets.length; i++) {
     let dataset = datasets[i];
-    dataset = globalMethods.methods.mixinMethods_enhanceTitleImg(dataset, cardBGImages, categoryCards);
+    dataset = globalMethods.methods.mixinMethods_enhanceMetadataEntry(dataset, cardBGImages, categoryCards);
     dataset.tags = globalMethods.methods.mixinMethods_enhanceTags(dataset.tags, categoryCards);
 
     dataset.location = metaDataFactory.createLocation(dataset);
