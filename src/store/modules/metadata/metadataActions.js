@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-10-31 10:04:07
+ * Last modified  : 2019-11-01 08:49:00
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -40,7 +40,7 @@ import {
   getSelectedTagsMergedWithHidden,
 } from '@/factories/modeFactory';
 
-import metadataTags from '@/store/modules/metadata/tags';
+import metadataTags from '@/store/modules/metadata/metadataTags';
 
 
 /* eslint-disable no-unused-vars  */
