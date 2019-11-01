@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-10-30 09:40:00
+ * Last modified  : 2019-11-01 09:52:34
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -14,6 +14,7 @@
 
 /* eslint-disable camelcase */
 import seedrandom from 'seedrandom';
+import { Object } from 'core-js';
 
 import {
   FOREST,
@@ -23,7 +24,6 @@ import {
   DIVERSITY,
   METEO,
 } from '@/store/categoriesConsts';
-import { Object } from 'core-js';
 
 export default {
   methods: {
@@ -102,7 +102,7 @@ export default {
       Object.assign(query, this.$route.query);
 
       if (search !== undefined) {
-        query.search = search;;
+        query.search = search;
       }
 
       if (tags !== undefined) {
@@ -349,6 +349,8 @@ export default {
      * @param {*} b
      */
     mixinMethods_formatBytes(a, b) {
+      /* eslint-disable prefer-template */
+      /* eslint-disable no-restricted-properties */
       if (a === 0) return '0 Bytes';
 
       const c = 1024;
