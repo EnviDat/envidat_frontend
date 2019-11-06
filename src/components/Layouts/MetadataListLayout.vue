@@ -47,7 +47,9 @@
       </v-layout>
 
     </v-flex>
-    <v-flex :class="useDynamicHeight ? 'metadataListScroll' : ''"
+
+    <v-flex ref="metadataListScroll"
+            :class="useDynamicHeight ? 'metadataListScroll' : ''"
             :style="useDynamicHeight ? `height: calc(100vh - ${ filteringComponentsHeight }px);` : ''" >
       
       <v-layout v-if="loading"
@@ -441,11 +443,8 @@ export default {
       this.filteringComponentsHeight = height + TheNavigationToolbar + padding;
     },
     setScrollPos(toPos) {
-      if (this.$refs
-       && this.$refs.metadataListLayout
-       && this.$refs.metadataListLayout.parentElement) {
-        // this.$refs.metadataListLayout.scrollTo(0, toPos);
-        this.$refs.metadataListLayout.parentElement.scrollTop = toPos;
+      if (this.$refs && this.$refs.metadataListScroll) {
+        this.$refs.metadataListScroll.scrollTop = toPos;
       }
     },
   },
