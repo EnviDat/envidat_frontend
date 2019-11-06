@@ -1,3 +1,16 @@
+/**
+ * Constants for the routing.
+ *
+ * @summary constants for the routing.
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:34:23 
+ * Last modified  : 2019-10-23 16:35:03
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 export const LANDING_PATH = '/';
 export const LANDING_PAGENAME = 'LandingPage';
 export const BROWSE_PATH = '/browse';
@@ -16,3 +29,5 @@ export const PROJECTS_PATH = '/projects';
 export const PROJECTS_PAGENAME = 'ProjectsPage';
 export const PROJECT_DETAIL_PATH = '/projectDetail';
 export const PROJECT_DETAIL_PAGENAME = 'ProjectDetailPage';
+export const REPORT_PATH = '/report';
+export const REPORT_PAGENAME = 'ReportPage';

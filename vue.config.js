@@ -1,5 +1,14 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+/**
+ * @summary config of vue cli services and it's webpack
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:12:30
+ * Last modified  : 2019-10-23 16:58:48
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 const dotenv = require('dotenv');
 
 dotenv.config();
@@ -29,7 +38,6 @@ module.exports = {
     //   // }
     // }
   },
-  
   pluginOptions: {
     storybook: {
       allowedPlugins: ['define'],
@@ -41,11 +49,14 @@ module.exports = {
   //   // while on idle state
   //   // config.plugins.delete('prefetch')
   // },
-  // configureWebpack: {
-  //   optimization: {
-  //     // splitChunks: false
-  //   }
-  // }
+  configureWebpack:{
+    optimization: {
+      splitChunks: {
+        minSize: 10000,
+        maxSize: 250000,
+      }
+    }
+  }  
   // devServer: {
   //   // assetsSubDirectory: "static",
   //   // assetsPublicPath: "/",

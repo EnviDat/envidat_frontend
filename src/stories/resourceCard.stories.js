@@ -1,43 +1,17 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from "@storybook/vue";
 import { action } from "@storybook/addon-actions";
-
 import Vue from "vue";
-import {
-  VBtn,
-  VTooltip,
-  VIcon,
-  VImg,
-  VLayout,
-  VFlex,
-  VCard,
-  VCardText,
-  VCardActions,
-  VCardTitle,
-  VCardMedia,
-  VChip,
-  VSpacer
-} from "vuetify/lib";
+import './js/vuetify-components';
+
 
 import Vue2Filters from 'vue2-filters';
 
 Vue.use(Vue2Filters);
 
-import globalMethods from "@/components/globalMethods";
+import globalMethods from "@/factories/globalMethods";
 Vue.mixin(globalMethods);
 
-Vue.component("v-card", VCard);
-Vue.component("v-card-text", VCardText);
-Vue.component("v-card-actions", VCardActions);
-Vue.component("v-card-title", VCardTitle);
-Vue.component("v-card-media", VCardMedia);
-Vue.component("v-chip", VChip);
-Vue.component("v-spacer", VSpacer);
-Vue.component("v-btn", VBtn);
-Vue.component("v-icon", VIcon);
-Vue.component("v-img", VImg);
-Vue.component("v-layout", VLayout);
-Vue.component("v-flex", VFlex);
 
 import ResourceCard from "@/components/Cards/ResourceCard.vue";
 import ResourceCardPlaceholder from "@/components/Cards/ResourceCardPlaceholder.vue";
@@ -49,7 +23,7 @@ import downloadIcon from "@/assets/icons/download.png";
 import dateCreatedIcon from "@/assets/icons/dateCreated.png";
 import lastModifiedIcon from "@/assets/icons/dateModified.png";
 
-const conversion = require("@/store/modules/metadata/conversion");
+const apiFactory = require("@/factories/apiFactory");
 
 const iconFiles = getIcons();
 
@@ -60,11 +34,11 @@ const iconFiles = getIcons();
 
 // alert('icons ' + str);
 
-import unFormatedMetadataCards from "@/stories/metadata";
+import unFormatedMetadataCards from "@/stories/js/metadata";
 let metadataCards = [];
 
 unFormatedMetadataCards.forEach(el => {
-  let formatted = conversion.solrResultToCKANJSON(el);
+  let formatted = apiFactory.solrResultToCKANJSON(el);
   // let keys = Object.keys(el.tags[0]);
   // let props = "";
   // keys.forEach(element => {
@@ -311,7 +285,6 @@ storiesOf("3 Cards | Resource Cards", module)
       key = key.replace('.png', '');
       icons.set(key, iconFileName);
     });
-  
+
     return icons;
   }
-  

@@ -5,17 +5,18 @@ import Vuetify, { VApp, VContainer, VLayout, VFlex } from 'vuetify/lib';
 
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
-import globalMethods from '@/components/globalMethods';
-import metaDataFactory from '@/components/metaDataFactory';
+import globalMethods from '@/factories/globalMethods';
+import metaDataFactory from '@/factories/metaDataFactory';
 
 const cardImages = getCardImages(globalMethods);
-import metadataCards from '@/stories/metadata';
+import metadataCards from '@/stories/js/metadata';
+import categoryCards from '@/store/modules/metadata/categoryCards';
 
 metadataCards.forEach(element => {
   element.tags = metaDataFactory.convertTags(element.tags, true);
 });
 
-globalMethods.methods.mixinMethods_enhanceMetadatas(metadataCards, cardImages);
+globalMethods.methods.mixinMethods_enhanceMetadatas(metadataCards, cardImages, categoryCards);
 
 import { configureViewport, INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 
@@ -149,6 +150,9 @@ function getCardImages(globalMethods) {
 
   imgPaths = require.context('@/assets/cards/hazard/', false, /\.jpg$/);
   cardImages.hazard = globalMethods.methods.mixinMethods_importImages(imgPaths);
+
+  imgPaths = require.context('@/assets/cards/meteo/', false, /\.jpg$/);
+  cardImages.meteo = globalMethods.methods.mixinMethods_importImages(imgPaths);
 
   return cardImages;
 }
