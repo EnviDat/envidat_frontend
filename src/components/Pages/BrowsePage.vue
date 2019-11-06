@@ -334,7 +334,7 @@ export default {
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
     searchTerm: '',
-    placeHolderAmount: 6,
+    placeHolderAmount: 4,
     suggestionText: 'Try one of these categories',
     selectedTagNames: [],
     popularTagAmount: 10,

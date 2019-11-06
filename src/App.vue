@@ -472,7 +472,7 @@ export default {
 }
 
 .metadataInfoIcon {
-  opacity: 0.75;
+  opacity: 0.7;
 }
 
 .envidatBadge span {
@@ -506,6 +506,7 @@ export default {
 .authorTag span,
 .envidatChip span {
   cursor: pointer !important;
+  font-weight: 700;
 }
 
 .filterTag {
