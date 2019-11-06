@@ -51,7 +51,7 @@
                                 :selectedTagNames="selectedTagNames"
                                 @clickedTagClose="catchTagCloseClicked"
                                 @clickedClear="catchTagCleared"
-                                :defaultListControls="controls"
+                                :defaultListControls="defaultControls"
                                 :enabledControls="enabledControls"
                                 :mapHeight="mapFilterHeight" />
           </div>
@@ -95,6 +95,11 @@ import {
   SET_PROJECTDETAIL_PAGE_BACK_URL,
 } from '@/store/projectsMutationsConsts';
 import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
+
+import {
+  LISTCONTROL_LIST_ACTIVE,
+  LISTCONTROL_MAP_ACTIVE,
+} from '@/store/metadataMutationsConsts';
 
 import ProjectHeader from '@/components/ProjectDetailViews/ProjectHeader';
 import ProjectBody from '@/components/ProjectDetailViews/ProjectBody';
@@ -329,8 +334,11 @@ export default {
     creatorSmall,
     placeHolderAmount: 3,
     selectedTagNames: [],
-    controls: [1],
-    enabledControls: [0, 1],
+    defaultControls: [LISTCONTROL_MAP_ACTIVE],
+    enabledControls: [
+      LISTCONTROL_LIST_ACTIVE,
+      LISTCONTROL_MAP_ACTIVE,
+    ],
     mapFilterHeight: 400,
     metadataListTitle: 'Datasets',
     metadataEmptyText: 'There are no datasets connected with the project',

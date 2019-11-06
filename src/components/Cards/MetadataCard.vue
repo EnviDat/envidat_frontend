@@ -54,8 +54,7 @@
                   }" >
       <!-- TODO: need to strip the markdown characters from the desc -->
       <v-layout row wrap>
-        <v-flex xs12
-                :style="flatLayout ? singleLineCss : ''" >
+        <v-flex xs12 >
           {{ truncatedSubtitle }}
         </v-flex>
         <v-flex xs12
@@ -170,6 +169,7 @@ export default {
     dark: Boolean,
     resourceCount: Number,
     flatLayout: Boolean,
+    compactLayout: Boolean,
     fileIconString: String,
     lockedIconString: String,
     unlockedIconString: String,
@@ -191,9 +191,6 @@ export default {
       return this.tags !== undefined && this.tags.length > this.maxTagNumber;
     },
     maxTagNumber() {
-      // if (this.flatLayout) {
-      //   return 10;
-      // }
       let textLength = 0;
       let numberOfTags = 0;
 
@@ -202,8 +199,9 @@ export default {
           if (this.tags[i].name !== undefined) {
             textLength += this.tags[i].name.length + 1;
 
-            if ((this.flatLayout && textLength >= this.maxCompactTagtextLength)
-            || (!this.flatLayout && textLength >= this.maxTagtextLength)) {
+            if ((this.flatLayout && textLength >= this.flatTagtextLength)
+              || ((this.compactLayout || this.$vuetify.breakpoint.smAndDown) && textLength >= this.compactTagtextLength)
+              || textLength >= this.tagtextLength) {
               break;
             }
 
@@ -215,13 +213,16 @@ export default {
       return numberOfTags;
     },
     maxTitleLengthReached() {
-      return (!this.flatLayout && this.title.length > this.maxTitleLength)
-          || ((this.flatLayout || this.$vuetify.breakpoint.smAndDown) && this.title.length > this.compactTitleLength);
+      return (this.flatLayout && this.title.length > this.flatTagtextLength)
+      || ((this.compactLayout || this.$vuetify.breakpoint.smAndDown) && this.title.length > this.compactTitleLength)
+      || this.title.length > this.titleLength;
     },
     truncatedTitle() {
-      let maxLength = this.maxTitleLength;
+      let maxLength = this.titleLength;
 
       if (this.flatLayout) {
+        maxLength = this.flatTitleLength;
+      } else if (this.compactLayout || this.$vuetify.breakpoint.smAndDown) {
         maxLength = this.compactTitleLength;
       }
 
@@ -232,9 +233,11 @@ export default {
       return this.title;
     },
     truncatedSubtitle() {
-      let maxLength = this.maxDescriptionLength;
+      let maxLength = this.descriptionLength;
 
       if (this.flatLayout) {
+        maxLength = this.flatDescriptionLength;
+      } else if (this.compactLayout || this.$vuetify.breakpoint.smAndDown) {
         maxLength = this.compactDescriptionLength;
       }
 
@@ -270,6 +273,7 @@ export default {
       return {
         black_title: !this.dark,
         white_title: this.dark,
+        // smallScreenTitle: this.compactLayout || this.$vuetify.breakpoint.xsOnly,
         smallScreenTitle: this.$vuetify.breakpoint.xsOnly,
         compactTitle: this.$vuetify.breakpoint.smOnly,
       };
@@ -296,16 +300,15 @@ export default {
     singleLineCss: 'white-space: nowrap; overflow: hidden; text-overflow: ellipsis;',
     show: false,
     showDataText: 'SHOW DATA',
-    // maxTitleLength: 80,
-    maxTitleLength: 150,
-    compactTitleLength: 120,
-    maxDescriptionLength: 280,
-    compactDescriptionLength: 450,
-    // maxTags: 3,
-    // maxTagtextLength: 40,
-    maxTagtextLength: 100,
-    maxCompactTagtextLength: 170,
-    // maxCompactTagtextLength: 320,
+    titleLength: 150,
+    compactTitleLength: 80,
+    flatTitleLength: 120,
+    descriptionLength: 280,
+    compactDescriptionLength: 130,
+    flatDescriptionLength: 500,
+    tagtextLength: 100,
+    compactTagtextLength: 60,
+    flatTagtextLength: 170,
     blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
     whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
   }),

@@ -117,6 +117,7 @@
                         :resourceCount="metadata.num_resources"
                         :dark="false"
                         :flatLayout="listView"
+                        :compactLayout="isActiveControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)"
                         :fileIconString="fileIconString"
                         :lockedIconString="lockedIconString"
                         :unlockedIconString="unlockedIconString"
@@ -189,6 +190,9 @@ import {
   SET_DETAIL_PAGE_BACK_URL,
   SET_VIRTUAL_LIST_INDEX,
   METADATA_NAMESPACE,
+  LISTCONTROL_LIST_ACTIVE,
+  LISTCONTROL_MAP_ACTIVE,
+  LISTCONTROL_COMPACT_LAYOUT_ACTIVE,
 } from '@/store/metadataMutationsConsts';
 
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
@@ -261,7 +265,7 @@ export default {
         sm6: true,
         md4: true,
         lg3: true,
-        xl2: this.isActiveControl(2),
+        xl2: this.isActiveControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE),
       };
 
       return fullSize;
@@ -416,10 +420,10 @@ export default {
       for (let index = 0; index < controlsActive.length; index++) {
         const el = controlsActive[index];
 
-        if (el === 0) {
+        if (el === LISTCONTROL_LIST_ACTIVE) {
           listActive = true;
         }
-        if (el === 1) {
+        if (el === LISTCONTROL_MAP_ACTIVE) {
           mapToggled = true;
         }
       }
@@ -478,6 +482,9 @@ export default {
     showMapFilter: false,
     pinnedIds: [],
     BROWSE_PAGENAME,
+    LISTCONTROL_LIST_ACTIVE,
+    LISTCONTROL_MAP_ACTIVE,
+    LISTCONTROL_COMPACT_LAYOUT_ACTIVE,
   }),
   components: {
     FilterKeywordsView,
