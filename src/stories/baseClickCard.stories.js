@@ -24,7 +24,7 @@ storiesOf("3 Cards | Click Cards", module).add("CategoryCcard Collection", () =>
   template: `
     <v-layout row wrap>
 
-      <v-flex xs6 pa-2
+      <v-flex xs6 py-1
         v-for="card in categorycards" :key="card.title">
             <base-click-card
               :title="card.title"
@@ -33,7 +33,7 @@ storiesOf("3 Cards | Click Cards", module).add("CategoryCcard Collection", () =>
             />
       </v-flex>
 
-      <v-flex xs4 pa-2
+      <v-flex xs4 py-1
         v-for="card in categorycards" :key="card.title">
             <base-click-card
               :title="card.title"
@@ -42,7 +42,7 @@ storiesOf("3 Cards | Click Cards", module).add("CategoryCcard Collection", () =>
             />
       </v-flex>
 
-      <v-flex xs3 pa-2
+      <v-flex xs3 py-1
         v-for="card in categorycards" :key="card.title">
             <base-click-card
               :title="card.title"
