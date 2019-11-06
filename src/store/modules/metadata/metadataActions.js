@@ -74,8 +74,9 @@ export default {
 
     searchTerm = searchTerm.trim();
     // using the envidat "query" action for performance boost (ckan package_search isn't performant)
-    const url = urlRewrite(`query?q=title:"${searchTerm}" OR notes:"${searchTerm}" OR author:"${searchTerm}"&wt=json&rows=1000`,
-                            '/', PROXY);
+    const query = `query?q=title:"${searchTerm}" OR notes:"${searchTerm}" OR author:"${searchTerm}"&wt=json&rows=1000`;
+    const publicOnlyQuery = `${query}&fq=capacity:public&fq=state:active`;
+    const url = urlRewrite(publicOnlyQuery, '/', PROXY);
 
     axios
       .get(url)
