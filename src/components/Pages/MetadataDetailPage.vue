@@ -7,6 +7,7 @@
               elevation-5
               style="z-index: 1;" >
         <metadata-header v-bind="header"
+                          :metadataId="metadataId"
                           :showPlaceholder="showPlaceholder"
                           :doiIcon="doiIcon"
                           :contactIcon="contactIcon"
@@ -48,8 +49,19 @@
 
 <script>
 /**
-   * The MetadataDetailPage shows all the important information of a metadata entry.
-   */
+ * The MetadataDetailPage shows all the important information of a metadata entry.
+ * It consists of all the MetadataDetailViews.
+ *
+ * @summary metadata detail page
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:12:30
+ * Last modified  : 2019-10-23 18:11:41
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import { mapGetters } from 'vuex';
 import {
   BROWSE_PATH,
@@ -58,8 +70,9 @@ import {
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
-} from '@/store/mutationsConsts';
+} from '@/store/mainMutationsConsts';
 import {
+  METADATA_NAMESPACE,
   LOAD_METADATA_CONTENT_BY_ID,
   CLEAN_CURRENT_METADATA,
 } from '@/store/metadataMutationsConsts';
@@ -69,11 +82,8 @@ import MetadataResources from '@/components/MetadataDetailViews/MetadataResource
 import MetadataLocation from '@/components/MetadataDetailViews/MetadataLocation';
 import MetadataDetails from '@/components/MetadataDetailViews/MetadataDetails';
 import MetadataCitation from '@/components/MetadataDetailViews/MetadataCitation';
-import NotFoundView from '@/components/Errors/NotFoundView';
-import metaDataFactory from '@/components/metaDataFactory';
+import metaDataFactory from '@/factories/metaDataFactory';
 import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
-
-// import { LOAD_METADATAS_CONTENT } from '@/store/metadataMutationsConsts';
 
 // Might want to check https://css-tricks.com/use-cases-fixed-backgrounds-css/
 // for animations between the different parts of the Metadata
@@ -82,7 +92,7 @@ import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
 // https://paper-leaf.com/blog/2016/01/creating-blurred-background-using-only-css/
 
 export default {
-  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+  beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.commit(SET_CURRENT_PAGE, METADATADETAIL_PAGENAME);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
@@ -91,7 +101,7 @@ export default {
   /**
      * @description load all the icons once before the first component's rendering.
      */
-  beforeMount: function beforeMount() {
+  beforeMount() {
     this.downloadIcon = this.mixinMethods_getIcon('download');
     this.linkIcon = this.mixinMethods_getIcon('link');
     this.doiIcon = this.mixinMethods_getIcon('doi');
@@ -105,38 +115,38 @@ export default {
   /**
      * @description reset the scrolling to the top.
      */
-  mounted: function mounted() {
+  mounted() {
     this.loadMetaDataContent();
     window.scrollTo(0, 0);
   },
   /**
    * @description
    */
-  beforeDestroy: function beforeDestroy() {
+  beforeDestroy() {
     // clean current metadata to make be empty for the next to load up
     this.$store.commit(`metadata/${CLEAN_CURRENT_METADATA}`);
   },
   computed: {
     ...mapGetters({
-      metadatasContent: 'metadata/metadatasContent',
-      loadingMetadatasContent: 'metadata/loadingMetadatasContent',
-      loadingCurrentMetadataContent: 'metadata/loadingCurrentMetadataContent',
-      currentMetadataContent: 'metadata/currentMetadataContent',
-      detailPageBackRoute: 'metadata/detailPageBackRoute',
-      idRemapping: 'metadata/idRemapping',
+      metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
+      loadingMetadatasContent: `${METADATA_NAMESPACE}/loadingMetadatasContent`,
+      loadingCurrentMetadataContent: `${METADATA_NAMESPACE}/loadingCurrentMetadataContent`,
+      currentMetadataContent: `${METADATA_NAMESPACE}/currentMetadataContent`,
+      detailPageBackRoute: `${METADATA_NAMESPACE}/detailPageBackRoute`,
+      idRemapping: `${METADATA_NAMESPACE}/idRemapping`,
       iconImages: 'iconImages',
       cardBGImages: 'cardBGImages',
     }),
     /**
      * @returns {Number} Size of the metadatasContent
      */
-    metadatasContentSize: function metadatasContentSize() {
+    metadatasContentSize() {
       return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
     },
     /**
      * @returns {String} the metadataId from the route
      */
-    metadataId: function metadataId() {
+    metadataId() {
       let id = this.$route.params.metadataid;
 
       if (this.idRemapping.has(id)) {
@@ -148,13 +158,13 @@ export default {
     /**
      * @returns {Boolean} if the placeHolders should be shown be somethings are still loading
      */
-    showPlaceholder: function showPlaceholder() {
+    showPlaceholder() {
       return this.loadingMetadatasContent || this.loadingCurrentMetadataContent;
     },
-    firstColumn: function firstColumn() {
+    firstColumn() {
       return this.$vuetify.breakpoint.mdAndUp ? this.firstCol : this.singleCol;
     },
-    secondColumn: function secondColumn() {
+    secondColumn() {
       return this.$vuetify.breakpoint.mdAndUp ? this.secondCol : [];
     },
   },
@@ -162,21 +172,26 @@ export default {
     /**
      * @description
      */
-    createMetadataContent: function createMetadataContent() {
-      let currentContent = this.currentMetadataContent;
+    createMetadataContent() {
+      const currentContent = this.currentMetadataContent;
       const { components } = this.$options;
 
+      // always initialize because when changing the url directly the reloading
+      // would not work and the old content would be loaded
+      this.header = null;
+      this.body = null;
+      this.citation = null;
+      this.resources = null;
+      this.location = null;
+      this.details = null;
+
       if (currentContent && currentContent.title !== undefined) {
-        currentContent = this.mixinMethods_enhanceMetadataEntry(currentContent, this.cardBGImages);
 
         this.header = metaDataFactory.createHeader(currentContent, this.$vuetify.breakpoint.smAndDown);
-        this.$set(components.MetadataHeader, 'genericProps', this.header);
 
         this.body = metaDataFactory.createBody(currentContent);
-        this.$set(components.MetadataBody, 'genericProps', this.body);
 
         this.citation = metaDataFactory.createCitation(currentContent);
-        this.$set(components.MetadataCitation, 'genericProps', this.citation);
 
         this.resources = metaDataFactory.createResources(currentContent);
         this.resources.doiIcon = this.doiIcon;
@@ -185,49 +200,53 @@ export default {
         this.resources.fileSizeIcon = this.fileSizeIcon;
         this.resources.dateCreatedIcon = this.dateCreatedIcon;
         this.resources.lastModifiedIcon = this.lastModifiedIcon;
-        this.$set(components.MetadataResources, 'genericProps', this.resources);
 
         this.location = metaDataFactory.createLocation(currentContent);
-        this.$set(components.MetadataLocation, 'genericProps', this.location);
 
         this.details = metaDataFactory.createDetails(currentContent);
-        this.$set(components.MetadataDetails, 'genericProps', { details: this.details });
-
-        this.firstCol = [
-          components.MetadataBody,
-          components.MetadataCitation,
-          components.MetadataLocation,
-        ];
-
-        this.secondCol = [
-          components.MetadataResources,
-          components.MetadataDetails,
-        ];
-
-        this.singleCol = [
-          components.MetadataBody,
-          components.MetadataCitation,
-          components.MetadataResources,
-          components.MetadataLocation,
-          components.MetadataDetails,
-        ];
-
-        this.$forceUpdate();
       }
+
+      this.$set(components.MetadataHeader, 'genericProps', this.header);
+      this.$set(components.MetadataBody, 'genericProps', this.body);
+      this.$set(components.MetadataCitation, 'genericProps', this.citation);
+      this.$set(components.MetadataResources, 'genericProps', this.resources);
+      this.$set(components.MetadataLocation, 'genericProps', this.location);
+      this.$set(components.MetadataDetails, 'genericProps', { details: this.details });
+
+      this.firstCol = [
+        components.MetadataBody,
+        components.MetadataCitation,
+        components.MetadataLocation,
+      ];
+
+      this.secondCol = [
+        components.MetadataResources,
+        components.MetadataDetails,
+      ];
+
+      this.singleCol = [
+        components.MetadataBody,
+        components.MetadataCitation,
+        components.MetadataResources,
+        components.MetadataLocation,
+        components.MetadataDetails,
+      ];
+
+      this.$forceUpdate();
     },
     /**
        * @description
        * @param {any} idOrName
        * @returns {any}
        */
-    isCurrentIdOrName: function isCurrentIdOrName(idOrName) {
+    isCurrentIdOrName(idOrName) {
       return this.currentMetadataContent.id === idOrName || this.currentMetadataContent.name === idOrName;
     },
     /**
        * @description
        * @param {any} tagName
        */
-    catchTagClicked: function catchTagClicked(tagName) {
+    catchTagClicked(tagName) {
       const tagNames = [];
       tagNames.push(tagName);
 
@@ -244,7 +263,7 @@ export default {
        * @description
        * @param {any} authorName
        */
-    catchAuthorClicked: function catchAuthorClicked(authorName) {
+    catchAuthorClicked(authorName) {
       const query = {};
       query.search = authorName;
 
@@ -256,7 +275,7 @@ export default {
     /**
        * @description
        */
-    catchBackClicked: function catchBackClicked() {
+    catchBackClicked() {
       // console.log(this.$router);
       const backRoute = this.detailPageBackRoute;
 
@@ -277,7 +296,7 @@ export default {
        * @description loads the content of this metadata entry (metadataid) from the URL.
        * Either loads it from the backend via action or creates it from the localStorage.
        */
-    loadMetaDataContent: function loadMetaDataContent() {
+    loadMetaDataContent() {
       if (!this.loadingMetadatasContent
         && (this.currentMetadataContent.title === undefined
             || !this.isCurrentIdOrName(this.metadataId))) {
@@ -303,13 +322,13 @@ export default {
     /**
        * @description
        */
-    currentMetadataContent: function updateContent() {
+    currentMetadataContent() {
       this.createMetadataContent();
     },
     /**
        * @description
        */
-    metadatasContent: function updateContent() {
+    metadatasContent() {
       // in case all the metadataContents are already loaded take it from there
       // if EnviDat is called via MetadataDetailPage URL directly
 
@@ -325,22 +344,13 @@ export default {
     MetadataLocation,
     MetadataDetails,
     MetadataCitation,
-    NotFoundView,
     TwoColumnLayout,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
     header: null,
     body: null,
-    citation: {
-      id: String,
-      citationText: String,
-      citationXmlLink: String,
-      citationIsoXmlLink: String,
-      citationGCMDXmlLink: String,
-      fixedHeight: Boolean,
-      showPlaceholder: Boolean,
-    },
+    citation: null,
     resources: null,
     location: null,
     details: null,

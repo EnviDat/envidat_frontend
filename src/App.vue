@@ -1,35 +1,53 @@
 <template>
   <v-app class="application" :style="dynamicBackground">
 
-    <navigation v-if="$vuetify.breakpoint.mdAndUp"
-                :mini="!this.menuItem.active"
-                :navItems="navItems"
-                :version="appVersion"
-                @menuClick="catchMenuClicked"
-                @itemClick="catchItemClicked" />
+      <div v-for="(notification, index) in visibleNotifications()"
+          :key="`notification_${index}`"
+          :style="`position: absolute;
+                  right: ${ $vuetify.breakpoint.xsOnly ? 0 : 15}px;
+                  top: ${35 + index * 175}px;
+                  z-index: ${NotificationZIndex};`" >
 
-    <navigation-mobile v-if="$vuetify.breakpoint.smAndDown"
+        <notification-card v-if="notification.show"
+                            :notification="notification"
+                            :showReportButton="config.errorReportingEnabled && notification.type === 'error'"
+                            @clickedClose="catchCloseClicked(notification.key)"
+                            @clickedReport="catchReportClicked(notification.key)" />
+      </div>
+
+    <the-navigation v-if="$vuetify.breakpoint.mdAndUp"
+                    :style="`z-index: ${NavigationZIndex}`"
+                    :mini="!this.menuItem.active"
                     :navItems="navItems"
-                    style="position: fixed; top: auto; right: 10px; bottom: 10px;"
-                    class="elevation-3"
+                    :version="appVersion"
+                    @menuClick="catchMenuClicked"
                     @itemClick="catchItemClicked" />
 
-    <navigation-toolbar :searchTerm="searchTerm"
-                        :showSearchCount="showSearchCount"
-                        :searchCount="searchCount"
-                        :showSearch="showToolbarSearch"
-                        @menuClick="catchMenuClicked"
-                        @searchClick="catchSearchClicked"
-                        @searchCleared="catchSearchCleared" />
+    <the-navigation-small v-if="$vuetify.breakpoint.smAndDown"
+                          :navItems="navItems"
+                          :style="`z-index: ${NavigationZIndex}`"
+                          class="envidatSmallNavigation elevation-3"
+                          @itemClick="catchItemClicked" />
+
+    <the-navigation-toolbar v-if="showToolbar"
+                            ref="TheNavigationToolbar"
+                            class="envidatToolbar"
+                            :style="`z-index: ${NavToolbarZIndex}`"
+                            :searchTerm="searchTerm"
+                            :showSearchCount="currentPageIsBrowsePage"
+                            :searchCount="searchCount"
+                            :showSearch="!currentPageIsLandingPage"
+                            :loading="loading"
+                            @menuClick="catchMenuClicked"
+                            @searchClick="catchSearchClicked"
+                            @searchCleared="catchSearchCleared" />
 
     <v-content>
-      <v-container fluid py-1
-                  v-bind="{ [`px-1`]: this.$vuetify.breakpoint.smAndDown,
-                            [`px-2`]: this.$vuetify.breakpoint.mdAndUp, }" >
+      <v-container fluid
+                    pa-2 
+                    :style="currentPageIsBrowsePage ? 'height: 100%;' : 'height: calc(100vh - 36px); overflow: auto;'">
         <v-layout column>
-
-          <v-flex xs12
-                  mx-0 >
+          <v-flex xs12 mx-0 >
 
             <transition name="fade" mode="out-in">
               <router-view />
@@ -37,30 +55,42 @@
 
           </v-flex>
 
-          <v-flex xs12
-            style="position: absolute; right: 5px; bottom: 2px; font-size: 6px !important;"
-          >Verison: {{ appVersion }}</v-flex>
         </v-layout>
       </v-container>
 
       <v-dialog v-model="showReloadDialog" persistent max-width="290">
         <v-card>
           <v-card-title class="headline">New Version Available!</v-card-title>
-          <v-card-text>{{ dialogVersionText() }}</v-card-text>
+          <v-card-text>{{ dialogVersionText }}</v-card-text>
           <v-card-actions>
             <v-spacer />
-            <v-btn color="green darken-1" flat @click="reloadApp();">Reload</v-btn>
-            <v-btn color="green darken-1" flat @click="dialogCanceled = true">Cancel</v-btn>
+            <v-btn color="green darken-1" flat @click="reloadApp()">Reload</v-btn>
+            <v-btn color="green darken-1" flat @click="reloadDialogCanceled = true">Cancel</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
     </v-content>
+
   </v-app>
 </template>
 
 <script>
+/**
+ * The App.vue bootstraps all the other components.
+ *
+ * @summary main component
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:12:30
+ * Last modified  : 2019-10-25 13:38:33
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import { mapGetters } from 'vuex';
 import {
+  LANDING_PATH,
   LANDING_PAGENAME,
   BROWSE_PATH,
   BROWSE_PAGENAME,
@@ -73,51 +103,40 @@ import {
   POLICIES_PAGENAME,
   ABOUT_PATH,
   ABOUT_PAGENAME,
+  REPORT_PATH,
 } from '@/router/routeConsts';
-import { BULK_LOAD_METADATAS_CONTENT } from '@/store/metadataMutationsConsts';
 import {
-  ADD_CARD_IMAGES,
-  ADD_ICON_IMAGE,
+  METADATA_NAMESPACE,
+  BULK_LOAD_METADATAS_CONTENT,
+} from '@/store/metadataMutationsConsts';
+import {
   SET_CONFIG,
-} from '@/store/mutationsConsts';
-import Navigation from '@/components/Navigation/Navigation';
-import NavigationMobile from '@/components/Navigation/NavigationMobile';
-import NavigationToolbar from '@/components/Navigation/NavigationToolbar';
+  TRIM_NOTIFICATIONS,
+  HIDE_NOTIFICATIONS,
+} from '@/store/mainMutationsConsts';
+import TheNavigation from '@/components/Navigation/TheNavigation';
+import TheNavigationSmall from '@/components/Navigation/TheNavigationSmall';
+import TheNavigationToolbar from '@/components/Navigation/TheNavigationToolbar';
+import NotificationCard from '@/components/Cards/NotificationCard';
 import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
 
 export default {
   beforeCreate() {
     // check for the backend version
     this.$store.dispatch(SET_CONFIG);
-    // window.applicationCache.onupdateready = function (e) {
-    //   console.log("applicationCache.onupdateready");
-    // };
-
-    // window.applicationCache.onerror = function (e) {
-    //   console.log("applicationCache.onerror");
-    // };
-
-    // window.applicationCache.onnoupdate = function (e) {
-    //   console.log("applicationCache.onnoupdate");
-    // };
   },
   created() {
     this.loadAllMetadata();
 
     const bgImgs = require.context('./assets/', false, /\.jpg$/);
     this.appBGImages = this.mixinMethods_importImages(bgImgs, 'app_b');
-
-    this.importCardBackgrounds();
-    this.importIcons();
   },
   updated() {
     this.updateActiveStateOnNavItems();
   },
   methods: {
     updateActiveStateOnNavItems() {
-      if (!this.currentPage) {
-        return;
-      }
+      // console.log(this.currentPage);
 
       for (let i = 0; i < this.navItems.length; i++) {
         const item = this.navItems[i];
@@ -141,6 +160,10 @@ export default {
         }
       }
     },
+    visibleNotifications() {
+      const notis = Object.values(this.notifications);
+      return notis.filter(n => n.show);
+    },
     catchMenuClicked() {
       this.menuItem.active = !this.menuItem.active;
     },
@@ -149,71 +172,48 @@ export default {
         window.open(item.path, '_blank');
         return;
       }
-
-      this.$router.push({ path: item.path });
+      if (this.$route.name === item.pageName) {
+        return;
+      }
+      this.$router.push({ path: item.path, query: '' });
     },
     catchSearchClicked(search) {
-      this.$router.push({
-        path: BROWSE_PATH,
-        query: { search },
-      });
+      this.mixinMethods_additiveChangeRoute(BROWSE_PATH, search);
     },
     catchSearchCleared() {
-      this.searchTerm = '';
+      this.mixinMethods_additiveChangeRoute(BROWSE_PATH, '');
+    },
+    navigateTo(navItem) {
+      if (navItem.pageName === 'external') {
+        window.open(navItem.path, '_blank');
+      } else {
+        this.$router.push(navItem.path);
+      }
+
+      if (this.$route.name === navItem.pageName) {
+        return;
+      }
+
+      this.$router.push({ path: navItem.path, query: '' });
+    },
+    catchCloseClicked(key) {
+      if (!this.notifications) return;
+
+      this.$store.commit(HIDE_NOTIFICATIONS, key);
+    },
+    catchReportClicked(index) {
+      if (this.$route.path === REPORT_PATH) {
+        return;
+      }
+      this.$router.push({ path: REPORT_PATH, query: index });
     },
     reloadApp() {
       window.location.reload();
     },
-    loadAllMetadata: function loadAllMetadata() {
+    loadAllMetadata() {
       if (!this.loadingMetadatasContent && this.metadatasContentSize <= 0) {
         this.$store.dispatch(`metadata/${BULK_LOAD_METADATAS_CONTENT}`);
       }
-    },
-    importCardBackgrounds: function importCardBackgrounds() {
-      const imgs = this.$store.getters.cardBGImages;
-
-      if (imgs && Object.keys(imgs).length > 0) {
-        // already loaded in localStorage
-        return;
-      }
-
-      let imgPaths = require.context('./assets/cards/landscape/', false, /\.jpg$/);
-
-      let images = this.mixinMethods_importImages(imgPaths);
-      this.$store.commit(ADD_CARD_IMAGES, { key: 'landscape', value: images });
-
-      imgPaths = require.context('./assets/cards/forest/', false, /\.jpg$/);
-      images = this.mixinMethods_importImages(imgPaths);
-      this.$store.commit(ADD_CARD_IMAGES, { key: 'forest', value: images });
-
-      imgPaths = require.context('./assets/cards/snow/', false, /\.jpg$/);
-      images = this.mixinMethods_importImages(imgPaths);
-      this.$store.commit(ADD_CARD_IMAGES, { key: 'snow', value: images });
-
-      imgPaths = require.context('./assets/cards/diversity/', false, /\.jpg$/);
-      images = this.mixinMethods_importImages(imgPaths);
-      this.$store.commit(ADD_CARD_IMAGES, { key: 'diversity', value: images });
-
-      imgPaths = require.context('./assets/cards/hazard/', false, /\.jpg$/);
-      images = this.mixinMethods_importImages(imgPaths);
-      this.$store.commit(ADD_CARD_IMAGES, { key: 'hazard', value: images });
-    },
-    importIcons: function importIcons() {
-      const imgs = this.$store.getters.iconImages;
-
-      if (imgs && Object.keys(imgs).length > 0) {
-        // already loaded in localStorage
-        return;
-      }
-
-      const imgPaths = require.context('./assets/icons/', false, /\.png$/);
-      const images = this.mixinMethods_importImages(imgPaths);
-
-      const keys = Object.keys(images);
-      keys.forEach((key) => {
-        // console.log('icon ' + key + ' value ' + images[key]);
-        this.$store.commit(ADD_ICON_IMAGE, { key, value: images[key] });
-      });
     },
     dialogVersionText() {
       return `You are using the version ${process.env.VUE_APP_VERSION}, but there is are newer version available (${this.newVersion}). Please reload to get the latest verison of EnviDat.`;
@@ -221,40 +221,40 @@ export default {
   },
   computed: {
     ...mapGetters({
-      metadataIds: 'metadata/metadataIds',
-      metadatasContent: 'metadata/metadatasContent',
-      loadingMetadataIds: 'metadata/loadingMetadataIds',
-      loadingMetadatasContent: 'metadata/loadingMetadatasContent',
-      loadingCurrentMetadataContent: 'metadata/loadingCurrentMetadataContent',
-      currentMetadataContent: 'metadata/currentMetadataContent',
-      popularTags: 'metadata/popularTags',
-      loadingPopularTags: 'metadata/loadingPopularTags',
+      metadataIds: `${METADATA_NAMESPACE}/metadataIds`,
+      metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
+      loadingMetadataIds: `${METADATA_NAMESPACE}/loadingMetadataIds`,
+      loadingMetadatasContent: `${METADATA_NAMESPACE}/loadingMetadatasContent`,
+      loadingCurrentMetadataContent: `${METADATA_NAMESPACE}/loadingCurrentMetadataContent`,
+      searchingMetadatasContent: `${METADATA_NAMESPACE}/searchingMetadatasContent`,
+      currentMetadataContent: `${METADATA_NAMESPACE}/currentMetadataContent`,
+      filteredContent: `${METADATA_NAMESPACE}/filteredContent`,
+      isFilteringContent: `${METADATA_NAMESPACE}/isFilteringContent`,
       currentPage: 'currentPage',
-      filteredContent: 'metadata/filteredContent',
       appBGImage: 'appBGImage',
-      showVersionModal: 'showVersionModal',
+      outdatedVersion: 'outdatedVersion',
       newVersion: 'newVersion',
+      config: 'config',
+      notifications: 'notifications',
+      maxNotifications: 'maxNotifications',
     }),
-    showSearchCount() {
+    loading() {
+      return this.loadingMetadatasContent || this.searchingMetadatasContent || this.isFilteringContent;
+    },
+    searchTerm() {
+      return this.$route.query.search;
+    },
+    currentPageIsBrowsePage() {
       return this.currentPage === BROWSE_PAGENAME;
     },
-    showToolbarSearch() {
-      return this.currentPage !== LANDING_PAGENAME;
+    currentPageIsLandingPage() {
+      return this.currentPage === LANDING_PAGENAME;
+    },
+    showToolbar() {
+      return !this.currentPageIsLandingPage || !this.$vuetify.breakpoint.smAndDown;
     },
     searchCount() {
       return this.filteredContent !== undefined ? Object.keys(this.filteredContent).length : 0;
-    },
-    menuItem() {
-      let menuItem = { active: true };
-
-      this.navItems.forEach((el) => {
-        if (el.icon === 'menu') {
-          menuItem = el;
-        }
-      });
-
-      // return default with active true so all items will be shown
-      return menuItem;
     },
     metadatasContentSize: function metadatasContentSize() {
       return this.metadatasContent !== undefined
@@ -262,16 +262,14 @@ export default {
         : 0;
     },
     showReloadDialog() {
-      return this.showVersionModal && !this.dialogCanceled;
+      return this.outdatedVersion && !this.reloadDialogCanceled;
     },
-    dynamicBackground: function dynamicBackground() {
+    dynamicBackground() {
       const imageKey = this.appBGImage;
       const bgImg = this.appBGImages[imageKey];
-      // console.log(imageKey + " bgImg " + bgImg);
       let bgStyle = '';
 
       if (bgImg) {
-        // bgStyle = `background-image: url(${bgImg}) !important;`;
         bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.25) 100%), url(${bgImg}) !important;`;
 
         bgStyle += `background-position: center top !important;
@@ -279,38 +277,58 @@ export default {
                       background-size: cover !important; `;
 
         if (bgImg.includes('browsepage')) {
-          // bgStyle = `background-image: url(${bgImg}) !important;`;
           bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
 
           bgStyle += `background-position: center top !important;
                         background-repeat: repeat !important; `;
         }
       }
-
       return bgStyle;
+    },
+    menuItem() {
+      let menuItem = { active: true };
+      this.navItems.forEach((el) => {
+        if (el.icon === 'menu') {
+          menuItem = el;
+        }
+      });
+      // return default with active true so all items will be shown
+      return menuItem;
     },
   },
   components: {
-    Navigation,
-    NavigationMobile,
-    NavigationToolbar,
+    TheNavigation,
+    TheNavigationSmall,
+    TheNavigationToolbar,
+    NotificationCard,
+  },
+  watch: {
+    notifications() {
+      if (!this.notifications) return;
+
+      const keys = Object.keys(this.notifications);
+      if (keys && keys.length > this.maxNotifications) {
+        this.$store.commit(TRIM_NOTIFICATIONS);
+      }
+    },
   },
   /* eslint-disable object-curly-newline */
   data: () => ({
     appBGImages: {},
-    prevHeight: 0,
-    dialogCanceled: false,
+    reloadDialogCanceled: false,
     appVersion: process.env.VUE_APP_VERSION,
     showMenu: true,
-    searchTerm: '',
+    NavToolbarZIndex: 1150,
+    NavigationZIndex: 1100,
+    NotificationZIndex: 1500,
     navItems: [
-      { title: 'Home', icon: 'envidat', toolTip: 'Back to the start page', active: false, path: './', pageName: LANDING_PAGENAME },
+      { title: 'Home', icon: 'envidat', toolTip: 'Back to the start page', active: false, path: LANDING_PATH, pageName: LANDING_PAGENAME },
       { title: 'Explore', icon: 'search', toolTip: 'Explore research data', active: false, path: BROWSE_PATH, pageName: BROWSE_PAGENAME },
-      { title: 'Login', icon: 'person', toolTip: 'Login to upload data', active: false, path: 'https://www.envidat.ch/user/reset', pageName: 'external' },
-      { title: 'Organizations', icon: 'account_tree', toolTip: 'Overview of the different organizations', active: false, path: 'https://www.envidat.ch/organization', pageName: 'external' },
       { title: 'Projects', icon: 'library_books', toolTip: 'Overview of the research projects on envidat', active: false, path: PROJECTS_PATH, pageName: PROJECTS_PAGENAME, subpages: [PROJECT_DETAIL_PAGENAME] },
+      { title: 'Organizations', icon: 'account_tree', toolTip: 'Overview of the different organizations', active: false, path: 'https://www.envidat.ch/organization', pageName: 'external' },
       { title: 'Guidelines', icon: 'local_library', toolTip: 'Guidlines about the creation of metadata', active: false, path: GUIDELINES_PATH, pageName: GUIDELINES_PAGENAME },
       { title: 'Policies', icon: 'policy', toolTip: 'The rules of EnviDat', active: false, path: POLICIES_PATH, pageName: POLICIES_PAGENAME },
+      { title: 'Login', icon: 'person', toolTip: 'Login to upload data', active: false, path: 'https://www.envidat.ch/user/reset', pageName: 'external' },
       { title: 'About', icon: 'info', toolTip: 'What is EnviDat? How is behind EnviDat?', active: false, path: ABOUT_PATH, pageName: ABOUT_PAGENAME },
       // { title: 'Contact', icon: 'contact_support', toolTip: 'Do you need support?', active: false },
       { title: 'Menu', icon: 'menu', active: false },
@@ -423,6 +441,17 @@ export default {
   transform: scale(1.2);
 }
 
+.envidatSmallNavigation {
+  position: fixed;
+  top: auto;
+  right: 10px;
+  bottom: 10px;
+}
+
+.envidatToolbar > .v-toolbar__content {
+  padding: 0px 18px !important;
+}
+
 .envidatIcon {
   height: 24px !important;
   width: 24px !important;
@@ -459,6 +488,11 @@ export default {
   font-size: 0.65rem !important;
   margin: 1px 2px !important;
   opacity: 0.85 !important;
+}
+
+.enviDatSnackbar > .v-snack__wrapper > .v-snack__content {
+  height: 100%;
+  padding: 12px;
 }
 
 .smallChip {

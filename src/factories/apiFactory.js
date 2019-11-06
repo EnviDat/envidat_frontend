@@ -1,3 +1,31 @@
+/**
+ * function factory for api methods
+ *
+ * @summary function factory for api methods
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:07:03 
+ * Last modified  : 2019-10-23 16:07:03 
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
+
+export function urlRewrite(url, baseUrl, proxyUrl, replaceQuestionMark) {
+  if (replaceQuestionMark) {
+    url = url.replace('?', '&');
+  }
+  url = url.replace("'", '%22');
+
+  // replace 'NULL' becaues the environment files can't have nothing and only strings
+  // as values
+  proxyUrl = proxyUrl.replace('NULL', '');
+
+  url = `${proxyUrl}${baseUrl}${url}`;
+
+  return url;
+}
+
 
 export function solrResultToCKANJSON(solorJSON) {
   const ckanStructure = {};

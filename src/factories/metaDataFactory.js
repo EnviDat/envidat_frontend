@@ -1,5 +1,25 @@
+/**
+ * function factory for metadata object creation methods by parsing
+ * the json from the backend.
+ *
+ * @summary function factory for metadata object creation methods
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:07:03 
+ * Last modified  : 2019-10-24 13:06:45
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
+import globalMethods from '@/factories/globalMethods';
+
 export default {
-  createHeader: function createHeader(dataset, smallScreen) {
+  createHeader(dataset, smallScreen) {
+    if (!dataset) {
+      return null;
+    }
+
     let { maintainer } = dataset;
 
     if (typeof dataset.maintainer === 'string') {
@@ -27,11 +47,15 @@ export default {
       license: license.title,
       tags: dataset.tags,
       titleImg: dataset.titleImg,
-      maxTags: smallScreen ? 5 : 12 ,
+      maxTags: smallScreen ? 5 : 12,
       authors,
     };
   },
-  createBody: function createBody(dataset) {
+  createBody(dataset) {
+    if (!dataset) {
+      return null;
+    }
+
     return {
       id: dataset.id,
       title: dataset.title,
@@ -39,7 +63,11 @@ export default {
       description: dataset.notes,
     };
   },
-  getAuthorsString: function getAuthorsString(dataset) {
+  getAuthorsString(dataset) {
+    if (!dataset) {
+      return null;
+    }
+
     let authors = '';
 
     if (dataset.author !== undefined) {
@@ -50,6 +78,10 @@ export default {
       }
 
       author.forEach((element) => {
+        if (element.given_name) {
+          authors += ` ${element.given_name}`;
+        } 
+
         authors += ` ${element.name};`;
       });
 
@@ -61,7 +93,11 @@ export default {
 
     return authors;
   },
-  createCitation: function createCitation(dataset) {
+  createCitation(dataset) {
+    if (!dataset) {
+      return null;
+    }
+
     const authors = this.getAuthorsString(dataset);
 
     let { publication } = dataset;
@@ -96,7 +132,11 @@ export default {
       citationRisXmlLink: `https://www.envidat.ch/dataset/${dataset.name}/export/ris.ris`,
     };
   },
-  createResources: function createResources(dataset) {
+  createResources(dataset) {
+    if (!dataset) {
+      return null;
+    }
+
     const resources = [];
 
     let { maintainer } = dataset;
@@ -141,6 +181,9 @@ export default {
         let { format } = element;
         format = format.replace('.', '').toLowerCase();
 
+        const created = globalMethods.methods.mixinMethods_formatDate(element.created);
+        const modified = globalMethods.methods.mixinMethods_formatDate(element.last_modified);
+
         const res = {
           // "hash": "",
           description: element.description,
@@ -158,8 +201,8 @@ export default {
           restricted: element.restricted,
           format,
           state: element.state,
-          created: element.created,
-          lastModified: element.last_modified,
+          created,
+          lastModified: modified,
           position: element.position,
           revisionId: element.revision_id,
           isProtected,
@@ -177,7 +220,11 @@ export default {
       resources,
     };
   },
-  createDetails: function createDetails(dataset) {
+  createDetails(dataset) {
+    if (!dataset) {
+      return null;
+    }
+
     const details = [];
 
     details.push({ label: 'Title', text: dataset.title });
@@ -188,8 +235,13 @@ export default {
     // TODO DataCRedit
 
     details.push({ label: 'DOI', text: dataset.doi, url: `https://doi.org/${dataset.doi}` });
-    details.push({ label: 'Created', text: dataset.created });
-    details.push({ label: 'Last Modified', text: dataset.last_modified });
+
+    
+    const created = globalMethods.methods.mixinMethods_formatDate(dataset.metadata_created);
+    details.push({ label: 'Created', text: created });
+
+    const modified = globalMethods.methods.mixinMethods_formatDate(dataset.metadata_modified);
+    details.push({ label: 'Last Modified', text: modified });
 
     const license = this.createLicense(dataset);
     details.push({ label: 'License', text: license.title, url: license.url });
@@ -198,7 +250,11 @@ export default {
 
     return details;
   },
-  createLicense: function createLicense(dataset) {
+  createLicense(dataset) {
+    if (!dataset) {
+      return null;
+    }
+
     const license = {};
 
     license.id = dataset.license_id;
@@ -207,7 +263,15 @@ export default {
 
     return license;
   },
-  createLocation: function createLocation(dataset) {
+  createLocation(dataset) {
+    if (!dataset) {
+      return null;
+    }
+
+    if (typeof dataset.location === 'object') {
+      return dataset.location;
+    }
+
     const location = {};
     location.id = dataset.id;
     location.name = dataset.name;
@@ -257,13 +321,13 @@ export default {
 
     return location;
   },
-  convertTags(tagsStringArray, tagsEnabled){
+  convertTags(tagsStringArray, tagsEnabled) {
     const tagObjs = [];
 
-    tagsStringArray.forEach(element => {
+    tagsStringArray.forEach((element) => {
       tagObjs.push({ name: element, enabled: tagsEnabled });
     });
 
     return tagObjs;
-  }
+  },
 };

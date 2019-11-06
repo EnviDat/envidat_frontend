@@ -1,64 +1,37 @@
+/**
+ * @summary story of all the MetadataDetailViews for sandbox testing
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:34:51
+ * Last modified  : 2019-10-24 10:59:28
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 /* eslint-disable import/no-extraneous-dependencies */
-import { storiesOf } from "@storybook/vue";
-import { action } from "@storybook/addon-actions";
+import { storiesOf } from '@storybook/vue';
+import { action } from '@storybook/addon-actions';
+import './js/vuetify-components';
 
-import Vue from "vue";
-
-import {
-  VBtn,
-  VTooltip,
-  VIcon,
-  VImg,
-  VLayout,
-  VFlex,
-  VCard,
-  VCardText,
-  VCardActions,
-  VCardTitle,
-  VCardMedia,
-  VChip,
-  VSpacer,
-  VDivider,
-  VAvatar,
-  VForm,
-  VTextarea
-} from "vuetify/lib";
-
-Vue.component("v-card", VCard);
-Vue.component("v-card-text", VCardText);
-Vue.component("v-card-actions", VCardActions);
-Vue.component("v-card-title", VCardTitle);
-Vue.component("v-card-media", VCardMedia);
-Vue.component("v-chip", VChip);
-Vue.component("v-avatar", VAvatar);
-Vue.component("v-spacer", VSpacer);
-Vue.component("v-divider", VDivider);
-Vue.component("v-form", VForm);
-Vue.component("v-textarea", VTextarea);
-Vue.component("v-btn", VBtn);
-Vue.component("v-icon", VIcon);
-Vue.component("v-img", VImg);
-Vue.component("v-layout", VLayout);
-Vue.component("v-flex", VFlex);
-
-import MetadataHeader from "@/components/MetadataDetailViews/MetadataHeader.vue";
-import MetadataBody from "@/components/MetadataDetailViews/MetadataBody.vue";
-import MetadataCitation from "@/components/MetadataDetailViews/MetadataCitation.vue";
-import MetadataDetails from "@/components/MetadataDetailViews/MetadataDetails.vue";
-import MetadataLocation from "@/components/MetadataDetailViews/MetadataLocation.vue";
+import MetadataHeader from '@/components/MetadataDetailViews/MetadataHeader.vue';
+import MetadataBody from '@/components/MetadataDetailViews/MetadataBody.vue';
+import MetadataCitation from '@/components/MetadataDetailViews/MetadataCitation.vue';
+import MetadataDetails from '@/components/MetadataDetailViews/MetadataDetails.vue';
+import MetadataLocation from '@/components/MetadataDetailViews/MetadataLocation.vue';
 
 // import for css classes
-import App from "@/App.vue";
-import MetadataDetailPage from "@/components/Pages/MetadataDetailPage.vue";
+import App from '@/App.vue';
+import MetadataDetailPage from '@/components/Pages/MetadataDetailPage.vue';
 
-import doiIcon from "@/assets/icons/doi.png";
-import mailIcon from "@/assets/icons/mail.png";
-import contactIcon from "@/assets/icons/contact2.png";
-import licenseIcon from "@/assets/icons/license.png";
+import doiIcon from '@/assets/icons/doi.png';
+import mailIcon from '@/assets/icons/mail.png';
+import contactIcon from '@/assets/icons/contact2.png';
+import licenseIcon from '@/assets/icons/license.png';
 
-import metaDataFactory from "@/components/metaDataFactory";
+import metaDataFactory from '@/factories/metaDataFactory';
 // metadata gets enhance in the storybook config
-import metadata from "@/stories/metadata";
+import metadata from './js/metadata';
 
 const smallHeader = metaDataFactory.createHeader(metadata[0], true);
 const largeHeader = metaDataFactory.createHeader(metadata[1], false);
@@ -110,12 +83,12 @@ const genericProps4 = {
 };
 
 export const methods = {
-  onCardClick: action("clicked on card"),
-  onTagClick: action("clicked on tag")
+  onCardClick: action('clicked on card'),
+  onTagClick: action('clicked on tag')
 };
 
-storiesOf("6 Metadata | Detail Views", module)
-  .add("Header", () => ({
+storiesOf('6 Detail Views | Metadata', module)
+  .add('Metadata Header', () => ({
     components: { MetadataHeader },
     template: `
     <v-layout row wrap>
@@ -125,7 +98,7 @@ storiesOf("6 Metadata | Detail Views", module)
       </v-flex>
 
       <v-flex xs12 py-3 >
-        <metadata-header />
+        <metadata-header metadataId="id-which-can-not-be-found" />
       </v-flex>
 
       <v-flex xs12 >
@@ -165,9 +138,9 @@ storiesOf("6 Metadata | Detail Views", module)
       doiIcon,
       contactIcon,
       licenseIcon,
-      mailIcon
-    })
-  })).add("Body", () => ({
+      mailIcon,
+    }),
+  })).add('Metadata Body', () => ({
     components: { MetadataBody },
     template: `
     <v-layout row wrap>
@@ -202,14 +175,15 @@ storiesOf("6 Metadata | Detail Views", module)
     methods,
     data: () => ({
       genericPropsPlaceholder: {
-        showPlaceholder: true,        
+        showPlaceholder: true,
+        description: null,
       },
       genericPropsBody: {
-        showPlaceholder: false,        
+        showPlaceholder: false,
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
       },
       genericPropsBodyLongDesc: {
-        showPlaceholder: false,        
+        showPlaceholder: false,
         description: `
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Cursus turpis massa tincidunt dui ut. Proin sagittis nisl rhoncus mattis rhoncus urna neque viverra. Quis enim lobortis scelerisque fermentum dui. Neque egestas congue quisque egestas. Malesuada proin libero nunc consequat interdum varius sit amet mattis. Volutpat blandit aliquam etiam erat. Tempor id eu nisl nunc. Lacus suspendisse faucibus interdum posuere lorem ipsum dolor sit amet. Ultricies mi eget mauris pharetra et ultrices. Eu consequat ac felis donec et odio pellentesque diam volutpat. Fames ac turpis egestas integer. Faucibus interdum posuere lorem ipsum dolor sit amet. Cursus euismod quis viverra nibh cras. Condimentum id venenatis a condimentum vitae sapien pellentesque habitant morbi. At elementum eu facilisis sed odio morbi quis. Ut sem viverra aliquet eget sit amet tellus.
         Proin nibh nisl condimentum id venenatis. Parturient montes nascetur ridiculus mus mauris vitae ultricies leo integer. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Eu mi bibendum neque egestas congue quisque egestas diam. Eu volutpat odio facilisis mauris sit amet massa vitae tortor. Porttitor lacus luctus accumsan tortor posuere ac ut consequat. Sed velit dignissim sodales ut. Est pellentesque elit ullamcorper dignissim cras tincidunt lobortis. Sodales ut eu sem integer vitae. Ipsum nunc aliquet bibendum enim facilisis gravida neque convallis a. Augue lacus viverra vitae congue. Eget sit amet tellus cras adipiscing enim eu turpis. Pharetra vel turpis nunc eget lorem. Cras sed felis eget velit aliquet sagittis.
@@ -224,7 +198,7 @@ storiesOf("6 Metadata | Detail Views", module)
         `
       },
     })
-  })).add("Citation", () => ({
+  })).add('Metadata Citation', () => ({
     components: { MetadataCitation },
     template: `
     <v-layout row wrap>
@@ -273,7 +247,7 @@ storiesOf("6 Metadata | Detail Views", module)
       this.$children.forEach((child) => {
         child.$forceUpdate();
       });
-    },    
+    },
     methods: {
     },
     data: () => ({
@@ -283,8 +257,8 @@ storiesOf("6 Metadata | Detail Views", module)
         showPlaceholder: true,
         fixedHeight: false,
       },
-    })
-  })).add("Details", () => ({
+    }),
+  })).add('Metadata Details', () => ({
     components: { MetadataDetails },
     template: `
     <v-layout row wrap>
@@ -328,7 +302,7 @@ storiesOf("6 Metadata | Detail Views", module)
       this.$children.forEach((child) => {
         child.$forceUpdate();
       });
-    },    
+    },
     methods: {
     },
     data: () => ({
@@ -339,8 +313,8 @@ storiesOf("6 Metadata | Detail Views", module)
         showPlaceholder: true,
         fixedHeight: false,
       },
-    })
-  })).add("Location", () => ({
+    }),
+  })).add('Metadata Location', () => ({
     components: { MetadataLocation },
     template: `
     <v-layout row wrap>
@@ -362,7 +336,7 @@ storiesOf("6 Metadata | Detail Views", module)
       this.$children.forEach((child) => {
         child.$forceUpdate();
       });
-    },    
+    },
     methods: {
     },
     data: () => ({
@@ -372,8 +346,5 @@ storiesOf("6 Metadata | Detail Views", module)
         showPlaceholder: true,
         fixedHeight: false,
       },
-    })
+    }),
   }));
-
-
-  

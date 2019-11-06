@@ -4,34 +4,27 @@
       Citation
     </v-card-title>
 
-    <v-card-text
-      v-if="citationText"
-      style="font-style: italic; "
-    >
+    <v-card-text v-if="citationText"
+                  style="font-style: italic; " >
       {{ citationText }}
     </v-card-text>
 
     <v-card-actions v-if="!showPlaceholder && citationText">
       <v-container fluid
-        grid-list-md
-        pa-0
-      >
+                    grid-list-md
+                    pa-0 >
         <v-layout justify-end
-          row wrap
-        >
-          <v-flex
-            v-for="link in citationLinks"
-            :key="link.text"
-          >
-            <base-rectangle-button
-              margin-class="mx-1 citationButton"
-              :button-text="link.text"
-              :tool-tip-text="link.toolTipText"
-              material-icon-name="assignment"
-              :is-small="true"
-              icon-color="white"
-              :url="link.url"
-            />
+                  row wrap >
+
+          <v-flex v-for="link in citationLinks"
+                  :key="link.text" >
+            <base-rectangle-button margin-class="mx-1 citationButton"
+                                    :button-text="link.text"
+                                    :tool-tip-text="link.tooltipText"
+                                    material-icon-name="assignment"
+                                    :is-small="true"
+                                    icon-color="white"
+                                    :url="link.url" />
           </v-flex>
         </v-layout>
       </v-container>
@@ -43,34 +36,40 @@
       </div>
     </v-card-text>
 
-    <v-card-text
-      v-if="!showPlaceholder && !citationText"
-      style="color: red;"
-    >
+    <v-card-text v-if="!showPlaceholder && !citationText"
+                  style="color: red;" >
       {{ emptyText }}
     </v-card-text>
 
     <v-card-actions v-if="showPlaceholder && !citationText">
       <v-spacer />
       <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer">
-        <div
-          style="width: 128px; height: 32px;"
-          class="mx-1 bone bone-type-image bone-style-rectangle"
-        />
-        <div
-          style="width: 128px; height: 32px;"
-          class="mx-1 bone bone-type-image bone-style-rectangle"
-        />
-        <div
-          style="width: 128px; height: 32px;"
-          class="mx-1 bone bone-type-image bone-style-rectangle"
-        />
+        <div style="width: 128px; height: 32px;"
+              class="mx-1 bone bone-type-image bone-style-rectangle" />
+        <div style="width: 128px; height: 32px;"
+              class="mx-1 bone bone-type-image bone-style-rectangle" />
+        <div style="width: 128px; height: 32px;"
+              class="mx-1 bone bone-type-image bone-style-rectangle" />
       </div>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
+/**
+ * MetadataCitation.vue shows the citation and buttons
+ * to download different xml formatted version of the citation.
+ *
+ * @summary shows the citation of a metadata entry
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 14:11:27
+ * Last modified  : 2019-10-23 15:54:13
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
+
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 
 export default {
@@ -83,7 +82,6 @@ export default {
   },
   data: () => ({
     emptyText: 'No citation found for this dataset',
-    checkedGenericProps: false,
   }),
   computed: {
     citationText() {
@@ -92,27 +90,27 @@ export default {
     citationLinks() {
       return [{
         text: 'DataCite',
-        toolTipText: 'Download DataCite XML citation',
+        tooltipText: 'Download DataCite XML citation',
         url: this.citationXmlLink,
       },
       {
         text: 'ISO 19139',
-        toolTipText: 'Download ISO XML citation',
+        tooltipText: 'Download ISO XML citation',
         url: this.citationIsoXmlLink,
       },
       {
         text: 'GCMD DIF',
-        toolTipText: 'Download GCMD XML citation',
+        tooltipText: 'Download GCMD XML citation',
         url: this.citationGCMDXmlLink,
       },
       {
         text: 'BibTex',
-        toolTipText: 'Download BibTex XML citation',
+        tooltipText: 'Download BibTex XML citation',
         url: this.citationBibtexXmlLink,
       },
       {
         text: 'RIS',
-        toolTipText: 'Download RIS XML citation',
+        tooltipText: 'Download RIS XML citation',
         url: this.citationRisXmlLink,
       },
       ];

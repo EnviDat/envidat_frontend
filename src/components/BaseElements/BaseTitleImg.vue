@@ -54,7 +54,7 @@
 
 <script>
 /**
- * The @class titleImg uses a image a background and overlays the Title and subTitle on top of it.
+ * The @class BaseTitleImg uses a image a background and overlays the Title and subTitle on top of it.
  *
  * If @prop parallax is true the image will be shown with a parallax effect provided the images is
  * bigger than the @prop height.
@@ -67,7 +67,17 @@
  * Depending on the contrasts and brigthness of the image it might make sense to set a
  * @prop textBackgroundColor which works well together with the text and increases contrast
  * and readability of the text.
+ *
+ * @summary Full width image with a title and subtitle, image can have parallax effect and/or blur
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-02 11:24:00
+ * Last modified  : 2019-10-23 14:05:36
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
  */
+
 export default {
   props: {
     parallax: Boolean,

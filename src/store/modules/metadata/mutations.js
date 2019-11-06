@@ -1,3 +1,16 @@
+/**
+ * metadata store mutations
+ *
+ * @summary metadata store mutations
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 16:34:51
+ * Last modified  : 2019-10-23 16:37:00
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
 import {
   LOAD_METADATA_CONTENT_BY_ID,
   LOAD_METADATA_CONTENT_BY_ID_SUCCESS,
@@ -7,9 +20,6 @@ import {
   SEARCH_METADATA_SUCCESS,
   SEARCH_METADATA_ERROR,
   CLEAR_SEARCH_METADATA,
-  LOAD_ALL_TAGS,
-  LOAD_ALL_TAGS_SUCCESS,
-  LOAD_ALL_TAGS_ERROR,
   BULK_LOAD_METADATAS_CONTENT,
   BULK_LOAD_METADATAS_CONTENT_SUCCESS,
   BULK_LOAD_METADATAS_CONTENT_ERROR,
@@ -24,9 +34,41 @@ import {
   SET_DETAIL_PAGE_BACK_URL,
   SET_ABOUT_PAGE_BACK_URL,
   SET_VIRTUAL_LIST_INDEX,
+  METADATA_NAMESPACE,
 } from '@/store/metadataMutationsConsts';
+import {
+  warningMessage,
+  errorMessage,
+  getSpecificApiError,
+} from '@/factories/notificationFactory';
+import { ADD_USER_NOTIFICATION } from '@/store/mainMutationsConsts';
 
-const conversion = require('./conversion');
+import metaDataFactory from '@/factories/metaDataFactory';
+import globalMethods from '@/factories/globalMethods';
+import { Object } from 'core-js';
+
+
+function enhanceMetadatas(store, datasets) {
+  if (!(datasets instanceof Array)) {
+    throw new Error('enhanceMetadatas() expects an array of datasets got ' + typeof datasets);
+  }
+  const { cardBGImages } = store.getters;
+  const categoryCards = store.getters[`${METADATA_NAMESPACE}/categoryCards`];
+  const metadatasContent = {};
+
+  for (let i = 0; i < datasets.length; i++) {
+    let dataset = datasets[i];
+    dataset = globalMethods.methods.mixinMethods_enhanceTitleImg(dataset, cardBGImages, categoryCards);
+    dataset = globalMethods.methods.mixinMethods_enhanceTags(dataset, categoryCards);
+
+    dataset.location = metaDataFactory.createLocation(dataset);
+
+    metadatasContent[dataset.id] = dataset;
+  }
+
+  return metadatasContent;
+}
+
 
 export default {
   [SEARCH_METADATA](state) {
@@ -35,21 +77,20 @@ export default {
     state.searchedMetadatasContent = {};
   },
   [SEARCH_METADATA_SUCCESS](state, payload) {
-    /* eslint-disable no-underscore-dangle */
-    for (let i = 0; i < payload.length; i++) {
-      const element = payload[i];
-      const ckanJSON = conversion.solrResultToCKANJSON(element);
 
-      this._vm.$set(state.searchedMetadatasContent, ckanJSON.id, ckanJSON);
-    }
+    state.searchedMetadatasContent = enhanceMetadatas(this, payload);
 
+    // this._vm.$set(state.searchedMetadatasContent, ckanJSON.id, ckanJSON);
     state.searchingMetadatasContentOK = true;
     state.searchingMetadatasContent = false;
   },
   [SEARCH_METADATA_ERROR](state, reason) {
     state.searchingMetadatasContent = false;
     state.searchingMetadatasContentOK = false;
-    state.error = reason;
+
+    const errObj = getSpecificApiError('The searching cause an error. Try again or use Keywords for filtering. Please report if the error persists!', reason);
+
+    this.commit(ADD_USER_NOTIFICATION, errObj);
   },
   [CLEAR_SEARCH_METADATA](state) {
     state.searchingMetadatasContent = false;
@@ -63,51 +104,26 @@ export default {
   },
   [LOAD_METADATA_CONTENT_BY_ID_SUCCESS](state, payload) {
     state.loadingCurrentMetadataContent = false;
-    state.currentMetadataContent = payload;
-    // this._vm.$set(state.currentMetadataContent, payload);
+    const enhancedPayload = enhanceMetadatas(this, [payload]);
+    state.currentMetadataContent = Object.values(enhancedPayload)[0];
   },
   [LOAD_METADATA_CONTENT_BY_ID_ERROR](state, reason) {
     state.loadingCurrentMetadataContent = false;
-    state.error = reason;
+
+    const errObj = getSpecificApiError('For this entry no Metadata cloud not be loaded, please report if the error persists!', reason);
+
+    this.commit(ADD_USER_NOTIFICATION, errObj);
   },
   [CLEAN_CURRENT_METADATA](state) {
     state.loadingCurrentMetadataContent = false;
     state.currentMetadataContent = {};
-  },
-  [LOAD_ALL_TAGS](state) {
-    state.loadingAllTags = true;
-    state.allTags = [];
-  },
-  [LOAD_ALL_TAGS_SUCCESS](state, payload) {
-    const tagList = [];
-
-    for (let i = 0; i < payload.length + 1; i += 2) {
-      const tag = { name: payload[i], count: payload[i + 1] };
-
-      if (tag.name) {
-        tagList.push(tag);
-      }
-    }
-
-    state.allTags = tagList;
-    state.loadingAllTags = false;
-  },
-  [LOAD_ALL_TAGS_ERROR](state, reason) {
-    state.loadingAllTags = false;
-    state.error = reason;
   },
   [BULK_LOAD_METADATAS_CONTENT](state) {
     state.loadingMetadatasContent = true;
     state.metadatasContent = {};
   },
   [BULK_LOAD_METADATAS_CONTENT_SUCCESS](state, payload) {
-    /* eslint-disable no-underscore-dangle */
-    for (let i = 0; i < payload.length; i++) {
-      const element = payload[i];
-      // const ckanJSON = conversion.solrResultToCKANJSON(element);
-
-      this._vm.$set(state.metadatasContent, element.id, element);
-    }
+    state.metadatasContent = enhanceMetadatas(this, payload);
 
     state.metadatasContentOK = true;
     state.loadingMetadatasContent = false;
@@ -115,7 +131,10 @@ export default {
   [BULK_LOAD_METADATAS_CONTENT_ERROR](state, reason) {
     state.loadingMetadatasContent = false;
     state.metadatasContentOK = false;
-    state.error = reason;
+
+    const errObj = getSpecificApiError('Metadata can not be loaded, please report if the error persists!', reason);
+
+    this.commit(ADD_USER_NOTIFICATION, errObj);
   },
   [UPDATE_TAGS](state) {
     state.updatingTags = true;
@@ -126,7 +145,9 @@ export default {
   },
   [UPDATE_TAGS_ERROR](state, reason) {
     state.updatingTags = false;
-    state.error = reason;
+
+    const errObj = warningMessage('Keyword update error', 'Filtering might not work properly try reloading the page');
+    this.commit(ADD_USER_NOTIFICATION, errObj);
   },
   [FILTER_METADATA](state) {
     state.isFilteringContent = true;
@@ -137,7 +158,8 @@ export default {
   },
   [FILTER_METADATA_ERROR](state, reason) {
     state.isFilteringContent = false;
-    state.error = reason;
+    const errObj = warningMessage('Filtering error', 'Filtering might not work properly try reloading the page');
+    this.commit(ADD_USER_NOTIFICATION, errObj);
   },
   [PIN_METADATA](state, payload) {
     if (state.pinnedIds.includes(payload)) {

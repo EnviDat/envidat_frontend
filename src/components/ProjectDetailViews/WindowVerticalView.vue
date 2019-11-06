@@ -109,6 +109,20 @@
 </template>
 
 <script>
+/**
+ * WindowVerticalView.vue IS UNFINISHED!
+ * Experimental a vertical slider for content (instead of images).
+ *
+ * @summary vertical slider for content
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 14:11:27
+ * Last modified  : 2019-10-23 16:06:31
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
+
 import MMarkdownPreview from 'm-markdown-preview';
 // import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
