@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   createHeader: function createHeader(dataset, smallScreen) {
     let { maintainer } = dataset;
 
