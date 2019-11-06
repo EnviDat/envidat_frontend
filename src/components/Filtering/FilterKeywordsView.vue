@@ -250,12 +250,6 @@ export default {
 };
 </script>
 
-<style>
-
-  .envidat_subheading {
-    font-family: 'Libre Baskerville', serif;
-    font-weight: 400;
-    opacity: 0.85;
-  }
+<style scoped>
 
 </style>

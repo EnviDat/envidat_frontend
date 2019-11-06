@@ -389,6 +389,7 @@ export default {
 
   .resourceCardText {
     font-size: 12px;
+    overflow: hidden;
   }
 
 </style>
