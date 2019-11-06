@@ -15,13 +15,11 @@
                         metadataListStyling }" >
 
         <metadata-list-layout :listContent="filteredContent"
-                            :listView="listViewActive"
-                            :showMapFilter="showMapFilter"
                             :mapFilteringPossible="mapFilteringPossible"
                             :placeHolderAmount="placeHolderAmount"
                             @clickedTag="catchTagClicked"
-                            :allTags="allTags"
                             :selectedTagNames="selectedTagNames"
+                            :allTags="allTags"
                             :showPlaceholder="keywordsPlaceholder"
                             @clickedExpand="catchFilterExpandClicked"
                             @clickedTagClose="catchTagCloseClicked"
@@ -62,6 +60,9 @@ import {
   SEARCH_METADATA,
   CLEAR_SEARCH_METADATA,
   FILTER_METADATA,
+  LISTCONTROL_LIST_ACTIVE,
+  LISTCONTROL_MAP_ACTIVE,
+  LISTCONTROL_COMPACT_LAYOUT_ACTIVE,
 } from '@/store/metadataMutationsConsts';
 import {
   SET_APP_BACKGROUND,
@@ -341,8 +342,11 @@ export default {
     smallMapHeight: 250,
     largeMapHeight: 325,
     mapFilterVisibleIds: [],
-    listViewActive: false,
-    enabledControls: [0, 1, 2],
+    enabledControls: [
+      LISTCONTROL_LIST_ACTIVE,
+      LISTCONTROL_MAP_ACTIVE,
+      LISTCONTROL_COMPACT_LAYOUT_ACTIVE,
+    ],
   }),
 };
 </script>
