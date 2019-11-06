@@ -3,8 +3,6 @@ const fs = require('fs');
 const packagelist = require(__dirname + '/../testdata/packagelist');
 const metadataList = packagelist.result;
 
-const metaDataFactory = require(__dirname + '/../components/metaDataFactory');
-
 const outputFileName = 'authorCollection.json';
 const outputPath = __dirname + '/../testdata/';
 
@@ -111,6 +109,7 @@ function getAuthors(dataset) {
 function extractAuthors() {
 
   const authorMap = {};
+  let authorCount = 0;
 
   for (let i = 0; i < metadataList.length; i++) {
     const dataset = metadataList[i];
@@ -156,12 +155,14 @@ function extractAuthors() {
         } else {
           // console.log('for ' + author.name + ' set ' + author.count);
           authorMap[authorName] = author;
+          authorCount++;
         }
       }
     } else {
       console.log('Dataset ' + dataset.title + ' id ' + dataset.id + ' has no authors?');
     }
 
+    console.log('extracted ' + authorCount + ' authors');
   }
 
   return authorMap;
