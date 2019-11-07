@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-11-01 15:39:15
+ * Last modified  : 2019-11-07 15:37:39
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -26,7 +26,7 @@ const swissflIcons = getSwissflIcons();
 const swissflMode = {
   name: SWISSFL_MODE,
   title: 'Swiss Forest Lab',
-  externalUrl: 'https://www.wsl.ch/de/wald/waldentwicklung-und-monitoring/swissforestlab.html',
+  externalUrl: 'https://swissforestlab.wsl.ch',
   mainTag: swissFLTag,
   extraTags: swissFLExtraTags,
   logo: swissflLogo,

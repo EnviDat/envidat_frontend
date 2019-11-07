@@ -57,7 +57,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-11-01 15:31:56
+ * Last modified  : 2019-11-07 15:34:44
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -247,9 +247,10 @@ export default {
       // use the defaultoptions to ensure that all untouched defaults stay in place
 
       let iconUrl = null;
+      let iconRetinaUrl = null;
       let iconShadowUrl = null;
       let opacity = null;
-      const height = 41;
+      let height = 41;
       let width = 25;
 
       if (this.modeData && this.modeData.icons) {
@@ -258,20 +259,23 @@ export default {
         if (extraValue) {
           extraValue = extraValue.toLowerCase();
           iconUrl = this.modeData.icons[extraValue];
-          width = 41;
         } else {
           iconUrl = Object.values(this.modeData.icons)[0];
         }
 
-        opacity = selected ? 0.5 : 0.4;
+        width = 30;
+        height = 30;
+        opacity = selected ? 0.6 : 0.4;
+        iconRetinaUrl = iconUrl;
       } else {
         iconUrl = selected ? this.selectedMarker : this.marker;
+        iconRetinaUrl = selected ? this.selectedMarker2x : this.marker2x;
         iconShadowUrl = this.markerShadow;
         opacity = selected ? 0.8 : 0.65;
       }
 
       iconOptions.iconUrl = iconUrl;
-      iconOptions.iconRetinaUrl = selected ? this.selectedMarker2x : this.marker2x;
+      iconOptions.iconRetinaUrl = iconRetinaUrl;
       iconOptions.shadowUrl = iconShadowUrl;
       iconOptions.iconSize = [width, height];
 
