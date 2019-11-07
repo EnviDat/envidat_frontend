@@ -91,8 +91,7 @@
                               isSmall
                               color="transparent"
                               :disabled="true"
-                              :customIcon="modeEntryIcon"
-                              :tooltipText="`Metadata with ${resourceAmount} resources`" />
+                              :customIcon="modeEntryIcon" />
         </v-flex>
 
         <v-flex pa-1>
@@ -139,7 +138,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-11-01 16:13:11
+ * Last modified  : 2019-11-07 14:23:06
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
