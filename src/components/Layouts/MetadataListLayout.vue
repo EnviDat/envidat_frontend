@@ -120,6 +120,7 @@
                         :lockedIconString="lockedIconString"
                         :unlockedIconString="unlockedIconString"
                         :categoryColor="metadata.categoryColor"
+                        :mode="mode"
                         @clickedEvent="metaDataClicked"
                         @clickedTag="catchTagClicked" />
         </v-flex>
