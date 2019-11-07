@@ -7,7 +7,7 @@
                   @mouseover="hoverBadge = true"
                   @mouseleave="hoverBadge = false" >
         <v-flex pa-0>
-          <v-badge :left="!hovered"
+          <v-badge :left="!hoverBadge"
                     overlap
                     color="secondary"
                     :class="{ envidatBadgeBigNumber : count > 9,
@@ -34,7 +34,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-02 11:41:29
+ * Last modified  : 2019-11-01 16:04:20
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -53,7 +53,7 @@ export default {
     tooltipText: String,
   },
   data: () => ({
-    hovered: false,
+    hoverBadge: false,
   }),
 };
 </script>
