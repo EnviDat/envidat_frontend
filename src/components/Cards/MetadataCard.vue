@@ -83,9 +83,25 @@
 
     <v-card-actions class="ma-0 pa-2"
                     style="position: absolute; bottom: 5px; right: 5px;" >
-      <v-spacer />
 
-      <v-tooltip v-if="isRestricted"
+      <v-layout column>
+        <v-flex v-if="modeData" 
+                pa-1>
+          <base-icon-button isFlat
+                              isSmall
+                              color="transparent"
+                              :disabled="true"
+                              :customIcon="modeEntryIcon"
+                              :tooltipText="`Metadata with ${resourceAmount} resources`" />
+        </v-flex>
+
+        <v-flex pa-1>
+          <base-icon-count-view :count="resourceAmount"
+                                :icon-string="fileIconString"
+                                :tooltipText="`Metadata with ${resourceAmount} resources`" />
+        </v-flex>
+      </v-layout>
+      <!-- <v-tooltip v-if="isRestricted"
                   bottom
                   :disabled="$vuetify.breakpoint.xsOnly" >
         <v-icon slot="activator"
@@ -105,11 +121,10 @@
                 :src="lockedIconString" >
           <span>The data of this entry is only accessible with permission.</span>
         </div>
-      </v-tooltip>
+      </v-tooltip> -->
 
-      <base-icon-count-view :count="resourceAmount"
-                            :icon-string="fileIconString"
-                            :tooltip="`Metadata with ${resourceAmount} resources`" />
+
+
     </v-card-actions>
   </v-card>
 </template>
@@ -124,13 +139,15 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-24 16:53:00
+ * Last modified  : 2019-11-01 16:13:11
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
 import TagChip from '@/components/Cards/TagChip';
 import BaseIconCountView from '@/components/BaseElements/BaseIconCountView';
+import BaseIconButton from '@/components/BaseElements/BaseIconButton';
+import { getModeData } from '@/factories/modeFactory';
 
 // Header Sleek design
 // https://codepen.io/GeorgeGedox/pen/NQrxrY
@@ -156,6 +173,7 @@ export default {
   components: {
     TagChip,
     BaseIconCountView,
+    BaseIconButton,
   },
   props: {
     id: String,
@@ -174,6 +192,7 @@ export default {
     lockedIconString: String,
     unlockedIconString: String,
     categoryColor: String,
+    mode: String,
   },
   computed: {
     dynamicCardBackground() {
@@ -273,6 +292,24 @@ export default {
         smallScreenTitle: this.$vuetify.breakpoint.xsOnly,
         compactTitle: this.$vuetify.breakpoint.smOnly,
       };
+    },
+    modeEntryIcon() {
+      const keys = Object.keys(this.modeData.icons);
+
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+
+        if (this.tags.findIndex(t => t.name === key.toUpperCase()) >= 0) {
+          return this.modeData.icons[key];
+        }
+      }
+
+      return Object.values(this.modeData.icons)[0];
+    },
+    modeData() {
+      if (!this.mode) return null;
+
+      return getModeData(this.mode);
     },
   },
   created() {
