@@ -65,19 +65,15 @@
         </v-flex>
       </v-layout>
 
-      <transition-group v-if="!loading"
-                        :name="$vuetify.breakpoint.mdAndUp ? 'itemfade' : ''"
-                        ref="metadataListLayout"
-                        class="layout"
-                        :class="{ ['column'] : listView,
-                                  ['row'] : !listView,
-                                  ['wrap'] : !listView }" >
+      <v-layout v-if="showPinnedElements"
+                class="layout"
+                :class="{ ['column'] : listView,
+                          ['row'] : !listView,
+                          ['wrap'] : !listView }" >
 
         <v-flex v-for="(pinnedId, index) in pinnedIds"
-                v-if="showPinnedElements"
                 :key="'pinned_' + index"
-                v-bind="cardGridClass"
-                >
+                v-bind="cardGridClass" >
 
           <metadata-card :id="metadatasContent[pinnedId].id"
                           :ref="metadatasContent[pinnedId].id"
@@ -99,6 +95,16 @@
                           @clickedEvent="metaDataClicked"
                           @clickedTag="catchTagClicked" />
         </v-flex>
+      </v-layout>
+
+      <transition-group v-if="!loading"
+                        :name="$vuetify.breakpoint.mdAndUp ? 'itemfade' : ''"
+                        ref="metadataListLayout"
+                        class="layout"
+                        :class="{ ['column'] : listView,
+                                  ['row'] : !listView,
+                                  ['wrap'] : !listView }" >
+
 
         <v-flex v-for="(metadata, index) in virtualListContent"
                 v-if="!isPinned(metadata.id)"
@@ -171,7 +177,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-25 15:56:53
+ * Last modified  : 2019-11-01 13:08:46
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -239,7 +245,7 @@ export default {
       categoryCards: `${METADATA_NAMESPACE}/categoryCards`,
     }),
     showPinnedElements() {
-      return !this.loading && this.showMapFilter && this.pinnedIds.length > 0;
+      return !this.loading && this.showMapFilter;
     },
     mergePinnedAndFiltered() {
       const pinnedContent = [];
