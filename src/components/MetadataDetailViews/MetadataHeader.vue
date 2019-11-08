@@ -68,9 +68,9 @@
           <v-layout row wrap >
             <tag-chip-author v-for="author in authors"
                               :key="author.name"
-                              :name="`${author.given_name} ${author.name}`"
+                              :name="authorName(author)"
                               :tooltipText="authorToolTipText"
-                              @clicked="catchAuthorClicked($event, `${author.given_name} ${author.name}`)" />
+                              @clicked="catchAuthorClicked($event, authorName(author))" />
           </v-layout>
         </v-flex>
 
@@ -195,7 +195,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-01 14:29:04
+ * Last modified  : 2019-11-08 14:48:22
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -206,6 +206,8 @@ import TagChipAuthor from '@/components/Cards/TagChipAuthor';
 import TagChipPlaceholder from '@/components/Cards/TagChipPlaceholder';
 import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
+
+import metaDataFactory from '@/factories/metaDataFactory';
 
 export default {
   components: {
@@ -288,6 +290,7 @@ export default {
       const iconflip = this.dark ? `${icon}_w` : icon;
       return iconflip;
     },
+    authorName: metaDataFactory.getAuthorName,
   },
 };
 </script>

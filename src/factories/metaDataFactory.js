@@ -6,13 +6,23 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-11-01 14:29:51
+ * Last modified  : 2019-11-08 14:33:13
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
-import globalMethods from '@/factories/globalMethods';
+import seedrandom from 'seedrandom';
+
+import {
+  FOREST,
+  SNOW,
+  LAND,
+  HAZARD,
+  DIVERSITY,
+  METEO,
+} from '@/store/categoriesConsts';
+
 
 export default {
   createHeader(dataset, smallScreen) {
@@ -64,7 +74,7 @@ export default {
     };
   },
   getAuthorName(author){
-    return `${author.given_name} ${author.name}`;
+    return `${author.given_name ? author.given_name : ''} ${author.name ? author.name : ''}`.trim();
   },
   getAuthorsString(dataset) {
     if (!dataset) {
@@ -180,8 +190,8 @@ export default {
         let { format } = element;
         format = format.replace('.', '').toLowerCase();
 
-        const created = globalMethods.methods.mixinMethods_formatDate(element.created);
-        const modified = globalMethods.methods.mixinMethods_formatDate(element.last_modified);
+        const created = this.formatDate(element.created);
+        const modified = this.formatDate(element.last_modified);
 
         const res = {
           // "hash": "",
@@ -236,10 +246,10 @@ export default {
     details.push({ label: 'DOI', text: dataset.doi, url: `https://doi.org/${dataset.doi}` });
 
     
-    const created = globalMethods.methods.mixinMethods_formatDate(dataset.metadata_created);
+    const created = this.formatDate(dataset.metadata_created);
     details.push({ label: 'Created', text: created });
 
-    const modified = globalMethods.methods.mixinMethods_formatDate(dataset.metadata_modified);
+    const modified = this.formatDate(dataset.metadata_modified);
     details.push({ label: 'Last Modified', text: modified });
 
     const license = this.createLicense(dataset);
@@ -332,5 +342,181 @@ export default {
     });
 
     return tagObjs;
+  },
+  /**
+   * @param {Object} metadataEntry
+   * @param {Array} cardBGImages
+   *
+   * @return {Object} metadataEntry enhanced with a title image based on the entrys tags
+   */
+  enhanceMetadataEntry(metadataEntry, cardBGImages, categoryCards) {
+    if (metadataEntry && !metadataEntry.titleImg) {
+      this.enhanceTitleImg(metadataEntry, cardBGImages, categoryCards);
+    }
+
+    return metadataEntry;
+  },
+  /**
+   * @param {Array} metadatas
+   * @param {Array} cardBGImages
+   *
+   * @return {Array} metadatas enhanced with a title image based on the metadatas tags
+   */
+  enhanceMetadatas(metadatas, cardBGImages, categoryCards) {
+    if (metadatas === undefined && metadatas.length <= 0) {
+      return undefined;
+    }
+
+    if (Array.isArray(metadatas)) {
+      for (let i = 0; i < metadatas.length; i++) {
+        const el = metadatas[i];
+
+        if (!el.titleImg) {
+          metadatas[i] = this.enhanceTitleImg(el, cardBGImages, categoryCards);
+        }
+      }
+    }
+
+    return metadatas;
+  },
+  /**
+   * @param {Object} metadata
+   * @param {Array} cardBGImages
+   *
+   * @return {Object} metadata entry enhanced with a title image based on its tags
+   */
+  enhanceTitleImg(metadata, cardBGImages, categoryCards) {
+    /* eslint-disable no-param-reassign */
+    const category = this.guessTagCategory(metadata.tags);
+
+    if (cardBGImages) {
+      const categoryImgs = cardBGImages[category];
+      const max = Object.keys(categoryImgs).length - 1;
+      const randomIndex = this.randomInt(0, max, metadata.title);
+      const cardImg = randomIndex >= 0 ? Object.values(categoryImgs)[randomIndex] : 0;
+
+      metadata.titleImg = cardImg;
+    }
+
+    metadata.categoryColor = this.getCategoryColor(categoryCards, category);
+
+    return metadata;
+  },
+  getCategoryColor(categoryCards, categoryName) {
+    for (let i = 0; i < categoryCards.length; i++) {
+      const cat = categoryCards[i];
+      if (cat.type === categoryName) {
+        return cat.color;
+      }
+    }
+
+    return null;
+  },
+  /**
+   * @param {Array} tags
+   *
+   * @return {String} category based on tags array
+   */
+  guessTagCategory(tags) {
+    let category = LAND;
+
+    if (tags) {
+      for (let i = 0; i < tags.length; i++) {
+        const element = tags[i];
+
+        if (element.name) {
+          if (element.name.includes('HAZARD') || element.name.includes('ACCIDENTS')) {
+            category = HAZARD; break;
+          }
+          if (element.name.includes('DIVERSITY')) {
+            category = DIVERSITY; break;
+          }
+          if (element.name.includes('FOREST')) {
+            category = FOREST; break;
+          }
+          if (element.name.includes('SNOW') || element.name.includes('AVALANCHE')) {
+            category = SNOW; break;
+          }
+          if (element.name.includes('METEO') || element.name.includes('CLIMATE')) {
+            category = METEO; break;
+          }
+          if (element.name.includes('LAND') || element.name.includes('LANDSCAPE')) {
+            category = LAND; break;
+          }
+        }
+      }
+    }
+
+    return category;
+  },
+  /**
+   * Create a psyeudo random integer based on a given seed using the 'seedrandom' lib.
+   *
+   * @param {Number} min
+   * @param {Number} max
+   * @param {String} seed
+   */
+  randomInt(min, max, seed = 'For the Horde!') {
+    const rng = seedrandom(seed);
+    const r = Math.floor(rng() * 10);
+
+    if (r > max) {
+      return max;
+    }
+    if (r < min) {
+      return min;
+    }
+
+    return r;
+  },
+  getTagColor(categoryCards, tagName) {
+    if (!tagName) {
+      return '';
+    }
+
+    for (let i = 0; i < categoryCards.length; i++) {
+      const cat = categoryCards[i];
+      if (tagName.toLowerCase().includes(cat.type)) {
+        return cat.darkColor;
+      }
+    }
+
+    return '#e0e0e0';
+  },
+  enhanceTags(dataset, categoryCards) {
+
+    if (dataset && dataset.tags && dataset.tags instanceof Array) {
+      for (let j = 0; j < dataset.tags.length; j++) {
+        const tag = dataset.tags[j];
+        tag.color = this.getTagColor(categoryCards, tag.name);
+      }
+    }
+
+    return dataset;
+  },
+  /**
+   * @param {String} date expecting a format like 2017-08-15T15:25:45.175790
+   * @return {String} Returns a date string containing the date and hours:minutes:seconds
+   */
+  formatDate(date) {
+    // expecting a format like 2017-08-15T15:25:45.175790
+    let formatedDate = '';
+
+    if (date) {
+      const split = date.split('T');
+      if (split.length > 0) {
+        const dateOnly = split[0];
+        const timeOnly = split[1];
+        const timeSplit = timeOnly.split('.');
+        const timeToMinutes = timeSplit[0];
+
+        formatedDate = `${dateOnly} ${timeToMinutes}`;
+      } else {
+        // fallback: just return the input
+        formatedDate = date;
+      }
+    }
+
+    return formatedDate;
   },
 };
