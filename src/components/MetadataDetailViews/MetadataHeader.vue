@@ -26,12 +26,13 @@
         <v-flex v-if="metadataTitle"
                 xs12 >
           <div class="headerTitle"
+                :style="$vuetify.breakpoint.xsOnly ? 'line-height: 1.2em;' : ''"
                 :class="{ 'py-2': $vuetify.breakpoint.mdAndUp,
                           'py-0': $vuetify.breakpoint.smAndDown,
-                          'display-2': $vuetify.breakpoint.lgAndUp,
-                          'display-1': $vuetify.breakpoint.mdOnly,
+                          'display-2': $vuetify.breakpoint.xlAndUp,
+                          'display-1': $vuetify.breakpoint.mdAndUp,
                           'headline': $vuetify.breakpoint.smOnly,
-                          'title': $vuetify.breakpoint.xsOnly,
+                          'subheading': $vuetify.breakpoint.xsOnly,
                         }" >
             {{ metadataTitle }}
           </div>
@@ -195,7 +196,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-08 14:48:22
+ * Last modified  : 2019-11-08 14:59:23
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
