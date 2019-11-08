@@ -157,17 +157,6 @@ export default {
 
       return visibleContent;
     },
-    dynamicCardBackground() {
-      const max = Object.keys(this.imagesImports).length;
-      const randomIndex = this.mixinMethods_randomInt(0, max);
-      const cardImg = Object.values(this.imagesImports)[randomIndex];
-
-      if (cardImg) {
-        return `background-image: linear-gradient(to bottom, rgba(1,1,1,0.5), rgba(255,255,255,0)), url(${cardImg}); background-position: center, center;`;
-      }
-
-      return '';
-    },
     hasRestrictedResources(metadata) {
       if (!metadata || !metadata.resources || metadata.resources.length <= 0) {
         return false;
