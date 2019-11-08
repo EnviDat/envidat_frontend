@@ -82,7 +82,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-25 13:38:33
+ * Last modified  : 2019-11-08 14:50:14
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -506,7 +506,10 @@ export default {
 .authorTag span,
 .envidatChip span {
   cursor: pointer !important;
-  font-weight: 700;
+}
+
+.authorTag span {
+  font-size: 14px !important;
 }
 
 .filterTag {
