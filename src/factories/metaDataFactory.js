@@ -324,13 +324,4 @@ export default {
 
     return location;
   },
-  convertTags(tagsStringArray, tagsEnabled) {
-    const tagObjs = [];
-
-    tagsStringArray.forEach((element) => {
-      tagObjs.push({ name: element, enabled: tagsEnabled });
-    });
-
-    return tagObjs;
-  },
 };

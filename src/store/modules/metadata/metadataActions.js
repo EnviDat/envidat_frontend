@@ -32,8 +32,12 @@ import {
   METADATA_NAMESPACE,
 } from '@/store/metadataMutationsConsts';
 
-import { tagsIncludedInSelectedTags } from '@/factories/metadataFilterMethods';
-import { urlRewrite, getEnabledTags } from '@/factories/apiFactory';
+import {
+  getEnabledTags,
+  tagsIncludedInSelectedTags,
+  getPopularTags,
+} from '@/factories/metadataFilterMethods';
+import { urlRewrite } from '@/factories/apiFactory';
 
 import {
   getTagsMergedWithExtras,
@@ -158,7 +162,13 @@ export default {
 
         const mergedExtraTags = getTagsMergedWithExtras(mode, allTags);
         if (mergedExtraTags) {
-          allWithExtras = mergedExtraTags;
+          const popularTags = getPopularTags(filteredContent, 'SWISS FOREST LAB', 3, filteredContent.length);
+          const mergedWithPopulars = [...mergedExtraTags, ...popularTags];
+          // remove the dublicates via filter() function
+          const mergedWithoutDublicates = mergedWithPopulars.filter((item, pos, self) => self.findIndex(v => v.name === item.name) === pos);
+          // tags with the same count as the content have no use, remove them
+          // allWithExtras = mergedWithoutDublicates.filter((item) => { item.count >= filteredContent.length});
+          allWithExtras = mergedWithoutDublicates;
         } else {
           allWithExtras = metadataTags;
         }

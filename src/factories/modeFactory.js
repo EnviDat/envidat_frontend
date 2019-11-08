@@ -11,6 +11,7 @@
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
+import { createTag } from '@/factories/metadataFilterMethods';
 
 import { SWISSFL_MODE } from '@/store/metadataMutationsConsts';
 import {
@@ -43,6 +44,13 @@ export function getModeData(mode) {
   }
 }
 
+
+function mergedExtraTags(modeObj, tags) {
+  const mergedTags = [...tags, ...modeObj.extraTags];
+  const uniqueArrayOfTags = mergedTags.filter((item, pos, self) => self.findIndex(v => v.name === item.name) === pos);
+  return uniqueArrayOfTags;
+}
+
 export function getTagsMergedWithExtras(mode, tags) {
   if (!mode) return null;
 
@@ -55,12 +63,16 @@ export function getTagsMergedWithExtras(mode, tags) {
   }
 }
 
-function mergedExtraTags(modeObj, tags) {
-  const mergedTags = [...tags, ...modeObj.extraTags];
-  const uniqueArrayOfTags = mergedTags.filter((item, pos, self) => self.findIndex(v => v.name === item.name) === pos);
-  return uniqueArrayOfTags;
-}
 
+function mergedHiddenFilters(modeObj, selectedTagNames) {
+  const secretTags = [...selectedTagNames];
+
+  if (!selectedTagNames.includes(modeObj.mainTag.name)) {
+    secretTags.push(modeObj.mainTag.name);
+  }
+
+  return secretTags;
+}
 
 export function getSelectedTagsMergedWithHidden(mode, selectedTagNames) {
   if (!mode) return null;
@@ -74,16 +86,6 @@ export function getSelectedTagsMergedWithHidden(mode, selectedTagNames) {
   }
 }
 
-function mergedHiddenFilters(modeObj, selectedTagNames) {
-  const secretTags = [...selectedTagNames];
-
-  if (!selectedTagNames.includes(modeObj.mainTag.name)) {
-    secretTags.push(modeObj.mainTag.name);
-  }
-
-  return secretTags;
-}
-
 function getSwissflLogo() {
   const swissflImages = require.context('@/assets/modes/swissfl', false, /\.jpg$/);
   const imgLogo = globalMethods.methods.mixinMethods_importImages(swissflImages, 'logo');
@@ -93,11 +95,11 @@ function getSwissflLogo() {
 function getSwissflIcons() {
   const swissflPngs = require.context('@/assets/modes/swissfl', false, /\.png$/);
   const iconImgs = globalMethods.methods.mixinMethods_importImages(swissflPngs);
-  const swissflIcons = Object.values(iconImgs);
+  const icons = Object.values(iconImgs);
   const swissflIconMap = {
-    dataset: swissflIcons[0],
-    infrastructure: swissflIcons[1],
-    model: swissflIcons[2],
+    dataset: icons[0],
+    infrastructure: icons[1],
+    model: icons[2],
   };
 
   return swissflIconMap;
@@ -122,7 +124,7 @@ export function enhanceMetadataFromExtras(mode, metdataEntry) {
       if (extra.key === key) {
         metdataEntry[key] = extra.value;
 
-        const extraTag = { name: extra.value.toUpperCase() };
+        const extraTag = createTag(extra.value.toUpperCase());
 
         if (metdataEntry.tags.findIndex(t => t.name === extraTag.name) < 0) {
           metdataEntry.tags.push(extraTag);
@@ -132,4 +134,4 @@ export function enhanceMetadataFromExtras(mode, metdataEntry) {
   }
 
   return metdataEntry;
-};
+}
