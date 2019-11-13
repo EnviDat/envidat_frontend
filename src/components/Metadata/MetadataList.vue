@@ -159,7 +159,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-13 14:50:46
+ * Last modified  : 2019-11-13 17:02:03
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -260,7 +260,8 @@ export default {
         sm6: true,
         md4: true,
         lg3: true,
-        xl2: this.isActiveControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE),
+        xl2: !this.isActiveControl(LISTCONTROL_MAP_ACTIVE)
+              && this.isActiveControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE),
       };
 
       return fullSize;
@@ -382,19 +383,6 @@ export default {
       }
 
       return height;
-    },
-    mapFilterWidth() {
-      const sWidth = document.documentElement.clientWidth;
-
-      if (this.$vuetify.breakpoint.mdAndUp) {
-        return sWidth * 0.31;
-      }
-
-      if (this.$vuetify.breakpoint.sm) {
-        return sWidth * 0.5;
-      }
-
-      return sWidth;
     },
     isActiveControl(number) {
       return this.controlsActive.includes(number);

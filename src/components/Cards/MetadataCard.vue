@@ -46,15 +46,16 @@
     </v-img>
 
     <v-card-text :class="{['cardText'] : $vuetify.breakpoint.mdAndUp,
-                        ['compactText'] : flatLayout || $vuetify.breakpoint.smAndDown,
-                        ['py-2'] : flatLayout,
-                        ['pr-5'] : flatLayout,
-                        ['pr-4'] : !flatLayout,
-                        ['py-2'] : !flatLayout,
-                  }" >
+                            ['compactText'] : flatLayout || $vuetify.breakpoint.smAndDown,
+                            ['py-2'] : flatLayout,
+                            ['pr-5'] : flatLayout,
+                            ['pr-4'] : !flatLayout,
+                            ['py-2'] : !flatLayout,
+                          }" >
       <!-- TODO: need to strip the markdown characters from the desc -->
       <v-layout row wrap>
-        <v-flex xs12 >
+        <v-flex v-if="!compactLayout"
+                  xs12 >
           {{ truncatedSubtitle }}
         </v-flex>
         <v-flex xs12
@@ -67,8 +68,7 @@
                       :name="tag.name"
                       :selectable="true"
                       :color="tag.color"
-                      @clicked="catchTagClicked($event, tag.name)"
-            />
+                      @clicked="catchTagClicked($event, tag.name)" />
 
             <tag-chip v-if="maxTagsReached"
                       py-0
@@ -123,7 +123,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-24 16:53:00
+ * Last modified  : 2019-11-13 16:59:16
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -275,7 +275,7 @@ export default {
         white_title: this.dark,
         // smallScreenTitle: this.compactLayout || this.$vuetify.breakpoint.xsOnly,
         smallScreenTitle: this.$vuetify.breakpoint.xsOnly,
-        compactTitle: this.$vuetify.breakpoint.smOnly,
+        compactTitle: this.compactLayout || this.$vuetify.breakpoint.smOnly,
       };
     },
   },
@@ -300,8 +300,8 @@ export default {
     singleLineCss: 'white-space: nowrap; overflow: hidden; text-overflow: ellipsis;',
     show: false,
     showDataText: 'SHOW DATA',
-    titleLength: 150,
-    compactTitleLength: 80,
+    titleLength: 100,
+    compactTitleLength: 115,
     flatTitleLength: 120,
     descriptionLength: 280,
     compactDescriptionLength: 130,
@@ -337,7 +337,7 @@ export default {
   }
 
   .headline {
-    font-size: 19px !important;
+    font-size: 18px !important;
   }
 
   .compactTitle {

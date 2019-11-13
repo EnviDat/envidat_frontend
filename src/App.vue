@@ -83,7 +83,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-08 16:14:53
+ * Last modified  : 2019-11-13 16:54:22
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -488,7 +488,7 @@ export default {
   height: 1.3rem !important;
   font-size: 0.65rem !important;
   margin: 1px 2px !important;
-  opacity: 0.85 !important;
+  /* opacity: 0.85 !important; */
 }
 
 .enviDatSnackbar > .v-snack__wrapper > .v-snack__content {
@@ -511,10 +511,6 @@ export default {
 
 .authorTag span {
   font-size: 14px !important;
-}
-
-.filterTag {
-  opacity: 0.7;
 }
 
 .chip__content span {
