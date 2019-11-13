@@ -76,12 +76,12 @@ import {
   LOAD_METADATA_CONTENT_BY_ID,
   CLEAN_CURRENT_METADATA,
 } from '@/store/metadataMutationsConsts';
-import MetadataHeader from '@/components/MetadataDetailViews/MetadataHeader';
-import MetadataBody from '@/components/MetadataDetailViews/MetadataBody';
-import MetadataResources from '@/components/MetadataDetailViews/MetadataResources';
-import MetadataLocation from '@/components/MetadataDetailViews/MetadataLocation';
-import MetadataDetails from '@/components/MetadataDetailViews/MetadataDetails';
-import MetadataCitation from '@/components/MetadataDetailViews/MetadataCitation';
+import MetadataHeader from '@/components/Metadata/MetadataHeader';
+import MetadataBody from '@/components/Metadata/MetadataBody';
+import MetadataResources from '@/components/Metadata/MetadataResources';
+import MetadataLocation from '@/components/Metadata/MetadataLocation';
+import MetadataDetails from '@/components/Metadata/MetadataDetails';
+import MetadataCitation from '@/components/Metadata/MetadataCitation';
 import metaDataFactory from '@/factories/metaDataFactory';
 import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
 
