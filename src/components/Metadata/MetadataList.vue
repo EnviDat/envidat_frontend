@@ -32,6 +32,7 @@
                         :content="mergePinnedAndFiltered"
                         :totalHeight="mapHeight"
                         :pinnedIds="pinnedIds"
+                        :bottomLayout="mapBottomLayout"
                         @pointClicked="catchPointClicked"
                         @clearButtonClicked="catchClearButtonClick" />
     </template>
@@ -150,7 +151,7 @@
 
 <script>
 /**
- * MetadataListLayout.vue uses the FilterKeywordView, FilterMapView and the ControlPanelView
+ * MetadataList.vue uses the FilterKeywordView, FilterMapView and the ControlPanelView
  * to create a List of metadata cards which can be filtered via the mentioned
  * filtering components.
  *
@@ -158,7 +159,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-13 14:06:43
+ * Last modified  : 2019-11-13 14:50:46
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -194,6 +195,10 @@ export default {
     selectedTagNames: Array,
     allTags: Array,
     mapHeight: Number,
+    mapBottomLayout: {
+      type: Boolean,
+      default: false,
+    },
     defaultListControls: Array,
     enabledControls: Array,
     useDynamicHeight: Boolean,

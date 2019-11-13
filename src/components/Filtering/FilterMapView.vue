@@ -10,15 +10,19 @@
     <div v-if="!errorLoadingLeaflet"
           class="fill-height" >
 
-      <v-layout row fill-height>
+      <v-layout fill-height
+                :class="{ 'column' : bottomLayout,
+                          'row' : !bottomLayout }" >
 
-        <v-flex py-0 pr-0 fill-height>
+        <v-flex py-0 fill-height
+                :class="{ 'pr-0' : !bottomLayout }">
           <div id="map"
                 ref="map"
                 v-bind="mapViewHeight" />
         </v-flex>
 
-        <v-flex xs2 py-0 pl-0>
+        <v-flex xs2 py-0
+                :class="{ 'pl-0' : !bottomLayout }">
 
           <filter-map-widget style="height: 100%"
                               :pinnedIds="pinnedIds"
@@ -31,6 +35,7 @@
                               :hasPolygons="hasPolygons"
                               :polygonEnabled="polygonEnabled"
                               :polygonNumber="hasPolygons ? polygonLayerGroup.length : 0"
+                              :bottomLayout="bottomLayout"
                               @clickedFocus="focusOnLayers"
                               @clickedPin="catchPinClicked"
                               @clickedMultipin="catchMultipinClicked"
@@ -55,7 +60,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-11-13 14:05:56
+ * Last modified  : 2019-11-13 14:46:44
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -85,6 +90,7 @@ export default {
     content: Array,
     totalHeight: Number,
     pinnedIds: Array,
+    bottomLayout: Boolean,
   },
   beforeMount() {
     this.pinIcon = this.mixinMethods_getIcon('marker');
