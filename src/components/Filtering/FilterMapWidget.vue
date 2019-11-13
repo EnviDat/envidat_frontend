@@ -7,19 +7,20 @@
                               :hasPins="hasPins"
                               :hasMultiPins="hasMultiPins"
                               :hasPolygons="hasPolygons"
-                              :bottomLayout="bottomLayout"
+                              :topLayout="topLayout"
                               :pinText="pinText"
                               :multiPinText="multiPinText"
                               :polygonText="polygonText" >
 
       <template v-slot:clearPins>
         <base-icon-button materialIconName="close"
-                  iconColor="red"
-                  :outlined="pinnedIds.length > 0"
-                  :isSmall="mdScreen || bottomLayout"
-                  :disabled="pinnedIds.length <= 0"
-                  :tooltipText="clearButtonTooltipText"
-                  @clicked="catchClearClicked()" />
+                          iconColor="red"
+                          :color="topLayout ? 'transparent' : ''"
+                          :outlined="!topLayout && pinnedIds.length > 0 "
+                          :isSmall="mdScreen || topLayout"
+                          :disabled="pinnedIds.length <= 0"
+                          :tooltipText="clearButtonTooltipText"
+                          @clicked="catchClearClicked()" />
       </template>
 
       <template v-slot:focus>
@@ -79,7 +80,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-11-13 16:23:49
+ * Last modified  : 2019-11-13 17:10:43
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -109,7 +110,7 @@ export default {
       default: 0,
       type: Number,
     },
-    bottomLayout: Boolean,
+    topLayout: Boolean,
   },
   beforeMount() {
     this.pinIcon = this.mixinMethods_getIcon('marker');

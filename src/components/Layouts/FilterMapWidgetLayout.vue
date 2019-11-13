@@ -13,7 +13,7 @@
           :class="mdScreen ? 'px-1 mb-1' : 'px-3'"
           :style="`background-color: ${$vuetify.theme.highlight};`" >
 
-      <v-layout v-if="bottomLayout"
+      <v-layout v-if="topLayout"
                   row
                   align-center
                   my-0 >
@@ -36,7 +36,7 @@
         </v-flex>
       </v-layout>
 
-      <div v-if="!bottomLayout"
+      <div v-if="!topLayout"
           class="my-0"
           :class="mdScreen ? 'caption' : 'body-2'" >
         {{ highlightedText }}
@@ -46,7 +46,7 @@
 
     <v-container :class="mdScreen ? 'px-3' : 'py-2 px-3'" >
 
-    <v-layout v-if="bottomLayout"
+    <v-layout v-if="topLayout"
               row wrap
               align-center justify-end>
 
@@ -64,7 +64,7 @@
       </v-flex>              
     </v-layout>
 
-    <v-layout v-if="!bottomLayout"
+    <v-layout v-if="!topLayout"
               :row="!mdScreen"
               :column="mdScreen"
               wrap
@@ -184,7 +184,7 @@ export default {
     hasPins: Boolean,
     hasMultiPins: Boolean,
     hasPolygons: Boolean,
-    bottomLayout: Boolean,
+    topLayout: Boolean,
     pinText: String,
     multiPinText: String,
     polygonText: String,
