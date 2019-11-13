@@ -47,7 +47,7 @@
   <v-layout v-if="!topFilteringLayout"
             row wrap>
 
-    <v-flex xs5 pb-0>
+    <v-flex xs4 pb-0>
       <v-layout column
                 fill-height>
 
@@ -67,7 +67,7 @@
       </v-layout>
     </v-flex>
 
-    <v-flex xs7 pb-0>
+    <v-flex xs8 pb-0>
       <v-layout column fill-height>
         <v-flex hidden-xs-only
                 shrink 
@@ -98,15 +98,14 @@
 
 <script>
 /**
- * SubLayout.vue uses the FilterKeywordView, FilterMapView and the ControlPanelView
- * to create a List of metadata cards which can be filtered via the mentioned
- * filtering components.
+ * MetadataListLayout.vue only handles the different layouts for the metadatalist
+ * with slots for the FilterKeywordView, FilterMapView and the ControlPanelView.
  *
- * @summary filterable list of metadata cards
+ * @summary layout of the list of metadata cards
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-13 11:31:27
+ * Last modified  : 2019-11-13 14:51:26
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -123,11 +122,7 @@ export default {
       default: false,
     },
     filteringComponentsHeight: Number,
-    // scrollPosition: Number,
   },
-  // updated() {
-  //   this.setScrollPos(this.scrollPosition);
-  // },
   methods: {
     setScrollPos(toPos) {
       if (this.$refs && this.$refs.metadataListScroll) {
