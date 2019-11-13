@@ -11,18 +11,11 @@
           class="fill-height" >
 
       <v-layout fill-height
-                :class="{ 'column' : bottomLayout,
-                          'row' : !bottomLayout }" >
-
-        <v-flex py-0 fill-height
-                :class="{ 'pr-0' : !bottomLayout }">
-          <div id="map"
-                ref="map"
-                v-bind="mapViewHeight" />
-        </v-flex>
+                :class="{ 'column' : topLayout,
+                          'row' : !topLayout }" >
 
         <v-flex xs2 py-0
-                :class="{ 'pl-0' : !bottomLayout }">
+                :class="{ 'pl-0' : !topLayout }">
 
           <filter-map-widget style="height: 100%"
                               :pinnedIds="pinnedIds"
@@ -35,13 +28,20 @@
                               :hasPolygons="hasPolygons"
                               :polygonEnabled="polygonEnabled"
                               :polygonNumber="hasPolygons ? polygonLayerGroup.length : 0"
-                              :bottomLayout="bottomLayout"
+                              :topLayout="topLayout"
                               @clickedFocus="focusOnLayers"
                               @clickedPin="catchPinClicked"
                               @clickedMultipin="catchMultipinClicked"
                               @clickedPolygon="catchPolygonClicked"
                               @clickedClear="catchClearClicked" />
 
+        </v-flex>
+
+        <v-flex py-0 fill-height
+                :class="{ 'pr-0' : !topLayout }">
+          <div id="map"
+                ref="map"
+                v-bind="mapViewHeight" />
         </v-flex>
 
       </v-layout>
@@ -60,7 +60,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-11-13 14:46:44
+ * Last modified  : 2019-11-13 17:06:17
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -90,7 +90,7 @@ export default {
     content: Array,
     totalHeight: Number,
     pinnedIds: Array,
-    bottomLayout: Boolean,
+    topLayout: Boolean,
   },
   beforeMount() {
     this.pinIcon = this.mixinMethods_getIcon('marker');

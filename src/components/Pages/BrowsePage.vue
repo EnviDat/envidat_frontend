@@ -14,7 +14,7 @@
                     :defaultListControls="controls"
                     :enabledControls="enabledControls"
                     :useDynamicHeight="true"
-                    :mapBottomLayout="true"  />
+                    :mapTopLayout="true"  />
 
   </article>
 </template>

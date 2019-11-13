@@ -32,7 +32,7 @@
                         :content="mergePinnedAndFiltered"
                         :totalHeight="mapHeight"
                         :pinnedIds="pinnedIds"
-                        :bottomLayout="mapBottomLayout"
+                        :topLayout="mapTopLayout"
                         @pointClicked="catchPointClicked"
                         @clearButtonClicked="catchClearButtonClick" />
     </template>
@@ -195,7 +195,7 @@ export default {
     selectedTagNames: Array,
     allTags: Array,
     mapHeight: Number,
-    mapBottomLayout: {
+    mapTopLayout: {
       type: Boolean,
       default: false,
     },
