@@ -53,13 +53,16 @@
       <v-flex shrink >
         <slot name="focus" />
       </v-flex>              
-      <v-flex shrink >
+      <v-flex v-if="hasPins"
+              shrink >
         <slot name="pinEnabled" />
       </v-flex>              
-      <v-flex shrink >
+      <v-flex v-if="hasMultiPins"
+              shrink >
         <slot name="multiPinEnabled" />
       </v-flex>              
-      <v-flex shrink >
+      <v-flex v-if="hasPolygons"
+              shrink >
         <slot name="polygonEnabled" />
       </v-flex>              
     </v-layout>
@@ -167,7 +170,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-11-13 16:23:53
+ * Last modified  : 2019-11-13 17:29:34
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
