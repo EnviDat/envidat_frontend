@@ -4,47 +4,7 @@
               pa-0
               grid-list-lg>
 
-  <v-layout v-if="topFilteringLayout"
-            column>
-    <v-flex >
-      
-      <v-layout row wrap
-                ref="metadataListLayoutFiltering" >
-
-        <v-flex xs12 sm9
-                key="filterKeywords" >
-          <slot name="filterKeywords" />
-        </v-flex>
-
-        <v-flex hidden-xs-only sm3
-                key="controlPanel" >
-          <slot name="controlPanel" />
-        </v-flex>
-
-
-        <v-flex v-if="showMapFilter && mapFilteringPossible"
-                xs12
-                key="filterMap" >
-          <slot name="filterMap" />
-        </v-flex>
-
-      </v-layout>
-
-    </v-flex>
-
-    <v-flex ref="metadataListScroll"
-            :class="useDynamicHeight ? 'metadataListScroll' : ''"
-            :style="useDynamicHeight ? `height: calc(100vh - ${ filteringComponentsHeight }px);` : ''" >
-      
-      <slot name="metadataListPlaceholder" />
-
-      <slot name="metadataListLayout" />
-
-    </v-flex>
-  </v-layout>
-
-
-  <v-layout v-if="!topFilteringLayout"
+  <v-layout v-if="!topFilteringLayout && showMapFilter"
             row wrap>
 
     <v-flex xs4 pb-0>
@@ -93,6 +53,45 @@
 
   </v-layout>
 
+  <v-layout v-else
+            column>
+    <v-flex >
+      
+      <v-layout row wrap
+                ref="metadataListLayoutFiltering" >
+
+        <v-flex xs12 sm9
+                key="filterKeywords" >
+          <slot name="filterKeywords" />
+        </v-flex>
+
+        <v-flex hidden-xs-only sm3
+                key="controlPanel" >
+          <slot name="controlPanel" />
+        </v-flex>
+
+
+        <v-flex v-if="showMapFilter && mapFilteringPossible"
+                xs12
+                key="filterMap" >
+          <slot name="filterMap" />
+        </v-flex>
+
+      </v-layout>
+
+    </v-flex>
+
+    <v-flex ref="metadataListScroll"
+            :class="useDynamicHeight ? 'metadataListScroll' : ''"
+            :style="useDynamicHeight ? `height: calc(100vh - ${ filteringComponentsHeight }px);` : ''" >
+      
+      <slot name="metadataListPlaceholder" />
+
+      <slot name="metadataListLayout" />
+
+    </v-flex>
+  </v-layout>
+
 </v-container>
 </template>
 
@@ -105,7 +104,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-13 14:51:26
+ * Last modified  : 2019-11-13 16:33:28
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
