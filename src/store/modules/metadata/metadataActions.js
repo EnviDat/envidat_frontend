@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-10-30 10:59:17
+ * Last modified  : 2019-11-13 17:28:41
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -150,61 +150,56 @@ export default {
 
     commit(UPDATE_TAGS);
 
-    setTimeout(() => {
-      try {
-        const updatedTags = getEnabledTags(allTags, filteredContent);
+    try {
+      const updatedTags = getEnabledTags(allTags, filteredContent);
 
-        commit(UPDATE_TAGS_SUCCESS, updatedTags);
-      } catch (error) {
-        commit(UPDATE_TAGS_ERROR, error);
-      }
-    }, 100);
+      commit(UPDATE_TAGS_SUCCESS, updatedTags);
+    } catch (error) {
+      commit(UPDATE_TAGS_ERROR, error);
+    }
   },
   async [FILTER_METADATA]({ dispatch, commit }, selectedTagNames) {
     commit(FILTER_METADATA);
 
-    // use timeout to make sure the placeholder as loading indicators will show up
-    setTimeout(() => {
-      let content = [];
-      // console.log("filteredMetadataContent");
+    let content = [];
+    // console.log("filteredMetadataContent");
 
-      const isSearchResultContent = this.getters[`${METADATA_NAMESPACE}/searchingMetadatasContentOK`];
+    const isSearchResultContent = this.getters[`${METADATA_NAMESPACE}/searchingMetadatasContentOK`];
 
-      try {
-        if (isSearchResultContent) {
-          const searchContent = this.getters[`${METADATA_NAMESPACE}/searchedMetadatasContent`];
-          const searchContentSize = contentSize(searchContent);
+    try {
+      if (isSearchResultContent) {
+        const searchContent = this.getters[`${METADATA_NAMESPACE}/searchedMetadatasContent`];
+        const searchContentSize = contentSize(searchContent);
 
-          if (searchContentSize > 0) {
-            content = Object.values(searchContent);
-          }
-        } else {
-          const metadatasContent = this.getters[`${METADATA_NAMESPACE}/metadatasContent`];
-          content = Object.values(metadatasContent);
+        if (searchContentSize > 0) {
+          content = Object.values(searchContent);
         }
-
-        const filteredContent = [];
-        let keep = false;
-
-        for (let i = 0; i < content.length; i++) {
-          const entry = content[i];
-          keep = contentFilterAccessibility(entry);
-
-          if (keep && selectedTagNames.length > 0) {
-            keep = contentFilteredByTags(entry, selectedTagNames);
-          }
-
-          if (keep) {
-            filteredContent.push(entry);
-          }
-        }
-
-        commit(FILTER_METADATA_SUCCESS, filteredContent);
-
-        dispatch(UPDATE_TAGS);
-      } catch (error) {
-        commit(FILTER_METADATA_ERROR, error);
+      } else {
+        const metadatasContent = this.getters[`${METADATA_NAMESPACE}/metadatasContent`];
+        content = Object.values(metadatasContent);
       }
-    }, 100);
+
+      const filteredContent = [];
+      let keep = false;
+
+      for (let i = 0; i < content.length; i++) {
+        const entry = content[i];
+        keep = contentFilterAccessibility(entry);
+
+        if (keep && selectedTagNames.length > 0) {
+          keep = contentFilteredByTags(entry, selectedTagNames);
+        }
+
+        if (keep) {
+          filteredContent.push(entry);
+        }
+      }
+
+      commit(FILTER_METADATA_SUCCESS, filteredContent);
+
+      dispatch(UPDATE_TAGS);
+    } catch (error) {
+      commit(FILTER_METADATA_ERROR, error);
+    }
   },
 };
