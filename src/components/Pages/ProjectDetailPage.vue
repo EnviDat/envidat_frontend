@@ -41,19 +41,20 @@
           <v-card-title class="metadataList_title title">{{ metadataListTitle }}</v-card-title>
 
           <div v-if="hasMetadatas" >
-            <metadata-list-layout class="px-3"
-                                :listContent="filteredListContent"
-                                :showMapFilter="false"
-                                :mapFilteringPossible="mapFilteringPossible"
-                                :placeHolderAmount="placeHolderAmount"
-                                @clickedTag="catchTagClicked"
-                                :allTags="allMetadataTags"
-                                :selectedTagNames="selectedTagNames"
-                                @clickedTagClose="catchTagCloseClicked"
-                                @clickedClear="catchTagCleared"
-                                :defaultListControls="defaultControls"
-                                :enabledControls="enabledControls"
-                                :mapHeight="mapFilterHeight" />
+            <metadata-list class="px-3"
+                            :listContent="filteredListContent"
+                            :showMapFilter="false"
+                            :mapFilteringPossible="mapFilteringPossible"
+                            :placeHolderAmount="placeHolderAmount"
+                            @clickedTag="catchTagClicked"
+                            :allTags="allMetadataTags"
+                            :selectedTagNames="selectedTagNames"
+                            @clickedTagClose="catchTagCloseClicked"
+                            @clickedClear="catchTagCleared"
+                            :defaultListControls="defaultControls"
+                            :enabledControls="enabledControls"
+                            :mapHeight="mapFilterHeight"
+                            :topFilteringLayout="true" />
           </div>
 
           <div v-if="!hasMetadatas" >
@@ -77,7 +78,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-24 16:55:39
+ * Last modified  : 2019-11-13 13:07:52
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -94,9 +95,9 @@ import {
   PROJECTS_NAMESPACE,
   SET_PROJECTDETAIL_PAGE_BACK_URL,
 } from '@/store/projectsMutationsConsts';
-import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
 
 import {
+  METADATA_NAMESPACE,
   LISTCONTROL_LIST_ACTIVE,
   LISTCONTROL_MAP_ACTIVE,
 } from '@/store/metadataMutationsConsts';
@@ -104,7 +105,7 @@ import {
 import ProjectHeader from '@/components/ProjectDetailViews/ProjectHeader';
 import ProjectBody from '@/components/ProjectDetailViews/ProjectBody';
 import ProjectSubprojects from '@/components/ProjectDetailViews/ProjectSubprojects';
-import MetadataListLayout from '@/components/Layouts/MetadataListLayout';
+import MetadataList from '@/components/Metadata/MetadataList';
 
 import missionImg from '@/assets/about/mission.jpg';
 import creator from '@/assets/cards/data_creator.jpg';
@@ -325,7 +326,7 @@ export default {
     ProjectHeader,
     ProjectBody,
     ProjectSubprojects,
-    MetadataListLayout,
+    MetadataList,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
