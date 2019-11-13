@@ -1,38 +1,22 @@
 <template>
-  <v-container grid-list-xs
-              fluid
-              tag="article"
-              pa-0
-  >
-    <v-layout row wrap
-    >
-      <v-flex style="z-index: 1;"
-              v-bind="{ ['mx-0']: $vuetify.breakpoint.mdAndUp,
-                        ['xs8']: showMapFilter & $vuetify.breakpoint.mdAndUp,
-                        ['xs6']: showMapFilter & $vuetify.breakpoint.sm,
-                        ['pr-3']: showMapFilter & $vuetify.breakpoint.sm,
-                        ['xs12']: !showMapFilter,
-                        metadataListStyling }" >
+  <article class="ma-0 pa-0 fill-height">
 
-        <metadata-list-layout :listContent="filteredContent"
-                            :mapFilteringPossible="mapFilteringPossible"
-                            :placeHolderAmount="placeHolderAmount"
-                            @clickedTag="catchTagClicked"
-                            :selectedTagNames="selectedTagNames"
-                            :allTags="allTags"
-                            :showPlaceholder="keywordsPlaceholder"
-                            @clickedExpand="catchFilterExpandClicked"
-                            @clickedTagClose="catchTagCloseClicked"
-                            @clickedClear="catchTagCleared"
-                            :mapHeight="$vuetify.breakpoint.smAndDown ? smallMapHeight : largeMapHeight"
-                            :mapWidth="mapFilterWidth"
-                            :defaultListControls="controls"
-                            :enabledControls="enabledControls"
-                            useDynamicHeight  />
-      </v-flex>
+    <metadata-list :listContent="filteredContent"
+                    :mapFilteringPossible="mapFilteringPossible"
+                    :placeHolderAmount="placeHolderAmount"
+                    @clickedTag="catchTagClicked"
+                    :selectedTagNames="selectedTagNames"
+                    :allTags="allTags"
+                    :showPlaceholder="keywordsPlaceholder"
+                    @clickedExpand="catchFilterExpandClicked"
+                    @clickedTagClose="catchTagCloseClicked"
+                    @clickedClear="catchTagCleared"
+                    :mapWidth="mapFilterWidth"
+                    :defaultListControls="controls"
+                    :enabledControls="enabledControls"
+                    useDynamicHeight  />
 
-    </v-layout>
-  </v-container>
+  </article>
 </template>
 
 <script>
@@ -44,7 +28,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-25 10:35:57
+ * Last modified  : 2019-11-13 14:13:36
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -55,7 +39,6 @@ import {
   BROWSE_PAGENAME,
   BROWSE_PATH,
 } from '@/router/routeConsts';
-import MetadataListLayout from '@/components/Layouts/MetadataListLayout';
 import {
   SEARCH_METADATA,
   CLEAR_SEARCH_METADATA,
@@ -70,6 +53,7 @@ import {
   SET_BROWSE_SCROLL_POSITION,
 } from '@/store/mainMutationsConsts';
 
+import MetadataList from '@/components/Metadata/MetadataList';
 
 export default {
   beforeRouteEnter(to, from, next) {
@@ -267,19 +251,6 @@ export default {
 
       return height;
     },
-    mapFilterWidth() {
-      const sWidth = document.documentElement.clientWidth;
-
-      if (this.$vuetify.breakpoint.mdAndUp) {
-        return sWidth * 0.31;
-      }
-
-      if (this.$vuetify.breakpoint.sm) {
-        return sWidth * 0.5;
-      }
-
-      return sWidth;
-    },
     metadataListStyling() {
       const json = {
         xs8: this.mapFilteringPossible && this.showMapFilter,
@@ -318,7 +289,7 @@ export default {
     },
   },
   components: {
-    MetadataListLayout,
+    MetadataList,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
