@@ -3,7 +3,6 @@
   <metadata-list-layout ref="metadataListLayoutComponent"
               :topFilteringLayout="topFilteringLayout"
               :useDynamicHeight="useDynamicHeight"
-              :filteringComponentsHeight="filteringComponentsHeight"
               :showMapFilter="showMapFilter"
               :mapFilteringPossible="mapFilteringPossible"
               @onScroll="onScroll" >
@@ -29,9 +28,9 @@
     </template>
 
     <template v-slot:filterMap>
-      <filter-map-view class="fill-height"
+      <filter-map-view :class="!mapHeight ? 'fill-height' : ''"
+                        :style="mapHeight ? `height: ${mapHeight}px;` : 'height: 100%;'"
                         :content="mergePinnedAndFiltered"
-                        :totalHeight="mapHeight"
                         :pinnedIds="pinnedIds"
                         :topLayout="mapTopLayout"
                         @pointClicked="catchPointClicked"
@@ -161,7 +160,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-14 15:51:06
+ * Last modified  : 2019-11-14 18:03:58
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -418,19 +417,6 @@ export default {
 
       this.controlsActive = controlsActive;
     },
-    setFilteringComponentsHeight() {
-      const FilterKeywordViewHeight = 88;
-      const TheNavigationToolbar = 36;
-      const padding = 8;
-      let height = FilterKeywordViewHeight;
-
-      if (this.showMapFilter && this.$refs && this.$refs.metadataListLayoutFiltering) {
-        // around 455px
-        height = this.$refs.metadataListLayoutFiltering.clientHeight;
-      }
-
-      this.filteringComponentsHeight = height + TheNavigationToolbar + padding;
-    },
     setScrollPos(toPos) {
       if (this.$refs && this.$refs.metadataListLayoutComponent) {
         this.$refs.metadataListLayoutComponent.setScrollPos(toPos);
@@ -448,9 +434,9 @@ export default {
       this.infiniteHandler();
     },
   },
-  updated() {
-    this.setFilteringComponentsHeight();
-  },
+  // updated() {
+  //   this.setFilteringComponentsHeight();
+  // },
   data: () => ({
     noResultText: 'Nothing found for these search criterias.',
     suggestionText: 'Change the criterias or try one of these categories',
@@ -459,7 +445,7 @@ export default {
     unlockedIconString: null,
     localTags: [],
     virtualListContent: [],
-    filteringComponentsHeight: 150,
+    // filteringComponentsHeight: 150,
     vLoading: false,
     infiniteId: +new Date(),
     preloadingDistance: 150,

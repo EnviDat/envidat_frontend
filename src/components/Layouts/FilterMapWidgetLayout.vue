@@ -8,8 +8,7 @@
     </v-card-title>
 
 
-    <div v-if="!mdScreen"
-          class="py-0 my-0 "
+    <div class="py-0 my-0 "
           :class="mdScreen ? 'px-1 mb-1' : 'px-3'"
           :style="`background-color: ${$vuetify.theme.highlight};`" >
 
@@ -170,7 +169,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-11-13 17:29:34
+ * Last modified  : 2019-11-14 17:57:05
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
