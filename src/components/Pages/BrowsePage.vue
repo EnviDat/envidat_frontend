@@ -90,6 +90,7 @@ export default {
     },
     storeScroll(scrollY) {
       this.$store.commit(SET_BROWSE_SCROLL_POSITION, scrollY);
+      console.log('stored ' + scrollY);
     },
     resetScrollPos() {
       this.storeScroll(0);
