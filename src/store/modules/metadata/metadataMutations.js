@@ -61,7 +61,7 @@ function enhanceMetadatas(store, datasets) {
   for (let i = 0; i < datasets.length; i++) {
     let dataset = datasets[i];
     dataset = metaDataFactory.enhanceMetadataEntry(dataset, cardBGImages, categoryCards);
-    dataset.tags = metaDataFactory.enhanceTags(dataset.tags, categoryCards);
+    dataset = metaDataFactory.enhanceTags(dataset, categoryCards);
 
     dataset.location = metaDataFactory.createLocation(dataset);
 
