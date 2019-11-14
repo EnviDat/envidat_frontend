@@ -47,7 +47,6 @@ import { ADD_USER_NOTIFICATION } from '@/store/mainMutationsConsts';
 
 import metaDataFactory from '@/factories/metaDataFactory';
 import { solrResultToCKANJSON } from '@/factories/apiFactory';
-import globalMethods from '@/factories/globalMethods';
 
 
 function enhanceMetadatas(store, datasets) {
@@ -57,6 +56,8 @@ function enhanceMetadatas(store, datasets) {
   const { cardBGImages } = store.getters;
   const categoryCards = store.getters[`${METADATA_NAMESPACE}/categoryCards`];
   const enhancedContent = {};
+
+  // enhanceMetadatas.authors = metaDataFactory.extractAuthors(datasets);
 
   for (let i = 0; i < datasets.length; i++) {
     let dataset = datasets[i];
