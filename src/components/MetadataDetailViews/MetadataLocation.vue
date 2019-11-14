@@ -101,7 +101,6 @@ export default {
         height = this.smallSize;
       } else if (this.$vuetify.breakpoint.mdAndDown) {
         width = this.fullWidthSize;
-        height = this.mediumSize;
       }
 
       return {
