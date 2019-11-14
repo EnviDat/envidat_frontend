@@ -1,11 +1,12 @@
 <template>
 
-  <metadata-list-layout ref="subLayout"
+  <metadata-list-layout ref="metadataListLayoutComponent"
               :topFilteringLayout="topFilteringLayout"
               :useDynamicHeight="useDynamicHeight"
               :filteringComponentsHeight="filteringComponentsHeight"
               :showMapFilter="showMapFilter"
-              :mapFilteringPossible="mapFilteringPossible" >
+              :mapFilteringPossible="mapFilteringPossible"
+              @onScroll="onScroll" >
 
     <template v-slot:filterKeywords>
       <filter-keywords-view :compactLayout="$vuetify.breakpoint.smAndDown"
@@ -53,7 +54,7 @@
       </v-layout>
     </template>
 
-    <template v-slot:metadataListLayout>
+    <template v-slot:metadataListLayout >
       <transition-group v-if="!loading"
                         :name="$vuetify.breakpoint.mdAndUp ? 'itemfade' : ''"
                         ref="metadataListLayout"
@@ -143,6 +144,7 @@
         </v-flex>
 
       </transition-group>
+
     </template>
 
   </metadata-list-layout>
@@ -159,7 +161,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-13 17:02:03
+ * Last modified  : 2019-11-14 15:51:06
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -430,9 +432,12 @@ export default {
       this.filteringComponentsHeight = height + TheNavigationToolbar + padding;
     },
     setScrollPos(toPos) {
-      if (this.$refs && this.$refs.subLayout) {
-        this.$refs.subLayout.setScrollPos(toPos);
+      if (this.$refs && this.$refs.metadataListLayoutComponent) {
+        this.$refs.metadataListLayoutComponent.setScrollPos(toPos);
       }
+    },
+    onScroll(pos) {
+      this.$emit('onScroll', pos);
     },
   },
   watch: {
@@ -497,6 +502,5 @@ export default {
   .highlighted {
     box-shadow: #4db6ac 0px 0px 5px 5px;
   }
-
 
 </style>
