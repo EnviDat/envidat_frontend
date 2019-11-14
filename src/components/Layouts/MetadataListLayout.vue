@@ -39,7 +39,8 @@
         <v-flex ref="metadataListScroll"
                 grow
                 pb-0
-                :class="useDynamicHeight ? 'metadataListScroll' : ''"
+                v-on:scroll="onScroll()"
+                :class="useDynamicHeight ? 'listScroll' : ''"
                 :style="useDynamicHeight ? `height: calc(100vh - ${ filteringComponentsHeight }px);` : ''" >
           
           <slot name="metadataListPlaceholder" />
@@ -82,7 +83,8 @@
     </v-flex>
 
     <v-flex ref="metadataListScroll"
-            :class="useDynamicHeight ? 'metadataListScroll' : ''"
+            v-on:scroll="onScroll()"
+            :class="useDynamicHeight ? 'listScroll' : ''"
             :style="useDynamicHeight ? `height: calc(100vh - ${ filteringComponentsHeight }px);` : ''" >
       
       <slot name="metadataListPlaceholder" />
@@ -104,7 +106,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-13 16:33:28
+ * Last modified  : 2019-11-14 15:49:51
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -127,14 +129,17 @@ export default {
       if (this.$refs && this.$refs.metadataListScroll) {
         this.$refs.metadataListScroll.scrollTop = toPos;
       }
-    },    
+    },
+    onScroll() {
+      this.$emit('onScroll', this.$refs.metadataListScroll.scrollTop);
+    },
   },
 };
 </script>
 
 <style scoped>
 
-  .metadataListScroll {
+  .listScroll {
     overflow-y: auto;
     overflow-x: hidden;
     scroll-behavior: smooth;
