@@ -196,7 +196,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-08 14:59:23
+ * Last modified  : 2019-11-14 17:39:28
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -276,6 +276,11 @@ export default {
 
       return style;
     },
+  },
+  updated() {
+    this.$nextTick(() => {
+      this.$emit('checkSize');
+    });
   },
   methods: {
     catchTagClicked(tagId) {

@@ -1,13 +1,15 @@
 <template>
   <v-container tag="article"
-                fluid fill-height
+                fluid
                 pa-0 >
 
     <v-layout row wrap>
 
-      <v-flex xs12 lg10 offset-lg1
+      <v-flex xs12
               elevation-5
-              style="z-index: 1;" >
+              ref="header"
+              style="z-index: 1; position: absolute; left: 0;" 
+              :style="headerStyle" >
 
         <project-header :title="currentProject ? currentProject.title : null"
                         :titleImg="currentProject ? currentProject.image_display_url : null"
@@ -15,10 +17,13 @@
                         :showPlaceholder="loading"
                         @clickedBack="catchBackClicked" />
       </v-flex>
+    </v-layout>
+
+    <v-layout row wrap
+              :style="`z-index: 0; position: relative; top: ${headerHeight()}px`" >
 
       <v-flex xs12 lg10 offset-lg1
-              px-3
-              style="z-index: 0;" >
+              px-3 >
 
         <project-body v-bind="currentProject"
                       :showPlaceholder="loading" />
@@ -78,7 +83,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-13 13:07:52
+ * Last modified  : 2019-11-14 17:31:51
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -248,8 +253,30 @@ export default {
 
       return projectDatasets;
     },
+    headerStyle() {
+      let width = 82.25;
+      let margin = '0px 8.33333%';
+
+      if (this.$vuetify.breakpoint.mdAndDown) {
+        width = 100;
+        margin = '0';
+      }
+
+      if (this.$vuetify.breakpoint.lg) {
+        width = 83.25;
+      }
+
+      return `width: ${width}%; margin: ${margin};`;
+    },
   },
   methods: {
+    headerHeight() {
+      if (this.$refs && this.$refs.header) {
+        return this.$refs.header.clientHeight;
+      }
+
+      return 150;
+    },
     getMetadataContent(id) {
       if (!this.metadatasContent) {
         return null;
