@@ -20,48 +20,48 @@ globalMethods.methods.mixinMethods_enhanceMetadatas(metadataCards, cardImages, c
 
 import { configureViewport, INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 
-const vuetifyViewports = {
-  VuetifyLg: {
-    name: 'Vuetify LG',
-    styles: {
-      width: '1904px',
-      height: '100%',
-    },
-    type: 'desktop'
-  },
-  VuetifyXs: {
-    name: 'Vuetify XS',
-    styles: {
-      width: '600px',
-      height: '100%',
-    },
-    type: 'mobile'
-  },
-  VuetifySm: {
-    name: 'Vuetify SM',
-    styles: {
-      width: '960px',
-      height: '100%',
-    },
-    type: 'mobile'
-  },
-  VuetifyMd: {
-    name: 'Vuetify MD',
-    styles: {
-      width: '1264px',
-      height: '100%',
-    },
-    type: 'tablet'
-  },
-  VuetifyXl: {
-    name: 'Vuetify XL',
-    styles: {
-      width: '4096px',
-      height: '100%',
-    },
-    type: 'desktop'
-  }
-};
+// const vuetifyViewports = {
+//   VuetifyLg: {
+//     name: 'Vuetify LG',
+//     styles: {
+//       width: '1904px',
+//       height: '100%',
+//     },
+//     type: 'desktop'
+//   },
+//   VuetifyXs: {
+//     name: 'Vuetify XS',
+//     styles: {
+//       width: '600px',
+//       height: '100%',
+//     },
+//     type: 'mobile'
+//   },
+//   VuetifySm: {
+//     name: 'Vuetify SM',
+//     styles: {
+//       width: '960px',
+//       height: '100%',
+//     },
+//     type: 'mobile'
+//   },
+//   VuetifyMd: {
+//     name: 'Vuetify MD',
+//     styles: {
+//       width: '1264px',
+//       height: '100%',
+//     },
+//     type: 'tablet'
+//   },
+//   VuetifyXl: {
+//     name: 'Vuetify XL',
+//     styles: {
+//       width: '4096px',
+//       height: '100%',
+//     },
+//     type: 'desktop'
+//   }
+// };
 
 // configureViewport({
 addParameters({

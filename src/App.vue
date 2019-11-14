@@ -307,7 +307,7 @@ export default {
       if (!this.notifications) return;
 
       const keys = Object.keys(this.notifications);
-      if (keys && keys.length > this.maxNotifications) {
+      if (keys.length > this.maxNotifications) {
         this.$store.commit(TRIM_NOTIFICATIONS);
       }
     },

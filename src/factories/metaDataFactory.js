@@ -277,7 +277,7 @@ export default {
     location.name = dataset.name;
     location.title = dataset.title;
 
-    if (dataset && dataset.spatial) {
+    if (dataset.spatial) {
       location.geoJSON = dataset.spatial;
 
       // parseJSON because the geoJOSN from CKAN might be invalid!
