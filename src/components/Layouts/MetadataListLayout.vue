@@ -4,12 +4,14 @@
               pa-0
               grid-list-lg>
 
-  <v-layout v-if="!topFilteringLayout && showMapFilter"
+  <v-layout v-if="!topFilteringLayout && showMapFilter
+                  && $vuetify.breakpoint.mdAndUp"
             row wrap>
 
     <v-flex xs4 pb-0>
       <v-layout column
-                fill-height>
+                fill-height
+                ref="metadataListLayoutFiltering">
 
         <v-flex shrink
                 key="filterKeywords" >
@@ -106,7 +108,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-14 15:49:51
+ * Last modified  : 2019-11-14 17:50:28
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -122,9 +124,25 @@ export default {
       type: Boolean,
       default: false,
     },
-    filteringComponentsHeight: Number,
+    // filteringComponentsHeight: Number,
+  },
+  updated() {
+    this.setFilteringComponentsHeight();
   },
   methods: {
+    setFilteringComponentsHeight() {
+      const FilterKeywordViewHeight = 88;
+      const TheNavigationToolbar = 36;
+      const padding = 8;
+      let height = FilterKeywordViewHeight;
+
+      if (this.showMapFilter && this.$refs && this.$refs.metadataListLayoutFiltering) {
+        // around 455px
+        height = this.$refs.metadataListLayoutFiltering.clientHeight;
+      }
+
+      this.filteringComponentsHeight = height + TheNavigationToolbar + padding;
+    },
     setScrollPos(toPos) {
       if (this.$refs && this.$refs.metadataListScroll) {
         this.$refs.metadataListScroll.scrollTop = toPos;
@@ -134,6 +152,9 @@ export default {
       this.$emit('onScroll', this.$refs.metadataListScroll.scrollTop);
     },
   },
+  data: () => ({
+    filteringComponentsHeight: 150,
+  }),
 };
 </script>
 
