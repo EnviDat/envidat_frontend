@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-11-01 09:52:34
+ * Last modified  : 2019-11-14 15:50:43
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -174,12 +174,6 @@ export default {
       const f = Math.floor(Math.log(a) / Math.log(c));
 
       return parseFloat((a / Math.pow(c, f)).toFixed(d)) + ' ' + e[f];
-    },
-    /**
-     * @param {Number} pos Sets the position to the main scroll position of the main
-     */
-    mixinMethods_setScrollPosition(pos) {
-      window.scrollTo(0, pos);
     },
   },
 };
