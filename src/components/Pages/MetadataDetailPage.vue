@@ -8,6 +8,7 @@
               ref="header"
               style="z-index: 1; position: absolute; left: 0;" 
               :style="headerStyle" >
+
         <metadata-header v-bind="header"
                           :metadataId="metadataId"
                           :showPlaceholder="showPlaceholder"
@@ -88,6 +89,7 @@ import MetadataDetails from '@/components/Metadata/MetadataDetails';
 import MetadataCitation from '@/components/Metadata/MetadataCitation';
 import metaDataFactory from '@/factories/metaDataFactory';
 import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
+import MetadataAuthors from '@/components/Metadata/MetadataAuthors';
 
 // Might want to check https://css-tricks.com/use-cases-fixed-backgrounds-css/
 // for animations between the different parts of the Metadata
@@ -210,6 +212,7 @@ export default {
       this.resources = null;
       this.location = null;
       this.details = null;
+      this.authors = null;
 
       if (currentContent && currentContent.title !== undefined) {
 
@@ -230,6 +233,8 @@ export default {
         this.location = metaDataFactory.createLocation(currentContent);
 
         this.details = metaDataFactory.createDetails(currentContent);
+
+        this.authors = metaDataFactory.createAuthors(currentContent);
       }
 
       this.$set(components.MetadataHeader, 'genericProps', this.header);
@@ -238,11 +243,13 @@ export default {
       this.$set(components.MetadataResources, 'genericProps', this.resources);
       this.$set(components.MetadataLocation, 'genericProps', this.location);
       this.$set(components.MetadataDetails, 'genericProps', { details: this.details });
+      this.$set(components.MetadataAuthors, 'genericProps', { authors: this.authors });
 
       this.firstCol = [
         components.MetadataBody,
         components.MetadataCitation,
         components.MetadataLocation,
+        components.MetadataAuthors,
       ];
 
       this.secondCol = [
@@ -255,6 +262,7 @@ export default {
         components.MetadataCitation,
         components.MetadataResources,
         components.MetadataLocation,
+        components.MetadataAuthors,
         components.MetadataDetails,
       ];
 
@@ -371,6 +379,7 @@ export default {
     MetadataDetails,
     MetadataCitation,
     TwoColumnLayout,
+    MetadataAuthors,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
@@ -380,6 +389,7 @@ export default {
     resources: null,
     location: null,
     details: null,
+    authors: null,
     amountOfResourcesToShowDetailsLeft: 4,
     notFoundBackPath: 'browse',
     downloadIcon: null,

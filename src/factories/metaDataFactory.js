@@ -76,6 +76,34 @@ export default {
   getAuthorName(author){
     return `${author.given_name ? author.given_name : ''} ${author.name ? author.name : ''}`.trim();
   },
+  getAuthorNameLookup(author) {
+
+    let fullName = author.name.trim();
+  
+    if (fullName.indexOf('.') >= 0) {
+      // for names like 'Meile R.' usually the lastname comes first then
+      const lookupName = fullNameList[fullName];
+      if (lookupName) {
+        fullName = lookupName;
+      }
+    }
+  
+    const nameSpilts = fullName.split(' ');
+  
+    let firstName = nameSpilts[0];
+    let lastName = nameSpilts[1];
+  
+    if (nameSpilts.length == 3) {
+      // For Names like 'Dude van Dudehood'
+      lastName = nameSpilts[1] + ' ' + nameSpilts[2];
+    }
+  
+    return {
+      fullName,
+      firstName,
+      lastName,
+    };
+  },  
   getAuthorsString(dataset) {
     if (!dataset) {
       return null;
@@ -334,6 +362,138 @@ export default {
 
     return location;
   },
+  createAuthors(dataset) {
+    if (!dataset) {
+      return null;
+    }
+
+    let authors = null;
+
+    if (typeof dataset.author === 'string') {
+      authors = JSON.parse(dataset.author);
+    }
+
+    if (authors && authors instanceof Array) {
+      const authorObjs = [];
+
+      for (let i = 0; i < authors.length; i++) {
+          const author = authors[i];
+
+          const authorName = this.getAuthorNameLookup(author);
+
+          const id = {
+            type: author.identifier_scheme,
+            identifier: author.identifier,
+          };
+          
+          const dataCredit = this.getDataCredit(author);
+
+          authorObjs.push({ firstName: authorName.firstName,
+                            lastName: authorName.lastName,
+                            fullName: authorName.fullName,
+                            datasetCount: 1,
+                            affiliation: author.affiliation,
+                            id,
+                            email: author.email,
+                            dataCredit });
+      }
+
+      return authorObjs;
+    }
+
+    return null;
+  },
+  extractAuthors(datasets) {
+
+    const authorMap = {};
+    let authorCount = 0;
+  
+    for (let i = 0; i < datasets.length; i++) {
+      const dataset = datasets[i];
+  
+      const authors = getAuthors(dataset);
+   
+      if (authors) {
+        for (let j = 0; j < authors.length; j++) {
+          const author = authors[j];
+  
+          const authorName = author.fullName;
+          const existingAuthor = authorMap[authorName];
+  
+          if (existingAuthor){
+            existingAuthor.datasetCount += author.datasetCount;
+  
+            if (author.data_credit){
+              if (!existingAuthor.data_credit){
+                existingAuthor.data_credit = author.data_credit;
+              } else {
+                const keys = Object.keys(author.data_credit);
+  
+                for (let k = 0; k < keys.length; k++) {
+                  const key = keys[k];
+                  const value = author.data_credit[key];
+  
+                  let existingValue = existingAuthor.data_credit[key];
+  
+                  if (existingValue) {
+                    existingValue += value;
+                  } else {
+                    existingValue = value;
+                  }
+  
+                  // console.log('for ' + author.name + ' set ' + key + ' ' + existingValue);
+                  existingAuthor.data_credit[key] = existingValue;
+                }
+              }
+            }
+  
+            // console.log('for ' + author.name + ' updated ' + existingAuthor.count);
+            authorMap[authorName] = existingAuthor;
+          } else {
+            // console.log('for ' + author.name + ' set ' + author.count);
+            authorMap[authorName] = author;
+            authorCount++;
+          }
+        }
+      } else {
+        console.log('Dataset ' + dataset.title + ' id ' + dataset.id + ' has no authors?');
+      }
+  
+      console.log('extracted ' + authorCount + ' authors');
+    }
+  
+    return authorMap;
+  },
+  getDataCredit(author) {
+    if (!author.data_credit) {
+      return null;
+    }
+  
+    // key: dataCreditName, value: count
+    const dataCredits = {};
+  
+    if (author.data_credit instanceof Array){
+      for (let i = 0; i < author.data_credit.length; i++) {
+        const credit = author.data_credit[i];
+        
+        if (dataCredits[credit]){
+          let v = dataCredits[credit];
+          v += 1;
+          dataCredits[credit] = v;
+        } else {
+          dataCredits[credit] = 1;
+        }
+      }
+  
+    } else if (typeof author.data_credit === 'string') {
+      dataCredits[author.data_credit] = 1;
+    } else {
+      console.log('Unexpected type for author.data_credit ' + typeof author.data_credit);
+      throw new Error('Unexpected type for author.data_credit ' + typeof author.data_credit);
+    }
+  
+    return dataCredits;
+  },  
   convertTags(tagsStringArray, tagsEnabled) {
     const tagObjs = [];
 
