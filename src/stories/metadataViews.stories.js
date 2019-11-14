@@ -20,10 +20,6 @@ import MetadataCitation from '@/components/MetadataDetailViews/MetadataCitation.
 import MetadataDetails from '@/components/MetadataDetailViews/MetadataDetails.vue';
 import MetadataLocation from '@/components/MetadataDetailViews/MetadataLocation.vue';
 
-// import for css classes
-import App from '@/App.vue';
-import MetadataDetailPage from '@/components/Pages/MetadataDetailPage.vue';
-
 import doiIcon from '@/assets/icons/doi.png';
 import mailIcon from '@/assets/icons/mail.png';
 import contactIcon from '@/assets/icons/contact2.png';
@@ -60,7 +56,7 @@ const genericProps2 = {
 };
 
 const details1 = metaDataFactory.createDetails(metadata[0]);
-const details2 = metaDataFactory.createDetails(metadata[1]);
+// const details2 = metaDataFactory.createDetails(metadata[1]);
 
 
 const genericProps3 = {

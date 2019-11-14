@@ -167,22 +167,6 @@ export default {
 
       return '';
     },
-    hasRestrictedResources(metadata) {
-      if (!metadata || !metadata.resources || metadata.resources.length <= 0) {
-        return false;
-      }
-
-      /* eslint-disable consistent-return  */
-      metadata.resources.forEach((res) => {
-        if (res.restricted !== undefined
-            && (res.restricted.allowed_users !== undefined
-            || (res.restricted.level !== undefined && res.restricted.level !== 'public'))) {
-          return true;
-        }
-      });
-
-      return false;
-    },
     filterContent() {
       this.$store.dispatch(`metadata/${FILTER_METADATA}`, this.selectedTagNames);
     },

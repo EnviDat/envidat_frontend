@@ -190,8 +190,6 @@
 
 
 <script>
-import BaseIconButton from '@/components/BaseElements/BaseIconButton';
-// import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 import DataCreditLayout from '@/components/Layouts/DataCreditLayout';
 
 // checkout skeleton
@@ -199,7 +197,6 @@ import DataCreditLayout from '@/components/Layouts/DataCreditLayout';
 
 export default {
   components: {
-    BaseIconButton,
     DataCreditLayout,
   },
   props: {

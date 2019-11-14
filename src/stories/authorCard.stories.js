@@ -1,38 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from "@storybook/vue";
 import { withKnobs, text, boolean, number } from '@storybook/addon-knobs';
-
-import Vue from "vue";
-import {
-  VBtn,
-  VTooltip,
-  VIcon,
-  VImg,
-  VLayout,
-  VFlex,
-  VCard,
-  VCardText,
-  VCardActions,
-  VCardTitle,
-  VCardMedia,
-  VChip,
-  VSpacer,
-  VHover
-} from "vuetify/lib";
-
-Vue.component("v-hover", VHover);
-Vue.component("v-card", VCard);
-Vue.component("v-card-text", VCardText);
-Vue.component("v-card-actions", VCardActions);
-Vue.component("v-card-title", VCardTitle);
-Vue.component("v-card-media", VCardMedia);
-Vue.component("v-chip", VChip);
-Vue.component("v-spacer", VSpacer);
-Vue.component("v-btn", VBtn);
-Vue.component("v-icon", VIcon);
-Vue.component("v-img", VImg);
-Vue.component("v-layout", VLayout);
-Vue.component("v-flex", VFlex);
+import './js/vuetify-components';
 
 import AuthorCard from "@/components/Cards/AuthorCard.vue";
 
