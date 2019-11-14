@@ -1,7 +1,8 @@
 <template>
   <article class="ma-0 pa-0 fill-height">
 
-    <metadata-list :listContent="filteredContent"
+    <metadata-list ref="metadataList"
+                    :listContent="filteredContent"
                     :mapFilteringPossible="mapFilteringPossible"
                     :placeHolderAmount="placeHolderAmount"
                     @clickedTag="catchTagClicked"
@@ -14,21 +15,22 @@
                     :defaultListControls="controls"
                     :enabledControls="enabledControls"
                     :useDynamicHeight="true"
-                    :mapTopLayout="true"  />
+                    :mapTopLayout="true"
+                    @onScroll="storeScroll" />
 
   </article>
 </template>
 
 <script>
 /**
- * The browse page of EnviDat. It consists of metadataListLayout
+ * The browse page of EnviDat. It consists of metadataList
  * but only all the logic for the interaction with the list.
  *
  * @summary browse page
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-13 16:31:03
+ * Last modified  : 2019-11-14 15:56:58
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -56,6 +58,7 @@ import {
 import MetadataList from '@/components/Metadata/MetadataList';
 
 export default {
+  name: 'BrowsePage',
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.commit(SET_CURRENT_PAGE, BROWSE_PAGENAME);
@@ -63,11 +66,6 @@ export default {
     });
   },
   mounted() {
-    const that = this;
-    window.onscroll = () => {
-      that.storeScroll(window.scrollY);
-    };
-
     this.checkRouteChanges(null);
   },
   beforeDestroy() {
@@ -93,9 +91,9 @@ export default {
     storeScroll(scrollY) {
       this.$store.commit(SET_BROWSE_SCROLL_POSITION, scrollY);
     },
-    resetScrollPosition() {
+    resetScrollPos() {
       this.storeScroll(0);
-      this.mixinMethods_setScrollPosition(0);
+      this.setScrollPos(0);
     },
     catchTagClicked(tagName) {
       if (!this.mixinMethods_isTagSelected(tagName)) {
@@ -183,13 +181,13 @@ export default {
       if (isBackNavigation) {
         // use a delayed scroll position setup because the list as to be loaded first
         setTimeout(() => {
-          this.mixinMethods_setScrollPosition(this.browseScrollPosition);
+          this.setScrollPos(this.browseScrollPosition);
         }, this.scrollPositionDelay);
       } else {
         if (checkSearchTriggering) {
           if (this.searchTerm && this.searchTerm.length > 0) {
             this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm, this.selectedTagNames);
-            this.resetScrollPosition();
+            this.resetScrollPos();
 
             // prevent immediately filtering, the search results
             // will be filtered via searchingMetadatasContentOK watch
@@ -199,16 +197,21 @@ export default {
           // the searchTerm was changed to empty -> clear the search results
           this.$store.commit(`metadata/${CLEAR_SEARCH_METADATA}`);
           // and manually reset the scrolling
-          this.resetScrollPosition();
+          this.resetScrollPos();
         }
 
         if (tagsChanged) {
           // in case the tags have changed the scroll needs to be reset
-          this.resetScrollPosition();
+          this.resetScrollPos();
         }
 
         // filter changes of the url except a change of the search term
         this.filterContent();
+      }
+    },
+    setScrollPos(toPos) {
+      if (this.$refs && this.$refs.metadataList) {
+        this.$refs.metadataList.setScrollPos(toPos);
       }
     },
   },
@@ -276,7 +279,7 @@ export default {
     },
     isFilteringContent() {
       if (!this.isFilteringContent) {
-        this.mixinMethods_setScrollPosition(this.browseScrollPosition);
+        this.setScrollPos(this.browseScrollPosition);
       }
     },
     metadatasContent() {
