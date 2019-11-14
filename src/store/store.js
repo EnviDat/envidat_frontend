@@ -31,6 +31,8 @@ import {
   METEO,
 } from '@/store/categoriesConsts';
 
+import { LISTCONTROL_MAP_ACTIVE } from '@/store/metadataMutationsConsts';
+
 const globalMethods = require('@/factories/globalMethods');
 
 const errReport = process.env.VUE_APP_ERROR_REPORTING_ENABLED;
@@ -51,8 +53,7 @@ const store = new Vuex.Store({
     appBGImage: '',
     cardBGImages: {},
     iconImages: {},
-    // controls default: [1] means the second [0,1] is active -> map filtering is active per default
-    controls: [1],
+    controls: [LISTCONTROL_MAP_ACTIVE],
     browseScrollPosition: 0,
     outdatedVersion: false,
     newVersion: process.env.VUE_APP_VERSION,

@@ -6,11 +6,12 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-10-23 16:11:39
+ * Last modified  : 2019-10-31 15:52:39
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
+
 
 export default {
   enhanceSubprojectsFromExtras(projects) {

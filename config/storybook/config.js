@@ -16,7 +16,7 @@ metadataCards.forEach(element => {
   element.tags = metaDataFactory.convertTags(element.tags, true);
 });
 
-globalMethods.methods.mixinMethods_enhanceMetadatas(metadataCards, cardImages, categoryCards);
+metaDataFactory.enhanceMetadatas(metadataCards, cardImages, categoryCards);
 
 import { configureViewport, INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 
