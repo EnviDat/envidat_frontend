@@ -123,13 +123,13 @@
  * file 'LICENSE.txt', which is part of this source code package.
 */
 
-import MMarkdownPreview from 'm-markdown-preview';
+// import MMarkdownPreview from 'm-markdown-preview';
 // import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 export default {
   components: {
     // BaseIconButton,
-    MMarkdownPreview,
+    // MMarkdownPreview,
   },
   props: {
     subProjects: Array,

@@ -31,9 +31,6 @@
  * file 'LICENSE.txt', which is part of this source code package.
 */
 
-import MMarkdownPreview from 'm-markdown-preview';
-import BaseTitleImg from '@/components/BaseElements/BaseTitleImg';
-
 export default {
   name: 'ImgAndTextLayout',
   props: {

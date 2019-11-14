@@ -15,7 +15,7 @@ Vue.mixin(globalMethods);
 
 import ResourceCard from "@/components/Cards/ResourceCard.vue";
 import ResourceCardPlaceholder from "@/components/Cards/ResourceCardPlaceholder.vue";
-import App from "@/App.vue";
+
 import fileSizeIcon from "@/assets/icons/fileSize.png";
 import doiIcon from "@/assets/icons/doi.png";
 import linkIcon from "@/assets/icons/link.png";

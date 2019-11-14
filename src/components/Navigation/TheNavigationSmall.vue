@@ -70,7 +70,7 @@ export default {
       this.navItems.forEach((el) => {
         if (el.icon === 'menu') {
           actives.push(el);
-        } if (el.active) {
+        } else if (el.active) {
           actives.push(el);
         }
       });
