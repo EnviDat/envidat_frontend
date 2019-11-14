@@ -2,10 +2,12 @@
   <v-container fluid
                 tag="article"
                 pa-0 >
-    <v-layout row wrap >
-      <v-flex xs12 lg10 offset-lg1
+    <v-layout row wrap  >
+      <v-flex xs12
               elevation-5
-              style="z-index: 1;" >
+              ref="header"
+              style="z-index: 1; position: absolute; left: 0;" 
+              :style="headerStyle" >
         <metadata-header v-bind="header"
                           :metadataId="metadataId"
                           :showPlaceholder="showPlaceholder"
@@ -15,11 +17,13 @@
                           :licenseIcon="licenseIcon"
                           @clickedTag="catchTagClicked"
                           @clickedBack="catchBackClicked"
-                          @clickedAuthor="catchAuthorClicked" />
+                          @clickedAuthor="catchAuthorClicked"
+                          @checkSize="$forceUpdate()" />
       </v-flex>
     </v-layout>
 
-    <two-column-layout :first-column="firstColumn"
+    <two-column-layout :style="`position: relative; top: ${headerHeight()}px`"
+                        :first-column="firstColumn"
                         :second-column="secondColumn"
                         :show-placeholder="showPlaceholder" >
 
@@ -56,7 +60,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-23 18:11:41
+ * Last modified  : 2019-11-14 17:41:06
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -167,8 +171,30 @@ export default {
     secondColumn() {
       return this.$vuetify.breakpoint.mdAndUp ? this.secondCol : [];
     },
+    headerStyle() {
+      let width = 82.25;
+      let margin = '0px 8.33333%';
+
+      if (this.$vuetify.breakpoint.mdAndDown) {
+        width = 100;
+        margin = '0';
+      }
+
+      if (this.$vuetify.breakpoint.lg) {
+        width = 83.25;
+      }
+
+      return `width: ${width}%; margin: ${margin};`;
+    },
   },
   methods: {
+    headerHeight() {
+      if (!this.showPlaceholder && this.$refs && this.$refs.header) {
+        return this.$refs.header.clientHeight;
+      }
+
+      return 220;
+    },
     /**
      * @description
      */
