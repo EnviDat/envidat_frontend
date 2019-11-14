@@ -1,6 +1,6 @@
 {
   "name": "envidat.ch",
-  "version": "0.6.44",
+  "version": "0.6.5",
   "private": true,
   "description": "Envidat frontend with vue",
   "author": "Dominik Haas-Artho",
@@ -30,7 +30,7 @@
     "vue-infinite-loading": "^2.4.4",
     "vue-router": "^3.0.3",
     "vue2-filters": "^0.7.0",
-    "vuetify": "^1.5.5",
+    "vuetify": "^1.5.21",
     "vuex": "^3.0.1",
     "vuex-localstorage": "^1.0.0"
   },

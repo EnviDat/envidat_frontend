@@ -45,8 +45,9 @@
     <v-content>
       <v-container fluid
                     pa-2 
-                    :style="currentPageIsBrowsePage ? 'height: 100%;' : 'height: calc(100vh - 36px); overflow: auto;'">
-        <v-layout column>
+                    fill-height
+                    :style="currentPageIsBrowsePage ? '' : 'height: calc(100vh - 36px); overflow: auto;'" >
+        <v-layout column fill-height>
           <v-flex xs12 mx-0 >
 
             <transition name="fade" mode="out-in">
@@ -82,7 +83,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-25 13:38:33
+ * Last modified  : 2019-11-13 16:54:22
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -472,7 +473,7 @@ export default {
 }
 
 .metadataInfoIcon {
-  opacity: 0.75;
+  opacity: 0.7;
 }
 
 .envidatBadge span {
@@ -487,7 +488,7 @@ export default {
   height: 1.3rem !important;
   font-size: 0.65rem !important;
   margin: 1px 2px !important;
-  opacity: 0.85 !important;
+  /* opacity: 0.85 !important; */
 }
 
 .enviDatSnackbar > .v-snack__wrapper > .v-snack__content {
@@ -508,8 +509,8 @@ export default {
   cursor: pointer !important;
 }
 
-.filterTag {
-  opacity: 0.7;
+.authorTag span {
+  font-size: 14px !important;
 }
 
 .chip__content span {

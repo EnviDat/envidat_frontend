@@ -14,8 +14,8 @@
                         style="position: absolute; top: 0px; right: 0px; z-index: 2;"
                         material-icon-name="close"
                         icon-color="primary"
-                        :color="(showPlaceholder || (!showPlaceholder && !metadataTitle)) ? 'white' : 'primary'"
-                        :outlined="(!showPlaceholder && (metadataTitle &&  metadataTitle.length > 0))"
+                        color="primary"
+                        outlined
                         tool-tip-text="Close Metadata"
                         :tool-tip-bottom="true"
                         @clicked="catchBackClicked" />
@@ -26,12 +26,13 @@
         <v-flex v-if="metadataTitle"
                 xs12 >
           <div class="headerTitle"
+                :style="$vuetify.breakpoint.xsOnly ? 'line-height: 1.2em;' : ''"
                 :class="{ 'py-2': $vuetify.breakpoint.mdAndUp,
                           'py-0': $vuetify.breakpoint.smAndDown,
-                          'display-2': $vuetify.breakpoint.lgAndUp,
-                          'display-1': $vuetify.breakpoint.mdOnly,
+                          'display-2': $vuetify.breakpoint.xlAndUp,
+                          'display-1': $vuetify.breakpoint.mdAndUp,
                           'headline': $vuetify.breakpoint.smOnly,
-                          'title': $vuetify.breakpoint.xsOnly,
+                          'subheading': $vuetify.breakpoint.xsOnly,
                         }" >
             {{ metadataTitle }}
           </div>
@@ -68,9 +69,9 @@
           <v-layout row wrap >
             <tag-chip-author v-for="author in authors"
                               :key="author.name"
-                              :name="author.name.trim()"
+                              :name="authorName(author)"
                               :tooltipText="authorToolTipText"
-                              @clicked="catchAuthorClicked($event, author.name.trim())" />
+                              @clicked="catchAuthorClicked($event, authorName(author))" />
           </v-layout>
         </v-flex>
 
@@ -195,7 +196,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-23 15:59:39
+ * Last modified  : 2019-11-14 17:39:28
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -206,6 +207,8 @@ import TagChipAuthor from '@/components/Cards/TagChipAuthor';
 import TagChipPlaceholder from '@/components/Cards/TagChipPlaceholder';
 import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
+
+import metaDataFactory from '@/factories/metaDataFactory';
 
 export default {
   components: {
@@ -274,6 +277,11 @@ export default {
       return style;
     },
   },
+  updated() {
+    this.$nextTick(() => {
+      this.$emit('checkSize');
+    });
+  },
   methods: {
     catchTagClicked(tagId) {
       this.$emit('clickedTag', tagId);
@@ -288,6 +296,7 @@ export default {
       const iconflip = this.dark ? `${icon}_w` : icon;
       return iconflip;
     },
+    authorName: metaDataFactory.getAuthorName,
   },
 };
 </script>

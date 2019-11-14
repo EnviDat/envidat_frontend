@@ -14,11 +14,11 @@ import { storiesOf } from '@storybook/vue';
 import { action } from '@storybook/addon-actions';
 import './js/vuetify-components';
 
-import MetadataHeader from '@/components/MetadataDetailViews/MetadataHeader.vue';
-import MetadataBody from '@/components/MetadataDetailViews/MetadataBody.vue';
-import MetadataCitation from '@/components/MetadataDetailViews/MetadataCitation.vue';
-import MetadataDetails from '@/components/MetadataDetailViews/MetadataDetails.vue';
-import MetadataLocation from '@/components/MetadataDetailViews/MetadataLocation.vue';
+import MetadataHeader from '@/components/Metadata/MetadataHeader.vue';
+import MetadataBody from '@/components/Metadata/MetadataBody.vue';
+import MetadataCitation from '@/components/Metadata/MetadataCitation.vue';
+import MetadataDetails from '@/components/Metadata/MetadataDetails.vue';
+import MetadataLocation from '@/components/Metadata/MetadataLocation.vue';
 
 import doiIcon from '@/assets/icons/doi.png';
 import mailIcon from '@/assets/icons/mail.png';
