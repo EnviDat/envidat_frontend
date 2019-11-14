@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { configure, addDecorator } from '@storybook/vue';
+import { configure, addDecorator, addParameters } from '@storybook/vue';
 import '@/plugins/vuetify';
 import Vuetify, { VApp, VContainer, VLayout, VFlex } from 'vuetify/lib';
 
@@ -24,46 +24,54 @@ const vuetifyViewports = {
   VuetifyLg: {
     name: 'Vuetify LG',
     styles: {
-      width: '1904px'
+      width: '1904px',
+      height: '100%',
     },
     type: 'desktop'
   },
   VuetifyXs: {
     name: 'Vuetify XS',
     styles: {
-      width: '600px'
+      width: '600px',
+      height: '100%',
     },
     type: 'mobile'
   },
   VuetifySm: {
     name: 'Vuetify SM',
     styles: {
-      width: '960px'
+      width: '960px',
+      height: '100%',
     },
     type: 'mobile'
   },
   VuetifyMd: {
     name: 'Vuetify MD',
     styles: {
-      width: '1264px'
+      width: '1264px',
+      height: '100%',
     },
     type: 'tablet'
   },
   VuetifyXl: {
     name: 'Vuetify XL',
     styles: {
-      width: '4096px'
+      width: '4096px',
+      height: '100%',
     },
     type: 'desktop'
   }
 };
 
-configureViewport({
-  defaultViewport: 'VuetifyMd',
-  viewports: {
-    ...vuetifyViewports,
-    ...INITIAL_VIEWPORTS
-  }
+// configureViewport({
+addParameters({
+  viewport : {
+    // defaultViewport: 'VuetifyMd',
+    viewports: {
+      // ...vuetifyViewports,
+      ...INITIAL_VIEWPORTS
+    },
+  },
 });
 
 
@@ -76,7 +84,7 @@ Vue.component('v-flex', VFlex);
 addDecorator(() => ({
   // template: '<v-app><story/></v-app>'
   template: `<v-app>
-    <v-container fluid>
+    <v-container fluid pa-2 grid-list-xs>
       <v-layout row wrap>
         <v-flex>
           <story/>

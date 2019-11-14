@@ -22,7 +22,8 @@
 
       <v-btn-toggle v-model="controlsActive"
                     multiple >
-        <v-btn flat
+        <v-btn v-if="isEnabledControl(0)"
+                flat
                 @click="catchControlClick(0)"
                 :class="isActiveControl(0) ? 'highlight' : ''"
                 :style="compactLayout ? 'height: 32px !important' : ''" >
@@ -30,13 +31,31 @@
                 :src="listViewIcon" >
         </v-btn>
 
-        <v-btn flat
+        <v-btn v-if="isEnabledControl(1)"
+                flat
                 @click="catchControlClick(1)"
                 :class="isActiveControl(1) ? 'highlight' : ''"
                 :style="compactLayout ? 'height: 32px !important' : ''" >
           <img class="envidatIcon"
                 :src="mapIcon" >
         </v-btn>
+
+        <v-btn v-if="isEnabledControl(2)"
+                flat
+                @click="catchControlClick(2)"
+                :class="isActiveControl(2) ? 'highlight' : ''"
+                :style="compactLayout ? 'height: 32px !important' : ''" >
+          <v-icon>view_comfortable</v-icon>
+        </v-btn>
+
+        <v-btn v-if="isEnabledControl(3)"
+                flat
+                @click="catchControlClick(3)"
+                :class="isActiveControl(3) ? 'highlight' : ''"
+                :style="compactLayout ? 'height: 32px !important' : ''" >
+          <v-icon>view_stream</v-icon>
+        </v-btn>
+
       </v-btn-toggle>
     </v-card-actions>
   </v-card>
@@ -51,7 +70,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-23 14:40:43
+ * Last modified  : 2019-10-24 17:25:17
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -64,6 +83,7 @@ export default {
     compactLayout: Boolean,
     label: String,
     controls: Array,
+    enabledControls: Array,
     flat: Boolean,
   },
   data: () => ({
@@ -90,6 +110,9 @@ export default {
   methods: {
     isActiveControl(number) {
       return this.controlsActive.includes(number);
+    },
+    isEnabledControl(number) {
+      return this.enabledControls.includes(number);
     },
     catchControlClick(number) {
       this.$emit('controlsChanged', number);

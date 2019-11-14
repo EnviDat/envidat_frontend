@@ -52,6 +52,7 @@
                                 @clickedTagClose="catchTagCloseClicked"
                                 @clickedClear="catchTagCleared"
                                 :defaultListControls="controls"
+                                :enabledControls="enabledControls"
                                 :mapHeight="mapFilterHeight" />
           </div>
 
@@ -76,7 +77,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-23 16:29:34
+ * Last modified  : 2019-10-24 16:55:39
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -329,6 +330,7 @@ export default {
     placeHolderAmount: 3,
     selectedTagNames: [],
     controls: [1],
+    enabledControls: [0, 1],
     mapFilterHeight: 400,
     metadataListTitle: 'Datasets',
     metadataEmptyText: 'There are no datasets connected with the project',
