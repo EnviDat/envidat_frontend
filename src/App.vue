@@ -85,7 +85,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-15 14:43:10
+ * Last modified  : 2019-11-15 15:18:53
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -118,6 +118,11 @@ import {
   TRIM_NOTIFICATIONS,
   HIDE_NOTIFICATIONS,
 } from '@/store/mainMutationsConsts';
+
+import { POLICIES_NAMESPACE } from '@/store/policiesMutationsConsts';
+import { GUIDELINES_NAMESPACE } from '@/store/guidelinesMutationsConsts';
+import { PROJECTS_NAMESPACE } from '@/store/projectsMutationsConsts';
+
 import TheNavigation from '@/components/Navigation/TheNavigation';
 import TheNavigationSmall from '@/components/Navigation/TheNavigationSmall';
 import TheNavigationToolbar from '@/components/Navigation/TheNavigationToolbar';
@@ -242,6 +247,9 @@ export default {
       currentMetadataContent: `${METADATA_NAMESPACE}/currentMetadataContent`,
       filteredContent: `${METADATA_NAMESPACE}/filteredContent`,
       isFilteringContent: `${METADATA_NAMESPACE}/isFilteringContent`,
+      policiesLoading: `${POLICIES_NAMESPACE}/loading`,
+      guidelinesLoading: `${GUIDELINES_NAMESPACE}/loading`,
+      projectsLoading: `${PROJECTS_NAMESPACE}/loading`,
       currentPage: 'currentPage',
       appBGImage: 'appBGImage',
       outdatedVersion: 'outdatedVersion',
@@ -251,7 +259,8 @@ export default {
       maxNotifications: 'maxNotifications',
     }),
     loading() {
-      return this.loadingMetadatasContent || this.searchingMetadatasContent || this.isFilteringContent;
+      return this.loadingMetadatasContent || this.searchingMetadatasContent || this.isFilteringContent
+          || this.projectsLoading || this.policiesLoading || this.guidelinesLoading;
     },
     searchTerm() {
       return this.$route.query.search;
