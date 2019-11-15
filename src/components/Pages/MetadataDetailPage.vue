@@ -18,7 +18,7 @@
                           @clickedTag="catchTagClicked"
                           @clickedBack="catchBackClicked"
                           @clickedAuthor="catchAuthorClicked"
-                          @checkSize="$forceUpdate()"
+                          @checkSize="resize"
                           :expanded="headerExpanded" />
       </v-flex>
     </v-layout>
@@ -189,14 +189,17 @@ export default {
       return `width: ${width}%; margin: ${margin};`;
     },
     headerExpanded() {
-      if (this.$vuetify.breakpoint.xs) {
-        return this.appScrollPosition < 10;
+      if (this.$vuetify.breakpoint.mdAndUp) {
+        return true;
       }
 
-      return this.appScrollPosition < 100;
+      return this.appScrollPosition < 20;
     },
   },
   methods: {
+    resize() {
+      this.$forceUpdate();
+    },
     headerHeight() {
       if (!this.showPlaceholder && this.$refs && this.$refs.header) {
         return this.$refs.header.clientHeight;

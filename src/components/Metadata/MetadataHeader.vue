@@ -57,8 +57,9 @@
           </div>
         </v-flex>
 
-        <v-expand-transition>
-          <div v-show="expanded">
+        <!-- <v-expand-transition @transitionend="expandFinished" @animationend="expandFinished" > -->
+          <v-flex v-show="expanded"
+                  xs12 >
 
             <v-flex v-if="authors"
                     xs12
@@ -182,8 +183,8 @@
                                       class="headerTag" />
               </v-layout>
             </v-flex>
-          </div>
-        </v-expand-transition>
+          </v-flex>
+        <!-- </v-expand-transition> -->
 
       </v-layout>
 
@@ -304,6 +305,9 @@ export default {
     });
   },
   methods: {
+    // expandFinished() {
+    //   console.log('finished');
+    // },
     catchTagClicked(tagId) {
       this.$emit('clickedTag', tagId);
     },
