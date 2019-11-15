@@ -15,11 +15,9 @@
 
         <v-list-tile v-show="menuItem.active || item.icon === 'menu'"
                       class="tileNoPadding"
-                      :class="{
-                              'pt-4': item.icon === 'menu' && menuItem.active,
-                              'pt-1': item.icon === 'menu' && !menuItem.active,
-                              'pt-2': item.icon === 'envidat'
-                              }" >
+                      :class="{ 'pt-4': item.icon === 'menu' && menuItem.active,
+                                'pt-1': item.icon === 'menu' && !menuItem.active,
+                                'pt-2': item.icon === 'envidat' }" >
 
           <v-list-tile-action v-if="item.icon === 'envidat'"
                               style="margin-left: 5px;">
