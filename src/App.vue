@@ -64,7 +64,7 @@
       <v-dialog v-model="showReloadDialog" persistent max-width="290">
         <v-card>
           <v-card-title class="headline">New Version Available!</v-card-title>
-          <v-card-text>{{ dialogVersionText }}</v-card-text>
+          <v-card-text>{{ dialogVersionText() }}</v-card-text>
           <v-card-actions>
             <v-spacer />
             <v-btn color="green darken-1" flat @click="reloadApp()">Reload</v-btn>
@@ -85,7 +85,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-13 16:54:22
+ * Last modified  : 2019-11-15 14:43:10
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -228,7 +228,7 @@ export default {
       }
     },
     dialogVersionText() {
-      return `You are using the version ${process.env.VUE_APP_VERSION}, but there is are newer version available (${this.newVersion}). Please reload to get the latest verison of EnviDat.`;
+      return `You are using the version ${this.appVersion}, but there is are newer version available (${this.newVersion}). Please reload to get the latest verison of EnviDat.`;
     },
   },
   computed: {
