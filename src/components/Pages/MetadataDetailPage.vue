@@ -18,7 +18,8 @@
                           @clickedTag="catchTagClicked"
                           @clickedBack="catchBackClicked"
                           @clickedAuthor="catchAuthorClicked"
-                          @checkSize="$forceUpdate()" />
+                          @checkSize="$forceUpdate()"
+                          :expanded="headerExpanded" />
       </v-flex>
     </v-layout>
 
@@ -140,6 +141,7 @@ export default {
       idRemapping: `${METADATA_NAMESPACE}/idRemapping`,
       iconImages: 'iconImages',
       cardBGImages: 'cardBGImages',
+      appScrollPosition: 'appScrollPosition',
     }),
     /**
      * @returns {Number} Size of the metadatasContent
@@ -186,6 +188,13 @@ export default {
 
       return `width: ${width}%; margin: ${margin};`;
     },
+    headerExpanded() {
+      if (this.$vuetify.breakpoint.xs) {
+        return this.appScrollPosition < 10;
+      }
+
+      return this.appScrollPosition < 100;
+    },
   },
   methods: {
     headerHeight() {
@@ -193,7 +202,7 @@ export default {
         return this.$refs.header.clientHeight;
       }
 
-      return 220;
+      return 150;
     },
     /**
      * @description

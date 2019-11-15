@@ -69,10 +69,6 @@ export default {
   mounted() {
     this.checkRouteChanges(null);
   },
-  beforeDestroy() {
-    // destory the scrolling hook that it won't use the scroll of another page
-    window.onscroll = null;
-  },
   methods: {
     loadRouteTags() {
       const tagsEncoded = this.$route.query.tags ? this.$route.query.tags : '';

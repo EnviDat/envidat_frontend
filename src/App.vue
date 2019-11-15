@@ -46,8 +46,10 @@
       <v-container fluid
                     pa-2 
                     fill-height
-                    :style="currentPageIsBrowsePage ? '' : 'height: calc(100vh - 36px); overflow: auto;'" >
-        <v-layout column fill-height>
+                    v-on:scroll="updateScroll()"
+                    ref="appContainer"
+                    :style="currentPageIsBrowsePage ? '' : 'height: calc(100vh - 36px); overflow: scroll;'" >
+        <v-layout column >
           <v-flex xs12 mx-0 >
 
             <transition name="fade" mode="out-in">
@@ -112,6 +114,7 @@ import {
 } from '@/store/metadataMutationsConsts';
 import {
   SET_CONFIG,
+  SET_APP_SCROLL_POSITION,
   TRIM_NOTIFICATIONS,
   HIDE_NOTIFICATIONS,
 } from '@/store/mainMutationsConsts';
@@ -136,6 +139,14 @@ export default {
     this.updateActiveStateOnNavItems();
   },
   methods: {
+    updateScroll() {
+      if (this.$refs && this.$refs.appContainer) {
+        this.storeScroll(this.$refs.appContainer.scrollTop);
+      }
+    },
+    storeScroll(scrollY) {
+      this.$store.commit(SET_APP_SCROLL_POSITION, scrollY);
+    },
     updateActiveStateOnNavItems() {
       // console.log(this.currentPage);
 
