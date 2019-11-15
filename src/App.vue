@@ -15,7 +15,7 @@
                             @clickedReport="catchReportClicked(notification.key)" />
       </div>
 
-    <the-navigation v-if="$vuetify.breakpoint.mdAndUp"
+    <the-navigation v-if="!showSmallNavigation"
                     :style="`z-index: ${NavigationZIndex}`"
                     :mini="!this.menuItem.active"
                     :navItems="navItems"
@@ -23,7 +23,7 @@
                     @menuClick="catchMenuClicked"
                     @itemClick="catchItemClicked" />
 
-    <the-navigation-small v-if="$vuetify.breakpoint.smAndDown"
+    <the-navigation-small v-if="showSmallNavigation"
                           :navItems="navItems"
                           :style="`z-index: ${NavigationZIndex}`"
                           class="envidatSmallNavigation elevation-3"
@@ -85,7 +85,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-15 15:18:53
+ * Last modified  : 2019-11-15 15:31:25
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -192,6 +192,11 @@ export default {
       if (this.$route.name === item.pageName) {
         return;
       }
+
+      if (this.showSmallNavigation) {
+        this.catchMenuClicked();
+      }
+
       this.$router.push({ path: item.path, query: '' });
     },
     catchSearchClicked(search) {
@@ -273,6 +278,9 @@ export default {
     },
     showToolbar() {
       return !this.currentPageIsLandingPage || !this.$vuetify.breakpoint.smAndDown;
+    },
+    showSmallNavigation() {
+      return this.$vuetify.breakpoint.smAndDown;
     },
     searchCount() {
       return this.filteredContent !== undefined ? Object.keys(this.filteredContent).length : 0;
