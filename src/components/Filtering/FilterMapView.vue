@@ -83,7 +83,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-11-14 18:08:43
+ * Last modified  : 2019-11-20 17:14:51
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -206,7 +206,7 @@ export default {
       this.markerCount = 0;
 
       if (this.map) {
-        this.map.on('locationerror', () => this.errorLoadingLeaflet = true);
+        this.map.on('locationerror', () => { this.errorLoadingLeaflet = true; });
 
         this.addOpenStreetMapLayer(this.map);
         this.updateMap();
@@ -416,15 +416,9 @@ export default {
 
       elements.forEach((el) => {
         if ((show && !checkBounds) || (show && checkBounds && !el.getBounds().contains(currentBounds))) {
-          try {
-            el.addTo(this.map);
-          } catch (error) {
-          }
+          el.addTo(this.map);
         } else {
-          try {
-            this.map.removeLayer(el);
-          } catch (error) {
-          }
+          this.map.removeLayer(el);
         }
       });
     },

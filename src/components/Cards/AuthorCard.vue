@@ -207,7 +207,7 @@ export default {
       return this.author.datasetCount > 5;
     },
     dataCredits() {
-      return this.author.dataCredit ? Object.keys(this.author.dataCredit) : [];
+      return this.author && this.author.dataCredit ? Object.keys(this.author.dataCredit) : [];
     },
     dataCreditScore() {
       let score = 0;
@@ -346,10 +346,6 @@ export default {
     font-size: 34px !important;
     font-weight: 700 !important;
     font-family: 'Libre Baskerville', serif !important;
-  }
-
-  .authorInfo, .authorInfoLabel {
-
   }
 
   .authorInfoLabel {
