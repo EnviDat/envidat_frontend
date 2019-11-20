@@ -15,11 +15,9 @@
 
         <v-list-tile v-show="menuItem.active || item.icon === 'menu'"
                       class="tileNoPadding"
-                      :class="{
-                              'pt-4': item.icon === 'menu' && menuItem.active,
-                              'pt-1': item.icon === 'menu' && !menuItem.active,
-                              'pt-2': item.icon === 'envidat'
-                              }" >
+                      :class="{ 'pt-4': item.icon === 'menu' && menuItem.active,
+                                'pt-1': item.icon === 'menu' && !menuItem.active,
+                                'pt-2': item.icon === 'envidat' }" >
 
           <v-list-tile-action v-if="item.icon === 'envidat'"
                               style="margin-left: 5px;">
@@ -31,16 +29,14 @@
           </v-list-tile-action>
 
           <v-list-tile-action v-if="item.icon !== 'envidat'"
-                              class="v-list__group__header__prepend-icon"
-          >
+                              class="v-list__group__header__prepend-icon" >
               <base-icon-button
                 marginClass="ma-0"
                 :tooltipText="item.title"
                 :materialIconName="item.icon"
                 :iconColor="item.active ? 'accent' : 'secondary'"
                 color="transparent"
-                @clicked="item.icon === 'menu' ? item.active = !item.active : itemClick(item)"
-              />
+                @clicked="item.icon === 'menu' ? item.active = !item.active : itemClick(item)" />
 
           </v-list-tile-action>
         </v-list-tile>

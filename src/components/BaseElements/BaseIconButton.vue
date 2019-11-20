@@ -36,18 +36,19 @@
       <span>{{ tooltipText }}</span>
     </v-tooltip>
 
-    <div v-if="count > 0" style="position: relative; right: -7px; top: -25px;" >
+    <v-badge v-if="count > 0"
+            overlap
+            style="position: relative; left: -30px; top: 5px;"
+            :style="(hoverBadge && $vuetify.breakpoint.smAndUp) || $vuetify.breakpoint.xsOnly ? 'left: -40px;' : ''"
+            color="highlight"
+            :class="{ envidatBadgeBigNumber : count > 9,
+                      envidatBadge: count <= 9 }"
+            @click.stop="onClick" >
+      <span slot="badge" class="black--text" >
+        {{ count }}
+      </span>
+    </v-badge>
 
-      <v-badge overlap
-              :style="(hoverBadge && $vuetify.breakpoint.smAndUp) || $vuetify.breakpoint.xsOnly ? 'right: 5px;' : ''"
-              color="highlight"
-              :class="{ envidatBadgeBigNumber : count > 9,
-                        envidatBadge: count <= 9 }" >
-        <span slot="badge" class="black--text" >
-          {{ count }}
-        </span>
-      </v-badge>
-    </div>
   </div>
 </template>
 
@@ -78,7 +79,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:32:12
- * Last modified  : 2019-10-24 11:23:10
+ * Last modified  : 2019-11-01 14:04:34
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

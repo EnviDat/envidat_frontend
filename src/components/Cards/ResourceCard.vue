@@ -148,7 +148,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-23 14:13:05
+ * Last modified  : 2019-10-30 10:50:04
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -229,12 +229,9 @@ export default {
     extensionIcon: function extensionIcon() {
       if (typeof this.mixinMethods_getIconFileExtension === 'undefined'
           || typeof this.$store === 'undefined') {
+
         const lookUp = `file${this.format.toLowerCase()}`;
         let icon = this.fileExtensionIcon.get(lookUp);
-
-        if (!icon && this.format.toLowerCase() === 'url') {
-          icon = this.fileExtensionIcon.get('link');
-        }
 
         if (!icon && this.audioFormats.includes(this.format)) {
           icon = this.fileExtensionIcon.get('fileAudio');
@@ -252,7 +249,12 @@ export default {
         return this.mixinMethods_getIcon('Audio');
       }
 
-      const extIcon = this.mixinMethods_getIconFileExtension(this.format);
+      let extIcon = this.mixinMethods_getIconFileExtension(this.format);
+
+      if (!extIcon && this.format.toLowerCase() === 'url') {
+        extIcon = this.linkIcon;
+      }
+
       if (extIcon) {
         return extIcon;
       }

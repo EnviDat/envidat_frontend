@@ -36,6 +36,12 @@
       </v-flex>
     </v-layout>
 
+    <v-progress-linear v-show="loading"
+                        indeterminate
+                        style="position: absolute; left: 0; bottom: -14px;"
+                        height="2"
+                        color="primary" />
+
 
   </v-toolbar>
 </template>

@@ -1,52 +1,37 @@
 <template>
-  <v-container grid-list-xs
-              fluid
-              tag="article"
-              pa-0
-  >
-    <v-layout row wrap
-    >
-      <v-flex style="z-index: 1;"
-              v-bind="{ ['mx-0']: $vuetify.breakpoint.mdAndUp,
-                        ['xs8']: showMapFilter & $vuetify.breakpoint.mdAndUp,
-                        ['xs6']: showMapFilter & $vuetify.breakpoint.sm,
-                        ['pr-3']: showMapFilter & $vuetify.breakpoint.sm,
-                        ['xs12']: !showMapFilter,
-                        metadataListStyling }" >
+  <article class="ma-0 pa-0 fill-height">
 
-        <metadata-list-layout :listContent="filteredContent"
-                            :listView="listViewActive"
-                            :showMapFilter="showMapFilter"
-                            :mapFilteringPossible="mapFilteringPossible"
-                            :placeHolderAmount="placeHolderAmount"
-                            @clickedTag="catchTagClicked"
-                            :allTags="allTags"
-                            :selectedTagNames="selectedTagNames"
-                            :showPlaceholder="keywordsPlaceholder"
-                            @clickedExpand="catchFilterExpandClicked"
-                            @clickedTagClose="catchTagCloseClicked"
-                            @clickedClear="catchTagCleared"
-                            :mapHeight="$vuetify.breakpoint.smAndDown ? smallMapHeight : largeMapHeight"
-                            :mapWidth="mapFilterWidth"
-                            :defaultListControls="controls"
-                            :enabledControls="enabledControls"
-                            useDynamicHeight  />
-      </v-flex>
+    <metadata-list ref="metadataList"
+                    :listContent="filteredContent"
+                    :mapFilteringPossible="mapFilteringPossible"
+                    :placeHolderAmount="placeHolderAmount"
+                    @clickedTag="catchTagClicked"
+                    :selectedTagNames="selectedTagNames"
+                    :allTags="allTags"
+                    :showPlaceholder="keywordsPlaceholder"
+                    @clickedExpand="catchFilterExpandClicked"
+                    @clickedTagClose="catchTagCloseClicked"
+                    @clickedClear="catchTagCleared"
+                    :defaultListControls="controls"
+                    :enabledControls="enabledControls"
+                    :mapHeight="$vuetify.breakpoint.smAndDown ? 310 : undefined"
+                    :useDynamicHeight="true"
+                    :mapTopLayout="$vuetify.breakpoint.mdAndUp"
+                    @onScroll="storeScroll" />
 
-    </v-layout>
-  </v-container>
+  </article>
 </template>
 
 <script>
 /**
- * The browse page of EnviDat. It consists of metadataListLayout
+ * The browse page of EnviDat. It consists of metadataList
  * but only all the logic for the interaction with the list.
  *
  * @summary browse page
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-25 10:35:57
+ * Last modified  : 2019-11-14 18:11:43
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -57,11 +42,13 @@ import {
   BROWSE_PAGENAME,
   BROWSE_PATH,
 } from '@/router/routeConsts';
-import MetadataListLayout from '@/components/Layouts/MetadataListLayout';
 import {
   SEARCH_METADATA,
   CLEAR_SEARCH_METADATA,
   FILTER_METADATA,
+  LISTCONTROL_LIST_ACTIVE,
+  LISTCONTROL_MAP_ACTIVE,
+  LISTCONTROL_COMPACT_LAYOUT_ACTIVE,
 } from '@/store/metadataMutationsConsts';
 import {
   SET_APP_BACKGROUND,
@@ -69,8 +56,10 @@ import {
   SET_BROWSE_SCROLL_POSITION,
 } from '@/store/mainMutationsConsts';
 
+import MetadataList from '@/components/Metadata/MetadataList';
 
 export default {
+  name: 'BrowsePage',
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.commit(SET_CURRENT_PAGE, BROWSE_PAGENAME);
@@ -78,16 +67,7 @@ export default {
     });
   },
   mounted() {
-    const that = this;
-    window.onscroll = () => {
-      that.storeScroll(window.scrollY);
-    };
-
     this.checkRouteChanges(null);
-  },
-  beforeDestroy() {
-    // destory the scrolling hook that it won't use the scroll of another page
-    window.onscroll = null;
   },
   methods: {
     loadRouteTags() {
@@ -108,9 +88,9 @@ export default {
     storeScroll(scrollY) {
       this.$store.commit(SET_BROWSE_SCROLL_POSITION, scrollY);
     },
-    resetScrollPosition() {
+    resetScrollPos() {
       this.storeScroll(0);
-      this.mixinMethods_setScrollPosition(0);
+      this.setScrollPos(0);
     },
     catchTagClicked(tagName) {
       if (!this.mixinMethods_isTagSelected(tagName)) {
@@ -156,17 +136,6 @@ export default {
 
       return visibleContent;
     },
-    dynamicCardBackground() {
-      const max = Object.keys(this.imagesImports).length;
-      const randomIndex = this.mixinMethods_randomInt(0, max);
-      const cardImg = Object.values(this.imagesImports)[randomIndex];
-
-      if (cardImg) {
-        return `background-image: linear-gradient(to bottom, rgba(1,1,1,0.5), rgba(255,255,255,0)), url(${cardImg}); background-position: center, center;`;
-      }
-
-      return '';
-    },
     hasRestrictedResources(metadata) {
       if (!metadata || !metadata.resources || metadata.resources.length <= 0) {
         return false;
@@ -209,13 +178,13 @@ export default {
       if (isBackNavigation) {
         // use a delayed scroll position setup because the list as to be loaded first
         setTimeout(() => {
-          this.mixinMethods_setScrollPosition(this.browseScrollPosition);
+          this.setScrollPos(this.browseScrollPosition);
         }, this.scrollPositionDelay);
       } else {
         if (checkSearchTriggering) {
           if (this.searchTerm && this.searchTerm.length > 0) {
             this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm, this.selectedTagNames);
-            this.resetScrollPosition();
+            this.resetScrollPos();
 
             // prevent immediately filtering, the search results
             // will be filtered via searchingMetadatasContentOK watch
@@ -225,16 +194,21 @@ export default {
           // the searchTerm was changed to empty -> clear the search results
           this.$store.commit(`metadata/${CLEAR_SEARCH_METADATA}`);
           // and manually reset the scrolling
-          this.resetScrollPosition();
+          this.resetScrollPos();
         }
 
         if (tagsChanged) {
           // in case the tags have changed the scroll needs to be reset
-          this.resetScrollPosition();
+          this.resetScrollPos();
         }
 
         // filter changes of the url except a change of the search term
         this.filterContent();
+      }
+    },
+    setScrollPos(toPos) {
+      if (this.$refs && this.$refs.metadataList) {
+        this.$refs.metadataList.setScrollPos(toPos);
       }
     },
   },
@@ -277,19 +251,6 @@ export default {
 
       return height;
     },
-    mapFilterWidth() {
-      const sWidth = document.documentElement.clientWidth;
-
-      if (this.$vuetify.breakpoint.mdAndUp) {
-        return sWidth * 0.31;
-      }
-
-      if (this.$vuetify.breakpoint.sm) {
-        return sWidth * 0.5;
-      }
-
-      return sWidth;
-    },
     metadataListStyling() {
       const json = {
         xs8: this.mapFilteringPossible && this.showMapFilter,
@@ -315,7 +276,7 @@ export default {
     },
     isFilteringContent() {
       if (!this.isFilteringContent) {
-        this.mixinMethods_setScrollPosition(this.browseScrollPosition);
+        this.setScrollPos(this.browseScrollPosition);
       }
     },
     metadatasContent() {
@@ -328,12 +289,12 @@ export default {
     },
   },
   components: {
-    MetadataListLayout,
+    MetadataList,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
     searchTerm: '',
-    placeHolderAmount: 6,
+    placeHolderAmount: 4,
     suggestionText: 'Try one of these categories',
     selectedTagNames: [],
     popularTagAmount: 10,
@@ -341,8 +302,11 @@ export default {
     smallMapHeight: 250,
     largeMapHeight: 325,
     mapFilterVisibleIds: [],
-    listViewActive: false,
-    enabledControls: [0, 1, 2],
+    enabledControls: [
+      LISTCONTROL_LIST_ACTIVE,
+      LISTCONTROL_MAP_ACTIVE,
+      LISTCONTROL_COMPACT_LAYOUT_ACTIVE,
+    ],
   }),
 };
 </script>
