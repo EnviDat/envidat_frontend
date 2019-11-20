@@ -19,7 +19,8 @@
                           @clickedTag="catchTagClicked"
                           @clickedBack="catchBackClicked"
                           @clickedAuthor="catchAuthorClicked"
-                          @checkSize="$forceUpdate()" />
+                          @checkSize="resize"
+                          :expanded="headerExpanded" />
       </v-flex>
     </v-layout>
 
@@ -61,7 +62,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-14 17:41:06
+ * Last modified  : 2019-11-15 15:11:04
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -135,6 +136,7 @@ export default {
   computed: {
     ...mapGetters({
       metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
+      metadatasContentSize: `${METADATA_NAMESPACE}/metadatasContentSize`,
       loadingMetadatasContent: `${METADATA_NAMESPACE}/loadingMetadatasContent`,
       loadingCurrentMetadataContent: `${METADATA_NAMESPACE}/loadingCurrentMetadataContent`,
       currentMetadataContent: `${METADATA_NAMESPACE}/currentMetadataContent`,
@@ -142,13 +144,8 @@ export default {
       idRemapping: `${METADATA_NAMESPACE}/idRemapping`,
       iconImages: 'iconImages',
       cardBGImages: 'cardBGImages',
+      appScrollPosition: 'appScrollPosition',
     }),
-    /**
-     * @returns {Number} Size of the metadatasContent
-     */
-    metadatasContentSize() {
-      return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
-    },
     /**
      * @returns {String} the metadataId from the route
      */
@@ -188,14 +185,24 @@ export default {
 
       return `width: ${width}%; margin: ${margin};`;
     },
+    headerExpanded() {
+      if (this.$vuetify.breakpoint.mdAndUp) {
+        return true;
+      }
+
+      return this.appScrollPosition < 20;
+    },
   },
   methods: {
+    resize() {
+      this.$forceUpdate();
+    },
     headerHeight() {
       if (!this.showPlaceholder && this.$refs && this.$refs.header) {
         return this.$refs.header.clientHeight;
       }
 
-      return 220;
+      return 150;
     },
     /**
      * @description

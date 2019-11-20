@@ -69,10 +69,6 @@ export default {
   mounted() {
     this.checkRouteChanges(null);
   },
-  beforeDestroy() {
-    // destory the scrolling hook that it won't use the scroll of another page
-    window.onscroll = null;
-  },
   methods: {
     loadRouteTags() {
       const tagsEncoded = this.$route.query.tags ? this.$route.query.tags : '';
@@ -203,6 +199,7 @@ export default {
   computed: {
     ...mapGetters({
       metadatasContent: 'metadata/metadatasContent',
+      metadatasContentSize: 'metadata/metadatasContentSize',
       searchedMetadatasContent: 'metadata/searchedMetadatasContent',
       searchingMetadatasContent: 'metadata/searchingMetadatasContent',
       searchingMetadatasContentOK: 'metadata/searchingMetadatasContentOK',
@@ -221,9 +218,6 @@ export default {
     }),
     keywordsPlaceholder() {
       return this.searchingMetadatasContent || this.updatingTags;
-    },
-    metadatasContentSize() {
-      return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
     },
     searchMetadatasContentSize() {
       return this.searchedMetadatasContent !== undefined ? Object.keys(this.searchedMetadatasContent).length : 0;

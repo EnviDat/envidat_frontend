@@ -80,14 +80,14 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-11-13 17:10:43
+ * Last modified  : 2019-11-20 17:14:00
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
-import FilterMapWidgetLayout from '@/components/Layouts/FilterMapWidgetLayout'
+import FilterMapWidgetLayout from '@/components/Layouts/FilterMapWidgetLayout';
 
 export default {
   props: {
