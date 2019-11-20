@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-11-13 17:28:41
+ * Last modified  : 2019-11-20 16:11:13
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -78,7 +78,7 @@ export default {
     const publicOnlyQuery = `${query}&fq=capacity:public&fq=state:active`;
     const url = urlRewrite(publicOnlyQuery, '/', PROXY);
 
-    axios
+    await axios
       .get(url)
       .then((response) => {
         commit(SEARCH_METADATA_SUCCESS, response.data.response.docs);
@@ -102,7 +102,7 @@ export default {
 
     const url = urlRewrite(`package_show?id=${metadataId}`, API_BASE, PROXY);
 
-    axios.get(url).then((response) => {
+    await axios.get(url).then((response) => {
       commit(LOAD_METADATA_CONTENT_BY_ID_SUCCESS, response.data.result);
     }).catch((reason) => {
       commit(LOAD_METADATA_CONTENT_BY_ID_ERROR, reason);
@@ -118,22 +118,22 @@ export default {
 
       import('@/testdata/packagelist.js')
       .then((projectJSON) => {
-        setTimeout(() => {
+        // setTimeout(() => {
           commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, projectJSON.default.result);
-          dispatch(FILTER_METADATA, []);
-        }, 1000);
+          return dispatch(FILTER_METADATA, []);
+        // }, 1);
       });
 
       return;
     }
 
-    axios.get(url)
+    await axios.get(url)
       .then((response) => {
         // commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, response.data.response.docs, showRestrictedContent);
         commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, response.data.result);
 
         // for the case when loaded up on landingpage
-        dispatch(FILTER_METADATA, []);
+        return dispatch(FILTER_METADATA, []);
       })
       .catch((reason) => {
         commit(BULK_LOAD_METADATAS_CONTENT_ERROR, reason);
@@ -200,7 +200,7 @@ export default {
 
       commit(FILTER_METADATA_SUCCESS, filteredContent);
 
-      dispatch(UPDATE_TAGS);
+      return dispatch(UPDATE_TAGS);
     } catch (error) {
       commit(FILTER_METADATA_ERROR, error);
     }
