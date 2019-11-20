@@ -86,7 +86,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-23 15:46:35
+ * Last modified  : 2019-10-31 08:20:02
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -123,8 +123,7 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
+<style scoped>
 
   .mt-md-pct{
     margin-top: 15%;

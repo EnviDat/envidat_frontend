@@ -1,25 +1,21 @@
 <template>
   <v-card raised
-          :height="totalHeight"
-          >
-    <!-- :width="totalWidth"  -->
+          v-bind="mapViewHeight" >
 
     <div v-if="errorLoadingLeaflet"
           v-bind="mapViewHeight" >
       Error loading leaflet
     </div>
 
-    <div v-if="!errorLoadingLeaflet" >
+    <div v-if="!errorLoadingLeaflet"
+          class="fill-height" >
 
-      <v-layout row>
+      <v-layout fill-height
+                :class="{ 'column' : topLayout,
+                          'row' : !topLayout }" >
 
-        <v-flex py-0 pr-0>
-          <div id="map"
-                ref="map"
-                v-bind="mapViewHeight" />
-        </v-flex>
-
-        <v-flex xs2 py-0 pl-0>
+        <v-flex v-if="topLayout"
+                xs2 py-0>
 
           <filter-map-widget style="height: 100%"
                               :pinnedIds="pinnedIds"
@@ -32,6 +28,37 @@
                               :hasPolygons="hasPolygons"
                               :polygonEnabled="polygonEnabled"
                               :polygonNumber="hasPolygons ? polygonLayerGroup.length : 0"
+                              :topLayout="topLayout"
+                              @clickedFocus="focusOnLayers"
+                              @clickedPin="catchPinClicked"
+                              @clickedMultipin="catchMultipinClicked"
+                              @clickedPolygon="catchPolygonClicked"
+                              @clickedClear="catchClearClicked" />
+
+        </v-flex>
+
+        <v-flex py-0 fill-height
+                :class="{ 'pr-0' : !topLayout }">
+          <div id="map"
+                ref="map"
+                v-bind="mapViewHeight" />
+        </v-flex>
+
+        <v-flex v-if="!topLayout"
+                xs2 py-0 pl-0 >
+
+          <filter-map-widget style="height: 100%"
+                              :pinnedIds="pinnedIds"
+                              :hasPins="hasPins"
+                              :pinEnabled="pinEnabled"
+                              :pinNumber="hasPins ? pinLayerGroup.length : 0"
+                              :hasMultiPins="hasMultiPins"
+                              :multiPinEnabled="multiPinEnabled"
+                              :multiPinNumber="hasMultiPins ? multiPins.length : 0"
+                              :hasPolygons="hasPolygons"
+                              :polygonEnabled="polygonEnabled"
+                              :polygonNumber="hasPolygons ? polygonLayerGroup.length : 0"
+                              :topLayout="topLayout"
                               @clickedFocus="focusOnLayers"
                               @clickedPin="catchPinClicked"
                               @clickedMultipin="catchMultipinClicked"
@@ -56,7 +83,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-24 16:18:44
+ * Last modified  : 2019-11-14 18:08:43
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -85,8 +112,8 @@ export default {
   props: {
     content: Array,
     totalHeight: Number,
-    totalWidth: Number,
     pinnedIds: Array,
+    topLayout: Boolean,
   },
   beforeMount() {
     this.pinIcon = this.mixinMethods_getIcon('marker');
@@ -116,7 +143,7 @@ export default {
     },
     mapViewHeight() {
       return {
-        style: `height: ${this.totalHeight}px;`,
+        style: `height: ${this.totalHeight ? `${this.totalHeight}px` : '100%'};`,
       };
     },
     widgetWidth() {
