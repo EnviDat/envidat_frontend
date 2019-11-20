@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-11-08 14:30:10
+ * Last modified  : 2019-11-20 17:16:15
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -39,7 +39,6 @@ import {
 
 import {
   warningMessage,
-  errorMessage,
   getSpecificApiError,
 } from '@/factories/notificationFactory';
 

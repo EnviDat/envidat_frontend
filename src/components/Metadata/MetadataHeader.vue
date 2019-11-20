@@ -57,123 +57,141 @@
           </div>
         </v-flex>
 
-        <v-flex v-if="authors"
-                xs12 >
-          <v-divider :dark="dark"
-                    :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
-                              'my-2': $vuetify.breakpoint.smAndUp }" />
-        </v-flex>
+        <!-- <v-expand-transition @transitionend="expandFinished" @animationend="expandFinished" > -->
+          <v-flex v-show="expanded"
+                  xs12 >
 
-        <v-flex v-if="authors"
-                xs12 >
-          <v-layout row wrap >
-            <tag-chip-author v-for="author in authors"
-                              :key="author.name"
-                              :name="authorName(author)"
-                              :tooltipText="authorToolTipText"
-                              @clicked="catchAuthorClicked($event, authorName(author))" />
-          </v-layout>
-        </v-flex>
-
-
-        <v-flex v-if="!authors && showPlaceholder"
-                xs12 >
-          <v-layout row wrap >
-            <tag-chip-placeholder v-for="n in 5"
-                                  :key="n"
-                                  class="headerTag" />
-          </v-layout>
-        </v-flex>
-
-        <v-flex xs12 >
-          <v-divider :dark="dark"
-                    :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
-                              'my-2': $vuetify.breakpoint.smAndUp }" />
-        </v-flex>
-
-        <v-flex xs12 >
-          <v-layout row wrap >
-            <v-flex xs12 sm6 md6 lg3
-                    py-0
-                    class="headerInfo" >
-              <base-icon-label-view :text="contactName"
-                                    :icon="contactIcon"
-                                    icon-tooltip="Main contact"
-                                    :align-left="true" />
+            <v-flex v-if="authors"
+                    xs12
+                    key="authors_divier" >
+              <v-divider :dark="dark"
+                        :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
+                                  'my-2': $vuetify.breakpoint.smAndUp }" />
             </v-flex>
 
-            <v-flex xs12 sm6 md6 lg3
-                    py-0
-                    class="headerInfo" >
-              <base-icon-label-view :text="contactEmail"
-                                    :icon="mailIcon"
-                                    icon-tooltip="Email adress of the main contact"
-                                    :align-left="true"
-                                    :word-break="true" />
+            <v-flex v-if="authors"
+                    xs12
+                    key="authors" >
+              <v-layout row wrap >
+                <tag-chip-author v-for="author in authors"
+                                  :key="author.name"
+                                  :name="authorName(author)"
+                                  :tooltipText="authorToolTipText"
+                                  @clicked="catchAuthorClicked($event, authorName(author))" />
+              </v-layout>
             </v-flex>
 
-            <v-flex xs12 sm6 md6 lg3
-                    py-0
-                    class="headerInfo" >
-              <base-icon-label-view :text="doi"
-                                    :icon="doiIcon"
-                                    icon-tooltip="Data Object Identifier"
-                                    :align-left="true"
-                                    :word-break="true" />
+            <v-flex v-if="!authors && showPlaceholder"
+                    xs12
+                    key="authors_placeholder" >
+              <v-layout row wrap >
+                <tag-chip-placeholder v-for="n in 5"
+                                      :key="n"
+                                      class="headerTag" />
+              </v-layout>
             </v-flex>
 
-            <v-flex xs12 sm6 md6 lg3
-                    py-0
-                    class="headerInfo" >
-              <base-icon-label-view :text="license"
-                                    :icon="licenseIcon"
-                                    icon-tooltip="License for the data files"
-                                    :align-left="true" />
+            <v-flex xs12
+                    key="headerinfo_divier" >
+              <v-divider :dark="dark"
+                        :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
+                                  'my-2': $vuetify.breakpoint.smAndUp }" />
             </v-flex>
-          </v-layout>
-        </v-flex>
 
-        <v-flex v-if="!showPlaceholder && tags"
-                xs12 >
-          <v-divider :dark="dark"
-                    :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
-                              'my-2': $vuetify.breakpoint.smAndUp }" />
-        </v-flex>
+            <v-flex xs12
+                    key="headerinfo" >
+              <v-layout row wrap >
+                <v-flex xs12 sm6 md6 lg3
+                        py-0
+                        class="headerInfo" >
+                  <base-icon-label-view :text="contactName"
+                                        :icon="contactIcon"
+                                        icon-tooltip="Main contact"
+                                        :compactLayout="$vuetify.breakpoint.xs"
+                                        :align-left="true" />
+                </v-flex>
 
-        <v-flex v-if="tags"
-                xs12 >
-          <v-layout row wrap >
-            <tag-chip v-for="tag in slicedTags"
-                      :key="tag.name"
-                      :name="tag.name"
-                      :selectable="true"
-                      class="headerTag"
-                      :color="tag.color"
-                      @clicked="catchTagClicked($event, tag.name)" />
+                <v-flex xs12 sm6 md6 lg3
+                        py-0
+                        class="headerInfo" >
+                  <base-icon-label-view :text="contactEmail"
+                                        :icon="mailIcon"
+                                        icon-tooltip="Email adress of the main contact"
+                                        :align-left="true"
+                                        :compactLayout="$vuetify.breakpoint.xs"
+                                        :word-break="true" />
+                </v-flex>
 
-            <v-flex v-if="tags && maxTagsReached && !showTagsExpanded"
-                    xs2 >
-              <tag-chip class="headerTag"
-                        :name="'...'"
-                        @click.native="showTagsExpanded = !showTagsExpanded" />
+                <v-flex xs12 sm6 md6 lg3
+                        py-0
+                        class="headerInfo" >
+                  <base-icon-label-view :text="doi"
+                                        :icon="doiIcon"
+                                        icon-tooltip="Data Object Identifier"
+                                        :align-left="true"
+                                        :compactLayout="$vuetify.breakpoint.xs"
+                                        :word-break="true" />
+                </v-flex>
+
+                <v-flex xs12 sm6 md6 lg3
+                        py-0
+                        class="headerInfo" >
+                  <base-icon-label-view :text="license"
+                                        :icon="licenseIcon"
+                                        icon-tooltip="License for the data files"
+                                        :compactLayout="$vuetify.breakpoint.xs"
+                                        :align-left="true" />
+                </v-flex>
+              </v-layout>
             </v-flex>
-          </v-layout>
-        </v-flex>
 
-        <v-flex v-if="!tags && showPlaceholder"
-                xs12 >
-          <v-layout row wrap >
-            <tag-chip-placeholder v-for="n in 5"
-                                  :key="n"
-                                  class="headerTag" />
-          </v-layout>
-        </v-flex>
+            <v-flex v-if="!showPlaceholder && tags"
+                    xs12
+                    key="tags_divier" >
+              <v-divider :dark="dark"
+                        :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
+                                  'my-2': $vuetify.breakpoint.smAndUp }" />
+            </v-flex>
+
+            <v-flex v-if="tags"
+                    xs12
+                    key="tags" >
+              <v-layout row wrap >
+                <tag-chip v-for="tag in slicedTags"
+                          :key="tag.name"
+                          :name="tag.name"
+                          :selectable="true"
+                          class="headerTag"
+                          :color="tag.color"
+                          @clicked="catchTagClicked($event, tag.name)" />
+
+                <v-flex v-if="tags && maxTagsReached && !showTagsExpanded"
+                        xs2 >
+                  <tag-chip class="headerTag"
+                            :name="'...'"
+                            @click.native="showTagsExpanded = !showTagsExpanded" />
+                </v-flex>
+              </v-layout>
+            </v-flex>
+
+            <v-flex v-if="!tags && showPlaceholder"
+                    xs12
+                    key="tags_placeholder" >
+              <v-layout row wrap >
+                <tag-chip-placeholder v-for="n in 5"
+                                      :key="n"
+                                      class="headerTag" />
+              </v-layout>
+            </v-flex>
+          </v-flex>
+        <!-- </v-expand-transition> -->
 
       </v-layout>
 
       <v-card-actions v-if="maxTagsReached"
                       style="position: absolute; bottom: 0px; right: 0px;">
-        <base-icon-button materialIconName="expand_more"
+        <base-icon-button v-show="expanded"
+                          materialIconName="expand_more"
                           :outlined="true"
                           color="primary"
                           iconColor="accent"
@@ -234,6 +252,10 @@ export default {
     contactIcon: String,
     mailIcon: String,
     licenseIcon: String,
+    expanded: {
+      type: Boolean,
+      default: true,
+    },
   },
   data: () => ({
     showTagsExpanded: false,
@@ -283,6 +305,9 @@ export default {
     });
   },
   methods: {
+    // expandFinished() {
+    //   console.log('finished');
+    // },
     catchTagClicked(tagId) {
       this.$emit('clickedTag', tagId);
     },

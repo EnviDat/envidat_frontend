@@ -1,17 +1,17 @@
 <template>
   <v-container tag="article" fluid fill-height pa-0 >
     <v-layout row wrap >
+
       <v-flex xs12 lg10 offset-lg1 >
-        <img-and-text-layout
-          :img="missionImg"
-          :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
-          title="About EnviDat"
-        />
+        <img-and-text-layout :img="missionImg"
+                              :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
+                              title="About EnviDat" />
       </v-flex>
 
       <v-flex xs12 lg10 offset-lg1 px-3 mt-5 >
         <v-container grid-list-lg pa-0 >
           <v-layout row wrap >
+
             <v-flex v-for="(card, index) in aboutCardInfo"
                     :key="index"
                     my-2
@@ -43,7 +43,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-23 16:25:52
+ * Last modified  : 2019-11-20 13:39:14
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
