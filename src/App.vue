@@ -245,6 +245,7 @@ export default {
     ...mapGetters({
       metadataIds: `${METADATA_NAMESPACE}/metadataIds`,
       metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
+      metadatasContentSize: `${METADATA_NAMESPACE}/metadatasContentSize`,
       loadingMetadataIds: `${METADATA_NAMESPACE}/loadingMetadataIds`,
       loadingMetadatasContent: `${METADATA_NAMESPACE}/loadingMetadatasContent`,
       loadingCurrentMetadataContent: `${METADATA_NAMESPACE}/loadingCurrentMetadataContent`,
@@ -284,11 +285,6 @@ export default {
     },
     searchCount() {
       return this.filteredContent !== undefined ? Object.keys(this.filteredContent).length : 0;
-    },
-    metadatasContentSize: function metadatasContentSize() {
-      return this.metadatasContent !== undefined
-        ? Object.keys(this.metadatasContent).length
-        : 0;
     },
     showReloadDialog() {
       return this.outdatedVersion && !this.reloadDialogCanceled;
