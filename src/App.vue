@@ -36,7 +36,7 @@
                             :searchTerm="searchTerm"
                             :showSearchCount="currentPageIsBrowsePage"
                             :searchCount="searchCount"
-                            :showSearch="!currentPageIsLandingPage"
+                            :showSearch="currentPageIsBrowsePage"
                             :loading="loading"
                             @menuClick="catchMenuClicked"
                             @searchClick="catchSearchClicked"
@@ -48,7 +48,7 @@
                     fill-height
                     v-on:scroll="updateScroll()"
                     ref="appContainer"
-                    :style="currentPageIsBrowsePage ? '' : 'height: calc(100vh - 36px); overflow: scroll;'" >
+                    :style="currentPageIsBrowsePage ? '' : 'height: calc(100vh - 36px); overflow-y: auto;'" >
         <v-layout column >
           <v-flex xs12 mx-0 >
 
@@ -85,7 +85,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-15 15:31:25
+ * Last modified  : 2019-11-15 15:50:59
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
