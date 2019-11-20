@@ -79,6 +79,7 @@
                           :resourceCount="metadatasContent[pinnedId].num_resources"
                           :dark="false"
                           :flatLayout="listView"
+                          :compactLayout="isActiveControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)"
                           :fileIconString="fileIconString"
                           :lockedIconString="lockedIconString"
                           :unlockedIconString="unlockedIconString"
@@ -160,7 +161,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-20 15:33:21
+ * Last modified  : 2019-11-20 17:07:47
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
