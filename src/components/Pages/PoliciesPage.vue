@@ -1,28 +1,30 @@
 <template>
-  <v-container
-    tag="article"
-    fluid
-    fill-height
-    pa-0
-  >
-    <v-layout
-      row
-      wrap
-    >
-      <v-flex v-show="loading">
+  <v-container tag="article"
+                fluid
+                fill-height
+                pa-0 >
+    <v-layout row wrap >
+
+      <v-flex xs12 lg10 offset-lg1>
+        <img-and-text-layout :img="policiesImg"
+                              :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
+                              title="Policies" />
+      </v-flex>
+
+      <v-flex v-if="loading"
+              offset-md2
+              offset-lg1
+              shrink
+              pt-5 >
         Loading Policies...
       </v-flex>
 
 
-      <v-flex
-        v-if="!loading"
-        xs12
-        md8
-        offset-md2
-        lg10
-        offset-lg1
-        mt-5
-      >
+      <v-flex v-if="!loading"
+                offset-md2
+                offset-lg1
+                shrink
+                pt-5 >
         <m-markdown-preview
           :markdown="policiesMarkdown"
           :options="markdownOptions"
@@ -41,7 +43,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-23 16:29:11
+ * Last modified  : 2019-11-20 11:39:46
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -58,6 +60,10 @@ import {
   SET_CURRENT_PAGE,
 } from '@/store/mainMutationsConsts';
 import { GET_POLICIES, POLICIES_NAMESPACE } from '@/store/policiesMutationsConsts';
+
+import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
+import policies from '@/assets/about/policies.jpg';
+import policiesSmall from '@/assets/about/policies_small.jpg';
 
 export default {
   beforeRouteEnter(to, from, next) {
@@ -90,6 +96,9 @@ export default {
         breaks: true,
       };
     },
+    policiesImg() {
+      return this.$vuetify.breakpoint.mdAndUp ? policies : policiesSmall;
+    },
   },
   methods: {
     /**
@@ -114,6 +123,7 @@ export default {
   },
   components: {
     MMarkdownPreview,
+    ImgAndTextLayout,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',

@@ -6,24 +6,14 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-11-01 11:24:01
+ * Last modified  : 2019-11-14 15:50:43
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
 /* eslint-disable camelcase */
-import seedrandom from 'seedrandom';
 import { Object } from 'core-js';
-
-import {
-  FOREST,
-  SNOW,
-  LAND,
-  HAZARD,
-  DIVERSITY,
-  METEO,
-} from '@/store/categoriesConsts';
 
 import { SWISSFL_MODE } from '@/store/metadataMutationsConsts';
 import { enhanceMetadataFromExtras } from '@/factories/modeFactory';
@@ -122,31 +112,6 @@ export default {
       });
     },
     /**
-     * @param {String} date expecting a format like 2017-08-15T15:25:45.175790
-     * @return {String} Returns a date string containing the date and hours:minutes:seconds
-     */
-    mixinMethods_formatDate(date) {
-      // expecting a format like 2017-08-15T15:25:45.175790
-      let formatedDate = '';
-
-      if (date) {
-        const split = date.split('T');
-        if (split.length > 0) {
-          const dateOnly = split[0];
-          const timeOnly = split[1];
-          const timeSplit = timeOnly.split('.');
-          const timeToMinutes = timeSplit[0];
-
-          formatedDate = `${dateOnly} ${timeToMinutes}`;
-        } else {
-          // fallback: just return the input
-          formatedDate = date;
-        }
-      }
-
-      return formatedDate;
-    },
-    /**
      * Loads the path to the icon image
      *
      * @param {String} iconName
@@ -187,163 +152,12 @@ export default {
 
       return imgCache;
     },
-    /**
-     * Create a psyeudo random integer based on a given seed using the 'seedrandom' lib.
-     *
-     * @param {Number} min
-     * @param {Number} max
-     * @param {String} seed
-     */
-    mixinMethods_randomInt(min, max, seed = 'For the Horde!') {
-      const rng = seedrandom(seed);
-      const r = Math.floor(rng() * 10);
-
-      if (r > max) {
-        return max;
-      }
-      if (r < min) {
-        return min;
-      }
-
-      return r;
-    },
-    /**
-     * @param {Object} metadataEntry
-     * @param {Array} cardBGImages
-     *
-     * @return {Object} metadataEntry enhanced with a title image based on the entrys tags
-     */
-    mixinMethods_enhanceMetadataEntry(metadataEntry, cardBGImages, categoryCards) {
-      if (metadataEntry && metadataEntry.title && !metadataEntry.titleImg) {
-        this.mixinMethods_enhanceTitleImg(metadataEntry, cardBGImages, categoryCards);
-      }
-
-      enhanceMetadataFromExtras(SWISSFL_MODE, metadataEntry);
-
-      return metadataEntry;
-    },
     mixinMethods_getGenericProp(propName) {
       if (!this.genericProps) {
         return null;
       }
 
       return this.genericProps[propName] ? this.genericProps[propName] : null;
-    },
-    /**
-     * @param {Array} metadatas
-     * @param {Array} cardBGImages
-     *
-     * @return {Array} metadatas enhanced with a title image based on the metadatas tags
-     */
-    mixinMethods_enhanceMetadatas(metadatas, cardBGImages, categoryCards) {
-      if (metadatas === undefined && metadatas.length <= 0) {
-        return undefined;
-      }
-
-      if (Array.isArray(metadatas)) {
-        for (let i = 0; i < metadatas.length; i++) {
-          const entry = metadatas[i];
-
-          metadatas[i] = this.mixinMethods_enhanceMetadataEntry(entry, cardBGImages, categoryCards);
-        }
-      }
-
-      return metadatas;
-    },
-    /**
-     * @param {Object} metadata
-     * @param {Array} cardBGImages
-     *
-     * @return {Object} metadata entry enhanced with a title image based on its tags
-     */
-    mixinMethods_enhanceTitleImg(metadata, cardBGImages, categoryCards) {
-      /* eslint-disable no-param-reassign */
-      const category = this.mixinMethods_guessTagCategory(metadata.tags);
-
-      if (cardBGImages) {
-        const categoryImgs = cardBGImages[category];
-        const max = Object.keys(categoryImgs).length - 1;
-        const randomIndex = this.mixinMethods_randomInt(0, max, metadata.title);
-        const cardImg = randomIndex >= 0 ? Object.values(categoryImgs)[randomIndex] : 0;
-
-        metadata.titleImg = cardImg;
-      }
-
-      metadata.categoryColor = this.mixinMethods_getCategoryColor(categoryCards, category);
-
-      return metadata;
-    },
-    mixinMethods_getCategoryColor(categoryCards, categoryName) {
-      for (let i = 0; i < categoryCards.length; i++) {
-        const cat = categoryCards[i];
-        if (cat.type === categoryName) {
-          return cat.color;
-        }
-      }
-
-      return null;
-    },
-    mixinMethods_getTagColor(categoryCards, tagName) {
-      if (!tagName) {
-        return '';
-      }
-
-      for (let i = 0; i < categoryCards.length; i++) {
-        const cat = categoryCards[i];
-        if (tagName.toLowerCase().includes(cat.type)) {
-          return cat.darkColor;
-        }
-      }
-
-      return '#e0e0e0';
-    },
-    mixinMethods_enhanceTags(tags, categoryCards) {
-
-      if (tags && tags instanceof Array) {
-        for (let j = 0; j < tags.length; j++) {
-          const tag = tags[j];
-          tag.color = this.mixinMethods_getTagColor(categoryCards, tag.name);
-        }
-      }
-
-      return tags;
-    },
-    /**
-     * @param {Array} tags
-     *
-     * @return {String} category based on tags array
-     */
-    mixinMethods_guessTagCategory(tags) {
-      let category = LAND;
-
-      if (tags) {
-        for (let i = 0; i < tags.length; i++) {
-          const element = tags[i];
-
-          if (element.name) {
-            if (element.name.includes('HAZARD') || element.name.includes('ACCIDENTS')) {
-              category = HAZARD; break;
-            }
-            if (element.name.includes('DIVERSITY')) {
-              category = DIVERSITY; break;
-            }
-            if (element.name.includes('FOREST')) {
-              category = FOREST; break;
-            }
-            if (element.name.includes('SNOW') || element.name.includes('AVALANCHE')) {
-              category = SNOW; break;
-            }
-            if (element.name.includes('METEO') || element.name.includes('CLIMATE')) {
-              category = METEO; break;
-            }
-            if (element.name.includes('LAND') || element.name.includes('LANDSCAPE')) {
-              category = LAND; break;
-            }
-          }
-        }
-      }
-
-      return category;
     },
     /**
      *
@@ -363,12 +177,6 @@ export default {
       const f = Math.floor(Math.log(a) / Math.log(c));
 
       return parseFloat((a / Math.pow(c, f)).toFixed(d)) + ' ' + e[f];
-    },
-    /**
-     * @param {Number} pos Sets the position to the main scroll position of the main
-     */
-    mixinMethods_setScrollPosition(pos) {
-      window.scrollTo(0, pos);
     },
   },
 };
