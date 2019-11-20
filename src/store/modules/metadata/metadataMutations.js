@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-11-01 09:54:05
+ * Last modified  : 2019-11-08 14:30:10
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -39,6 +39,7 @@ import {
 
 import {
   warningMessage,
+  errorMessage,
   getSpecificApiError,
 } from '@/factories/notificationFactory';
 
@@ -59,8 +60,8 @@ function enhanceMetadatas(store, datasets) {
 
   for (let i = 0; i < datasets.length; i++) {
     let dataset = datasets[i];
-    dataset = globalMethods.methods.mixinMethods_enhanceMetadataEntry(dataset, cardBGImages, categoryCards);
-    dataset.tags = globalMethods.methods.mixinMethods_enhanceTags(dataset.tags, categoryCards);
+    dataset = metaDataFactory.enhanceMetadataEntry(dataset, cardBGImages, categoryCards);
+    dataset = metaDataFactory.enhanceTags(dataset, categoryCards);
 
     dataset.location = metaDataFactory.createLocation(dataset);
 

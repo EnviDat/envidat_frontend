@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-11-07 16:10:01
+ * Last modified  : 2019-11-20 16:03:04
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -60,6 +60,8 @@ export function getEnabledTags(tags, content) {
 }
 
 export function tagsIncludedInSelectedTags(tags, selectedTagNames) {
+  if (!tags || !selectedTagNames) return false;
+
   let selectedTagFound = 0;
 
   for (let j = 0; j < selectedTagNames.length; j++) {

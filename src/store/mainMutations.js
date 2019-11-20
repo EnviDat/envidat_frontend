@@ -15,6 +15,7 @@ import {
   ADD_CARD_IMAGES,
   ADD_ICON_IMAGE,
   SET_CONTROLS,
+  SET_APP_SCROLL_POSITION,
   SET_BROWSE_SCROLL_POSITION,
   SET_CONFIG_SUCCESS,
   SET_CONFIG_ERROR,
@@ -46,6 +47,9 @@ export default {
   },
   [SET_CONTROLS](state, payload) {
     state.controls = payload;
+  },
+  [SET_APP_SCROLL_POSITION](state, payload) {
+    state.appScrollPosition = payload;
   },
   [SET_BROWSE_SCROLL_POSITION](state, payload) {
     state.browseScrollPosition = payload;

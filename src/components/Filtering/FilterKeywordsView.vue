@@ -36,7 +36,6 @@
                         :selectable="tag.enabled"
                         :highlighted="false"
                         :closeable="false"
-                        class="filterTag"
                         :color="tag.color"
                         @clicked="catchTagClicked($event, tag.name)" />
             </v-flex>
@@ -61,7 +60,6 @@
                         :selectable="true"
                         :highlighted="true"
                         :closeable="true"
-                        class="filterTag"
                         @clickedClose="catchTagCloseClicked($event, tag.name)"
                         @clicked="catchTagCloseClicked($event, tag.name)" />
             </v-flex>
@@ -251,12 +249,6 @@ export default {
 };
 </script>
 
-<style>
-
-  .envidat_subheading {
-    font-family: 'Libre Baskerville', serif;
-    font-weight: 400;
-    opacity: 0.85;
-  }
+<style scoped>
 
 </style>

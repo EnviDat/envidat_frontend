@@ -48,11 +48,12 @@
       </v-flex>
     </v-layout>
 
-    <v-progress-linear v-if="loading"
-      style="position: absolute;height: 2px;left: 0px;bottom: -14px;"
-      color="secondary"
-      height="2"
-      :indeterminate="loading" />
+    <v-progress-linear v-show="loading"
+                        indeterminate
+                        style="position: absolute; left: 0; bottom: -14px;"
+                        height="2"
+                        color="primary" />
+
 
   </v-toolbar>
 </template>

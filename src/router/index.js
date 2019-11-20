@@ -141,15 +141,15 @@ export default new Router({
   isSameRoute(a, b) {
     if (b === START) {
       return a === b;
-    } if (!b) {
+    } else if (!b) {
       return false;
-    } if (a.path && b.path) {
+    } else if (a.path && b.path) {
       return (
         a.path.replace(trailingSlashRE, '') === b.path.replace(trailingSlashRE, '')
         && a.hash === b.hash
         && this.isObjectEqual(a.query, b.query)
       );
-    } if (a.name && b.name) {
+    } else if (a.name && b.name) {
       return (
         a.name === b.name
         && a.hash === b.hash
