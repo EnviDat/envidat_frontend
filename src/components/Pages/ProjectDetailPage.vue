@@ -46,7 +46,8 @@
           <v-card-title class="metadataList_title title">{{ metadataListTitle }}</v-card-title>
 
           <div v-if="hasMetadatas" >
-            <metadata-list class="px-3"
+            <metadata-list ref="metadataList"
+                            class="px-3"
                             :listContent="filteredListContent"
                             :showMapFilter="false"
                             :mapFilteringPossible="mapFilteringPossible"
@@ -59,7 +60,8 @@
                             :defaultListControls="defaultControls"
                             :enabledControls="enabledControls"
                             :mapHeight="mapFilterHeight"
-                            :topFilteringLayout="true" />
+                            :topFilteringLayout="true"
+                            @setScroll="setScrollPos" />
           </div>
 
           <div v-if="!hasMetadatas" >
@@ -83,7 +85,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-14 17:31:51
+ * Last modified  : 2019-11-20 15:51:22
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -347,6 +349,12 @@ export default {
     },
     catchTagCleared() {
       this.selectedTagNames = [];
+    },
+    setScrollPos(toPos) {
+      
+      if (this.$root.$children && this.$root.$children[0].$refs.appContainer) {
+        this.$root.$children[0].$refs.appContainer.scrollTop = toPos;
+      }
     },
   },
   components: {
