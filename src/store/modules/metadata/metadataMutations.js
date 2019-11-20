@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-10-23 16:37:00
+ * Last modified  : 2019-11-08 14:30:10
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -36,37 +36,39 @@ import {
   SET_VIRTUAL_LIST_INDEX,
   METADATA_NAMESPACE,
 } from '@/store/metadataMutationsConsts';
+
 import {
   warningMessage,
   errorMessage,
   getSpecificApiError,
 } from '@/factories/notificationFactory';
+
 import { ADD_USER_NOTIFICATION } from '@/store/mainMutationsConsts';
 
 import metaDataFactory from '@/factories/metaDataFactory';
+import { solrResultToCKANJSON } from '@/factories/apiFactory';
 import globalMethods from '@/factories/globalMethods';
-import { Object } from 'core-js';
 
 
 function enhanceMetadatas(store, datasets) {
   if (!(datasets instanceof Array)) {
-    throw new Error('enhanceMetadatas() expects an array of datasets got ' + typeof datasets);
+    throw new Error(`enhanceMetadatas() expects an array of datasets got ${typeof datasets}`);
   }
   const { cardBGImages } = store.getters;
   const categoryCards = store.getters[`${METADATA_NAMESPACE}/categoryCards`];
-  const metadatasContent = {};
+  const enhancedContent = {};
 
   for (let i = 0; i < datasets.length; i++) {
     let dataset = datasets[i];
-    dataset = globalMethods.methods.mixinMethods_enhanceTitleImg(dataset, cardBGImages, categoryCards);
-    dataset = globalMethods.methods.mixinMethods_enhanceTags(dataset, categoryCards);
+    dataset = metaDataFactory.enhanceMetadataEntry(dataset, cardBGImages, categoryCards);
+    dataset = metaDataFactory.enhanceTags(dataset, categoryCards);
 
     dataset.location = metaDataFactory.createLocation(dataset);
 
-    metadatasContent[dataset.id] = dataset;
+    enhancedContent[dataset.id] = dataset;
   }
 
-  return metadatasContent;
+  return enhancedContent;
 }
 
 
@@ -78,9 +80,14 @@ export default {
   },
   [SEARCH_METADATA_SUCCESS](state, payload) {
 
-    state.searchedMetadatasContent = enhanceMetadatas(this, payload);
+    const convertedPayload = [];
+    for (let i = 0; i < payload.length; i++) {
+      const convertedEntry = solrResultToCKANJSON(payload[i]);
+      convertedPayload.push(convertedEntry);
+    }
 
-    // this._vm.$set(state.searchedMetadatasContent, ckanJSON.id, ckanJSON);
+    state.searchedMetadatasContent = enhanceMetadatas(this, convertedPayload);
+
     state.searchingMetadatasContentOK = true;
     state.searchingMetadatasContent = false;
   },
@@ -146,7 +153,7 @@ export default {
   [UPDATE_TAGS_ERROR](state, reason) {
     state.updatingTags = false;
 
-    const errObj = warningMessage('Keyword update error', 'Filtering might not work properly try reloading the page');
+    const errObj = warningMessage('Keyword update error', `Error: ${reason.message}. \n Filtering might not work properly try reloading the page`, reason.stack);
     this.commit(ADD_USER_NOTIFICATION, errObj);
   },
   [FILTER_METADATA](state) {
@@ -158,7 +165,7 @@ export default {
   },
   [FILTER_METADATA_ERROR](state, reason) {
     state.isFilteringContent = false;
-    const errObj = warningMessage('Filtering error', 'Filtering might not work properly try reloading the page');
+    const errObj = warningMessage('Filtering error', `Error: ${reason.message}. \n Filtering might not work properly try reloading the page`, reason.stack);
     this.commit(ADD_USER_NOTIFICATION, errObj);
   },
   [PIN_METADATA](state, payload) {

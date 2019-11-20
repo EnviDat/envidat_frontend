@@ -1,14 +1,14 @@
 <template>
-  <v-container tag="article" fluid fill-height pa-0>
-    <v-layout wrap>
+  <v-container tag="article"
+                fluid
+                fill-height
+                pa-0>
+    <v-layout row wrap>
+
       <v-flex xs12 lg10 offset-lg1>
-
-        <img-and-text-layout
-          :img="missionImg"
-          :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
-          title="Research Projects"
-        />
-
+        <img-and-text-layout :img="missionImg"
+                              :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
+                              title="Research Projects" />
       </v-flex>
 
       <v-flex xs12 lg10 offset-lg1 mt-5>
@@ -47,7 +47,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-23 16:32:02
+ * Last modified  : 2019-11-20 13:05:04
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

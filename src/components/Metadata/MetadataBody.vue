@@ -4,6 +4,7 @@
 
     <v-card-text v-if="fullDescription"
                   ref="description"
+                  style="overflow-x: hidden;"
                   class="heightAndScroll pb-4" >
 
       <m-markdown-preview :markdown="fullDescription"
@@ -51,7 +52,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-23 15:57:23
+ * Last modified  : 2019-11-20 13:07:27
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

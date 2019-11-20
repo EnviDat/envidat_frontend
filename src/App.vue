@@ -15,7 +15,7 @@
                             @clickedReport="catchReportClicked(notification.key)" />
       </div>
 
-    <the-navigation v-if="$vuetify.breakpoint.mdAndUp"
+    <the-navigation v-if="!showSmallNavigation"
                     :style="`z-index: ${NavigationZIndex}`"
                     :mini="!this.menuItem.active"
                     :navItems="navItems"
@@ -23,7 +23,7 @@
                     @menuClick="catchMenuClicked"
                     @itemClick="catchItemClicked" />
 
-    <the-navigation-small v-if="$vuetify.breakpoint.smAndDown"
+    <the-navigation-small v-if="showSmallNavigation"
                           :navItems="navItems"
                           :style="`z-index: ${NavigationZIndex}`"
                           class="envidatSmallNavigation elevation-3"
@@ -36,7 +36,7 @@
                             :searchTerm="searchTerm"
                             :showSearchCount="currentPageIsBrowsePage"
                             :searchCount="searchCount"
-                            :showSearch="!currentPageIsLandingPage"
+                            :showSearch="currentPageIsBrowsePage"
                             :loading="loading"
                             @menuClick="catchMenuClicked"
                             @searchClick="catchSearchClicked"
@@ -45,8 +45,11 @@
     <v-content>
       <v-container fluid
                     pa-2 
-                    :style="currentPageIsBrowsePage ? 'height: 100%;' : 'height: calc(100vh - 36px); overflow: auto;'">
-        <v-layout column>
+                    fill-height
+                    v-on:scroll="updateScroll()"
+                    ref="appContainer"
+                    :style="currentPageIsBrowsePage ? '' : 'height: calc(100vh - 36px); overflow-y: auto;'" >
+        <v-layout column >
           <v-flex xs12 mx-0 >
 
             <transition name="fade" mode="out-in">
@@ -61,7 +64,7 @@
       <v-dialog v-model="showReloadDialog" persistent max-width="290">
         <v-card>
           <v-card-title class="headline">New Version Available!</v-card-title>
-          <v-card-text>{{ dialogVersionText }}</v-card-text>
+          <v-card-text>{{ dialogVersionText() }}</v-card-text>
           <v-card-actions>
             <v-spacer />
             <v-btn color="green darken-1" flat @click="reloadApp()">Reload</v-btn>
@@ -82,7 +85,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-25 13:38:33
+ * Last modified  : 2019-11-15 15:50:59
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -111,9 +114,15 @@ import {
 } from '@/store/metadataMutationsConsts';
 import {
   SET_CONFIG,
+  SET_APP_SCROLL_POSITION,
   TRIM_NOTIFICATIONS,
   HIDE_NOTIFICATIONS,
 } from '@/store/mainMutationsConsts';
+
+import { POLICIES_NAMESPACE } from '@/store/policiesMutationsConsts';
+import { GUIDELINES_NAMESPACE } from '@/store/guidelinesMutationsConsts';
+import { PROJECTS_NAMESPACE } from '@/store/projectsMutationsConsts';
+
 import TheNavigation from '@/components/Navigation/TheNavigation';
 import TheNavigationSmall from '@/components/Navigation/TheNavigationSmall';
 import TheNavigationToolbar from '@/components/Navigation/TheNavigationToolbar';
@@ -135,6 +144,14 @@ export default {
     this.updateActiveStateOnNavItems();
   },
   methods: {
+    updateScroll() {
+      if (this.$refs && this.$refs.appContainer) {
+        this.storeScroll(this.$refs.appContainer.scrollTop);
+      }
+    },
+    storeScroll(scrollY) {
+      this.$store.commit(SET_APP_SCROLL_POSITION, scrollY);
+    },
     updateActiveStateOnNavItems() {
       // console.log(this.currentPage);
 
@@ -175,6 +192,11 @@ export default {
       if (this.$route.name === item.pageName) {
         return;
       }
+
+      if (this.showSmallNavigation) {
+        this.catchMenuClicked();
+      }
+
       this.$router.push({ path: item.path, query: '' });
     },
     catchSearchClicked(search) {
@@ -216,7 +238,7 @@ export default {
       }
     },
     dialogVersionText() {
-      return `You are using the version ${process.env.VUE_APP_VERSION}, but there is are newer version available (${this.newVersion}). Please reload to get the latest verison of EnviDat.`;
+      return `You are using the version ${this.appVersion}, but there is are newer version available (${this.newVersion}). Please reload to get the latest verison of EnviDat.`;
     },
   },
   computed: {
@@ -230,6 +252,9 @@ export default {
       currentMetadataContent: `${METADATA_NAMESPACE}/currentMetadataContent`,
       filteredContent: `${METADATA_NAMESPACE}/filteredContent`,
       isFilteringContent: `${METADATA_NAMESPACE}/isFilteringContent`,
+      policiesLoading: `${POLICIES_NAMESPACE}/loading`,
+      guidelinesLoading: `${GUIDELINES_NAMESPACE}/loading`,
+      projectsLoading: `${PROJECTS_NAMESPACE}/loading`,
       currentPage: 'currentPage',
       appBGImage: 'appBGImage',
       outdatedVersion: 'outdatedVersion',
@@ -239,7 +264,8 @@ export default {
       maxNotifications: 'maxNotifications',
     }),
     loading() {
-      return this.loadingMetadatasContent || this.searchingMetadatasContent || this.isFilteringContent;
+      return this.loadingMetadatasContent || this.searchingMetadatasContent || this.isFilteringContent
+          || this.projectsLoading || this.policiesLoading || this.guidelinesLoading;
     },
     searchTerm() {
       return this.$route.query.search;
@@ -252,6 +278,9 @@ export default {
     },
     showToolbar() {
       return !this.currentPageIsLandingPage || !this.$vuetify.breakpoint.smAndDown;
+    },
+    showSmallNavigation() {
+      return this.$vuetify.breakpoint.smAndDown;
     },
     searchCount() {
       return this.filteredContent !== undefined ? Object.keys(this.filteredContent).length : 0;
@@ -472,7 +501,7 @@ export default {
 }
 
 .metadataInfoIcon {
-  opacity: 0.75;
+  opacity: 0.7;
 }
 
 .envidatBadge span {
@@ -487,7 +516,7 @@ export default {
   height: 1.3rem !important;
   font-size: 0.65rem !important;
   margin: 1px 2px !important;
-  opacity: 0.85 !important;
+  /* opacity: 0.85 !important; */
 }
 
 .enviDatSnackbar > .v-snack__wrapper > .v-snack__content {
@@ -508,8 +537,8 @@ export default {
   cursor: pointer !important;
 }
 
-.filterTag {
-  opacity: 0.7;
+.authorTag span {
+  font-size: 14px !important;
 }
 
 .chip__content span {
