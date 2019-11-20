@@ -19,6 +19,7 @@ import MetadataBody from '@/components/Metadata/MetadataBody.vue';
 import MetadataCitation from '@/components/Metadata/MetadataCitation.vue';
 import MetadataDetails from '@/components/Metadata/MetadataDetails.vue';
 import MetadataLocation from '@/components/Metadata/MetadataLocation.vue';
+import MetadataAuthors from '@/components/Metadata/MetadataAuthors.vue';
 
 import doiIcon from '@/assets/icons/doi.png';
 import mailIcon from '@/assets/icons/mail.png';
@@ -76,6 +77,13 @@ const genericProps4 = {
   isPoint: location1.isPoint,
   isMultiPoint: location1.isMultiPoint,
   geoJSON: location1.geoJSON,
+};
+
+const authors = metaDataFactory.createAuthors(metadata[2]);
+
+const genericProps5 = {
+  showPlaceholder: false,
+  authors,
 };
 
 export const methods = {
@@ -341,6 +349,40 @@ storiesOf('6 Detail Views | Metadata', module)
         details: [],
         showPlaceholder: true,
         fixedHeight: false,
+      },
+    }),
+  })).add('Metadata Authors', () => ({
+    components: { MetadataAuthors },
+    template: `
+    <v-layout row wrap>
+
+      <v-flex xs12 md6 py-3>
+        <metadata-authors :genericProps="genericProps5" />
+      </v-flex>
+
+      <v-flex xs12 md6 py-3>
+        <metadata-authors :genericProps="genericPropsPlaceholder"
+          :showPlaceholder="genericPropsPlaceholder.showPlaceholder" />
+      </v-flex>
+
+      <v-flex xs12 md6 py-3>
+        <metadata-authors  />
+      </v-flex>
+
+    </v-layout>        
+    `,
+    // updated() {
+    //   this.$children.forEach((child) => {
+    //     child.$forceUpdate();
+    //   });
+    // },
+    methods: {
+    },
+    data: () => ({
+      genericProps5,
+      genericPropsPlaceholder: {
+        authors: [],
+        showPlaceholder: true,
       },
     }),
   }));
