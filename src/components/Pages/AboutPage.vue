@@ -49,10 +49,7 @@
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
-import { mapGetters } from 'vuex';
-import {
-  ABOUT_PAGENAME,
-} from '@/router/routeConsts';
+import { ABOUT_PAGENAME } from '@/router/routeConsts';
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
