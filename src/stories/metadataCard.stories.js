@@ -16,7 +16,7 @@ import './js/vuetify-components';
 
 import MetadataCard from '@/components/Cards/MetadataCard.vue';
 import MetadataCardPlaceholder from '@/components/Cards/MetadataCardPlaceholder.vue';
-import App from '@/App.vue';
+
 import fileIcon from '@/assets/icons/file.png';
 import lockedIcon from '@/assets/icons/lockClosed.png';
 import unlockedIcon from '@/assets/icons/lockOpen.png';
@@ -25,21 +25,21 @@ import unlockedIcon from '@/assets/icons/lockOpen.png';
 import metadataCards from './js/metadata';
 
 export const methods = {
-  hasRestrictedResources: function hasRestrictedResources(metadata) {
+  hasRestrictedResources(metadata) {
     if (!metadata || !metadata.resources || metadata.resources.length <= 0) {
       return false;
     }
 
-    /* eslint-disable consistent-return  */
-    metadata.resources.forEach(res => {
-      if (
-        res.restricted !== undefined &&
-        (res.restricted.allowed_users !== undefined ||
-          (res.restricted.level !== undefined && res.restricted.level !== 'public'))
-      ) {
+    for (let i = 0; i < metadata.resources.length; i++) {
+      const res = metadata.resources[i];
+      
+      if (res.restricted !== undefined
+        && (res.restricted.allowed_users !== undefined
+        || (res.restricted.level !== undefined
+            && res.restricted.level !== 'public'))) {
         return true;
       }
-    });
+    }
 
     return false;
   },
