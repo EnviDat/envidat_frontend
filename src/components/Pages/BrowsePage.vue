@@ -215,6 +215,7 @@ export default {
   computed: {
     ...mapGetters({
       metadatasContent: 'metadata/metadatasContent',
+      metadatasContentSize: 'metadata/metadatasContentSize',
       searchedMetadatasContent: 'metadata/searchedMetadatasContent',
       searchingMetadatasContent: 'metadata/searchingMetadatasContent',
       searchingMetadatasContentOK: 'metadata/searchingMetadatasContentOK',
@@ -233,9 +234,6 @@ export default {
     }),
     keywordsPlaceholder() {
       return this.searchingMetadatasContent || this.updatingTags;
-    },
-    metadatasContentSize() {
-      return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
     },
     searchMetadatasContentSize() {
       return this.searchedMetadatasContent !== undefined ? Object.keys(this.searchedMetadatasContent).length : 0;
