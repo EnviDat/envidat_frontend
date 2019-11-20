@@ -22,28 +22,26 @@
 
       <v-btn-toggle v-model="controlsActive"
                     multiple >
-        <v-btn v-if="isEnabledControl(0)"
+        <v-btn v-if="isEnabledControl(LISTCONTROL_LIST_ACTIVE)"
                 flat
-                @click="catchControlClick(0)"
-                :class="isActiveControl(0) ? 'highlight' : ''"
+                @click="catchControlClick(LISTCONTROL_LIST_ACTIVE)"
+                :class="isActiveControl(LISTCONTROL_LIST_ACTIVE) ? 'highlight' : ''"
                 :style="compactLayout ? 'height: 32px !important' : ''" >
-          <img class="envidatIcon"
-                :src="listViewIcon" >
+          <v-icon>view_headline</v-icon>
         </v-btn>
 
-        <v-btn v-if="isEnabledControl(1)"
+        <v-btn v-if="isEnabledControl(LISTCONTROL_MAP_ACTIVE)"
                 flat
-                @click="catchControlClick(1)"
-                :class="isActiveControl(1) ? 'highlight' : ''"
+                @click="catchControlClick(LISTCONTROL_MAP_ACTIVE)"
+                :class="isActiveControl(LISTCONTROL_MAP_ACTIVE) ? 'highlight' : ''"
                 :style="compactLayout ? 'height: 32px !important' : ''" >
-          <img class="envidatIcon"
-                :src="mapIcon" >
+          <v-icon>map</v-icon>
         </v-btn>
 
-        <v-btn v-if="isEnabledControl(2)"
+        <v-btn v-if="isEnabledControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)"
                 flat
-                @click="catchControlClick(2)"
-                :class="isActiveControl(2) ? 'highlight' : ''"
+                @click="catchControlClick(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)"
+                :class="isActiveControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE) ? 'highlight' : ''"
                 :style="compactLayout ? 'height: 32px !important' : ''" >
           <v-icon>view_comfortable</v-icon>
         </v-btn>
@@ -70,11 +68,16 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-24 17:25:17
+ * Last modified  : 2019-11-08 16:32:31
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
+import {
+  LISTCONTROL_LIST_ACTIVE,
+  LISTCONTROL_MAP_ACTIVE,
+  LISTCONTROL_COMPACT_LAYOUT_ACTIVE,
+} from '@/store/metadataMutationsConsts';
 
 export default {
   components: {
@@ -94,6 +97,9 @@ export default {
     controlsActive: [],
     listViewIcon: null,
     mapIcon: null,
+    LISTCONTROL_LIST_ACTIVE,
+    LISTCONTROL_MAP_ACTIVE,
+    LISTCONTROL_COMPACT_LAYOUT_ACTIVE,
   }),
   beforeMount: function beforeMount() {
     this.listViewIcon = this.mixinMethods_getIcon('listView');

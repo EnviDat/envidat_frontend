@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-10-23 16:07:03 
+ * Last modified  : 2019-11-01 09:52:52
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -15,8 +15,6 @@
 import {
   ADD_USER_NOTIFICATION,
 } from '@/store/mainMutationsConsts';
-
-import store from '@/store/store';
 
 function defaultNotification() {
   return {
@@ -60,24 +58,24 @@ export function warningMessage(message, details) {
   return notification;
 }
 
-function genericMessage (status) {
+function genericMessage(status) {
   switch (status) {
     case 400:
-      return "Client tried to execute a function with wrong parameters";
+      return 'Client tried to execute a function with wrong parameters';
     case 401:
-      return "Not authorized";
+      return 'Not authorized';
     // case 422:
-    //   return "Unprosomething entity";
+    //   return 'Unprosomething entity';
     case 403:
-      return "Access denied";
+      return 'Access denied';
     case 404:
-      return "Could not find the requested resource";
+      return 'Could not find the requested resource';
     case 405:
-      return "Client tried to execute an unkown function";
+      return 'Client tried to execute an unkown function';
     case 408:
-      return "Timeout! Ups no answer from the internet? Check your internet connection and if it persits report this error.";
+      return 'Timeout! Ups no answer from the internet? Check your internet connection and if it persits report this error.';
     default:
-      return "An unknown Error occured please report to the envidat team (envidat@wsl.ch)";
+      return 'An unknown Error occured please report to the envidat team (envidat@wsl.ch)';
   }
 }
 
@@ -85,8 +83,8 @@ export function getSpecificApiError(details, reason) {
   let errObj = errorMessage(reason, details);
 
   if (reason.response) {
-    const status = reason.response.status + ' ' + reason.response.statusText;
-    details += '\n' + reason.request.responseURL;
+    const status = `${reason.response.status} ${reason.response.statusText}`;
+    details += `\n ${reason.request.responseURL}`;
     errObj = errorMessage(status, details, reason.response.stack);
   }
 
@@ -97,22 +95,22 @@ export function getGenericApiError(reason) {
   let errObj = errorMessage(reason);
 
   if (reason.response) {
-    const status = reason.response.status + ' ' + reason.response.statusText;
+    const status = `${reason.response.status} ${reason.response.statusText}`;
     const message = genericMessage(reason.response.status);
     const details = reason.request.responseURL;
-    errObj = errorMessage(message, status + ' ' + details, reason.response.stack);
+    errObj = errorMessage(message, `${status} ${details}`, reason.response.stack);
   }
 
   return errObj;
 }
 
-export function handleGenericAPIError (reason) {
-  let errObj = getGenericApiError(reason);
+export function handleGenericAPIError(store, reason) {
+  const errObj = getGenericApiError(reason);
 
   store.commit(ADD_USER_NOTIFICATION, errObj);
 }
 
-export function handleGenericError (msg, details, stack) {
+export function handleGenericError(store, msg, details, stack) {
   const errObj = errorMessage(msg, details, stack);
 
   store.commit(ADD_USER_NOTIFICATION, errObj);
