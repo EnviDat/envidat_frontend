@@ -1,5 +1,5 @@
 <template>
-  <v-card :class="{ ['pt-2']: this.isOnTop }">
+  <v-card >
     <v-card-title class="title metadata_title">
       Author Details
     </v-card-title>
@@ -28,10 +28,8 @@
       </v-layout>
     </v-container>
 
-    <v-card-text
-      v-if="!showPlaceholder && (!authors || authors.length <= 0)"
-      style="color: red;"
-    >
+    <v-card-text v-if="!showPlaceholder && (!authors || authors.length <= 0)"
+                  style="color: red;" >
       {{ emptyText }}
     </v-card-text>
 

@@ -2,11 +2,10 @@
   <!-- <div  @mouseover="hovered = true"
         @mouseleave="hovered = false" > -->
     <v-card class="authorCard pa-3"
-            hover
-            :style="`background-color: ${this.dark ? darkColor : whiteColor};`"
-            min-height="350px"
-            max-width="400px"
+            :style="dynamicCardBackground"
             @click.native="cardClick" >
+
+            <!-- :style="`background-color: ${this.dark ? darkColor : whiteColor};`" -->
 
       <v-card-title class="pa-3 justify-end">
         <div :style="`background-color: ${!this.dark ? darkColor : whiteColor};`"
@@ -42,12 +41,13 @@
       </v-card-title>
 
       <v-card-title class="pa-0">
-        <data-credit-layout class="py-0"
-                             :dataCredit="author.dataCredit"
-                             :iconColor="!this.dark ? darkColor : whiteColor"
-                             :dark="dark" />
+        <data-credit-layout v-if="author.dataCredit"
+                              class="py-0"
+                              :dataCredit="author.dataCredit"
+                              :iconColor="this.dark ? whiteColor : darkColor"
+                              :dark="!dark" />
 
-        <v-container py-0 pt-2 grid-list-xs>
+        <v-container py-0 px-3 pt-2 grid-list-xs>
           <v-layout column px-0 >
 
             <v-flex xs12>
@@ -83,24 +83,18 @@
       <v-layout row
                 align-center
                 px-2 >
-        <v-flex grow>
-          <v-divider dark ></v-divider>
+
+        <v-flex grow @click="infosExpanded = !infosExpanded">
+          <v-divider :dark="dark" />
         </v-flex>
+
         <v-flex shrink pa-0>
           <v-btn flat icon
-                  color="amber"
+                  :color="dark ? 'white' : 'black'"
                   class="ma-0"
                   @click="infosExpanded = !infosExpanded">
             <v-icon> {{ infosExpanded ? 'arrow_drop_down' : 'arrow_left' }}</v-icon>
           </v-btn>
-          <!-- <base-icon-button materialIconName="expand_more"
-                            :outlined="true"
-                            iconColor="primary"
-                            :isToggled="infosExpanded"
-                            :rotateOnClick="true"
-                            :rotateToggle="infosExpanded"
-                            :toolTipText="infosExpanded ? 'Hide info' : 'Show info'"
-                            @clicked="infosExpanded = !infosExpanded" /> -->
         </v-flex>
       </v-layout>
 
@@ -173,15 +167,15 @@
             :style="bottomToTopStyle(dataCreditsCount('collection') * 10, 'green')" ></div> -->
 
 
-      <div v-if="author.datasetCount >= 10"
+      <div v-if="dataCreditLevel === 1"
             style="position: absolute; top: 0px; right: 20%;"
            :style="bottomToTopStyle(100, 'gold', 'red')" ></div>
 
-      <div v-if="author.datasetCount >= 30"
+      <div v-if="dataCreditLevel === 2"
             style="position: absolute; top: 0px; right: 15%;"
            :style="bottomToTopStyle(100, 'gold', 'red')" ></div>
 
-      <div v-if="author.datasetCount >= 60"
+      <div v-if="dataCreditLevel === 3"
             style="position: absolute; top: 0px; right: 10%;"
            :style="bottomToTopStyle(100, 'gold', 'red')" ></div>
     </v-card>
@@ -204,21 +198,48 @@ export default {
   },
   computed: {
     dark() {
-      return this.author.datasetCount > 5;
+      return this.dataCreditLevel === 3;
     },
     dataCredits() {
       return this.author.dataCredit ? Object.keys(this.author.dataCredit) : [];
+    },
+    dataCreditLevel() {
+      let lvl = 0;
+
+      if (this.dataCreditScore > 20) {
+        lvl = 1;
+
+        if (this.dataCreditScore > 40) {
+          lvl = 2;
+
+          if (this.dataCreditScore > 60) {
+            lvl = 3;
+          }
+        }
+      }
+
+      return lvl;
     },
     dataCreditScore() {
       let score = 0;
 
       if (this.author) {
-        score = this.author.datasetCount;
+        // a dataset counts two points
+        score = this.author.datasetCount * 2;
       }
 
-      if (this.dataCredits.length > 0) {
-        score += this.dataCredits.length;
-        score *= this.dataCredits.length;
+      if (this.author.dataCredit) {
+        const counts = Object.values(this.author.dataCredit);
+
+        for (let i = 0; i < counts.length; i++) {
+          const creditCount = counts[i];
+          score += creditCount;
+          if (creditCount > 0) {
+            // add +4 for every dataCredit made so it gives
+            // least 5 points for each datacredit
+            score += 4;
+          }
+        }
       }
 
       return score;
@@ -249,6 +270,35 @@ export default {
       }
 
       return minSize;
+    },
+    dynamicCardBackground() {
+      let color = 'white';
+      let toColor = '#efefef';
+
+      if (this.dataCreditLevel === 0) {
+        return 'background-color: #fff';
+      }
+      
+      if (this.dataCreditLevel === 1) {
+        color = '#e00000'; // #e00000
+        toColor = '#ff3d3d'; // #ff0000
+      } else if (this.dataCreditLevel === 2) {
+        color = '#ffac05';
+        toColor = '#ffd700';
+      } else if (this.dataCreditLevel === 3) {
+        return 'background-color: #111';
+      }
+
+      // return this.bottomToTopStyle('100%', color, 'gold');
+      return `background-image: linear-gradient(45deg, ${color} 10%, ${toColor} 90%);
+              background-position: center, center; background-size: cover;`;
+
+      // const gradient = this.dark ? this.blackTopToBottom : this.whiteTopToBottom;
+
+      // return `background-image: linear-gradient(0deg, ${gradient});
+      //         background-position: center, center; background-size: cover;
+      //         background-repeat: initial;
+      //         z-index: 0;`;
     },
   },
   methods: {
@@ -304,6 +354,7 @@ export default {
     },
   },
   data: () => ({
+    dataScoreLabel: 'Data Credit Score',
     dataCountLabel: 'Published datasets',
     emailLabel: 'Email',
     affiliationLabel: 'Affiliation',
@@ -336,6 +387,9 @@ export default {
 
   .authorCard {
     border-radius: 20px;
+    min-width: 300px;
+    max-width: 400px;
+    min-height: 350px;
   }
 
   .authorTitle {

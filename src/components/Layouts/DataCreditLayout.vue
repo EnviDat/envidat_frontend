@@ -5,7 +5,8 @@
 
       <v-flex v-for="(creditName, index) in dataCreditNames"
               :key="index"
-              shrink pb-5>
+              shrink pb-5
+              v-show="showZero || (!showZero && dataCreditCounts[index] > 0)">
 
         <v-layout column
                   align-center >
@@ -21,7 +22,8 @@
                 <span slot="badge" >
                       {{ dataCreditCounts[index] }}
                 </span>
-                <v-icon dark :color="iconColor" >
+                <v-icon dark :color="iconColor"
+                        :class="!dark ? 'white--text' : 'black--text'" >
                   {{ iconLookup(creditName) }}
                 </v-icon>
               </v-badge>
@@ -48,6 +50,10 @@ export default {
     dataCredit: Object,
     iconColor: String,
     dark: Boolean,
+    showZero: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     dataCreditNames() {
