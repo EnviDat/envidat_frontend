@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-10-31 15:52:39
+ * Last modified  : 2019-11-20 16:08:39
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -70,14 +70,15 @@ export default {
         for (let j = 0; j < proj.packages.length; j++) {
           const dataset = proj.packages[j];
 
-          const fullDataset = allDatasets[dataset.id];
+          if (!dataset.tags) {
+            const fullDataset = allDatasets[dataset.id];
 
-          if (fullDataset) {
-            // the tags of each dataset has to be looked up in the allDatasets (metadataContents)
-            // because the backend call doesn't deliver the packages with the tags
-            // it can only delivery the tags for the projects, which is no use for this
-            // case
-            dataset.tags = fullDataset.tags;
+            if (fullDataset) {
+              // the tags of each dataset has to be looked up in the allDatasets (metadataContents)
+              // because the backend call doesn't deliver the packages with the tags
+              // it can only delivery the tags for the projects, which is no use for this case
+              dataset.tags = fullDataset.tags;
+            }
           }
         }
 

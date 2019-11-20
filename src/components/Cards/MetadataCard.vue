@@ -57,7 +57,8 @@
                   xs12 >
           {{ truncatedSubtitle }}
         </v-flex>
-        <v-flex xs12
+        <v-flex v-if="tags"
+                xs12
                 px-1
                 style="overflow: hidden;">
 
@@ -122,7 +123,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-11-13 16:59:16
+ * Last modified  : 2019-11-20 14:31:57
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

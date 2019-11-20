@@ -134,6 +134,7 @@ export default {
   computed: {
     ...mapGetters({
       metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
+      metadatasContentSize: `${METADATA_NAMESPACE}/metadatasContentSize`,
       loadingMetadatasContent: `${METADATA_NAMESPACE}/loadingMetadatasContent`,
       loadingCurrentMetadataContent: `${METADATA_NAMESPACE}/loadingCurrentMetadataContent`,
       currentMetadataContent: `${METADATA_NAMESPACE}/currentMetadataContent`,
@@ -143,12 +144,6 @@ export default {
       cardBGImages: 'cardBGImages',
       appScrollPosition: 'appScrollPosition',
     }),
-    /**
-     * @returns {Number} Size of the metadatasContent
-     */
-    metadatasContentSize() {
-      return this.metadatasContent !== undefined ? Object.keys(this.metadatasContent).length : 0;
-    },
     /**
      * @returns {String} the metadataId from the route
      */
