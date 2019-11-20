@@ -83,7 +83,7 @@
                                     :materialIconName="item.icon"
                                     :iconColor="item.active ? 'accent' : 'grey'"
                                     color="secondary"
-                                    @click="item.icon === 'menu' ? item.active = !item.active : itemClick(item)" />
+                                    @clicked="item.icon === 'menu' ? item.active = !item.active : itemClick(item)" />
           </v-list-tile-content>
         </div>
 
