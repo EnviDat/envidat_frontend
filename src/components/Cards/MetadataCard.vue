@@ -45,13 +45,12 @@
       </v-container>
     </v-img>
 
-    <v-card-text :class="{['cardText'] : $vuetify.breakpoint.mdAndUp,
-                            ['compactText'] : flatLayout || $vuetify.breakpoint.smAndDown,
-                            ['py-2'] : flatLayout,
-                            ['pr-5'] : flatLayout,
-                            ['pr-4'] : !flatLayout,
-                            ['py-2'] : !flatLayout,
-                          }" >
+    <v-card-text py-2 
+                  :class="{['cardText'] : $vuetify.breakpoint.mdAndUp,
+                        ['compactText'] : flatLayout || $vuetify.breakpoint.smAndDown,
+                        ['pr-5'] : flatLayout,
+                        ['pr-4'] : !flatLayout,
+                  }" >
       <!-- TODO: need to strip the markdown characters from the desc -->
       <v-layout row wrap>
         <v-flex v-if="!compactLayout"
