@@ -5,18 +5,16 @@
                         :mini-variant.sync="mini"
                         mini-variant-width="60"
                         width="190"
-                        @click.native.stop=""
-  >
+                        @click.native.stop="" >
 
     <v-list class="pt-1"
             :class="{ 'narrowNavigation': mini }"
-                        @click.native.stop=""
+            @click.native.stop=""
             dense >
 
       <v-list-tile v-for="(item, index) in navItemsMenuExcluded"
                   :key="index"
-                        @click.native.stop=""
-                  >
+                  @click.native.stop="" >
 
         <div v-if="mini" style="width: 100%; height: 100%;">
 
@@ -36,8 +34,7 @@
                               :materialIconName="item.icon"
                               :iconColor="item.active ? 'accent' : 'secondary'"
                               color="transparent"
-                              @clicked="item.icon === 'menu' ? item.active = !item.active : itemClick(item)"
-                            />
+                              @clicked="item.icon === 'menu' ? item.active = !item.active : itemClick(item)" />
           </v-list-tile-action>
         </div>
 

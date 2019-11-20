@@ -29,16 +29,14 @@
           </v-list-tile-action>
 
           <v-list-tile-action v-if="item.icon !== 'envidat'"
-                              class="v-list__group__header__prepend-icon"
-          >
+                              class="v-list__group__header__prepend-icon" >
               <base-icon-button
                 marginClass="ma-0"
                 :tooltipText="item.title"
                 :materialIconName="item.icon"
                 :iconColor="item.active ? 'accent' : 'secondary'"
                 color="transparent"
-                @clicked="item.icon === 'menu' ? item.active = !item.active : itemClick(item)"
-              />
+                @clicked="item.icon === 'menu' ? item.active = !item.active : itemClick(item)" />
 
           </v-list-tile-action>
         </v-list-tile>
