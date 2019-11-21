@@ -8,6 +8,7 @@
               ref="header"
               style="z-index: 1; position: absolute; left: 0;" 
               :style="headerStyle" >
+
         <metadata-header v-bind="header"
                           :metadataId="metadataId"
                           :showPlaceholder="showPlaceholder"
@@ -87,6 +88,7 @@ import MetadataResources from '@/components/Metadata/MetadataResources';
 import MetadataLocation from '@/components/Metadata/MetadataLocation';
 import MetadataDetails from '@/components/Metadata/MetadataDetails';
 import MetadataCitation from '@/components/Metadata/MetadataCitation';
+import MetadataPublications from '@/components/Metadata/MetadataPublications';
 import metaDataFactory from '@/factories/metaDataFactory';
 import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
 
@@ -217,6 +219,7 @@ export default {
       this.resources = null;
       this.location = null;
       this.details = null;
+      this.publications = null;
 
       if (currentContent && currentContent.title !== undefined) {
 
@@ -237,17 +240,21 @@ export default {
         this.location = metaDataFactory.createLocation(currentContent);
 
         this.details = metaDataFactory.createDetails(currentContent);
+
+        this.publications = metaDataFactory.createPublications(currentContent);
       }
 
       this.$set(components.MetadataHeader, 'genericProps', this.header);
-      this.$set(components.MetadataBody, 'genericProps', this.body);
+      this.$set(components.MetadataBody, 'genericProps', { body: this.body });
       this.$set(components.MetadataCitation, 'genericProps', this.citation);
       this.$set(components.MetadataResources, 'genericProps', this.resources);
       this.$set(components.MetadataLocation, 'genericProps', this.location);
       this.$set(components.MetadataDetails, 'genericProps', { details: this.details });
+      this.$set(components.MetadataPublications, 'genericProps', { publications: this.publications });
 
       this.firstCol = [
         components.MetadataBody,
+        components.MetadataPublications,
         components.MetadataCitation,
         components.MetadataLocation,
       ];
@@ -260,6 +267,7 @@ export default {
       this.singleCol = [
         components.MetadataBody,
         components.MetadataCitation,
+        components.MetadataPublications,
         components.MetadataResources,
         components.MetadataLocation,
         components.MetadataDetails,
@@ -377,6 +385,7 @@ export default {
     MetadataLocation,
     MetadataDetails,
     MetadataCitation,
+    MetadataPublications,
     TwoColumnLayout,
   },
   data: () => ({
@@ -387,6 +396,7 @@ export default {
     resources: null,
     location: null,
     details: null,
+    publications: null,
     amountOfResourcesToShowDetailsLeft: 4,
     notFoundBackPath: 'browse',
     downloadIcon: null,
