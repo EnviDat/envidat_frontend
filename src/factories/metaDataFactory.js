@@ -88,6 +88,19 @@ export default {
       emptyText: 'No related publications found for this dataset.',
     };
   },
+  createFunding(dataset) {
+    if (!dataset) {
+      return null;
+    }
+
+    return {
+      text: dataset.funding_information,
+      title: 'Funding Information',
+      maxTextLength: 500,
+      emptyTextColor: 'black',
+      emptyText: 'No information about funding found for this dataset.',
+    };
+  },
   getAuthorName(author){
     return `${author.given_name ? author.given_name : ''} ${author.name ? author.name : ''}`.trim();
   },

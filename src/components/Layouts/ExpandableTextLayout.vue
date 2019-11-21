@@ -1,6 +1,6 @@
 <template>
   <v-card :class="cardClass">
-    <v-card-title v-if="!showPlaceholder && title"
+    <v-card-title v-if="title"
                   class="metadata_title title">
       {{ title }}
     </v-card-title>
