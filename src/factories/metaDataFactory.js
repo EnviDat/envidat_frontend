@@ -67,10 +67,25 @@ export default {
     }
 
     return {
-      id: dataset.id,
-      title: dataset.title,
-      doi: dataset.doi,
-      description: dataset.notes,
+      // id: dataset.id,
+      title: 'Description',
+      // doi: dataset.doi,
+      text: dataset.notes,
+      maxTextLength: 1000,
+      emptyText: 'No description found for this dataset.',
+    };
+  },
+  createPublications(dataset) {
+    if (!dataset) {
+      return null;
+    }
+
+    return {
+      text: dataset.related_publications,
+      title: 'Related Publications',
+      maxTextLength: 500,
+      emptyTextColor: 'black',
+      emptyText: 'No related publications found for this dataset.',
     };
   },
   getAuthorName(author){

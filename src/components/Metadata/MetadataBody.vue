@@ -1,5 +1,8 @@
 <template>
-  <v-card :class="{ ['pt-2']: this.isOnTop }">
+  <expandable-text-layout v-bind="body"
+                            :showPlaceholder="showPlaceholder" />
+
+  <!-- <v-card :class="{ ['pt-2']: this.isOnTop }">
     <v-card-title class="metadata_title title">Description</v-card-title>
 
     <v-card-text v-if="fullDescription"
@@ -41,7 +44,7 @@
 
     </v-card-actions>
 
-  </v-card>
+  </v-card> -->
 </template>
 
 <script>
@@ -58,61 +61,39 @@
  * file 'LICENSE.txt', which is part of this source code package.
 */
 
-import MMarkdownPreview from 'm-markdown-preview';
-import BaseIconButton from '@/components/BaseElements/BaseIconButton';
+import ExpandableTextLayout from '@/components/Layouts/ExpandableTextLayout';
 
 export default {
+  name: 'MetadataBody',
   components: {
-    MMarkdownPreview,
-    BaseIconButton,
+    ExpandableTextLayout,
   },
   props: {
     genericProps: Object,
     showPlaceholder: Boolean,
   },
   computed: {
-    description() {
-      return this.mixinMethods_getGenericProp('description');
-    },
-    fullDescription() {
-      if (this.description) {
-        if (this.maxDescriptionLengthReached) {
-          return this.showFullDescription ? this.description.trim() : `${this.description.trim().substring(0, this.maxTextLength)}...`;
-        }
+    body() {
+      let body = this.mixinMethods_getGenericProp('body');
 
-        return this.description.trim();
+      if (!body) {
+        body = { title: 'Description' };
       }
 
-      return '';
+      return body;
     },
-    maxDescriptionLengthReached() {
-      return this.description && this.description.length > this.maxTextLength;
-    },
-  },
-  mounted() {
   },
   methods: {
-    readMore() {
-      this.showFullDescription = !this.showFullDescription;
-    },
-    rightPos() {
-      return this.$refs.description && this.$refs.description.clientHeight >= 500 ? '10px' : '0';
-    },
   },
   data: () => ({
-    isOnTop: false,
-    showFullDescription: false,
-    checkedGenericProps: false,
-    maxTextLength: 1000,
-    emptyText: 'No description found for this dataset.',
   }),
 };
 </script>
 
 <style scoped>
 
-  .heightAndScroll {
+  /* .heightAndScroll {
     max-height: 500px;
     overflow-y: auto !important;
-  }
+  } */
 </style>
