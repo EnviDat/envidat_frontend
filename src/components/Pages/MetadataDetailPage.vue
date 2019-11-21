@@ -89,6 +89,8 @@ import MetadataLocation from '@/components/Metadata/MetadataLocation';
 import MetadataDetails from '@/components/Metadata/MetadataDetails';
 import MetadataCitation from '@/components/Metadata/MetadataCitation';
 import MetadataPublications from '@/components/Metadata/MetadataPublications';
+import MetadataFunding from '@/components/Metadata/MetadataFunding';
+
 import metaDataFactory from '@/factories/metaDataFactory';
 import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
 
@@ -220,6 +222,7 @@ export default {
       this.location = null;
       this.details = null;
       this.publications = null;
+      this.funding = null;
 
       if (currentContent && currentContent.title !== undefined) {
 
@@ -242,6 +245,7 @@ export default {
         this.details = metaDataFactory.createDetails(currentContent);
 
         this.publications = metaDataFactory.createPublications(currentContent);
+        this.funding = metaDataFactory.createFunding(currentContent);
       }
 
       this.$set(components.MetadataHeader, 'genericProps', this.header);
@@ -251,10 +255,12 @@ export default {
       this.$set(components.MetadataLocation, 'genericProps', this.location);
       this.$set(components.MetadataDetails, 'genericProps', { details: this.details });
       this.$set(components.MetadataPublications, 'genericProps', { publications: this.publications });
+      this.$set(components.MetadataFunding, 'genericProps', { funding: this.funding });
 
       this.firstCol = [
         components.MetadataBody,
         components.MetadataPublications,
+        components.MetadataFunding,
         components.MetadataCitation,
         components.MetadataLocation,
       ];
@@ -269,6 +275,7 @@ export default {
         components.MetadataCitation,
         components.MetadataPublications,
         components.MetadataResources,
+        components.MetadataFunding,
         components.MetadataLocation,
         components.MetadataDetails,
       ];
@@ -386,6 +393,7 @@ export default {
     MetadataDetails,
     MetadataCitation,
     MetadataPublications,
+    MetadataFunding,
     TwoColumnLayout,
   },
   data: () => ({
@@ -397,6 +405,7 @@ export default {
     location: null,
     details: null,
     publications: null,
+    funding: null,
     amountOfResourcesToShowDetailsLeft: 4,
     notFoundBackPath: 'browse',
     downloadIcon: null,

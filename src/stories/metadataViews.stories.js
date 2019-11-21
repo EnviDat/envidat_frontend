@@ -20,6 +20,7 @@ import MetadataCitation from '@/components/Metadata/MetadataCitation.vue';
 import MetadataDetails from '@/components/Metadata/MetadataDetails.vue';
 import MetadataLocation from '@/components/Metadata/MetadataLocation.vue';
 import MetadataPublications from '@/components/Metadata/MetadataPublications.vue';
+import MetadataFunding from '@/components/Metadata/MetadataFunding.vue';
 
 import doiIcon from '@/assets/icons/doi.png';
 import mailIcon from '@/assets/icons/mail.png';
@@ -62,6 +63,9 @@ const publications1 = metaDataFactory.createPublications(metadata[0]);
 // const details2 = metaDataFactory.createDetails(metadata[1]);
 
 const publications2 = metaDataFactory.createPublications(metadata[1]);
+
+const funding1 = metaDataFactory.createFunding(metadata[0]);
+const funding2 = metaDataFactory.createFunding(metadata[1]);
 
 const body1 = metaDataFactory.createBody(metadata[0]);
 const body2 = metaDataFactory.createBody(metadata[1]);
@@ -177,7 +181,7 @@ storiesOf('6 Detail Views | Metadata', module)
       },
       genericPropsBody: {
         showPlaceholder: false,
-        body: body2,
+        body: body1,
       },
       genericPropsBodyLongDesc: {
         showPlaceholder: false,
@@ -381,8 +385,60 @@ storiesOf('6 Detail Views | Metadata', module)
           title: 'Related Publications',
           text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Cursus turpis massa tincidunt dui ut. Proin sagittis nisl rhoncus mattis rhoncus urna neque viverra. Quis enim lobortis scelerisque fermentum dui. Neque egestas congue quisque egestas. Malesuada proin libero nunc consequat interdum varius sit amet mattis. Volutpat blandit aliquam etiam erat. Tempor id eu nisl nunc. Lacus suspendisse faucibus interdum posuere lorem ipsum dolor sit amet. Ultricies mi eget mauris pharetra et ultrices. Eu consequat ac felis donec et odio pellentesque diam volutpat. Fames ac turpis egestas integer. Faucibus interdum posuere lorem ipsum dolor sit amet. Cursus euismod quis viverra nibh cras. Condimentum id venenatis a condimentum vitae sapien pellentesque habitant morbi. At elementum eu facilisis sed odio morbi quis. Ut sem viverra aliquet eget sit amet tellus.
           Proin nibh nisl condimentum id venenatis. Parturient montes nascetur ridiculus mus mauris vitae ultricies leo integer. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Eu mi bibendum neque egestas congue quisque egestas diam. Eu volutpat odio facilisis mauris sit amet massa vitae tortor. Porttitor lacus luctus accumsan tortor posuere ac ut consequat. Sed velit dignissim sodales ut. Est pellentesque elit ullamcorper dignissim cras tincidunt lobortis. Sodales ut eu sem integer vitae. Ipsum nunc aliquet bibendum enim facilisis gravida neque convallis a. Augue lacus viverra vitae congue. Eget sit amet tellus cras adipiscing enim eu turpis. Pharetra vel turpis nunc eget lorem. Cras sed felis eget velit aliquet sagittis.
-          Tellus elementum sagittis vitae et. Morbi leo urna molestie at elementum. Cursus sit amet dictum sit amet. Dictumst quisque sagittis purus sit amet volutpat consequat mauris. Risus commodo viverra maecenas accumsan lacus vel facilisis volutpat. Pellentesque id nibh tortor id aliquet lectus. At elementum eu facilisis sed odio morbi. Massa id neque aliquam vestibulum morbi blandit cursus. Ultricies mi quis hendrerit dolor magna eget est lorem. Adipiscing commodo elit at imperdiet dui accumsan sit amet nulla. Vitae tempus quam pellentesque nec. Auctor augue mauris augue neque gravida in fermentum. Ac auctor augue mauris augue neque gravida in fermentum. Bibendum at varius vel pharetra vel. Eget velit aliquet sagittis id consectetur purus ut faucibus. Faucibus purus in massa tempor nec feugiat.
-          Sed tempus urna et pharetra pharetra massa massa. Suspendisse in est ante in nibh mauris cursus mattis. Orci a scelerisque purus semper eget duis at tellus at. Semper eget duis at tellus at urna condimentum. Nunc scelerisque viverra mauris in aliquam sem. Blandit massa enim nec dui nunc mattis. Suspendisse faucibus interdum posuere lorem ipsum dolor sit amet consectetur. Diam maecenas ultricies mi eget mauris. Nisl tincidunt eget nullam non nisi est. Diam phasellus vestibulum lorem sed risus ultricies tristique nulla. Cras fermentum odio eu feugiat pretium. Et tortor at risus viverra adipiscing at in tellus. Tristique nulla aliquet enim tortor at auctor. Consequat nisl vel pretium lectus quam id.
+          Sagittis nisl rhoncus mattis rhoncus urna. Vehicula ipsum a arcu cursus vitae. Sed elementum tempus egestas sed. Nec nam aliquam sem et tortor. Enim lobortis scelerisque fermentum dui faucibus in ornare quam viverra. Massa eget egestas purus viverra accumsan in. Integer eget aliquet nibh praesent. Ut placerat orci nulla pellentesque dignissim enim sit amet. Amet venenatis urna cursus eget. Nunc pulvinar sapien et ligula. Vel pharetra vel turpis nunc eget lorem dolor. Felis donec et odio pellentesque diam. Porttitor rhoncus dolor purus non enim.
+          Facilisi etiam dignissim diam quis enim lobortis scelerisque fermentum. A diam maecenas sed enim ut sem viverra. Ac felis donec et odio pellentesque diam volutpat commodo. Risus commodo viverra maecenas accumsan lacus vel facilisis. Vitae aliquet nec ullamcorper sit amet. Ullamcorper malesuada proin libero nunc consequat. Arcu vitae elementum curabitur vitae nunc sed velit dignissim sodales. Et tortor consequat id porta nibh venenatis. Lectus mauris ultrices eros in cursus. Tellus integer feugiat scelerisque varius morbi enim nunc faucibus a. Justo donec enim diam vulputate ut pharetra sit. Sit amet luctus venenatis lectus magna fringilla. Vulputate ut pharetra sit amet aliquam id diam maecenas ultricies. Orci dapibus ultrices in iaculis nunc sed augue lacus.
+          `,
+        },
+      },
+    }),
+  })).add('Metadata Funding', () => ({
+    components: { MetadataFunding },
+    template: `
+    <v-layout row wrap>
+
+      <v-flex xs6 py-3>
+        <metadata-funding :genericProps="genericPropsEmpty"
+                                :showPlaceholder="genericPropsEmpty.showPlaceholder"/>
+      </v-flex>
+
+      <v-flex xs6 py-3>
+        <metadata-funding :genericProps="genericPropsFunding" />
+      </v-flex>
+
+      <v-flex xs6 py-3>
+        <metadata-funding :genericProps="genericPropsPlaceholder"
+                                :showPlaceholder="genericPropsPlaceholder.showPlaceholder" />
+      </v-flex>
+
+      <v-flex xs6 py-3>
+        <metadata-funding />
+      </v-flex>
+      
+    </v-layout>        
+    `,
+    updated() {
+    },
+    methods: {
+    },
+    data: () => ({
+      genericProp: {
+        funding: funding1,
+        showPlaceholder: false,
+      },
+      genericPropsPlaceholder: {
+        funding: null,
+        showPlaceholder: true,
+      },
+      genericPropsEmpty: {
+        funding: funding2,
+        showPlaceholder: false,
+      },
+      genericPropsFunding: {
+        showPlaceholder: false,
+        funding: {
+          title: 'Funding Information',
+          text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Cursus turpis massa tincidunt dui ut. Proin sagittis nisl rhoncus mattis rhoncus urna neque viverra. Quis enim lobortis scelerisque fermentum dui. Neque egestas congue quisque egestas. Malesuada proin libero nunc consequat interdum varius sit amet mattis. Volutpat blandit aliquam etiam erat. Tempor id eu nisl nunc. Lacus suspendisse faucibus interdum posuere lorem ipsum dolor sit amet. Ultricies mi eget mauris pharetra et ultrices. Eu consequat ac felis donec et odio pellentesque diam volutpat. Fames ac turpis egestas integer. Faucibus interdum posuere lorem ipsum dolor sit amet. Cursus euismod quis viverra nibh cras. Condimentum id venenatis a condimentum vitae sapien pellentesque habitant morbi. At elementum eu facilisis sed odio morbi quis. Ut sem viverra aliquet eget sit amet tellus.
+          Proin nibh nisl condimentum id venenatis. Parturient montes nascetur ridiculus mus mauris vitae ultricies leo integer. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Eu mi bibendum neque egestas congue quisque egestas diam. Eu volutpat odio facilisis mauris sit amet massa vitae tortor. Porttitor lacus luctus accumsan tortor posuere ac ut consequat. Sed velit dignissim sodales ut. Est pellentesque elit ullamcorper dignissim cras tincidunt lobortis. Sodales ut eu sem integer vitae. Ipsum nunc aliquet bibendum enim facilisis gravida neque convallis a. Augue lacus viverra vitae congue. Eget sit amet tellus cras adipiscing enim eu turpis. Pharetra vel turpis nunc eget lorem. Cras sed felis eget velit aliquet sagittis.
           Sagittis nisl rhoncus mattis rhoncus urna. Vehicula ipsum a arcu cursus vitae. Sed elementum tempus egestas sed. Nec nam aliquam sem et tortor. Enim lobortis scelerisque fermentum dui faucibus in ornare quam viverra. Massa eget egestas purus viverra accumsan in. Integer eget aliquet nibh praesent. Ut placerat orci nulla pellentesque dignissim enim sit amet. Amet venenatis urna cursus eget. Nunc pulvinar sapien et ligula. Vel pharetra vel turpis nunc eget lorem dolor. Felis donec et odio pellentesque diam. Porttitor rhoncus dolor purus non enim.
           Facilisi etiam dignissim diam quis enim lobortis scelerisque fermentum. A diam maecenas sed enim ut sem viverra. Ac felis donec et odio pellentesque diam volutpat commodo. Risus commodo viverra maecenas accumsan lacus vel facilisis. Vitae aliquet nec ullamcorper sit amet. Ullamcorper malesuada proin libero nunc consequat. Arcu vitae elementum curabitur vitae nunc sed velit dignissim sodales. Et tortor consequat id porta nibh venenatis. Lectus mauris ultrices eros in cursus. Tellus integer feugiat scelerisque varius morbi enim nunc faucibus a. Justo donec enim diam vulputate ut pharetra sit. Sit amet luctus venenatis lectus magna fringilla. Vulputate ut pharetra sit amet aliquam id diam maecenas ultricies. Orci dapibus ultrices in iaculis nunc sed augue lacus.
           `,
