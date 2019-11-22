@@ -93,15 +93,16 @@ export default {
       return null;
     }
 
-    return {
-      text: dataset.funding_information,
-      title: 'Funding Information',
-      maxTextLength: 500,
-      emptyTextColor: 'black',
-      emptyText: 'No information about funding found for this dataset.',
-    };
+    return dataset.funding;
+    // return {
+    //   text: dataset.funding_information,
+    //   title: 'Funding Information',
+    //   maxTextLength: 500,
+    //   emptyTextColor: 'black',
+    //   emptyText: 'No information about funding found for this dataset.',
+    // };
   },
-  getAuthorName(author){
+  getAuthorName(author) {
     return `${author.given_name ? author.given_name : ''} ${author.name ? author.name : ''}`.trim();
   },
   getAuthorsString(dataset) {
@@ -119,7 +120,7 @@ export default {
       }
 
       author.forEach((element) => {
-        authors += ` ${ this.getAuthorName(element) };`;
+        authors += ` ${this.getAuthorName(element)};`;
       });
 
       // cut of the last ';'
