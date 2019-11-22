@@ -43,7 +43,7 @@
                 pb-0
                 v-on:scroll="onScroll()"
                 :class="useDynamicHeight ? 'listScroll' : ''"
-                :style="useDynamicHeight ? `height: calc(100vh - ${ filteringComponentsHeight }px);` : ''" >
+                :style="useDynamicHeight ? `height: calc(100vh - ${filteringComponentsHeight }px);` : ''" >
           
           <slot name="metadataListPlaceholder" />
 
@@ -87,7 +87,7 @@
     <v-flex ref="metadataListScroll"
             v-on:scroll="onScroll()"
             :class="useDynamicHeight ? 'listScroll' : ''"
-            :style="useDynamicHeight ? `height: calc(100vh - ${ filteringComponentsHeight }px);` : ''" >
+            :style="useDynamicHeight ? `height: calc(100vh - ${filteringComponentsHeight }px);` : ''" >
       
       <slot name="metadataListPlaceholder" />
 

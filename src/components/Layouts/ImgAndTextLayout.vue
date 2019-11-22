@@ -6,7 +6,7 @@
           <v-parallax :height="height" :src="img" style="opacity: 0.8; filter: blur(2px);" />
 
           <v-layout align-center justify-center fill-height
-                    :style="`position: relative; top: -${ height }px; text-align: center;`" >
+                    :style="`position: relative; top: -${height }px; text-align: center;`" >
             <v-flex class="text"
                     :class="{ 'display-3' : $vuetify.breakpoint.mdAndUp,
                               'display-1' : $vuetify.breakpoint.smAndDown, }">
