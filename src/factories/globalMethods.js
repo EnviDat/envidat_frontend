@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-11-14 15:50:43
+ * Last modified  : 2019-11-22 15:03:58
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -14,9 +14,6 @@
 
 /* eslint-disable camelcase */
 import { Object } from 'core-js';
-
-import { SWISSFL_MODE } from '@/store/metadataMutationsConsts';
-import { enhanceMetadataFromExtras } from '@/factories/modeFactory';
 
 export default {
   methods: {
