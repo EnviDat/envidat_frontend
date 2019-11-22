@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-10-25 10:04:43
+ * Last modified  : 2019-11-22 09:36:19
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -42,10 +42,10 @@ export default [
     title: 'Landscape', type: LAND, img: landImg, color: '#f1f8e9', darkColor: '#DCEDC8',
   },
   {
-    title: 'Natural disasters', type: HAZARD, img: hazardImg, color: '#fbe9e7', darkColor: '#FFCCBC',
+    title: 'Natural Hazards', type: HAZARD, img: hazardImg, color: '#fbe9e7', darkColor: '#FFCCBC',
   },
   {
-    title: 'Diversity', type: DIVERSITY, img: diversityImg, color: '#ede7f6', darkColor: '#D1C4E9',
+    title: 'Biodiversity', type: DIVERSITY, img: diversityImg, color: '#ede7f6', darkColor: '#D1C4E9',
   },
   {
     title: 'Meteo', type: METEO, img: meteoImg, color: '#E8EAF6', darkColor: '#C5CAE9',
