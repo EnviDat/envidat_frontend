@@ -52,7 +52,6 @@
         </v-flex>
       </v-layout>
 
-      </v-layout>
     </v-flex>
 
   </v-layout>
@@ -109,7 +108,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-14 17:50:28
+ * Last modified  : 2019-11-22 13:05:03
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
