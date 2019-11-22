@@ -4,7 +4,7 @@
       <div v-for="(notification, index) in visibleNotifications()"
           :key="`notification_${index}`"
           :style="`position: absolute;
-                  right: ${ $vuetify.breakpoint.xsOnly ? 0 : 15}px;
+                  right: ${$vuetify.breakpoint.xsOnly ? 0 : 15}px;
                   top: ${35 + index * 175}px;
                   z-index: ${NotificationZIndex};`" >
 
