@@ -31,7 +31,7 @@
                         :rotateOnClick="true"
                         :rotateToggle="expanded"
                         :tooltipText="expanded ? 'Hide info' : 'Show info'"
-                        @click="toggleExpand"
+                        @clicked="toggleExpand"
       />
     </v-card-actions>
 
