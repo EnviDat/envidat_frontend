@@ -363,7 +363,7 @@ export default {
    * @return {Array} metadatas enhanced with a title image based on the metadatas tags
    */
   enhanceMetadatas(metadatas, cardBGImages, categoryCards) {
-    if (metadatas === undefined && metadatas.length <= 0) {
+    if (metadatas === undefined || metadatas.length <= 0) {
       return undefined;
     }
 
