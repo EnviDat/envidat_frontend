@@ -84,7 +84,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-11-20 17:14:51
+ * Last modified  : 2019-11-22 16:41:27
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -93,6 +93,9 @@
 import { mapGetters } from 'vuex';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import 'leaflet.markercluster/dist/leaflet.markercluster';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import metaDataFactory from '@/factories/metaDataFactory';
 import FilterMapWidget from '@/components/Filtering/FilterMapWidget';
 import { getModeData } from '@/factories/modeFactory';
@@ -380,7 +383,15 @@ export default {
       }
 
       this.polygonLayerGroup = polys;
-      this.pinLayerGroup = pins;
+
+      try {
+        this.map.removeLayer(this.pinLayerGroup);
+        const clustergroup = L.markerClusterGroup();
+        clustergroup.addLayers(pins);
+        this.pinLayerGroup = clustergroup;
+      } catch (e) {
+        console.log('cluster error ' + e);
+      }
 
       if (multiPins.length > 0) {
         const flatMultiPins = [];
@@ -398,7 +409,16 @@ export default {
         // the number from the flatMultiPins will be every single pin
         this.multiPins = multiPins;
 
-        this.multiPinLayerGroup = flatMultiPins;
+        try {
+          this.map.removeLayer(this.multiPinLayerGroup);
+          const clustergroup = L.markerClusterGroup();
+          clustergroup.addLayers(flatMultiPins);
+          this.multiPinLayerGroup = clustergroup;
+        } catch (e) {
+          console.log('cluster error ' + e);
+        }
+
+        // this.multiPinLayerGroup = flatMultiPins;
       } else {
         this.multiPinLayerGroup = [];
       }
@@ -463,13 +483,22 @@ export default {
     showMapElements(elements, show, checkBounds) {
       const currentBounds = this.map.getBounds();
 
-      elements.forEach((el) => {
-        if ((show && !checkBounds) || (show && checkBounds && !el.getBounds().contains(currentBounds))) {
-          el.addTo(this.map);
+      if (elements instanceof Array) {
+        elements.forEach((el) => {
+          if ((show && !checkBounds) || (show && checkBounds && !el.getBounds().contains(currentBounds))) {
+            el.addTo(this.map);
+          } else {
+            this.map.removeLayer(el);
+          }
+        });
+      } else {
+        /* eslint-disable no-lonely-if */
+        if ((show && !checkBounds) || (show && checkBounds && !elements.getBounds().contains(currentBounds))) {
+          elements.addTo(this.map);
         } else {
-          this.map.removeLayer(el);
+          this.map.removeLayer(elements);
         }
-      });
+      }
     },
     updateMap() {
       this.clearLayers(this.map);
