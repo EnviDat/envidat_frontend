@@ -71,6 +71,9 @@ const funding2 = [
   { grant_number : 'XYZ', institution: 'WSL', institution_url: 'https://www.wsl.ch' },
   { grant_number : 'XZZ', institution: 'EAWAG', institution_url: 'https://www.eawag.ch' },
   { grant_number : '', institution: 'Aquascope', institution_url: '' },
+  { grant_number : 'XYZ-ZYX', institution: 'EAWAG', institution_url: 'https://www.eawag.ch' },
+  { grant_number : '', institution: 'Someone', institution_url: '' },
+  { grant_number : '', institution: 'Someone you do not know with a long name', institution_url: '' },
 ];
 
 const body1 = metaDataFactory.createBody(metadata[0]);
