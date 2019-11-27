@@ -30,7 +30,7 @@
     <template v-slot:filterMap>
       <filter-map-view :class="!mapHeight ? 'fill-height' : ''"
                         :style="mapHeight ? `height: ${mapHeight}px;` : 'height: 100%;'"
-                        :content="mergePinnedAndFiltered"
+                        :content="listContent"
                         :pinnedIds="pinnedIds"
                         :topLayout="mapTopLayout"
                         :mode="mode"
@@ -164,7 +164,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-22 15:10:21
+ * Last modified  : 2019-11-27 10:32:11
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
