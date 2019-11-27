@@ -84,7 +84,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-11-22 16:41:27
+ * Last modified  : 2019-11-27 11:29:10
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -232,6 +232,7 @@ export default {
         this.map.on('locationerror', () => { this.errorLoadingLeaflet = true; });
 
         this.addOpenStreetMapLayer(this.map);
+
         this.updateMap();
 
         this.map.on('zoomend', () => {
@@ -272,36 +273,33 @@ export default {
       this.mapLayerGroup = L.layerGroup([baseMap]);
       this.mapLayerGroup.addTo(map);
     },
-    getPoint(dataset, coords, id, title, selected) {
+    getPointIcon(dataset, modeData, selected) {
       const iconOptions = L.Icon.Default.prototype.options;
       // use the defaultoptions to ensure that all untouched defaults stay in place
 
       let iconUrl = null;
       let iconRetinaUrl = null;
       let iconShadowUrl = null;
-      let opacity = null;
       let height = 41;
       let width = 25;
 
-      if (this.modeData && this.modeData.icons) {
-        let extraValue = dataset[this.modeData.extrasKey];
+      if (modeData && modeData.icons) {
+        let extraValue = dataset[modeData.extrasKey];
 
         if (extraValue) {
           extraValue = extraValue.toLowerCase();
-          iconUrl = this.modeData.icons[extraValue];
+          iconUrl = modeData.icons[extraValue];
         } else {
-          iconUrl = Object.values(this.modeData.icons)[0];
+          iconUrl = Object.values(modeData.icons)[0];
         }
 
         width = 30;
         height = 30;
-        opacity = selected ? 0.6 : 0.4;
         iconRetinaUrl = iconUrl;
       } else {
         iconUrl = selected ? this.selectedMarker : this.marker;
         iconRetinaUrl = selected ? this.selectedMarker2x : this.marker2x;
         iconShadowUrl = this.markerShadow;
-        opacity = selected ? 0.8 : 0.65;
       }
 
       iconOptions.iconUrl = iconUrl;
@@ -309,7 +307,18 @@ export default {
       iconOptions.shadowUrl = iconShadowUrl;
       iconOptions.iconSize = [width, height];
 
-      const icon = L.icon(iconOptions);
+      return L.icon(iconOptions);
+    },
+    getPoint(dataset, coords, id, title, selected) {
+      const icon = this.getPointIcon(dataset, this.modeData, selected);
+
+      let opacity = null;
+
+      if (this.modeData && this.modeData.icons) {
+        opacity = selected ? 0.6 : 0.4;
+      } else {
+        opacity = selected ? 0.8 : 0.65;
+      }
 
       const point = L.marker(coords, {
         icon,
@@ -322,6 +331,7 @@ export default {
       point.on({ click: this.catchPointClick });
       point.on({ mouseover: this.catchPointHover });
       point.on({ mouseout: this.catchPointHoverLeave });
+
       return point;
     },
     getPolygon(coords, id, title, selected) {
@@ -357,7 +367,10 @@ export default {
       for (let i = 0; i < locationDataSet.length; i++) {
         const dataset = locationDataSet[i];
 
-        const location = metaDataFactory.createLocation(dataset);
+        let location = dataset.location;
+        if (!location) {
+          location = metaDataFactory.createLocation(dataset);
+        }
         const selected = this.pinnedIds.includes(location.id);
 
         if (location.isPoint) {
@@ -384,14 +397,7 @@ export default {
 
       this.polygonLayerGroup = polys;
 
-      try {
-        this.map.removeLayer(this.pinLayerGroup);
-        const clustergroup = L.markerClusterGroup();
-        clustergroup.addLayers(pins);
-        this.pinLayerGroup = clustergroup;
-      } catch (e) {
-        console.log('cluster error ' + e);
-      }
+      this.pinLayerGroup = pins;
 
       if (multiPins.length > 0) {
         const flatMultiPins = [];
@@ -409,16 +415,11 @@ export default {
         // the number from the flatMultiPins will be every single pin
         this.multiPins = multiPins;
 
-        try {
-          this.map.removeLayer(this.multiPinLayerGroup);
-          const clustergroup = L.markerClusterGroup();
-          clustergroup.addLayers(flatMultiPins);
-          this.multiPinLayerGroup = clustergroup;
-        } catch (e) {
-          console.log('cluster error ' + e);
-        }
+        this.multiPinLayerGroup = flatMultiPins;
 
-        // this.multiPinLayerGroup = flatMultiPins;
+        // merge the multipins with the normal pins on one layer?
+        // this.pinLayerGroup = [...pins, ...flatMultiPins];
+
       } else {
         this.multiPinLayerGroup = [];
       }
@@ -486,21 +487,28 @@ export default {
       if (elements instanceof Array) {
         elements.forEach((el) => {
           if ((show && !checkBounds) || (show && checkBounds && !el.getBounds().contains(currentBounds))) {
-            el.addTo(this.map);
+            this.clusterLayer.addLayer(el);
           } else {
-            this.map.removeLayer(el);
+            this.clusterLayer.removeLayer(el);
           }
         });
       } else {
         /* eslint-disable no-lonely-if */
         if ((show && !checkBounds) || (show && checkBounds && !elements.getBounds().contains(currentBounds))) {
-          elements.addTo(this.map);
+          this.clusterLayer.addLayer(elements);
         } else {
-          this.map.removeLayer(elements);
+          this.clusterLayer.removeLayer(elements);
         }
       }
+
+      this.clusterLayer.addTo(this.map);
     },
     updateMap() {
+      if (!this.clusterLayer) {
+        this.clusterLayer = L.markerClusterGroup();
+      }
+
+      this.clusterLayer.removeFrom(this.map);
       this.clearLayers(this.map);
 
       // fills this.pinLayerGroup, this.multiPinLayerGroup, this.polygonLayerGroup
@@ -533,6 +541,9 @@ export default {
     content() {
       this.updateMap();
     },
+    pinnedIds() {
+      this.updateMap();
+    },
   },
   data: () => ({
     map: null,
@@ -558,6 +569,7 @@ export default {
     selectedMarker,
     selectedMarker2x,
     markerShadow,
+    clusterLayer: null,
   }),
   components: {
     FilterMapWidget,
