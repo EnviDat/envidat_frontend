@@ -30,9 +30,10 @@
     <template v-slot:filterMap>
       <filter-map-view :class="!mapHeight ? 'fill-height' : ''"
                         :style="mapHeight ? `height: ${mapHeight}px;` : 'height: 100%;'"
-                        :content="mergePinnedAndFiltered"
+                        :content="listContent"
                         :pinnedIds="pinnedIds"
                         :topLayout="mapTopLayout"
+                        :mode="mode"
                         @pointClicked="catchPointClicked"
                         @clearButtonClicked="catchClearButtonClick" />
     </template>
@@ -78,6 +79,7 @@
                           :restricted="hasRestrictedResources(metadatasContent[pinnedId])"
                           :resourceCount="metadatasContent[pinnedId].num_resources"
                           :dark="false"
+                          :mode="mode"
                           :flatLayout="listView"
                           :compactLayout="isActiveControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)"
                           :fileIconString="fileIconString"
@@ -104,6 +106,7 @@
                         :restricted="hasRestrictedResources(metadata)"
                         :resourceCount="metadata.num_resources"
                         :dark="false"
+                        :mode="mode"
                         :flatLayout="listView"
                         :compactLayout="isActiveControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)"
                         :fileIconString="fileIconString"
@@ -161,7 +164,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-20 17:07:47
+ * Last modified  : 2019-11-27 10:32:11
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -208,6 +211,7 @@ export default {
       type: Boolean,
       default: false,
     },
+    mode: String,
   },
   beforeMount() {
     this.fileIconString = this.mixinMethods_getIcon('file');
