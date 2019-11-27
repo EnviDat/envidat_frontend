@@ -84,7 +84,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-11-27 11:38:58
+ * Last modified  : 2019-11-27 13:19:10
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -318,7 +318,7 @@ export default {
       let opacity = null;
 
       if (this.modeData && this.modeData.icons) {
-        opacity = selected ? 1 : 0.5;
+        opacity = selected ? 1 : 0.65;
       } else {
         opacity = selected ? 0.8 : 0.65;
       }
