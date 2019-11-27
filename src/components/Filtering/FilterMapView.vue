@@ -84,7 +84,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-11-27 11:29:10
+ * Last modified  : 2019-11-27 11:38:58
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -282,6 +282,7 @@ export default {
       let iconShadowUrl = null;
       let height = 41;
       let width = 25;
+      let iconClass = '';
 
       if (modeData && modeData.icons) {
         let extraValue = dataset[modeData.extrasKey];
@@ -296,6 +297,7 @@ export default {
         width = 30;
         height = 30;
         iconRetinaUrl = iconUrl;
+        iconClass = 'swissFL_icon';
       } else {
         iconUrl = selected ? this.selectedMarker : this.marker;
         iconRetinaUrl = selected ? this.selectedMarker2x : this.marker2x;
@@ -306,6 +308,7 @@ export default {
       iconOptions.iconRetinaUrl = iconRetinaUrl;
       iconOptions.shadowUrl = iconShadowUrl;
       iconOptions.iconSize = [width, height];
+      iconOptions.className = iconClass;
 
       return L.icon(iconOptions);
     },
@@ -315,7 +318,7 @@ export default {
       let opacity = null;
 
       if (this.modeData && this.modeData.icons) {
-        opacity = selected ? 0.6 : 0.4;
+        opacity = selected ? 1 : 0.5;
       } else {
         opacity = selected ? 0.8 : 0.65;
       }
@@ -577,7 +580,11 @@ export default {
 };
 </script>
 
-<style scoped>
+<style >
 
+  .swissFL_icon {
+    margin-top: -28px !important;
+    margin-left: -15px !important;
+  }
 
 </style>
