@@ -14,6 +14,9 @@ import { storiesOf } from '@storybook/vue';
 import { action } from '@storybook/addon-actions';
 import './js/vuetify-components';
 
+/* import App needed for Css classes */
+import App from '@/App';
+
 import MetadataHeader from '@/components/Metadata/MetadataHeader.vue';
 import MetadataBody from '@/components/Metadata/MetadataBody.vue';
 import MetadataCitation from '@/components/Metadata/MetadataCitation.vue';
