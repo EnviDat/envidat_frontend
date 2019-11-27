@@ -118,8 +118,10 @@ import missionImg from '@/assets/about/mission.jpg';
 import creator from '@/assets/cards/data_creator.jpg';
 import creatorSmall from '@/assets/cards/data_creator_small.jpg';
 
-import { tagsIncludedInSelectedTags } from '@/factories/metadataFilterMethods';
-// const filtermethods = require('@/factories/metadataFilterMethods');
+import {
+  tagsIncludedInSelectedTags,
+  createTag,
+} from '@/factories/metadataFilterMethods';
 
 export default {
   /**
@@ -225,7 +227,7 @@ export default {
           }
         }
 
-        projectDatasetsTags.push({ name: tag.name, enabled: found });
+        projectDatasetsTags.push(createTag(tag.name, { enabled: found }));
       }
 
       return projectDatasetsTags;
