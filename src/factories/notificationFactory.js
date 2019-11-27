@@ -47,10 +47,11 @@ export function errorMessage(message, details, stack) {
   return notification;
 }
 
-export function warningMessage(message, details) {
+export function warningMessage(message, details, stack) {
   const notification = defaultNotification();
   notification.message = message;
   notification.details = details;
+  notification.stack = stack;
   notification.color = 'warning';
   notification.icon = 'warning';
   notification.type = 'warning';

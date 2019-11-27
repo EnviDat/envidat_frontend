@@ -16,7 +16,7 @@
 
               <project-card :id="project.id"
                             :title="project.title"
-                            :img="project.image_url"
+                            :img="project.image_display_url"
                             :defaultImg="defaultImg"
                             :description="project.description"
                             :subProjects="project.subProjects"
@@ -51,7 +51,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-23 16:05:31
+ * Last modified  : 2019-11-22 13:43:14
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
