@@ -7,6 +7,7 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 import { createTag } from '@/factories/metadataFilterMethods';
 import globalMethods from '@/factories/globalMethods';
+import metaDataFactory from '@/factories/metaDataFactory';
 
 const cardImages = getCardImages(globalMethods);
 import metadataCards from '@/stories/js/metadata';
