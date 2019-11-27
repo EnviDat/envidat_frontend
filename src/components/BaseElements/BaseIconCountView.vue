@@ -7,10 +7,13 @@
                   @mouseover="hoverBadge = true"
                   @mouseleave="hoverBadge = false" >
         <v-flex pa-0>
-          <v-badge :style="`top: 3px !important; left: ${hoverBadge ? '-10' : '0' }px !important;`"
+          <v-badge :left="!hoverBadge"
+                    overlap
                     color="secondary"
                     :class="{ envidatBadgeBigNumber : count > 9,
                               envidatBadge: count <= 9 }" >
+<!-- :style="`top: 3px !important; left: ${hoverBadge ? '-10' : '0' }px !important;`" -->
+                                                  
             <span slot="badge">{{ count }}</span>
           </v-badge>
         </v-flex>
@@ -33,7 +36,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-11-27 14:31:27
+ * Last modified  : 2019-11-27 14:54:23
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
