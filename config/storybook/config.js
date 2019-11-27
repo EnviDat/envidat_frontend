@@ -5,6 +5,7 @@ import Vuetify, { VApp, VContainer, VLayout, VFlex } from 'vuetify/lib';
 
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
+import { createTag } from '@/factories/metadataFilterMethods';
 import globalMethods from '@/factories/globalMethods';
 import metaDataFactory from '@/factories/metaDataFactory';
 
@@ -13,7 +14,16 @@ import metadataCards from '@/stories/js/metadata';
 import categoryCards from '@/store/modules/metadata/categoryCards';
 
 metadataCards.forEach(element => {
-  element.tags = metaDataFactory.convertTags(element.tags, true);
+
+  element.tags = (tagsStringArray, tagsEnabled) => {
+    const tagObjs = [];
+
+    tagsStringArray.forEach((element) => {
+      tagObjs.push(createTag(element, { enabled: tagsEnabled }));
+    });
+
+    return tagObjs;
+  };
 });
 
 metaDataFactory.enhanceMetadatas(metadataCards, cardImages, categoryCards);

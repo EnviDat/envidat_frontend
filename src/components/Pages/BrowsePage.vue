@@ -12,6 +12,7 @@
                     @clickedExpand="catchFilterExpandClicked"
                     @clickedTagClose="catchTagCloseClicked"
                     @clickedClear="catchTagCleared"
+                    :mode="mode"
                     :defaultListControls="controls"
                     :enabledControls="enabledControls"
                     :mapHeight="$vuetify.breakpoint.smAndDown ? 310 : undefined"
@@ -46,6 +47,7 @@ import {
   SEARCH_METADATA,
   CLEAR_SEARCH_METADATA,
   FILTER_METADATA,
+  METADATA_NAMESPACE,
   LISTCONTROL_LIST_ACTIVE,
   LISTCONTROL_MAP_ACTIVE,
   LISTCONTROL_COMPACT_LAYOUT_ACTIVE,
@@ -137,7 +139,8 @@ export default {
       return visibleContent;
     },
     filterContent() {
-      this.$store.dispatch(`metadata/${FILTER_METADATA}`, this.selectedTagNames);
+      const mode = this.$route.query.mode ? this.$route.query.mode.toLowerCase() : null;
+      this.$store.dispatch(`${METADATA_NAMESPACE}/${FILTER_METADATA}`, { selectedTagNames: this.selectedTagNames, mode });
     },
     checkRouteChanges(fromRoute) {
       if (!fromRoute) {
@@ -148,6 +151,7 @@ export default {
         }
       }
 
+      // const isBackNavigation = false;
       const isBackNavigation = this.$router.options.isSameRoute(this.$route, fromRoute);
       const tagsChanged = this.loadRouteTags();
       const searchParameter = this.$route.query.search ? this.$route.query.search : '';
@@ -186,7 +190,8 @@ export default {
           this.resetScrollPos();
         }
 
-        // filter changes of the url except a change of the search term
+        // always filter changes of the url except a change of the search term
+        // because due to navigation the inital filter might be needed
         this.filterContent();
       }
     },
@@ -248,6 +253,9 @@ export default {
     },
     searchCount() {
       return this.filteredContent !== undefined ? this.filteredContent.length : 0;
+    },
+    mode() {
+      return this.$route.query.mode ? this.$route.query.mode.toLowerCase() : null;
     },
   },
   watch: {
