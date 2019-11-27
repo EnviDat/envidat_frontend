@@ -1,57 +1,48 @@
 <template>
   <v-layout row ma-0 pa-0 >
-    <v-tooltip
-      bottom
-      :disabled="$vuetify.breakpoint.xsOnly || !iconTooltip"
-    >
+    <v-tooltip bottom
+                :disabled="$vuetify.breakpoint.xsOnly || !iconTooltip" >
+
       <div slot="activator" class="layout row align-center">
-        <div
-          v-if="icon && iconTooltip"
-          :class="alignClass"
-          class="iconCentering"
-          style="position: relative: top: 2px; max-width: 100%"
-        >
-          <img
-            class="envidatIcon"
-            :class="compactLayout ? 'small' : ''"
-            :src="icon"
-          >
+        <div v-if="icon && iconTooltip"
+              :class="alignClass"
+              class="iconCentering"
+              style="position: relative: top: 2px; max-width: 100%" >
+
+          <img class="envidatIcon"
+                :class="compactLayout ? 'small' : ''"
+                :src="icon" >
         </div>
 
-        <v-flex
-          v-if="icon && !iconTooltip"
-          xs2
-          pr-2
-          style="max-width: 100%"
-        >
+        <v-flex v-if="icon && !iconTooltip"
+                xs2
+                pr-2
+                style="max-width: 100%" >
           <div class="iconCentering">
-            <img
-              class="envidatIcon"
-              :class="compactLayout ? 'small' : ''"
-              :src="icon"
-            >
+            <img class="envidatIcon"
+                  :class="compactLayout ? 'small' : ''"
+                  :src="icon" >
           </div>
         </v-flex>
 
-        <v-flex
-          v-if="label"
-          xs4
-          :style="textStyle"
-        >
+        <v-flex v-if="label"
+                xs4
+                :style="textStyle" >
           {{ label }}
         </v-flex>
 
-        <v-flex
-          v-if="text"
-          :style="textStyle"
-        >
+        <v-flex v-if="text"
+                :style="textStyle" >
           {{ text }}
         </v-flex>
 
+        <v-flex v-if="url"
+                :style="textStyle" >
+          <a :href="url" target="_blank" rel="noopener noreferrer">{{ text ? text : url }}</a>
+        </v-flex>
+
         <v-flex v-if="!text && usePlaceholder">
-          <div
-            class="pr-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer"
-          >
+          <div class="pr-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
             <div class="bone bone-type-text bone-style-steps" />
           </div>
         </v-flex>
@@ -84,6 +75,7 @@ export default {
     iconTooltip: String,
     label: String,
     text: String,
+    url: String,
     alignLeft: Boolean,
     bold: Boolean,
     usePlaceholder: Boolean,
