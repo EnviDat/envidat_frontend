@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-11-22 16:44:31
+ * Last modified  : 2019-11-27 16:17:35
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -169,7 +169,7 @@ export default {
         const mergedExtraTags = getTagsMergedWithExtras(mode, allTags);
         if (mergedExtraTags) {
           const popularTags = getPopularTags(filteredContent, 'SWISS FOREST LAB', 3, filteredContent.length);
-          const mergedWithPopulars = [...mergedExtraTags, ...popularTags];
+          const mergedWithPopulars = [...mergedExtraTags, ...popularTags.slice(0, 15)];
           // remove the dublicates via filter() function
           const mergedWithoutDublicates = mergedWithPopulars.filter((item, pos, self) => self.findIndex(v => v.name === item.name) === pos);
           // tags with the same count as the content have no use, remove them
