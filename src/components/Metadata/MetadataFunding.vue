@@ -95,7 +95,24 @@ export default {
   },
   computed: {
     funding() {
-      return this.mixinMethods_getGenericProp('funding');
+      let funding = this.mixinMethods_getGenericProp('funding');
+
+      if (funding) {
+        let notAvailable = 0;
+
+        for (let i = 0; i < funding.length; i++) {
+          const item = funding[i];
+          if (!this.showFundingItem(item)) {
+            notAvailable++;
+          }
+        }
+
+        if (notAvailable === funding.length) {
+          return null;
+        }
+      }
+
+      return funding;
     },
     fundingItems() {
       if (!this.funding) return null;
@@ -111,7 +128,7 @@ export default {
   },
   data: () => ({
     title: 'Funding Information',
-    emptyText: 'No information about funding found for this dataset.',
+    emptyText: 'No information about funding available for this dataset.',
     emptyTextColor: 'red',
   }),
 };
