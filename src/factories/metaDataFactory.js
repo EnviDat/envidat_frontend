@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-11-22 15:03:52
+ * Last modified  : 2019-11-28 16:07:41
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -87,7 +87,7 @@ export default {
       title: 'Related Publications',
       maxTextLength: 500,
       emptyTextColor: 'black',
-      emptyText: 'No related publications found for this dataset.',
+      emptyText: 'No related publications available for this dataset.',
     };
   },
   createFunding(dataset) {
