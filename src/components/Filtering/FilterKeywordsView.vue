@@ -36,7 +36,6 @@
                         :selectable="tag.enabled"
                         :highlighted="false"
                         :closeable="false"
-                        class="filterTag"
                         :color="tag.color"
                         @clicked="catchTagClicked($event, tag.name)" />
             </v-flex>
@@ -61,7 +60,6 @@
                         :selectable="true"
                         :highlighted="true"
                         :closeable="true"
-                        class="filterTag"
                         @clickedClose="catchTagCloseClicked($event, tag.name)"
                         @clicked="catchTagCloseClicked($event, tag.name)" />
             </v-flex>
@@ -102,6 +100,7 @@
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
+import { createTag } from '@/factories/metadataFilterMethods';
 
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import TagChip from '@/components/Cards/TagChip';
@@ -153,7 +152,7 @@ export default {
         for (let i = 0; i < this.selectedTagNames.length; i++) {
           const element = this.selectedTagNames[i];
 
-          selecteds.push({ name: element, enabled: true });
+          selecteds.push(createTag(element, { enabled: true }));
         }
       }
 
@@ -250,12 +249,6 @@ export default {
 };
 </script>
 
-<style>
-
-  .envidat_subheading {
-    font-family: 'Libre Baskerville', serif;
-    font-weight: 400;
-    opacity: 0.85;
-  }
+<style scoped>
 
 </style>

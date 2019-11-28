@@ -190,8 +190,6 @@
 
 
 <script>
-import BaseIconButton from '@/components/BaseElements/BaseIconButton';
-// import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 import DataCreditLayout from '@/components/Layouts/DataCreditLayout';
 
 // checkout skeleton
@@ -199,7 +197,6 @@ import DataCreditLayout from '@/components/Layouts/DataCreditLayout';
 
 export default {
   components: {
-    BaseIconButton,
     DataCreditLayout,
   },
   props: {
@@ -210,7 +207,7 @@ export default {
       return this.author.datasetCount > 5;
     },
     dataCredits() {
-      return this.author.dataCredit ? Object.keys(this.author.dataCredit) : [];
+      return this.author && this.author.dataCredit ? Object.keys(this.author.dataCredit) : [];
     },
     dataCreditScore() {
       let score = 0;
@@ -349,10 +346,6 @@ export default {
     font-size: 34px !important;
     font-weight: 700 !important;
     font-family: 'Libre Baskerville', serif !important;
-  }
-
-  .authorInfo, .authorInfoLabel {
-
   }
 
   .authorInfoLabel {

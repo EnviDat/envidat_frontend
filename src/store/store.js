@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-10-23 17:45:07
+ * Last modified  : 2019-11-22 13:28:12
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -31,7 +31,8 @@ import {
   METEO,
 } from '@/store/categoriesConsts';
 
-const globalMethods = require('@/factories/globalMethods');
+import { LISTCONTROL_MAP_ACTIVE } from '@/store/metadataMutationsConsts';
+import globalMethods from '@/factories/globalMethods';
 
 const errReport = process.env.VUE_APP_ERROR_REPORTING_ENABLED;
 // the check for 'NULL' is needed because simply nothing will not work
@@ -51,8 +52,8 @@ const store = new Vuex.Store({
     appBGImage: '',
     cardBGImages: {},
     iconImages: {},
-    // controls default: [1] means the second [0,1] is active -> map filtering is active per default
-    controls: [1],
+    controls: [LISTCONTROL_MAP_ACTIVE],
+    appScrollPosition: 0,
     browseScrollPosition: 0,
     outdatedVersion: false,
     newVersion: process.env.VUE_APP_VERSION,
@@ -68,6 +69,7 @@ const store = new Vuex.Store({
     iconImages: state => state.iconImages,
     aboutText: state => state.aboutText,
     controls: state => state.controls,
+    appScrollPosition: state => state.appScrollPosition,
     browseScrollPosition: state => state.browseScrollPosition,
     outdatedVersion: state => state.outdatedVersion,
     newVersion: state => state.newVersion,
@@ -99,7 +101,7 @@ const persistPlugin = createPersist({
 store.plugins = [persistPlugin];
 
 function setImages(categoryName, imgPaths) {
-  const images = globalMethods.default.methods.mixinMethods_importImages(imgPaths);
+  const images = globalMethods.methods.mixinMethods_importImages(imgPaths);
   store.state.cardBGImages[categoryName] = images;
   // this._vm(store.state.cardBGImages, categoryName, images);
 }
@@ -115,7 +117,7 @@ function importCardBackgrounds() {
 
 function importIcons() {
   const imgPaths = require.context('../assets/icons/', false, /\.png$/);
-  const images = globalMethods.default.methods.mixinMethods_importImages(imgPaths);
+  const images = globalMethods.methods.mixinMethods_importImages(imgPaths);
 
   const keys = Object.keys(images);
   keys.forEach((key) => {

@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-10-23 16:39:54
+ * Last modified  : 2019-11-01 08:45:09
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -13,16 +13,16 @@
 
 // import createPersist from 'vuex-localstorage';
 
-import globalMethods from '@/factories/globalMethods';
+import metaDataFactory from '@/factories/metaDataFactory';
 
-import mutations from './mutations';
-import actions from './actions';
+import mutations from '@/store/modules/metadata/metadataMutations';
+import actions from '@/store/modules/metadata/metadataActions';
 import categoryCards from '@/store/modules/metadata/categoryCards';
-import tags from './tags';
+import tags from '@/store/modules/metadata/metadataTags';
 
 for (let i = 0; i < tags.length; i++) {
   const tag = tags[i];
-  tag.color = globalMethods.methods.mixinMethods_getTagColor(categoryCards, tag.name);
+  tag.color = metaDataFactory.getTagColor(categoryCards, tag.name);
 }
 
 const initialState = {
@@ -107,6 +107,7 @@ export const metadata = {
     loadingMetadatasContent: state => state.loadingMetadatasContent,
     metadataIds: state => state.metadataIds,
     metadatasContent: state => state.metadatasContent,
+    metadatasContentSize: state => state.metadatasContent !== undefined ? Object.keys(state.metadatasContent).length : 0,
     searchedMetadatasContent: state => state.searchedMetadatasContent,
     searchingMetadatasContent: state => state.searchingMetadatasContent,
     searchingMetadatasContentOK: state => state.searchingMetadatasContentOK,
