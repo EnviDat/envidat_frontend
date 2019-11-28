@@ -1,6 +1,6 @@
 {
   "name": "envidat.ch",
-  "version": "0.6.6",
+  "version": "0.6.61",
   "private": true,
   "description": "Envidat frontend with vue",
   "author": "Dominik Haas-Artho",
@@ -21,7 +21,6 @@
     "eslint-import-resolver-webpack": "^0.11.1",
     "eslint-plugin-import": "^2.18.2",
     "leaflet": "^1.6.0",
-    "leaflet.gridlayer.googlemutant": "^0.7.0",
     "leaflet.markercluster": "^1.4.1",
     "m-markdown-preview": "^1.0.0",
     "material-design-icons-iconfont": "^5.0.1",
