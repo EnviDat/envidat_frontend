@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-11-08 14:33:13
+ * Last modified  : 2019-11-22 15:03:52
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -23,6 +23,8 @@ import {
   METEO,
 } from '@/store/categoriesConsts';
 
+import { SWISSFL_MODE } from '@/store/metadataMutationsConsts';
+import { enhanceMetadataFromExtras } from '@/factories/modeFactory';
 
 export default {
   createHeader(dataset, smallScreen) {
@@ -383,6 +385,8 @@ export default {
       this.enhanceTitleImg(metadataEntry, cardBGImages, categoryCards);
     }
 
+    enhanceMetadataFromExtras(SWISSFL_MODE, metadataEntry);
+
     return metadataEntry;
   },
   /**
@@ -392,7 +396,7 @@ export default {
    * @return {Array} metadatas enhanced with a title image based on the metadatas tags
    */
   enhanceMetadatas(metadatas, cardBGImages, categoryCards) {
-    if (metadatas === undefined && metadatas.length <= 0) {
+    if (metadatas === undefined || metadatas.length <= 0) {
       return undefined;
     }
 

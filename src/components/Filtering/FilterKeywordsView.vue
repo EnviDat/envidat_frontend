@@ -100,6 +100,7 @@
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
+import { createTag } from '@/factories/metadataFilterMethods';
 
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import TagChip from '@/components/Cards/TagChip';
@@ -151,7 +152,7 @@ export default {
         for (let i = 0; i < this.selectedTagNames.length; i++) {
           const element = this.selectedTagNames[i];
 
-          selecteds.push({ name: element, enabled: true });
+          selecteds.push(createTag(element, { enabled: true }));
         }
       }
 

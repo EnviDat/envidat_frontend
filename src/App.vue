@@ -38,6 +38,8 @@
                             :searchCount="searchCount"
                             :showSearch="currentPageIsBrowsePage"
                             :loading="loading"
+                            :mode="mode"
+                            :modeCloseCallback="catchModeClose"
                             @menuClick="catchMenuClicked"
                             @searchClick="catchSearchClicked"
                             @searchCleared="catchSearchCleared" />
@@ -203,7 +205,13 @@ export default {
       this.mixinMethods_additiveChangeRoute(BROWSE_PATH, search);
     },
     catchSearchCleared() {
+      // the search parameter needs to be '' to clear it
       this.mixinMethods_additiveChangeRoute(BROWSE_PATH, '');
+    },
+    catchModeClose() {
+      this.$router.push({
+        path: BROWSE_PATH,
+      });
     },
     navigateTo(navItem) {
       if (navItem.pageName === 'external') {
@@ -319,6 +327,9 @@ export default {
       });
       // return default with active true so all items will be shown
       return menuItem;
+    },
+    mode() {
+      return this.$route.query.mode ? this.$route.query.mode.toLowerCase() : null;
     },
   },
   components: {
@@ -474,7 +485,7 @@ export default {
 }
 
 .envidatToolbar > .v-toolbar__content {
-  padding: 0px 18px !important;
+  padding: 0px 8px !important;
 }
 
 .envidatIcon {
