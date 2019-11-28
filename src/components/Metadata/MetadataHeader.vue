@@ -126,6 +126,7 @@
                         py-0
                         class="headerInfo" >
                   <base-icon-label-view :text="doi"
+                                        :url="doiUrl"
                                         :icon="doiIcon"
                                         icon-tooltip="Data Object Identifier"
                                         :align-left="true"
@@ -297,6 +298,9 @@ export default {
       }
 
       return style;
+    },
+    doiUrl() {
+      return this.doi ? `https://www.datacite.org/doi/${this.doi}` : '';
     },
   },
   updated() {
