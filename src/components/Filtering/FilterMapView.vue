@@ -96,6 +96,8 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/leaflet.markercluster';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+import 'leaflet-bing-layer';
+
 import metaDataFactory from '@/factories/metaDataFactory';
 import FilterMapWidget from '@/components/Filtering/FilterMapWidget';
 import { getModeData } from '@/factories/modeFactory';
@@ -266,10 +268,13 @@ export default {
       }
     },
     addOpenStreetMapLayer(map) {
-      const baseMap = L.tileLayer(
-        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' },
-      ).addTo(map);
+      // const baseMap = L.tileLayer(
+      //   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      //   { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' },
+      // ).addTo(map);
+
+      const baseMap = L.tileLayer.bing({ bingMapsKey: this.bingApiKey }).addTo(map);
+
       this.mapLayerGroup = L.layerGroup([baseMap]);
       this.mapLayerGroup.addTo(map);
     },
@@ -573,6 +578,7 @@ export default {
     selectedMarker2x,
     markerShadow,
     clusterLayer: null,
+    bingApiKey: process.env.VUE_APP_BING_API_KEY,
   }),
   components: {
     FilterMapWidget,
