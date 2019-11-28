@@ -1,4 +1,4 @@
-const metadataFilterMethods = require('../factories/metadataFilterMethods');
+const metadataFilterMethods = require('../../factories/metadataFilterMethods');
 
 it('Tag - creation - empty', () => {
   const tag = metadataFilterMethods.createTag();
