@@ -276,7 +276,7 @@ storiesOf('3 Cards | Resource Cards', module)
 
     const imgPaths = require.context('@/assets/icons/', false, /\.png$/);
 
-    imgPaths.keys().forEach((iconFileName) => {
+    imgPaths.keys().forEach(iconFileName => {
       const splits = iconFileName.split('/');
       let key = splits[splits.length - 1];
       key = key.replace('.png', '');
