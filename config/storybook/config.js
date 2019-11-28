@@ -14,16 +14,7 @@ import metadataCards from '@/stories/js/metadata';
 import categoryCards from '@/store/modules/metadata/categoryCards';
 
 metadataCards.forEach(element => {
-
-  element.tags = (tagsStringArray, tagsEnabled) => {
-    const tagObjs = [];
-
-    tagsStringArray.forEach((element) => {
-      tagObjs.push(createTag(element, { enabled: tagsEnabled }));
-    });
-
-    return tagObjs;
-  };
+  element.tags = metaDataFactory.convertTags(element.tags, true);
 });
 
 metaDataFactory.enhanceMetadatas(metadataCards, cardImages, categoryCards);
