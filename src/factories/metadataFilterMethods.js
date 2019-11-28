@@ -37,6 +37,8 @@ export function createTag(name, options = defaultTagOptions) {
 export function getEnabledTags(tags, content) {
   const updatedTags = [];
 
+  if (!tags) return updatedTags;
+
   for (let i = 0; i < tags.length; i++) {
     const tag = tags[i];
     let found = false;

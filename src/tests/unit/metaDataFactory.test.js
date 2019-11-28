@@ -27,13 +27,13 @@ it('Tag - creation - options tag overload', () => {
 });
 
 
-it('Tag - count - empty', () => {
+it('Tag - countTags - empty', () => {
   const count = metadataFilterMethods.countTags();
   expect(count).toBeDefined();
   expect(count.length).toEqual(0);
 });
 
-it('Tag - count - basic', () => {
+it('Tag - countTags - basic', () => {
   const tag1 = metadataFilterMethods.createTag('tag1');
   const tag2 = metadataFilterMethods.createTag('tag2');
   const tag3 = metadataFilterMethods.createTag('tag3');
@@ -48,4 +48,34 @@ it('Tag - count - basic', () => {
   expect(count[1].count).toEqual(2);
   expect(count[2].count).toEqual(1);
   expect(count[3].count).toEqual(1);
+});
+
+it('Tag - getEnabledTags - empty', () => {
+  const count = metadataFilterMethods.getEnabledTags();
+  expect(count).toBeDefined();
+  expect(count.length).toEqual(0);
+});
+
+it('Tag - getEnabledTags - check enabled tags', () => {
+  const tag1 = metadataFilterMethods.createTag('tag1');
+  const tag2 = metadataFilterMethods.createTag('tag2');
+  const tag3 = metadataFilterMethods.createTag('tag3');
+  const tag4 = metadataFilterMethods.createTag('tag4');
+
+  const tags = [tag1, tag2, tag2, tag3, tag3, tag3, tag4];
+
+  const contentTags1 = {tags: [tag3, tag4]};
+  const contentTags2 = {tags: [tag2, tag3, tag3, tag3, tag4]};
+  const contentTags3 = {tags: [tag2, tag2, tag3, tag3, tag4]};
+  const contentTags4 = {tags: [tag3, tag3]};
+
+  const contentList = [contentTags1, contentTags2, contentTags3, contentTags4];
+
+  const newTags = metadataFilterMethods.getEnabledTags(tags, contentList);
+
+  expect(newTags).toBeDefined();
+  expect(newTags[0].enabled).toBeFalsy();
+  expect(newTags[1].enabled).toBeTruthy();
+  expect(newTags[2].enabled).toBeTruthy();
+  expect(newTags[3].enabled).toBeTruthy();
 });
