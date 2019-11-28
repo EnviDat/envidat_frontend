@@ -64,7 +64,6 @@ export default {
     markerShadow,
     map: null,
     mapIsSetup: false,
-    checkedGenericProps: false,
     emptyText: 'No location found for this dataset',
   }),
   computed: {

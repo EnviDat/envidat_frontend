@@ -16,9 +16,11 @@
                   :key="card.title"
                   my-2 px-1
                   xs6 md4 >
-            <base-click-card :title="card.title"
-                              :img="card.img"
-                              @click="catchCategoryClicked" />
+              <base-click-card :title="card.title"
+                                :img="card.img"
+                                :color="card.darkColor"
+                                :contain="card.contain"
+                                @click="catchCategoryClicked(card.type)" />
           </v-flex>
         </v-layout>
       </v-container>
@@ -36,7 +38,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-24 11:33:43
+ * Last modified  : 2019-11-28 15:16:55
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

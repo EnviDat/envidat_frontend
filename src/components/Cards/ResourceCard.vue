@@ -10,16 +10,13 @@
     </v-card-title>
 
     <v-card-text class="pt-0"
-                :class="{
-                  'pb-3': $vuetify.breakpoint.mdAndUp,
-                  'pb-5': $vuetify.breakpoint.smAndDown,
-                }" >
+                :class="{ 'pb-3': $vuetify.breakpoint.mdAndUp,
+                          'pb-5': $vuetify.breakpoint.smAndDown, }" >
       <v-container grid-list-xs
                     pa-0 >
         <v-layout v-bind="{ ['row']: $vuetify.breakpoint.smAndUp,
                             ['wrap']: $vuetify.breakpoint.smAndUp,
-                            ['column']: $vuetify.breakpoint.xsOnly,
-                  }" >
+                            ['column']: $vuetify.breakpoint.xsOnly, }" >
           <v-flex v-bind="{ [`xs6`]: !this.twoColumnLayout && !showFullDescription,
                             [`xs12`]: this.twoColumnLayout || showFullDescription }"
                   order-xs1
@@ -100,31 +97,31 @@
     </v-card-text>
 
     <v-card-actions class="ma-0 pa-2"
-                    style="position: absolute; bottom: 5px; right: 50px;"
-    >
-      <v-spacer />
+                    style="position: absolute; bottom: 5px; right: 50px;" >
 
       <base-icon-button v-if="maxDescriptionLengthReached"
                         class="mr-2"
                         material-icon-name="expand_more"
-                        icon-color="accent"
-                        color="transparent"
-                        :isToggled="showFullDescription"
+                        :iconColor="showFullDescription ? 'accent' : 'primary'"
+                        color="accent"
+                        :outlined="true"
+                        :isToggled="!showFullDescription"
                         :rotateOnClick="true"
                         :rotateToggle="showFullDescription"
                         :tooltipText="showFullDescription ? 'Hide full description' : 'Show full description'"
-                        @clicked="showFullDescription = !showFullDescription"
-      />
+                        @clicked="showFullDescription = !showFullDescription" />
     </v-card-actions>
 
     <div class="ma-0 py-3"
           style="position: absolute; bottom: 0px; right: 0px;" >
+
       <div v-if="isProtected"
             class="fabMenu fabPosition elevation-2 ma-2 pl-2 pt-2" >
+
         <v-icon class="pl-1 pt-1">shield</v-icon>
         <p class="pt-2 lockedText black--text resourceCardText"
-            v-html="protectedText"
-        ></p>
+            v-html="protectedText">
+        </p>
       </div>
 
       <base-icon-button v-if="!isProtected"
@@ -148,7 +145,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-30 10:50:04
+ * Last modified  : 2019-11-28 15:12:18
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
