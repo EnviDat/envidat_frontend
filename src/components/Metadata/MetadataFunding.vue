@@ -47,6 +47,7 @@
     </v-card-text>
 
     <v-card-text v-if="!showPlaceholder && !funding"
+                  class="pt-0"
                   :style="`color: ${emptyTextColor};`" >
       {{ emptyText }}
     </v-card-text>
@@ -78,7 +79,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-28 16:01:50
+ * Last modified  : 2019-11-28 16:18:58
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
