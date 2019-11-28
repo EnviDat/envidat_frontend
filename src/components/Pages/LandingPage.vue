@@ -23,7 +23,7 @@
       <v-flex hidden-sm-and-up mt-5 >
         <small-search-bar-view :labelText="labelText"
                           :buttonText="buttonText"
-                          :hasButton="true"
+                          :hasButton="$vuetify.breakpoint.smAndUp"
                           @clicked="catchSearchClicked"
                         />
       </v-flex>
@@ -62,7 +62,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-28 11:04:25
+ * Last modified  : 2019-11-28 16:25:55
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
