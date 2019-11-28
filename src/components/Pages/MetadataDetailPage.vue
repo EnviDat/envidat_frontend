@@ -8,6 +8,7 @@
               ref="header"
               style="z-index: 1; position: absolute; left: 0;" 
               :style="headerStyle" >
+
         <metadata-header v-bind="header"
                           :metadataId="metadataId"
                           :showPlaceholder="showPlaceholder"
@@ -61,7 +62,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-15 15:11:04
+ * Last modified  : 2019-11-28 16:03:23
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -87,6 +88,9 @@ import MetadataResources from '@/components/Metadata/MetadataResources';
 import MetadataLocation from '@/components/Metadata/MetadataLocation';
 import MetadataDetails from '@/components/Metadata/MetadataDetails';
 import MetadataCitation from '@/components/Metadata/MetadataCitation';
+import MetadataPublications from '@/components/Metadata/MetadataPublications';
+import MetadataFunding from '@/components/Metadata/MetadataFunding';
+
 import metaDataFactory from '@/factories/metaDataFactory';
 import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
 
@@ -217,6 +221,8 @@ export default {
       this.resources = null;
       this.location = null;
       this.details = null;
+      this.publications = null;
+      this.funding = null;
 
       if (currentContent && currentContent.title !== undefined) {
 
@@ -237,17 +243,25 @@ export default {
         this.location = metaDataFactory.createLocation(currentContent);
 
         this.details = metaDataFactory.createDetails(currentContent);
+
+        this.publications = metaDataFactory.createPublications(currentContent);
+        this.funding = metaDataFactory.createFunding(currentContent);
       }
 
       this.$set(components.MetadataHeader, 'genericProps', this.header);
-      this.$set(components.MetadataBody, 'genericProps', this.body);
+      this.$set(components.MetadataBody, 'genericProps', { body: this.body });
       this.$set(components.MetadataCitation, 'genericProps', this.citation);
       this.$set(components.MetadataResources, 'genericProps', this.resources);
       this.$set(components.MetadataLocation, 'genericProps', this.location);
       this.$set(components.MetadataDetails, 'genericProps', { details: this.details });
 
+      this.$set(components.MetadataPublications, 'genericProps', { publications: this.publications });
+      this.$set(components.MetadataFunding, 'genericProps', { funding: this.funding });
+
       this.firstCol = [
         components.MetadataBody,
+        components.MetadataPublications,
+        components.MetadataFunding,
         components.MetadataCitation,
         components.MetadataLocation,
       ];
@@ -260,7 +274,9 @@ export default {
       this.singleCol = [
         components.MetadataBody,
         components.MetadataCitation,
+        components.MetadataPublications,
         components.MetadataResources,
+        components.MetadataFunding,
         components.MetadataLocation,
         components.MetadataDetails,
       ];
@@ -377,6 +393,8 @@ export default {
     MetadataLocation,
     MetadataDetails,
     MetadataCitation,
+    MetadataPublications,
+    MetadataFunding,
     TwoColumnLayout,
   },
   data: () => ({
@@ -387,6 +405,8 @@ export default {
     resources: null,
     location: null,
     details: null,
+    publications: null,
+    funding: null,
     amountOfResourcesToShowDetailsLeft: 4,
     notFoundBackPath: 'browse',
     downloadIcon: null,

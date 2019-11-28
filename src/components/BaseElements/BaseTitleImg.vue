@@ -1,5 +1,5 @@
 <template>
-  <div :style="`height: ${ height }px;`">
+  <div :style="`height: ${height}px;`">
     <!-- use slot for the content and make a component for only the layouting -->
 
     <v-parallax v-if="parallax"
@@ -18,7 +18,7 @@
 
     <v-layout align-center justify-center column fill-height
               mx-2
-              :style="`position: relative; top: -${ height }px;
+              :style="`position: relative; top: -${height }px;
                       text-align: center;`" >
               <!-- :style="`position: relative; top: 0;`" -->
       <div style="background-color: white;" />
