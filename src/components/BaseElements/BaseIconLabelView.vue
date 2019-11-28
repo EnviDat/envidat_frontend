@@ -31,7 +31,7 @@
           {{ label }}
         </v-flex>
 
-        <v-flex v-if="text"
+        <v-flex v-if="text && !url"
                 :style="textStyle" >
           {{ text }}
         </v-flex>
@@ -62,7 +62,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-02 11:47:20
+ * Last modified  : 2019-11-28 16:15:58
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
