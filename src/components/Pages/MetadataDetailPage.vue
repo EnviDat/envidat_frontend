@@ -62,7 +62,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-15 15:11:04
+ * Last modified  : 2019-11-28 16:03:23
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -254,6 +254,7 @@ export default {
       this.$set(components.MetadataResources, 'genericProps', this.resources);
       this.$set(components.MetadataLocation, 'genericProps', this.location);
       this.$set(components.MetadataDetails, 'genericProps', { details: this.details });
+
       this.$set(components.MetadataPublications, 'genericProps', { publications: this.publications });
       this.$set(components.MetadataFunding, 'genericProps', { funding: this.funding });
 

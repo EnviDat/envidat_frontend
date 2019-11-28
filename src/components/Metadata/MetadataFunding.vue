@@ -78,7 +78,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-20 13:07:27
+ * Last modified  : 2019-11-28 16:01:50
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -95,7 +95,7 @@ export default {
   },
   computed: {
     funding() {
-      let funding = this.mixinMethods_getGenericProp('funding');
+      const funding = this.mixinMethods_getGenericProp('funding');
 
       if (funding) {
         let notAvailable = 0;
@@ -129,7 +129,7 @@ export default {
   data: () => ({
     title: 'Funding Information',
     emptyText: 'No information about funding available for this dataset.',
-    emptyTextColor: 'red',
+    emptyTextColor: 'black',
   }),
 };
 </script>
