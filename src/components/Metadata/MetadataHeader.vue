@@ -215,7 +215,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-14 17:39:28
+ * Last modified  : 2019-11-28 16:17:23
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -300,7 +300,7 @@ export default {
       return style;
     },
     doiUrl() {
-      return this.doi ? `https://www.datacite.org/doi/${this.doi}` : '';
+      return this.doi ? `https://www.doi.org/${this.doi}` : null;
     },
   },
   updated() {
