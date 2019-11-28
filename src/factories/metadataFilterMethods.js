@@ -14,6 +14,7 @@
 const defaultTagOptions = { enabled: true, color: '#e0e0e0', count: 0 };
 
 export function createTag(name, options = defaultTagOptions) {
+  if (!name) return null;
 
   let enabled = options.enabled !== undefined ? options.enabled : defaultTagOptions.enabled;
   let color = options.color ? options.color : defaultTagOptions.color;
