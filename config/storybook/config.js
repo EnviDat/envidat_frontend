@@ -5,6 +5,7 @@ import Vuetify, { VApp, VContainer, VLayout, VFlex } from 'vuetify/lib';
 
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
+import { createTag } from '@/factories/metadataFilterMethods';
 import globalMethods from '@/factories/globalMethods';
 import metaDataFactory from '@/factories/metaDataFactory';
 

@@ -40,6 +40,7 @@
               <base-click-card :title="card.title"
                                 :img="card.img"
                                 :color="card.darkColor"
+                                :contain="card.contain"
                                 @click="catchCategoryClicked(card.type)" />
             </v-flex>
           </v-layout>
@@ -61,7 +62,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-31 08:22:03
+ * Last modified  : 2019-11-28 11:04:25
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -113,8 +114,21 @@ export default {
         return;
       }
 
+      if (cardType.includes('mode')) {
+        const splits = cardType.split('_');
+        const modeName = splits[1];
+        this.catchModeClicked(modeName);
+        return;
+      }
+
       const tagsEncoded = this.mixinMethods_encodeTagForUrl([cardType.toUpperCase()]);
       this.mixinMethods_additiveChangeRoute(BROWSE_PATH, undefined, tagsEncoded);
+    },
+    catchModeClicked(mode) {
+      this.$router.push({
+        path: BROWSE_PATH,
+        query: { mode },
+      });
     },
     catchSearchClicked(search) {
       this.$router.push({

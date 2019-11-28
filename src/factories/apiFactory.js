@@ -26,37 +26,6 @@ export function urlRewrite(url, baseUrl, proxyUrl, replaceQuestionMark) {
   return url;
 }
 
-/**
- * Goes through all the tags and checks if they are part of the content list.
- * @param {array} tags 
- * @param {array} content 
- */
-export function getEnabledTags(tags, content) {
-  const updatedTags = [];
-
-  for (let i = 0; i < tags.length; i++) {
-    const tag = tags[i];
-    let found = false;
-
-    for (let j = 0; j < content.length; j++) {
-      const el = content[j];
-
-      if (el.tags && el.tags.length > 0) {
-        const index = el.tags.findIndex(obj => obj.name.includes(tag.name));
-
-        if (index >= 0) {
-          found = true;
-          break;
-        }
-      }
-    }
-
-    updatedTags.push({ name: tag.name, enabled: found, color: tag.color });
-  }
-
-  return updatedTags;
-}
-
 export function solrResultToCKANJSON(solorJSON) {
   const ckanStructure = {};
 

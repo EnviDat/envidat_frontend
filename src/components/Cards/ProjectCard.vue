@@ -57,7 +57,7 @@
                             :tooltipText="`Open Subproject ${sub.title}`"
                             tooltipBottom
                             :isSmall="true"
-                            @click="subprojectClick(sub.id)" />
+                            @clicked="subprojectClick(sub.id)" />
           </v-flex>
         </v-layout>
       </v-card-text>
@@ -75,7 +75,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-23 14:38:42
+ * Last modified  : 2019-11-28 12:57:06
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

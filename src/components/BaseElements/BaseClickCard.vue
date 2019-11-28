@@ -9,6 +9,7 @@
         <v-flex xs5
                 py-0 >
           <v-img class="imagezoom"
+                  :contain="contain"
                   :height=" $vuetify.breakpoint.smAndDown ? '65px' : '100px' "
                   :src="img" />
         </v-flex>
@@ -47,7 +48,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-24 11:37:44
+ * Last modified  : 2019-11-28 10:45:20
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -62,6 +63,10 @@ export default {
     title: String,
     img: String,
     color: String,
+    contain: {
+      type: Boolean,
+      default: false,
+    },
   },
   methods: {
     clicked() {
