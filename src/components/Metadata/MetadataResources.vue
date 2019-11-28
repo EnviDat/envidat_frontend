@@ -73,7 +73,6 @@ export default {
   },
   data: () => ({
     showAllResources: false,
-    checkedGenericProps: false,
     emptyText: 'No resources found for this dataset',
   }),
   computed: {

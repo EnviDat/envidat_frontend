@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-11-22 15:03:52
+ * Last modified  : 2019-11-28 16:07:41
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -69,13 +69,42 @@ export default {
     }
 
     return {
-      id: dataset.id,
-      title: dataset.title,
-      doi: dataset.doi,
-      description: dataset.notes,
+      // id: dataset.id,
+      title: 'Description',
+      // doi: dataset.doi,
+      text: dataset.notes,
+      maxTextLength: 1000,
+      emptyText: 'No description found for this dataset.',
     };
   },
-  getAuthorName(author){
+  createPublications(dataset) {
+    if (!dataset) {
+      return null;
+    }
+
+    return {
+      text: dataset.related_publications,
+      title: 'Related Publications',
+      maxTextLength: 500,
+      emptyTextColor: 'black',
+      emptyText: 'No related publications available for this dataset.',
+    };
+  },
+  createFunding(dataset) {
+    if (!dataset) {
+      return null;
+    }
+
+    return dataset.funding;
+    // return {
+    //   text: dataset.funding_information,
+    //   title: 'Funding Information',
+    //   maxTextLength: 500,
+    //   emptyTextColor: 'black',
+    //   emptyText: 'No information about funding found for this dataset.',
+    // };
+  },
+  getAuthorName(author) {
     return `${author.given_name ? author.given_name : ''} ${author.name ? author.name : ''}`.trim();
   },
   getAuthorsString(dataset) {
@@ -93,7 +122,7 @@ export default {
       }
 
       author.forEach((element) => {
-        authors += ` ${ this.getAuthorName(element) };`;
+        authors += ` ${this.getAuthorName(element)};`;
       });
 
       // cut of the last ';'
