@@ -378,7 +378,7 @@ export default {
       LISTCONTROL_MAP_ACTIVE,
     ],
     mapFilterHeight: 400,
-    metadataListTitle: 'Datasets',
+    metadataListTitle: 'Related Datasets',
     metadataEmptyText: 'There are no datasets connected with the project',
   }),
 };
