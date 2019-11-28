@@ -1,79 +1,29 @@
 <template>
   <v-card class="elevation-0" >
 
-    <v-card-title :class="mdScreen ? 'pa-2' : 'pb-2'" >
-      <div class="mb-0"
-          :class="mdScreen ? 'body-2 font-weight-bold' : 'title '" >
-        Cartographic Filtering</div>
-    </v-card-title>
+    <filter-map-widget-layout :title="title"
+                              :highlightedText="highlightedText"
+                              :pinnedAmount="pinnedIds.length"
+                              :hasPins="hasPins"
+                              :hasMultiPins="hasMultiPins"
+                              :hasPolygons="hasPolygons"
+                              :topLayout="topLayout"
+                              :pinText="pinText"
+                              :multiPinText="multiPinText"
+                              :polygonText="polygonText" >
 
-    <div v-if="!mdScreen"
-          class="py-0 my-0 "
-          :class="mdScreen ? 'px-1 mb-1' : 'px-3'"
-          :style="`background-color: ${$vuetify.theme.highlight};`" >
-
-      <p class="my-0"
-          :class="mdScreen ? 'caption' : 'body-2'" >
-        {{ highlightedText }}
-      </p>
-
-    </div>
-
-    <v-container :class="mdScreen ? 'px-3' : 'py-2 px-3'" >
-
-    <v-layout :row="!mdScreen"
-              :column="mdScreen"
-              wrap
-              align-center>
-
-      <v-flex v-if="mdScreen"
-              pa-0 >
-        <v-layout row align-center>
-          <v-flex shrink>
-            <div :style="`color:${pinnedIds.length > 0 ? $vuetify.theme.primary : 'rgba(0,0,0,.47)'};`">
-              {{ filterText + pinnedIds.length }}
-            </div>
-          </v-flex>
-          <v-flex grow>
-            <base-icon-button materialIconName="close"
-                              iconColor="red"
-                              :outlined="pinnedIds.length > 0"
-                              :isSmall="mdScreen"
-                              :disabled="pinnedIds.length <= 0"
-                              :tooltipText="clearButtonTooltipText"
-                              @clicked="catchClearClicked()" />
-          </v-flex>
-        </v-layout>
-      </v-flex>
-
-      <v-flex v-if="!mdScreen"
-              grow
-              py-1>
-        <div :style="`color:${pinnedIds.length > 0 ? $vuetify.theme.primary : 'rgba(0,0,0,.47)'};`">
-          {{ filterText + pinnedIds.length }}
-        </div>
-      </v-flex>
-
-      <v-flex v-if="!mdScreen"
-              py-1
-              :class="mdScreen ? 'shrink' : 'lg3'">
+      <template v-slot:clearPins>
         <base-icon-button materialIconName="close"
                           iconColor="red"
-                          :outlined="pinnedIds.length > 0"
-                          :isSmall="mdScreen"
+                          :color="topLayout ? 'transparent' : ''"
+                          :outlined="!topLayout && pinnedIds.length > 0 "
+                          :isSmall="mdScreen || topLayout"
                           :disabled="pinnedIds.length <= 0"
                           :tooltipText="clearButtonTooltipText"
                           @clicked="catchClearClicked()" />
-      </v-flex>
+      </template>
 
-
-      <v-flex hidden-md-and-down lg9
-              py-1 >
-        {{ focusText }}
-      </v-flex>
-
-      <v-flex md12 lg3
-              py-1 >
+      <template v-slot:focus>
         <base-icon-button materialIconName="remove_red_eye"
                           iconColor="black"
                           color="highlight"
@@ -81,18 +31,9 @@
                           :outlined="true"
                           :tooltipText="focusText"
                           @clicked="catchFocusClicked()" />
-      </v-flex>
+      </template>
 
-      <v-flex v-if="hasPins"
-              hidden-md-and-down
-              lg9
-              py-1 >
-        {{ pinText }}
-      </v-flex>
-
-      <v-flex v-if="hasPins"
-              md12 lg3
-              py-1 >
+      <template v-slot:pinEnabled>
         <base-icon-button :count="pinNumber"
                           :customIcon="pinIcon"
                           color="secondary"
@@ -101,18 +42,9 @@
                           :isToggled="pinEnabled"
                           :tooltipText="pinText"
                           @clicked="catchPinClicked()" />
-      </v-flex>
+      </template>
 
-      <v-flex v-if="hasMultiPins"
-              hidden-md-and-down
-              lg9
-              py-1 >
-        {{ multiPinText }}
-      </v-flex>
-
-      <v-flex v-if="hasMultiPins"
-              md12 lg3
-              py-1 >
+      <template v-slot:multiPinEnabled>
         <base-icon-button :count="multiPinNumber"
                           :customIcon="multiPinIcon"
                           color="secondary"
@@ -121,18 +53,9 @@
                           :isToggled="multiPinEnabled"
                           :tooltipText="multiPinText"
                           @clicked="catchMultipinClicked()" />
-      </v-flex>
+      </template>
 
-      <v-flex v-if="hasPolygons"
-              hidden-md-and-down
-              lg9
-              py-1 >
-        {{ polygonText }}
-      </v-flex>
-
-      <v-flex v-if="hasPolygons"
-              md12 lg3
-              py-1 >
+      <template v-slot:polygonEnabled>
         <base-icon-button :count="polygonNumber"
                           materialIconName="layers"
                           iconColor="black"
@@ -142,11 +65,9 @@
                           :outlined="true"
                           :tooltipText="polygonText"
                           @clicked="catchPolygonClicked()" />
-      </v-flex>
+      </template>
 
-
-    </v-layout>
-    </v-container>
+    </filter-map-widget-layout>
 
   </v-card>
 </template>
@@ -159,16 +80,21 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-24 16:36:18
+ * Last modified  : 2019-11-22 14:13:22
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
+import FilterMapWidgetLayout from '@/components/Layouts/FilterMapWidgetLayout';
 
 export default {
   props: {
+    title: {
+      type: String,
+      default: 'Cartographic Filtering',
+    },
     pinnedIds: Array,
     hasPins: Boolean,
     pinEnabled: Boolean,
@@ -188,12 +114,11 @@ export default {
       default: 0,
       type: Number,
     },
+    topLayout: Boolean,
   },
   beforeMount() {
     this.pinIcon = this.mixinMethods_getIcon('marker');
     this.multiPinIcon = this.mixinMethods_getIcon('markerMulti');
-    // this.polygonIcon = this.mixinMethods_getIcon('polygons');
-    // this.eyeIcon = this.mixinMethods_getIcon('eye');
   },
   computed: {
     smScreen() {
@@ -238,6 +163,7 @@ export default {
   }),
   components: {
     BaseIconButton,
+    FilterMapWidgetLayout,
   },
 };
 </script>

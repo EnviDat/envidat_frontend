@@ -3,17 +3,18 @@
 
     <!-- Top of Card -->
     <v-card ripple
-            height="150"
+            :height="headerCardHeight"
             :class="`elevation-${hovered ? 5 : 3}`"
             style="z-index: 1;"
             @click.native="cardClick" >
 
       <v-layout fill-height style="max-width: 100%; background-color: white; border-radius: 2px;" class="ma-0" >
-          <v-flex v-if="img" xs6 pa-0 >
-            <v-img style="height: 100%; border-radius: 2px 0px 0px 2px;"
-                    :cover="img.width < 200"
-                    :contain="img.width > 200"
-                    :src="img"
+          <v-flex xs6 pa-0 >
+            <v-img style="border-radius: 2px 0px 0px 2px;"
+                    :contain="headerImg ? headerImg.width > headerImg.height : false"
+                    :cover="headerImg ? headerImg.width < headerImg.height : false"
+                    :height="headerCardHeight"
+                    :src="headerImg ? headerImg.src : ''"
                     :lazy-src="defaultImg"
                     />
           </v-flex>
@@ -56,7 +57,7 @@
                             :tooltipText="`Open Subproject ${sub.title}`"
                             tooltipBottom
                             :isSmall="true"
-                            @click="subprojectClick(sub.id)" />
+                            @clicked="subprojectClick(sub.id)" />
           </v-flex>
         </v-layout>
       </v-card-text>
@@ -74,7 +75,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-23 14:38:42
+ * Last modified  : 2019-11-28 12:57:06
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -104,6 +105,22 @@ export default {
     dark: Boolean,
   },
   computed: {
+    headerImg() {
+      const img = new Image();
+      let imgSrc = this.defaultImg;
+
+      if (this.img) {
+        imgSrc = this.img;
+      }
+
+      img.src = imgSrc;
+      img.onload = () => {
+        // forced to make the check with for the contain property again
+        this.$forceUpdate();
+      };
+
+      return img;
+    },
     maxTitleLengthReached() {
       return this.title.length > this.maxTitleLength;
     },
@@ -142,6 +159,7 @@ export default {
     maxDescriptionLength: 290,
     maxTitleLength: 100,
     hovered: false,
+    headerCardHeight: 150,
   }),
 };
 </script>

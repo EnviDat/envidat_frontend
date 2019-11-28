@@ -5,6 +5,7 @@ import Vuetify, { VApp, VContainer, VLayout, VFlex } from 'vuetify/lib';
 
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
+import { createTag } from '@/factories/metadataFilterMethods';
 import globalMethods from '@/factories/globalMethods';
 import metaDataFactory from '@/factories/metaDataFactory';
 
@@ -16,52 +17,52 @@ metadataCards.forEach(element => {
   element.tags = metaDataFactory.convertTags(element.tags, true);
 });
 
-globalMethods.methods.mixinMethods_enhanceMetadatas(metadataCards, cardImages, categoryCards);
+metaDataFactory.enhanceMetadatas(metadataCards, cardImages, categoryCards);
 
 import { configureViewport, INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 
-const vuetifyViewports = {
-  VuetifyLg: {
-    name: 'Vuetify LG',
-    styles: {
-      width: '1904px',
-      height: '100%',
-    },
-    type: 'desktop'
-  },
-  VuetifyXs: {
-    name: 'Vuetify XS',
-    styles: {
-      width: '600px',
-      height: '100%',
-    },
-    type: 'mobile'
-  },
-  VuetifySm: {
-    name: 'Vuetify SM',
-    styles: {
-      width: '960px',
-      height: '100%',
-    },
-    type: 'mobile'
-  },
-  VuetifyMd: {
-    name: 'Vuetify MD',
-    styles: {
-      width: '1264px',
-      height: '100%',
-    },
-    type: 'tablet'
-  },
-  VuetifyXl: {
-    name: 'Vuetify XL',
-    styles: {
-      width: '4096px',
-      height: '100%',
-    },
-    type: 'desktop'
-  }
-};
+// const vuetifyViewports = {
+//   VuetifyLg: {
+//     name: 'Vuetify LG',
+//     styles: {
+//       width: '1904px',
+//       height: '100%',
+//     },
+//     type: 'desktop'
+//   },
+//   VuetifyXs: {
+//     name: 'Vuetify XS',
+//     styles: {
+//       width: '600px',
+//       height: '100%',
+//     },
+//     type: 'mobile'
+//   },
+//   VuetifySm: {
+//     name: 'Vuetify SM',
+//     styles: {
+//       width: '960px',
+//       height: '100%',
+//     },
+//     type: 'mobile'
+//   },
+//   VuetifyMd: {
+//     name: 'Vuetify MD',
+//     styles: {
+//       width: '1264px',
+//       height: '100%',
+//     },
+//     type: 'tablet'
+//   },
+//   VuetifyXl: {
+//     name: 'Vuetify XL',
+//     styles: {
+//       width: '4096px',
+//       height: '100%',
+//     },
+//     type: 'desktop'
+//   }
+// };
 
 // configureViewport({
 addParameters({

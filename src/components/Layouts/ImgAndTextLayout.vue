@@ -2,13 +2,14 @@
   <v-container pa-0 style="position: relative;">
     <v-layout column>
         <v-sheet :height="height">
+
           <v-parallax :height="height" :src="img" style="opacity: 0.8; filter: blur(2px);" />
+
           <v-layout align-center justify-center fill-height
                     :style="`position: relative; top: -${ height }px; text-align: center;`" >
-            <v-flex class="text" :class="{
-                'display-3' : $vuetify.breakpoint.mdAndUp,
-                'display-1' : $vuetify.breakpoint.smAndDown,
-              }">
+            <v-flex class="text"
+                    :class="{ 'display-3' : $vuetify.breakpoint.mdAndUp,
+                              'display-1' : $vuetify.breakpoint.smAndDown, }">
               {{ title }}
             </v-flex>
           </v-layout>
@@ -25,14 +26,11 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-23 14:55:10
+ * Last modified  : 2019-11-20 14:05:26
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
-
-import MMarkdownPreview from 'm-markdown-preview';
-import BaseTitleImg from '@/components/BaseElements/BaseTitleImg';
 
 export default {
   name: 'ImgAndTextLayout',

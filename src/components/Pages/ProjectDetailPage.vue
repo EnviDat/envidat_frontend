@@ -1,13 +1,15 @@
 <template>
   <v-container tag="article"
-                fluid fill-height
+                fluid
                 pa-0 >
 
     <v-layout row wrap>
 
-      <v-flex xs12 lg10 offset-lg1
+      <v-flex xs12
               elevation-5
-              style="z-index: 1;" >
+              ref="header"
+              style="z-index: 1; position: absolute; left: 0;" 
+              :style="headerStyle" >
 
         <project-header :title="currentProject ? currentProject.title : null"
                         :titleImg="currentProject ? currentProject.image_display_url : null"
@@ -15,10 +17,13 @@
                         :showPlaceholder="loading"
                         @clickedBack="catchBackClicked" />
       </v-flex>
+    </v-layout>
+
+    <v-layout row wrap
+              :style="`z-index: 0; position: relative; top: ${headerHeight()}px`" >
 
       <v-flex xs12 lg10 offset-lg1
-              px-3
-              style="z-index: 0;" >
+              px-3 >
 
         <project-body v-bind="currentProject"
                       :showPlaceholder="loading" />
@@ -41,19 +46,22 @@
           <v-card-title class="metadataList_title title">{{ metadataListTitle }}</v-card-title>
 
           <div v-if="hasMetadatas" >
-            <metadata-list-layout class="px-3"
-                                :listContent="filteredListContent"
-                                :showMapFilter="false"
-                                :mapFilteringPossible="mapFilteringPossible"
-                                :placeHolderAmount="placeHolderAmount"
-                                @clickedTag="catchTagClicked"
-                                :allTags="allMetadataTags"
-                                :selectedTagNames="selectedTagNames"
-                                @clickedTagClose="catchTagCloseClicked"
-                                @clickedClear="catchTagCleared"
-                                :defaultListControls="controls"
-                                :enabledControls="enabledControls"
-                                :mapHeight="mapFilterHeight" />
+            <metadata-list ref="metadataList"
+                            class="px-3"
+                            :listContent="filteredListContent"
+                            :showMapFilter="false"
+                            :mapFilteringPossible="mapFilteringPossible"
+                            :placeHolderAmount="placeHolderAmount"
+                            @clickedTag="catchTagClicked"
+                            :allTags="allMetadataTags"
+                            :selectedTagNames="selectedTagNames"
+                            @clickedTagClose="catchTagCloseClicked"
+                            @clickedClear="catchTagCleared"
+                            :defaultListControls="defaultControls"
+                            :enabledControls="enabledControls"
+                            :mapHeight="mapFilterHeight"
+                            :topFilteringLayout="true"
+                            @setScroll="setScrollPos" />
           </div>
 
           <div v-if="!hasMetadatas" >
@@ -77,7 +85,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-24 16:55:39
+ * Last modified  : 2019-11-20 15:51:22
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -94,19 +102,26 @@ import {
   PROJECTS_NAMESPACE,
   SET_PROJECTDETAIL_PAGE_BACK_URL,
 } from '@/store/projectsMutationsConsts';
-import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
+
+import {
+  METADATA_NAMESPACE,
+  LISTCONTROL_LIST_ACTIVE,
+  LISTCONTROL_MAP_ACTIVE,
+} from '@/store/metadataMutationsConsts';
 
 import ProjectHeader from '@/components/ProjectDetailViews/ProjectHeader';
 import ProjectBody from '@/components/ProjectDetailViews/ProjectBody';
 import ProjectSubprojects from '@/components/ProjectDetailViews/ProjectSubprojects';
-import MetadataListLayout from '@/components/Layouts/MetadataListLayout';
+import MetadataList from '@/components/Metadata/MetadataList';
 
 import missionImg from '@/assets/about/mission.jpg';
 import creator from '@/assets/cards/data_creator.jpg';
 import creatorSmall from '@/assets/cards/data_creator_small.jpg';
 
-import { tagsIncludedInSelectedTags } from '@/factories/metadataFilterMethods';
-// const filtermethods = require('@/factories/metadataFilterMethods');
+import {
+  tagsIncludedInSelectedTags,
+  createTag,
+} from '@/factories/metadataFilterMethods';
 
 export default {
   /**
@@ -212,7 +227,7 @@ export default {
           }
         }
 
-        projectDatasetsTags.push({ name: tag.name, enabled: found });
+        projectDatasetsTags.push(createTag(tag.name, { enabled: found }));
       }
 
       return projectDatasetsTags;
@@ -242,8 +257,30 @@ export default {
 
       return projectDatasets;
     },
+    headerStyle() {
+      let width = 82.25;
+      let margin = '0px 8.33333%';
+
+      if (this.$vuetify.breakpoint.mdAndDown) {
+        width = 100;
+        margin = '0';
+      }
+
+      if (this.$vuetify.breakpoint.lg) {
+        width = 83.25;
+      }
+
+      return `width: ${width}%; margin: ${margin};`;
+    },
   },
   methods: {
+    headerHeight() {
+      if (this.$refs && this.$refs.header) {
+        return this.$refs.header.clientHeight;
+      }
+
+      return 150;
+    },
     getMetadataContent(id) {
       if (!this.metadatasContent) {
         return null;
@@ -315,12 +352,18 @@ export default {
     catchTagCleared() {
       this.selectedTagNames = [];
     },
+    setScrollPos(toPos) {
+      
+      if (this.$root.$children && this.$root.$children[0].$refs.appContainer) {
+        this.$root.$children[0].$refs.appContainer.scrollTop = toPos;
+      }
+    },
   },
   components: {
     ProjectHeader,
     ProjectBody,
     ProjectSubprojects,
-    MetadataListLayout,
+    MetadataList,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
@@ -329,10 +372,13 @@ export default {
     creatorSmall,
     placeHolderAmount: 3,
     selectedTagNames: [],
-    controls: [1],
-    enabledControls: [0, 1],
+    defaultControls: [LISTCONTROL_MAP_ACTIVE],
+    enabledControls: [
+      LISTCONTROL_LIST_ACTIVE,
+      LISTCONTROL_MAP_ACTIVE,
+    ],
     mapFilterHeight: 400,
-    metadataListTitle: 'Datasets',
+    metadataListTitle: 'Related Datasets',
     metadataEmptyText: 'There are no datasets connected with the project',
   }),
 };

@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51 
- * Last modified  : 2019-10-23 16:41:19
+ * Last modified  : 2019-11-20 14:52:54
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -19,6 +19,9 @@ import {
   GET_PROJECTS_ERROR,
 } from '@/store/projectsMutationsConsts';
 
+import {
+  METADATA_NAMESPACE,
+} from '@/store/metadataMutationsConsts';
 import { urlRewrite } from '@/factories/apiFactory';
 
 const API_BASE = '/api/action/';
@@ -27,7 +30,7 @@ const useTestData = process.env.VUE_APP_USE_TESTDATA;
 
 
 export default {
-  [GET_PROJECTS]({ commit }) {
+  async [GET_PROJECTS]({ dispatch, commit }) {
     commit(GET_PROJECTS);
 
     const url = urlRewrite(
@@ -35,6 +38,10 @@ export default {
       API_BASE,
       ENVIDAT_PROXY,
     );
+
+    if (this.getters[`${METADATA_NAMESPACE}/metadatasContentSize`] === 0) {
+      await dispatch(`${METADATA_NAMESPACE}/BULK_LOAD_METADATAS_CONTENT`, null, { root: true })      
+    }
 
     if (typeof useTestData === 'string' && useTestData.toLowerCase() === 'true') {
       // const projectJSON = require('@/testdata/projects.js');
@@ -47,7 +54,7 @@ export default {
       return;
     }
 
-    axios.get(url)
+    await axios.get(url)
       .then((response) => {
         commit(GET_PROJECTS_SUCCESS, response.data.result);
       })

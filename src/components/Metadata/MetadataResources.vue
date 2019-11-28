@@ -7,16 +7,19 @@
     <v-container v-if="resources && resources.length > 0"
                 fluid grid-list-xs grid-list-md
                 pa-3 >
-      <v-layout row wrap >
+      <v-layout v-if="showPlaceholder"
+                  row wrap >
         <v-flex v-for="n in 2"
-                  v-if="showPlaceholder"
                   :key="n"
                   xs12 sm6 >
           <resource-card-placeholder :two-column-layout="twoColumnLayout" />
         </v-flex>
+      </v-layout>
+
+      <v-layout v-if="!showPlaceholder"
+                row wrap >
 
         <v-flex v-for="res in resources"
-                v-if="!showPlaceholder"
                 :key="res.id"
                 xs12 sm6 >
           <resource-card v-bind="res"

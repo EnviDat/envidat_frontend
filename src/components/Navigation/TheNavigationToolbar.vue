@@ -3,23 +3,35 @@
               clipped-left
               color="white"
               height="36"
-              :extended="expanded"
-              :extension-height="80">
+              :extended="mode && $vuetify.breakpoint.xsOnly"
+              :extension-height="50">
 
-    <v-btn v-if="$vuetify.breakpoint.mdAndUp"
-            icon @click.native="menuClick">
-      <v-icon>menu</v-icon>
-    </v-btn>
+    <template v-slot:extension
+              v-if="mode && $vuetify.breakpoint.xsOnly" >
+      <mode-view :mode="mode"
+                  :compact="true"
+                  :closeCallback="modeCloseCallback" />
+    </template>
 
+    <v-layout row
+              align-center >
 
-    <v-spacer v-if="$vuetify.breakpoint.mdAndUp"></v-spacer>
+      <v-flex md4>
 
-    <v-layout row>
-      <v-flex hidden-sm-and-down md6>
-
+        <v-btn v-if="$vuetify.breakpoint.mdAndUp"
+                icon
+                @click.native="menuClick">
+          <v-icon>menu</v-icon>
+        </v-btn>
       </v-flex>
 
-      <v-flex xs12 md6>
+      <v-flex md4 >
+        <mode-view v-if="mode && $vuetify.breakpoint.smAndUp"
+                    :mode="mode"
+                    :closeCallback="modeCloseCallback" />
+      </v-flex>
+
+      <v-flex md4>
         <small-search-bar-view v-if="showSearch"
                                 :compactLayout="$vuetify.breakpoint.smAndDown"
                                 class="elevation-0"
@@ -36,18 +48,29 @@
       </v-flex>
     </v-layout>
 
+    <v-progress-linear v-show="loading"
+                        indeterminate
+                        style="position: absolute; left: 0; bottom: -14px;"
+                        height="2"
+                        color="primary" />
+
 
   </v-toolbar>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import {
+  METADATA_NAMESPACE,
+} from '@/store/metadataMutationsConsts';
 import Logo from '@/assets/logo/EnviDat_logo_32.png';
 import SmallSearchBarView from '@/components/Filtering/SmallSearchBarView';
+import ModeView from '@/components/Layouts/ModeView';
 
 export default {
   components: {
     SmallSearchBarView,
+    ModeView,
   },
   props: {
     searchTerm: String,
@@ -57,17 +80,13 @@ export default {
     searchCount: Number,
     showSearch: Boolean,
     loading: Boolean,
+    mode: String,
+    modeCloseCallback: Function,
   },
-  data: () => ({
-    Logo,
-    logoText: 'EnviDat',
-    searchFocused: false,
-    expanded: false,
-  }),
   computed: {
     ...mapGetters({
-      searchPlaceholderText: 'metadata/searchPlaceholderText',
-      searchPlaceholderTextSmall: 'metadata/searchPlaceholderTextSmall',
+      searchPlaceholderText: `${METADATA_NAMESPACE}/searchPlaceholderText`,
+      searchPlaceholderTextSmall: `${METADATA_NAMESPACE}/searchPlaceholderTextSmall`,
     }),
     searchBarPlaceholder() {
       return this.$vuetify.breakpoint.mdAndUp ? this.searchPlaceholderText : this.searchPlaceholderTextSmall;
@@ -89,34 +108,30 @@ export default {
     loginClick() {
       this.$emit('loginClick');
     },
-    // navigateToAboutPage: function navigateToAboutPage() {
-    //   if (this.$route.fullPath.includes(BROWSE_PATH)) {
-    //     // when the about click is done on the browse page,
-    //     // clear the detail back url to prevent the resetup of the wrong url
-    //     this.$store.commit(`metadata/${SET_DETAIL_PAGE_BACK_URL}`, null);
-    //   }
-    //   this.$store.commit(`metadata/${SET_ABOUT_PAGE_BACK_URL}`, this.$route);
-    //   this.$router.push({
-    //     path: ABOUT_PATH,
-    //   });
-    // },
   },
+  data: () => ({
+    Logo,
+    logoText: 'EnviDat',
+    searchFocused: false,
+    expanded: false,
+    modeLogo: null,
+  }),
 };
 </script>
 
 <style>
-.envidatLogoText {
-  display: inline;
-  vertical-align: middle;
-  position: relative;
-  bottom: -2px;
-}
+  .envidatLogoText {
+    display: inline;
+    vertical-align: middle;
+    position: relative;
+    bottom: -2px;
+  }
 
-.envidatNavbarLinksSmall > span > .v-btn--small {
-  font-size: 10px !important;
-}
+  .envidatNavbarLinksSmall > span > .v-btn--small {
+    font-size: 10px !important;
+  }
 
-.envidatNavbarTitleSmall {
-  font-size: 18px !important;
-}
+  .envidatNavbarTitleSmall {
+    font-size: 18px !important;
+  }
 </style>

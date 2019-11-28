@@ -20,7 +20,7 @@ function getDataCredit(author) {
       const credit = author.data_credit[i];
       
       if (dataCredits[credit]){
-        const v = dataCredits[credit];
+        let v = dataCredits[credit];
         v += 1;
         dataCredits[credit] = v;
       } else {
@@ -57,7 +57,6 @@ function getAuthorName(author) {
 
   if (nameSpilts.length == 3) {
     // For Names like 'Dude van Dudehood'
-    firstName = nameSpilts[0];
     lastName = nameSpilts[1] + ' ' + nameSpilts[2];
   }
 

@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-10-25 10:04:43
+ * Last modified  : 2019-11-28 11:06:48
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -27,6 +27,9 @@ import hazardImg from '@/assets/cards/c_b_hazard_cloud_small.jpg';
 import diversityImg from '@/assets/cards/c_b_diversity_meadow_small.jpg';
 import meteoImg from '@/assets/cards/c_b_c_b_clouds_lighting_small.jpg';
 import dataCreatorImg from '@/assets/cards/data_creator_small.jpg';
+import swissFLLogo from '@/assets/cards/swiss_forest_lab_logo.jpg';
+
+import { SWISSFL_MODE } from '@/store/metadataMutationsConsts';
 
 export default [
   {
@@ -42,12 +45,15 @@ export default [
     title: 'Landscape', type: LAND, img: landImg, color: '#f1f8e9', darkColor: '#DCEDC8',
   },
   {
-    title: 'Natural disasters', type: HAZARD, img: hazardImg, color: '#fbe9e7', darkColor: '#FFCCBC',
+    title: 'Natural Hazards', type: HAZARD, img: hazardImg, color: '#fbe9e7', darkColor: '#FFCCBC',
   },
   {
-    title: 'Diversity', type: DIVERSITY, img: diversityImg, color: '#ede7f6', darkColor: '#D1C4E9',
+    title: 'Biodiversity', type: DIVERSITY, img: diversityImg, color: '#ede7f6', darkColor: '#D1C4E9',
   },
   {
     title: 'Meteo', type: METEO, img: meteoImg, color: '#E8EAF6', darkColor: '#C5CAE9',
+  },
+  {
+    title: 'Swiss Forest Lab View', type: `mode_${SWISSFL_MODE}`, img: swissFLLogo, color: '#8BC34A', darkColor: '#8BC34A', contain: true,
   },
 ];
