@@ -62,7 +62,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-28 16:25:55
+ * Last modified  : 2019-11-29 14:15:57
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -122,7 +122,7 @@ export default {
       }
 
       const tagsEncoded = this.mixinMethods_encodeTagForUrl([cardType.toUpperCase()]);
-      this.mixinMethods_additiveChangeRoute(BROWSE_PATH, undefined, tagsEncoded);
+      this.mixinMethods_additiveChangeRoute(BROWSE_PATH, '', tagsEncoded);
     },
     catchModeClicked(mode) {
       this.$router.push({
@@ -153,8 +153,6 @@ export default {
     },
     redirectToDashboard() {
       window.open('https://www.envidat.ch/user/reset', '_blank');
-      // window.location.href = 'https://www.envidat.ch/user/reset';
-      // this.$router.push('https://www.envidat.ch/user/reset');
     },
   },
   components: {
