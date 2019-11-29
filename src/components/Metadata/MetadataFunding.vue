@@ -18,10 +18,11 @@
                   class="heightAndScroll pb-4" >
 
       <v-layout row wrap>
-        <v-flex xs12>
+        <v-flex xs12 py-1>
           {{ preText }}
         </v-flex>
         <v-flex xs6 md4
+                py-1
                 v-for="(item, index) in fundingItems"
                 :key="index" >
 
@@ -82,7 +83,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-29 16:26:22
+ * Last modified  : 2019-11-29 16:34:29
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
