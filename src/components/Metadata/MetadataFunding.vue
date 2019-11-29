@@ -18,6 +18,9 @@
                   class="heightAndScroll pb-4" >
 
       <v-layout row wrap>
+        <v-flex xs12>
+          {{ preText }}
+        </v-flex>
         <v-flex xs6 md4
                 v-for="(item, index) in fundingItems"
                 :key="index" >
@@ -79,7 +82,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-28 16:18:58
+ * Last modified  : 2019-11-29 16:26:22
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -129,6 +132,7 @@ export default {
   },
   data: () => ({
     title: 'Funding Information',
+    preText: 'This work was supported by:',
     emptyText: 'No information about funding available for this dataset.',
     emptyTextColor: 'black',
   }),
