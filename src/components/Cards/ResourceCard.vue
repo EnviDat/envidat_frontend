@@ -102,10 +102,10 @@
       <base-icon-button v-if="maxDescriptionLengthReached"
                         class="mr-2"
                         material-icon-name="expand_more"
-                        :iconColor="showFullDescription ? 'accent' : 'primary'"
+                        :iconColor="showFullDescription ? 'primary' : 'accent'"
                         color="accent"
                         :outlined="true"
-                        :isToggled="!showFullDescription"
+                        :isToggled="showFullDescription"
                         :rotateOnClick="true"
                         :rotateToggle="showFullDescription"
                         :tooltipText="showFullDescription ? 'Hide full description' : 'Show full description'"
@@ -145,7 +145,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-28 15:12:18
+ * Last modified  : 2019-11-29 14:39:55
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
