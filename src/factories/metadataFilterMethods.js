@@ -112,19 +112,20 @@ export function countTags(datasets) {
   return tagCounts;
 }
 
-export function getPopularTags(datasets, excludeTag, minCount = 5, maxCount = 0) {
+export function getPopularTags(datasets, excludeTag = '', minCount = 5, maxCount = 0) {
   if (!datasets || datasets.length <= 0) return [];
 
   const tagCounted = countTags(datasets);
   const cleandAndCounted = [];
-
   for (let i = 0; i < tagCounted.length; i++) {
     const tag = tagCounted[i];
+    // console.log(tag.name + ' ' + tag.count + ' minCount ' + minCount + ' count? ' + (tag.count >= minCount) + ' excludeTag ' + (excludeTag === '' || (excludeTag && tag.name.toLowerCase() !== excludeTag.toLowerCase())) + ' maxCount ' + (maxCount === 0 || (maxCount > 0 && tag.count < maxCount)) );
     if ((tag.count >= minCount)
-      && (excludeTag && tag.name.toLowerCase() !== excludeTag.toLowerCase())
-      && (maxCount > 0 && tag.count < maxCount)) {
+      && (excludeTag === '' || (excludeTag && tag.name.toLowerCase() !== excludeTag.toLowerCase()))
+      && (maxCount === 0 || (maxCount > 0 && tag.count < maxCount))) {
       cleandAndCounted.push(tag);
     }    
   }
+
   return cleandAndCounted;
 }
