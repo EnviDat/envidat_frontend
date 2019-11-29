@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-11-28 16:07:41
+ * Last modified  : 2019-11-29 15:52:06
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -93,6 +93,15 @@ export default {
   createFunding(dataset) {
     if (!dataset) {
       return null;
+    }
+
+    if (typeof dataset.funding === 'string') {
+      try {
+        const funding = JSON.parse(dataset.funding);;
+        return funding;
+      } catch (e) {
+        console.log("Error JSON Parse of Funding: " + e);
+      }      
     }
 
     return dataset.funding;
