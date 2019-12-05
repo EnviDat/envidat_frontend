@@ -1,23 +1,23 @@
 const metadataFilterMethods = require('../../factories/metadataFilterMethods');
 
-it('Tag - creation - empty', () => {
+it('metadataFilterMethods Tag - creation - empty', () => {
   const tag = metadataFilterMethods.createTag();
   expect(tag).toBeNull();
 });
 
-it('Tag - creation - only name', () => {
+it('metadataFilterMethods Tag - creation - only name', () => {
   const tag = metadataFilterMethods.createTag('someTag');
   expect(tag.name).toBe('someTag');
 });
 
-it('Tag - creation - defaults', () => {
+it('metadataFilterMethods Tag - creation - defaults', () => {
   const tag = metadataFilterMethods.createTag('someTag');
   expect(tag.enabled).toBeDefined();
   expect(tag.color).toBeDefined();
   expect(tag.count).toBeDefined();
 });
 
-it('Tag - creation - options tag overload', () => {
+it('metadataFilterMethods Tag - creation - options tag overload', () => {
   const existingTag = { name: 'dude', enabled: false, color: '#ffffff', count: 5};
   const tag = metadataFilterMethods.createTag(existingTag.name, { tag : existingTag });
   expect(tag.name).toBe(existingTag.name);
@@ -27,7 +27,7 @@ it('Tag - creation - options tag overload', () => {
 });
 
 
-it('Tag - countTags - empty', () => {
+it('metadataFilterMethods Tag - countTags - empty', () => {
   const count = metadataFilterMethods.countTags();
   expect(count).toBeDefined();
   expect(count.length).toEqual(0);
@@ -57,7 +57,7 @@ function getMockDatasets(two = false, three = false, four = false){
   return [{ tags: tags1 }];
 }
 
-it('Tag - countTags - basic', () => {
+it('metadataFilterMethods Tag - countTags - basic', () => {
   const datasets = getMockDatasets();
 
   const count = metadataFilterMethods.countTags(datasets);
@@ -69,13 +69,13 @@ it('Tag - countTags - basic', () => {
   expect(count[3].count).toEqual(1);
 });
 
-it('Tag - getEnabledTags - empty', () => {
+it('metadataFilterMethods Tag - getEnabledTags - empty', () => {
   const count = metadataFilterMethods.getEnabledTags();
   expect(count).toBeDefined();
   expect(count.length).toEqual(0);
 });
 
-it('Tag - getEnabledTags - check enabled tags', () => {
+it('metadataFilterMethods Tag - getEnabledTags - check enabled tags', () => {
   const tag1 = metadataFilterMethods.createTag('tag1');
   const tag2 = metadataFilterMethods.createTag('tag2');
   const tag3 = metadataFilterMethods.createTag('tag3');
@@ -99,13 +99,13 @@ it('Tag - getEnabledTags - check enabled tags', () => {
   expect(newTags[3].enabled).toBeTruthy();
 });
 
-it('Tag - tagsIncludedInSelectedTags - empty', () => {
+it('metadataFilterMethods Tag - tagsIncludedInSelectedTags - empty', () => {
   const included = metadataFilterMethods.tagsIncludedInSelectedTags();
 
   expect(included).toBeFalsy();
 });
 
-it('Tag - tagsIncludedInSelectedTags - check included', () => {
+it('metadataFilterMethods Tag - tagsIncludedInSelectedTags - check included', () => {
   const tag1 = metadataFilterMethods.createTag('tag1');
   const tag2 = metadataFilterMethods.createTag('tag2');
   const tag3 = metadataFilterMethods.createTag('tag3');
@@ -119,14 +119,14 @@ it('Tag - tagsIncludedInSelectedTags - check included', () => {
   expect(included).toBeTruthy();
 });
 
-it('Tag - getPopularTags - empty', () => {
+it('metadataFilterMethods Tag - getPopularTags - empty', () => {
   const popularTags = metadataFilterMethods.getPopularTags();
 
   expect(popularTags).toBeDefined();
   expect(popularTags.length).toEqual(0);
 });
 
-it('Tag - getPopularTags - check returned amount', () => {
+it('metadataFilterMethods Tag - getPopularTags - check returned amount', () => {
   const datasets = getMockDatasets(false, false, true);
 
   const popularTags = metadataFilterMethods.getPopularTags(datasets);
@@ -135,7 +135,7 @@ it('Tag - getPopularTags - check returned amount', () => {
   expect(popularTags.length).toEqual(2);
 });
 
-it('Tag - getPopularTags - check returned amount with minCount', () => {
+it('metadataFilterMethods Tag - getPopularTags - check returned amount with minCount', () => {
   const datasets = getMockDatasets(true);
 
   const popularTags = metadataFilterMethods.getPopularTags(datasets, '', 1);
@@ -144,7 +144,7 @@ it('Tag - getPopularTags - check returned amount with minCount', () => {
   expect(popularTags.length).toEqual(4);
 });
 
-it('Tag - getPopularTags - with exludeTag and minCount', () => {
+it('metadataFilterMethods Tag - getPopularTags - with exludeTag and minCount', () => {
   const datasets = getMockDatasets(true);
 
   const popularTags = metadataFilterMethods.getPopularTags(datasets, 'tag1', 2);
