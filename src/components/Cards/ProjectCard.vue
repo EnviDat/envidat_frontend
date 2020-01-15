@@ -1,5 +1,7 @@
 <template>
-  <div @mouseover="hovered = true" @mouseleave="hovered = false" >
+  <div @mouseover="hovered = true"
+        @mouseleave="hovered = false"
+        style="cursor: pointer;" >
 
     <!-- Top of Card -->
     <v-card ripple
