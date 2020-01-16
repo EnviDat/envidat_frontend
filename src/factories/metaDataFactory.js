@@ -205,7 +205,7 @@ export default {
         let restrictedUsers;
         let restrictedObj = false;
 
-        if (typeof element.restricted === 'string') {
+        if (typeof element.restricted === 'string' && element.restricted.length > 0) {
           try {
             restrictedObj = JSON.parse(element.restricted);
             isProtected = restrictedObj.level !== 'public';
