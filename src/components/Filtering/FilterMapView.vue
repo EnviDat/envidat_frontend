@@ -96,7 +96,7 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/leaflet.markercluster';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
-import metaDataFactory from '@/factories/metaDataFactory';
+import { createLocation } from '@/factories/metaDataFactory';
 import FilterMapWidget from '@/components/Filtering/FilterMapWidget';
 import { getModeData } from '@/factories/modeFactory';
 
@@ -372,7 +372,7 @@ export default {
 
         let location = dataset.location;
         if (!location) {
-          location = metaDataFactory.createLocation(dataset);
+          location = createLocation(dataset);
         }
         const selected = this.pinnedIds.includes(location.id);
 

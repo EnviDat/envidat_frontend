@@ -24,9 +24,11 @@ import ProjectBody from '@/components/ProjectDetailViews/ProjectBody.vue';
 
 // get Project test data and enhance it
 import projectJSON from '@/testdata/projects';
-import projectDataFactory from '@/factories/projectsDataFactory';
+import {
+  enhanceSubprojectsFromExtras,
+} from '@/factories/projectsDataFactory';
 
-const enhancedProjects = projectDataFactory.enhanceSubprojectsFromExtras(projectJSON.result);
+const enhancedProjects = enhanceSubprojectsFromExtras(projectJSON.result);
 const projects = enhancedProjects;
 
 

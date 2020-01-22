@@ -13,7 +13,7 @@
 
 // import createPersist from 'vuex-localstorage';
 
-import metaDataFactory from '@/factories/metaDataFactory';
+import { getTagColor } from '@/factories/metaDataFactory';
 
 import mutations from '@/store/modules/metadata/metadataMutations';
 import actions from '@/store/modules/metadata/metadataActions';
@@ -22,7 +22,7 @@ import tags from '@/store/modules/metadata/metadataTags';
 
 for (let i = 0; i < tags.length; i++) {
   const tag = tags[i];
-  tag.color = metaDataFactory.getTagColor(categoryCards, tag.name);
+  tag.color = getTagColor(categoryCards, tag.name);
 }
 
 const initialState = {
