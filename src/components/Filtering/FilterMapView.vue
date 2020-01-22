@@ -84,7 +84,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-11-27 13:19:10
+ * Last modified  : 2019-11-28 14:30:32
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -585,6 +585,10 @@ export default {
   .swissFL_icon {
     margin-top: -28px !important;
     margin-left: -15px !important;
+  }
+
+  .leaflet-popup-content-wrapper .leaflet-popup-content {
+    font-family: 'Raleway', sans-serif !important;
   }
 
 </style>

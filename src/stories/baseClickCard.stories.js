@@ -3,7 +3,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-10-24 10:18:06
+ * Last modified  : 2019-11-28 16:53:51
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -27,7 +27,7 @@ storiesOf('3 Cards | Click Cards ', module).add('CategoryCcard Collection', () =
     <v-layout row wrap>
 
       <v-flex xs6 py-1
-        v-for="card in categorycards" :key="card.title">
+        v-for="card in categoryCards" :key="card.title">
             <base-click-card
               :title='card.title'
               :img='card.img'
@@ -37,7 +37,7 @@ storiesOf('3 Cards | Click Cards ', module).add('CategoryCcard Collection', () =
       </v-flex>
 
       <v-flex xs4 py-1
-        v-for="card in categorycards" :key="card.title">
+        v-for="card in categoryCards" :key="card.title">
             <base-click-card
               :title='card.title'
               :img='card.img'
@@ -47,7 +47,7 @@ storiesOf('3 Cards | Click Cards ', module).add('CategoryCcard Collection', () =
       </v-flex>
 
       <v-flex xs3 py-1
-        v-for="card in categorycards" :key="card.title">
+        v-for="card in categoryCards" :key="card.title">
             <base-click-card
               :title='card.title'
               :img='card.img'

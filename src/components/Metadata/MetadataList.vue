@@ -164,7 +164,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-27 10:32:11
+ * Last modified  : 2019-11-29 14:15:50
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -322,11 +322,33 @@ export default {
     catchTagCleared() {
       this.$emit('clickedClear');
     },
-    catchCategoryClicked(cardTitle) {
+    catchCategoryClicked(cardType) {
+      if (cardType.includes('login')) {
+        this.catchLoginclick();
+        return;
+      }
+
+      if (cardType.includes('mode')) {
+        const splits = cardType.split('_');
+        const modeName = splits[1];
+        this.catchModeClicked(modeName);
+        return;
+      }
+
+      const tagsEncoded = this.mixinMethods_encodeTagForUrl([cardType.toUpperCase()]);
+      this.mixinMethods_additiveChangeRoute(BROWSE_PATH, '', tagsEncoded);
+    },
+    catchModeClicked(mode) {
       this.$router.push({
         path: BROWSE_PATH,
-        query: { search: cardTitle },
+        query: { mode },
       });
+    },
+    catchLoginclick() {
+      this.redirectToDashboard();
+    },
+    redirectToDashboard() {
+      window.open('https://www.envidat.ch/user/reset', '_blank');
     },
     metaDataClicked(datasetname) {
       this.$store.commit(`${METADATA_NAMESPACE}/${SET_DETAIL_PAGE_BACK_URL}`, this.$route);
