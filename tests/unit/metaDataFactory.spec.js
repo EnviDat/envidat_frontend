@@ -3,10 +3,16 @@ import {
   createBody,
   createFunding,
   createCitation,
+  createLicense,
+  createLocation,
+  createPublications,
+  createDetails,
+  createResource,
+  enhanceTags,
 } from '@/factories/metaDataFactory';
 
 import packagelist from '@/testdata/packagelist';
-import { createResource } from '../../src/factories/metaDataFactory';
+import categoryCards from '@/store/modules/metadata/categoryCards';
 
 // const metadatasContent = {};
 // packagelist.result.forEach((entry) => {
@@ -132,5 +138,110 @@ describe('metaDataFactory - createResource', () => {
     expect(res.position).toBeDefined();
     expect(res.revisionId).toBeDefined();
     expect(res.isProtected).toBeDefined();
+  });
+});
+
+describe('metaDataFactory - createLicense', () => {
+  it('empty', () => {
+    const license = createLicense(undefined);
+    expect(license).toBeNull();
+  });
+
+  it('with dataset', () => {
+    const dataset = packagelist.result[6];
+
+    const license = createLicense(dataset);
+
+    expect(license).toBeDefined();
+    expect(license.id).toBeDefined();
+    expect(license.title).toBeDefined();
+    expect(license.url).toBeDefined();
+  });
+});
+
+describe('metaDataFactory - createLocation', () => {
+  it('empty', () => {
+    const loc = createLocation(undefined);
+    expect(loc).toBeNull();
+  });
+
+  it('with dataset', () => {
+    const dataset = packagelist.result[6];
+
+    const loc = createLocation(dataset);
+
+    expect(loc).toBeDefined();
+    expect(loc.id).toBeDefined();
+    expect(loc.name).toBeDefined();
+    expect(loc.title).toBeDefined();
+
+    expect(loc.isPolygon).toBeDefined();
+    expect(loc.isPoint).toBeDefined();
+    expect(loc.isMultiPoint).toBeDefined();
+
+    expect(loc.pointArray).toBeDefined();    
+    expect(loc.pointArray.length).toBeGreaterThan(0);
+  });
+});
+
+describe('metaDataFactory - createPublications', () => {
+  it('empty', () => {
+    const pub = createPublications(undefined);
+    expect(pub).toBeNull();
+  });
+
+  it('with dataset', () => {
+    const dataset = packagelist.result[6];
+
+    const pub = createPublications(dataset);
+
+    expect(pub).toBeDefined();
+    expect(pub.text).toBeDefined();
+    expect(pub.maxTextLength).toBeDefined();
+    expect(pub.emptyText).toBeDefined();
+    expect(pub.emptyTextColor).toBeDefined();
+  });
+});
+
+describe('metaDataFactory - createDetails', () => {
+  it('empty', () => {
+    const details = createDetails(undefined);
+    expect(details).toBeNull();
+  });
+
+  it('with dataset', () => {
+    const dataset = packagelist.result[6];
+
+    const details = createDetails(dataset);
+
+    expect(details).toBeDefined();
+
+    for (let i = 0; i < details.length; i++) {
+      const detail = details[i];
+      
+      expect(detail.label).toBeDefined();
+      expect(detail.text).toBeDefined();
+    }
+  });
+});
+
+describe('metaDataFactory - enhanceTags', () => {
+  it('empty', () => {
+    const enhancedDataset = enhanceTags();
+    expect(enhancedDataset).toBeNull();
+  });
+
+  it('with dataset', () => {
+    const dataset = packagelist.result[6];
+
+    const enhancedDataset = enhanceTags(dataset, categoryCards);
+
+    expect(enhancedDataset).toBeDefined();
+
+    for (let j = 0; j < enhancedDataset.tags.length; j++) {
+      const tag = enhancedDataset.tags[j];
+      expect(tag).toBeDefined();
+      expect(tag).not.toBe('');
+    }
   });
 });
