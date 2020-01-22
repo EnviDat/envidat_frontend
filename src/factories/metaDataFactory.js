@@ -145,13 +145,11 @@ export function createLicense(dataset) {
     return null;
   }
 
-  const license = {};
-
-  license.id = dataset.license_id;
-  license.title = dataset.license_title;
-  license.url = dataset.license_url;
-
-  return license;
+  return {
+    id: dataset.license_id,
+    title: dataset.license_title,
+    url: dataset.license_url,
+  };
 }
 
 export function createHeader(dataset, smallScreen) {
@@ -431,10 +429,11 @@ export function createLocation(dataset) {
     return dataset.location;
   }
 
-  const location = {};
-  location.id = dataset.id;
-  location.name = dataset.name;
-  location.title = dataset.title;
+  const location = {
+    id: dataset.id,
+    name: dataset.name,
+    title: dataset.title,
+  };
 
   if (dataset.spatial) {
     location.geoJSON = dataset.spatial;
@@ -504,7 +503,7 @@ export function getCategoryColor(categoryCards, categoryName) {
 
 
 export function getTagColor(categoryCards, tagName) {
-  if (!tagName) {
+  if (!categoryCards || !tagName) {
     return '';
   }
 
@@ -519,6 +518,9 @@ export function getTagColor(categoryCards, tagName) {
 }
 
 export function enhanceTags(dataset, categoryCards) {
+  if (!dataset || !categoryCards) {
+    return null;
+  }
 
   if (dataset && dataset.tags && dataset.tags instanceof Array) {
     for (let j = 0; j < dataset.tags.length; j++) {
@@ -537,6 +539,10 @@ export function enhanceTags(dataset, categoryCards) {
  * @return {Object} metadata entry enhanced with a title image based on its tags
  */
 export function enhanceTitleImg(metadata, cardBGImages, categoryCards) {
+  if (!metadata || !categorycardBGImagesCards) {
+    return null;
+  }
+
   /* eslint-disable no-param-reassign */
   const category = guessTagCategory(metadata.tags);
 
@@ -561,6 +567,10 @@ export function enhanceTitleImg(metadata, cardBGImages, categoryCards) {
  * @return {Object} metadataEntry enhanced with a title image based on the entrys tags
  */
 export function enhanceMetadataEntry(metadataEntry, cardBGImages, categoryCards) {
+  if (!metadataEntry || !cardBGImages || !categoryCards) {
+    return null;
+  }
+
   if (metadataEntry && !metadataEntry.titleImg) {
     enhanceTitleImg(metadataEntry, cardBGImages, categoryCards);
   }
