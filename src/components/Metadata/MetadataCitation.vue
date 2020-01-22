@@ -6,7 +6,13 @@
 
     <v-card-text v-if="citationText"
                   style="font-style: italic; " >
-      {{ citationText }}
+
+      <m-markdown-preview :markdown="citationText"
+                          :options="{ html: true,
+                                      xhtmlOut: true,
+                                      linkify: true,
+                                      breaks: true }" />
+
     </v-card-text>
 
     <v-card-actions v-if="!showPlaceholder && citationText">
@@ -70,10 +76,12 @@
  * file 'LICENSE.txt', which is part of this source code package.
 */
 
+import MMarkdownPreview from 'm-markdown-preview';
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 
 export default {
   components: {
+    MMarkdownPreview,
     BaseRectangleButton,
   },
   props: {
