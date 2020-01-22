@@ -32,7 +32,7 @@ export default {
 
     const details = 'An error occured while loading the guidelines!';
     const errObj = getSpecificApiError(details, reason);
-    state.guidelinesMarkdown = details + ': ' + reason;
+    state.guidelinesMarkdown = `${details}: ${reason}`;
 
     if (process.env.NODE_ENV === 'development') {
       state.guidelinesMarkdown += ' \nThis is normal when developing locally on localhost:8080';
