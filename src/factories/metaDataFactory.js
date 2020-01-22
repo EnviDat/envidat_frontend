@@ -168,7 +168,7 @@ export default {
     }
 
     if (dataset.doi) {
-      text += ` doi: ${dataset.doi}. `;
+      text += ` doi: <a href="https://www.doi.org/${dataset.doi}" target="_blank">${dataset.doi}</a>. `;
     }
 
     return {
