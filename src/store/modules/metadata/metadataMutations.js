@@ -44,7 +44,11 @@ import {
 
 import { ADD_USER_NOTIFICATION } from '@/store/mainMutationsConsts';
 
-import metaDataFactory from '@/factories/metaDataFactory';
+import {
+  enhanceMetadataEntry,
+  enhanceTags,
+  createLocation,
+} from '@/factories/metaDataFactory';
 import { solrResultToCKANJSON } from '@/factories/apiFactory';
 
 
@@ -58,10 +62,10 @@ function enhanceMetadatas(store, datasets) {
 
   for (let i = 0; i < datasets.length; i++) {
     let dataset = datasets[i];
-    dataset = metaDataFactory.enhanceMetadataEntry(dataset, cardBGImages, categoryCards);
-    dataset = metaDataFactory.enhanceTags(dataset, categoryCards);
+    dataset = enhanceMetadataEntry(dataset, cardBGImages, categoryCards);
+    dataset = enhanceTags(dataset, categoryCards);
 
-    dataset.location = metaDataFactory.createLocation(dataset);
+    dataset.location = createLocation(dataset);
 
     enhancedContent[dataset.id] = dataset;
   }

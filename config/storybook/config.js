@@ -5,19 +5,23 @@ import Vuetify, { VApp, VContainer, VLayout, VFlex } from 'vuetify/lib';
 
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
-import { createTag } from '@/factories/metadataFilterMethods';
+// import { createTag } from '@/factories/metadataFilterMethods';
 import globalMethods from '@/factories/globalMethods';
 import metaDataFactory from '@/factories/metaDataFactory';
 
-const cardImages = getCardImages(globalMethods);
-import metadataCards from '@/stories/js/metadata';
+const cardImages = getCardImages();
+import {
+  convertTags,
+  enhanceMetadatas,
+} from '@/stories/js/metadata';
+
 import categoryCards from '@/store/modules/metadata/categoryCards';
 
 metadataCards.forEach(element => {
-  element.tags = metaDataFactory.convertTags(element.tags, true);
+  element.tags = convertTags(element.tags, true);
 });
 
-metaDataFactory.enhanceMetadatas(metadataCards, cardImages, categoryCards);
+enhanceMetadatas(metadataCards, cardImages, categoryCards);
 
 import { configureViewport, INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 
@@ -92,7 +96,7 @@ addDecorator(() => ({
         </v-flex>
       </v-layout>
     </v-container>
-    </v-app>`
+    </v-app>`,
 }));
 
 const req = require.context('@/stories', true, /\.stories.js$/);
@@ -127,7 +131,7 @@ configure(loadStories, module);
 // configure(loadStories, module);
 
 
-function getCardImages(globalMethods) {
+function getCardImages() {
   let cardImages = {};
 
   // alert(

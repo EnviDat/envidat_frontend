@@ -227,7 +227,7 @@ import TagChipPlaceholder from '@/components/Cards/TagChipPlaceholder';
 import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
-import metaDataFactory from '@/factories/metaDataFactory';
+import { getAuthorName } from '@/factories/metaDataFactory';
 
 export default {
   components: {
@@ -325,7 +325,7 @@ export default {
       const iconflip = this.dark ? `${icon}_w` : icon;
       return iconflip;
     },
-    authorName: metaDataFactory.getAuthorName,
+    authorName: getAuthorName,
   },
 };
 </script>
