@@ -35,6 +35,7 @@ import {
   SET_ABOUT_PAGE_BACK_URL,
   SET_VIRTUAL_LIST_INDEX,
   METADATA_NAMESPACE,
+  SWISSFL_MODE,
 } from '@/store/metadataMutationsConsts';
 
 import {
@@ -51,6 +52,8 @@ import {
 } from '@/factories/metaDataFactory';
 import { solrResultToCKANJSON } from '@/factories/apiFactory';
 
+import { enhanceMetadataFromExtras } from '@/factories/modeFactory';
+
 
 function enhanceMetadatas(store, datasets) {
   if (!(datasets instanceof Array)) {
@@ -63,6 +66,8 @@ function enhanceMetadatas(store, datasets) {
   for (let i = 0; i < datasets.length; i++) {
     let dataset = datasets[i];
     dataset = enhanceMetadataEntry(dataset, cardBGImages, categoryCards);
+    dataset = enhanceMetadataFromExtras(SWISSFL_MODE, dataset);
+
     dataset = enhanceTags(dataset, categoryCards);
 
     dataset.location = createLocation(dataset);
