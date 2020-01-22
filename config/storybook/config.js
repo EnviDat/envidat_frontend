@@ -1,29 +1,31 @@
 import Vue from 'vue';
 import { configure, addDecorator, addParameters } from '@storybook/vue';
 import '@/plugins/vuetify';
-import Vuetify, { VApp, VContainer, VLayout, VFlex } from 'vuetify/lib';
+import {
+  VApp, VContainer, VLayout, VFlex,
+} from 'vuetify/lib';
+import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 
-import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import 'material-design-icons-iconfont/dist/material-design-icons.css';
 
 // import { createTag } from '@/factories/metadataFilterMethods';
 import globalMethods from '@/factories/globalMethods';
-import metaDataFactory from '@/factories/metaDataFactory';
-
-const cardImages = getCardImages();
 import {
   convertTags,
   enhanceMetadatas,
-} from '@/stories/js/metadata';
+} from '@/factories/metaDataFactory';
+import metadataCards from '@/stories/js/metadata';
 
 import categoryCards from '@/store/modules/metadata/categoryCards';
 
-metadataCards.forEach(element => {
+const cardImages = getCardImages();
+
+metadataCards.forEach((element) => {
   element.tags = convertTags(element.tags, true);
 });
 
 enhanceMetadatas(metadataCards, cardImages, categoryCards);
 
-import { configureViewport, INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 
 // const vuetifyViewports = {
 //   VuetifyLg: {
@@ -70,11 +72,11 @@ import { configureViewport, INITIAL_VIEWPORTS } from '@storybook/addon-viewport'
 
 // configureViewport({
 addParameters({
-  viewport : {
+  viewport: {
     // defaultViewport: 'VuetifyMd',
     viewports: {
       // ...vuetifyViewports,
-      ...INITIAL_VIEWPORTS
+      ...INITIAL_VIEWPORTS,
     },
   },
 });
@@ -132,7 +134,7 @@ configure(loadStories, module);
 
 
 function getCardImages() {
-  let cardImages = {};
+  const cardImages = {};
 
   // alert(
   //   'globalMethods ' +
