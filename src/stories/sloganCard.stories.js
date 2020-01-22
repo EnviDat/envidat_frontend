@@ -15,7 +15,7 @@ storiesOf('3 Cards | Slogan Cards', module)
     template: `
     <v-container grid-list-lg fluid pa-0>
     <v-layout row wrap>
-      <v-flex xs3>
+      <v-flex xs12 sm6 md4 lg3>
         <slogan-card
             @click="onClick"
             :slogan="'Random Slogan'"

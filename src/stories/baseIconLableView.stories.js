@@ -127,6 +127,13 @@ storiesOf('1 Lables | IconLabel Collection', module).add('different labels', () 
           />
       </v-flex>
 
+      <v-flex xs4>
+        <base-icon-label-view
+          :icon="fileIcon"
+          iconTooltip="Url test with wsl link"
+          url="https://www.wsl.ch" />
+      </v-flex>
+
     </v-layout>
           `,
   // methods,
