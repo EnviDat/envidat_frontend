@@ -284,6 +284,72 @@ export function createCitation(dataset) {
   };
 }
 
+export function createResource(dataset) {
+  if (!dataset) {
+    return null;
+  }
+
+  let isProtected = false;
+  let restrictedUsers;
+  let restrictedObj = false;
+
+  if (dataset.restricted
+    && typeof dataset.restricted === 'string'
+    && dataset.restricted.length > 0) {
+
+    try {
+      restrictedObj = JSON.parse(dataset.restricted);
+      isProtected = restrictedObj.level !== 'public';
+      restrictedUsers = restrictedObj.allowed_users !== '';
+      // "{"allowed_users": "", "level": "public", "shared_secret": ""}"
+    } catch (err) {
+      isProtected = !dataset.restricted.includes('public');
+    }
+  }
+
+  let resURL = dataset.url;
+
+  if (isProtected || (typeof restrictedUsers === 'boolean' && restrictedUsers === true)) {
+    const splits = dataset.url.split('resource');
+    if (splits && splits.length > 0) {
+      resURL = splits[0];
+    } else {
+      resURL = '';
+    }
+  }
+
+  let format = dataset.format ? dataset.format : '';
+  format = format.replace('.', '').toLowerCase();
+
+  const created = formateDate(dataset.created);
+  const modified = formateDate(dataset.last_modified);
+
+  return {
+    // "hash": "",
+    description: dataset.description,
+    // "cache_last_updated": null,
+    metadataId: dataset.package_id,
+    // "mimetype_inner": null,
+    // url_type: "upload",
+    id: dataset.id,
+    size: dataset.size ? dataset.size : '',
+    mimetype: dataset.mimetype ? dataset.mimetype : '',
+    cacheUrl: dataset.cache_url ? dataset.cache_url : '',
+    doi: dataset.doi,
+    name: dataset.name,
+    url: resURL,
+    restricted: dataset.restricted ? dataset.restricted : '',
+    format,
+    state: dataset.state ? dataset.state : '',
+    created,
+    lastModified: modified,
+    position: dataset.position ? dataset.position : '',
+    revisionId: dataset.revision_id ? dataset.revision_id : '',
+    isProtected,
+  };
+
+}
+
 export function createResources(dataset) {
   if (!dataset) {
     return null;
@@ -304,62 +370,9 @@ export function createResources(dataset) {
 
   if (dataset.resources) {
     dataset.resources.forEach((element) => {
-      let isProtected = false;
-      let restrictedUsers;
-      let restrictedObj = false;
 
-      if (typeof element.restricted === 'string' && element.restricted.length > 0) {
-        try {
-          restrictedObj = JSON.parse(element.restricted);
-          isProtected = restrictedObj.level !== 'public';
-          restrictedUsers = restrictedObj.allowed_users !== '';
-          // "{"allowed_users": "", "level": "public", "shared_secret": ""}"
-        } catch (err) {
-          isProtected = !element.restricted.includes('public');
-        }
-      }
-
-      let resURL = element.url;
-
-      if (isProtected || (typeof restrictedUsers === 'boolean' && restrictedUsers === true)) {
-        const splits = element.url.split('resource');
-        if (splits && splits.length > 0) {
-          resURL = splits[0];
-        } else {
-          resURL = '';
-        }
-      }
-
-      let { format } = element;
-      format = format.replace('.', '').toLowerCase();
-
-      const created = formateDate(element.created);
-      const modified = formateDate(element.last_modified);
-
-      const res = {
-        // "hash": "",
-        description: element.description,
-        // "cache_last_updated": null,
-        metadataId: element.package_id,
-        // "mimetype_inner": null,
-        // url_type: "upload",
-        id: element.id,
-        size: element.size,
-        mimetype: element.mimetype,
-        cacheUrl: element.cache_url,
-        doi: element.doi,
-        name: element.name,
-        url: resURL,
-        restricted: element.restricted,
-        format,
-        state: element.state,
-        created,
-        lastModified: modified,
-        position: element.position,
-        revisionId: element.revision_id,
-        isProtected,
-        metadataContact: contactEmail,
-      };
+      const res = createResource(element);
+      res.metadataContact = contactEmail;
 
       resources.push(res);
     });
