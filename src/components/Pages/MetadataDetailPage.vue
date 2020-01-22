@@ -91,7 +91,16 @@ import MetadataCitation from '@/components/Metadata/MetadataCitation';
 import MetadataPublications from '@/components/Metadata/MetadataPublications';
 import MetadataFunding from '@/components/Metadata/MetadataFunding';
 
-import metaDataFactory from '@/factories/metaDataFactory';
+import {
+  createHeader,
+  createBody,
+  createCitation,
+  createLocation,
+  createResources,
+  createDetails,
+  createFunding,
+  createPublications,
+} from '@/factories/metaDataFactory';
 import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
 
 // Might want to check https://css-tricks.com/use-cases-fixed-backgrounds-css/
@@ -226,13 +235,13 @@ export default {
 
       if (currentContent && currentContent.title !== undefined) {
 
-        this.header = metaDataFactory.createHeader(currentContent, this.$vuetify.breakpoint.smAndDown);
+        this.header = createHeader(currentContent, this.$vuetify.breakpoint.smAndDown);
 
-        this.body = metaDataFactory.createBody(currentContent);
+        this.body = createBody(currentContent);
 
-        this.citation = metaDataFactory.createCitation(currentContent);
+        this.citation = createCitation(currentContent);
 
-        this.resources = metaDataFactory.createResources(currentContent);
+        this.resources = createResources(currentContent);
         this.resources.doiIcon = this.doiIcon;
         this.resources.downloadIcon = this.downloadIcon;
         this.resources.linkIcon = this.linkIcon;
@@ -240,12 +249,12 @@ export default {
         this.resources.dateCreatedIcon = this.dateCreatedIcon;
         this.resources.lastModifiedIcon = this.lastModifiedIcon;
 
-        this.location = metaDataFactory.createLocation(currentContent);
+        this.location = createLocation(currentContent);
 
-        this.details = metaDataFactory.createDetails(currentContent);
+        this.details = createDetails(currentContent);
 
-        this.publications = metaDataFactory.createPublications(currentContent);
-        this.funding = metaDataFactory.createFunding(currentContent);
+        this.publications = createPublications(currentContent);
+        this.funding = createFunding(currentContent);
       }
 
       this.$set(components.MetadataHeader, 'genericProps', this.header);
