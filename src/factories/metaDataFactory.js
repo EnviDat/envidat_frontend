@@ -23,8 +23,136 @@ import {
   METEO,
 } from '@/store/categoriesConsts';
 
-import { SWISSFL_MODE } from '@/store/metadataMutationsConsts';
-import { enhanceMetadataFromExtras } from '@/factories/modeFactory';
+
+/**
+ * Create a psyeudo random integer based on a given seed using the 'seedrandom' lib.
+ *
+ * @param {Number} min
+ * @param {Number} max
+ * @param {String} seed
+ */
+export function randomInt(min, max, seed = 'For the Horde!') {
+  const rng = seedrandom(seed);
+  const r = Math.floor(rng() * 10);
+
+  if (r > max) {
+    return max;
+  }
+  if (r < min) {
+    return min;
+  }
+
+  return r;
+}
+
+/**
+ * @param {Array} tags
+ *
+ * @return {String} category based on tags array
+ */
+export function guessTagCategory(tags) {
+  let category = LAND;
+
+  if (tags) {
+    for (let i = 0; i < tags.length; i++) {
+      const element = tags[i];
+
+      if (element.name) {
+        if (element.name.includes('HAZARD') || element.name.includes('ACCIDENTS')) {
+          category = HAZARD; break;
+        }
+        if (element.name.includes('DIVERSITY')) {
+          category = DIVERSITY; break;
+        }
+        if (element.name.includes('FOREST')) {
+          category = FOREST; break;
+        }
+        if (element.name.includes('SNOW') || element.name.includes('AVALANCHE')) {
+          category = SNOW; break;
+        }
+        if (element.name.includes('METEO') || element.name.includes('CLIMATE')) {
+          category = METEO; break;
+        }
+        if (element.name.includes('LAND') || element.name.includes('LANDSCAPE')) {
+          category = LAND; break;
+        }
+      }
+    }
+  }
+
+  return category;
+}
+
+/**
+ * @param {String} date expecting a format like 2017-08-15T15:25:45.175790
+ * @return {String} Returns a date string containing the date and hours:minutes:seconds
+ */
+export function formateDate(date) {
+  // expecting a format like 2017-08-15T15:25:45.175790
+  let formatedDate = '';
+
+  if (date) {
+    const split = date.split('T');
+    if (split.length > 0) {
+      const dateOnly = split[0];
+      const timeOnly = split[1];
+      const timeSplit = timeOnly.split('.');
+      const timeToMinutes = timeSplit[0];
+
+      formatedDate = `${dateOnly} ${timeToMinutes}`;
+    } else {
+      // fallback: just return the input
+      formatedDate = date;
+    }
+  }
+
+  return formatedDate;
+}
+
+export function getAuthorName(author) {
+  return `${author.given_name ? author.given_name : ''} ${author.name ? author.name : ''}`.trim();
+}
+
+export function getAuthorsString(dataset) {
+  if (!dataset) {
+    return null;
+  }
+
+  let authors = '';
+
+  if (dataset.author !== undefined) {
+    let { author } = dataset;
+
+    if (typeof dataset.author === 'string') {
+      author = JSON.parse(dataset.author);
+    }
+
+    author.forEach((element) => {
+      authors += ` ${getAuthorName(element)};`;
+    });
+
+    // cut of the last ';'
+    if (authors.length > 1) {
+      authors = authors.substring(0, authors.length - 1);
+    }
+  }
+
+  return authors.trim();
+}
+
+export function createLicense(dataset) {
+  if (!dataset) {
+    return null;
+  }
+
+  const license = {};
+
+  license.id = dataset.license_id;
+  license.title = dataset.license_title;
+  license.url = dataset.license_url;
+
+  return license;
+}
 
 export function createHeader(dataset, smallScreen) {
   if (!dataset) {
@@ -42,7 +170,7 @@ export function createHeader(dataset, smallScreen) {
     contactEmail = maintainer.email ? maintainer.email : '';
   }
 
-  const license = this.createLicense(dataset);
+  const license = createLicense(dataset);
 
   let authors = null;
 
@@ -53,7 +181,7 @@ export function createHeader(dataset, smallScreen) {
   return {
     metadataTitle: dataset.title,
     doi: dataset.doi,
-    contactName: maintainer ? this.getAuthorName(maintainer) : '',
+    contactName: maintainer ? getAuthorName(maintainer) : '',
     contactEmail,
     license: license.title,
     tags: dataset.tags,
@@ -99,11 +227,11 @@ export function createFunding(dataset) {
 
   if (typeof dataset.funding === 'string') {
     try {
-      const funding = JSON.parse(dataset.funding);;
+      const funding = JSON.parse(dataset.funding);
       return funding;
     } catch (e) {
       console.log("Error JSON Parse of Funding: " + e);
-    }      
+    }
   }
 
   return dataset.funding;
@@ -116,43 +244,12 @@ export function createFunding(dataset) {
   // };
 }
 
-export function getAuthorName(author) {
-  return `${author.given_name ? author.given_name : ''} ${author.name ? author.name : ''}`.trim();
-}
-
-export function getAuthorsString(dataset) {
-  if (!dataset) {
-    return null;
-  }
-
-  let authors = '';
-
-  if (dataset.author !== undefined) {
-    let { author } = dataset;
-
-    if (typeof dataset.author === 'string') {
-      author = JSON.parse(dataset.author);
-    }
-
-    author.forEach((element) => {
-      authors += ` ${this.getAuthorName(element)};`;
-    });
-
-    // cut of the last ';'
-    if (authors.length > 1) {
-      authors = authors.substring(0, authors.length - 1);
-    }
-  }
-
-  return authors.trim();
-}
-
 export function createCitation(dataset) {
   if (!dataset) {
     return null;
   }
 
-  const authors = this.getAuthorsString(dataset);
+  const authors = getAuthorsString(dataset);
 
   let { publication } = dataset;
 
@@ -236,8 +333,8 @@ export function createResources(dataset) {
       let { format } = element;
       format = format.replace('.', '').toLowerCase();
 
-      const created = this.formatDate(element.created);
-      const modified = this.formatDate(element.last_modified);
+      const created = formateDate(element.created);
+      const modified = formateDate(element.last_modified);
 
       const res = {
         // "hash": "",
@@ -285,21 +382,21 @@ export function createDetails(dataset) {
 
   details.push({ label: 'Title', text: dataset.title });
 
-  const authors = this.getAuthorsString(dataset);
+  const authors = getAuthorsString(dataset);
   details.push({ label: 'Authors', text: authors });
 
   // TODO DataCRedit
 
   details.push({ label: 'DOI', text: dataset.doi, url: `https://doi.org/${dataset.doi}` });
 
-  
-  const created = this.formatDate(dataset.metadata_created);
+
+  const created = formateDate(dataset.metadata_created);
   details.push({ label: 'Created', text: created });
 
-  const modified = this.formatDate(dataset.metadata_modified);
+  const modified = formateDate(dataset.metadata_modified);
   details.push({ label: 'Last Modified', text: modified });
 
-  const license = this.createLicense(dataset);
+  const license = createLicense(dataset);
   details.push({ label: 'License', text: license.title, url: license.url });
 
   details.push({ label: 'MetadataId', text: dataset.id });
@@ -311,19 +408,6 @@ export function createDetails(dataset) {
   return details;
 }
 
-export function createLicense(dataset) {
-  if (!dataset) {
-    return null;
-  }
-
-  const license = {};
-
-  license.id = dataset.license_id;
-  license.title = dataset.license_title;
-  license.url = dataset.license_url;
-
-  return license;
-}
 
 export function createLocation(dataset) {
   if (!dataset) {
@@ -394,70 +478,6 @@ export function convertTags(tagsStringArray, tagsEnabled) {
   return tagObjs;
 }
 
-/**
- * @param {Object} metadataEntry
- * @param {Array} cardBGImages
- *
- * @return {Object} metadataEntry enhanced with a title image based on the entrys tags
- */
-export function enhanceMetadataEntry(metadataEntry, cardBGImages, categoryCards) {
-  if (metadataEntry && !metadataEntry.titleImg) {
-    this.enhanceTitleImg(metadataEntry, cardBGImages, categoryCards);
-  }
-
-  enhanceMetadataFromExtras(SWISSFL_MODE, metadataEntry);
-
-  return metadataEntry;
-}
-
-/**
- * @param {Array} metadatas
- * @param {Array} cardBGImages
- *
- * @return {Array} metadatas enhanced with a title image based on the metadatas tags
- */
-export function enhanceMetadatas(metadatas, cardBGImages, categoryCards) {
-  if (metadatas === undefined || metadatas.length <= 0) {
-    return undefined;
-  }
-
-  if (Array.isArray(metadatas)) {
-    for (let i = 0; i < metadatas.length; i++) {
-      const el = metadatas[i];
-
-      if (!el.titleImg) {
-        metadatas[i] = this.enhanceTitleImg(el, cardBGImages, categoryCards);
-      }
-    }
-  }
-
-  return metadatas;
-}
-
-/**
- * @param {Object} metadata
- * @param {Array} cardBGImages
- *
- * @return {Object} metadata entry enhanced with a title image based on its tags
- */
-export function enhanceTitleImg(metadata, cardBGImages, categoryCards) {
-  /* eslint-disable no-param-reassign */
-  const category = this.guessTagCategory(metadata.tags);
-
-  if (cardBGImages) {
-    const categoryImgs = cardBGImages[category];
-    const max = Object.keys(categoryImgs).length - 1;
-    const randomIndex = this.randomInt(0, max, metadata.title);
-    const cardImg = randomIndex >= 0 ? Object.values(categoryImgs)[randomIndex] : 0;
-
-    metadata.titleImg = cardImg;
-  }
-
-  metadata.categoryColor = this.getCategoryColor(categoryCards, category);
-
-  return metadata;
-}
-
 export function getCategoryColor(categoryCards, categoryName) {
   for (let i = 0; i < categoryCards.length; i++) {
     const cat = categoryCards[i];
@@ -469,63 +489,7 @@ export function getCategoryColor(categoryCards, categoryName) {
   return null;
 }
 
-/**
- * @param {Array} tags
- *
- * @return {String} category based on tags array
- */
-export function guessTagCategory(tags) {
-  let category = LAND;
 
-  if (tags) {
-    for (let i = 0; i < tags.length; i++) {
-      const element = tags[i];
-
-      if (element.name) {
-        if (element.name.includes('HAZARD') || element.name.includes('ACCIDENTS')) {
-          category = HAZARD; break;
-        }
-        if (element.name.includes('DIVERSITY')) {
-          category = DIVERSITY; break;
-        }
-        if (element.name.includes('FOREST')) {
-          category = FOREST; break;
-        }
-        if (element.name.includes('SNOW') || element.name.includes('AVALANCHE')) {
-          category = SNOW; break;
-        }
-        if (element.name.includes('METEO') || element.name.includes('CLIMATE')) {
-          category = METEO; break;
-        }
-        if (element.name.includes('LAND') || element.name.includes('LANDSCAPE')) {
-          category = LAND; break;
-        }
-      }
-    }
-  }
-
-  return category;
-}
-/**
- * Create a psyeudo random integer based on a given seed using the 'seedrandom' lib.
- *
- * @param {Number} min
- * @param {Number} max
- * @param {String} seed
- */
-export function randomInt(min, max, seed = 'For the Horde!') {
-  const rng = seedrandom(seed);
-  const r = Math.floor(rng() * 10);
-
-  if (r > max) {
-    return max;
-  }
-  if (r < min) {
-    return min;
-  }
-
-  return r;
-}
 export function getTagColor(categoryCards, tagName) {
   if (!tagName) {
     return '';
@@ -546,7 +510,7 @@ export function enhanceTags(dataset, categoryCards) {
   if (dataset && dataset.tags && dataset.tags instanceof Array) {
     for (let j = 0; j < dataset.tags.length; j++) {
       const tag = dataset.tags[j];
-      tag.color = this.getTagColor(categoryCards, tag.name);
+      tag.color = getTagColor(categoryCards, tag.name);
     }
   }
 
@@ -554,27 +518,63 @@ export function enhanceTags(dataset, categoryCards) {
 }
 
 /**
- * @param {String} date expecting a format like 2017-08-15T15:25:45.175790
- * @return {String} Returns a date string containing the date and hours:minutes:seconds
+ * @param {Object} metadata
+ * @param {Array} cardBGImages
+ *
+ * @return {Object} metadata entry enhanced with a title image based on its tags
  */
-export function formatDate(date) {
-  // expecting a format like 2017-08-15T15:25:45.175790
-  let formatedDate = '';
+export function enhanceTitleImg(metadata, cardBGImages, categoryCards) {
+  /* eslint-disable no-param-reassign */
+  const category = guessTagCategory(metadata.tags);
 
-  if (date) {
-    const split = date.split('T');
-    if (split.length > 0) {
-      const dateOnly = split[0];
-      const timeOnly = split[1];
-      const timeSplit = timeOnly.split('.');
-      const timeToMinutes = timeSplit[0];
+  if (cardBGImages) {
+    const categoryImgs = cardBGImages[category];
+    const max = Object.keys(categoryImgs).length - 1;
+    const randomIndex = randomInt(0, max, metadata.title);
+    const cardImg = randomIndex >= 0 ? Object.values(categoryImgs)[randomIndex] : 0;
 
-      formatedDate = `${dateOnly} ${timeToMinutes}`;
-    } else {
-      // fallback: just return the input
-      formatedDate = date;
+    metadata.titleImg = cardImg;
+  }
+
+  metadata.categoryColor = getCategoryColor(categoryCards, category);
+
+  return metadata;
+}
+
+/**
+ * @param {Object} metadataEntry
+ * @param {Array} cardBGImages
+ *
+ * @return {Object} metadataEntry enhanced with a title image based on the entrys tags
+ */
+export function enhanceMetadataEntry(metadataEntry, cardBGImages, categoryCards) {
+  if (metadataEntry && !metadataEntry.titleImg) {
+    enhanceTitleImg(metadataEntry, cardBGImages, categoryCards);
+  }
+
+  return metadataEntry;
+}
+
+/**
+ * @param {Array} metadatas
+ * @param {Array} cardBGImages
+ *
+ * @return {Array} metadatas enhanced with a title image based on the metadatas tags
+ */
+export function enhanceMetadatas(metadatas, cardBGImages, categoryCards) {
+  if (metadatas === undefined || metadatas.length <= 0) {
+    return undefined;
+  }
+
+  if (Array.isArray(metadatas)) {
+    for (let i = 0; i < metadatas.length; i++) {
+      const el = metadatas[i];
+
+      if (!el.titleImg) {
+        metadatas[i] = enhanceTitleImg(el, cardBGImages, categoryCards);
+      }
     }
   }
 
-  return formatedDate;
+  return metadatas;
 }
