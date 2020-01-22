@@ -228,7 +228,7 @@ export function createFunding(dataset) {
       const funding = JSON.parse(dataset.funding);
       return funding;
     } catch (e) {
-      console.log("Error JSON Parse of Funding: " + e);
+      console.log('Error JSON Parse of Funding: ' + e);
     }
   }
 
@@ -539,7 +539,7 @@ export function enhanceTags(dataset, categoryCards) {
  * @return {Object} metadata entry enhanced with a title image based on its tags
  */
 export function enhanceTitleImg(metadata, cardBGImages, categoryCards) {
-  if (!metadata || !categorycardBGImagesCards) {
+  if (!metadata || !categoryCards) {
     return null;
   }
 
