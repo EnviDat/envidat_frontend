@@ -17,6 +17,7 @@ If it doesn't help they have to be install manually (was once the case for a sto
 # Usage
 If you'd like to use check the CKAN actions https://docs.ckan.org/en/2.8/api/index.html
 In general you have to change the environment variables in the .env.development / .env.production files
+
 <code>
   VUE_APP_ENVIDAT_PROXY=https://www.envidat.ch
   VUE_APP_SOLR_PROXY=NULL
