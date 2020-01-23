@@ -1,5 +1,6 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ddf970eec3da4b668f90bb03d012872e)](https://www.codacy.com/gh/EnviDat/envidat_frontend?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=EnviDat/envidat_frontend&amp;utm_campaign=Badge_Grade)
 [![DeepScan grade](https://deepscan.io/api/teams/6114/projects/7972/branches/89555/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=6114&pid=7972&bid=89555)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ddf970eec3da4b668f90bb03d012872e)](https://www.codacy.com/gh/EnviDat/envidat_frontend?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=EnviDat/envidat_frontend&amp;utm_campaign=Badge_Grade)
 ![Travis (.com) branch](https://img.shields.io/travis/com/EnviDat/envidat_frontend/develop)
 
 # EnviDat Frontend
