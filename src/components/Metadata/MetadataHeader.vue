@@ -57,7 +57,6 @@
           </div>
         </v-flex>
 
-        <!-- <v-expand-transition @transitionend="expandFinished" @animationend="expandFinished" > -->
           <v-flex v-show="expanded"
                   xs12 >
 
@@ -185,7 +184,6 @@
               </v-layout>
             </v-flex>
           </v-flex>
-        <!-- </v-expand-transition> -->
 
       </v-layout>
 

@@ -99,29 +99,6 @@
                                 :tooltipText="`Metadata with ${resourceAmount} resources`" />
         </v-flex>
       </v-layout>
-      <!-- <v-tooltip v-if="isRestricted"
-                  bottom
-                  :disabled="$vuetify.breakpoint.xsOnly" >
-        <v-icon slot="activator"
-                color="black" >
-          lock
-        </v-icon>
-        <div v-if="userHasAccess"
-              class="iconCentering" >
-          <img class="envidatIcon"
-                :src="unlockedIconString" >
-          <span>The data of this entry is only accessible with permission.</span>
-        </div>
-
-        <div v-if="userHasAccess"
-              class="iconCentering" >
-          <img class="envidatIcon"
-                :src="lockedIconString" >
-          <span>The data of this entry is only accessible with permission.</span>
-        </div>
-      </v-tooltip> -->
-
-
 
     </v-card-actions>
   </v-card>

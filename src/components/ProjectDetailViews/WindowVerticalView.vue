@@ -83,11 +83,6 @@
                     </v-btn>
                   </v-flex>
 
-                  <!-- <m-markdown-preview :markdown="sub.description"
-                                      :options="{ html: true,
-                                                  xhtmlOut: true,
-                                                  linkify: true,
-                                                  breaks: true }" /> -->
                   <v-flex xs12>Metadata</v-flex>
 
                   <v-flex xs12
