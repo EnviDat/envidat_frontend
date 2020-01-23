@@ -11,7 +11,8 @@
 
           <img class="envidatIcon"
                 :class="compactLayout ? 'small' : ''"
-                :src="icon" >
+                :src="icon"
+                :alt="`${iconString} icon`" >
         </div>
 
         <v-flex v-if="icon && !iconTooltip"
@@ -21,7 +22,8 @@
           <div class="iconCentering">
             <img class="envidatIcon"
                   :class="compactLayout ? 'small' : ''"
-                  :src="icon" >
+                  :src="icon"
+                  :alt="`${iconString} icon`" >
           </div>
         </v-flex>
 

@@ -2,49 +2,6 @@
   <expandable-text-layout v-bind="body"
                             :showPlaceholder="showPlaceholder" />
 
-  <!-- <v-card :class="{ ['pt-2']: this.isOnTop }">
-    <v-card-title class="metadata_title title">Description</v-card-title>
-
-    <v-card-text v-if="fullDescription"
-                  ref="description"
-                  style="overflow-x: hidden;"
-                  class="heightAndScroll pb-4" >
-
-      <m-markdown-preview :markdown="fullDescription"
-                          :options="{ html: true,
-                                      xhtmlOut: true,
-                                      linkify: true,
-                                      breaks: true }" />
-    </v-card-text>
-
-    <v-card-text v-if="showPlaceholder && !fullDescription" >
-      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer">
-        <div class="bone bone-type-multiline bone-style-paragraph" />
-      </div>
-    </v-card-text>
-
-    <v-card-text v-if="!showPlaceholder && !fullDescription"
-                  style="color: red;" >
-      {{ emptyText }}
-    </v-card-text>
-
-    <v-card-actions v-if="maxDescriptionLengthReached"
-                    class="ma-0 pa-2"
-                    style="position: absolute; bottom: 5px; right: 0px;" >
-
-      <base-icon-button class="mr-2"
-                        material-icon-name="expand_more"
-                        icon-color="accent"
-                        color="accent"
-                        outlined
-                        :rotateOnClick="true"
-                        :rotateToggle="showFullDescription"
-                        :tooltipText="showFullDescription ? 'Hide full description' : 'Show full description'"
-                        @clicked="showFullDescription = !showFullDescription" />
-
-    </v-card-actions>
-
-  </v-card> -->
 </template>
 
 <script>

@@ -56,22 +56,6 @@
       {{ emptyText }}
     </v-card-text>
 
-    <!-- <v-card-actions v-if="maxTextLengthReached"
-                    class="ma-0 pa-2"
-                    :style="`position: absolute; bottom: 5px; right: ${rightPos()};`" >
-
-      <base-icon-button class="mr-2"
-                        material-icon-name="expand_more"
-                        :iconColor="showFullText ? 'primary' : 'accent'"
-                        :color="showFullText ? 'accent' : 'primary'"
-                        :outlined="showFullText"
-                        :rotateOnClick="true"
-                        :rotateToggle="showFullText"
-                        :tooltipText="showFullText ? 'Collaspe text' : 'Show full text'"
-                        @clicked="readMore" />
-
-    </v-card-actions> -->
-
   </v-card>
 </template>
 
@@ -88,7 +72,6 @@
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
-
 
 export default {
   name: 'MetadataFunding',
@@ -140,6 +123,3 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
