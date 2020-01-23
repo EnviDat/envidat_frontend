@@ -11,7 +11,6 @@
 
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from "@storybook/vue";
-import { action } from "@storybook/addon-actions";
 import './js/vuetify-components';
 
 import ModeView from '@/components/Layouts/ModeView.vue';
@@ -21,7 +20,6 @@ import { SWISSFL_MODE } from '@/store/metadataMutationsConsts';
 storiesOf('1 Lables | Mode View', module).add('SwissForestLab implementation', () => ({
   components: { ModeView },
   template: `
-  <!-- mode-view :mode="SWISSFL_MODE" / -->
   <v-layout row wrap>
 
     <v-flex xs12 style="border: solid 1px;" >

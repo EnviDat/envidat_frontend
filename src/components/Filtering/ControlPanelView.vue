@@ -1,6 +1,6 @@
 <template>
   <v-card :class="flat ? 'elevation-0' : ''">
-    <!-- :height="compactLayout ? $vuetify.breakpoint.sm ? 38 : 32 : 40" -->
+
     <v-card-actions class="ma-0 py-0 px-2"
                     :class="flat ? '' : 'fill-height'" >
 
@@ -16,7 +16,6 @@
                     disabled
                     hide-details />
 
-      <!-- <div class="pl-2">Controls</div> -->
 
       <v-spacer v-if="$vuetify.breakpoint.mdAndUp" />
 

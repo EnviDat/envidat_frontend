@@ -1,32 +1,20 @@
 <template>
-  <!-- <v-tooltip
-    bottom
-    :disabled="$vuetify.breakpoint.xsOnly"
-  > -->
-    <!-- <div slot="activator" class="iconCentering">
-        <img class="envidatIcon"
-            :class="compactLayout ? 'small' : ''"
-            :src="icon" />
-      </div> -->
+  <v-chip
+    slot="activator"
+    class="authorTag"
+    :class="{ 'white--text': highlighted ? true : false,
+              'smallChip': $vuetify.breakpoint.smAndDown ? true : false,
+    }"
+    :style="{'height' : $vuetify.breakpoint.xsOnly ? '15px' : '' }"
+    @click.stop="clicked"
+  >
+    <v-avatar>
+      <v-icon>account_circle</v-icon>
+    </v-avatar>
 
-    <v-chip
-      slot="activator"
-      class="authorTag"
-      :class="{ 'white--text': highlighted ? true : false,
-                'smallChip': $vuetify.breakpoint.smAndDown ? true : false,
-      }"
-      :style="{'height' : $vuetify.breakpoint.xsOnly ? '15px' : '' }"
-      @click.stop="clicked"
-    >
-      <v-avatar>
-        <v-icon>account_circle</v-icon>
-      </v-avatar>
+    {{ name }}
+  </v-chip>
 
-      {{ name }}
-    </v-chip>
-
-    <!-- <span>{{ tooltipText }}</span>
-  </v-tooltip> -->
 </template>
 
 <script>

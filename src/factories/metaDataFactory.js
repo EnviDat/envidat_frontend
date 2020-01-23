@@ -522,7 +522,7 @@ export function enhanceTags(dataset, categoryCards) {
     return null;
   }
 
-  if (dataset && dataset.tags && dataset.tags instanceof Array) {
+  if (dataset.tags && dataset.tags instanceof Array) {
     for (let j = 0; j < dataset.tags.length; j++) {
       const tag = dataset.tags[j];
       tag.color = getTagColor(categoryCards, tag.name);
@@ -571,7 +571,7 @@ export function enhanceMetadataEntry(metadataEntry, cardBGImages, categoryCards)
     return null;
   }
 
-  if (metadataEntry && !metadataEntry.titleImg) {
+  if (!metadataEntry.titleImg) {
     enhanceTitleImg(metadataEntry, cardBGImages, categoryCards);
   }
 

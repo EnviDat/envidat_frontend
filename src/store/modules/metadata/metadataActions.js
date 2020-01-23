@@ -164,7 +164,7 @@ export default {
     commit(UPDATE_TAGS);
 
     try {
-        let allWithExtras = allTags;
+        let allWithExtras = [];
 
         const mergedExtraTags = getTagsMergedWithExtras(mode, allTags);
         if (mergedExtraTags) {

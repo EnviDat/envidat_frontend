@@ -21,6 +21,25 @@ import {
 
 import globalMethods from '@/factories/globalMethods';
 
+function getSwissflLogo() {
+  const swissflImages = require.context('@/assets/modes/swissfl', false, /\.jpg$/);
+  const imgLogo = globalMethods.methods.mixinMethods_importImages(swissflImages, 'logo');
+  return imgLogo['./logo.jpg'];  
+}
+
+function getSwissflIcons() {
+  const swissflPngs = require.context('@/assets/modes/swissfl', false, /\.png$/);
+  const iconImgs = globalMethods.methods.mixinMethods_importImages(swissflPngs);
+  const icons = Object.values(iconImgs);
+  const swissflIconMap = {
+    dataset: icons[0],
+    infrastructure: icons[1],
+    model: icons[2],
+  };
+
+  return swissflIconMap;
+}
+
 const swissflLogo = getSwissflLogo();
 const swissflIcons = getSwissflIcons();
 
@@ -36,11 +55,10 @@ const swissflMode = {
 }
 
 export function getModeData(mode) {
-  switch (mode) {
-    case SWISSFL_MODE:
-      return swissflMode;
-    default:
-      throw new Error(`Not Mode Objection for mode: "${mode}" implemented`);
+  if (mode === SWISSFL_MODE) {
+    return swissflMode;
+  } else {
+    throw new Error(`Not Mode Objection for mode: "${mode}" implemented`);
   }
 }
 
@@ -86,24 +104,6 @@ export function getSelectedTagsMergedWithHidden(mode, selectedTagNames) {
   }
 }
 
-function getSwissflLogo() {
-  const swissflImages = require.context('@/assets/modes/swissfl', false, /\.jpg$/);
-  const imgLogo = globalMethods.methods.mixinMethods_importImages(swissflImages, 'logo');
-  return imgLogo['./logo.jpg'];  
-}
-
-function getSwissflIcons() {
-  const swissflPngs = require.context('@/assets/modes/swissfl', false, /\.png$/);
-  const iconImgs = globalMethods.methods.mixinMethods_importImages(swissflPngs);
-  const icons = Object.values(iconImgs);
-  const swissflIconMap = {
-    dataset: icons[0],
-    infrastructure: icons[1],
-    model: icons[2],
-  };
-
-  return swissflIconMap;
-}
 
 let tempModeData = null;
 
