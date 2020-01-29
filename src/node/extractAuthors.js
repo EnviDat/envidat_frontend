@@ -107,7 +107,7 @@ function getAuthors(dataset) {
 
 function extractAuthors() {
 
-  const authorMap = {};
+  const mapAuthors = {};
   let authorCount = 0;
 
   for (let i = 0; i < metadataList.length; i++) {
@@ -120,7 +120,7 @@ function extractAuthors() {
         const author = authors[j];
 
         const authorName = author.fullName;
-        const existingAuthor = authorMap[authorName];
+        const existingAuthor = mapAuthors[authorName];
 
         if (existingAuthor) {
           existingAuthor.datasetCount += author.datasetCount;
@@ -150,10 +150,10 @@ function extractAuthors() {
           }
 
           // console.log('for ' + author.name + ' updated ' + existingAuthor.count);
-          authorMap[authorName] = existingAuthor;
+          mapAuthors[authorName] = existingAuthor;
         } else {
           // console.log('for ' + author.name + ' set ' + author.count);
-          authorMap[authorName] = author;
+          mapAuthors[authorName] = author;
           authorCount++;
         }
       }
@@ -164,7 +164,7 @@ function extractAuthors() {
     console.log('extracted ' + authorCount + ' authors');
   }
 
-  return authorMap;
+  return mapAuthors;
 }
 
 function writeAuthorsToFile(authorMap) {

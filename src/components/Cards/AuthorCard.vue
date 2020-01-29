@@ -1,6 +1,4 @@
 <template>
-  <!-- <div  @mouseover="hovered = true"
-        @mouseleave="hovered = false" > -->
     <v-card class="authorCard pa-3"
             hover
             :style="`background-color: ${this.dark ? darkColor : whiteColor};`"
@@ -60,8 +58,6 @@
 
                 <v-flex shrink
                         class="subheading">
-                        <!-- :class="dark ? 'white--text' : 'black--text'" >
-                  {{ author.datasetCount }} -->
 
                   <div :style="`background-color: ${!this.dark ? darkColor : whiteColor}; font-size: 20px !important`"
                         class="dataCreditScore ">
@@ -93,14 +89,6 @@
                   @click="infosExpanded = !infosExpanded">
             <v-icon> {{ infosExpanded ? 'arrow_drop_down' : 'arrow_left' }}</v-icon>
           </v-btn>
-          <!-- <base-icon-button materialIconName="expand_more"
-                            :outlined="true"
-                            iconColor="primary"
-                            :isToggled="infosExpanded"
-                            :rotateOnClick="true"
-                            :rotateToggle="infosExpanded"
-                            :toolTipText="infosExpanded ? 'Hide info' : 'Show info'"
-                            @clicked="infosExpanded = !infosExpanded" /> -->
         </v-flex>
       </v-layout>
 
@@ -167,10 +155,6 @@
 
       </v-container>
       </v-card-text>
-
-      <!-- <div v-if="dataCreditsCount('collection') > 5"
-            style="position: absolute; bottom: 0px; right: 30%;"
-            :style="bottomToTopStyle(dataCreditsCount('collection') * 10, 'green')" ></div> -->
 
 
       <div v-if="author.datasetCount >= 10"

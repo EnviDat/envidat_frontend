@@ -29,9 +29,7 @@
               {{ creditName }}
             </v-tooltip>
           </v-flex>
-          <!-- <v-flex py-0 class="caption">
-            {{ dataCreditCounts[index] }}
-          </v-flex> -->
+
         </v-layout>
 
       </v-flex>
