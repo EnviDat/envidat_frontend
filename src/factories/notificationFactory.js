@@ -95,10 +95,10 @@ export function getSpecificApiError(details, reason) {
 export function getGenericApiError(reason) {
   let errObj = errorMessage(reason);
 
-  if (reason.response) {
+  if (reason && reason.response) {
     const status = `${reason.response.status} ${reason.response.statusText}`;
     const message = genericMessage(reason.response.status);
-    const details = reason.request.responseURL;
+    const details = reason.request ? reason.request.responseURL : '';
     errObj = errorMessage(message, `${status} ${details}`, reason.response.stack);
   }
 
