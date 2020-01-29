@@ -1,10 +1,9 @@
-branches:
-  only:
-  - unit_tests
 language: node_js
 node_js:
   - "12"
 before_install:
   - npm i -g npm
+  - npm i
 script:
-  - npm test
+  - npm run test:unit
+  - npm run build

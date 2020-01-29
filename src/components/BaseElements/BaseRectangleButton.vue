@@ -12,7 +12,7 @@
             @click.stop="onClick" >
 
       <div v-if="customIcon" class="iconCentering">
-        <img class="envidatIcon" :src="customIcon" />
+        <img class="envidatIcon" :src="customIcon" :alt="`${iconString} icon`" />
       </div>
 
       <v-icon v-if="materialIconName"

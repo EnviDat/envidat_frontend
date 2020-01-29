@@ -134,7 +134,7 @@ configure(loadStories, module);
 
 
 function getCardImages() {
-  const cardImages = {};
+  const imgs = {};
 
   // alert(
   //   'globalMethods ' +
@@ -144,22 +144,22 @@ function getCardImages() {
   // );
 
   let imgPaths = require.context('@/assets/cards/landscape/', false, /\.jpg$/);
-  cardImages.landscape = globalMethods.methods.mixinMethods_importImages(imgPaths);
+  imgs.landscape = globalMethods.methods.mixinMethods_importImages(imgPaths);
 
   imgPaths = require.context('@/assets/cards/forest/', false, /\.jpg$/);
-  cardImages.forest = globalMethods.methods.mixinMethods_importImages(imgPaths);
+  imgs.forest = globalMethods.methods.mixinMethods_importImages(imgPaths);
 
   imgPaths = require.context('@/assets/cards/snow/', false, /\.jpg$/);
-  cardImages.snow = globalMethods.methods.mixinMethods_importImages(imgPaths);
+  imgs.snow = globalMethods.methods.mixinMethods_importImages(imgPaths);
 
   imgPaths = require.context('@/assets/cards/diversity/', false, /\.jpg$/);
-  cardImages.diversity = globalMethods.methods.mixinMethods_importImages(imgPaths);
+  imgs.diversity = globalMethods.methods.mixinMethods_importImages(imgPaths);
 
   imgPaths = require.context('@/assets/cards/hazard/', false, /\.jpg$/);
-  cardImages.hazard = globalMethods.methods.mixinMethods_importImages(imgPaths);
+  imgs.hazard = globalMethods.methods.mixinMethods_importImages(imgPaths);
 
   imgPaths = require.context('@/assets/cards/meteo/', false, /\.jpg$/);
-  cardImages.meteo = globalMethods.methods.mixinMethods_importImages(imgPaths);
+  imgs.meteo = globalMethods.methods.mixinMethods_importImages(imgPaths);
 
-  return cardImages;
+  return imgs;
 }

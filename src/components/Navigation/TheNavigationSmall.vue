@@ -64,9 +64,7 @@ export default {
       const actives = [];
 
       this.navItems.forEach((el) => {
-        if (el.icon === 'menu') {
-          actives.push(el);
-        } else if (el.active) {
+        if (el.icon === 'menu' || el.active) {
           actives.push(el);
         }
       });

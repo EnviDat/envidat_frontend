@@ -286,28 +286,6 @@ storiesOf('6 Detail Views | Metadata', module)
         />
       </v-flex>
 
-<!--
-      <v-flex xs12 py-3>
-        <metadata-details :genericProps="genericProps2"
-        />
-      </v-flex>
-
-      <v-flex xs12 py-3>
-        <metadata-details :genericProps="genericPropsPlaceholder"
-          :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
-        />
-      </v-flex>
-
-      <v-flex xs12 py-3>
-        <metadata-details :genericProps="genericPropsPlaceholder"
-        />
-      </v-flex>
-
-      <v-flex xs6 py-3>
-        <metadata-details :genericProps="genericPropsPlaceholder"
-        />
-      </v-flex>
--->
     </v-layout>        
     `,
     updated() {
