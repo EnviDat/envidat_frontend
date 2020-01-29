@@ -3,6 +3,7 @@ import {
   errorMessage,
   warningMessage,
   getGenericApiError,
+  getSpecificApiError,
 } from '../../src/factories/notificationFactory';
 
 describe('notificationFactory - successMessage', () => {
@@ -109,11 +110,8 @@ describe('notificationFactory - getGenericApiError', () => {
   it('with Message 404', () => {
     const expectedType = 'error';
     const reason = {
-      response: {
-        status: 404,
-        statusText: 'Not found',
-        responseURL: 'unit test mock url',
-      },
+      response: { status: 404, statusText: 'Not found' },
+      request: { responseURL: 'unit test mock url' },
     };
 
     const msg = getGenericApiError(reason);
@@ -175,5 +173,41 @@ describe('notificationFactory - getGenericApiError', () => {
     expect(msg.message).toBeDefined();
     expect(msg.details).toBeDefined();
     expect(msg.details.includes(reason.response.status)).toBeTruthy();
+  });
+});
+
+describe('notificationFactory - getSpecificApiError', () => {
+  it('empty', () => {
+    const expectedType = 'error';
+
+    const msg = getSpecificApiError(undefined);
+
+    expect(msg).toBeDefined();
+    expect(msg.type).toBe(expectedType);
+    expect(msg.color).toBe(expectedType);
+    expect(msg.message).toBeUndefined();
+    expect(msg.details).toBeUndefined();
+  });
+
+  it('with Message 404', () => {
+    const expectedType = 'error';
+    const details = 'specificError testing';
+
+    const reason = {
+      response: {
+        status: 404,
+        statusText: 'Not found',
+      },
+      request: { responseURL: 'unit test mock url' },
+    };
+
+    const msg = getSpecificApiError(details, reason);
+
+    expect(msg).toBeDefined();
+    expect(msg.type).toBe(expectedType);
+    expect(msg.color).toBe(expectedType);
+    expect(msg.message).toBeDefined();
+    expect(msg.message.includes(reason.response.status.toString())).toBeTruthy();
+    expect(msg.details.includes(details)).toBeTruthy();
   });
 });
