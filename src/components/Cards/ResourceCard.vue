@@ -167,7 +167,7 @@ export default {
     url: String,
     created: String,
     lastModified: String,
-    size: Number,
+    size: String,
     format: String,
     twoColumnLayout: Boolean,
     height: String,
@@ -190,7 +190,11 @@ export default {
   computed: {
     formatedBytes() {
       if (!this.size) return '';
-      const bytesString = this.mixinMethods_formatBytes(this.size);
+      let sizeNumber = this.size;
+      if (typeof this.size === 'number') {
+        sizeNumber = Number.parseInt(this.size);
+      }
+      const bytesString = this.mixinMethods_formatBytes(sizeNumber);
       return bytesString;
     },
     isLink() {
