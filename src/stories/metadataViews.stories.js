@@ -15,6 +15,7 @@ import { action } from '@storybook/addon-actions';
 import './js/vuetify-components';
 
 /* import App needed for Css classes */
+// eslint-disable-next-line no-unused-vars
 import App from '@/App';
 
 import MetadataHeader from '@/components/Metadata/MetadataHeader.vue';
@@ -24,6 +25,7 @@ import MetadataDetails from '@/components/Metadata/MetadataDetails.vue';
 import MetadataLocation from '@/components/Metadata/MetadataLocation.vue';
 import MetadataPublications from '@/components/Metadata/MetadataPublications.vue';
 import MetadataFunding from '@/components/Metadata/MetadataFunding.vue';
+import MetadataAuthors from '@/components/Metadata/MetadataAuthors.vue';
 
 import doiIcon from '@/assets/icons/doi.png';
 import mailIcon from '@/assets/icons/mail.png';
@@ -37,6 +39,7 @@ import {
   createPublications,
   createBody,
   createLocation,
+  createAuthors,
 } from '@/factories/metaDataFactory';
 // metadata gets enhance in the storybook config
 import metadata from './js/metadata';
@@ -78,7 +81,7 @@ const publications2 = createPublications(metadata[1]);
 
 // const funding1 = createFunding(metadata[0]);
 const funding1 = [{ grant_number: '', institution: 'Funding not available', institution_url: '' }];
-// const funding2 = metaDataFactory.createFunding(metadata[1]);
+// const funding2 = createFunding(metadata[1]);
 const funding2 = [
   { grant_number: 'XYZ', institution: 'WSL', institution_url: 'https://www.wsl.ch' },
   { grant_number: 'XZZ', institution: 'EAWAG', institution_url: 'https://www.eawag.ch' },
@@ -110,7 +113,7 @@ const genericProps4 = {
   geoJSON: location1.geoJSON,
 };
 
-const authors = metaDataFactory.createAuthors(metadata[2]);
+const authors = createAuthors(metadata[2]);
 
 const genericProps5 = {
   showPlaceholder: false,
@@ -448,7 +451,9 @@ storiesOf('6 Detail Views | Metadata', module)
         funding: funding2,
         showPlaceholder: false,
       },
-  })).add('Metadata Authors', () => ({
+    }),
+  }))
+.add('Metadata Authors', () => ({
     components: { MetadataAuthors },
     template: `
     <v-layout row wrap>
@@ -482,5 +487,4 @@ storiesOf('6 Detail Views | Metadata', module)
         showPlaceholder: true,
       },
     }),
-  }));
-
+}));
