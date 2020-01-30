@@ -80,7 +80,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-11-20 17:14:00
+ * Last modified  : 2019-11-22 14:13:22
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -91,6 +91,10 @@ import FilterMapWidgetLayout from '@/components/Layouts/FilterMapWidgetLayout';
 
 export default {
   props: {
+    title: {
+      type: String,
+      default: 'Cartographic Filtering',
+    },
     pinnedIds: Array,
     hasPins: Boolean,
     pinEnabled: Boolean,
@@ -151,7 +155,6 @@ export default {
     },
   },
   data: () => ({
-    title: 'Cartographic Filtering',
     filterText: 'Pinned: ',
     highlightedText: 'Select markers to pin entries to the top of the list',
     clearButtonText: 'Clear Pins',

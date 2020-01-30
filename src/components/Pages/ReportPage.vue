@@ -47,7 +47,6 @@
                           v-model="feedbackText" />
 
               <v-btn color="primary" @click="submit">Send</v-btn>
-              <!-- <v-btn @click="clear">clear</v-btn> -->
             </form>
           </v-card-text>
         </v-card>

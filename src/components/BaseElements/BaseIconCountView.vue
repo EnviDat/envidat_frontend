@@ -12,12 +12,13 @@
                     color="secondary"
                     :class="{ envidatBadgeBigNumber : count > 9,
                               envidatBadge: count <= 9 }" >
+                                                  
             <span slot="badge">{{ count }}</span>
           </v-badge>
         </v-flex>
 
         <v-flex pa-0>
-          <img class="envidatIcon" :src="iconString">
+          <img class="envidatIcon" :src="iconString" :alt="`${iconString} icon`">
         </v-flex>
       </v-layout>
     </div>
@@ -34,17 +35,11 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-11-01 16:04:20
+ * Last modified  : 2019-11-27 14:54:23
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
-
-/** Review
-     * Wieso 2x envidatBadge? --> in BasIconButton
-     * Wieso -View im Namen?
-     */
-
 export default {
   name: 'BaseIconCountView',
   props: {
@@ -58,6 +53,3 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>

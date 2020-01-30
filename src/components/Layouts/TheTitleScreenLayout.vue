@@ -7,13 +7,6 @@
         <v-flex xs12>
           <v-layout row align-center >
 
-            <!-- <v-flex xs4 lg3
-                    hidden-lg-and-down >
-              <img style="width: 200px;"
-                    :src="lgLogo"
-                    :alt="alternativeText" >
-            </v-flex> -->
-
             <v-flex hidden-sm-and-down
                     xs3 >
               <img :src="mdLogo" :alt="alternativeText">

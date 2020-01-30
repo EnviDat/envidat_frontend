@@ -1,6 +1,4 @@
 <template>
-  <!-- <div  @mouseover="hovered = true"
-        @mouseleave="hovered = false" > -->
     <v-card class="authorCard pa-3"
             :style="dynamicCardBackground"
             @click.native="cardClick" >
@@ -60,8 +58,6 @@
 
                 <v-flex shrink
                         class="subheading">
-                        <!-- :class="dark ? 'white--text' : 'black--text'" >
-                  {{ author.datasetCount }} -->
 
                   <div :style="`background-color: ${!this.dark ? darkColor : whiteColor}; font-size: 20px !important`"
                         class="dataCreditScore ">
@@ -161,10 +157,6 @@
 
       </v-container>
       </v-card-text>
-
-      <!-- <div v-if="dataCreditsCount('collection') > 5"
-            style="position: absolute; bottom: 0px; right: 30%;"
-            :style="bottomToTopStyle(dataCreditsCount('collection') * 10, 'green')" ></div> -->
 
 
       <div v-if="dataCreditLevel === 1"

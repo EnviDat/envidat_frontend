@@ -24,6 +24,7 @@
                 class="iconCentering" >
 
             <img class="envidatIcon"
+                :alt="`${customIcon} icon`"
                 :src="customIcon" >
           </div>
 

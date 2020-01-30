@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-10-23 17:45:07
+ * Last modified  : 2019-11-22 13:28:12
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -32,8 +32,7 @@ import {
 } from '@/store/categoriesConsts';
 
 import { LISTCONTROL_MAP_ACTIVE } from '@/store/metadataMutationsConsts';
-
-const globalMethods = require('@/factories/globalMethods');
+import globalMethods from '@/factories/globalMethods';
 
 const errReport = process.env.VUE_APP_ERROR_REPORTING_ENABLED;
 // the check for 'NULL' is needed because simply nothing will not work
@@ -102,7 +101,7 @@ const persistPlugin = createPersist({
 store.plugins = [persistPlugin];
 
 function setImages(categoryName, imgPaths) {
-  const images = globalMethods.default.methods.mixinMethods_importImages(imgPaths);
+  const images = globalMethods.methods.mixinMethods_importImages(imgPaths);
   store.state.cardBGImages[categoryName] = images;
   // this._vm(store.state.cardBGImages, categoryName, images);
 }
@@ -118,7 +117,7 @@ function importCardBackgrounds() {
 
 function importIcons() {
   const imgPaths = require.context('../assets/icons/', false, /\.png$/);
-  const images = globalMethods.default.methods.mixinMethods_importImages(imgPaths);
+  const images = globalMethods.methods.mixinMethods_importImages(imgPaths);
 
   const keys = Object.keys(images);
   keys.forEach((key) => {

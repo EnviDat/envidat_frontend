@@ -57,7 +57,6 @@
           </div>
         </v-flex>
 
-        <!-- <v-expand-transition @transitionend="expandFinished" @animationend="expandFinished" > -->
           <v-flex v-show="expanded"
                   xs12 >
 
@@ -126,6 +125,7 @@
                         py-0
                         class="headerInfo" >
                   <base-icon-label-view :text="doi"
+                                        :url="doiUrl"
                                         :icon="doiIcon"
                                         icon-tooltip="Data Object Identifier"
                                         :align-left="true"
@@ -184,7 +184,6 @@
               </v-layout>
             </v-flex>
           </v-flex>
-        <!-- </v-expand-transition> -->
 
       </v-layout>
 
@@ -214,7 +213,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-14 17:39:28
+ * Last modified  : 2019-11-28 16:17:23
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -226,7 +225,7 @@ import TagChipPlaceholder from '@/components/Cards/TagChipPlaceholder';
 import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
-import metaDataFactory from '@/factories/metaDataFactory';
+import { getAuthorName } from '@/factories/metaDataFactory';
 
 export default {
   components: {
@@ -298,6 +297,9 @@ export default {
 
       return style;
     },
+    doiUrl() {
+      return this.doi ? `https://www.doi.org/${this.doi}` : null;
+    },
   },
   updated() {
     this.$nextTick(() => {
@@ -321,7 +323,7 @@ export default {
       const iconflip = this.dark ? `${icon}_w` : icon;
       return iconflip;
     },
-    authorName: metaDataFactory.getAuthorName,
+    authorName: getAuthorName,
   },
 };
 </script>
