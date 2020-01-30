@@ -5,7 +5,7 @@
 
             <!-- :style="`background-color: ${this.dark ? darkColor : whiteColor};`" -->
 
-      <v-card-title class="px-3 py-0 justify-end">
+      <v-card-title class="px-2 py-0 justify-end">
         <div :style="`background-color: ${!this.dark ? darkColor : whiteColor};`"
               class="dataCreditScore elevation-5">
 
@@ -16,7 +16,7 @@
         </div>
       </v-card-title>
 
-      <v-card-title class="pt-0 pb-5">
+      <v-card-title class="px-2 pt-0 pb-5">
         <v-container pa-0 grid-list-xs>
           <v-layout row wrap>
 
@@ -38,14 +38,14 @@
         </v-container>
       </v-card-title>
 
-      <v-card-title class="pa-0">
+      <v-card-title class="py-0 px-2">
         <data-credit-layout v-if="author.dataCredit"
-                              class="py-0"
+                              class="pa-0"
                               :dataCredit="author.dataCredit"
                               :iconColor="this.dark ? whiteColor : darkColor"
                               :dark="!dark" />
 
-        <v-container py-0 px-3 pt-2 grid-list-xs>
+        <v-container pa-0 pt-2 grid-list-xs>
           <v-layout column px-0 >
 
             <v-flex xs12>
@@ -76,25 +76,30 @@
         </v-container>
       </v-card-title>
 
-      <v-layout row
-                align-center
-                px-2 >
+      <v-card-title class="py-0 px-2">
+        <v-container pa-0 grid-list-xs>
+          <v-layout row
+                    align-center
+                    pa-0 >
 
-        <v-flex grow @click="infosExpanded = !infosExpanded">
-          <v-divider :dark="dark" />
-        </v-flex>
+            <v-flex grow @click="infosExpanded = !infosExpanded">
+              <v-divider :dark="dark" />
+            </v-flex>
 
-        <v-flex shrink pa-0>
-          <v-btn flat icon
-                  :color="dark ? 'white' : 'black'"
-                  class="ma-0"
-                  @click="infosExpanded = !infosExpanded">
-            <v-icon> {{ infosExpanded ? 'arrow_drop_down' : 'arrow_left' }}</v-icon>
-          </v-btn>
-        </v-flex>
-      </v-layout>
+            <v-flex shrink>
+              <v-btn flat icon
+                      :color="dark ? 'white' : 'black'"
+                      class="ma-0"
+                      @click="infosExpanded = !infosExpanded">
+                <v-icon> {{ infosExpanded ? 'arrow_drop_down' : 'arrow_left' }}</v-icon>
+              </v-btn>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-card-title>
 
-      <v-card-text v-if="infosExpanded" >
+      <v-card-text v-if="infosExpanded"
+                    class="py-0 px-2">
       <v-container grid-list-xs align-content-end align-end
                     pa-0 >
         <v-layout row wrap>
@@ -381,7 +386,7 @@ export default {
     border-radius: 20px;
     min-width: 300px;
     max-width: 400px;
-    min-height: 350px;
+    /* min-height: 350px; */
   }
 
   .authorTitle {

@@ -100,6 +100,7 @@ import {
   createDetails,
   createFunding,
   createPublications,
+  createAuthors,
 } from '@/factories/metaDataFactory';
 import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
 import MetadataAuthors from '@/components/Metadata/MetadataAuthors';
@@ -258,7 +259,7 @@ export default {
         this.publications = createPublications(currentContent);
         this.funding = createFunding(currentContent);
 
-        this.authors = metaDataFactory.createAuthors(currentContent);
+        this.authors = createAuthors(currentContent);
       }
 
       this.$set(components.MetadataHeader, 'genericProps', this.header);
