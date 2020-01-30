@@ -279,12 +279,12 @@ export default {
         components.MetadataFunding,
         components.MetadataCitation,
         components.MetadataLocation,
-        components.MetadataAuthors,
       ];
 
       this.secondCol = [
         components.MetadataResources,
         components.MetadataDetails,
+        components.MetadataAuthors,
       ];
 
       this.singleCol = [

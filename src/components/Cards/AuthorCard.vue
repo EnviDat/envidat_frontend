@@ -5,7 +5,8 @@
 
             <!-- :style="`background-color: ${this.dark ? darkColor : whiteColor};`" -->
 
-      <v-card-title class="px-2 py-0 justify-end">
+      <v-card-title class="pa-0"
+                    style="position: absolute; right: 15px; top: 15px;">
         <div :style="`background-color: ${!this.dark ? darkColor : whiteColor};`"
               class="dataCreditScore elevation-5">
 
@@ -56,10 +57,16 @@
                   {{ dataCountLabel }}
                 </v-flex>
 
-                <v-flex shrink
-                        class="subheading">
+                <v-flex shrink>
+                  <base-icon-button materialIconName="search"
+                                    :outlined="false"
+                                    color="transparent"
+                                    :tooltipText="`See all the dataset of ${author.firstName} ${author.lastName}`"
+                                    @clicked="catchSearchAuthor" />
+                </v-flex>
 
-                  <div :style="`background-color: ${!this.dark ? darkColor : whiteColor}; font-size: 20px !important`"
+                <v-flex shrink>
+                  <div :style="`background-color: ${!this.dark ? darkColor : whiteColor}; font-size: 18px !important`"
                         class="dataCreditScore ">
 
                     <div :style="smallCountStyling"
@@ -67,8 +74,8 @@
                       {{ author.datasetCount }}
                     </div>
                   </div>
-
                 </v-flex>
+
               </v-layout>
             </v-flex>
 
@@ -182,6 +189,7 @@
 
 <script>
 import DataCreditLayout from '@/components/Layouts/DataCreditLayout';
+import BaseIconButton from '../BaseElements/BaseIconButton';
 
 // checkout skeleton
 // https://github.com/ToxicJojo/SkeletonPlaceholder
@@ -189,6 +197,7 @@ import DataCreditLayout from '@/components/Layouts/DataCreditLayout';
 export default {
   components: {
     DataCreditLayout,
+    BaseIconButton,
   },
   props: {
     author: Object,
@@ -251,7 +260,7 @@ export default {
       return style;
     },
     smallCountStyling() {
-      let style = `width: ${this.dataCreditSize * 0.65}px; height: ${this.dataCreditSize * 0.65}px;`;
+      let style = `width: ${this.dataCreditSize * 0.55}px; height: ${this.dataCreditSize * 0.55}px;`;
 
       if (this.dataCreditScore >= 100) {
         style = `${style}position: relative; top: 3px;`;
@@ -314,6 +323,9 @@ export default {
       return this.author.dataCredit ? this.author.dataCredit[credit] : '';
     },
     cardClick() {
+    },
+    catchSearchAuthor() {
+
     },
     verticalLineStyle(color) {
       return `border-left: thick solid ${color}`;
@@ -392,11 +404,11 @@ export default {
   .authorTitle {
     margin: 0;
     padding: 0;
-    line-height: 3rem;
+    line-height: 2.75rem;
     word-break: break-word;
     font-size: 34px !important;
     font-weight: 700 !important;
-    font-family: 'Libre Baskerville', serif !important;
+    font-family: 'Raleway', serif !important;
   }
 
   .authorInfoLabel {
