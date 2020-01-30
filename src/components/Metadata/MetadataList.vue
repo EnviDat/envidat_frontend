@@ -30,9 +30,10 @@
     <template v-slot:filterMap>
       <filter-map-view :class="!mapHeight ? 'fill-height' : ''"
                         :style="mapHeight ? `height: ${mapHeight}px;` : 'height: 100%;'"
-                        :content="mergePinnedAndFiltered"
+                        :content="listContent"
                         :pinnedIds="pinnedIds"
                         :topLayout="mapTopLayout"
+                        :mode="mode"
                         @pointClicked="catchPointClicked"
                         @clearButtonClicked="catchClearButtonClick" />
     </template>
@@ -78,6 +79,7 @@
                           :restricted="hasRestrictedResources(metadatasContent[pinnedId])"
                           :resourceCount="metadatasContent[pinnedId].num_resources"
                           :dark="false"
+                          :mode="mode"
                           :flatLayout="listView"
                           :compactLayout="isActiveControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)"
                           :fileIconString="fileIconString"
@@ -104,6 +106,7 @@
                         :restricted="hasRestrictedResources(metadata)"
                         :resourceCount="metadata.num_resources"
                         :dark="false"
+                        :mode="mode"
                         :flatLayout="listView"
                         :compactLayout="isActiveControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)"
                         :fileIconString="fileIconString"
@@ -161,7 +164,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-20 17:07:47
+ * Last modified  : 2019-11-29 14:15:50
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -208,6 +211,7 @@ export default {
       type: Boolean,
       default: false,
     },
+    mode: String,
   },
   beforeMount() {
     this.fileIconString = this.mixinMethods_getIcon('file');
@@ -318,11 +322,33 @@ export default {
     catchTagCleared() {
       this.$emit('clickedClear');
     },
-    catchCategoryClicked(cardTitle) {
+    catchCategoryClicked(cardType) {
+      if (cardType.includes('login')) {
+        this.catchLoginclick();
+        return;
+      }
+
+      if (cardType.includes('mode')) {
+        const splits = cardType.split('_');
+        const modeName = splits[1];
+        this.catchModeClicked(modeName);
+        return;
+      }
+
+      const tagsEncoded = this.mixinMethods_encodeTagForUrl([cardType.toUpperCase()]);
+      this.mixinMethods_additiveChangeRoute(BROWSE_PATH, '', tagsEncoded);
+    },
+    catchModeClicked(mode) {
       this.$router.push({
         path: BROWSE_PATH,
-        query: { search: cardTitle },
+        query: { mode },
       });
+    },
+    catchLoginclick() {
+      this.redirectToDashboard();
+    },
+    redirectToDashboard() {
+      window.open('https://www.envidat.ch/user/reset', '_blank');
     },
     metaDataClicked(datasetname) {
       this.$store.commit(`${METADATA_NAMESPACE}/${SET_DETAIL_PAGE_BACK_URL}`, this.$route);
@@ -362,7 +388,7 @@ export default {
         const res = metadata.resources[i];
         
         if (res.restricted !== undefined
-            && (res.restricted.allowed_users !== undefined
+        && (res.restricted.allowed_users !== undefined
             || (res.restricted.level !== undefined
                 && res.restricted.level !== 'public'))) {
           return true;

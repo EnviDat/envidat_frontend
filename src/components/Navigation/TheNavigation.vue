@@ -41,8 +41,6 @@
         <div v-if="!mini" style="width: 100%; height: 100%;">
 
           <v-list-tile-action v-if="item.icon === 'envidat'">
-                              <!-- class="v-list__group__header__prepend-icon"
-                              style="position: relative; right: -1px;" > -->
             <v-layout row wrap>
 
               <v-flex xs3>

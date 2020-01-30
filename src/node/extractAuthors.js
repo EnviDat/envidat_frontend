@@ -15,11 +15,11 @@ function getDataCredit(author) {
   // key: dataCreditName, value: count
   const dataCredits = {};
 
-  if (author.data_credit instanceof Array){
+  if (author.data_credit instanceof Array) {
     for (let i = 0; i < author.data_credit.length; i++) {
       const credit = author.data_credit[i];
       
-      if (dataCredits[credit]){
+      if (dataCredits[credit]) {
         let v = dataCredits[credit];
         v += 1;
         dataCredits[credit] = v;
@@ -107,7 +107,7 @@ function getAuthors(dataset) {
 
 function extractAuthors(datasets) {
 
-  const authorMap = {};
+  const mapAuthors = {};
   let authorCount = 0;
 
   for (let i = 0; i < datasets.length; i++) {
@@ -120,13 +120,13 @@ function extractAuthors(datasets) {
         const author = authors[j];
 
         const authorName = author.fullName;
-        const existingAuthor = authorMap[authorName];
+        const existingAuthor = mapAuthors[authorName];
 
-        if (existingAuthor){
+        if (existingAuthor) {
           existingAuthor.datasetCount += author.datasetCount;
 
-          if (author.data_credit){
-            if (!existingAuthor.data_credit){
+          if (author.data_credit) {
+            if (!existingAuthor.data_credit) {
               existingAuthor.data_credit = author.data_credit;
             } else {
               const keys = Object.keys(author.data_credit);
@@ -150,10 +150,10 @@ function extractAuthors(datasets) {
           }
 
           // console.log('for ' + author.name + ' updated ' + existingAuthor.count);
-          authorMap[authorName] = existingAuthor;
+          mapAuthors[authorName] = existingAuthor;
         } else {
           // console.log('for ' + author.name + ' set ' + author.count);
-          authorMap[authorName] = author;
+          mapAuthors[authorName] = author;
           authorCount++;
         }
       }
@@ -164,7 +164,7 @@ function extractAuthors(datasets) {
     console.log('extracted ' + authorCount + ' authors');
   }
 
-  return authorMap;
+  return mapAuthors;
 }
 
 function writeAuthorsToFile(authorMap) {

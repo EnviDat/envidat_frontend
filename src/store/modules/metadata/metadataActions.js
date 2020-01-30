@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-11-20 16:11:13
+ * Last modified  : 2019-11-28 13:53:56
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -32,8 +32,18 @@ import {
   METADATA_NAMESPACE,
 } from '@/store/metadataMutationsConsts';
 
-import { tagsIncludedInSelectedTags } from '@/factories/metadataFilterMethods';
-import { urlRewrite, getEnabledTags } from '@/factories/apiFactory';
+import {
+  tagsIncludedInSelectedTags,
+  getEnabledTags,
+  getPopularTags,
+} from '@/factories/metadataFilterMethods';
+import {
+  getTagsMergedWithExtras,
+  getSelectedTagsMergedWithHidden
+} from '@/factories/modeFactory';
+import { urlRewrite } from '@/factories/apiFactory';
+
+import metadataTags from '@/store/modules/metadata/metadataTags';
 
 /* eslint-disable no-unused-vars  */
 const PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
@@ -120,7 +130,7 @@ export default {
       .then((projectJSON) => {
         // setTimeout(() => {
           commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, projectJSON.default.result);
-          return dispatch(FILTER_METADATA, []);
+          return dispatch(FILTER_METADATA, { selectedTagNames: [] });
         // }, 1);
       });
 
@@ -133,16 +143,16 @@ export default {
         commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, response.data.result);
 
         // for the case when loaded up on landingpage
-        return dispatch(FILTER_METADATA, []);
+        return dispatch(FILTER_METADATA, { selectedTagNames: [] });
       })
       .catch((reason) => {
         commit(BULK_LOAD_METADATAS_CONTENT_ERROR, reason);
       });
   },
-  [UPDATE_TAGS]({ commit }) {
-    if (this.getters[`${METADATA_NAMESPACE}/updatingTags`]) {
-      return;
-    }
+  [UPDATE_TAGS]({ commit }, mode) {
+    // if (this.getters[`${METADATA_NAMESPACE}/updatingTags`]) {
+    //   return;
+    // }
 
     const filteredContent = this.getters[`${METADATA_NAMESPACE}/filteredContent`];
     const allTags = this.getters[`${METADATA_NAMESPACE}/allTags`];
@@ -154,16 +164,34 @@ export default {
     commit(UPDATE_TAGS);
 
     try {
-      const updatedTags = getEnabledTags(allTags, filteredContent);
+        let allWithExtras = [];
 
+        const mergedExtraTags = getTagsMergedWithExtras(mode, allTags);
+        if (mergedExtraTags) {
+          const popularTags = getPopularTags(filteredContent, 'SWISS FOREST LAB', 5, filteredContent.length);
+          const mergedWithPopulars = [...mergedExtraTags, ...popularTags.slice(0, 15)];
+
+          const mergedWithoutDublicates = mergedWithPopulars.filter((item, pos, self) => self.findIndex(v => v.name === item.name) === pos);
+          // tags with the same count as the content have no use, remove them
+          // allWithExtras = mergedWithoutDublicates.filter((item) => { item.count >= filteredContent.length});
+          allWithExtras = mergedWithoutDublicates;
+        } else {
+          allWithExtras = metadataTags;
+        }
+    
+        const updatedTags = getEnabledTags(allWithExtras, filteredContent);
       commit(UPDATE_TAGS_SUCCESS, updatedTags);
     } catch (error) {
       commit(UPDATE_TAGS_ERROR, error);
     }
   },
-  async [FILTER_METADATA]({ dispatch, commit }, selectedTagNames) {
+  async [FILTER_METADATA]({ dispatch, commit }, { selectedTagNames, mode }) {
     commit(FILTER_METADATA);
 
+    const mergedWithHiddenNames = getSelectedTagsMergedWithHidden(mode, selectedTagNames);
+    if (mergedWithHiddenNames) {
+      selectedTagNames = mergedWithHiddenNames;
+    }
     let content = [];
     // console.log("filteredMetadataContent");
 
@@ -200,7 +228,7 @@ export default {
 
       commit(FILTER_METADATA_SUCCESS, filteredContent);
 
-      return dispatch(UPDATE_TAGS);
+      return await dispatch(UPDATE_TAGS, mode);
     } catch (error) {
       commit(FILTER_METADATA_ERROR, error);
     }

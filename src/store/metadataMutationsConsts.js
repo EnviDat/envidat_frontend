@@ -3,7 +3,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51 
- * Last modified  : 2019-10-23 16:46:58
+ * Last modified  : 2019-10-25 17:06:40
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -30,6 +30,7 @@ export const UPDATE_TAGS_ERROR = 'UPDATE_TAGS_ERROR';
 export const FILTER_METADATA = 'FILTER_METADATA';
 export const FILTER_METADATA_SUCCESS = 'FILTER_METADATA_SUCCESS';
 export const FILTER_METADATA_ERROR = 'FILTER_METADATA_ERROR';
+export const SWISSFL_MODE = 'swissfl';
 
 export const PIN_METADATA = 'PIN_METADATA';
 export const CLEAR_PINNED_METADATA = 'CLEAR_PINNED_METADATA';

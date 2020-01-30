@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:33:32 
- * Last modified  : 2019-10-23 17:45:46
+ * Last modified  : 2019-10-25 15:40:50
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -114,7 +114,7 @@ export default new Router({
     });
   },
   // methods is available as this.$router.options.isObjectEqual
-  isObjectEqual: function isObjectEqual(a, b) {
+  isObjectEqual(a, b) {
     // if (a === void 0) a = {};
     // if (b === void 0) b = {};
     if (a === null) a = {};
@@ -138,7 +138,7 @@ export default new Router({
     });
   },
   // methods is available as this.$router.options.isSameRoute
-  isSameRoute: function isSameRoute(a, b) {
+  isSameRoute(a, b) {
     if (b === START) {
       return a === b;
     } else if (!b) {

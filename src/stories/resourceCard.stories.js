@@ -1,60 +1,57 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { storiesOf } from "@storybook/vue";
-import { action } from "@storybook/addon-actions";
-import Vue from "vue";
+import { storiesOf } from '@storybook/vue';
+import { action } from '@storybook/addon-actions';
+import Vue from 'vue';
+import globalMethods from '@/factories/globalMethods';
+import Vue2Filters from 'vue2-filters';
 import './js/vuetify-components';
 
-
-import Vue2Filters from 'vue2-filters';
-
 Vue.use(Vue2Filters);
-
-import globalMethods from "@/factories/globalMethods";
 Vue.mixin(globalMethods);
 
 
-import ResourceCard from "@/components/Cards/ResourceCard.vue";
-import ResourceCardPlaceholder from "@/components/Cards/ResourceCardPlaceholder.vue";
+import ResourceCard from '@/components/Cards/ResourceCard.vue';
+import ResourceCardPlaceholder from '@/components/Cards/ResourceCardPlaceholder.vue';
 
-import fileSizeIcon from "@/assets/icons/fileSize.png";
-import doiIcon from "@/assets/icons/doi.png";
-import linkIcon from "@/assets/icons/link.png";
-import downloadIcon from "@/assets/icons/download.png";
-import dateCreatedIcon from "@/assets/icons/dateCreated.png";
-import lastModifiedIcon from "@/assets/icons/dateModified.png";
+import fileSizeIcon from '@/assets/icons/fileSize.png';
+import doiIcon from '@/assets/icons/doi.png';
+import linkIcon from '@/assets/icons/link.png';
+import downloadIcon from '@/assets/icons/download.png';
+import dateCreatedIcon from '@/assets/icons/dateCreated.png';
+import lastModifiedIcon from '@/assets/icons/dateModified.png';
 
-const apiFactory = require("@/factories/apiFactory");
+const apiFactory = require('@/factories/apiFactory');
 
 const iconFiles = getIcons();
 
 // let str = '';
 // for (let [key, value] of iconFiles) {
-//   str += "got key " + key + " value " + value + " \n";
+//   str += 'got key ' + key + ' value ' + value + ' \n';
 // }
 
 // alert('icons ' + str);
 
-import unFormatedMetadataCards from "@/stories/js/metadata";
-let metadataCards = [];
+import unFormatedMetadataCards from '@/stories/js/metadata';
+const metadataCards = [];
 
 unFormatedMetadataCards.forEach(el => {
-  let formatted = apiFactory.solrResultToCKANJSON(el);
+  const formatted = apiFactory.solrResultToCKANJSON(el);
   // let keys = Object.keys(el.tags[0]);
-  // let props = "";
+  // let props = '';
   // keys.forEach(element => {
-  //   props += element + " ";
+  //   props += element + ' ';
   // });
-  // alert(typeof el.resources + " resources: " + el.resources.length + " " + el.resources instanceof Array);
+  // alert(typeof el.resources + ' resources: ' + el.resources.length + ' ' + el.resources instanceof Array);
   metadataCards.push(formatted);
 });
 
 export const methods = {
-  onCardClick: action("clicked on card"),
-  onTagClick: action("clicked on tag")
+  onCardClick: action('clicked on card'),
+  onTagClick: action('clicked on tag')
 };
 
-storiesOf("3 Cards | Resource Cards", module)
-  .add("Resource card collection twoColumnLayout", () => ({
+storiesOf('3 Cards | Resource Cards', module)
+  .add('Resource card collection twoColumnLayout', () => ({
     components: { ResourceCard },
     template: `
 <v-layout column>
@@ -142,7 +139,7 @@ storiesOf("3 Cards | Resource Cards", module)
     })
   }))
 
-  .add("Resource card collection", () => ({
+  .add('Resource card collection', () => ({
     components: { ResourceCard },
     template: `
 <v-layout column>
@@ -223,11 +220,11 @@ storiesOf("3 Cards | Resource Cards", module)
       fileSizeIcon,
       dateCreatedIcon,
       lastModifiedIcon,
-      iconFiles
-    })
+      iconFiles,
+    }),
   }))
 
-  .add("Resource Placeholder collection", () => ({
+  .add('Resource Placeholder collection', () => ({
     components: { ResourceCardPlaceholder },
     template: `
 <v-layout column>
@@ -270,17 +267,17 @@ storiesOf("3 Cards | Resource Cards", module)
 </v-layout>
     `,
     methods,
-    data: () => ({})
+    data: () => ({}),
   }));
 
 
   function getIcons() {
-    let icons  = new Map();
+    const icons = new Map();
 
-    let imgPaths = require.context("@/assets/icons/", false, /\.png$/);
+    const imgPaths = require.context('@/assets/icons/', false, /\.png$/);
 
     imgPaths.keys().forEach(iconFileName => {
-      let splits = iconFileName.split('/');
+      const splits = iconFileName.split('/');
       let key = splits[splits.length - 1];
       key = key.replace('.png', '');
       icons.set(key, iconFileName);

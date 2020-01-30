@@ -3,7 +3,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-10-24 11:14:02
+ * Last modified  : 2019-10-31 08:14:47
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -43,9 +43,9 @@ storiesOf('2 Buttons | Icon buttons', module)
 
       <v-flex xs1>
         <base-icon-button
-        tooltipText="Example Text"
+          tooltipText="Example Text"
           class="mr-2"
-          materialIconName="expand_more"
+          materialIconName="expand_less"
           color="transparent"
           :isToggled="showFullDescription"
           :rotateOnClick="true"
@@ -66,6 +66,20 @@ storiesOf('2 Buttons | Icon buttons', module)
           @clicked="showFullDescription = !showFullDescription"
         />
       </v-flex>
+
+      <v-flex xs1>
+      <base-icon-button
+        class="mr-2"
+        materialIconName="close"
+        iconColor="accent"
+        color="primary"
+        :isToggled="showFullDescription"
+        :rotateOnClick="true"
+        :rotateToggle="showFullDescription"
+        @clicked="showFullDescription = !showFullDescription"
+      />
+
+    </v-flex>
 
     </v-layout>`,
     methods,
