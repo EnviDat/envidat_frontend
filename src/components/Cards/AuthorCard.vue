@@ -7,7 +7,7 @@
 
             <!-- :style="`background-color: ${this.dark ? darkColor : whiteColor};`" -->
 
-      <v-card-title class="pa-3 justify-end">
+      <v-card-title class="px-3 py-0 justify-end">
         <div :style="`background-color: ${!this.dark ? darkColor : whiteColor};`"
               class="dataCreditScore elevation-5">
 
@@ -18,7 +18,7 @@
         </div>
       </v-card-title>
 
-      <v-card-title class="pt-5 pb-5">
+      <v-card-title class="pt-0 pb-5">
         <v-container pa-0 grid-list-xs>
           <v-layout row wrap>
 
