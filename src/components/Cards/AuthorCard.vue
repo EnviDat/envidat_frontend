@@ -23,12 +23,12 @@
         </v-layout>
       </v-card-title>
 
-      <v-card-title class="py-1 px-2">
-        <data-credit-layout v-if="author.dataCredit"
-                              class="pa-0"
-                              :dataCredit="author.dataCredit"
-                              :iconColor="this.dark ? whiteColor : darkColor"
-                              :dark="!dark" />
+      <v-card-title v-if="author.dataCredit"
+                    class="py-1 px-2">
+        <data-credit-layout class="pa-0"
+                            :dataCredit="author.dataCredit"
+                            :iconColor="this.dark ? whiteColor : darkColor"
+                            :dark="!dark" />
 
       </v-card-title>
 
@@ -50,7 +50,7 @@
                                 :outlined="dark"
                                 :color="dark ? 'white' : 'transparent'"
                                 :tooltipText="`Search for the datasets of ${author.firstName} ${author.lastName}`"
-                                @clicked="catchSearchAuthor" />
+                                @clicked="catchSearchAuthor(author.fullName)" />
 
               <v-badge color="highlight"
                         overlap
@@ -207,6 +207,7 @@
 <script>
 import DataCreditLayout from '@/components/Layouts/DataCreditLayout';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
+import { BROWSE_PATH } from '@/router/routeConsts';
 
 // checkout skeleton
 // https://github.com/ToxicJojo/SkeletonPlaceholder
@@ -333,8 +334,8 @@ export default {
     },
     cardClick() {
     },
-    catchSearchAuthor() {
-
+    catchSearchAuthor(search) {
+      this.mixinMethods_additiveChangeRoute(BROWSE_PATH, search);
     },
     verticalLineStyle(color) {
       return `border-left: thick solid ${color}`;
