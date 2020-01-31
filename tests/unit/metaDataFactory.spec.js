@@ -9,6 +9,9 @@ import {
   createDetails,
   createResource,
   enhanceTags,
+  createAuthors,
+  extractAuthors,
+  getFullAuthorsFromDataset,
 } from '@/factories/metaDataFactory';
 
 import packagelist from '@/testdata/packagelist';
@@ -242,6 +245,93 @@ describe('metaDataFactory - enhanceTags', () => {
       const tag = enhancedDataset.tags[j];
       expect(tag).toBeDefined();
       expect(tag).not.toBe('');
+    }
+  });
+});
+
+describe('metaDataFactory - createAuthors', () => {
+  it('empty', () => {
+    const authors = createAuthors(undefined);
+    expect(authors).toBeNull();
+  });
+
+  it('with dataset', () => {
+    const dataset = packagelist.result[7];
+
+    const authors = createAuthors(dataset);
+
+    expect(authors).toBeDefined();
+
+    for (let i = 0; i < authors.length; i++) {
+      const author = authors[i];
+      
+      expect(author.firstName).toBeDefined();
+      expect(author.lastName).toBeDefined();
+      expect(author.datasetCount).toBeGreaterThanOrEqual(1);
+      expect(author.affiliation).toBeDefined();
+      expect(author.id).toBeDefined();
+      expect(author.email).toBeDefined();
+      expect(author.dataCredit).toBeDefined();
+    }
+  });
+});
+
+describe('metaDataFactory - extractAuthors', () => {
+  it('empty', () => {
+    const authorMap = extractAuthors(undefined);
+    expect(authorMap).toBeNull();
+  });
+
+  it('with datasets', () => {
+    const datasets = packagelist.result;
+
+    const authorMap = extractAuthors(datasets);
+
+    expect(authorMap).toBeDefined();
+
+    const keys = Object.keys(authorMap);
+
+    for (let i = 0; i < keys.length; i++) {
+      const authorFullName = keys[i];
+      const author = authorMap[authorFullName];
+      
+      expect(author.firstName).toBeDefined();
+      expect(author.lastName).toBeDefined();
+      expect(author.datasetCount).toBeGreaterThanOrEqual(1);
+      expect(author.affiliation).toBeDefined();
+      expect(author.id).toBeDefined();
+      expect(author.email).toBeDefined();
+      expect(author.dataCredit).toBeDefined();
+    }
+  });
+});
+
+describe('metaDataFactory - getFullAuthorsFromDataset', () => {
+  it('empty', () => {
+    const authorMap = getFullAuthorsFromDataset();
+    expect(authorMap).toBeNull();
+  });
+
+  it('with datasets', () => {
+    const datasets = packagelist.result;
+    const authorMap = extractAuthors(datasets);
+
+    expect(authorMap).toBeDefined();
+
+    const fullAuthors = getFullAuthorsFromDataset(authorMap, datasets[2]);
+
+    expect(fullAuthors).toBeDefined();
+
+    for (let i = 0; i < fullAuthors.length; i++) {
+      const author = fullAuthors[i];
+      
+      expect(author.firstName).toBeDefined();
+      expect(author.lastName).toBeDefined();
+      expect(author.datasetCount).toBeGreaterThanOrEqual(1);
+      expect(author.affiliation).toBeDefined();
+      expect(author.id).toBeDefined();
+      expect(author.email).toBeDefined();
+      expect(author.dataCredit).toBeDefined();
     }
   });
 });
