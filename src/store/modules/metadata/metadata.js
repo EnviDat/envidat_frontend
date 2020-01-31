@@ -99,6 +99,8 @@ const initialState = {
   idRemapping: new Map([
     ['als‐based‐snow‐depth‐and‐canopy‐height‐maps‐from‐flights‐in‐2017‐grisons‐ch‐and‐grand‐mesa‐co', 'grand-mesa-co']
   ]),
+  asciiDead: '&#8224;',
+  authorPassedInfo: 'Sadly this author has passed away.',
 };
 
 export const metadata = {
@@ -132,6 +134,8 @@ export const metadata = {
     aboutPageBackRoute: state => state.aboutPageBackRoute,
     categoryCards: state => state.categoryCards,
     idRemapping: state => state.idRemapping,
+    asciiDead: state => state.asciiDead,
+    authorPassedInfo: state => state.authorPassedInfo,
   },
   mutations,
   actions,

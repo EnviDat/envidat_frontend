@@ -12,7 +12,16 @@
       <v-icon>account_circle</v-icon>
     </v-avatar>
 
-    {{ name }}
+    {{ authorName }}
+
+    <v-tooltip v-if="authorIsDead"
+                bottom>
+      <v-icon slot="activator" >
+        hourglass_empty
+      </v-icon>
+      {{ authorPassedInfo }}
+    </v-tooltip>
+
   </v-chip>
 
 </template>
@@ -30,6 +39,9 @@
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
+import { mapGetters } from 'vuex';
+import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
+
 export default {
   props: {
     name: String,
@@ -37,6 +49,16 @@ export default {
     highlighted: Boolean,
   },
   computed: {
+    ...mapGetters({
+      asciiDead: `${METADATA_NAMESPACE}/asciiDead`,
+      authorPassedInfo: `${METADATA_NAMESPACE}/authorPassedInfo`,
+    }),
+    authorIsDead() {
+      return this.name ? this.name.includes(this.asciiDead) : false;
+    },
+    authorName() {
+      return this.authorIsDead ? this.name.replace(`(${this.asciiDead})`, '') : this.name;
+    },
   },
   methods: {
     clicked: function clicked() {
