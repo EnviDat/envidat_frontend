@@ -33,7 +33,7 @@
       </v-card-title>
 
       <v-card-title class="py-1 px-2">
-        <v-container pa-0 >
+        <v-container pa-0 fluid>
           <v-layout row wrap
                     align-center
                     justify-space-between >
@@ -123,6 +123,7 @@
         </v-layout>
 
         <v-container v-if="infosExpanded"
+                      fluid
                       grid-list-lg align-end
                       py-2 px-0 >
           <v-layout row wrap>
