@@ -16,7 +16,8 @@
 
     <v-tooltip v-if="authorIsDead"
                 bottom>
-      <v-icon slot="activator" >
+      <v-icon slot="activator"
+              small >
         hourglass_empty
       </v-icon>
       {{ authorPassedInfo }}
