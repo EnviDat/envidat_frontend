@@ -6,19 +6,34 @@
       <v-card-title class="px-2 pb-5">
         <v-layout row wrap>
 
-          <v-flex xs12 py-0 >
+          <v-flex grow py-0 >
             <div class="authorTitle"
                   :class="dark ? 'white--text' : 'black--text'" >
               {{ author.firstName }}
             </div>
           </v-flex>
 
+          <v-flex v-if="authorIsDead"
+                  shrink py-0>
+
+            <v-tooltip bottom>
+              <v-icon slot="activator"
+                      dark
+                      :class="dark ? 'white--text' : 'black--text'">
+                hourglass_empty
+              </v-icon>
+              {{ authorPassedInfo }}
+            </v-tooltip>
+
+          </v-flex>
+
           <v-flex xs12 py-0>
             <div class="authorTitle"
                   :class="dark ? 'white--text' : 'black--text'" >
-              {{ author.lastName }}
+              {{ authorIsDead ? author.lastName.replace(`(${asciiDead})`, '') : author.lastName }}
             </div>
           </v-flex>
+
 
         </v-layout>
       </v-card-title>
@@ -316,6 +331,9 @@ export default {
       return `background-image: linear-gradient(45deg, ${color} 10%, ${toColor} 90%);
               background-position: center, center; background-size: cover;`;
     },
+    authorIsDead() {
+      return this.author.fullName ? this.author.fullName.match(this.asciiDead) : false;
+    }
   },
   methods: {
     isOrcId(id) {
@@ -373,6 +391,8 @@ export default {
     infosExpanded: false,
     darkColor: '#231F20',
     whiteColor: '#EFEFEF',
+    asciiDead: '&#8224;',
+    authorPassedInfo: 'Sadly this author has passed away.',
   }),
 };
 </script>
