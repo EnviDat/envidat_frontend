@@ -45,6 +45,10 @@ const initialState = {
   metadatasContentOK: false,
   metadatasContent: {},
   /**
+   * authorsMap property holds the  for "bulk" loading all the metadata when the app starts up
+   */
+  authorsMap: {},
+  /**
    * the Search properties used when the users makes a full text search
    */
   searchedMetadatasContent: {},
@@ -108,6 +112,7 @@ export const metadata = {
     metadataIds: state => state.metadataIds,
     metadatasContent: state => state.metadatasContent,
     metadatasContentSize: state => state.metadatasContent !== undefined ? Object.keys(state.metadatasContent).length : 0,
+    authorsMap: state => state.authorsMap,
     searchedMetadatasContent: state => state.searchedMetadatasContent,
     searchingMetadatasContent: state => state.searchingMetadatasContent,
     searchingMetadatasContentOK: state => state.searchingMetadatasContentOK,

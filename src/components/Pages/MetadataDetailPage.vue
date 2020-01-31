@@ -100,7 +100,7 @@ import {
   createDetails,
   createFunding,
   createPublications,
-  createAuthors,
+  getFullAuthorsFromDataset,
 } from '@/factories/metaDataFactory';
 import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
 import MetadataAuthors from '@/components/Metadata/MetadataAuthors';
@@ -155,6 +155,7 @@ export default {
       currentMetadataContent: `${METADATA_NAMESPACE}/currentMetadataContent`,
       detailPageBackRoute: `${METADATA_NAMESPACE}/detailPageBackRoute`,
       idRemapping: `${METADATA_NAMESPACE}/idRemapping`,
+      authorsMap: `${METADATA_NAMESPACE}/authorsMap`,
       iconImages: 'iconImages',
       cardBGImages: 'cardBGImages',
       appScrollPosition: 'appScrollPosition',
@@ -259,7 +260,7 @@ export default {
         this.publications = createPublications(currentContent);
         this.funding = createFunding(currentContent);
 
-        this.authors = createAuthors(currentContent);
+        this.authors = getFullAuthorsFromDataset(this.authorsMap, currentContent);
       }
 
       this.$set(components.MetadataHeader, 'genericProps', this.header);
