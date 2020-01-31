@@ -220,6 +220,8 @@
 
 
 <script>
+import { mapGetters } from 'vuex';
+import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
 import DataCreditLayout from '@/components/Layouts/DataCreditLayout';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import { BROWSE_PATH } from '@/router/routeConsts';
@@ -236,6 +238,10 @@ export default {
     author: Object,
   },
   computed: {
+    ...mapGetters({
+      asciiDead: `${METADATA_NAMESPACE}/asciiDead`,
+      authorPassedInfo: `${METADATA_NAMESPACE}/authorPassedInfo`,
+    }),
     dark() {
       return this.dataCreditLevel === 3;
     },
@@ -333,7 +339,7 @@ export default {
     },
     authorIsDead() {
       return this.author.fullName ? this.author.fullName.match(this.asciiDead) : false;
-    }
+    },
   },
   methods: {
     isOrcId(id) {
@@ -391,8 +397,6 @@ export default {
     infosExpanded: false,
     darkColor: '#231F20',
     whiteColor: '#EFEFEF',
-    asciiDead: '&#8224;',
-    authorPassedInfo: 'Sadly this author has passed away.',
   }),
 };
 </script>
