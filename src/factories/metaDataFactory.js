@@ -672,7 +672,7 @@ export function createAuthors(dataset) {
   return null;
 }
 
-export function extractAuthors(datasets) {
+export function extractAuthorsMap(datasets) {
   if (!datasets) { return null; }
 
   const authorMap = {};

@@ -49,6 +49,7 @@ import {
   enhanceMetadataEntry,
   enhanceTags,
   createLocation,
+  extractAuthorsMap,
 } from '@/factories/metaDataFactory';
 import { solrResultToCKANJSON } from '@/factories/apiFactory';
 
@@ -62,8 +63,6 @@ function enhanceMetadatas(store, datasets) {
   const { cardBGImages } = store.getters;
   const categoryCards = store.getters[`${METADATA_NAMESPACE}/categoryCards`];
   const enhancedContent = {};
-
-  // enhanceMetadatas.authors = metaDataFactory.extractAuthors(datasets);
 
   for (let i = 0; i < datasets.length; i++) {
     let dataset = datasets[i];
@@ -140,6 +139,7 @@ export default {
   },
   [BULK_LOAD_METADATAS_CONTENT_SUCCESS](state, payload) {
     state.metadatasContent = enhanceMetadatas(this, payload);
+    state.authorsMap = extractAuthorsMap(payload);
 
     state.metadatasContentOK = true;
     state.loadingMetadatasContent = false;

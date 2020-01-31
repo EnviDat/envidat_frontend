@@ -10,7 +10,7 @@ import {
   createResource,
   enhanceTags,
   createAuthors,
-  extractAuthors,
+  extractAuthorsMap,
   getFullAuthorsFromDataset,
 } from '@/factories/metaDataFactory';
 
@@ -276,16 +276,16 @@ describe('metaDataFactory - createAuthors', () => {
   });
 });
 
-describe('metaDataFactory - extractAuthors', () => {
+describe('metaDataFactory - ', () => {
   it('empty', () => {
-    const authorMap = extractAuthors(undefined);
+    const authorMap = extractAuthorsMap(undefined);
     expect(authorMap).toBeNull();
   });
 
   it('with datasets', () => {
     const datasets = packagelist.result;
 
-    const authorMap = extractAuthors(datasets);
+    const authorMap = extractAuthorsMap(datasets);
 
     expect(authorMap).toBeDefined();
 
@@ -314,7 +314,7 @@ describe('metaDataFactory - getFullAuthorsFromDataset', () => {
 
   it('with datasets', () => {
     const datasets = packagelist.result;
-    const authorMap = extractAuthors(datasets);
+    const authorMap = (datasets);
 
     expect(authorMap).toBeDefined();
 
