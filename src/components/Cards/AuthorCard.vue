@@ -32,7 +32,7 @@
                               :iconColor="this.dark ? whiteColor : darkColor"
                               :dark="!dark" />
 
-        <v-container px-0 py-3 >
+        <v-container px-0 pt-3 pb-0 >
           <v-layout row wrap
                     align-center
                     justify-space-between >
@@ -43,23 +43,22 @@
             </v-flex>
 
             <v-flex shrink py-0>
-              <div :style="`background-color: ${!this.dark ? darkColor : whiteColor}; font-size: 18px !important`"
-                    class="dataCreditScore ">
-
-                <div :style="smallCountStyling"
-                    :class="!this.dark ? 'white--text' : 'black--text'" >
-                  {{ author.datasetCount }}
-                </div>
-              </div>
-            </v-flex>
-
-            <v-flex shrink py-0>
               <base-icon-button class="ma-0"
                                 material-icon-name="search"
                                 :iconColor="dark ? 'white' : 'black'"
-                                color="transparent"
+                                :outlined="dark"
+                                :color="dark ? 'white' : 'transparent'"
                                 :tooltipText="`Search for the datasets of ${author.firstName} ${author.lastName}`"
                                 @clicked="catchSearchAuthor" />
+
+              <v-badge color="highlight"
+                        overlap
+                        style="top: -25px; right: -2px;">
+                <span slot="badge"
+                      :class="dark ? 'white--text' : 'black--text'" >
+                      {{ author.datasetCount }}
+                </span>
+              </v-badge>
 
             </v-flex>
           </v-layout>
@@ -67,7 +66,7 @@
       </v-card-title>
 
 
-      <v-card-title class="pl-2 pr-0" >
+      <v-card-title class="pl-2 py-2 pr-0" >
       <v-container pa-0 >
 
         <v-layout row wrap
@@ -93,7 +92,7 @@
       </v-container>
       </v-card-title>
 
-      <v-card-title class="py-0 px-2">
+      <v-card-title class="pt-2 pb-0 px-2">
         <v-container pa-0 grid-list-xs>
           <v-layout row
                     align-center
@@ -106,9 +105,10 @@
             <v-flex shrink>
               <v-btn flat icon
                       :color="dark ? 'white' : 'black'"
+                      :outline="dark"
                       class="ma-0"
                       @click="infosExpanded = !infosExpanded">
-                <v-icon> {{ infosExpanded ? 'arrow_drop_down' : 'arrow_left' }}</v-icon>
+                <v-icon> {{ infosExpanded ? 'keyboard_arrow_down' : 'keyboard_arrow_left' }}</v-icon>
               </v-btn>
             </v-flex>
           </v-layout>
@@ -297,25 +297,17 @@ export default {
       }
       
       if (this.dataCreditLevel === 1) {
-        color = '#e00000'; // #e00000
-        toColor = '#ff3d3d'; // #ff0000
+        color = '#e02a00FF'; // #e00000
+        toColor = '#ff3d3d64'; // #ff0000
       } else if (this.dataCreditLevel === 2) {
-        color = '#ffac05';
-        toColor = '#ffd700';
+        color = '#ffac05FF';
+        toColor = '#ffac0596';
       } else if (this.dataCreditLevel === 3) {
         return 'background-color: #111';
       }
 
-      // return this.bottomToTopStyle('100%', color, 'gold');
       return `background-image: linear-gradient(45deg, ${color} 10%, ${toColor} 90%);
               background-position: center, center; background-size: cover;`;
-
-      // const gradient = this.dark ? this.blackTopToBottom : this.whiteTopToBottom;
-
-      // return `background-image: linear-gradient(0deg, ${gradient});
-      //         background-position: center, center; background-size: cover;
-      //         background-repeat: initial;
-      //         z-index: 0;`;
     },
   },
   methods: {
@@ -356,20 +348,9 @@ export default {
       const width = '1';
       /* eslint-disable prefer-template */
       let grd = 'height: ' + height + '%;border-width: ' + width + 'px; border-style: solid;';
-      // grd += ''
-      //   -webkit-border-image:
-      //     -webkit-gradient(linear, 0 100%, 0 0, from(${fromColor}), to(transparent) 1 100%;
-      //   -webkit-border-image:
-      //     -webkit-linear-gradient(bottom, ${fromColor}, transparent) 1 100%;
-      //   -moz-border-image:
-      //     -moz-linear-gradient(bottom, ${fromColor}, transparent) 1 100%;
-      //   -o-border-image:
-      //     -o-linear-gradient(bottom, ${fromColor}, transparent) 1 100%;
-        // border-image:
-        //   linear-gradient(to top, ${fromColor}, transparent) 1 100%;`;
       grd += 'border-image: ';
       grd += 'linear-gradient(to top, ' + fromColor + ' , ' + toColor + ') 1 ' + toPct + ';';
-      // console.log(grd);
+
       return grd;
     },
   },
