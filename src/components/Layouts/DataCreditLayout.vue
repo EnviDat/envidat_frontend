@@ -9,31 +9,30 @@
 
       <v-flex v-for="(creditName, index) in dataCreditNames"
               :key="index"
-              shrink px-1 pb-5
+              shrink px-1
               v-show="showZero || (!showZero && dataCreditCounts[index] > 0)">
 
-        <v-layout column
-                  align-center >
+        <v-layout column >
 
           <v-flex py-0 >
             <v-tooltip bottom>
-              <v-badge slot="activator"
-                        class="dataCreditBadge"
-                        bottom
-                        :class="!dark ? 'white--text' : 'black--text'"
-                        overlap
+              <v-icon slot="activator"
+                      dark :color="iconColor"
+                      :class="!dark ? 'white--text' : 'black--text'" >
+                {{ iconLookup(creditName) }}
+              </v-icon>
+
+              {{ creditName }}
+            </v-tooltip>
+          </v-flex>
+
+          <v-flex pt-0 >
+              <v-badge :class="!dark ? 'white--text' : 'black--text'"
                         color="highlight">
                 <span slot="badge" >
                       {{ dataCreditCounts[index] }}
                 </span>
-                <v-icon dark :color="iconColor"
-                        :class="!dark ? 'white--text' : 'black--text'" >
-                  {{ iconLookup(creditName) }}
-                </v-icon>
               </v-badge>
-
-              {{ creditName }}
-            </v-tooltip>
           </v-flex>
 
         </v-layout>

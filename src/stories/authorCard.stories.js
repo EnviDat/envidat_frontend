@@ -57,6 +57,10 @@ const stories = storiesOf('3 Cards | Author Cards', module)
           <author-card :author="author" />
         </v-flex>
 
+        <v-flex xs12 pt-5 >
+          <author-card :author="author" />
+        </v-flex>
+
       </v-layout>
     </v-container>
     `,

@@ -4,35 +4,36 @@
             @click.native="cardClick" >
 
       <v-card-title class="px-2 pb-5">
-        <v-container pa-0 grid-list-xs>
-          <v-layout row wrap>
+        <v-layout row wrap>
 
-            <v-flex xs12 py-0 >
-              <div class="authorTitle"
-                    :class="dark ? 'white--text' : 'black--text'" >
-                {{ author.firstName }}
-              </div>
-            </v-flex>
+          <v-flex xs12 py-0 >
+            <div class="authorTitle"
+                  :class="dark ? 'white--text' : 'black--text'" >
+              {{ author.firstName }}
+            </div>
+          </v-flex>
 
-            <v-flex xs12 py-0>
-              <div class="authorTitle"
-                    :class="dark ? 'white--text' : 'black--text'" >
-                {{ author.lastName }}
-              </div>
-            </v-flex>
+          <v-flex xs12 py-0>
+            <div class="authorTitle"
+                  :class="dark ? 'white--text' : 'black--text'" >
+              {{ author.lastName }}
+            </div>
+          </v-flex>
 
-          </v-layout>
-        </v-container>
+        </v-layout>
       </v-card-title>
 
-      <v-card-title class="py-0 px-2">
+      <v-card-title class="py-1 px-2">
         <data-credit-layout v-if="author.dataCredit"
                               class="pa-0"
                               :dataCredit="author.dataCredit"
                               :iconColor="this.dark ? whiteColor : darkColor"
                               :dark="!dark" />
 
-        <v-container px-0 pt-3 pb-0 >
+      </v-card-title>
+
+      <v-card-title class="py-1 px-2">
+        <v-container pa-0 >
           <v-layout row wrap
                     align-center
                     justify-space-between >
@@ -66,16 +67,20 @@
       </v-card-title>
 
 
-      <v-card-title class="pl-2 py-2 pr-0" >
-      <v-container pa-0 >
+      <v-card-title class="pl-2 py-1 pr-0" >
 
         <v-layout row wrap
                   justify-space-between
                   align-center >
 
-          <v-flex xs6
+          <v-flex shrink
                   :class="dark ? 'white--text' : 'black--text'" >
             {{ dataScoreLabel }}
+          </v-flex>
+
+          <v-flex grow
+                  :class="dark ? 'white--text' : 'black--text'" >
+            <v-icon>info</v-icon>
           </v-flex>
 
           <v-flex shrink>
@@ -89,96 +94,90 @@
             </div>
           </v-flex>
         </v-layout>
-      </v-container>
       </v-card-title>
 
       <v-card-title class="pt-2 pb-0 px-2">
-        <v-container pa-0 grid-list-xs>
-          <v-layout row
-                    align-center
-                    pa-0 >
+        <v-layout row
+                  align-center
+                  pa-0 >
 
-            <v-flex grow @click="infosExpanded = !infosExpanded">
-              <v-divider :dark="dark" />
-            </v-flex>
-
-            <v-flex shrink>
-              <v-btn flat icon
-                      :color="dark ? 'white' : 'black'"
-                      :outline="dark"
-                      class="ma-0"
-                      @click="infosExpanded = !infosExpanded">
-                <v-icon> {{ infosExpanded ? 'keyboard_arrow_down' : 'keyboard_arrow_left' }}</v-icon>
-              </v-btn>
-            </v-flex>
-          </v-layout>
-        </v-container>
-      <!-- </v-card-title> -->
-
-      <!-- <v-card-text v-if="infosExpanded"
-                    class="py-0 px-2"> -->
-      <v-container v-if="infosExpanded"
-                    grid-list-xs align-end
-                    pa-0 >
-        <v-layout row wrap>
-
-          <v-flex xs12 v-if="author.email">
-            <v-layout column>
-              <v-flex xs12 py-0
-                      class="authorInfoLabel"
-                      :class="dark ? 'white--text' : 'black--text'" >
-                {{ emailLabel }}
-              </v-flex>
-
-              <v-flex xs12 py-0
-                      class="authorInfo"
-                      :class="dark ? 'white--text' : 'black--text'" >
-                {{ author.email }}
-              </v-flex>
-            </v-layout>
+          <v-flex grow @click="infosExpanded = !infosExpanded">
+            <v-divider :dark="dark" />
           </v-flex>
 
-          <v-flex xs12 v-if="author.id && author.id.identifier">
-            <v-layout column>
-              <v-flex xs12 py-0
-                      class="authorInfoLabel"
-                      :class="dark ? 'white--text' : 'black--text'" >
-                {{ author.id.type ? author.id.type : idLabel }}
-              </v-flex>
-
-              <v-flex xs12 py-0
-                      class="authorInfo"
-                      :class="dark ? 'white--text' : 'black--text'" >
-
-                <a v-if="(author.id.type && author.id.type === 'orcid') || isOrcId(formatIdentifier(author.id.identifier))"
-                    :href="`https://orcid.org/${formatIdentifier(author.id.identifier)}`"
-                    target="_blank" >
-                    {{ formatIdentifier(author.id.identifier) }}
-                </a>
-                <div v-else>{{ formatIdentifier(author.id.identifier) }}</div>
-
-              </v-flex>
-            </v-layout>
-          </v-flex>
-
-          <v-flex xs12 v-if="author.affiliation">
-            <v-layout column>
-              <v-flex xs12 py-0
-                      class="authorInfoLabel"
-                      :class="dark ? 'white--text' : 'black--text'" >
-                {{ affiliationLabel }}
-              </v-flex>
-
-              <v-flex xs12 py-0
-                      class="authorInfo"
-                      :class="dark ? 'white--text' : 'black--text'" >
-                {{ author.affiliation }}
-              </v-flex>
-            </v-layout>
+          <v-flex shrink>
+            <v-btn flat icon
+                    :color="dark ? 'white' : 'black'"
+                    :outline="dark"
+                    class="ma-0"
+                    @click="infosExpanded = !infosExpanded">
+              <v-icon> {{ infosExpanded ? 'keyboard_arrow_down' : 'keyboard_arrow_left' }}</v-icon>
+            </v-btn>
           </v-flex>
         </v-layout>
 
-      </v-container>
+        <v-container v-if="infosExpanded"
+                      grid-list-lg align-end
+                      py-2 px-0 >
+          <v-layout row wrap>
+
+            <v-flex xs6 v-if="author.email">
+              <v-layout column>
+                <v-flex xs12 py-0
+                        class="authorInfoLabel"
+                        :class="dark ? 'white--text' : 'black--text'" >
+                  {{ emailLabel }}
+                </v-flex>
+
+                <v-flex xs12 py-0
+                        class="authorInfo"
+                        :class="dark ? 'white--text' : 'black--text'" >
+                  {{ author.email }}
+                </v-flex>
+              </v-layout>
+            </v-flex>
+
+            <v-flex xs6 v-if="author.id && author.id.identifier">
+              <v-layout column>
+                <v-flex xs12 py-0
+                        class="authorInfoLabel"
+                        :class="dark ? 'white--text' : 'black--text'" >
+                  {{ author.id.type ? author.id.type : idLabel }}
+                </v-flex>
+
+                <v-flex xs12 py-0
+                        class="authorInfo"
+                        :class="dark ? 'white--text' : 'black--text'" >
+
+                  <a v-if="(author.id.type && author.id.type === 'orcid') || isOrcId(formatIdentifier(author.id.identifier))"
+                      :href="`https://orcid.org/${formatIdentifier(author.id.identifier)}`"
+                      target="_blank" >
+                      {{ formatIdentifier(author.id.identifier) }}
+                  </a>
+                  <div v-else>{{ formatIdentifier(author.id.identifier) }}</div>
+
+                </v-flex>
+              </v-layout>
+            </v-flex>
+
+            <v-flex xs6 v-if="author.affiliation">
+              <v-layout column>
+                <v-flex xs12 py-0
+                        class="authorInfoLabel"
+                        :class="dark ? 'white--text' : 'black--text'" >
+                  {{ affiliationLabel }}
+                </v-flex>
+
+                <v-flex xs12 py-0
+                        class="authorInfo"
+                        :class="dark ? 'white--text' : 'black--text'" >
+                  {{ author.affiliation }}
+                </v-flex>
+              </v-layout>
+            </v-flex>
+          </v-layout>
+
+        </v-container>
       </v-card-title>
 
 
