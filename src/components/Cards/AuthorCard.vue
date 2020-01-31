@@ -78,9 +78,15 @@
             {{ dataScoreLabel }}
           </v-flex>
 
-          <v-flex grow
-                  :class="dark ? 'white--text' : 'black--text'" >
-            <v-icon>info</v-icon>
+          <v-flex grow >
+            <v-tooltip bottom>
+              <v-icon slot="activator"
+                      dark
+                      :class="dark ? 'white--text' : 'black--text'">
+                info_outline
+              </v-icon>
+              {{ dataCreditScoreInfo }}
+            </v-tooltip>
           </v-flex>
 
           <v-flex shrink>
@@ -356,6 +362,7 @@ export default {
   data: () => ({
     dataScoreLabel: 'Data Credit Score',
     dataCountLabel: 'Published datasets',
+    dataCreditScoreInfo: 'The Data Credit Score represents the engangement of an author to declared how on they were involved to a certain publish research dataset.',
     emailLabel: 'Email',
     affiliationLabel: 'Affiliation',
     idLabel: 'Identifier',
