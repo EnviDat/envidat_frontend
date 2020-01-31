@@ -1,4 +1,9 @@
 language: node_js
+# safelist
+branches:
+  only:
+  - master
+  - develop
 node_js:
   - "12"
 before_install:
