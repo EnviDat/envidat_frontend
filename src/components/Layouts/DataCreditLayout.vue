@@ -3,7 +3,7 @@
     <v-layout row
               wrap >
 
-      <v-flex xs12>
+      <v-flex xs12 v-show="hasDataCreditCounts">
         {{ label }}
       </v-flex>
 
@@ -80,6 +80,16 @@ export default {
 
       return counts;
     },
+    hasDataCreditCounts() {
+      for (let i = 0; i < this.dataCreditCounts.length; i++) {
+        const count = this.dataCreditCounts[i];
+        if (count > 0) {
+          return true;
+        }
+      }
+
+      return false;
+    }
   },
   methods: {
     iconLookup(creditName) {
