@@ -3,9 +3,13 @@
     <v-layout row
               wrap >
 
+      <v-flex xs12>
+        {{ label }}
+      </v-flex>
+
       <v-flex v-for="(creditName, index) in dataCreditNames"
               :key="index"
-              shrink pb-5
+              shrink px-1 pb-5
               v-show="showZero || (!showZero && dataCreditCounts[index] > 0)">
 
         <v-layout column
@@ -51,6 +55,10 @@ export default {
     showZero: {
       type: Boolean,
       default: false,
+    },
+    label: {
+      type: String,
+      default: 'Data Credit Badges',
     },
   },
   computed: {

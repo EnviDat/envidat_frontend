@@ -20,7 +20,6 @@ const stories = storiesOf('3 Cards | Author Cards', module)
     components: { AuthorCard },
     props: {
       author: {
-        // type: Object,
         default: {
           firstName: text('firstName', 'Felix'),
           lastName: text('lastName', 'Gugerli'),
@@ -39,28 +38,6 @@ const stories = storiesOf('3 Cards | Author Cards', module)
             publication: number('publication', 5),
             supervision: number('supervision', 6),
           },
-          // "lastName": "Gugerli",
-          // "fullName": "Felix Gugerli",
-          // "datasetCount": 1,
-          // "affiliation": "WSL",
-          // "id": {
-          //   "identifier": "0000-0003-3878-1845"
-          // },
-          // "email": "felix.gugerli@wsl.ch",
-          // "dataCredit": {
-          //   "collection": 1,
-          //   "validation": 1,
-          //   "curation": 1,
-          //   "software": 1,
-          //   "publication": 1,
-          //   "supervision": 1
-          // },
-          // isDisabled: {
-          //   default: boolean('Disabled', true)
-          // },
-          // buttonText: {
-          //   default: text('buttonText', 'SEARCH')
-          // },
         },
       },
     },    
@@ -68,7 +45,15 @@ const stories = storiesOf('3 Cards | Author Cards', module)
     <v-container grid-list-lg fluid pa-0>
       <v-layout row wrap>
 
-        <v-flex pt-5 >
+        <v-flex xs4 pt-5 >
+          <author-card :author="author" />
+        </v-flex>
+
+        <v-flex xs4 pt-5 >
+          <author-card :author="author" />
+        </v-flex>
+
+        <v-flex xs6 pt-5 >
           <author-card :author="author" />
         </v-flex>
 
@@ -80,11 +65,5 @@ const stories = storiesOf('3 Cards | Author Cards', module)
       authorCollection,
     }),
   }));
-
-{ /* <v-flex xs4
-  v-for="(author, index) in authors()"
-  :key="index" >
-  <author-card :author="author" />
-</v-flex> */ }
 
 stories.addDecorator(withKnobs);

@@ -3,21 +3,7 @@
             :style="dynamicCardBackground"
             @click.native="cardClick" >
 
-            <!-- :style="`background-color: ${this.dark ? darkColor : whiteColor};`" -->
-
-      <v-card-title class="pa-0"
-                    style="position: absolute; right: 15px; top: 15px;">
-        <div :style="`background-color: ${!this.dark ? darkColor : whiteColor};`"
-              class="dataCreditScore elevation-5">
-
-          <div :style="bigCountStyling"
-              :class="!this.dark ? 'white--text' : 'black--text'" >
-            {{ dataCreditScore }}
-          </div>
-        </div>
-      </v-card-title>
-
-      <v-card-title class="px-2 pt-0 pb-5">
+      <v-card-title class="px-2 pb-5">
         <v-container pa-0 grid-list-xs>
           <v-layout row wrap>
 
@@ -46,41 +32,65 @@
                               :iconColor="this.dark ? whiteColor : darkColor"
                               :dark="!dark" />
 
-        <v-container pa-0 pt-2 grid-list-xs>
-          <v-layout column px-0 >
+        <v-container px-0 py-3 >
+          <v-layout row wrap
+                    align-center
+                    justify-space-between >
 
-            <v-flex xs12>
-              <v-layout row align-center>
-                <v-flex grow
-                        class="subheading"
-                        :class="dark ? 'white--text' : 'black--text'" >
-                  {{ dataCountLabel }}
-                </v-flex>
-
-                <v-flex shrink>
-                  <base-icon-button materialIconName="search"
-                                    :outlined="false"
-                                    color="transparent"
-                                    :tooltipText="`See all the dataset of ${author.firstName} ${author.lastName}`"
-                                    @clicked="catchSearchAuthor" />
-                </v-flex>
-
-                <v-flex shrink>
-                  <div :style="`background-color: ${!this.dark ? darkColor : whiteColor}; font-size: 18px !important`"
-                        class="dataCreditScore ">
-
-                    <div :style="smallCountStyling"
-                        :class="!this.dark ? 'white--text' : 'black--text'" >
-                      {{ author.datasetCount }}
-                    </div>
-                  </div>
-                </v-flex>
-
-              </v-layout>
+            <v-flex xs5 py-0
+                    :class="dark ? 'white--text' : 'black--text'" >
+              {{ dataCountLabel }} 
             </v-flex>
 
+            <v-flex shrink py-0>
+              <div :style="`background-color: ${!this.dark ? darkColor : whiteColor}; font-size: 18px !important`"
+                    class="dataCreditScore ">
+
+                <div :style="smallCountStyling"
+                    :class="!this.dark ? 'white--text' : 'black--text'" >
+                  {{ author.datasetCount }}
+                </div>
+              </div>
+            </v-flex>
+
+            <v-flex shrink py-0>
+              <base-icon-button class="ma-0"
+                                material-icon-name="search"
+                                :iconColor="dark ? 'white' : 'black'"
+                                color="transparent"
+                                :tooltipText="`Search for the datasets of ${author.firstName} ${author.lastName}`"
+                                @clicked="catchSearchAuthor" />
+
+            </v-flex>
           </v-layout>
         </v-container>
+      </v-card-title>
+
+
+      <v-card-title class="pl-2 pr-0" >
+      <v-container pa-0 >
+
+        <v-layout row wrap
+                  justify-space-between
+                  align-center >
+
+          <v-flex xs6
+                  :class="dark ? 'white--text' : 'black--text'" >
+            {{ dataScoreLabel }}
+          </v-flex>
+
+          <v-flex shrink>
+            <div :style="`background-color: ${!this.dark ? darkColor : whiteColor};`"
+                  class="dataCreditScore elevation-5">
+
+              <div :style="bigCountStyling"
+                  :class="!this.dark ? 'white--text' : 'black--text'" >
+                {{ dataCreditScore }}
+              </div>
+            </div>
+          </v-flex>
+        </v-layout>
+      </v-container>
       </v-card-title>
 
       <v-card-title class="py-0 px-2">
@@ -103,11 +113,12 @@
             </v-flex>
           </v-layout>
         </v-container>
-      </v-card-title>
+      <!-- </v-card-title> -->
 
-      <v-card-text v-if="infosExpanded"
-                    class="py-0 px-2">
-      <v-container grid-list-xs align-content-end align-end
+      <!-- <v-card-text v-if="infosExpanded"
+                    class="py-0 px-2"> -->
+      <v-container v-if="infosExpanded"
+                    grid-list-xs align-end
                     pa-0 >
         <v-layout row wrap>
 
@@ -168,19 +179,19 @@
         </v-layout>
 
       </v-container>
-      </v-card-text>
+      </v-card-title>
 
 
-      <div v-if="dataCreditLevel === 1"
-            style="position: absolute; top: 0px; right: 20%;"
+      <div v-if="dataCreditLevel >= 1"
+            style="position: absolute; top: 0px; right: 18%;"
            :style="bottomToTopStyle(100, 'gold', 'red')" ></div>
 
-      <div v-if="dataCreditLevel === 2"
-            style="position: absolute; top: 0px; right: 15%;"
+      <div v-if="dataCreditLevel >= 2"
+            style="position: absolute; top: 0px; right: 12%;"
            :style="bottomToTopStyle(100, 'gold', 'red')" ></div>
 
-      <div v-if="dataCreditLevel === 3"
-            style="position: absolute; top: 0px; right: 10%;"
+      <div v-if="dataCreditLevel >= 3"
+            style="position: absolute; top: 0px; right: 6%;"
            :style="bottomToTopStyle(100, 'gold', 'red')" ></div>
     </v-card>
 
@@ -189,7 +200,7 @@
 
 <script>
 import DataCreditLayout from '@/components/Layouts/DataCreditLayout';
-import BaseIconButton from '../BaseElements/BaseIconButton';
+import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 // checkout skeleton
 // https://github.com/ToxicJojo/SkeletonPlaceholder
@@ -212,13 +223,13 @@ export default {
     dataCreditLevel() {
       let lvl = 0;
 
-      if (this.dataCreditScore > 20) {
+      if (this.dataCreditScore >= 20) {
         lvl = 1;
 
-        if (this.dataCreditScore > 40) {
+        if (this.dataCreditScore >= 40) {
           lvl = 2;
 
-          if (this.dataCreditScore > 60) {
+          if (this.dataCreditScore >= 60) {
             lvl = 3;
           }
         }
@@ -396,8 +407,8 @@ export default {
 
   .authorCard {
     border-radius: 20px;
-    min-width: 300px;
-    max-width: 400px;
+    /* min-width: 300px; */
+    /* max-width: 400px; */
     /* min-height: 350px; */
   }
 
@@ -409,6 +420,10 @@ export default {
     font-size: 34px !important;
     font-weight: 700 !important;
     font-family: 'Raleway', serif !important;
+  }
+
+  .subheading {
+    font-size: 14px !important;
   }
 
   .authorInfoLabel {
