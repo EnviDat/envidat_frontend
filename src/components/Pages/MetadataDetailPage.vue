@@ -159,7 +159,15 @@ export default {
       iconImages: 'iconImages',
       cardBGImages: 'cardBGImages',
       appScrollPosition: 'appScrollPosition',
+      asciiDead: `${METADATA_NAMESPACE}/asciiDead`,
+      authorPassedInfo: `${METADATA_NAMESPACE}/authorPassedInfo`,
     }),
+    authorDeadInfo() {
+      return {
+        asciiDead: this.asciiDead,
+        authorPassedInfo: this.authorPassedInfo,
+      };
+    },
     /**
      * @returns {String} the metadataId from the route
      */
@@ -239,7 +247,7 @@ export default {
 
       if (currentContent && currentContent.title !== undefined) {
 
-        this.header = createHeader(currentContent, this.$vuetify.breakpoint.smAndDown);
+        this.header = createHeader(currentContent, this.$vuetify.breakpoint.smAndDown, this.authorDeadInfo);
 
         this.body = createBody(currentContent);
 

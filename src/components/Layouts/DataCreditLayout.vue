@@ -89,7 +89,7 @@ export default {
       }
 
       return false;
-    }
+    },
   },
   methods: {
     iconLookup(creditName) {

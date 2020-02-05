@@ -40,22 +40,18 @@
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
-import { mapGetters } from 'vuex';
-import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
 
 export default {
   props: {
     name: String,
     tooltipText: String,
     highlighted: Boolean,
+    asciiDead: String,
+    authorPassedInfo: String,
   },
   computed: {
-    ...mapGetters({
-      asciiDead: `${METADATA_NAMESPACE}/asciiDead`,
-      authorPassedInfo: `${METADATA_NAMESPACE}/authorPassedInfo`,
-    }),
     authorIsDead() {
-      return this.name ? this.name.includes(this.asciiDead) : false;
+      return this.asciiDead && this.name ? this.name.includes(this.asciiDead) : false;
     },
     authorName() {
       return this.authorIsDead ? this.name.replace(`(${this.asciiDead})`, '') : this.name;

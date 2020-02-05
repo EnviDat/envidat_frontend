@@ -76,6 +76,8 @@
                                   :key="author.name"
                                   :name="authorName(author)"
                                   :tooltipText="authorToolTipText"
+                                  :asciiDead="asciiDead"
+                                  :authorPassedInfo="authorPassedInfo"
                                   @clicked="catchAuthorClicked($event, authorName(author))" />
               </v-layout>
             </v-flex>
@@ -255,6 +257,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    authorDeadInfo: {
+      type: Object,
+      default: null,
+    },
   },
   data: () => ({
     showTagsExpanded: false,
@@ -266,6 +272,12 @@ export default {
     NotFoundTitle: 'No metadata found for',
   }),
   computed: {
+    asciiDead() {
+      return this.authorDeadInfo && this.authorDeadInfo.asciiDead ? this.authorDeadInfo.asciiDead : null;
+    },
+    authorPassedInfo() {
+      return this.authorDeadInfo && this.authorDeadInfo.authorPassedInfo ? this.authorDeadInfo.authorPassedInfo : null;
+    },
     maxTagsReached() {
       return this.tags ? this.tags.length >= this.maxTags : false;
     },
