@@ -152,7 +152,7 @@ export function createLicense(dataset) {
   };
 }
 
-export function createHeader(dataset, smallScreen) {
+export function createHeader(dataset, smallScreen, authorDeadInfo = null) {
   if (!dataset) {
     return null;
   }
@@ -186,6 +186,7 @@ export function createHeader(dataset, smallScreen) {
     titleImg: dataset.titleImg,
     maxTags: smallScreen ? 5 : 12,
     authors,
+    authorDeadInfo,
   };
 }
 

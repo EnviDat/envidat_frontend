@@ -4,20 +4,20 @@
       Author Details
     </v-card-title>
 
-    <v-container v-if="authors && authors.length > 0"
-                fluid grid-list-xs grid-list-md
+    <v-container fluid
+                grid-list-md
                 pa-3 >
 
-      <!-- <v-layout v-if="showPlaceholder"
+      <v-layout v-if="showPlaceholder"
                   row wrap >
         <v-flex v-for="n in 2"
                   :key="n"
                   xs12 sm6 >
-          <resource-card-placeholder :two-column-layout="twoColumnLayout" />
+          <author-card-placeholder />
         </v-flex>
-      </v-layout> -->
+      </v-layout>
 
-      <v-layout v-if="!showPlaceholder"
+      <v-layout v-if="!showPlaceholder && authors && authors.length > 0"
                 row wrap >
 
         <v-flex v-for="author in authors"
@@ -51,12 +51,12 @@
 */
 
 import AuthorCard from '@/components/Cards/AuthorCard';
-// import ResourceCardPlaceholder from '@/components/Cards/ResourceCardPlaceholder';
+import AuthorCardPlaceholder from '@/components/Cards/AuthorCardPlaceholder';
 
 export default {
   components: {
     AuthorCard,
-    // ResourceCardPlaceholder,
+    AuthorCardPlaceholder,
   },
   props: {
     genericProps: Object,

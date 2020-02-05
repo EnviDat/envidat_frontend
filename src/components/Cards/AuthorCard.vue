@@ -220,8 +220,6 @@
 
 
 <script>
-import { mapGetters } from 'vuex';
-import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
 import DataCreditLayout from '@/components/Layouts/DataCreditLayout';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import { BROWSE_PATH } from '@/router/routeConsts';
@@ -236,12 +234,10 @@ export default {
   },
   props: {
     author: Object,
+    asciiDead: String,
+    authorPassedInfo: String,
   },
   computed: {
-    ...mapGetters({
-      asciiDead: `${METADATA_NAMESPACE}/asciiDead`,
-      authorPassedInfo: `${METADATA_NAMESPACE}/authorPassedInfo`,
-    }),
     dark() {
       return this.dataCreditLevel === 3;
     },
@@ -271,18 +267,18 @@ export default {
       if (this.author) {
         // a dataset counts two points
         score = this.author.datasetCount * 2;
-      }
 
-      if (this.author.dataCredit) {
-        const counts = Object.values(this.author.dataCredit);
+        if (this.author.dataCredit) {
+          const counts = Object.values(this.author.dataCredit);
 
-        for (let i = 0; i < counts.length; i++) {
-          const creditCount = counts[i];
-          score += creditCount;
-          if (creditCount > 0) {
-            // add +4 for every dataCredit made so it gives
-            // least 5 points for each datacredit
-            score += 4;
+          for (let i = 0; i < counts.length; i++) {
+            const creditCount = counts[i];
+            score += creditCount;
+            if (creditCount > 0) {
+              // add +4 for every dataCredit made so it gives
+              // least 5 points for each datacredit
+              score += 4;
+            }
           }
         }
       }
@@ -338,7 +334,7 @@ export default {
               background-position: center, center; background-size: cover;`;
     },
     authorIsDead() {
-      return this.author.fullName ? this.author.fullName.match(this.asciiDead) : false;
+      return this.asciiDead && this.author.fullName ? this.author.fullName.match(this.asciiDead) : false;
     },
   },
   methods: {
