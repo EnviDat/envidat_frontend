@@ -3,7 +3,7 @@
             :style="dynamicCardBackground"
             @click.native="cardClick" >
 
-      <v-card-title class="px-2 pb-5">
+      <v-card-title class="px-2 pb-4">
         <v-layout row wrap>
 
           <v-flex grow py-0 >
@@ -34,12 +34,11 @@
             </div>
           </v-flex>
 
-
         </v-layout>
       </v-card-title>
 
       <v-card-title v-if="author.dataCredit"
-                    class="py-1 px-2">
+                    class="py-1 pb-2 px-2">
         <data-credit-layout class="pa-0"
                             :dataCredit="author.dataCredit"
                             :iconColor="this.dark ? whiteColor : darkColor"
@@ -47,7 +46,7 @@
 
       </v-card-title>
 
-      <v-card-title class="py-1 px-2">
+      <v-card-title class="py-2 px-2">
         <v-container pa-0 fluid>
           <v-layout row wrap
                     align-center
@@ -84,7 +83,7 @@
 
       <v-card-title class="pl-2 py-1 pr-0" >
 
-        <v-layout row wrap
+        <v-layout row
                   justify-space-between
                   align-center >
 
@@ -104,7 +103,7 @@
             </v-tooltip>
           </v-flex>
 
-          <v-flex shrink>
+          <v-flex shrink pa-0>
             <div :style="`background-color: ${!this.dark ? darkColor : whiteColor};`"
                   class="dataCreditScore elevation-5">
 
@@ -143,7 +142,7 @@
                       py-2 px-0 >
           <v-layout row wrap>
 
-            <v-flex xs6 v-if="author.email">
+            <v-flex shrink v-if="author.email">
               <v-layout column>
                 <v-flex xs12 py-0
                         class="authorInfoLabel"
@@ -159,7 +158,7 @@
               </v-layout>
             </v-flex>
 
-            <v-flex xs6 v-if="author.id && author.id.identifier">
+            <v-flex shrink v-if="author.id && author.id.identifier">
               <v-layout column>
                 <v-flex xs12 py-0
                         class="authorInfoLabel"
@@ -182,15 +181,15 @@
               </v-layout>
             </v-flex>
 
-            <v-flex xs6 v-if="author.affiliation">
+            <v-flex shrink v-if="author.affiliation">
               <v-layout column>
-                <v-flex xs12 py-0
+                <v-flex xs6 py-0
                         class="authorInfoLabel"
                         :class="dark ? 'white--text' : 'black--text'" >
                   {{ affiliationLabel }}
                 </v-flex>
 
-                <v-flex xs12 py-0
+                <v-flex xs6 py-0
                         class="authorInfo"
                         :class="dark ? 'white--text' : 'black--text'" >
                   {{ author.affiliation }}
