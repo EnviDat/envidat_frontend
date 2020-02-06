@@ -12,7 +12,17 @@
       <v-icon>account_circle</v-icon>
     </v-avatar>
 
-    {{ name }}
+    {{ authorName }}
+
+    <v-tooltip v-if="authorIsDead"
+                bottom>
+      <v-icon slot="activator"
+              small >
+        hourglass_empty
+      </v-icon>
+      {{ authorPassedInfo }}
+    </v-tooltip>
+
   </v-chip>
 
 </template>
@@ -30,13 +40,22 @@
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
+
 export default {
   props: {
     name: String,
     tooltipText: String,
     highlighted: Boolean,
+    asciiDead: String,
+    authorPassedInfo: String,
   },
   computed: {
+    authorIsDead() {
+      return this.asciiDead && this.name ? this.name.includes(this.asciiDead) : false;
+    },
+    authorName() {
+      return this.authorIsDead ? this.name.replace(`(${this.asciiDead})`, '') : this.name;
+    },
   },
   methods: {
     clicked: function clicked() {

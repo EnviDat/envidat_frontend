@@ -1,172 +1,217 @@
 <template>
     <v-card class="authorCard pa-3"
-            hover
-            :style="`background-color: ${this.dark ? darkColor : whiteColor};`"
-            min-height="350px"
-            max-width="400px"
+            :style="dynamicCardBackground"
             @click.native="cardClick" >
 
-      <v-card-title class="pa-3 justify-end">
-        <div :style="`background-color: ${!this.dark ? darkColor : whiteColor};`"
-              class="dataCreditScore elevation-5">
+      <v-card-title class="px-2 pb-4">
+        <v-layout row wrap>
 
-          <div :style="bigCountStyling"
-              :class="!this.dark ? 'white--text' : 'black--text'" >
-            {{ dataCreditScore }}
-          </div>
-        </div>
+          <v-flex grow py-0 >
+            <div class="authorTitle"
+                  :class="dark ? 'white--text' : 'black--text'" >
+              {{ author.firstName }}
+            </div>
+          </v-flex>
+
+          <v-flex v-if="authorIsDead"
+                  shrink py-0>
+
+            <v-tooltip bottom>
+              <v-icon slot="activator"
+                      dark
+                      :class="dark ? 'white--text' : 'black--text'">
+                hourglass_empty
+              </v-icon>
+              {{ authorPassedInfo }}
+            </v-tooltip>
+
+          </v-flex>
+
+          <v-flex xs12 py-0>
+            <div class="authorTitle"
+                  :class="dark ? 'white--text' : 'black--text'" >
+              {{ authorIsDead ? author.lastName.replace(`(${asciiDead})`, '') : author.lastName }}
+            </div>
+          </v-flex>
+
+        </v-layout>
       </v-card-title>
 
-      <v-card-title class="pt-5 pb-5">
-        <v-container pa-0 grid-list-xs>
-          <v-layout row wrap>
+      <v-card-title v-if="author.dataCredit"
+                    class="py-1 pb-2 px-2">
+        <data-credit-layout class="pa-0"
+                            :dataCredit="author.dataCredit"
+                            :iconColor="this.dark ? whiteColor : darkColor"
+                            :dark="!dark" />
 
-            <v-flex xs12 py-0 >
-              <div class="authorTitle"
+      </v-card-title>
+
+      <v-card-title class="py-2 px-2">
+        <v-container pa-0 fluid>
+          <v-layout row wrap
+                    align-center
+                    justify-space-between >
+
+            <v-flex xs5 py-0
                     :class="dark ? 'white--text' : 'black--text'" >
-                {{ author.firstName }}
-              </div>
+              {{ dataCountLabel }} 
             </v-flex>
 
-            <v-flex xs12 py-0>
-              <div class="authorTitle"
-                    :class="dark ? 'white--text' : 'black--text'" >
-                {{ author.lastName }}
-              </div>
-            </v-flex>
+            <v-flex shrink py-0>
+              <base-icon-button class="ma-0"
+                                material-icon-name="search"
+                                :iconColor="dark ? 'white' : 'black'"
+                                :outlined="dark"
+                                :color="dark ? 'white' : 'transparent'"
+                                :tooltipText="`Search for the datasets of ${author.firstName} ${author.lastName}`"
+                                @clicked="catchSearchAuthor(author.fullName)" />
 
+              <v-badge color="highlight"
+                        overlap
+                        style="top: -25px; right: -2px;">
+                <span slot="badge"
+                      :class="dark ? 'white--text' : 'black--text'" >
+                      {{ author.datasetCount }}
+                </span>
+              </v-badge>
+
+            </v-flex>
           </v-layout>
         </v-container>
       </v-card-title>
 
-      <v-card-title class="pa-0">
-        <data-credit-layout class="py-0"
-                             :dataCredit="author.dataCredit"
-                             :iconColor="!this.dark ? darkColor : whiteColor"
-                             :dark="dark" />
 
-        <v-container py-0 pt-2 grid-list-xs>
-          <v-layout column px-0 >
+      <v-card-title class="pl-2 py-1 pr-0" >
 
-            <v-flex xs12>
-              <v-layout row align-center>
-                <v-flex grow
-                        class="subheading"
+        <v-layout row
+                  justify-space-between
+                  align-center >
+
+          <v-flex shrink
+                  :class="dark ? 'white--text' : 'black--text'" >
+            {{ dataScoreLabel }}
+          </v-flex>
+
+          <v-flex grow >
+            <v-tooltip bottom>
+              <v-icon slot="activator"
+                      dark
+                      :class="dark ? 'white--text' : 'black--text'">
+                info_outline
+              </v-icon>
+              {{ dataCreditScoreInfo }}
+            </v-tooltip>
+          </v-flex>
+
+          <v-flex shrink pa-0>
+            <div :style="`background-color: ${!this.dark ? darkColor : whiteColor};`"
+                  class="dataCreditScore elevation-5">
+
+              <div :style="bigCountStyling"
+                  :class="!this.dark ? 'white--text' : 'black--text'" >
+                {{ dataCreditScore }}
+              </div>
+            </div>
+          </v-flex>
+        </v-layout>
+      </v-card-title>
+
+      <v-card-title class="pt-2 pb-0 px-2">
+        <v-layout row
+                  align-center
+                  pa-0 >
+
+          <v-flex grow @click="infosExpanded = !infosExpanded">
+            <v-divider :dark="dark" />
+          </v-flex>
+
+          <v-flex shrink>
+            <v-btn flat icon
+                    :color="dark ? 'white' : 'black'"
+                    :outline="dark"
+                    class="ma-0"
+                    @click="infosExpanded = !infosExpanded">
+              <v-icon> {{ infosExpanded ? 'keyboard_arrow_down' : 'keyboard_arrow_left' }}</v-icon>
+            </v-btn>
+          </v-flex>
+        </v-layout>
+
+        <v-container v-if="infosExpanded"
+                      fluid
+                      grid-list-lg align-end
+                      py-2 px-0 >
+          <v-layout row wrap>
+
+            <v-flex shrink v-if="author.email">
+              <v-layout column>
+                <v-flex xs12 py-0
+                        class="authorInfoLabel"
                         :class="dark ? 'white--text' : 'black--text'" >
-                  {{ dataCountLabel }}
+                  {{ emailLabel }}
                 </v-flex>
 
-                <v-flex shrink
-                        class="subheading">
+                <v-flex xs12 py-0
+                        class="authorInfo"
+                        :class="dark ? 'white--text' : 'black--text'" >
+                  {{ author.email }}
+                </v-flex>
+              </v-layout>
+            </v-flex>
 
-                  <div :style="`background-color: ${!this.dark ? darkColor : whiteColor}; font-size: 20px !important`"
-                        class="dataCreditScore ">
+            <v-flex shrink v-if="author.id && author.id.identifier">
+              <v-layout column>
+                <v-flex xs12 py-0
+                        class="authorInfoLabel"
+                        :class="dark ? 'white--text' : 'black--text'" >
+                  {{ author.id.type ? author.id.type : idLabel }}
+                </v-flex>
 
-                    <div :style="smallCountStyling"
-                        :class="!this.dark ? 'white--text' : 'black--text'" >
-                      {{ author.datasetCount }}
-                    </div>
-                  </div>
+                <v-flex xs12 py-0
+                        class="authorInfo"
+                        :class="dark ? 'white--text' : 'black--text'" >
+
+                  <a v-if="(author.id.type && author.id.type === 'orcid') || isOrcId(formatIdentifier(author.id.identifier))"
+                      :href="`https://orcid.org/${formatIdentifier(author.id.identifier)}`"
+                      target="_blank" >
+                      {{ formatIdentifier(author.id.identifier) }}
+                  </a>
+                  <div v-else>{{ formatIdentifier(author.id.identifier) }}</div>
 
                 </v-flex>
               </v-layout>
             </v-flex>
 
+            <v-flex shrink v-if="author.affiliation">
+              <v-layout column>
+                <v-flex xs6 py-0
+                        class="authorInfoLabel"
+                        :class="dark ? 'white--text' : 'black--text'" >
+                  {{ affiliationLabel }}
+                </v-flex>
+
+                <v-flex xs6 py-0
+                        class="authorInfo"
+                        :class="dark ? 'white--text' : 'black--text'" >
+                  {{ author.affiliation }}
+                </v-flex>
+              </v-layout>
+            </v-flex>
           </v-layout>
+
         </v-container>
       </v-card-title>
 
-      <v-layout row
-                align-center
-                px-2 >
-        <v-flex grow>
-          <v-divider dark ></v-divider>
-        </v-flex>
-        <v-flex shrink pa-0>
-          <v-btn flat icon
-                  color="amber"
-                  class="ma-0"
-                  @click="infosExpanded = !infosExpanded">
-            <v-icon> {{ infosExpanded ? 'arrow_drop_down' : 'arrow_left' }}</v-icon>
-          </v-btn>
-        </v-flex>
-      </v-layout>
 
-      <v-card-text v-if="infosExpanded" >
-      <v-container grid-list-xs align-content-end align-end
-                    pa-0 >
-        <v-layout row wrap>
-
-          <v-flex xs12 v-if="author.email">
-            <v-layout column>
-              <v-flex xs12 py-0
-                      class="authorInfoLabel"
-                      :class="dark ? 'white--text' : 'black--text'" >
-                {{ emailLabel }}
-              </v-flex>
-
-              <v-flex xs12 py-0
-                      class="authorInfo"
-                      :class="dark ? 'white--text' : 'black--text'" >
-                {{ author.email }}
-              </v-flex>
-            </v-layout>
-          </v-flex>
-
-          <v-flex xs12 v-if="author.id && author.id.identifier">
-            <v-layout column>
-              <v-flex xs12 py-0
-                      class="authorInfoLabel"
-                      :class="dark ? 'white--text' : 'black--text'" >
-                {{ author.id.type ? author.id.type : idLabel }}
-              </v-flex>
-
-              <v-flex xs12 py-0
-                      class="authorInfo"
-                      :class="dark ? 'white--text' : 'black--text'" >
-
-                <a v-if="(author.id.type && author.id.type === 'orcid') || isOrcId(formatIdentifier(author.id.identifier))"
-                    :href="`https://orcid.org/${formatIdentifier(author.id.identifier)}`"
-                    target="_blank" >
-                    {{ formatIdentifier(author.id.identifier) }}
-                </a>
-                <div v-else>{{ formatIdentifier(author.id.identifier) }}</div>
-
-              </v-flex>
-            </v-layout>
-          </v-flex>
-
-          <v-flex xs12 v-if="author.affiliation">
-            <v-layout column>
-              <v-flex xs12 py-0
-                      class="authorInfoLabel"
-                      :class="dark ? 'white--text' : 'black--text'" >
-                {{ affiliationLabel }}
-              </v-flex>
-
-              <v-flex xs12 py-0
-                      class="authorInfo"
-                      :class="dark ? 'white--text' : 'black--text'" >
-                {{ author.affiliation }}
-              </v-flex>
-            </v-layout>
-          </v-flex>
-        </v-layout>
-
-      </v-container>
-      </v-card-text>
-
-
-      <div v-if="author.datasetCount >= 10"
-            style="position: absolute; top: 0px; right: 20%;"
+      <div v-if="dataCreditLevel >= 1"
+            style="position: absolute; top: 0px; right: 18%;"
            :style="bottomToTopStyle(100, 'gold', 'red')" ></div>
 
-      <div v-if="author.datasetCount >= 30"
-            style="position: absolute; top: 0px; right: 15%;"
+      <div v-if="dataCreditLevel >= 2"
+            style="position: absolute; top: 0px; right: 12%;"
            :style="bottomToTopStyle(100, 'gold', 'red')" ></div>
 
-      <div v-if="author.datasetCount >= 60"
-            style="position: absolute; top: 0px; right: 10%;"
+      <div v-if="dataCreditLevel >= 3"
+            style="position: absolute; top: 0px; right: 6%;"
            :style="bottomToTopStyle(100, 'gold', 'red')" ></div>
     </v-card>
 
@@ -175,6 +220,8 @@
 
 <script>
 import DataCreditLayout from '@/components/Layouts/DataCreditLayout';
+import BaseIconButton from '@/components/BaseElements/BaseIconButton';
+import { BROWSE_PATH } from '@/router/routeConsts';
 
 // checkout skeleton
 // https://github.com/ToxicJojo/SkeletonPlaceholder
@@ -182,27 +229,57 @@ import DataCreditLayout from '@/components/Layouts/DataCreditLayout';
 export default {
   components: {
     DataCreditLayout,
+    BaseIconButton,
   },
   props: {
     author: Object,
+    asciiDead: String,
+    authorPassedInfo: String,
   },
   computed: {
     dark() {
-      return this.author.datasetCount > 5;
+      return this.dataCreditLevel === 3;
     },
     dataCredits() {
       return this.author && this.author.dataCredit ? Object.keys(this.author.dataCredit) : [];
+    },
+    dataCreditLevel() {
+      let lvl = 0;
+
+      if (this.dataCreditScore >= 20) {
+        lvl = 1;
+
+        if (this.dataCreditScore >= 40) {
+          lvl = 2;
+
+          if (this.dataCreditScore >= 60) {
+            lvl = 3;
+          }
+        }
+      }
+
+      return lvl;
     },
     dataCreditScore() {
       let score = 0;
 
       if (this.author) {
-        score = this.author.datasetCount;
-      }
+        // a dataset counts two points
+        score = this.author.datasetCount * 2;
 
-      if (this.dataCredits.length > 0) {
-        score += this.dataCredits.length;
-        score *= this.dataCredits.length;
+        if (this.author.dataCredit) {
+          const counts = Object.values(this.author.dataCredit);
+
+          for (let i = 0; i < counts.length; i++) {
+            const creditCount = counts[i];
+            score += creditCount;
+            if (creditCount > 0) {
+              // add +4 for every dataCredit made so it gives
+              // least 5 points for each datacredit
+              score += 4;
+            }
+          }
+        }
       }
 
       return score;
@@ -217,7 +294,7 @@ export default {
       return style;
     },
     smallCountStyling() {
-      let style = `width: ${this.dataCreditSize * 0.65}px; height: ${this.dataCreditSize * 0.65}px;`;
+      let style = `width: ${this.dataCreditSize * 0.55}px; height: ${this.dataCreditSize * 0.55}px;`;
 
       if (this.dataCreditScore >= 100) {
         style = `${style}position: relative; top: 3px;`;
@@ -233,6 +310,30 @@ export default {
       }
 
       return minSize;
+    },
+    dynamicCardBackground() {
+      let color = 'white';
+      let toColor = '#efefef';
+
+      if (this.dataCreditLevel === 0) {
+        return 'background-color: #fff';
+      }
+      
+      if (this.dataCreditLevel === 1) {
+        color = '#e02a00FF'; // #e00000
+        toColor = '#ff3d3d64'; // #ff0000
+      } else if (this.dataCreditLevel === 2) {
+        color = '#ffac05FF';
+        toColor = '#ffac0596';
+      } else if (this.dataCreditLevel === 3) {
+        return 'background-color: #111';
+      }
+
+      return `background-image: linear-gradient(45deg, ${color} 10%, ${toColor} 90%);
+              background-position: center, center; background-size: cover;`;
+    },
+    authorIsDead() {
+      return this.asciiDead && this.author.fullName ? this.author.fullName.match(this.asciiDead) : false;
     },
   },
   methods: {
@@ -252,6 +353,9 @@ export default {
     },
     cardClick() {
     },
+    catchSearchAuthor(search) {
+      this.mixinMethods_additiveChangeRoute(BROWSE_PATH, search);
+    },
     verticalLineStyle(color) {
       return `border-left: thick solid ${color}`;
     },
@@ -270,25 +374,16 @@ export default {
       const width = '1';
       /* eslint-disable prefer-template */
       let grd = 'height: ' + height + '%;border-width: ' + width + 'px; border-style: solid;';
-      // grd += ''
-      //   -webkit-border-image:
-      //     -webkit-gradient(linear, 0 100%, 0 0, from(${fromColor}), to(transparent) 1 100%;
-      //   -webkit-border-image:
-      //     -webkit-linear-gradient(bottom, ${fromColor}, transparent) 1 100%;
-      //   -moz-border-image:
-      //     -moz-linear-gradient(bottom, ${fromColor}, transparent) 1 100%;
-      //   -o-border-image:
-      //     -o-linear-gradient(bottom, ${fromColor}, transparent) 1 100%;
-        // border-image:
-        //   linear-gradient(to top, ${fromColor}, transparent) 1 100%;`;
       grd += 'border-image: ';
       grd += 'linear-gradient(to top, ' + fromColor + ' , ' + toColor + ') 1 ' + toPct + ';';
-      // console.log(grd);
+
       return grd;
     },
   },
   data: () => ({
+    dataScoreLabel: 'Data Credit Score',
     dataCountLabel: 'Published datasets',
+    dataCreditScoreInfo: 'The Data Credit Score represents the engangement of an author to declared how on they were involved to a certain publish research dataset.',
     emailLabel: 'Email',
     affiliationLabel: 'Affiliation',
     idLabel: 'Identifier',
@@ -320,16 +415,23 @@ export default {
 
   .authorCard {
     border-radius: 20px;
+    /* min-width: 300px; */
+    /* max-width: 400px; */
+    /* min-height: 350px; */
   }
 
   .authorTitle {
     margin: 0;
     padding: 0;
-    line-height: 3rem;
+    line-height: 2.75rem;
     word-break: break-word;
     font-size: 34px !important;
     font-weight: 700 !important;
-    font-family: 'Libre Baskerville', serif !important;
+    font-family: 'Raleway', serif !important;
+  }
+
+  .subheading {
+    font-size: 14px !important;
   }
 
   .authorInfoLabel {

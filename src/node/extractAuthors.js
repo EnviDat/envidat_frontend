@@ -102,16 +102,16 @@ function getAuthors(dataset) {
       return authorObjs;
     }
 
-    return null;
+  return null;
 }
 
-function extractAuthors() {
+function extractAuthorsMap(datasets) {
 
   const mapAuthors = {};
   let authorCount = 0;
 
-  for (let i = 0; i < metadataList.length; i++) {
-    const dataset = metadataList[i];
+  for (let i = 0; i < datasets.length; i++) {
+    const dataset = datasets[i];
 
     const authors = getAuthors(dataset);
  
@@ -186,7 +186,7 @@ const fullNameList = {
   'Meile, R.': 'Rolf Meile',
 };
 
-const authorMap = extractAuthors();
+const authorMap = extractAuthorsMap(metadataList);
 
 writeAuthorsToFile(authorMap);
 
