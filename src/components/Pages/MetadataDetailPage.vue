@@ -100,8 +100,10 @@ import {
   createDetails,
   createFunding,
   createPublications,
+  getFullAuthorsFromDataset,
 } from '@/factories/metaDataFactory';
 import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
+import MetadataAuthors from '@/components/Metadata/MetadataAuthors';
 
 // Might want to check https://css-tricks.com/use-cases-fixed-backgrounds-css/
 // for animations between the different parts of the Metadata
@@ -153,10 +155,19 @@ export default {
       currentMetadataContent: `${METADATA_NAMESPACE}/currentMetadataContent`,
       detailPageBackRoute: `${METADATA_NAMESPACE}/detailPageBackRoute`,
       idRemapping: `${METADATA_NAMESPACE}/idRemapping`,
+      authorsMap: `${METADATA_NAMESPACE}/authorsMap`,
       iconImages: 'iconImages',
       cardBGImages: 'cardBGImages',
       appScrollPosition: 'appScrollPosition',
+      asciiDead: `${METADATA_NAMESPACE}/asciiDead`,
+      authorPassedInfo: `${METADATA_NAMESPACE}/authorPassedInfo`,
     }),
+    authorDeadInfo() {
+      return {
+        asciiDead: this.asciiDead,
+        authorPassedInfo: this.authorPassedInfo,
+      };
+    },
     /**
      * @returns {String} the metadataId from the route
      */
@@ -232,10 +243,11 @@ export default {
       this.details = null;
       this.publications = null;
       this.funding = null;
+      this.authors = null;
 
       if (currentContent && currentContent.title !== undefined) {
 
-        this.header = createHeader(currentContent, this.$vuetify.breakpoint.smAndDown);
+        this.header = createHeader(currentContent, this.$vuetify.breakpoint.smAndDown, this.authorDeadInfo);
 
         this.body = createBody(currentContent);
 
@@ -255,6 +267,8 @@ export default {
 
         this.publications = createPublications(currentContent);
         this.funding = createFunding(currentContent);
+
+        this.authors = getFullAuthorsFromDataset(this.authorsMap, currentContent);
       }
 
       this.$set(components.MetadataHeader, 'genericProps', this.header);
@@ -263,6 +277,7 @@ export default {
       this.$set(components.MetadataResources, 'genericProps', this.resources);
       this.$set(components.MetadataLocation, 'genericProps', this.location);
       this.$set(components.MetadataDetails, 'genericProps', { details: this.details });
+      this.$set(components.MetadataAuthors, 'genericProps', { authors: this.authors });
 
       this.$set(components.MetadataPublications, 'genericProps', { publications: this.publications });
       this.$set(components.MetadataFunding, 'genericProps', { funding: this.funding });
@@ -278,6 +293,7 @@ export default {
       this.secondCol = [
         components.MetadataResources,
         components.MetadataDetails,
+        components.MetadataAuthors,
       ];
 
       this.singleCol = [
@@ -287,6 +303,7 @@ export default {
         components.MetadataResources,
         components.MetadataFunding,
         components.MetadataLocation,
+        components.MetadataAuthors,
         components.MetadataDetails,
       ];
 
@@ -405,6 +422,7 @@ export default {
     MetadataPublications,
     MetadataFunding,
     TwoColumnLayout,
+    MetadataAuthors,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
@@ -416,6 +434,7 @@ export default {
     details: null,
     publications: null,
     funding: null,
+    authors: null,
     amountOfResourcesToShowDetailsLeft: 4,
     notFoundBackPath: 'browse',
     downloadIcon: null,

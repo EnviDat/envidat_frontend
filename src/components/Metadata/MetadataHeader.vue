@@ -1,7 +1,7 @@
 <template>
     <v-card :class="{
-              'pa-4': $vuetify.breakpoint.smAndUp,
-              'pa-3': $vuetify.breakpoint.xsOnly,
+              'pa-4': $vuetify.breakpoint.lgAndUp,
+              'pa-3': $vuetify.breakpoint.mdAndDown,
             }"
             :dark="dark"
             :color="(showPlaceholder || (!showPlaceholder && !metadataTitle)) ? 'primary' : 'white'" >
@@ -76,6 +76,8 @@
                                   :key="author.name"
                                   :name="authorName(author)"
                                   :tooltipText="authorToolTipText"
+                                  :asciiDead="asciiDead"
+                                  :authorPassedInfo="authorPassedInfo"
                                   @clicked="catchAuthorClicked($event, authorName(author))" />
               </v-layout>
             </v-flex>
@@ -255,6 +257,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    authorDeadInfo: {
+      type: Object,
+      default: null,
+    },
   },
   data: () => ({
     showTagsExpanded: false,
@@ -266,6 +272,12 @@ export default {
     NotFoundTitle: 'No metadata found for',
   }),
   computed: {
+    asciiDead() {
+      return this.authorDeadInfo && this.authorDeadInfo.asciiDead ? this.authorDeadInfo.asciiDead : null;
+    },
+    authorPassedInfo() {
+      return this.authorDeadInfo && this.authorDeadInfo.authorPassedInfo ? this.authorDeadInfo.authorPassedInfo : null;
+    },
     maxTagsReached() {
       return this.tags ? this.tags.length >= this.maxTags : false;
     },
@@ -334,6 +346,7 @@ export default {
     font-family: 'Libre Baskerville', serif !important;
     font-weight: 400;
     opacity: 1;
+    line-height: 1 !important;
     text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
   }
 

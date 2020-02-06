@@ -1,11 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { storiesOf } from "@storybook/vue";
+import { storiesOf } from '@storybook/vue';
 import { withKnobs, text, number } from '@storybook/addon-knobs';
 import './js/vuetify-components';
 
-import AuthorCard from "@/components/Cards/AuthorCard.vue";
+import AuthorCard from '@/components/Cards/AuthorCard.vue';
 
-import authorCollection from "@/testdata/authorCollection.json";
+import authorCollection from '@/testdata/authorCollection.json';
 
 export const methods = {
   authors() {
@@ -15,12 +15,11 @@ export const methods = {
 };
 
 
-const stories = storiesOf("3 Cards | Author Cards", module)
-  .add("Author Cards", () => ({
+const stories = storiesOf('3 Cards | Author Cards', module)
+  .add('Author Cards', () => ({
     components: { AuthorCard },
     props: {
       author: {
-        // type: Object,
         default: {
           firstName: text('firstName', 'Felix'),
           lastName: text('lastName', 'Gugerli'),
@@ -28,10 +27,10 @@ const stories = storiesOf("3 Cards | Author Cards", module)
           datasetCount: number('datasetCount', 7),
           affiliation: text('affiliation', 'WSL'),
           id: {
-            identifier:  text('identifier', '0000-0003-3878-1845'),
+            identifier: text('identifier', '0000-0003-3878-1845'),
           },
           email: text('email', 'felix.gugerli@wsl.ch'),
-          "dataCredit": {
+          dataCredit: {
             collection: number('collection', 1),
             validation: number('validation', 2),
             curation: number('curation', 3),
@@ -39,28 +38,6 @@ const stories = storiesOf("3 Cards | Author Cards", module)
             publication: number('publication', 5),
             supervision: number('supervision', 6),
           },
-          // "lastName": "Gugerli",
-          // "fullName": "Felix Gugerli",
-          // "datasetCount": 1,
-          // "affiliation": "WSL",
-          // "id": {
-          //   "identifier": "0000-0003-3878-1845"
-          // },
-          // "email": "felix.gugerli@wsl.ch",
-          // "dataCredit": {
-          //   "collection": 1,
-          //   "validation": 1,
-          //   "curation": 1,
-          //   "software": 1,
-          //   "publication": 1,
-          //   "supervision": 1
-          // },
-          // isDisabled: {
-          //   default: boolean('Disabled', true)
-          // },
-          // buttonText: {
-          //   default: text('buttonText', 'SEARCH')
-          // },
         },
       },
     },    
@@ -68,7 +45,19 @@ const stories = storiesOf("3 Cards | Author Cards", module)
     <v-container grid-list-lg fluid pa-0>
       <v-layout row wrap>
 
-        <v-flex pt-5 >
+        <v-flex xs4 pt-5 >
+          <author-card :author="author" />
+        </v-flex>
+
+        <v-flex xs4 pt-5 >
+          <author-card :author="author" />
+        </v-flex>
+
+        <v-flex xs6 pt-5 >
+          <author-card :author="author" />
+        </v-flex>
+
+        <v-flex xs12 pt-5 >
           <author-card :author="author" />
         </v-flex>
 
@@ -80,11 +69,5 @@ const stories = storiesOf("3 Cards | Author Cards", module)
       authorCollection,
     }),
   }));
-
-{/* <v-flex xs4
-  v-for="(author, index) in authors()"
-  :key="index" >
-  <author-card :author="author" />
-</v-flex> */}
 
 stories.addDecorator(withKnobs);

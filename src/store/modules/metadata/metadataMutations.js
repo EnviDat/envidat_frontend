@@ -49,6 +49,7 @@ import {
   enhanceMetadataEntry,
   enhanceTags,
   createLocation,
+  extractAuthorsMap,
 } from '@/factories/metaDataFactory';
 import { solrResultToCKANJSON } from '@/factories/apiFactory';
 
@@ -138,6 +139,7 @@ export default {
   },
   [BULK_LOAD_METADATAS_CONTENT_SUCCESS](state, payload) {
     state.metadatasContent = enhanceMetadatas(this, payload);
+    state.authorsMap = extractAuthorsMap(payload);
 
     state.metadatasContentOK = true;
     state.loadingMetadatasContent = false;

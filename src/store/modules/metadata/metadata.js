@@ -45,6 +45,10 @@ const initialState = {
   metadatasContentOK: false,
   metadatasContent: {},
   /**
+   * authorsMap property holds the  for "bulk" loading all the metadata when the app starts up
+   */
+  authorsMap: {},
+  /**
    * the Search properties used when the users makes a full text search
    */
   searchedMetadatasContent: {},
@@ -95,6 +99,8 @@ const initialState = {
   idRemapping: new Map([
     ['als‐based‐snow‐depth‐and‐canopy‐height‐maps‐from‐flights‐in‐2017‐grisons‐ch‐and‐grand‐mesa‐co', 'grand-mesa-co']
   ]),
+  asciiDead: '&#8224;',
+  authorPassedInfo: 'Sadly this author has passed away.',
 };
 
 export const metadata = {
@@ -108,6 +114,7 @@ export const metadata = {
     metadataIds: state => state.metadataIds,
     metadatasContent: state => state.metadatasContent,
     metadatasContentSize: state => state.metadatasContent !== undefined ? Object.keys(state.metadatasContent).length : 0,
+    authorsMap: state => state.authorsMap,
     searchedMetadatasContent: state => state.searchedMetadatasContent,
     searchingMetadatasContent: state => state.searchingMetadatasContent,
     searchingMetadatasContentOK: state => state.searchingMetadatasContentOK,
@@ -127,6 +134,8 @@ export const metadata = {
     aboutPageBackRoute: state => state.aboutPageBackRoute,
     categoryCards: state => state.categoryCards,
     idRemapping: state => state.idRemapping,
+    asciiDead: state => state.asciiDead,
+    authorPassedInfo: state => state.authorPassedInfo,
   },
   mutations,
   actions,

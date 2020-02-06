@@ -464,9 +464,6 @@ export default {
       this.infiniteHandler();
     },
   },
-  // updated() {
-  //   this.setFilteringComponentsHeight();
-  // },
   data: () => ({
     noResultText: 'Nothing found for these search criterias.',
     suggestionText: 'Change the criterias or try one of these categories',
@@ -475,7 +472,6 @@ export default {
     unlockedIconString: null,
     localTags: [],
     virtualListContent: [],
-    // filteringComponentsHeight: 150,
     vLoading: false,
     infiniteId: +new Date(),
     preloadingDistance: 150,
