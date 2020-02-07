@@ -236,6 +236,15 @@ export default {
       searchPlaceholderText: `${METADATA_NAMESPACE}/searchPlaceholderText`,
       searchPlaceholderTextSmall: `${METADATA_NAMESPACE}/searchPlaceholderTextSmall`,
     }),
+    enabledControls() {
+      let enableds = this.preenabledControls;
+
+      if (this.$vuetify.breakpoint.smAndDown) {
+        enableds = enableds.filter(i => i !== LISTCONTROL_COMPACT_LAYOUT_ACTIVE);
+      }
+
+      return enableds;
+    },
     searchBarPlaceholder() {
       return this.$vuetify.breakpoint.mdAndUp ? this.searchPlaceholderText : this.searchPlaceholderTextSmall;
     },
@@ -310,7 +319,7 @@ export default {
     smallMapHeight: 250,
     largeMapHeight: 325,
     mapFilterVisibleIds: [],
-    enabledControls: [
+    preenabledControls: [
       LISTCONTROL_LIST_ACTIVE,
       LISTCONTROL_MAP_ACTIVE,
       LISTCONTROL_COMPACT_LAYOUT_ACTIVE,
