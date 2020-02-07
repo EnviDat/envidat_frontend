@@ -17,7 +17,6 @@
 
     <the-navigation v-if="!showSmallNavigation"
                     :style="`z-index: ${NavigationZIndex}`"
-                    :drawer="!this.menuItem.active"
                     :navItems="navItems"
                     :version="appVersion"
                     @menuClick="catchMenuClicked"

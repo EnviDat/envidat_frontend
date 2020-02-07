@@ -65,16 +65,19 @@
   <v-layout v-else
             column>
     <v-flex >
-      
+      <v-container fluid
+                    pa-0 >
       <v-layout row wrap
                 ref="metadataListLayoutFiltering" >
 
-        <v-flex xs12 sm9
+        <v-flex xs12 sm8
+                pb-0
                 key="filterKeywords" >
           <slot name="filterKeywords" />
         </v-flex>
 
-        <v-flex hidden-xs-only sm3
+        <v-flex hidden-xs-only sm4
+                pb-0
                 key="controlPanel" >
           <slot name="controlPanel" />
         </v-flex>
@@ -87,18 +90,22 @@
         </v-flex>
 
       </v-layout>
-
+      </v-container>
     </v-flex>
 
     <v-flex ref="metadataListScroll"
             v-on:scroll="onScroll()"
             :class="useDynamicHeight ? 'listScroll' : ''"
             :style="useDynamicHeight ? `height: calc(100vh - ${filteringComponentsHeight }px);` : ''" >
-      
+
+      <v-container fluid
+                    pa-0 >
+
       <slot name="metadataListPlaceholder" />
 
       <slot name="metadataListLayout" />
 
+      </v-container>
     </v-flex>
   </v-layout>
 
