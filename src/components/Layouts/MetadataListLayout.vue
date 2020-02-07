@@ -70,13 +70,14 @@
       <v-layout row wrap
                 ref="metadataListLayoutFiltering" >
 
-        <v-flex xs12 sm7
+        <v-flex xs12
                 pb-0
                 key="filterKeywords" >
           <slot name="filterKeywords" />
         </v-flex>
 
-        <v-flex hidden-xs-only sm5
+        <v-flex hidden-xs-only
+                xs12
                 pb-0
                 key="controlPanel" >
           <slot name="controlPanel" />
