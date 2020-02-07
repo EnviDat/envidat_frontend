@@ -8,9 +8,11 @@
                   && $vuetify.breakpoint.mdAndUp"
             row wrap>
 
-    <v-flex xs4 pb-0>
+    <v-flex xs4 py-0>
+      <v-container fluid
+                    fill-height
+                    pa-0 >
       <v-layout column
-                fill-height
                 ref="metadataListLayoutFiltering">
 
         <v-flex shrink
@@ -27,10 +29,14 @@
         </v-flex>
 
       </v-layout>
+      </v-container>
     </v-flex>
 
-    <v-flex xs8 pb-0>
-      <v-layout column fill-height>
+    <v-flex xs8 py-0>
+      <v-container fluid
+                    fill-height
+                    pa-0 >
+      <v-layout column>
         <v-flex hidden-xs-only
                 shrink 
                 key="controlPanel" >
@@ -51,7 +57,7 @@
 
         </v-flex>
       </v-layout>
-
+      </v-container>
     </v-flex>
 
   </v-layout>

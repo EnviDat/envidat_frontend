@@ -18,7 +18,12 @@
                     :mapHeight="$vuetify.breakpoint.smAndDown ? 310 : undefined"
                     :useDynamicHeight="true"
                     :mapTopLayout="$vuetify.breakpoint.mdAndUp"
-                    @onScroll="storeScroll" />
+                    @onScroll="storeScroll"
+                    :searchTerm="searchTerm"
+                    :searchCount="searchCount"
+                    :searchBarPlaceholder="searchBarPlaceholder"
+                    @searchClick="catchSearchClicked"
+                    @searchCleared="catchSearchCleared" />
 
   </article>
 </template>
@@ -200,6 +205,13 @@ export default {
         this.$refs.metadataList.setScrollPos(toPos);
       }
     },
+    catchSearchClicked(search) {
+      this.mixinMethods_additiveChangeRoute(BROWSE_PATH, search);
+    },
+    catchSearchCleared() {
+      // the search parameter needs to be '' to clear it
+      this.mixinMethods_additiveChangeRoute(BROWSE_PATH, '');
+    },
   },
   computed: {
     ...mapGetters({
@@ -220,7 +232,12 @@ export default {
       scrollPositionDelay: 'metadata/scrollPositionDelay',
       browseScrollPosition: 'browseScrollPosition',
       controls: 'controls',
+      searchPlaceholderText: `${METADATA_NAMESPACE}/searchPlaceholderText`,
+      searchPlaceholderTextSmall: `${METADATA_NAMESPACE}/searchPlaceholderTextSmall`,
     }),
+    searchBarPlaceholder() {
+      return this.$vuetify.breakpoint.mdAndUp ? this.searchPlaceholderText : this.searchPlaceholderTextSmall;
+    },
     keywordsPlaceholder() {
       return this.searchingMetadatasContent || this.updatingTags;
     },
@@ -252,7 +269,7 @@ export default {
       return this.$vuetify.breakpoint.smAndUp;
     },
     searchCount() {
-      return this.filteredContent !== undefined ? this.filteredContent.length : 0;
+      return this.filteredContent !== undefined ? Object.keys(this.filteredContent).length : 0;
     },
     mode() {
       return this.$route.query.mode ? this.$route.query.mode.toLowerCase() : null;

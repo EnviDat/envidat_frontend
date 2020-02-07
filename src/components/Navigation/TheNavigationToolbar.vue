@@ -31,7 +31,7 @@
                     :closeCallback="modeCloseCallback" />
       </v-flex>
 
-      <v-flex md4>
+      <!-- <v-flex md4>
         <small-search-bar-view v-if="showSearch"
                                 :compactLayout="$vuetify.breakpoint.smAndDown"
                                 class="elevation-0"
@@ -45,7 +45,7 @@
                                 style="align-items: center;"
                                 @clicked="catchSearchClicked"
                                 @searchCleared="catchSearchCleared" />
-      </v-flex>
+      </v-flex> -->
     </v-layout>
 
     <v-progress-linear v-show="loading"
@@ -76,21 +76,18 @@ export default {
     searchTerm: String,
     allTags: Array,
     selectedTags: Array,
-    showSearchCount: Boolean,
-    searchCount: Number,
-    showSearch: Boolean,
     loading: Boolean,
     mode: String,
     modeCloseCallback: Function,
   },
   computed: {
-    ...mapGetters({
-      searchPlaceholderText: `${METADATA_NAMESPACE}/searchPlaceholderText`,
-      searchPlaceholderTextSmall: `${METADATA_NAMESPACE}/searchPlaceholderTextSmall`,
-    }),
-    searchBarPlaceholder() {
-      return this.$vuetify.breakpoint.mdAndUp ? this.searchPlaceholderText : this.searchPlaceholderTextSmall;
-    },
+    // ...mapGetters({
+    //   searchPlaceholderText: `${METADATA_NAMESPACE}/searchPlaceholderText`,
+    //   searchPlaceholderTextSmall: `${METADATA_NAMESPACE}/searchPlaceholderTextSmall`,
+    // }),
+    // searchBarPlaceholder() {
+    //   return this.$vuetify.breakpoint.mdAndUp ? this.searchPlaceholderText : this.searchPlaceholderTextSmall;
+    // },
     filterIconColor() {
       return !this.selectedTags || this.selectedTags.length <= 0 ? 'grey' : 'primary';
     },
