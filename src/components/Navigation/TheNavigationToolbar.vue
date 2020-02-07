@@ -32,11 +32,6 @@
                     :closeCallback="modeCloseCallback" />
       </v-flex>
 
-      <v-flex v-if="!mode && $vuetify.breakpoint.smAndUp"
-              grow >
-        <div class="title" style="text-align: center;">{{ pageTitle }}</div>
-      </v-flex>
-
       <v-flex v-if="userIsSignedIn"
               shrink >
         <user-avatar v-if="$vuetify.breakpoint.smAndUp"
@@ -80,16 +75,8 @@ export default {
     modeCloseCallback: Function,
     userIsSignedIn: Boolean,
     avatarClickCallback: Function,
-    pageTitle: String,
   },
   computed: {
-    // ...mapGetters({
-    //   searchPlaceholderText: `${METADATA_NAMESPACE}/searchPlaceholderText`,
-    //   searchPlaceholderTextSmall: `${METADATA_NAMESPACE}/searchPlaceholderTextSmall`,
-    // }),
-    // searchBarPlaceholder() {
-    //   return this.$vuetify.breakpoint.mdAndUp ? this.searchPlaceholderText : this.searchPlaceholderTextSmall;
-    // },
     filterIconColor() {
       return !this.selectedTags || this.selectedTags.length <= 0 ? 'grey' : 'primary';
     },

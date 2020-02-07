@@ -36,7 +36,6 @@
                             :loading="loading"
                             :mode="mode"
                             :modeCloseCallback="catchModeClose"
-                            :pageTitle="currentPage"
                             @menuClick="catchMenuClicked"
                             @searchClick="catchSearchClicked"
                             @searchCleared="catchSearchCleared" />
