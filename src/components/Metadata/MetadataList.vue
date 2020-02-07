@@ -18,13 +18,14 @@
     </template>
 
     <template v-slot:controlPanel>
-      <v-card >
+      <v-card style="min-height: 36px; ">
         <v-container pa-2 fluid>
         <v-layout row align-center justify-space-between>
           <v-flex grow>
           <small-search-bar-view :compactLayout="$vuetify.breakpoint.smAndDown"
                                   class="elevation-0"
                                   :searchTerm="searchTerm"
+                                  :showSearch="showSearch"
                                   :showSearchCount="true"
                                   :searchCount="searchCount"
                                   :isFlat="true"
@@ -35,9 +36,8 @@
                                   @searchCleared="catchSearchCleared" />
           </v-flex>
 
-          <v-flex shrink py-0 >
-          <list-control-toggle class="fill-height"
-                              :controls="controlsActive"
+          <v-flex shrink py-0>
+          <list-control-toggle :controls="controlsActive"
                               :enabledControls="enabledControls"
                               :compactLayout="$vuetify.breakpoint.smAndDown"
                               :flat="true"
@@ -234,6 +234,7 @@ export default {
       default: false,
     },
     mode: String,    
+    showSearch: Boolean,
     searchTerm: String,
     searchCount: Number,
     searchBarPlaceholder: String,

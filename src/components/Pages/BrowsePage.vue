@@ -19,6 +19,7 @@
                     :useDynamicHeight="true"
                     :mapTopLayout="$vuetify.breakpoint.mdAndUp"
                     @onScroll="storeScroll"
+                    :showSearch="true"
                     :searchTerm="searchTerm"
                     :searchCount="searchCount"
                     :searchBarPlaceholder="searchBarPlaceholder"
