@@ -17,7 +17,7 @@
 
     <the-navigation v-if="!showSmallNavigation"
                     :style="`z-index: ${NavigationZIndex}`"
-                    :mini="!this.menuItem.active"
+                    :drawer="!this.menuItem.active"
                     :navItems="navItems"
                     :version="appVersion"
                     @menuClick="catchMenuClicked"
@@ -29,7 +29,7 @@
                           class="envidatSmallNavigation elevation-3"
                           @itemClick="catchItemClicked" />
 
-    <the-navigation-toolbar v-if="showToolbar"
+    <!-- <the-navigation-toolbar v-if="showToolbar"
                             ref="TheNavigationToolbar"
                             class="envidatToolbar"
                             :style="`z-index: ${NavToolbarZIndex}`"
@@ -39,7 +39,7 @@
                             :modeCloseCallback="catchModeClose"
                             @menuClick="catchMenuClicked"
                             @searchClick="catchSearchClicked"
-                            @searchCleared="catchSearchCleared" />
+                            @searchCleared="catchSearchCleared" /> -->
 
     <v-content>
       <v-container fluid
