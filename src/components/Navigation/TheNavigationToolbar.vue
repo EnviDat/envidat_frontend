@@ -6,17 +6,18 @@
               :extended="mode && $vuetify.breakpoint.xsOnly"
               :extension-height="50">
 
-    <template v-slot:extension
-              v-if="mode && $vuetify.breakpoint.xsOnly" >
+    <template v-if="mode && $vuetify.breakpoint.xsOnly"
+              v-slot:extension >
       <mode-view :mode="mode"
                   :compact="true"
                   :closeCallback="modeCloseCallback" />
     </template>
 
     <v-layout row
-              align-center >
+              align-center
+              justify-space-between >
 
-      <v-flex md4>
+      <v-flex shrink>
 
         <v-btn v-if="$vuetify.breakpoint.mdAndUp"
                 icon
@@ -25,27 +26,23 @@
         </v-btn>
       </v-flex>
 
-      <v-flex md4 >
-        <mode-view v-if="mode && $vuetify.breakpoint.smAndUp"
-                    :mode="mode"
+      <v-flex v-if="mode && $vuetify.breakpoint.smAndUp"
+              grow >
+        <mode-view :mode="mode"
                     :closeCallback="modeCloseCallback" />
       </v-flex>
 
-      <!-- <v-flex md4>
-        <small-search-bar-view v-if="showSearch"
-                                :compactLayout="$vuetify.breakpoint.smAndDown"
-                                class="elevation-0"
-                                :searchTerm="searchTerm"
-                                :showSearchCount="showSearchCount"
-                                :searchCount="searchCount"
-                                isFlat
-                                :fixedHeight="36"
-                                :labelText="searchBarPlaceholder"
-                                :loading="loading"
-                                style="align-items: center;"
-                                @clicked="catchSearchClicked"
-                                @searchCleared="catchSearchCleared" />
-      </v-flex> -->
+      <v-flex v-if="!mode && $vuetify.breakpoint.smAndUp"
+              grow >
+        <div class="title" style="text-align: center;">{{ pageTitle }}</div>
+      </v-flex>
+
+      <v-flex v-if="userIsSignedIn"
+              shrink >
+        <user-avatar v-if="$vuetify.breakpoint.smAndUp"
+                    :clickCallback="avatarClickCallback" />
+      </v-flex>
+
     </v-layout>
 
     <v-progress-linear v-show="loading"
@@ -66,11 +63,13 @@ import {
 import Logo from '@/assets/logo/EnviDat_logo_32.png';
 import SmallSearchBarView from '@/components/Filtering/SmallSearchBarView';
 import ModeView from '@/components/Layouts/ModeView';
+import UserAvatar from '@/components/Layouts/UserAvatar';
 
 export default {
   components: {
     SmallSearchBarView,
     ModeView,
+    UserAvatar,
   },
   props: {
     searchTerm: String,
@@ -79,6 +78,9 @@ export default {
     loading: Boolean,
     mode: String,
     modeCloseCallback: Function,
+    userIsSignedIn: Boolean,
+    avatarClickCallback: Function,
+    pageTitle: String,
   },
   computed: {
     // ...mapGetters({

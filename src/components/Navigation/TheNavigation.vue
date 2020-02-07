@@ -1,6 +1,7 @@
 <template>
   <v-navigation-drawer app
                         permanent
+                        clipped
                         :mini-variant.sync="mini"
                         mini-variant-width="60"
                         width="190" >

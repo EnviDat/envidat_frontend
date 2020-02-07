@@ -28,7 +28,7 @@
                           class="envidatSmallNavigation elevation-3"
                           @itemClick="catchItemClicked" />
 
-    <!-- <the-navigation-toolbar v-if="showToolbar"
+    <the-navigation-toolbar v-if="showToolbar"
                             ref="TheNavigationToolbar"
                             class="envidatToolbar"
                             :style="`z-index: ${NavToolbarZIndex}`"
@@ -36,9 +36,10 @@
                             :loading="loading"
                             :mode="mode"
                             :modeCloseCallback="catchModeClose"
+                            :pageTitle="currentPage"
                             @menuClick="catchMenuClicked"
                             @searchClick="catchSearchClicked"
-                            @searchCleared="catchSearchCleared" /> -->
+                            @searchCleared="catchSearchCleared" />
 
     <v-content>
       <v-container fluid

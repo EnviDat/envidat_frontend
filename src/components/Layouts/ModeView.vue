@@ -29,6 +29,15 @@
 
     </div>
 
+    <div class="item">
+      <base-icon-button materialIconName="info_outline"
+                        :tooltipText="`${tooltipText} ${modeTitle}`"
+                        tooltipBottom
+                        color="transparent"
+                        iconColor="secondary"
+                        isSmall />
+    </div>
+
     <div v-if="closeCallback"
           class="item">
       <base-icon-button materialIconName="close"
@@ -38,15 +47,6 @@
                         iconColor="red"
                         isSmall
                         @clicked="closeCallback" />
-    </div>
-
-    <div class="item">
-      <base-icon-button materialIconName="info_outline"
-                        :tooltipText="`${tooltipText} ${modeTitle}`"
-                        tooltipBottom
-                        color="transparent"
-                        iconColor="secondary"
-                        isSmall />
     </div>
 
   </v-layout>
