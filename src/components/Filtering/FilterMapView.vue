@@ -7,11 +7,10 @@
       Error loading leaflet
     </div>
 
-    <div v-if="!errorLoadingLeaflet"
-          class="fill-height" >
+    <v-container v-if="!errorLoadingLeaflet"
+          fill-height fluid pa-0>
 
-      <v-layout fill-height
-                :class="{ 'column' : topLayout,
+      <v-layout :class="{ 'column' : topLayout,
                           'row' : !topLayout }" >
 
         <v-flex v-if="topLayout"
@@ -70,7 +69,7 @@
 
       </v-layout>
 
-    </div>
+    </v-container>
 
   </v-card>
 </template>

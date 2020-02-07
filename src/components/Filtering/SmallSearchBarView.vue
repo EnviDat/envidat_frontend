@@ -1,10 +1,10 @@
 <template>
-  <v-card :height="height">
+  <v-card >
 
-    <v-layout row align-center fill-height justify-space-between>
+    <v-layout row align-center justify-space-between>
 
       <v-flex v-if="loading"
-      style="min-width: 55px; text-align: center;"
+      style="min-width: 60px; text-align: center;"
               shrink >
         <v-progress-circular indeterminate
                               size="20"
@@ -13,8 +13,8 @@
       </v-flex>
 
       <v-flex v-if="showSearchCount && !loading"
-              shrink py-0 px-1
-              style="min-width: 55px; text-align: center;" >
+              shrink py-0 px-2
+              style="min-width: 60px; text-align: center;" >
 
         <v-tooltip bottom :disabled="$vuetify.breakpoint.xsOnly">
           <tag-chip slot="activator"
@@ -29,7 +29,7 @@
       </v-flex>
 
       <v-flex v-if="!hasButton"
-                shrink >
+                shrink pa-0 >
         <base-icon-button materialIconName="search"
                           marginClass="ma-0"
                           color="transparent"
