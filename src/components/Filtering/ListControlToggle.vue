@@ -1,39 +1,50 @@
 <template>
-  <v-btn-toggle v-model="controlsActive"
-                multiple >
-    <v-btn v-if="isEnabledControl(LISTCONTROL_LIST_ACTIVE)"
-            flat
-            @click="catchControlClick(LISTCONTROL_LIST_ACTIVE)"
-            :class="isActiveControl(LISTCONTROL_LIST_ACTIVE) ? 'highlight' : ''"
-            :style="compactLayout ? 'height: 32px !important' : ''" >
-      <v-icon>view_headline</v-icon>
-    </v-btn>
 
-    <v-btn v-if="isEnabledControl(LISTCONTROL_MAP_ACTIVE)"
-            flat
-            @click="catchControlClick(LISTCONTROL_MAP_ACTIVE)"
-            :class="isActiveControl(LISTCONTROL_MAP_ACTIVE) ? 'highlight' : ''"
-            :style="compactLayout ? 'height: 32px !important' : ''" >
-      <v-icon>map</v-icon>
-    </v-btn>
+  <v-container pa-0>
+    <v-layout row>
+      <v-flex >
+        <v-btn-toggle v-model="controlsActive">
+          <v-btn v-if="isEnabledControl(LISTCONTROL_MAP_ACTIVE)"
+                  flat
+                  @click="catchControlClick(LISTCONTROL_MAP_ACTIVE)"
+                  :class="isActiveControl(LISTCONTROL_MAP_ACTIVE) ? 'secondary' : ''"
+                  :style="compactLayout ? 'height: 32px !important' : ''" >
+            <v-icon>map</v-icon>
+          </v-btn>
+        </v-btn-toggle>
+      </v-flex>
 
-    <v-btn v-if="isEnabledControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)"
-            flat
-            @click="catchControlClick(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)"
-            :class="isActiveControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE) ? 'highlight' : ''"
-            :style="compactLayout ? 'height: 32px !important' : ''" >
-      <v-icon>view_comfortable</v-icon>
-    </v-btn>
+      <v-flex >
+        <v-btn-toggle v-model="controlsActive"
+                       >
+          <v-btn v-if="isEnabledControl(LISTCONTROL_LIST_ACTIVE)"
+                  flat
+                  @click="catchControlClick(LISTCONTROL_LIST_ACTIVE)"
+                  :class="isActiveControl(LISTCONTROL_LIST_ACTIVE) ? 'secondary' : ''"
+                  :style="compactLayout ? 'height: 32px !important' : ''" >
+            <v-icon >view_headline</v-icon>
+          </v-btn>
 
-    <v-btn v-if="isEnabledControl(3)"
-            flat
-            @click="catchControlClick(3)"
-            :class="isActiveControl(3) ? 'highlight' : ''"
-            :style="compactLayout ? 'height: 32px !important' : ''" >
-      <v-icon>view_stream</v-icon>
-    </v-btn>
+          <v-btn v-if="isEnabledControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)"
+                  flat
+                  @click="catchControlClick(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)"
+                  :class="isActiveControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE) ? 'secondary' : ''"
+                  :style="compactLayout ? 'height: 32px !important' : ''" >
+            <v-icon>view_comfortable</v-icon>
+          </v-btn>
 
-  </v-btn-toggle>
+          <v-btn v-if="isEnabledControl(3)"
+                  flat
+                  @click="catchControlClick(3)"
+                  :class="isActiveControl(3) ? 'highlight' : ''"
+                  :style="compactLayout ? 'height: 32px !important' : ''" >
+            <v-icon>view_stream</v-icon>
+          </v-btn>
+
+        </v-btn-toggle>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -63,6 +74,7 @@ export default {
     compactLayout: Boolean,
     controls: Array,
     enabledControls: Array,
+    mapEnabled: Boolean,
     flat: Boolean,
   },
   data: () => ({
