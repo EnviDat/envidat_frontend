@@ -36,6 +36,8 @@
                             :loading="loading"
                             :mode="mode"
                             :modeCloseCallback="catchModeClose"
+                            :searchCount="searchCount"
+                            :showSearchCount="true"
                             @menuClick="catchMenuClicked"
                             @searchClick="catchSearchClicked"
                             @searchCleared="catchSearchCleared" />
@@ -282,7 +284,8 @@ export default {
       return this.currentPage === LANDING_PAGENAME;
     },
     showToolbar() {
-      return !this.currentPageIsLandingPage || !this.$vuetify.breakpoint.smAndDown;
+      return false;
+      // return this.currentPageIsBrowsePage || !this.$vuetify.breakpoint.smAndDown;
     },
     showSmallNavigation() {
       return this.$vuetify.breakpoint.smAndDown;

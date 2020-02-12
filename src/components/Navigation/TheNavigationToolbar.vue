@@ -32,6 +32,22 @@
                     :closeCallback="modeCloseCallback" />
       </v-flex>
 
+      <v-flex v-if="$vuetify.breakpoint.xsOnly"
+              grow >
+          <small-search-bar-view :compactLayout="true"
+                                  class="elevation-0"
+                                  :searchTerm="searchTerm"
+                                  :showSearch="true"
+                                  :showSearchCount="true"
+                                  :searchCount="searchCount"
+                                  :isFlat="true"
+                                  :fixedHeight="36"
+                                  :labelText="searchBarPlaceholder"
+                                  :loading="loading"
+                                  @clicked="catchSearchClicked"
+                                  @searchCleared="catchSearchCleared" />
+      </v-flex>
+
       <v-flex v-if="userIsSignedIn"
               shrink >
         <user-avatar v-if="$vuetify.breakpoint.smAndUp"
@@ -52,9 +68,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import {
-  METADATA_NAMESPACE,
-} from '@/store/metadataMutationsConsts';
+import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
 import Logo from '@/assets/logo/EnviDat_logo_32.png';
 import SmallSearchBarView from '@/components/Filtering/SmallSearchBarView';
 import ModeView from '@/components/Layouts/ModeView';
@@ -70,6 +84,8 @@ export default {
     searchTerm: String,
     allTags: Array,
     selectedTags: Array,
+    showSearchCount: Boolean,
+    searchCount: Number,
     loading: Boolean,
     mode: String,
     modeCloseCallback: Function,
@@ -77,6 +93,13 @@ export default {
     avatarClickCallback: Function,
   },
   computed: {
+    ...mapGetters({
+      searchPlaceholderText: `${METADATA_NAMESPACE}/searchPlaceholderText`,
+      searchPlaceholderTextSmall: `${METADATA_NAMESPACE}/searchPlaceholderTextSmall`,
+    }),
+    searchBarPlaceholder() {
+      return this.$vuetify.breakpoint.mdAndUp ? this.searchPlaceholderText : this.searchPlaceholderTextSmall;
+    },
     filterIconColor() {
       return !this.selectedTags || this.selectedTags.length <= 0 ? 'grey' : 'primary';
     },

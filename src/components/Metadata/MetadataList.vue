@@ -36,7 +36,8 @@
                                   @searchCleared="catchSearchCleared" />
           </v-flex>
 
-          <v-flex shrink py-0>
+          <v-flex hidden-xs-only
+                  shrink py-0>
           <list-control-toggle :controls="controlsActive"
                               :enabledControls="enabledControls"
                               :compactLayout="$vuetify.breakpoint.smAndDown"
