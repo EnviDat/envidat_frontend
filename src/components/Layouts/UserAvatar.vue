@@ -1,0 +1,56 @@
+<template>
+  <!-- <v-layout row
+            :justify-center="!compact"
+            :justify-space-between="compact"
+            align-center>
+
+    <div class="item"> -->
+      <base-icon-button materialIconName="account_circle"
+                        tooltipBottom
+                        color="highlight"
+                        iconColor="black"
+                        isSmall />
+                        <!-- :tooltipText="`${tooltipText} ${modeTitle}`" -->
+    <!-- </div> -->
+
+  <!-- </v-layout> -->
+</template>
+
+<script>
+/**
+ * TheTitleScreenLayout.vue shows the EnviDat logo and the SloganCard
+ * with different layouts for the differen screen sizes.
+ *
+ * @summary responsive layout for the title screen with logo and SloganCard
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-23 14:11:27
+ * Last modified  : 2019-10-31 15:29:14
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+*/
+import BaseIconButton from '@/components/BaseElements/BaseIconButton';
+
+export default {
+  components: {
+    BaseIconButton,
+  },
+  props: {
+    compact: Boolean,
+    clickCallback: Function,
+  },
+  data: () => ({
+    modeInfoPrefix: 'Special View',
+    tooltipText: 'You are in a specific view which shows data for',
+  }),
+  computed: {
+  },
+};
+</script>
+
+<style scoped>
+  .item {
+    margin: 0px 5px;
+  }
+</style>

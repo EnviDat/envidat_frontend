@@ -17,7 +17,6 @@
 
     <the-navigation v-if="!showSmallNavigation"
                     :style="`z-index: ${NavigationZIndex}`"
-                    :mini="!this.menuItem.active"
                     :navItems="navItems"
                     :version="appVersion"
                     @menuClick="catchMenuClicked"
@@ -34,12 +33,11 @@
                             class="envidatToolbar"
                             :style="`z-index: ${NavToolbarZIndex}`"
                             :searchTerm="searchTerm"
-                            :showSearchCount="currentPageIsBrowsePage"
-                            :searchCount="searchCount"
-                            :showSearch="currentPageIsBrowsePage"
                             :loading="loading"
                             :mode="mode"
                             :modeCloseCallback="catchModeClose"
+                            :searchCount="searchCount"
+                            :showSearchCount="true"
                             @menuClick="catchMenuClicked"
                             @searchClick="catchSearchClicked"
                             @searchCleared="catchSearchCleared" />
@@ -286,7 +284,8 @@ export default {
       return this.currentPage === LANDING_PAGENAME;
     },
     showToolbar() {
-      return !this.currentPageIsLandingPage || !this.$vuetify.breakpoint.smAndDown;
+      return false;
+      // return this.currentPageIsBrowsePage || !this.$vuetify.breakpoint.smAndDown;
     },
     showSmallNavigation() {
       return this.$vuetify.breakpoint.smAndDown;

@@ -29,8 +29,8 @@ const initialState = {
   /**
    * The placeholder text for the search bars
    */
-  searchPlaceholderTextSmall: 'Enter search term',
-  searchPlaceholderText: 'Enter research term, topic or author name',
+  searchPlaceholderTextSmall: 'Enter research search term',
+  searchPlaceholderText: 'Enter research term, topic or name of an author',
   /**
    * metadataIds properties are used for step by step loading all the metadata
    */
