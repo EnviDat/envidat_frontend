@@ -31,7 +31,6 @@
 
 
 <script>
-import TagChipPlaceholder from '@/components/Cards/TagChipPlaceholder';
 import defaultTexture from '@/assets/cards/forest/c_b_forest_texture_bark2.jpg';
 
 // checkout skeleton
@@ -39,7 +38,6 @@ import defaultTexture from '@/assets/cards/forest/c_b_forest_texture_bark2.jpg';
 
 export default {
   components: {
-    TagChipPlaceholder,
   },
   props: {
     flatLayout: Boolean,
