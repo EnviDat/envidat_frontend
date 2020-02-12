@@ -268,7 +268,7 @@ export default {
       const baseMap = L.tileLayer(
         'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' },
-      ).addTo(map);
+      );
       this.mapLayerGroup = L.layerGroup([baseMap]);
       this.mapLayerGroup.addTo(map);
     },
@@ -503,7 +503,6 @@ export default {
         }
       }
 
-      this.clusterLayer.addTo(this.map);
     },
     updateMap() {
       if (!this.clusterLayer) {
@@ -519,6 +518,8 @@ export default {
       this.addElementsToMap(this.pinLayerGroup, this.pinEnabled);
       this.addElementsToMap(this.multiPinLayerGroup, this.multiPinEnabled);
       this.addElementsToMap(this.polygonLayerGroup, this.polygonEnabled, true);
+
+      this.clusterLayer.addTo(this.map);
     },
     updatePins() {
       this.clearLayers(this.map, 'pins');
@@ -535,9 +536,6 @@ export default {
 
       this.addElementsToMap(this.polygonLayerGroup, this.polygonEnabled, true);
     },
-  },
-  updated() {
-    this.setupMap();
   },
   watch: {
     content() {

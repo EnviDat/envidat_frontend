@@ -77,10 +77,8 @@
     </template>
 
     <template v-slot:metadataListLayout >
-      <transition-group v-if="!loading"
-                        :name="$vuetify.breakpoint.mdAndUp ? 'itemfade' : ''"
+      <v-layout v-if="!loading"
                         ref="metadataListLayout"
-                        class="layout"
                         :class="{ ['column'] : listView,
                                   ['row'] : !listView,
                                   ['wrap'] : !listView }" >
@@ -168,7 +166,7 @@
                                   @clicked="catchCategoryClicked" />
         </v-flex>
 
-      </transition-group>
+      </v-layout>
 
     </template>
 

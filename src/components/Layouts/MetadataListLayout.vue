@@ -73,7 +73,7 @@
         <v-flex hidden-sm-and-up
                 xs12
                 py-0
-                key="controlPanel" >
+                key="controlPanel_smallscreen" >
           <slot name="controlPanel" />
         </v-flex>
 
