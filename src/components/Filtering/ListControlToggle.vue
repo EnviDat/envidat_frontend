@@ -2,10 +2,9 @@
 
   <v-container pa-0>
     <v-layout row>
-      <v-flex >
+      <v-flex v-if="isEnabledControl(LISTCONTROL_MAP_ACTIVE)" >
         <v-btn-toggle v-model="controlsActive">
-          <v-btn v-if="isEnabledControl(LISTCONTROL_MAP_ACTIVE)"
-                  flat
+          <v-btn flat
                   @click="catchControlClick(LISTCONTROL_MAP_ACTIVE)"
                   :class="isActiveControl(LISTCONTROL_MAP_ACTIVE) ? 'secondary' : ''"
                   :style="compactLayout ? 'height: 32px !important' : ''" >
@@ -14,9 +13,10 @@
         </v-btn-toggle>
       </v-flex>
 
-      <v-flex >
-        <v-btn-toggle v-model="controlsActive"
-                       >
+      <v-flex v-if="isEnabledControl(LISTCONTROL_LIST_ACTIVE)
+                    || isEnabledControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)" >
+        <v-btn-toggle v-model="controlsActive" >
+
           <v-btn v-if="isEnabledControl(LISTCONTROL_LIST_ACTIVE)"
                   flat
                   @click="catchControlClick(LISTCONTROL_LIST_ACTIVE)"
