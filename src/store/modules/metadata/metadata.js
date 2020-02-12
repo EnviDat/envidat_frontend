@@ -69,9 +69,10 @@ const initialState = {
    */
   vIndex: 0,
   vReloadAmount: 16,
-  vReloadDelay: 150,
+  vReloadAmountMobile: 5,
+  vReloadDelay: 15,
   // scrollPositionDelay has to be more than the vReloadDelay
-  scrollPositionDelay: 200,
+  scrollPositionDelay: 20,
   /**
    * Pinned Elements from the MapFilter
    */
@@ -124,6 +125,7 @@ export const metadata = {
     filteredContent: state => state.filteredContent,
     vIndex: state => state.vIndex,
     vReloadAmount: state => state.vReloadAmount,
+    vReloadAmountMobile: state => state.vReloadAmountMobile,
     vReloadDelay: state => state.vReloadDelay,
     scrollPositionDelay: state => state.scrollPositionDelay,
     pinnedIds: state => state.pinnedIds,

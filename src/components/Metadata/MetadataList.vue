@@ -144,7 +144,7 @@
                             :distance="preloadingDistance"
                             @infinite="infiniteHandler" >
             <div slot="no-results">
-              <BaseRectangleButton v-if="vIndex > 0 && vIndex > vReloadAmount"
+              <BaseRectangleButton v-if="vIndex > 0 && vIndex > reloadAmount"
                                     :buttonText="scrollTopButtonText"
                                     :isSmall="true"
                                     :isFlat="true"
@@ -263,10 +263,14 @@ export default {
       updatingTags: `${METADATA_NAMESPACE}/updatingTags`,
       vIndex: `${METADATA_NAMESPACE}/vIndex`,
       vReloadAmount: `${METADATA_NAMESPACE}/vReloadAmount`,
+      vReloadAmountMobile: `${METADATA_NAMESPACE}/vReloadAmountMobile`,
       vReloadDelay: `${METADATA_NAMESPACE}/vReloadDelay`,
       isFilteringContent: `${METADATA_NAMESPACE}/isFilteringContent`,
       categoryCards: `${METADATA_NAMESPACE}/categoryCards`,
     }),
+    reloadAmount() {
+      return this.$vuetify.breakpoint.smAndUp ? this.vReloadAmount : this.vReloadAmountMobile;
+    },
     showPinnedElements() {
       return !this.loading && this.showMapFilter && this.pinnedIds.length > 0;
     },
@@ -320,7 +324,7 @@ export default {
           i = that.vIndex;
         }
 
-        for (;i < that.vIndex + that.vReloadAmount && i < that.contentSize; i++) {
+        for (;i < that.vIndex + that.reloadAmount && i < that.contentSize; i++) {
           that.virtualListContent.push(that.listContent[i]);
         }
 
@@ -534,7 +538,7 @@ export default {
 <style scoped>
   .itemfade-enter-active,
   .itemfade-leave-active {
-    transition: opacity 0.2s;
+    transition: opacity 0.1s;
     transition-timing-function: linear;
   }
 
