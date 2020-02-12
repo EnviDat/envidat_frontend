@@ -39,7 +39,7 @@ import {
 } from '@/factories/metadataFilterMethods';
 import {
   getTagsMergedWithExtras,
-  getSelectedTagsMergedWithHidden
+  getSelectedTagsMergedWithHidden,
 } from '@/factories/modeFactory';
 import { urlRewrite } from '@/factories/apiFactory';
 

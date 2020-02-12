@@ -9,6 +9,7 @@
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
+import { Object } from 'core-js';
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
@@ -26,7 +27,6 @@ import {
 } from './mainMutationsConsts';
 
 import { getSpecificApiError } from '@/factories/notificationFactory';
-import { Object } from 'core-js';
 
 export default {
   [SET_APP_BACKGROUND](state, bgImg) {
@@ -58,7 +58,7 @@ export default {
     state.config = payload;
   },
   [SET_CONFIG_ERROR](state, reason) {
-    let notificationObj = getSpecificApiError('Config could not ge loaded!', reason);
+    const notificationObj = getSpecificApiError('Config could not ge loaded!', reason);
     this.commit(ADD_USER_NOTIFICATION, notificationObj);
   },
   [CHECK_FRONTEND_VERSION](state, version) {
@@ -86,14 +86,14 @@ export default {
     state.notifications[key].show = false;
   },
   [ADD_USER_NOTIFICATION](state, notificationObj) {
-    const key = notificationObj.message + '_' + notificationObj.details.length;
+    const key = `${notificationObj.message}_${notificationObj.details.length}`;
     notificationObj.key = key;
 
     if (!state.notifications[key]) {
       this._vm.$set(state.notifications, key, notificationObj);
     } else {
       const existingNotification = state.notifications[key];
-      if (existingNotification.details !== notificationObj.details){
+      if (existingNotification.details !== notificationObj.details) {
         this._vm.$set(state.notifications, key, notificationObj);
       }
     }
