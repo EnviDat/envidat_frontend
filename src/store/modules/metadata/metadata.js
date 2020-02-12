@@ -97,7 +97,7 @@ const initialState = {
    * because a User might have given the direct url to a paper and later on changed it
    */
   idRemapping: new Map([
-    ['als‐based‐snow‐depth‐and‐canopy‐height‐maps‐from‐flights‐in‐2017‐grisons‐ch‐and‐grand‐mesa‐co', 'grand-mesa-co']
+    ['als‐based‐snow‐depth‐and‐canopy‐height‐maps‐from‐flights‐in‐2017‐grisons‐ch‐and‐grand‐mesa‐co', 'grand-mesa-co'],
   ]),
   asciiDead: '&#8224;',
   authorPassedInfo: 'Sadly this author has passed away.',
@@ -113,7 +113,7 @@ export const metadata = {
     loadingMetadatasContent: state => state.loadingMetadatasContent,
     metadataIds: state => state.metadataIds,
     metadatasContent: state => state.metadatasContent,
-    metadatasContentSize: state => state.metadatasContent !== undefined ? Object.keys(state.metadatasContent).length : 0,
+    metadatasContentSize: state => (state.metadatasContent !== undefined ? Object.keys(state.metadatasContent).length : 0),
     authorsMap: state => state.authorsMap,
     searchedMetadatasContent: state => state.searchedMetadatasContent,
     searchingMetadatasContent: state => state.searchingMetadatasContent,

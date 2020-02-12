@@ -26,6 +26,7 @@ export function createTag(name, options = defaultTagOptions) {
     count = options.count === undefined && options.tag.count ? options.tag.count : count;
   }
 
+  // eslint-disable-next-line object-curly-newline
   return { name, enabled, color, count };
 }
 
@@ -56,7 +57,7 @@ export function getEnabledTags(tags, content) {
       }
     }
 
-    updatedTags.push(createTag(tag.name, {enabled: found, color: tag.color, count: tag.count }));
+    updatedTags.push(createTag(tag.name, { enabled: found, color: tag.color, count: tag.count }));
   }
 
   return updatedTags;
@@ -95,19 +96,19 @@ export function countTags(datasets) {
       const tag = dataset.tags[j];
 
       let count = 1;
-      let existingTag = tagMap.get(tag.name);
+      const existingTag = tagMap.get(tag.name);
 
       if (existingTag) {
         count += existingTag.count;
       }
 
-      tagMap.set(tag.name, createTag(tag.name, { tag: existingTag, count: count }));
+      tagMap.set(tag.name, createTag(tag.name, { tag: existingTag, count }));
     }
   }
 
   const tagCounts = Array.from(tagMap.values());
 
-  tagCounts.sort((a, b) => { return b.count - a.count; });
+  tagCounts.sort((a, b) => b.count - a.count);
 
   return tagCounts;
 }

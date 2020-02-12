@@ -733,6 +733,8 @@ export function extractAuthorsMap(datasets) {
     // console.log(`extracted ${authorCount} authors`);
   }
 
+  authorMap.authorCount = authorCount;
+
   return authorMap;
 }
 
