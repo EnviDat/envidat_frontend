@@ -70,6 +70,13 @@
       <v-layout row wrap
                 ref="metadataListLayoutFiltering" >
 
+        <v-flex hidden-sm-and-up
+                xs12
+                py-0
+                key="controlPanel" >
+          <slot name="controlPanel" />
+        </v-flex>
+
         <v-flex xs12
                 pb-0
                 key="filterKeywords" >

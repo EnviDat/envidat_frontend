@@ -88,10 +88,10 @@ storiesOf('4 Filtering | SearchBarView', module)
         </v-flex>
 
         <v-flex>
-            <v-layout row>
-            <v-flex xs4 px-1>
+            <v-layout row wrap>
+            <v-flex xs6 px-1>
                 <small-search-bar-view
-                            labelText="xs4 no button"
+                            labelText="xs6 no button"
                             :searchTerm="searchTerm"
                             showSearchCount
                             :searchCount='123'
@@ -101,9 +101,9 @@ storiesOf('4 Filtering | SearchBarView', module)
                               />
             </v-flex>
 
-            <v-flex xs3 px-1>
+            <v-flex xs6 px-1>
                 <small-search-bar-view
-                            labelText="xs3 with compactLayout"
+                            labelText="xs6 with compactLayout"
                             :searchTerm="searchTerm"
                             showSearchCount
                             :searchCount='12'
@@ -113,9 +113,9 @@ storiesOf('4 Filtering | SearchBarView', module)
                             />
             </v-flex>
 
-            <v-flex xs3 px-1>
+            <v-flex xs6 px-1>
                 <small-search-bar-view
-                            labelText="xs3 no compactLayout"
+                            labelText="xs6 no compactLayout"
                             :searchTerm="searchTerm"
                             showSearchCount
                             :searchCount='0'
