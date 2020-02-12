@@ -61,6 +61,8 @@
                             :enabledControls="enabledControls"
                             :mapHeight="mapFilterHeight"
                             :topFilteringLayout="true"
+                            :showSearch="false"
+                            :searchCount="filteredListContent.length"
                             @setScroll="setScrollPos" />
           </div>
 

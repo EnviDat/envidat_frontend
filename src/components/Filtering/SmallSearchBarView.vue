@@ -1,10 +1,10 @@
 <template>
-  <v-card :height="height">
-
-    <v-layout row align-center fill-height justify-space-between>
+  <v-card >
+    <v-container fluid pa-0 >
+    <v-layout row align-center justify-space-between>
 
       <v-flex v-if="loading"
-      style="min-width: 55px; text-align: center;"
+              style="min-width: 60px; text-align: center;"
               shrink >
         <v-progress-circular indeterminate
                               size="20"
@@ -13,8 +13,8 @@
       </v-flex>
 
       <v-flex v-if="showSearchCount && !loading"
-              shrink py-0 px-1
-              style="min-width: 55px; text-align: center;" >
+              shrink
+              style="min-width: 60px; text-align: center;" >
 
         <v-tooltip bottom :disabled="$vuetify.breakpoint.xsOnly">
           <tag-chip slot="activator"
@@ -28,8 +28,9 @@
         </v-tooltip>
       </v-flex>
 
-      <v-flex v-if="!hasButton"
-                shrink >
+      <v-flex v-if="showSearch && !hasButton"
+                shrink
+                pa-0 >
         <base-icon-button materialIconName="search"
                           marginClass="ma-0"
                           color="transparent"
@@ -38,10 +39,13 @@
         />
       </v-flex>
 
-      <v-flex grow py-0 px-2>
+      <v-flex v-if="showSearch"
+              grow
+              py-0 >
         <v-tooltip bottom :disabled="$vuetify.breakpoint.xsOnly || !searchToolTipText">
-          <div slot="activator">
-            <v-text-field class="envidatSmallSearch"
+          <!-- <div > -->
+            <v-text-field slot="activator"
+                          class="envidatSmallSearch"
                           style="align-items: center;"
                           :class="{'small': compactLayout}"
                           v-model="searchText"
@@ -53,18 +57,19 @@
                           @keyup.enter="clicked"
                           append-icon="clear"
                           @click:append="clearClicked" />
-          </div>
+          <!-- </div> -->
 
           <span>{{ searchToolTipText }}</span>
         </v-tooltip>
       </v-flex>
 
-      <v-flex v-if="hasButton"
+      <v-flex v-if="showSearch && hasButton"
               shrink >
         <base-rectangle-button :button-text="buttonText" :is-small="true" @clicked="clicked" />
       </v-flex>
 
     </v-layout>
+    </v-container>
   </v-card>
 </template>
 
@@ -94,6 +99,10 @@ export default {
   },
   props: {
     labelText: String,
+    showSearch: {
+      type: Boolean,
+      default: true,
+    },
     searchTerm: String,
     showSearchCount: Boolean,
     searchCount: Number,

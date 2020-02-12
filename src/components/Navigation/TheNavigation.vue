@@ -4,8 +4,7 @@
                         clipped
                         :mini-variant.sync="mini"
                         mini-variant-width="60"
-                        width="190"
-                        @click.native.stop="" >
+                        width="190" >
 
     <v-list class="pt-1"
             :class="{ 'narrowNavigation': mini }"
@@ -14,7 +13,7 @@
 
       <v-list-tile v-for="(item, index) in navItemsMenuExcluded"
                   :key="index"
-                  @click.native.stop="" >
+                  @click.native.stop="mini = !mini" >
 
         <div v-if="mini" style="width: 100%; height: 100%;">
 
@@ -83,6 +82,20 @@
         </div>
 
       </v-list-tile>
+      <v-list-tile>
+        <div style="width: 100%; height: 100%;">
+        <v-list-tile-action>
+          <v-btn icon
+                  class="ma-0"
+                  @click.stop="mini = !mini" >
+              <v-icon color="primary">
+                {{ mini ? 'chevron_right' : 'chevron_left' }}
+              </v-icon>
+          </v-btn>            
+        </v-list-tile-action>
+        </div>
+      </v-list-tile>
+
     </v-list>
 
   </v-navigation-drawer>
@@ -96,12 +109,12 @@ import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 export default {
   props: {
     navItems: Array,
-    mini: Boolean,
     version: String,
   },
   data: () => ({
     Logo,
     logoText: 'EnviDat',
+    mini: true,
   }),
   computed: {
     navItemsMenuExcluded() {
