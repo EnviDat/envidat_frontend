@@ -7,6 +7,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "modern-build": "vue-cli-service build --modern",
     "test": "jest",
     "lint": "vue-cli-service lint",
     "extract-authors": "node src/node/extractAuthors.js",
@@ -79,6 +80,7 @@
   },
   "browserslist": [
     "> 1%",
-    "last 2 versions"
+    "last 5 versions",
+    "not ie <= 8"
   ]
 }
