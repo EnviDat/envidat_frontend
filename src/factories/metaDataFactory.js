@@ -645,6 +645,7 @@ export function createAuthors(dataset) {
       const author = authors[i];
 
       // const authorName = getAuthorName(author);
+      // console.log('authorName: ' + authorName);
       const firstName = author.given_name;
       const lastName = author.name;
 
@@ -677,7 +678,7 @@ export function extractAuthorsMap(datasets) {
   if (!datasets) { return null; }
 
   const authorMap = {};
-  let authorCount = 0;
+  // let authorCount = 0;
 
   for (let i = 0; i < datasets.length; i++) {
     const dataset = datasets[i];
@@ -723,7 +724,7 @@ export function extractAuthorsMap(datasets) {
         } else {
           // console.log('for ' + author.name + ' set ' + author.count);
           authorMap[authorName] = author;
-          authorCount++;
+          // authorCount++;
         }
       }
     } else {
@@ -732,8 +733,6 @@ export function extractAuthorsMap(datasets) {
 
     // console.log(`extracted ${authorCount} authors`);
   }
-
-  authorMap.authorCount = authorCount;
 
   return authorMap;
 }
