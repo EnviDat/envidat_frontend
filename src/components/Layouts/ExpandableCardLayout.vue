@@ -1,26 +1,28 @@
 <template>
-  <v-card :class="cardClass">
-    <v-card-title v-if="title"
-                  class="metadata_title title"
-                  @click="toggleShowContent">
-      {{ title }}
-    </v-card-title>
+  <!-- <v-layout style="position: relative; "> -->
+  <v-card :class="cardClass" >
 
-    <v-card-actions class="ma-0 pa-2"
-                    :style="`position: absolute; top: 0px; right: 0px;`" >
+    <v-card-actions v-if="expandable"
+                    class="ma-0 pa-2"
+                    :style="`position: absolute; top: 0px; right: 0px;`"
+                    @clicked="toggleContent" >
 
       <base-icon-button material-icon-name="expand_more"
-                        :iconColor="'primary'"
-                        :color="'accent'"
-                        :outlined="showContent"
+                        :iconColor="showContent ? 'accent' : 'primary'"
+                        :color="showContent ? 'accent' : 'primary'"
+                        :outlined="true"
                         :rotateOnClick="true"
                         :rotateToggle="showContent"
                         :tooltipText="showContent ? 'Collaspe text' : 'Show full text'"
-                        @clicked="toggleShowContent" />
-
+                        @clicked="toggleContent" />
     </v-card-actions>
 
-    <slot v-if="showContent" />
+    <slot name="title" @click="toggleContent" />
+
+    <slot v-if="!expandable || (expandable && showContent)"
+          name="content" />
+
+    <slot name="placeholder" />
 
   </v-card>
 </template>
@@ -47,14 +49,16 @@ export default {
   components: {
     BaseIconButton,
   },
+  mounted() {
+  },
   props: {
-    title: String,
     cardClass: String,
+    expandable: Boolean,
   },
   computed: {
   },
   methods: {
-    toggleShowContent() {
+    toggleContent() {
       this.showContent = !this.showContent;
     },
   },

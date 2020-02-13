@@ -1,62 +1,74 @@
 <template>
-  <v-card >
-    <v-card-title v-if="title"
-                  class="metadata_title title">
-      {{ title }}
-    </v-card-title>
-    
-    <v-card-title v-if="showPlaceholder && !title" >
-      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer"
-            style="width: 100%;">
-        <div class="bone bone-type-heading" />
-      </div>
-    </v-card-title>
+  <expandable-card-layout :expandable="expandable" >
 
-    <v-card-text v-if="fundingItems"
-                  ref="funding"
-                  style="overflow-x: hidden;"
-                  class="heightAndScroll pb-4" >
+    <template v-slot:title >
+      <v-card-title class="metadata_title title">
+        {{ title }}
+      </v-card-title>
+    </template>
 
-      <v-layout row wrap>
-        <v-flex xs12 py-1>
-          {{ preText }}
-        </v-flex>
-        <v-flex xs6 md4
-                py-1
-                v-for="(item, index) in fundingItems"
-                :key="index" >
+    <template v-if="fundingItems"
+              v-slot:content >
 
-          <div v-if="showFundingItem(item)">
+      <v-card-text ref="funding"
+                    style="overflow-x: hidden;"
+                    class="heightAndScroll pb-4" >
 
-            <a v-if="item.institution_url"
-                :href="item.institution_url"
-                target="_blank">
-              <div>{{ item.institution }}</div>
-            </a>
+        <v-layout row wrap>
+          <v-flex xs12 py-1>
+            {{ preText }}
+          </v-flex>
+          <v-flex xs6 md4
+                  py-1
+                  v-for="(item, index) in fundingItems"
+                  :key="index" >
 
-            <div v-else>{{ item.institution }}</div>
+            <div v-if="showFundingItem(item)">
 
-            <div v-if="item.grant_number">(Grant/Award:{{ item.grant_number }})</div>
-          </div>
+              <a v-if="item.institution_url"
+                  :href="item.institution_url"
+                  target="_blank">
+                <div>{{ item.institution }}</div>
+              </a>
 
-        </v-flex>
-      </v-layout>
+              <div v-else>{{ item.institution }}</div>
 
-    </v-card-text>
+              <div v-if="item.grant_number">(Grant/Award:{{ item.grant_number }})</div>
+            </div>
 
-    <v-card-text v-if="showPlaceholder && !funding" >
-      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer">
-        <div class="bone bone-type-multiline bone-style-paragraph" />
-      </div>
-    </v-card-text>
+          </v-flex>
+        </v-layout>
 
-    <v-card-text v-if="!showPlaceholder && !funding"
-                  class="pt-0"
-                  :style="`color: ${emptyTextColor};`" >
-      {{ emptyText }}
-    </v-card-text>
+      </v-card-text>
 
-  </v-card>
+    </template>
+
+    <template v-slot:placeholder >
+
+      <v-card-text v-if="!showPlaceholder && !funding"
+                    class="pt-0"
+                    :style="`color: ${emptyTextColor};`" >
+        {{ emptyText }}
+      </v-card-text>
+
+      <v-card-title v-if="!showPlaceholder && !title"
+              >
+        <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer"
+              style="width: 100%;">
+          <div class="bone bone-type-heading" />
+        </div>
+      </v-card-title>
+
+      <v-card-text v-if="showPlaceholder && !funding" >
+        <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer">
+          <div class="bone bone-type-multiline bone-style-paragraph" />
+        </div>
+      </v-card-text>
+
+    </template>
+
+  </expandable-card-layout>
+
 </template>
 
 <script>
@@ -72,14 +84,17 @@
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
+import ExpandableCardLayout from '@/components/Layouts/ExpandableCardLayout';
 
 export default {
   name: 'MetadataFunding',
   components: {
+    ExpandableCardLayout,
   },
   props: {
     genericProps: Object,
     showPlaceholder: Boolean,
+    expandable: Boolean,    
   },
   computed: {
     funding() {
@@ -122,4 +137,3 @@ export default {
   }),
 };
 </script>
-

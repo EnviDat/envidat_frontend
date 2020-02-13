@@ -36,7 +36,8 @@
                 mb-2 >
           <component :is="entry"
                       :generic-props="entry.genericProps"
-                      :show-placeholder="showPlaceholder" />
+                      :show-placeholder="showPlaceholder"
+                      :expandable="$vuetify.breakpoint.smAndDown" />
         </v-flex>
       </template>
 
@@ -46,7 +47,8 @@
                 mb-2 >
           <component :is="entry"
                       :generic-props="entry.genericProps"
-                      :show-placeholder="showPlaceholder" />
+                      :show-placeholder="showPlaceholder"
+                      :expandable="$vuetify.breakpoint.xsOnly" />
         </v-flex>
       </template>
     </two-column-layout>

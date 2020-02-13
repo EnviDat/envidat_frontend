@@ -21,7 +21,6 @@ import App from '@/App';
 import MetadataPublications from '@/components/Metadata/MetadataPublications';
 import MetadataFunding from '@/components/Metadata/MetadataFunding';
 import MetadataAuthors from '@/components/Metadata/MetadataAuthors';
-import ExpandableCardLayout from '@/components/Layouts/ExpandableCardLayout';
 
 import {
   createPublications,
@@ -118,13 +117,14 @@ storiesOf('6 Detail Views | Metadata', module)
     }),
   }))
 .add('Metadata Funding', () => ({
-    components: { MetadataFunding, ExpandableCardLayout },
+    components: { MetadataFunding },
     template: `
     <v-layout row wrap>
 
       <v-flex xs12 py-3>
-        <metadata-funding :genericProps="genericProps2"
-                                :showPlaceholder="genericProps2.showPlaceholder"/>
+        <metadata-funding expandable="true"
+                          :genericProps="genericProps2"
+                          :showPlaceholder="genericProps2.showPlaceholder"/>
       </v-flex>
 
       <v-flex xs6 py-3>
@@ -143,13 +143,6 @@ storiesOf('6 Detail Views | Metadata', module)
 
       <v-flex xs6 py-3>
         <metadata-funding />
-      </v-flex>
-
-      <v-flex xs6 py-3>
-        <expandable-card-layout title="Funding Information">
-          <metadata-funding :genericProps="genericPropsPlaceholder"
-                            :showPlaceholder="genericPropsPlaceholder.showPlaceholder" />
-        </expandable-card-layout>
       </v-flex>
 
     </v-layout>        
