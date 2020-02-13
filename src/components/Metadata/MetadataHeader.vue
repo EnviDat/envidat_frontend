@@ -190,7 +190,7 @@
       </v-layout>
 
       <v-card-actions v-if="maxTagsReached"
-                      style="position: absolute; bottom: 0px; right: 0px;">
+                      style="position: absolute; bottom: 0px; right: 0px; z-index: 2;">
         <base-icon-button v-show="expanded"
                           materialIconName="expand_more"
                           :outlined="true"
