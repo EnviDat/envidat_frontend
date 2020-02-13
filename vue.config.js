@@ -55,9 +55,9 @@ module.exports = {
       splitChunks: {
         minSize: 10000,
         maxSize: 250000,
-      }
-    }
-  }  
+      },
+    },
+  },  
   // devServer: {
   //   // assetsSubDirectory: "static",
   //   // assetsPublicPath: "/",
