@@ -48,7 +48,7 @@
                     fill-height
                     v-on:scroll="updateScroll()"
                     ref="appContainer"
-                    :style="currentPageIsBrowsePage ? '' : 'height: calc(100vh - 36px); overflow-y: auto; scroll-behavior: smooth;'" >
+                    :style="pageStyle" >
         <v-layout column >
           <v-flex xs12 mx-0 >
 
@@ -286,6 +286,10 @@ export default {
     showToolbar() {
       return false;
       // return this.currentPageIsBrowsePage || !this.$vuetify.breakpoint.smAndDown;
+    },
+    pageStyle() {
+      const heightStyle = this.showToolbar ? 'height: calc(100vh - 36px);' : 'height: 100vh;';
+      return this.currentPageIsBrowsePage ? '' : `${heightStyle} overflow-y: auto; scroll-behavior: smooth;`;
     },
     showSmallNavigation() {
       return this.$vuetify.breakpoint.smAndDown;
