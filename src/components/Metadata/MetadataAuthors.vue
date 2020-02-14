@@ -1,39 +1,58 @@
 <template>
-  <v-card >
-    <v-card-title class="title metadata_title">
-      Author Details
-    </v-card-title>
 
-    <v-container fluid
-                grid-list-md
-                pa-3 >
+  <expandable-card-layout :expandable="expandable && hasAuthors" >
 
-      <v-layout v-if="showPlaceholder"
-                  row wrap >
-        <v-flex v-for="n in 2"
-                  :key="n"
+    <template v-slot:title >
+      <v-card-title class="metadata_title title">
+        Author Details
+      </v-card-title>
+    </template>
+
+    <template v-if="!showPlaceholder && hasAuthors"
+              v-slot:content >
+
+      <v-container fluid
+                  grid-list-md
+                  pa-3 >
+
+        <v-layout row wrap >
+
+          <v-flex v-for="author in authors"
+                  :key="author.fullName"
                   xs12 sm6 >
-          <author-card-placeholder />
-        </v-flex>
-      </v-layout>
+            <author-card :author="author" />
+          </v-flex>
+        </v-layout>
+      </v-container>
 
-      <v-layout v-if="!showPlaceholder && authors && authors.length > 0"
-                row wrap >
+    </template>
 
-        <v-flex v-for="author in authors"
-                :key="author.fullName"
-                xs12 sm6 >
-          <author-card :author="author" />
-        </v-flex>
-      </v-layout>
-    </v-container>
+    <template v-slot:placeholder >
 
-    <v-card-text v-if="!showPlaceholder && (!authors || authors.length <= 0)"
-                  style="color: red;" >
-      {{ emptyText }}
-    </v-card-text>
+      <v-container v-if="showPlaceholder"
+                  fluid
+                  grid-list-md
+                  pa-3 >
 
-  </v-card>
+        <v-layout row wrap >
+          <v-flex v-for="n in 2"
+                    :key="n"
+                    xs12 sm6 >
+            <author-card-placeholder />
+          </v-flex>
+        </v-layout>
+
+      </v-container>
+
+      <v-card-text v-if="!showPlaceholder && !hasAuthors"
+                    style="color: red;" >
+        {{ emptyText }}
+      </v-card-text>
+
+    </template>
+
+  </expandable-card-layout>
+
 </template>
 
 <script>
@@ -52,15 +71,18 @@
 
 import AuthorCard from '@/components/Cards/AuthorCard';
 import AuthorCardPlaceholder from '@/components/Cards/AuthorCardPlaceholder';
+import ExpandableCardLayout from '@/components/Layouts/ExpandableCardLayout';
 
 export default {
   components: {
     AuthorCard,
     AuthorCardPlaceholder,
+    ExpandableCardLayout,
   },
   props: {
     genericProps: Object,
     showPlaceholder: Boolean,
+    expandable: Boolean,
   },
   data: () => ({
     showAllResources: false,
@@ -68,6 +90,9 @@ export default {
     emptyText: 'No authors found for this dataset',
   }),
   computed: {
+    hasAuthors() {
+      return this.authors && this.authors.length > 0;
+    },
     authors() {
       return this.mixinMethods_getGenericProp('authors');
     },

@@ -107,7 +107,7 @@ storiesOf('6 Detail Views | Metadata', module)
         Empty Metadata Header
       </v-flex>
 
-      <v-flex xs12 py-3 >
+      <v-flex xs12 py-2 >
         <metadata-header metadataId="id-which-can-not-be-found" />
       </v-flex>
 
@@ -115,11 +115,11 @@ storiesOf('6 Detail Views | Metadata', module)
         Metadata Header with showPlaceholder
       </v-flex>
 
-      <v-flex xs12 py-3 >
+      <v-flex xs12 py-2 >
         <metadata-header :showPlaceholder="true" />
       </v-flex>
 
-      <v-flex xs12 py-3>
+      <v-flex xs12 py-2>
         <metadata-header
           v-bind="smallHeader"
           :doiIcon="doiIcon"
@@ -129,7 +129,7 @@ storiesOf('6 Detail Views | Metadata', module)
         />
       </v-flex>        
 
-      <v-flex xs12 py-3>
+      <v-flex xs12 py-2>
         <metadata-header
           v-bind="largeHeader"
           :doiIcon="doiIcon"
@@ -155,22 +155,22 @@ storiesOf('6 Detail Views | Metadata', module)
     template: `
     <v-layout row wrap>
 
-      <v-flex xs12 py-3>
+      <v-flex xs12 py-2>
         <metadata-body :genericProps="genericPropsPlaceholder" />
       </v-flex>
 
-      <v-flex xs6 py-3>
+      <v-flex xs6 py-2>
         <metadata-body :genericProps="genericPropsBody" />
       </v-flex>
 
-      <v-flex xs6 py-3>
+      <v-flex xs6 py-2>
         <metadata-body
           :genericProps="genericPropsPlaceholder"
           :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
         />
       </v-flex>
 
-      <v-flex xs12 py-3>
+      <v-flex xs12 py-2>
         <metadata-body :genericProps="genericPropsBodyLongDesc" />
       </v-flex>
 
@@ -196,39 +196,39 @@ storiesOf('6 Detail Views | Metadata', module)
     template: `
     <v-layout row wrap>
 
-      <v-flex xs6 py-3>
+      <v-flex xs6 py-2>
         <metadata-citation
           :genericProps="genericProps1"
         />
       </v-flex>
 
-      <v-flex xs6 py-3>
+      <v-flex xs6 py-2>
         <metadata-citation
           :genericProps="genericPropsPlaceholder"
           :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
         />
       </v-flex>
 
-      <v-flex xs12 py-3>
+      <v-flex xs12 py-2>
         <metadata-citation
           :genericProps="genericProps2"
         />
       </v-flex>
 
-      <v-flex xs12 py-3>
+      <v-flex xs12 py-2>
         <metadata-citation
           :genericProps="genericPropsPlaceholder"
           :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
         />
       </v-flex>
 
-      <v-flex xs12 py-3>
+      <v-flex xs12 py-2>
         <metadata-citation
           :genericProps="genericPropsPlaceholder"
         />
       </v-flex>
 
-      <v-flex xs6 py-3>
+      <v-flex xs6 py-2>
         <metadata-citation
           :genericProps="genericPropsPlaceholder"
         />
@@ -257,12 +257,18 @@ storiesOf('6 Detail Views | Metadata', module)
     template: `
     <v-layout row wrap>
 
-      <v-flex xs6 py-3>
+      <v-flex xs12 py-2>
+        <metadata-details :expandable="true"
+                          :genericProps="genericProps3"
+        />
+      </v-flex>
+
+      <v-flex xs6 py-2>
         <metadata-details :genericProps="genericProps3"
         />
       </v-flex>
 
-      <v-flex xs6 py-3>
+      <v-flex xs6 py-2>
         <metadata-details :genericProps="genericPropsPlaceholder"
           :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
         />
@@ -292,14 +298,21 @@ storiesOf('6 Detail Views | Metadata', module)
     template: `
     <v-layout row wrap>
 
-      <v-flex xs6 py-3>
-        <metadata-location :genericProps="genericProps4"
+      <v-flex xs12 py-2>
+        <metadata-location :expandable="true"
+                            :genericProps="genericProps4"
         />
       </v-flex>
 
-      <v-flex xs6 py-3>
-        <metadata-location :genericProps="genericPropsPlaceholder"
-          :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
+      <v-flex xs6 py-2>
+        <metadata-location :expandable="true"
+                            :genericProps="genericPropsPlaceholder"
+                            :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
+        />
+      </v-flex>
+
+      <v-flex xs6 py-2>
+        <metadata-location :genericProps="genericProps4"
         />
       </v-flex>
 

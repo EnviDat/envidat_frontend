@@ -1,5 +1,5 @@
 <template>
-  <expandable-card-layout :expandable="expandable" >
+  <expandable-card-layout :expandable="expandable && fundingItems" >
 
     <template v-slot:title >
       <v-card-title class="metadata_title title">

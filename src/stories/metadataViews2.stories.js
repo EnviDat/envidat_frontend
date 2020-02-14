@@ -66,21 +66,21 @@ storiesOf('6 Detail Views | Metadata', module)
     template: `
     <v-layout row wrap>
 
-      <v-flex xs6 py-3>
+      <v-flex xs6 py-2>
         <metadata-publications :genericProps="genericPropsEmpty"
                                 :showPlaceholder="genericPropsEmpty.showPlaceholder"/>
       </v-flex>
 
-      <v-flex xs6 py-3>
+      <v-flex xs6 py-2>
         <metadata-publications :genericProps="genericPropsPublications" />
       </v-flex>
 
-      <v-flex xs6 py-3>
+      <v-flex xs6 py-2>
         <metadata-publications :genericProps="genericPropsPlaceholder"
                                 :showPlaceholder="genericPropsPlaceholder.showPlaceholder" />
       </v-flex>
 
-      <v-flex xs6 py-3>
+      <v-flex xs6 py-2>
         <metadata-publications />
       </v-flex>
       
@@ -121,27 +121,29 @@ storiesOf('6 Detail Views | Metadata', module)
     template: `
     <v-layout row wrap>
 
-      <v-flex xs12 py-3>
-        <metadata-funding expandable="true"
+      <v-flex xs12 py-2>
+        <metadata-funding :genericProps="genericProps2"
+                          :showPlaceholder="genericProps2.showPlaceholder"/>
+      </v-flex>
+
+      <v-flex xs6 py-2>
+        <metadata-funding :expandable="true"
                           :genericProps="genericProps2"
                           :showPlaceholder="genericProps2.showPlaceholder"/>
       </v-flex>
 
-      <v-flex xs6 py-3>
-        <metadata-funding :genericProps="genericProps2"
-                                :showPlaceholder="genericProps2.showPlaceholder"/>
+      <v-flex xs6 py-2>
+        <metadata-funding :expandable="true"
+                          :genericProps="genericProp" />
       </v-flex>
 
-      <v-flex xs6 py-3>
-        <metadata-funding :genericProps="genericProp" />
-      </v-flex>
-
-      <v-flex xs6 py-3>
-        <metadata-funding :genericProps="genericPropsPlaceholder"
+      <v-flex xs6 py-2>
+        <metadata-funding :expandable="true"
+                          :genericProps="genericPropsPlaceholder"
                                 :showPlaceholder="genericPropsPlaceholder.showPlaceholder" />
       </v-flex>
 
-      <v-flex xs6 py-3>
+      <v-flex xs6 py-2>
         <metadata-funding />
       </v-flex>
 
@@ -171,17 +173,23 @@ storiesOf('6 Detail Views | Metadata', module)
     template: `
     <v-layout row wrap>
 
-      <v-flex xs12 md6 py-3>
+      <v-flex xs12 md6 py-2>
         <metadata-authors :genericProps="genericProps5" />
       </v-flex>
 
-      <v-flex xs12 md6 py-3>
-        <metadata-authors :genericProps="genericPropsPlaceholder"
+      <v-flex xs12 md6 py-2>
+        <metadata-authors :expandable="true"
+                          :genericProps="genericProps5" />
+      </v-flex>
+
+      <v-flex xs12 md6 py-2>
+        <metadata-authors :expandable="true"
+                          :genericProps="genericPropsPlaceholder"
           :showPlaceholder="genericPropsPlaceholder.showPlaceholder" />
       </v-flex>
 
-      <v-flex xs12 md6 py-3>
-        <metadata-authors  />
+      <v-flex xs12 md6 py-2>
+        <metadata-authors :expandable="true" />
       </v-flex>
 
     </v-layout>        

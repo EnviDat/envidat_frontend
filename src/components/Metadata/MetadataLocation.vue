@@ -1,26 +1,40 @@
 <template>
-  <v-card>
-    <v-card-title class="title metadata_title">Location</v-card-title>
 
-    <v-card-text v-if="isEmpty && !showPlaceholder" style="color: red;">{{ emptyText }}</v-card-text>
+  <expandable-card-layout :expandable="expandable && !isEmpty" >
 
-    <v-card-text v-if="showPlaceholder" >
-      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer">
-        <div v-bind="mapSize"
-              class='bone bone-type-image' />
-      </div>
-    </v-card-text>
+    <template v-slot:title >
+      <v-card-title class="title metadata_title">Location</v-card-title>
+    </template>
 
-    <v-card-text v-if="!showPlaceholder && !isEmpty">
-      <!-- can't get it to work with the v-show for now
-            because leaflet needs the ref
-      to the mapcontainer to correctly initialize-->
-      <div id="mapcontainer" ref="mapcontainer">
-        <div id="map" ref="map" v-bind="mapSize" />
-      </div>
-    </v-card-text>
+    <template v-if="!isEmpty"
+              v-slot:content >
 
-  </v-card>
+      <v-card-text v-if="!showPlaceholder && !isEmpty">
+        <!-- can't get it to work with the v-show for now
+              because leaflet needs the ref
+        to the mapcontainer to correctly initialize-->
+        <div id="mapcontainer" ref="mapcontainer">
+          <div id="map" ref="map" v-bind="mapSize" />
+        </div>
+      </v-card-text>
+
+    </template>
+
+    <template v-slot:placeholder >
+
+      <v-card-text v-if="isEmpty && !showPlaceholder" style="color: red;">{{ emptyText }}</v-card-text>
+
+      <v-card-text v-if="showPlaceholder" >
+        <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer">
+          <div v-bind="mapSize"
+                class='bone bone-type-image' />
+        </div>
+      </v-card-text>
+
+    </template>
+
+  </expandable-card-layout>
+
 </template>
 
 <script>
@@ -47,12 +61,16 @@ import markerShadow from '@/assets/map/marker-shadow.png';
 // });
 
 // HACK end
+import ExpandableCardLayout from '@/components/Layouts/ExpandableCardLayout';
 
 export default {
-  components: {},
+  components: {
+    ExpandableCardLayout,
+  },
   props: {
     genericProps: Object,
     showPlaceholder: Boolean,
+    expandable: Boolean,    
   },
   data: () => ({
     smallSize: 300,
