@@ -68,7 +68,6 @@ const genericProps2 = {
 };
 
 const details1 = createDetails(metadata[0]);
-metadata[0].related_publications = 'blabla bla';
 
 const body1 = createBody(metadata[0]);
 const body2 = createBody(metadata[1]);

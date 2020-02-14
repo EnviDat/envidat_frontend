@@ -1,6 +1,7 @@
 <template>
   <expandable-text-layout v-bind="publications"
-                            :showPlaceholder="showPlaceholder" />
+                          :showPlaceholder="showPlaceholder"
+                          :expandable="expandable && hasPublications" />
 </template>
 
 <script>
@@ -27,25 +28,32 @@ export default {
   props: {
     genericProps: Object,
     showPlaceholder: Boolean,
+    expandable: Boolean,
+  },
+  created() {
+    this.pubs = this.mixinMethods_getGenericProp('publications');
   },
   computed: {
+    hasPublications() {
+      return this.pubs !== null && this.pubs.text !== '';
+    },
     publications() {
-      let pub = this.mixinMethods_getGenericProp('publications');
-
-      if (!pub) {
-        pub = {
-          title: 'Related Publications', 
+      if (!this.pubs) {
+        return {
+          title: this.title, 
           emptyTextColor: 'black',
           emptyText: 'No related publications available for this dataset.',
         };
       }
 
-      return pub;
+      return this.pubs;
     },
   },
   methods: {
   },
   data: () => ({
+    title: 'Related Publications',
+    pubs: null,
   }),
 };
 </script>

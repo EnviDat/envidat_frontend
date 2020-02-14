@@ -67,16 +67,19 @@ storiesOf('6 Detail Views | Metadata', module)
     <v-layout row wrap>
 
       <v-flex xs6 py-2>
-        <metadata-publications :genericProps="genericPropsEmpty"
+        <metadata-publications :expandable="true"
+                                :genericProps="genericPropsEmpty"
                                 :showPlaceholder="genericPropsEmpty.showPlaceholder"/>
       </v-flex>
 
       <v-flex xs6 py-2>
-        <metadata-publications :genericProps="genericPropsPublications" />
+        <metadata-publications :expandable="true"
+                                :genericProps="genericPropsPublications" />
       </v-flex>
 
       <v-flex xs6 py-2>
-        <metadata-publications :genericProps="genericPropsPlaceholder"
+        <metadata-publications :expandable="true"
+                                :genericProps="genericPropsPlaceholder"
                                 :showPlaceholder="genericPropsPlaceholder.showPlaceholder" />
       </v-flex>
 
@@ -96,11 +99,11 @@ storiesOf('6 Detail Views | Metadata', module)
         showPlaceholder: false,
       },
       genericPropsPlaceholder: {
-        publications: null,
+        publications: publications2,
         showPlaceholder: true,
       },
       genericPropsEmpty: {
-        publications: publications2,
+        publications: null,
         showPlaceholder: false,
       },
       genericPropsPublications: {
