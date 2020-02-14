@@ -5,7 +5,7 @@
     <v-card-actions v-if="expandable"
                     class="ma-0 pa-2"
                     :style="`position: absolute; top: 0px; right: 0px;`"
-                    @clicked="toggleContent" >
+                    @click="toggleContent" >
 
       <base-icon-button material-icon-name="expand_more"
                         :iconColor="showContent ? 'accent' : 'primary'"

@@ -1,5 +1,21 @@
 <template>
   <v-card :class="cardClass">
+
+    <v-card-actions v-if="expandable && !showPlaceholder"
+                    class="ma-0 pa-2"
+                    :style="`position: absolute; top: 0px; right: 0px;`"
+                    @click="toggleContent" >
+
+      <base-icon-button material-icon-name="expand_more"
+                        :iconColor="showContent ? 'accent' : 'primary'"
+                        :color="showContent ? 'accent' : 'primary'"
+                        :outlined="true"
+                        :rotateOnClick="true"
+                        :rotateToggle="showContent"
+                        :tooltipText="showContent ? 'Collaspe text' : 'Show full text'"
+                        @clicked="toggleContent" />
+    </v-card-actions>
+
     <v-card-title v-if="title"
                   class="metadata_title title">
       {{ title }}
@@ -12,7 +28,7 @@
       </div>
     </v-card-title>
 
-    <v-card-text v-if="fullText"
+    <v-card-text v-if="fullText && showContent"
                   ref="text"
                   style="overflow-x: hidden;"
                   class="heightAndScroll pb-4" >
@@ -36,7 +52,7 @@
       {{ emptyText }}
     </v-card-text>
 
-    <v-card-actions v-if="maxTextLengthReached"
+    <v-card-actions v-if="showContent && maxTextLengthReached"
                     class="ma-0 pa-2"
                     :style="`position: absolute; bottom: 5px; right: ${rightPos()};`" >
 
@@ -96,6 +112,7 @@ export default {
       default: 'red',
     },
     cardClass: String,
+    expandable: Boolean,
   },
   computed: {
     fullText() {
@@ -120,9 +137,13 @@ export default {
     rightPos() {
       return this.$refs.text && this.$refs.text.clientHeight >= 500 ? '0px' : '10px';
     },
+    toggleContent() {
+      this.showContent = !this.showContent;
+    },
   },
   data: () => ({
     showFullText: false,
+    showContent: false,
   }),
 };
 </script>
