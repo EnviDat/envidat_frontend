@@ -36,14 +36,12 @@
  * file 'LICENSE.txt', which is part of this source code package.
 */
 
-// import MMarkdownPreview from 'm-markdown-preview';
 // import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import ProjectCard from '@/components/Cards/ProjectCard';
 
 export default {
   components: {
     ProjectCard,
-    // MMarkdownPreview,
   },
   props: {
     subProjects: Array,

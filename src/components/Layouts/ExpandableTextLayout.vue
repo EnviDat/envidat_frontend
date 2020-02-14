@@ -15,13 +15,8 @@
     <v-card-text v-if="fullText"
                   ref="text"
                   style="overflow-x: hidden;"
-                  class="heightAndScroll pb-4" >
-
-      <m-markdown-preview :markdown="fullText"
-                          :options="{ html: true,
-                                      xhtmlOut: true,
-                                      linkify: true,
-                                      breaks: true }" />
+                  class="heightAndScroll pb-4"
+                  v-html="markdownText" >
     </v-card-text>
 
     <v-card-text v-if="showPlaceholder && !fullText" >
@@ -70,13 +65,13 @@
  * file 'LICENSE.txt', which is part of this source code package.
 */
 
-import MMarkdownPreview from 'm-markdown-preview';
+import remark from 'remark';
+import html from 'remark-html';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 export default {
   name: 'ExpandableTextLayout',
   components: {
-    MMarkdownPreview,
     BaseIconButton,
   },
   props: {
@@ -98,6 +93,9 @@ export default {
     cardClass: String,
   },
   computed: {
+    markdownText() {
+      return remark().use(html).processSync(this.fullText);
+    },
     fullText() {
       if (this.text) {
         if (this.maxTextLengthReached) {

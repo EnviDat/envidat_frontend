@@ -24,11 +24,8 @@
                 offset-md2
                 offset-lg1
                 shrink
-                pt-5 >
-        <m-markdown-preview
-          :markdown="guidelinesMarkdown"
-          :options="markdownOptions"
-        />
+                pt-5
+                v-html="markdownText" >
       </v-flex>
     </v-layout>
   </v-container>
@@ -49,8 +46,10 @@
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
+import remark from 'remark';
+import html from 'remark-html';
 import { mapGetters } from 'vuex';
-import MMarkdownPreview from 'm-markdown-preview';
+
 import {
   BROWSE_PATH,
   GUIDELINES_PAGENAME,
@@ -77,9 +76,9 @@ export default {
     this.$store.dispatch(`guidelines/${GET_GUIDELINES}`);
   },
   /**
-     * @description reset the scrolling to the top,
-     * because of the scrolling is set from the browsePage or metaDetailPage
-     */
+   * @description reset the scrolling to the top,
+   * because of the scrolling is set from the browsePage or metaDetailPage
+   */
   mounted() {
     window.scrollTo(0, 0);
   },
@@ -90,13 +89,8 @@ export default {
       guidelinesMarkdown: 'guidelines/guidelinesMarkdown',
       loading: 'guidelines/loading',
     }),
-    markdownOptions() {
-      return {
-        html: true,
-        xhtmlOut: true,
-        linkify: true,
-        breaks: true,
-      };
+    markdownText() {
+      return remark().use(html).processSync(this.guidelinesMarkdown);
     },
     guidelineImg() {
       return this.$vuetify.breakpoint.mdAndUp ? guidelines : guidelinesSmall;
@@ -124,7 +118,6 @@ export default {
     },
   },
   components: {
-    MMarkdownPreview,
     ImgAndTextLayout,
   },
   data: () => ({

@@ -1,18 +1,12 @@
 <template>
-  <v-layout
-    row
-    wrap
-  >
+  <v-layout row
+            wrap >
     <v-flex
       v-for="(info, index) in textArray"
       :key="index"
       xs12
       my-2
-    >
-      <m-markdown-preview
-        :markdown="info"
-        :options="markdownOptions"
-      />
+      v-html="markdownText(info)" >
     </v-flex>
   </v-layout>
 </template>
@@ -31,23 +25,18 @@
  * file 'LICENSE.txt', which is part of this source code package.
 */
 
-import MMarkdownPreview from 'm-markdown-preview';
+import remark from 'remark';
+import html from 'remark-html';
 
 export default {
   components: {
-    MMarkdownPreview,
   },
   props: {
     textArray: Array,
   },
-  computed: {
-    markdownOptions() {
-      return {
-        html: true,
-        xhtmlOut: true,
-        linkify: true,
-        breaks: true,
-      };
+  methods: {
+    markdownText(markdown) {
+      return remark().use(html).processSync(markdown);
     },
   },
 };

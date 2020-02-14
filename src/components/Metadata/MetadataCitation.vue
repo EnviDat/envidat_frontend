@@ -5,13 +5,8 @@
     </v-card-title>
 
     <v-card-text v-if="citationText"
-                  style="font-style: italic; " >
-
-      <m-markdown-preview :markdown="citationText"
-                          :options="{ html: true,
-                                      xhtmlOut: true,
-                                      linkify: true,
-                                      breaks: true }" />
+                  style="font-style: italic; "
+                  v-html="markdownText" >
 
     </v-card-text>
 
@@ -76,12 +71,12 @@
  * file 'LICENSE.txt', which is part of this source code package.
 */
 
-import MMarkdownPreview from 'm-markdown-preview';
+import remark from 'remark';
+import html from 'remark-html';
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 
 export default {
   components: {
-    MMarkdownPreview,
     BaseRectangleButton,
   },
   props: {
@@ -92,6 +87,9 @@ export default {
     emptyText: 'No citation found for this dataset',
   }),
   computed: {
+    markdownText() {
+      return remark().use(html).processSync(this.citationText);
+    },
     citationText() {
       return this.mixinMethods_getGenericProp('citationText');
     },

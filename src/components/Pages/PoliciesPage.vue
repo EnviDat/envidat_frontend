@@ -19,16 +19,12 @@
         Loading Policies...
       </v-flex>
 
-
       <v-flex v-if="!loading"
                 offset-md2
                 offset-lg1
                 shrink
-                pt-5 >
-        <m-markdown-preview
-          :markdown="policiesMarkdown"
-          :options="markdownOptions"
-        />
+                pt-5
+                v-html="markdownText" >
       </v-flex>
     </v-layout>
   </v-container>
@@ -49,8 +45,10 @@
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
+import remark from 'remark';
+import html from 'remark-html';
 import { mapGetters } from 'vuex';
-import MMarkdownPreview from 'm-markdown-preview';
+
 import {
   BROWSE_PATH,
   POLICIES_PAGENAME,
@@ -76,9 +74,9 @@ export default {
     this.$store.dispatch(`${POLICIES_NAMESPACE}/${GET_POLICIES}`);
   },
   /**
-     * @description reset the scrolling to the top,
-     * because of the scrolling is set from the browsePage or metaDetailPage
-     */
+   * @description reset the scrolling to the top,
+   * because of the scrolling is set from the browsePage or metaDetailPage
+   */
   mounted() {
     window.scrollTo(0, 0);
   },
@@ -88,13 +86,8 @@ export default {
       policiesMarkdown: `${POLICIES_NAMESPACE}/policiesMarkdown`,
       loading: `${POLICIES_NAMESPACE}/loading`,
     }),
-    markdownOptions() {
-      return {
-        html: true,
-        xhtmlOut: true,
-        linkify: true,
-        breaks: true,
-      };
+    markdownText() {
+      return remark().use(html).processSync(this.policiesMarkdown);
     },
     policiesImg() {
       return this.$vuetify.breakpoint.mdAndUp ? policies : policiesSmall;
@@ -122,7 +115,6 @@ export default {
     },
   },
   components: {
-    MMarkdownPreview,
     ImgAndTextLayout,
   },
   data: () => ({

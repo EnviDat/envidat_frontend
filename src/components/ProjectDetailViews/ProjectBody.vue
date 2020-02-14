@@ -5,13 +5,9 @@
 
     <v-card-text v-if="fullDescription"
                   ref="description"
-                  class="heightAndScroll pb-4" >
+                  class="heightAndScroll pb-4"
+                  v-html="markdownText" >
 
-      <m-markdown-preview :markdown="fullDescription"
-                          :options="{ html: true,
-                                      xhtmlOut: true,
-                                      linkify: true,
-                                      breaks: true }" />
     </v-card-text>
 
     <v-card-text v-if="showPlaceholder && !fullDescription" >
@@ -60,13 +56,13 @@
  * file 'LICENSE.txt', which is part of this source code package.
 */
 
-import MMarkdownPreview from 'm-markdown-preview';
+import remark from 'remark';
+import html from 'remark-html';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 export default {
   components: {
     BaseIconButton,
-    MMarkdownPreview,
   },
   props: {
     description: String,
@@ -74,6 +70,9 @@ export default {
     showPlaceholder: Boolean,
   },
   computed: {
+    markdownText() {
+      return remark().use(html).processSync(this.fullDescription);
+    },
     fullDescription() {
       if (this.description) {
         if (this.maxDescriptionLengthReached) {
