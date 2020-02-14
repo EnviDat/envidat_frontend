@@ -24,7 +24,7 @@ import globalMethods from '@/factories/globalMethods';
 function getSwissflLogo() {
   const swissflImages = require.context('@/assets/modes/swissfl', false, /\.jpg$/);
   const imgLogo = globalMethods.methods.mixinMethods_importImages(swissflImages, 'logo');
-  return imgLogo['./logo.jpg'];  
+  return imgLogo['./logo.jpg'];
 }
 
 function getSwissflIcons() {
@@ -52,14 +52,14 @@ const swissflMode = {
   logo: swissflLogo,
   icons: swissflIcons,
   extrasKey: 'swissFL_type',
-}
+};
 
 export function getModeData(mode) {
   if (mode === SWISSFL_MODE) {
     return swissflMode;
-  } else {
-    throw new Error(`Not Mode Objection for mode: "${mode}" implemented`);
   }
+
+  throw new Error(`Not Mode Objection for mode: "${mode}" implemented`);
 }
 
 
@@ -110,7 +110,7 @@ let tempModeData = null;
 export function enhanceMetadataFromExtras(mode, metdataEntry) {
 
   if (typeof metdataEntry.extras === 'object'
-      && metdataEntry.extras instanceof Array) {
+    && metdataEntry.extras instanceof Array) {
 
     if (!tempModeData || (tempModeData && tempModeData.name !== mode)) {
       tempModeData = getModeData(mode);
@@ -120,7 +120,7 @@ export function enhanceMetadataFromExtras(mode, metdataEntry) {
 
     for (let i = 0; i < metdataEntry.extras.length; i++) {
       const extra = metdataEntry.extras[i];
-      
+
       if (extra.key === key) {
         metdataEntry[key] = extra.value;
 
