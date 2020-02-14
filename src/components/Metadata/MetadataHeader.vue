@@ -259,7 +259,16 @@ export default {
     },
     authorDeadInfo: {
       type: Object,
-      default: null,
+      default: () => ({
+        asciiDead: {
+          type: String,
+          default: '',
+        },
+        authorPassedInfo: {
+          type: String,
+          default: '',
+        },
+      }),
     },
   },
   data: () => ({

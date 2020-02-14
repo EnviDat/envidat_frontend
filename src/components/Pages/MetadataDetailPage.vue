@@ -250,6 +250,7 @@ export default {
       if (currentContent && currentContent.title !== undefined) {
 
         this.header = createHeader(currentContent, this.$vuetify.breakpoint.smAndDown, this.authorDeadInfo);
+        this.header.authorDeadInfo = this.authorDeadInfo;
 
         this.body = createBody(currentContent);
 
@@ -266,6 +267,7 @@ export default {
         this.location = createLocation(currentContent);
 
         this.details = createDetails(currentContent);
+        this.details.authorDeadInfo = this.authorDeadInfo;
 
         this.publications = createPublications(currentContent);
         this.funding = createFunding(currentContent);
