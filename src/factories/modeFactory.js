@@ -22,13 +22,15 @@ import {
 import globalMethods from '@/factories/globalMethods';
 
 function getSwissflLogo() {
-  const swissflImages = require.context('@/assets/modes/swissfl', false, /\.jpg$/);
+  // use the relative path to the assets, because it will run in unit tests
+  const swissflImages = require.context('../assets/modes/swissfl', false, /\.jpg$/);
   const imgLogo = globalMethods.methods.mixinMethods_importImages(swissflImages, 'logo');
   return imgLogo['./logo.jpg'];
 }
 
 function getSwissflIcons() {
-  const swissflPngs = require.context('@/assets/modes/swissfl', false, /\.png$/);
+  // use the relative path to the assets, because it will run in unit tests
+  const swissflPngs = require.context('../assets/modes/swissfl', false, /\.png$/);
   const iconImgs = globalMethods.methods.mixinMethods_importImages(swissflPngs);
   const icons = Object.values(iconImgs);
   const swissflIconMap = {
@@ -108,6 +110,7 @@ export function getSelectedTagsMergedWithHidden(mode, selectedTagNames) {
 let tempModeData = null;
 
 export function enhanceMetadataFromExtras(mode, metdataEntry) {
+  if (!mode || !metdataEntry) return null;
 
   if (typeof metdataEntry.extras === 'object'
     && metdataEntry.extras instanceof Array) {

@@ -123,7 +123,7 @@ module.exports = {
   // runner: "jest-runner",
 
   // The paths to modules that run some code to configure or set up the testing environment before each test
-  // setupFiles: [],
+  setupFiles: ['<rootDir>/tests/unit/register-context.js'],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   // setupFilesAfterEnv: [],
@@ -171,5 +171,5 @@ module.exports = {
   // watchman: true,
   testEnvironment: 'node',
 
-  preset: '@vue/cli-plugin-unit-jest'
+  preset: '@vue/cli-plugin-unit-jest',
 };

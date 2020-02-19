@@ -2,9 +2,14 @@ import {
   getModeData,
   getTagsMergedWithExtras,
   enhanceMetadataFromExtras,
-} from '../../src/factories/modeFactory';
+} from '@/factories/modeFactory';
 
-import { SWISSFL_MODE } from '../../src/store/metadataMutationsConsts';
+import { SWISSFL_MODE } from '@/store/metadataMutationsConsts';
+import {
+  swissFLExtraTags,
+} from '@/store/modules/metadata/swissForestLabTags';
+
+import metadataTags from '@/store/modules/metadata/metadataTags';
 
 describe('modeFactory - getModeData', () => {
   it('empty', () => {
@@ -39,18 +44,18 @@ describe('modeFactory - getTagsMergedWithExtras', () => {
 
     expect(mergedTags).toBeDefined();
     expect(mergedTags).toBeInstanceOf(Array);
-    expect(mergedTags.length).toBeLessThanOrEqual(0);
+    expect(mergedTags.length).toBeLessThanOrEqual(swissFLExtraTags.length);
   });
 
-  // it('with SwissFL mode with tags', () => {
+  it('with SwissFL mode with tags', () => {
 
-  //   const tags = [];
-  //   const mergedTags = getTagsMergedWithExtras(SWISSFL_MODE, tags);
+    const tags = metadataTags;
+    const mergedTags = getTagsMergedWithExtras(SWISSFL_MODE, tags);
 
-  //   expect(mergedTags).toBeDefined();
-  //   expect(mergedTags).toBeInstanceOf(Array);
-  //   expect(mergedTags.length).toBeLessThanOrEqual(0);
-  // });
+    expect(mergedTags).toBeDefined();
+    expect(mergedTags).toBeInstanceOf(Array);
+    expect(mergedTags.length).toBeLessThanOrEqual(swissFLExtraTags.length + metadataTags.length);
+  });
 });
 
 describe('modeFactory - enhanceMetadataFromExtras', () => {
@@ -60,13 +65,13 @@ describe('modeFactory - enhanceMetadataFromExtras', () => {
     expect(enhancedMetadata).toBeNull();
   });
 
-  it('with SwissFL mode', () => {
-    const metdataEntry = {};
+  // it('with SwissFL mode', () => {
+  //   const metdataEntry = {};
 
-    const enhancedMetadata = enhanceMetadataFromExtras(SWISSFL_MODE, metdataEntry);
+  //   const enhancedMetadata = enhanceMetadataFromExtras(SWISSFL_MODE, metdataEntry);
 
-    expect(enhancedMetadata).toBeDefined();
-    expect(enhancedMetadata.extras).toBeDefined();
-    expect(enhancedMetadata.extras).toBeInstanceOf(Array);
-  });
+  //   expect(enhancedMetadata).toBeDefined();
+  //   expect(enhancedMetadata.extras).toBeDefined();
+  //   expect(enhancedMetadata.extras).toBeInstanceOf(Array);
+  // });
 });
