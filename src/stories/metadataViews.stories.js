@@ -1,3 +1,4 @@
+/* eslint-disable object-property-newline */
 /**
  * @summary story of all the MetadataDetailViews for sandbox testing
  * @author Dominik Haas-Artho
@@ -15,6 +16,7 @@ import { action } from '@storybook/addon-actions';
 import './js/vuetify-components';
 
 /* import App needed for Css classes */
+// eslint-disable-next-line no-unused-vars
 import App from '@/App';
 
 import MetadataHeader from '@/components/Metadata/MetadataHeader.vue';
@@ -68,15 +70,15 @@ const publications1 = metaDataFactory.createPublications(metadata[0]);
 const publications2 = metaDataFactory.createPublications(metadata[1]);
 
 // const funding1 = metaDataFactory.createFunding(metadata[0]);
-const funding1 = [{ grant_number : '', institution: 'Funding not available', institution_url: '' }];
+const funding1 = [{ grant_number: '', institution: 'Funding not available', institution_url: '' }];
 // const funding2 = metaDataFactory.createFunding(metadata[1]);
 const funding2 = [
-  { grant_number : 'XYZ', institution: 'WSL', institution_url: 'https://www.wsl.ch' },
-  { grant_number : 'XZZ', institution: 'EAWAG', institution_url: 'https://www.eawag.ch' },
-  { grant_number : '', institution: 'Aquascope', institution_url: '' },
-  { grant_number : 'XYZ-ZYX', institution: 'EAWAG', institution_url: 'https://www.eawag.ch' },
-  { grant_number : '', institution: 'Someone', institution_url: '' },
-  { grant_number : '', institution: 'Someone you do not know with a long name', institution_url: '' },
+  { grant_number: 'XYZ', institution: 'WSL', institution_url: 'https://www.wsl.ch' },
+  { grant_number: 'XZZ', institution: 'EAWAG', institution_url: 'https://www.eawag.ch' },
+  { grant_number: '', institution: 'Aquascope', institution_url: '' },
+  { grant_number: 'XYZ-ZYX', institution: 'EAWAG', institution_url: 'https://www.eawag.ch' },
+  { grant_number: '', institution: 'Someone', institution_url: '' },
+  { grant_number: '', institution: 'Someone you do not know with a long name', institution_url: '' },
 ];
 
 const body1 = metaDataFactory.createBody(metadata[0]);
@@ -103,7 +105,7 @@ const genericProps4 = {
 
 export const methods = {
   onCardClick: action('clicked on card'),
-  onTagClick: action('clicked on tag')
+  onTagClick: action('clicked on tag'),
 };
 
 storiesOf('6 Detail Views | Metadata', module)
@@ -199,7 +201,7 @@ storiesOf('6 Detail Views | Metadata', module)
         showPlaceholder: false,
         body: body2,
       },
-    })
+    }),
   })).add('Metadata Citation', () => ({
     components: { MetadataCitation },
     template: `
@@ -260,7 +262,8 @@ storiesOf('6 Detail Views | Metadata', module)
         fixedHeight: false,
       },
     }),
-  })).add('Metadata Details', () => ({
+  }))
+.add('Metadata Details', () => ({
     components: { MetadataDetails },
     template: `
     <v-layout row wrap>
@@ -316,7 +319,8 @@ storiesOf('6 Detail Views | Metadata', module)
         fixedHeight: false,
       },
     }),
-  })).add('Metadata Location', () => ({
+  }))
+.add('Metadata Location', () => ({
     components: { MetadataLocation },
     template: `
     <v-layout row wrap>
@@ -349,7 +353,8 @@ storiesOf('6 Detail Views | Metadata', module)
         fixedHeight: false,
       },
     }),
-  })).add('Metadata Publications', () => ({
+  }))
+.add('Metadata Publications', () => ({
     components: { MetadataPublications },
     template: `
     <v-layout row wrap>
@@ -403,7 +408,8 @@ storiesOf('6 Detail Views | Metadata', module)
         },
       },
     }),
-  })).add('Metadata Funding', () => ({
+  }))
+.add('Metadata Funding', () => ({
     components: { MetadataFunding },
     template: `
     <v-layout row wrap>

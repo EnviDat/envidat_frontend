@@ -11,7 +11,7 @@
 
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from '@storybook/vue';
-import { withKnobs, text, boolean, number } from '@storybook/addon-knobs';
+import { withKnobs, text, boolean } from '@storybook/addon-knobs';
 import './js/vuetify-components';
 
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton.vue';
@@ -21,16 +21,16 @@ export const methods = {
 };
 
 
-const stories = storiesOf("2 Buttons | Rectangle", module)
-  .add("basic with tool tip", () => ({
+const stories = storiesOf('2 Buttons | Rectangle', module)
+  .add('basic with tool tip', () => ({
     components: { BaseRectangleButton },
     props: {
       isDisabled: {
-        default: boolean('Disabled', true)
+        default: boolean('Disabled', true),
       },
       buttonText: {
-        default: text('buttonText', 'SEARCH')
-      }
+        default: text('buttonText', 'SEARCH'),
+      },
     },    
     template: `
     <v-layout row wrap>
