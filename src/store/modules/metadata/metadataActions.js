@@ -212,17 +212,11 @@ export default {
       }
 
       const filteredContent = [];
-      let keep = false;
 
       for (let i = 0; i < content.length; i++) {
         const entry = content[i];
-        keep = contentFilterAccessibility(entry);
 
-        if (keep && selectedTagNames.length > 0) {
-          keep = contentFilteredByTags(entry, selectedTagNames);
-        }
-
-        if (keep) {
+        if (contentFilteredByTags(entry, selectedTagNames)) {
           filteredContent.push(entry);
         }
       }

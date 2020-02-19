@@ -18,29 +18,31 @@ import metadataCards from '@/stories/js/metadata';
 
 import categoryCards from '@/store/modules/metadata/categoryCards';
 
-const cardImages = () => {
+function getCardImages() {
   const imgs = {};
 
-  let imgPaths = require.context('@/assets/cards/landscape/', false, /\.jpg$/);
+  let imgPaths = require.context('../../src/assets/cards/landscape/', false, /\.jpg$/);
   imgs.landscape = globalMethods.methods.mixinMethods_importImages(imgPaths);
 
-  imgPaths = require.context('@/assets/cards/forest/', false, /\.jpg$/);
+  imgPaths = require.context('../../src/assets/cards/forest/', false, /\.jpg$/);
   imgs.forest = globalMethods.methods.mixinMethods_importImages(imgPaths);
 
-  imgPaths = require.context('@/assets/cards/snow/', false, /\.jpg$/);
+  imgPaths = require.context('../../src/assets/cards/snow/', false, /\.jpg$/);
   imgs.snow = globalMethods.methods.mixinMethods_importImages(imgPaths);
 
-  imgPaths = require.context('@/assets/cards/diversity/', false, /\.jpg$/);
+  imgPaths = require.context('../../src/assets/cards/diversity/', false, /\.jpg$/);
   imgs.diversity = globalMethods.methods.mixinMethods_importImages(imgPaths);
 
-  imgPaths = require.context('@/assets/cards/hazard/', false, /\.jpg$/);
+  imgPaths = require.context('../../src/assets/cards/hazard/', false, /\.jpg$/);
   imgs.hazard = globalMethods.methods.mixinMethods_importImages(imgPaths);
 
-  imgPaths = require.context('@/assets/cards/meteo/', false, /\.jpg$/);
+  imgPaths = require.context('../../src/assets/cards/meteo/', false, /\.jpg$/);
   imgs.meteo = globalMethods.methods.mixinMethods_importImages(imgPaths);
 
   return imgs;
-};
+}
+
+const cardImages = getCardImages();
 
 metadataCards.forEach((element) => {
   element.tags = convertTags(element.tags, true);
