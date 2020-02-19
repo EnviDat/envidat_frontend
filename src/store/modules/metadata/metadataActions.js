@@ -185,7 +185,8 @@ export default {
       commit(UPDATE_TAGS_ERROR, error);
     }
   },
-  async [FILTER_METADATA]({ dispatch, commit }, { selectedTagNames, mode }) {
+  // eslint-disable-next-line consistent-return
+  [FILTER_METADATA]({ dispatch, commit }, { selectedTagNames, mode }) {
     commit(FILTER_METADATA);
 
     const mergedWithHiddenNames = getSelectedTagsMergedWithHidden(mode, selectedTagNames);
@@ -228,7 +229,7 @@ export default {
 
       commit(FILTER_METADATA_SUCCESS, filteredContent);
 
-      return await dispatch(UPDATE_TAGS, mode);
+      return dispatch(UPDATE_TAGS, mode);
     } catch (error) {
       commit(FILTER_METADATA_ERROR, error);
     }
