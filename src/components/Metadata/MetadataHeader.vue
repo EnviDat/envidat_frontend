@@ -6,7 +6,7 @@
             :dark="dark"
             :color="(showPlaceholder || (!showPlaceholder && !metadataTitle)) ? 'primary' : 'white'" >
 
-      <div v-bind="{['style'] : dynamicCardBackground }" >
+      <div v-bind="{['style'] : $vuetify.breakpoint.mdAndUp ? dynamicCardBackground : ''}" >
         <!-- this loads the background image -->
       </div>
 
@@ -268,7 +268,7 @@ export default {
     blackTopToBottom: 'rgba(80,80,80, 0.1) 0%, rgba(80,80,80, 0.9) 70%',
     // whiteTopToBottom: 'rgba(255,255,255, 0.3) 0%, rgba(255,255,255, 1) 60%',
     whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
-    authorToolTipText: 'Search for more data of this Author',
+    authorToolTipText: 'Search for more data of this author',
     NotFoundTitle: 'No metadata found for',
   }),
   computed: {

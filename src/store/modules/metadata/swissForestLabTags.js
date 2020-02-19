@@ -12,7 +12,7 @@
  */
 export const swissFLTag = { name: 'SWISS FOREST LAB', enabled: false };
 
-export const swissFLExtraTags =  [
+export const swissFLExtraTags = [
   { name: 'INFRASTRUCTURE', enabled: true, color: '#ede7f6' },
   { name: 'MODEL', enabled: true, color: '#fbe9e7' },
 ];

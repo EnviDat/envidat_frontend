@@ -1,10 +1,11 @@
 <template>
-  <v-card >
+  <v-card ref="MetadataAuthors">
     <v-card-title class="title metadata_title">
       Author Details
     </v-card-title>
 
-    <v-container fluid
+    <v-container v-if="showAuthors"
+                fluid
                 grid-list-md
                 pa-3 >
 
@@ -62,10 +63,26 @@ export default {
     genericProps: Object,
     showPlaceholder: Boolean,
   },
+  mounted() {
+    const options = this.options || {};
+
+    this.observer = new IntersectionObserver(([entry]) => {
+      if (entry && entry.isIntersecting) {
+        this.showAuthors = true;
+      }
+    }, options);
+
+    this.observer.observe(this.$el);
+  },
+  destroyed() {
+    this.observer.disconnect();
+    this.showAuthors = false;
+  },  
   data: () => ({
-    showAllResources: false,
+    showAuthors: false,
     checkedGenericProps: false,
     emptyText: 'No authors found for this dataset',
+    observer: null,
   }),
   computed: {
     authors() {

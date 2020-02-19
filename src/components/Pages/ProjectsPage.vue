@@ -12,7 +12,22 @@
       </v-flex>
 
       <v-flex xs12 lg10 offset-lg1 mt-5>
-        <v-container fluid grid-list-lg pa-1 >
+
+        <v-container v-if="loading"
+                      fluid grid-list-lg pa-1 >
+          <v-layout wrap>
+
+            <v-flex v-for="(project, index) in 3"
+                    :key="index"
+                    xs12 sm6 md4 xl3 >
+              <project-card-placeholder />
+            </v-flex>
+
+          </v-layout>
+        </v-container>
+
+        <v-container v-else
+                    fluid grid-list-lg pa-1 >
           <v-layout wrap>
 
             <v-flex v-for="(project, index) in projectsCardsParents"
@@ -32,6 +47,7 @@
 
           </v-layout>
         </v-container>
+
       </v-flex>
 
     </v-layout>
@@ -64,6 +80,7 @@ import {
 
 import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
 import ProjectCard from '@/components/Cards/ProjectCard';
+import ProjectCardPlaceholder from '@/components/Cards/ProjectCardPlaceholder';
 
 import mission from '@/assets/about/mission.jpg';
 import missionSmall from '@/assets/about/mission_small.jpg';
@@ -93,22 +110,10 @@ export default {
     window.scrollTo(0, 0);
   },
   computed: {
-      /**
-       * TODO: getter in store einbauen? Wieso parents?
-       * */
-    projectsCardsParents() {
-      const noSubs = [];
-
-      for (let i = 0; i < this.projects.length; i++) {
-        const p = this.projects[i];
-        if (!p.parent) {
-          noSubs.push(p);
-        }
-      }
-      return noSubs;
-    },
     ...mapGetters({
       projects: `${PROJECTS_NAMESPACE}/projects`,
+      loading: `${PROJECTS_NAMESPACE}/loading`,
+      projectsCardsParents: `${PROJECTS_NAMESPACE}/projectsCardsParents`,
     }),
     missionImg() {
       return this.$vuetify.breakpoint.mdAndUp ? mission : missionSmall;
@@ -119,7 +124,7 @@ export default {
   },
   methods: {
     onCardClick(projectId) {
-      this.$store.commit(`${PROJECTS_NAMESPACE}/${SET_PROJECTDETAIL_PAGE_BACK_URL}`, this.$route); //TODO: Was macht das?
+      this.$store.commit(`${PROJECTS_NAMESPACE}/${SET_PROJECTDETAIL_PAGE_BACK_URL}`, this.$route);
 
       this.$router.push({
         name: PROJECT_DETAIL_PAGENAME,
@@ -138,6 +143,7 @@ export default {
   components: {
     ImgAndTextLayout,
     ProjectCard,
+    ProjectCardPlaceholder,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',

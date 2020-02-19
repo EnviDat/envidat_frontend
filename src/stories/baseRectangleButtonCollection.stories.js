@@ -10,18 +10,18 @@
  */
 
 /* eslint-disable import/no-extraneous-dependencies */
-import { storiesOf } from "@storybook/vue";
-import { action } from "@storybook/addon-actions";
+import { storiesOf } from '@storybook/vue';
+import { action } from '@storybook/addon-actions';
 import './js/vuetify-components';
 
-import BaseRectangleButton from "@/components/BaseElements/BaseRectangleButton.vue";
+import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton.vue';
 
 export const methods = {
-  onClick: action("clicked")
+  onClick: action('clicked'),
 };
 
-storiesOf("2 Buttons | Rectangle Collection", module)
-  .add("buttons with differents states", () => ({
+storiesOf('2 Buttons | Rectangle Collection', module)
+  .add('buttons with differents states', () => ({
     components: { BaseRectangleButton },
     template: `
     <v-layout row wrap>
@@ -147,9 +147,9 @@ storiesOf("2 Buttons | Rectangle Collection", module)
       </v-flex>
 
     </v-layout>`,
-    methods
+    methods,
   }))
-  .add("buttons with icons", () => ({
+  .add('buttons with icons', () => ({
     components: { BaseRectangleButton },
     template: `
     <v-layout row wrap>
@@ -186,5 +186,5 @@ storiesOf("2 Buttons | Rectangle Collection", module)
       </v-flex>
 
     </v-layout>`,
-    methods
+    methods,
   }));

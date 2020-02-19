@@ -10,7 +10,7 @@
  */
 
 /* eslint-disable import/no-extraneous-dependencies */
-import { storiesOf } from "@storybook/vue";
+import { storiesOf } from '@storybook/vue';
 import './js/vuetify-components';
 
 import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView.vue';
