@@ -4,7 +4,6 @@
           style="height: 100%; max-height: 375px !important;"
   >
     <v-img background-color="primary"
-            :style="!flatLayout ? dynamicCardBackground : ''"
             :height="flatLayout ? '65px' : $vuetify.breakpoint.smAndDown ? '100px' : '125px'"
     >
 
@@ -53,7 +52,6 @@
 
 <script>
 import TagChipPlaceholder from '@/components/Cards/TagChipPlaceholder';
-import defaultTexture from '@/assets/cards/forest/c_b_forest_texture_bark2.jpg';
 
 // checkout skeleton
 // https://github.com/ToxicJojo/SkeletonPlaceholder
@@ -67,22 +65,8 @@ export default {
     categoryColor: String,
   },
   data: () => ({
-    defaultTexture,
-    blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
-    whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
   }),
   computed: {
-    dynamicCardBackground: function dynamicCardBackground() {
-      const gradient = this.dark ? this.blackTopToBottom : this.whiteTopToBottom;
-
-      if (this.$vuetify.breakpoint.mdAndUp && this.defaultTexture) {
-        return `background-image: linear-gradient(0deg, ${gradient}), url(${this.defaultTexture});
-                background-position: center, center;
-                background-size: cover; background-repeat: initial; `;
-      }
-
-      return `background-color: ${this.categoryColor}`;
-    },
   },
   created() {
   },

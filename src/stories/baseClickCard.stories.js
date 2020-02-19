@@ -18,7 +18,7 @@ import BaseClickCard from '@/components/BaseElements/BaseClickCard.vue';
 import categoryCards from '@/store/modules/metadata/categoryCards';
 
 export const methods = {
-  onClick: action('clicked')
+  onClick: action('clicked'),
 };
 
 storiesOf('3 Cards | Click Cards ', module).add('CategoryCcard Collection', () => ({

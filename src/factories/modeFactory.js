@@ -22,13 +22,15 @@ import {
 import globalMethods from '@/factories/globalMethods';
 
 function getSwissflLogo() {
-  const swissflImages = require.context('@/assets/modes/swissfl', false, /\.jpg$/);
+  // use the relative path to the assets, because it will run in unit tests
+  const swissflImages = require.context('../assets/modes/swissfl', false, /\.jpg$/);
   const imgLogo = globalMethods.methods.mixinMethods_importImages(swissflImages, 'logo');
-  return imgLogo['./logo.jpg'];  
+  return imgLogo['./logo.jpg'];
 }
 
 function getSwissflIcons() {
-  const swissflPngs = require.context('@/assets/modes/swissfl', false, /\.png$/);
+  // use the relative path to the assets, because it will run in unit tests
+  const swissflPngs = require.context('../assets/modes/swissfl', false, /\.png$/);
   const iconImgs = globalMethods.methods.mixinMethods_importImages(swissflPngs);
   const icons = Object.values(iconImgs);
   const swissflIconMap = {
@@ -52,14 +54,14 @@ const swissflMode = {
   logo: swissflLogo,
   icons: swissflIcons,
   extrasKey: 'swissFL_type',
-}
+};
 
 export function getModeData(mode) {
   if (mode === SWISSFL_MODE) {
     return swissflMode;
-  } else {
-    throw new Error(`Not Mode Objection for mode: "${mode}" implemented`);
   }
+
+  throw new Error(`Not Mode Objection for mode: "${mode}" implemented`);
 }
 
 
@@ -108,9 +110,10 @@ export function getSelectedTagsMergedWithHidden(mode, selectedTagNames) {
 let tempModeData = null;
 
 export function enhanceMetadataFromExtras(mode, metdataEntry) {
+  if (!mode || !metdataEntry) return null;
 
   if (typeof metdataEntry.extras === 'object'
-      && metdataEntry.extras instanceof Array) {
+    && metdataEntry.extras instanceof Array) {
 
     if (!tempModeData || (tempModeData && tempModeData.name !== mode)) {
       tempModeData = getModeData(mode);
@@ -120,7 +123,7 @@ export function enhanceMetadataFromExtras(mode, metdataEntry) {
 
     for (let i = 0; i < metdataEntry.extras.length; i++) {
       const extra = metdataEntry.extras[i];
-      
+
       if (extra.key === key) {
         metdataEntry[key] = extra.value;
 

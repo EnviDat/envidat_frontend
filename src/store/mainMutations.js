@@ -10,6 +10,7 @@
  */
 
 import { Object } from 'core-js';
+import { getSpecificApiError } from '@/factories/notificationFactory';
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
@@ -26,7 +27,6 @@ import {
   HIDE_NOTIFICATIONS,
 } from './mainMutationsConsts';
 
-import { getSpecificApiError } from '@/factories/notificationFactory';
 
 export default {
   [SET_APP_BACKGROUND](state, bgImg) {

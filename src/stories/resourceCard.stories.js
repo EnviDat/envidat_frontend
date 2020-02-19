@@ -2,13 +2,9 @@
 import { storiesOf } from '@storybook/vue';
 import { action } from '@storybook/addon-actions';
 import Vue from 'vue';
-import globalMethods from '@/factories/globalMethods';
 import Vue2Filters from 'vue2-filters';
 import './js/vuetify-components';
-
-Vue.use(Vue2Filters);
-Vue.mixin(globalMethods);
-
+import globalMethods from '@/factories/globalMethods';
 
 import ResourceCard from '@/components/Cards/ResourceCard.vue';
 import ResourceCardPlaceholder from '@/components/Cards/ResourceCardPlaceholder.vue';
@@ -19,8 +15,27 @@ import linkIcon from '@/assets/icons/link.png';
 import downloadIcon from '@/assets/icons/download.png';
 import dateCreatedIcon from '@/assets/icons/dateCreated.png';
 import lastModifiedIcon from '@/assets/icons/dateModified.png';
+import unFormatedMetadataCards from '@/stories/js/metadata';
+
+Vue.use(Vue2Filters);
+Vue.mixin(globalMethods);
 
 const apiFactory = require('@/factories/apiFactory');
+
+function getIcons() {
+  const icons = new Map();
+
+  const imgPaths = require.context('@/assets/icons/', false, /\.png$/);
+
+  imgPaths.keys().forEach((iconFileName) => {
+    const splits = iconFileName.split('/');
+    let key = splits[splits.length - 1];
+    key = key.replace('.png', '');
+    icons.set(key, iconFileName);
+  });
+
+  return icons;
+}
 
 const iconFiles = getIcons();
 
@@ -31,10 +46,9 @@ const iconFiles = getIcons();
 
 // alert('icons ' + str);
 
-import unFormatedMetadataCards from '@/stories/js/metadata';
 const metadataCards = [];
 
-unFormatedMetadataCards.forEach(el => {
+unFormatedMetadataCards.forEach((el) => {
   const formatted = apiFactory.solrResultToCKANJSON(el);
   // let keys = Object.keys(el.tags[0]);
   // let props = '';
@@ -47,7 +61,7 @@ unFormatedMetadataCards.forEach(el => {
 
 export const methods = {
   onCardClick: action('clicked on card'),
-  onTagClick: action('clicked on tag')
+  onTagClick: action('clicked on tag'),
 };
 
 storiesOf('3 Cards | Resource Cards', module)
@@ -135,8 +149,8 @@ storiesOf('3 Cards | Resource Cards', module)
       fileSizeIcon,
       dateCreatedIcon,
       lastModifiedIcon,
-      iconFiles
-    })
+      iconFiles,
+    }),
   }))
 
   .add('Resource card collection', () => ({
@@ -269,19 +283,3 @@ storiesOf('3 Cards | Resource Cards', module)
     methods,
     data: () => ({}),
   }));
-
-
-  function getIcons() {
-    const icons = new Map();
-
-    const imgPaths = require.context('@/assets/icons/', false, /\.png$/);
-
-    imgPaths.keys().forEach(iconFileName => {
-      const splits = iconFileName.split('/');
-      let key = splits[splits.length - 1];
-      key = key.replace('.png', '');
-      icons.set(key, iconFileName);
-    });
-
-    return icons;
-  }
