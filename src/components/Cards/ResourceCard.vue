@@ -24,15 +24,15 @@
             <v-layout column>
               <v-flex v-if="showFullDescription"
                       xs11
-                      class="resourceCardText heightAndScroll" >
-                {{ description }}
+                      class="resourceCardText heightAndScroll"
+                      v-html="markdownText" >
               </v-flex>
 
               <v-flex v-if="!showFullDescription"
                       xs11
                       pb-5
                       class="resourceCardText" >
-                {{ description | truncate(maxDescriptionLength) }}
+                {{ markdownTextTruncated }}
               </v-flex>
             </v-layout>
           </v-flex>
@@ -150,6 +150,9 @@
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
+import remark from 'remark';
+import html from 'remark-html';
+import strip from 'strip-markdown';
 
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
@@ -188,6 +191,23 @@ export default {
     audioFormats: ['mp3', 'wav', 'wma', 'ogg'],
   }),
   computed: {
+    markdownText() {
+      return remark().use(html).processSync(this.description.trim());
+    },
+    markdownTextTruncated() {
+      if (this.maxDescriptionLengthReached) {
+        const strippedFile = remark().use(strip).processSync(this.description.trim());
+        const strippedMarkdown = strippedFile.contents;
+
+        if (strippedMarkdown) {
+          return `${strippedMarkdown.substring(0, this.maxDescriptionLength)}...`;
+        }
+
+        return '';
+      }
+
+      return this.description.trim();      
+    },
     formatedBytes() {
       if (!this.size) return '';
       let sizeNumber = this.size;
@@ -211,10 +231,9 @@ export default {
 
       return isFile;
     },
-    maxDescriptionLengthReached: function maxDescriptionLengthReached() {
+    maxDescriptionLengthReached() {
       return this.description && this.description.length > this.maxDescriptionLength;
     },
-
     protectedText() {
       if (this.url && this.url.length > 0) {
         return `This resource is protected <a href="${this.url}" target="_blank" >login via the ckan UI to get access</a>.`;
@@ -224,10 +243,10 @@ export default {
     },
   },
   methods: {
-    clicked: function clicked() {
+    clicked() {
       this.$emit('clicked');
     },
-    extensionIcon: function extensionIcon() {
+    extensionIcon() {
       if (typeof this.mixinMethods_getIconFileExtension === 'undefined'
           || typeof this.$store === 'undefined') {
 
