@@ -6,7 +6,7 @@
             :dark="dark"
             :color="(showPlaceholder || (!showPlaceholder && !metadataTitle)) ? 'primary' : 'white'" >
 
-      <div v-bind="{['style'] : dynamicCardBackground }" >
+      <div v-bind="{['style'] : $vuetify.breakpoint.mdAndUp ? dynamicCardBackground : ''}" >
         <!-- this loads the background image -->
       </div>
 
