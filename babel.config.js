@@ -10,10 +10,12 @@
  */
 
 module.exports = {
-  plugins: [
-    'require-context-hook',
-  ],  
   presets: [
     ['@babel/preset-env', { targets: { node: 'current' } }],
   ],
+  env: {
+    test: {
+      plugins: ['require-context-hook'],
+    },
+  },  
 };
