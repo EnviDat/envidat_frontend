@@ -119,7 +119,7 @@ export default {
   },
   methods: {
     onCardClick(projectId) {
-      this.$store.commit(`${PROJECTS_NAMESPACE}/${SET_PROJECTDETAIL_PAGE_BACK_URL}`, this.$route); //TODO: Was macht das?
+      this.$store.commit(`${PROJECTS_NAMESPACE}/${SET_PROJECTDETAIL_PAGE_BACK_URL}`, this.$route);
 
       this.$router.push({
         name: PROJECT_DETAIL_PAGENAME,

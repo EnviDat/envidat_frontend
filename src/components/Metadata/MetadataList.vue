@@ -1,3 +1,4 @@
+/* eslint-disable vue/no-use-v-if-with-v-for */
 <template>
 
   <metadata-list-layout ref="metadataListLayoutComponent"
@@ -83,8 +84,7 @@
                                   ['row'] : !listView,
                                   ['wrap'] : !listView }" >
 
-        <v-flex v-for="(pinnedId, index) in pinnedIds"
-                v-if="showPinnedElements"
+        <v-flex v-for="(pinnedId, index) in pinnedList"
                 :key="'pinned_' + index"
                 v-bind="cardGridClass" >
 
@@ -111,8 +111,7 @@
                           @clickedTag="catchTagClicked" />
         </v-flex>
 
-        <v-flex v-for="(metadata, index) in virtualListContent"
-                v-if="!isPinned(metadata.id)"
+        <v-flex v-for="(metadata, index) in unpinnedFilteredList"
                 :key="'filtered_' + index"
                 v-bind="cardGridClass" >
 
@@ -273,6 +272,22 @@ export default {
     },
     showPinnedElements() {
       return !this.loading && this.showMapFilter && this.pinnedIds.length > 0;
+    },
+    unpinnedFilteredList() {
+      const listWithoutPins = [];
+      for (let i = 0; i < this.virtualListContent.length; i++) {
+        const metadata = this.virtualListContent[i];
+        if (!this.isPinned(metadata.id)) {
+          listWithoutPins.push(metadata);
+        }
+      }
+
+      return listWithoutPins;
+    },
+    pinnedList() {
+      if (!this.showPinnedElements) return [];
+
+      return this.pinnedIds;
     },
     mergePinnedAndFiltered() {
       const pinnedContent = [];

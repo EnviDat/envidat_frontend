@@ -192,7 +192,7 @@ export default {
       if (!this.size) return '';
       let sizeNumber = this.size;
       if (typeof this.size === 'number') {
-        sizeNumber = Number.parseInt(this.size);
+        sizeNumber = Number.parseInt(this.size, 10);
       }
       const bytesString = this.mixinMethods_formatBytes(sizeNumber);
       return bytesString;
