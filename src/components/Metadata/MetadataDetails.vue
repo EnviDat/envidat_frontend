@@ -7,19 +7,20 @@
     <v-card-text v-if="details && details.length > 0">
       <v-form>
         <div v-for="val in details"
-              :key="val.label" >
+              :key="val.label"
+              class="mt-2" >
           <v-text-field v-if="isSingleText(val.text)"
                         :id="val.label"
                         :label="val.label"
                         :name="val.label"
-                        :value="val.text.replace(`(${asciiDead})`, '').trim()"
+                        hide-details
                         readonly />
 
           <v-textarea v-if="!isSingleText(val.text)"
                       :id="val.label"
                       :label="val.label"
                       :name="val.label"
-                      :value="val.text.replace(`(${asciiDead})`, '').trim()"
+                      hide-details
                       readonly />
         </div>
       </v-form>

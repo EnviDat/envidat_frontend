@@ -18,7 +18,6 @@ import SearchBarView from '../components/Filtering/SearchBarView.vue';
 import SmallSearchBarView from '../components/Filtering/SmallSearchBarView.vue';
 
 
-
 storiesOf('4 Filtering | SearchBarView', module)
   .add('basic', () => ({
     components: { SearchBarView },
@@ -31,7 +30,7 @@ storiesOf('4 Filtering | SearchBarView', module)
           />`,
     methods: {
       onClick(searchTerm) {
-        action('clicked search for "' + searchTerm + '"');
+        action(`clicked search for "${searchTerm}"`);
       },
       onClear() {
         action('cleared Search')(this.searchTerm = '');
@@ -130,7 +129,7 @@ storiesOf('4 Filtering | SearchBarView', module)
       </v-layout>`,
     methods: {
       onClick(search) {
-        action('clicked search for "' + search + '"');
+        action(`clicked search for "${search}"`);
       },
       onClear() {
         action('cleared Search')(this.searchTerm = '');

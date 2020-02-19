@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from '@storybook/vue';
 import './js/vuetify-components';
-import {action} from "@storybook/addon-actions";
+import { action } from '@storybook/addon-actions';
 import SloganCard from '../components/Cards/SloganCard';
 
 
