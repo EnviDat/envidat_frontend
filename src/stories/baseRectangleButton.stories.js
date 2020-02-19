@@ -21,16 +21,16 @@ export const methods = {
 };
 
 
-const stories = storiesOf("2 Buttons | Rectangle", module)
-  .add("basic with tool tip", () => ({
+const stories = storiesOf('2 Buttons | Rectangle', module)
+  .add('basic with tool tip', () => ({
     components: { BaseRectangleButton },
     props: {
       isDisabled: {
-        default: boolean('Disabled', true)
+        default: boolean('Disabled', true),
       },
       buttonText: {
-        default: text('buttonText', 'SEARCH')
-      }
+        default: text('buttonText', 'SEARCH'),
+      },
     },    
     template: `
     <v-layout row wrap>

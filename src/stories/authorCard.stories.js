@@ -1,6 +1,8 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from '@storybook/vue';
-import { withKnobs, text, number } from '@storybook/addon-knobs';
+import {
+ withKnobs, text, number, 
+} from '@storybook/addon-knobs';
 import './js/vuetify-components';
 
 import AuthorCard from '@/components/Cards/AuthorCard.vue';
