@@ -182,7 +182,7 @@ describe('metaDataFactory - createLocation', () => {
     expect(loc.isPoint).toBeDefined();
     expect(loc.isMultiPoint).toBeDefined();
 
-    expect(loc.pointArray).toBeDefined();    
+    expect(loc.pointArray).toBeDefined();
     expect(loc.pointArray.length).toBeGreaterThan(0);
   });
 });
@@ -221,7 +221,7 @@ describe('metaDataFactory - createDetails', () => {
 
     for (let i = 0; i < details.length; i++) {
       const detail = details[i];
-      
+
       expect(detail.label).toBeDefined();
       expect(detail.text).toBeDefined();
     }

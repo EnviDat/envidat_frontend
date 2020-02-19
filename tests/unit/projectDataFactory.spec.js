@@ -1,8 +1,8 @@
 import {
-    enhanceSubprojectsFromExtras,
-    enhanceProjectsDatasets,
-  } from '@/factories/projectsDataFactory';
-  
+  enhanceSubprojectsFromExtras,
+  enhanceProjectsDatasets,
+} from '../../src/factories/projectsDataFactory';
+
 import packagelist from '@/testdata/packagelist';
 import projectJSON from '@/testdata/projects';
 

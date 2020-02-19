@@ -10,8 +10,10 @@
  */
 
 module.exports = {
+  plugins: [
+    'require-context-hook',
+  ],  
   presets: [
-    '@vue/app',
     ['@babel/preset-env', { targets: { node: 'current' } }],
   ],
 };
