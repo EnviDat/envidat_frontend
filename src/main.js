@@ -14,20 +14,20 @@
 
 import 'babel-polyfill';
 import Vue from 'vue';
+import store from '@/store/store';
+import {
+  handleGenericError,
+  handleGenericAPIError,
+} from '@/factories/notificationFactory';
 
 import './plugins/vuetify';
 import axios from 'axios';
 
 import Vue2Filters from 'vue2-filters';
 import InfiniteLoading from 'vue-infinite-loading';
-import App from './App';
 import router from './router';
-import store from '@/store/store';
 import globalMethods from './factories/globalMethods';
-import {
-  handleGenericError,
-  handleGenericAPIError,
-} from '@/factories/notificationFactory';
+import App from './App';
 
 
 Vue.use(InfiniteLoading /* , { options } */);
