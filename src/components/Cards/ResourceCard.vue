@@ -167,7 +167,7 @@ export default {
     url: String,
     created: String,
     lastModified: String,
-    size: String,
+    size: Number,
     format: String,
     twoColumnLayout: Boolean,
     height: String,
