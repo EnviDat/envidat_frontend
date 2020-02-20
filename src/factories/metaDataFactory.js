@@ -5,7 +5,7 @@
  * @summary function factory for metadata object creation methods
  * @author Dominik Haas-Artho
  *
- * Created at     : 2019-10-23 16:07:03 
+ * Created at     : 2019-10-23 16:07:03
  * Last modified  : 2019-11-29 15:52:06
  *
  * This file is subject to the terms and conditions defined in
@@ -644,6 +644,7 @@ export function createAuthors(dataset) {
       const author = authors[i];
 
       // const authorName = getAuthorName(author);
+      // console.log('authorName: ' + authorName);
       const firstName = author.given_name;
       const lastName = author.name;
 
@@ -676,7 +677,7 @@ export function extractAuthorsMap(datasets) {
   if (!datasets) { return null; }
 
   const authorMap = {};
-  let authorCount = 0;
+  // let authorCount = 0;
 
   for (let i = 0; i < datasets.length; i++) {
     const dataset = datasets[i];
@@ -722,7 +723,7 @@ export function extractAuthorsMap(datasets) {
         } else {
           // console.log('for ' + author.name + ' set ' + author.count);
           authorMap[authorName] = author;
-          authorCount++;
+          // authorCount++;
         }
       }
     } else {

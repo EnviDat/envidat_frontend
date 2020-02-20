@@ -8,7 +8,7 @@
       </v-card-title>
     </template>
 
-    <template v-if="!showPlaceholder && hasAuthors"
+    <template v-if="!showPlaceholder && showAuthors && hasAuthors"
               v-slot:content >
 
       <v-container fluid
@@ -84,10 +84,26 @@ export default {
     showPlaceholder: Boolean,
     expandable: Boolean,
   },
+  mounted() {
+    const options = this.options || {};
+
+    this.observer = new IntersectionObserver(([entry]) => {
+      if (entry && entry.isIntersecting) {
+        this.showAuthors = true;
+      }
+    }, options);
+
+    this.observer.observe(this.$el);
+  },
+  destroyed() {
+    this.observer.disconnect();
+    this.showAuthors = false;
+  },  
   data: () => ({
-    showAllResources: false,
+    showAuthors: false,
     checkedGenericProps: false,
     emptyText: 'No authors found for this dataset',
+    observer: null,
   }),
   computed: {
     hasAuthors() {

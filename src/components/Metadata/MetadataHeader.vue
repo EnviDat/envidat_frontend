@@ -6,7 +6,7 @@
             :dark="dark"
             :color="(showPlaceholder || (!showPlaceholder && !metadataTitle)) ? 'primary' : 'white'" >
 
-      <div v-bind="{['style'] : dynamicCardBackground }" >
+      <div v-bind="{['style'] : $vuetify.breakpoint.mdAndUp ? dynamicCardBackground : ''}" >
         <!-- this loads the background image -->
       </div>
 
@@ -190,7 +190,7 @@
       </v-layout>
 
       <v-card-actions v-if="maxTagsReached"
-                      style="position: absolute; bottom: 0px; right: 0px;">
+                      style="position: absolute; bottom: 0px; right: 0px; z-index: 2;">
         <base-icon-button v-show="expanded"
                           materialIconName="expand_more"
                           :outlined="true"
@@ -277,7 +277,7 @@ export default {
     blackTopToBottom: 'rgba(80,80,80, 0.1) 0%, rgba(80,80,80, 0.9) 70%',
     // whiteTopToBottom: 'rgba(255,255,255, 0.3) 0%, rgba(255,255,255, 1) 60%',
     whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
-    authorToolTipText: 'Search for more data of this Author',
+    authorToolTipText: 'Search for more data of this author',
     NotFoundTitle: 'No metadata found for',
   }),
   computed: {

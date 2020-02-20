@@ -182,7 +182,7 @@ describe('metaDataFactory - createLocation', () => {
     expect(loc.isPoint).toBeDefined();
     expect(loc.isMultiPoint).toBeDefined();
 
-    expect(loc.pointArray).toBeDefined();    
+    expect(loc.pointArray).toBeDefined();
     expect(loc.pointArray.length).toBeGreaterThan(0);
   });
 });
@@ -221,7 +221,7 @@ describe('metaDataFactory - createDetails', () => {
 
     for (let i = 0; i < details.length; i++) {
       const detail = details[i];
-      
+
       expect(detail.label).toBeDefined();
       expect(detail.text).toBeDefined();
     }
@@ -264,7 +264,7 @@ describe('metaDataFactory - createAuthors', () => {
 
     for (let i = 0; i < authors.length; i++) {
       const author = authors[i];
-      
+
       expect(author.firstName).toBeDefined();
       expect(author.lastName).toBeDefined();
       expect(author.datasetCount).toBeGreaterThanOrEqual(1);
@@ -294,7 +294,9 @@ describe('metaDataFactory - ', () => {
     for (let i = 0; i < keys.length; i++) {
       const authorFullName = keys[i];
       const author = authorMap[authorFullName];
-      
+
+      // console.log('authorFullName: ' + authorFullName + ' fullName: ' + author.fullName + ' firstName: ' + author.firstName + ' lastName: ' + author.lastName);
+            
       expect(author.firstName).toBeDefined();
       expect(author.lastName).toBeDefined();
       expect(author.datasetCount).toBeGreaterThanOrEqual(1);

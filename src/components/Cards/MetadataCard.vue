@@ -16,7 +16,7 @@
                   py-0 >
             <v-layout row>
 
-              <v-flex v-if="!maxTitleLengthReached"
+              <v-flex v-if="!maxTitleLengthReached || $vuetify.breakpoint.xsOnly"
                       xs12 >
                 <div class="headline mb-0"
                     :class="titleClass" >
@@ -24,10 +24,9 @@
                 </div>
               </v-flex>
 
-              <v-flex v-if="maxTitleLengthReached"
+              <v-flex v-if="maxTitleLengthReached && !$vuetify.breakpoint.xsOnly"
                       xs12 >
-                <v-tooltip bottom
-                            :disabled="$vuetify.breakpoint.xsOnly" >
+                <v-tooltip bottom >
                   <div slot="activator"
                         class="headline mb-0"
                         :class="titleClass" >
@@ -95,8 +94,7 @@
 
         <v-flex pa-1>
           <base-icon-count-view :count="resourceAmount"
-                                :icon-string="fileIconString"
-                                :tooltipText="`Metadata with ${resourceAmount} resources`" />
+                                :icon-string="fileIconString" />
         </v-flex>
       </v-layout>
 

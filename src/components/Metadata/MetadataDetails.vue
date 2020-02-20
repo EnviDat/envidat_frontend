@@ -20,6 +20,7 @@
                           :label="val.label"
                           :name="val.label"
                           :value="detailText(val.text)"
+                          hide-details
                           readonly />
 
             <v-textarea v-if="!isSingleText(val.text)"
@@ -27,6 +28,7 @@
                         :label="val.label"
                         :name="val.label"
                         :value="detailText(val.text)"
+                        hide-details
                         readonly />
           </div>
         </v-form>

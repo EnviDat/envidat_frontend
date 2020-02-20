@@ -29,8 +29,8 @@ const initialState = {
   /**
    * The placeholder text for the search bars
    */
-  searchPlaceholderTextSmall: 'Enter search term',
-  searchPlaceholderText: 'Enter research term, topic or author name',
+  searchPlaceholderTextSmall: 'Enter research search term',
+  searchPlaceholderText: 'Enter research term, topic or name of an author',
   /**
    * metadataIds properties are used for step by step loading all the metadata
    */
@@ -69,9 +69,10 @@ const initialState = {
    */
   vIndex: 0,
   vReloadAmount: 16,
-  vReloadDelay: 150,
+  vReloadAmountMobile: 5,
+  vReloadDelay: 15,
   // scrollPositionDelay has to be more than the vReloadDelay
-  scrollPositionDelay: 200,
+  scrollPositionDelay: 20,
   /**
    * Pinned Elements from the MapFilter
    */
@@ -97,7 +98,7 @@ const initialState = {
    * because a User might have given the direct url to a paper and later on changed it
    */
   idRemapping: new Map([
-    ['als‐based‐snow‐depth‐and‐canopy‐height‐maps‐from‐flights‐in‐2017‐grisons‐ch‐and‐grand‐mesa‐co', 'grand-mesa-co']
+    ['als‐based‐snow‐depth‐and‐canopy‐height‐maps‐from‐flights‐in‐2017‐grisons‐ch‐and‐grand‐mesa‐co', 'grand-mesa-co'],
   ]),
   asciiDead: '&#8224;',
   authorPassedInfo: 'Sadly this author has passed away.',
@@ -113,7 +114,7 @@ export const metadata = {
     loadingMetadatasContent: state => state.loadingMetadatasContent,
     metadataIds: state => state.metadataIds,
     metadatasContent: state => state.metadatasContent,
-    metadatasContentSize: state => state.metadatasContent !== undefined ? Object.keys(state.metadatasContent).length : 0,
+    metadatasContentSize: state => (state.metadatasContent !== undefined ? Object.keys(state.metadatasContent).length : 0),
     authorsMap: state => state.authorsMap,
     searchedMetadatasContent: state => state.searchedMetadatasContent,
     searchingMetadatasContent: state => state.searchingMetadatasContent,
@@ -124,6 +125,7 @@ export const metadata = {
     filteredContent: state => state.filteredContent,
     vIndex: state => state.vIndex,
     vReloadAmount: state => state.vReloadAmount,
+    vReloadAmountMobile: state => state.vReloadAmountMobile,
     vReloadDelay: state => state.vReloadDelay,
     scrollPositionDelay: state => state.scrollPositionDelay,
     pinnedIds: state => state.pinnedIds,

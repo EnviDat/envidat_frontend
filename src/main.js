@@ -12,24 +12,22 @@
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import 'babel-polyfill';
 import Vue from 'vue';
+import store from '@/store/store';
+import {
+  handleGenericError,
+  handleGenericAPIError,
+} from '@/factories/notificationFactory';
 
 import './plugins/vuetify';
 import axios from 'axios';
 
 import Vue2Filters from 'vue2-filters';
 import InfiniteLoading from 'vue-infinite-loading';
-import App from './App';
 import router from './router';
-import store from '@/store/store';
 import globalMethods from './factories/globalMethods';
-import {
-  handleGenericError,
-  handleGenericAPIError,
-} from '@/factories/notificationFactory';
+import App from './App';
 
 
 Vue.use(InfiniteLoading /* , { options } */);

@@ -1,7 +1,32 @@
 <template>
-  <v-tooltip bottom
-              :disabled="$vuetify.breakpoint.xsOnly" >
-    <div slot="activator"
+  <div>
+    <v-tooltip v-if="$vuetify.breakpoint.mdAndUp && tooltipText"
+                bottom >
+      <div slot="activator"
+            class="metadataInfoIcon" >
+        <v-layout row
+                    @mouseover="hoverBadge = true"
+                    @mouseleave="hoverBadge = false" >
+          <v-flex pa-0>
+            <v-badge :left="!hoverBadge"
+                      overlap
+                      color="secondary"
+                      :class="{ envidatBadgeBigNumber : count > 9,
+                                envidatBadge: count <= 9 }" >
+                                                    
+              <span slot="badge">{{ count }}</span>
+            </v-badge>
+          </v-flex>
+
+          <v-flex pa-0>
+            <img class="envidatIcon" :src="iconString" :alt="`${iconString} icon`">
+          </v-flex>
+        </v-layout>
+      </div>
+      <span>{{ tooltipText }}</span>
+    </v-tooltip>
+
+    <div v-else
           class="metadataInfoIcon" >
       <v-layout row
                   @mouseover="hoverBadge = true"
@@ -22,8 +47,8 @@
         </v-flex>
       </v-layout>
     </div>
-    <span>{{ tooltipText }}</span>
-  </v-tooltip>
+
+  </div>
 </template>
 
 <script>
@@ -52,4 +77,3 @@ export default {
   }),
 };
 </script>
-

@@ -17,7 +17,6 @@
 
     <the-navigation v-if="!showSmallNavigation"
                     :style="`z-index: ${NavigationZIndex}`"
-                    :mini="!this.menuItem.active"
                     :navItems="navItems"
                     :version="appVersion"
                     @menuClick="catchMenuClicked"
@@ -34,12 +33,11 @@
                             class="envidatToolbar"
                             :style="`z-index: ${NavToolbarZIndex}`"
                             :searchTerm="searchTerm"
-                            :showSearchCount="currentPageIsBrowsePage"
-                            :searchCount="searchCount"
-                            :showSearch="currentPageIsBrowsePage"
                             :loading="loading"
                             :mode="mode"
                             :modeCloseCallback="catchModeClose"
+                            :searchCount="searchCount"
+                            :showSearchCount="true"
                             @menuClick="catchMenuClicked"
                             @searchClick="catchSearchClicked"
                             @searchCleared="catchSearchCleared" />
@@ -50,7 +48,7 @@
                     fill-height
                     v-on:scroll="updateScroll()"
                     ref="appContainer"
-                    :style="currentPageIsBrowsePage ? '' : 'height: calc(100vh - 36px); overflow-y: auto; scroll-behavior: smooth;'" >
+                    :style="pageStyle" >
         <v-layout column >
           <v-flex xs12 mx-0 >
 
@@ -286,7 +284,12 @@ export default {
       return this.currentPage === LANDING_PAGENAME;
     },
     showToolbar() {
-      return !this.currentPageIsLandingPage || !this.$vuetify.breakpoint.smAndDown;
+      return false;
+      // return this.currentPageIsBrowsePage || !this.$vuetify.breakpoint.smAndDown;
+    },
+    pageStyle() {
+      const heightStyle = this.showToolbar ? 'height: calc(100vh - 36px);' : 'height: 100vh;';
+      return this.currentPageIsBrowsePage ? '' : `${heightStyle} overflow-y: auto; scroll-behavior: smooth;`;
     },
     showSmallNavigation() {
       return this.$vuetify.breakpoint.smAndDown;

@@ -1,3 +1,4 @@
+/* eslint-disable object-property-newline */
 /**
  * @summary story of all the MetadataDetailViews for sandbox testing
  * @author Dominik Haas-Artho
