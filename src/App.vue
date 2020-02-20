@@ -483,8 +483,8 @@ export default {
 .envidatSmallNavigation {
   position: fixed;
   top: auto;
-  right: 10px;
-  bottom: 10px;
+  left: 10px;
+  top: 10px;
 }
 
 .envidatToolbar > .v-toolbar__content {
