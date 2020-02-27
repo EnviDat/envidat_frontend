@@ -26,6 +26,23 @@ export const projects = {
   state: projectsState,
   getters: {
     projects: state => state.projects,
+    projectsCardsParents: (state) => {
+      const noSubs = [];
+      const pros = state.projects;
+
+      if (!pros) {
+        return noSubs;
+      }
+
+      for (let i = 0; i < pros.length; i++) {
+        const p = pros[i];
+        if (!p.parent) {
+          noSubs.push(p);
+        }
+      }
+
+      return noSubs;
+    },
     projectsPageBackRoute: state => state.projectsPageBackRoute,
     loading: state => state.loading,
   },

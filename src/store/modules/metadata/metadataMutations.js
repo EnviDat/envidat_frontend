@@ -35,6 +35,7 @@ import {
   SET_ABOUT_PAGE_BACK_URL,
   SET_VIRTUAL_LIST_INDEX,
   METADATA_NAMESPACE,
+  SWISSFL_MODE,
 } from '@/store/metadataMutationsConsts';
 
 import {
@@ -44,8 +45,15 @@ import {
 
 import { ADD_USER_NOTIFICATION } from '@/store/mainMutationsConsts';
 
-import metaDataFactory from '@/factories/metaDataFactory';
+import {
+  enhanceMetadataEntry,
+  enhanceTags,
+  createLocation,
+  extractAuthorsMap,
+} from '@/factories/metaDataFactory';
 import { solrResultToCKANJSON } from '@/factories/apiFactory';
+
+import { enhanceMetadataFromExtras } from '@/factories/modeFactory';
 
 
 function enhanceMetadatas(store, datasets) {
@@ -58,10 +66,12 @@ function enhanceMetadatas(store, datasets) {
 
   for (let i = 0; i < datasets.length; i++) {
     let dataset = datasets[i];
-    dataset = metaDataFactory.enhanceMetadataEntry(dataset, cardBGImages, categoryCards);
-    dataset = metaDataFactory.enhanceTags(dataset, categoryCards);
+    dataset = enhanceMetadataEntry(dataset, cardBGImages, categoryCards);
+    dataset = enhanceMetadataFromExtras(SWISSFL_MODE, dataset);
 
-    dataset.location = metaDataFactory.createLocation(dataset);
+    dataset = enhanceTags(dataset, categoryCards);
+
+    dataset.location = createLocation(dataset);
 
     enhancedContent[dataset.id] = dataset;
   }
@@ -129,6 +139,7 @@ export default {
   },
   [BULK_LOAD_METADATAS_CONTENT_SUCCESS](state, payload) {
     state.metadatasContent = enhanceMetadatas(this, payload);
+    state.authorsMap = extractAuthorsMap(payload);
 
     state.metadatasContentOK = true;
     state.loadingMetadatasContent = false;

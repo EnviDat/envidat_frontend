@@ -1,32 +1,30 @@
 <template>
-  <!-- <v-tooltip
-    bottom
-    :disabled="$vuetify.breakpoint.xsOnly"
-  > -->
-    <!-- <div slot="activator" class="iconCentering">
-        <img class="envidatIcon"
-            :class="compactLayout ? 'small' : ''"
-            :src="icon" />
-      </div> -->
+  <v-chip
+    slot="activator"
+    class="authorTag"
+    :class="{ 'white--text': highlighted ? true : false,
+              'smallChip': $vuetify.breakpoint.smAndDown ? true : false,
+    }"
+    :style="{'height' : $vuetify.breakpoint.xsOnly ? '15px' : '' }"
+    @click.stop="clicked"
+  >
+    <v-avatar>
+      <v-icon>account_circle</v-icon>
+    </v-avatar>
 
-    <v-chip
-      slot="activator"
-      class="authorTag"
-      :class="{ 'white--text': highlighted ? true : false,
-                'smallChip': $vuetify.breakpoint.smAndDown ? true : false,
-      }"
-      :style="{'height' : $vuetify.breakpoint.xsOnly ? '15px' : '' }"
-      @click.stop="clicked"
-    >
-      <v-avatar>
-        <v-icon>account_circle</v-icon>
-      </v-avatar>
+    {{ authorName }}
 
-      {{ name }}
-    </v-chip>
+    <v-tooltip v-if="authorIsDead"
+                bottom>
+      <v-icon slot="activator"
+              small >
+        hourglass_empty
+      </v-icon>
+      {{ authorPassedInfo }}
+    </v-tooltip>
 
-    <!-- <span>{{ tooltipText }}</span>
-  </v-tooltip> -->
+  </v-chip>
+
 </template>
 
 <script>
@@ -42,13 +40,22 @@
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
+
 export default {
   props: {
     name: String,
     tooltipText: String,
     highlighted: Boolean,
+    asciiDead: String,
+    authorPassedInfo: String,
   },
   computed: {
+    authorIsDead() {
+      return this.asciiDead && this.name ? this.name.includes(this.asciiDead) : false;
+    },
+    authorName() {
+      return this.authorIsDead ? this.name.replace(`(${this.asciiDead})`, '') : this.name;
+    },
   },
   methods: {
     clicked: function clicked() {

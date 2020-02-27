@@ -2,15 +2,18 @@
 
 module.exports = {
   root: true,
+
   parserOptions: {
     parser: 'babel-eslint',
     sourceType: 'module',
     ecmaVersion: 10,
   },
+
   // env: {
   //   browser: true,
   // },
   extends: ['@vue/airbnb', 'plugin:vue/essential'],
+
   // // required to lint *.vue files
   // plugins: [
   //   'html'
@@ -21,6 +24,7 @@ module.exports = {
       'babel-module': {},
     },
   },
+
   // },
   // add your custom rules here
   rules: {
@@ -50,4 +54,16 @@ module.exports = {
     // windows linebreaks when not in production environment
     // "linebreak-style": ["error", process.env.NODE_ENV === 'prod' ? "unix" : "windows"]
   },
+
+  overrides: [
+    {
+      files: [
+        '**/__tests__/*.{j,t}s?(x)',
+        '**/tests/unit/**/*.spec.{j,t}s?(x)'
+      ],
+      env: {
+        jest: true
+      }
+    }
+  ]
 };

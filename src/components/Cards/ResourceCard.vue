@@ -11,7 +11,7 @@
 
     <v-card-text class="pt-0"
                 :class="{ 'pb-3': $vuetify.breakpoint.mdAndUp,
-                          'pb-5': $vuetify.breakpoint.smAndDown, }" >
+                          'pb-5': $vuetify.breakpoint.smAndDown || showFullDescription, }" >
       <v-container grid-list-xs
                     pa-0 >
         <v-layout v-bind="{ ['row']: $vuetify.breakpoint.smAndUp,
@@ -24,13 +24,13 @@
             <v-layout column>
               <v-flex v-if="showFullDescription"
                       xs11
-                      pb-4
                       class="resourceCardText heightAndScroll" >
                 {{ description }}
               </v-flex>
 
               <v-flex v-if="!showFullDescription"
                       xs11
+                      pb-5
                       class="resourceCardText" >
                 {{ description | truncate(maxDescriptionLength) }}
               </v-flex>
@@ -97,7 +97,7 @@
     </v-card-text>
 
     <v-card-actions class="ma-0 pa-2"
-                    style="position: absolute; bottom: 5px; right: 50px;" >
+                    style="position: absolute; bottom: 0px; right: 50px;" >
 
       <base-icon-button v-if="maxDescriptionLengthReached"
                         class="mr-2"
@@ -125,7 +125,7 @@
       </div>
 
       <base-icon-button v-if="!isProtected"
-                        class="fabPosition ma-3"
+                        class="fabPosition ma-2"
                         style="height: 40px; width: 40px;"
                         :customIcon="isFile ? downloadIcon : linkIcon"
                         color="accent"
@@ -190,7 +190,11 @@ export default {
   computed: {
     formatedBytes() {
       if (!this.size) return '';
-      const bytesString = this.mixinMethods_formatBytes(this.size);
+      let sizeNumber = this.size;
+      if (typeof this.size === 'number') {
+        sizeNumber = Number.parseInt(this.size, 10);
+      }
+      const bytesString = this.mixinMethods_formatBytes(sizeNumber);
       return bytesString;
     },
     isLink() {
@@ -262,9 +266,7 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 
   .black_title{
     color: rgba(0,0,0,.87) !important;

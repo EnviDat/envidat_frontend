@@ -31,11 +31,6 @@
       </v-layout>
     </v-container>
 
-    <!-- <div v-if="color"
-          class="py-0 my-0 "
-          :style="`height: 5px; background-color: ${color};`" >
-    </div> -->
-
   </v-card>
 </template>
 

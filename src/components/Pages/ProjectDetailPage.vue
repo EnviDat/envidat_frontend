@@ -61,6 +61,8 @@
                             :enabledControls="enabledControls"
                             :mapHeight="mapFilterHeight"
                             :topFilteringLayout="true"
+                            :showSearch="false"
+                            :searchCount="filteredListContent.length"
                             @setScroll="setScrollPos" />
           </div>
 
@@ -144,6 +146,9 @@ export default {
       }
 
       vm.$store.commit(`${PROJECTS_NAMESPACE}/${SET_PROJECTDETAIL_PAGE_BACK_URL}`, backRoute);
+
+      // reset scroll for every new load of project details
+      vm.setScrollPos(0);
     });
   },
   beforeRouteUpdate(to, from, next) {
@@ -158,19 +163,13 @@ export default {
     }
     this.$store.commit(`${PROJECTS_NAMESPACE}/${SET_PROJECTDETAIL_PAGE_BACK_URL}`, backRoute);
 
+    this.setScrollPos(0);
     next();
   },
   beforeMount() {
     if (this.projects.length <= 0) {
       this.$store.dispatch(`${PROJECTS_NAMESPACE}/${GET_PROJECTS}`);
     }
-  },
-  /**
-   * @description reset the scrolling to the top,
-   * because of the scrolling is set from the browsePage or metaDetailPage
-   */
-  mounted() {
-    window.scrollTo(0, 0);
   },
   computed: {
     ...mapGetters({

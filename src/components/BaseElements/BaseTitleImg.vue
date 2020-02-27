@@ -20,7 +20,7 @@
               mx-2
               :style="`position: relative; top: -${height }px;
                       text-align: center;`" >
-              <!-- :style="`position: relative; top: 0;`" -->
+
       <div style="background-color: white;" />
 
       <div class="envidatTitle"

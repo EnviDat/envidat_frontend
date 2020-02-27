@@ -11,7 +11,8 @@
 
           <img class="envidatIcon"
                 :class="compactLayout ? 'small' : ''"
-                :src="icon" >
+                :src="icon"
+                :alt="`${icon} icon`" >
         </div>
 
         <v-flex v-if="icon && !iconTooltip"
@@ -21,7 +22,8 @@
           <div class="iconCentering">
             <img class="envidatIcon"
                   :class="compactLayout ? 'small' : ''"
-                  :src="icon" >
+                  :src="icon"
+                  :alt="`${icon} icon`" >
           </div>
         </v-flex>
 
@@ -83,9 +85,6 @@ export default {
     compactLayout: Boolean,
   },
   computed: {
-      /**
-       * TODO Sehr schwer verstädnlich was das macht
-       */
     alignClass() {
       return {
         flex: !this.alignLeft,
