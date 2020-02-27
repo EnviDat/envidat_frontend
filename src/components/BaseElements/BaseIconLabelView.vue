@@ -85,9 +85,6 @@ export default {
     compactLayout: Boolean,
   },
   computed: {
-      /**
-       * TODO Sehr schwer verstädnlich was das macht
-       */
     alignClass() {
       return {
         flex: !this.alignLeft,

@@ -50,7 +50,7 @@
                         ['pr-5'] : flatLayout,
                         ['pr-4'] : !flatLayout,
                   }" >
-      <!-- TODO: need to strip the markdown characters from the desc -->
+
       <v-layout row wrap>
         <v-flex v-if="!compactLayout"
                   xs12 >
