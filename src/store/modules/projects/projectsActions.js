@@ -26,7 +26,6 @@ import { urlRewrite } from '@/factories/apiFactory';
 
 const API_BASE = '/api/action/';
 const ENVIDAT_PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
-const useTestData = process.env.VUE_APP_USE_TESTDATA;
 
 
 export default {
@@ -41,17 +40,6 @@ export default {
 
     if (this.getters[`${METADATA_NAMESPACE}/metadatasContentSize`] === 0) {
       await dispatch(`${METADATA_NAMESPACE}/BULK_LOAD_METADATAS_CONTENT`, null, { root: true })      
-    }
-
-    if (typeof useTestData === 'string' && useTestData.toLowerCase() === 'true') {
-      // const projectJSON = require('@/testdata/projects.js');
-
-      import('@/testdata/projects.js')
-      .then((projects) => {
-        commit(GET_PROJECTS_SUCCESS, projects.default.result);
-      });
-
-      return;
     }
 
     await axios.get(url)
