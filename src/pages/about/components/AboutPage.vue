@@ -29,6 +29,51 @@
         </v-container>
       </v-flex>
 
+      <v-flex xs12 lg10 offset-lg1>
+        <img-and-text-layout :img="guidelineImg"
+                              :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
+                              title="Guidelines" />
+      </v-flex>
+
+      <v-flex v-if="guidelinesLoading"
+              offset-md2
+              offset-lg1
+              shrink
+              pt-5 >
+        Loading Guidelines...
+      </v-flex>
+
+
+      <v-flex v-if="!guidelinesLoading"
+                offset-md2
+                offset-lg1
+                shrink
+                pt-5
+                v-html="guidelinesMarkdownText" >
+      </v-flex>
+
+      <v-flex xs12 lg10 offset-lg1>
+        <img-and-text-layout :img="policiesImg"
+                              :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
+                              title="Policies" />
+      </v-flex>
+
+      <v-flex v-if="policiesLoading"
+              offset-md2
+              offset-lg1
+              shrink
+              pt-5 >
+        Loading Policies...
+      </v-flex>
+
+      <v-flex v-if="!policiesLoading"
+                offset-md2
+                offset-lg1
+                shrink
+                pt-5
+                v-html="policiesMarkdownText" >
+      </v-flex>
+
     </v-layout>
   </v-container>
 </template>
@@ -48,12 +93,24 @@
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
+import remark from 'remark';
+import html from 'remark-html';
+import { mapGetters } from 'vuex';
 
 import { ABOUT_PAGENAME } from '@/router/routeConsts';
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
 } from '@/store/mainMutationsConsts';
+import {
+  GET_POLICIES,
+  POLICIES_NAMESPACE,
+} from '@/pages/about/store/policiesMutationsConsts';
+import {
+  GET_GUIDELINES,
+  GUIDELINES_NAMESPACE,
+} from '@/pages/about/store/guidelinesMutationsConsts';
+
 
 import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
 
@@ -67,6 +124,11 @@ import conceptSmall from '@/assets/about/concept_small.jpg';
 import communitySmall from '@/assets/about/community_small.jpg';
 import wslLogo from '@/assets/about/wslLogo.jpg';
 import wslLogoSmall from '@/assets/about/wslLogo_small.jpg';
+
+import policies from '@/assets/about/policies.jpg';
+import policiesSmall from '@/assets/about/policies_small.jpg';
+import guidelines from '@/assets/about/guidelines.jpg';
+import guidelinesSmall from '@/assets/about/guidelines_small.jpg';
 
 import ExpandableCard from '@/components/Cards/ExpandableCard';
 
@@ -83,14 +145,27 @@ export default {
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
     });
   },
+  beforeMount() {
+    this.$store.dispatch(`${POLICIES_NAMESPACE}/${GET_POLICIES}`);
+    this.$store.dispatch(`${GUIDELINES_NAMESPACE}/${GET_GUIDELINES}`);
+  },
   /**
-     * @description reset the scrolling to the top,
-     * because of the scrolling is set from the browsePage or metaDetailPage
-     */
+   * @description reset the scrolling to the top,
+   * because of the scrolling is set from the browsePage or metaDetailPage
+   */
   mounted() {
     window.scrollTo(0, 0);
   },
   computed: {
+    ...mapGetters({
+      guidelinesPageBackRoute: `${GUIDELINES_NAMESPACE}/guidelinesPageBackRoute`,
+      // guidelinesTitle: 'guidelines/guidelinesTitle',
+      guidelinesMarkdown: `${GUIDELINES_NAMESPACE}/guidelinesMarkdown`,
+      guidelinesLoading: `${GUIDELINES_NAMESPACE}/loading`,
+      policiesPageBackRoute: `${POLICIES_NAMESPACE}/policiesPageBackRoute`,
+      policiesMarkdown: `${POLICIES_NAMESPACE}/policiesMarkdown`,
+      policiesLoading: `${POLICIES_NAMESPACE}/loading`,
+    }),
     missionImg() {
       return this.$vuetify.breakpoint.mdAndUp ? mission : missionSmall;
     },
@@ -128,6 +203,18 @@ export default {
           widthClass: 'xs12 sm12 md8',
         },
       ];
+    },
+    policiesMarkdownText() {
+      return remark().use(html).processSync(this.policiesMarkdown);
+    },
+    policiesImg() {
+      return this.$vuetify.breakpoint.mdAndUp ? policies : policiesSmall;
+    },
+    guidelinesMarkdownText() {
+      return remark().use(html).processSync(this.guidelinesMarkdown);
+    },
+    guidelineImg() {
+      return this.$vuetify.breakpoint.mdAndUp ? guidelines : guidelinesSmall;
     },
   },
   components: {
