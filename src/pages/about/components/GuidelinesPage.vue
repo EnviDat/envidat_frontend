@@ -6,9 +6,9 @@
     <v-layout row wrap >
 
       <v-flex xs12 lg10 offset-lg1>
-        <img-and-text-layout :img="policiesImg"
+        <img-and-text-layout :img="guidelineImg"
                               :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
-                              title="Policies" />
+                              title="Guidelines" />
       </v-flex>
 
       <v-flex v-if="loading"
@@ -16,7 +16,7 @@
               offset-lg1
               shrink
               pt-5 >
-        Loading Policies...
+        Loading Guidelines...
       </v-flex>
 
 
@@ -26,7 +26,7 @@
                 shrink
                 pt-5 >
         <m-markdown-preview
-          :markdown="policiesMarkdown"
+          :markdown="guidelinesMarkdown"
           :options="markdownOptions"
         />
       </v-flex>
@@ -36,14 +36,14 @@
 
 <script>
 /**
- * The policies page of EnviDat. It consists of:
+ * The guideline page of EnviDat. It consists of:
  * - TitleImage and Title (ImgAndTextLayout)
  *
- * @summary policies page
+ * @summary guideline page
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-20 11:39:46
+ * Last modified  : 2019-11-15 16:16:28
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -53,27 +53,28 @@ import { mapGetters } from 'vuex';
 import MMarkdownPreview from 'm-markdown-preview';
 import {
   BROWSE_PATH,
-  POLICIES_PAGENAME,
+  GUIDELINES_PAGENAME,
 } from '@/router/routeConsts';
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
 } from '@/store/mainMutationsConsts';
-import { GET_POLICIES, POLICIES_NAMESPACE } from '@/store/policiesMutationsConsts';
+import { GET_GUIDELINES } from '@/pages/about/store/guidelinesMutationsConsts';
 
 import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
-import policies from '@/assets/about/policies.jpg';
-import policiesSmall from '@/assets/about/policies_small.jpg';
+import guidelines from '@/assets/about/guidelines.jpg';
+import guidelinesSmall from '@/assets/about/guidelines_small.jpg';
+
 
 export default {
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.$store.commit(SET_CURRENT_PAGE, POLICIES_PAGENAME);
+      vm.$store.commit(SET_CURRENT_PAGE, GUIDELINES_PAGENAME);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
     });
   },
   beforeMount() {
-    this.$store.dispatch(`${POLICIES_NAMESPACE}/${GET_POLICIES}`);
+    this.$store.dispatch(`guidelines/${GET_GUIDELINES}`);
   },
   /**
      * @description reset the scrolling to the top,
@@ -84,9 +85,10 @@ export default {
   },
   computed: {
     ...mapGetters({
-      policiesPageBackRoute: `${POLICIES_NAMESPACE}/policiesPageBackRoute`,
-      policiesMarkdown: `${POLICIES_NAMESPACE}/policiesMarkdown`,
-      loading: `${POLICIES_NAMESPACE}/loading`,
+      guidelinesPageBackRoute: 'guidelines/guidelinesPageBackRoute',
+      // guidelinesTitle: 'guidelines/guidelinesTitle',
+      guidelinesMarkdown: 'guidelines/guidelinesMarkdown',
+      loading: 'guidelines/loading',
     }),
     markdownOptions() {
       return {
@@ -96,8 +98,8 @@ export default {
         breaks: true,
       };
     },
-    policiesImg() {
-      return this.$vuetify.breakpoint.mdAndUp ? policies : policiesSmall;
+    guidelineImg() {
+      return this.$vuetify.breakpoint.mdAndUp ? guidelines : guidelinesSmall;
     },
   },
   methods: {
@@ -105,7 +107,7 @@ export default {
        * @description changes the url to page the user was before. Fallback: BrowsePage
        */
     catchBackClicked() {
-      const backRoute = this.policiesPageBackRoute;
+      const backRoute = this.aboutPageBackRoute;
 
       if (backRoute) {
         this.$router.push({
