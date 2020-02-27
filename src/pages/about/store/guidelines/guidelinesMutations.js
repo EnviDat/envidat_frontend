@@ -21,14 +21,14 @@ import { getSpecificApiError } from '@/factories/notificationFactory';
 
 export default {
   [GET_GUIDELINES](state) {
-    state.loading = true;
+    state.guidelinesloading = true;
   },
   [GET_GUIDELINES_SUCCESS](state, payload) {
     state.guidelinesMarkdown = payload;
-    state.loading = false;
+    state.guidelinesloading = false;
   },
   [GET_GUIDELINES_ERROR](state, reason) {
-    state.loading = false;
+    state.guidelinesloading = false;
 
     const details = 'An error occured while loading the guidelines!';
     const errObj = getSpecificApiError(details, reason);

@@ -17,7 +17,7 @@ import mutations from '@/pages/about/store/guidelines/guidelinesMutations';
 const guidelinesState = {
   guidelinesPageBackRoute: '',
   guidelinesMarkdown: null,
-  loading: false,
+  guidelinesLoading: false,
 };
 
 
@@ -27,7 +27,7 @@ export const guidelines = {
   getters: {
     guidelinesMarkdown: state => state.guidelinesMarkdown,
     guidelinesPageBackRoute: state => state.guidelinesPageBackRoute,
-    loading: state => state.loading,
+    guidelinesLoading: state => state.guidelinesLoading,
   },
   mutations,
   actions,

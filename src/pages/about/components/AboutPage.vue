@@ -104,11 +104,9 @@ import {
 } from '@/store/mainMutationsConsts';
 import {
   GET_POLICIES,
-  POLICIES_NAMESPACE,
 } from '@/pages/about/store/policiesMutationsConsts';
 import {
   GET_GUIDELINES,
-  GUIDELINES_NAMESPACE,
 } from '@/pages/about/store/guidelinesMutationsConsts';
 
 
@@ -146,8 +144,8 @@ export default {
     });
   },
   beforeMount() {
-    this.$store.dispatch(`${POLICIES_NAMESPACE}/${GET_POLICIES}`);
-    this.$store.dispatch(`${GUIDELINES_NAMESPACE}/${GET_GUIDELINES}`);
+    this.$store.dispatch(`about/${GET_POLICIES}`);
+    this.$store.dispatch(`about/${GET_GUIDELINES}`);
   },
   /**
    * @description reset the scrolling to the top,
@@ -158,13 +156,13 @@ export default {
   },
   computed: {
     ...mapGetters({
-      guidelinesPageBackRoute: `${GUIDELINES_NAMESPACE}/guidelinesPageBackRoute`,
+      guidelinesPageBackRoute: 'about/guidelinesPageBackRoute',
       // guidelinesTitle: 'guidelines/guidelinesTitle',
-      guidelinesMarkdown: `${GUIDELINES_NAMESPACE}/guidelinesMarkdown`,
-      guidelinesLoading: `${GUIDELINES_NAMESPACE}/loading`,
-      policiesPageBackRoute: `${POLICIES_NAMESPACE}/policiesPageBackRoute`,
-      policiesMarkdown: `${POLICIES_NAMESPACE}/policiesMarkdown`,
-      policiesLoading: `${POLICIES_NAMESPACE}/loading`,
+      guidelinesMarkdown: 'about/guidelinesMarkdown',
+      guidelinesLoading: 'about/guidelinesLoading',
+      policiesPageBackRoute: 'about/policiesPageBackRoute',
+      policiesMarkdown: 'about/policiesMarkdown',
+      policiesLoading: 'about/policiesLoading',
     }),
     missionImg() {
       return this.$vuetify.breakpoint.mdAndUp ? mission : missionSmall;

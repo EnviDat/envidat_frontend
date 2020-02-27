@@ -17,7 +17,7 @@ import mutations from '@/pages/about/store/policies/policiesMutations';
 const policiesState = {
   policiesPageBackRoute: '',
   policiesMarkdown: null,
-  loading: false,
+  policiesLoading: false,
 };
 
 
@@ -27,7 +27,7 @@ export const policies = {
   getters: {
     policiesMarkdown: state => state.policiesMarkdown,
     policiesPageBackRoute: state => state.policiesPageBackRoute,
-    loading: state => state.loading,
+    policiesLoading: state => state.policiesLoading,
   },
   mutations,
   actions,

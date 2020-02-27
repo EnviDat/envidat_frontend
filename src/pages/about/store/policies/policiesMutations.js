@@ -21,14 +21,14 @@ import { getSpecificApiError } from '@/factories/notificationFactory';
 
 export default {
   [GET_POLICIES](state) {
-    state.loading = true;
+    state.policiesLoading = true;
   },
   [GET_POLICIES_SUCCESS](state, payload) {
     state.policiesMarkdown = payload;
-    state.loading = false;
+    state.policiesLoading = false;
   },
   [GET_POLICIES_ERROR](state, reason) {
-    state.loading = false;
+    state.policiesLoading = false;
 
     const details = 'An error occured while loading the policies!';
     const errObj = getSpecificApiError(details, reason);

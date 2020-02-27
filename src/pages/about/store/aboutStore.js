@@ -14,18 +14,10 @@
 import { policies } from '@/pages/about/store/policies/policies';
 import { guidelines } from '@/pages/about/store/guidelines/guidelines';
 
-const aboutState = {
-  policies,
-  guidelines,
-};
-
 export const about = {
   namespaced: true,
-  state: aboutState,
-  getters: {
-    policies: state => state.policies,
-    guidelines: state => state.guidelines,
-  },
-  // mutations,
-  // actions,
+  state: { ...policies.state, ...guidelines.state },
+  getters: { ...policies.getters, ...guidelines.getters },
+  mutations: { ...policies.mutations, ...guidelines.mutations },
+  actions: { ...policies.actions, ...guidelines.actions },
 };
