@@ -15,7 +15,7 @@ import {
   GET_POLICIES,
   GET_POLICIES_SUCCESS,
   GET_POLICIES_ERROR,
-} from '@/store/policiesMutationsConsts';
+} from '@/pages/about/store/policiesMutationsConsts';
 import { ADD_USER_NOTIFICATION } from '@/store/mainMutationsConsts';
 import { getSpecificApiError } from '@/factories/notificationFactory';
 
