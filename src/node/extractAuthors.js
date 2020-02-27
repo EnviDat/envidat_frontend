@@ -189,6 +189,6 @@ function writeAuthorsToFile(authorMap) {
   
 }
 
-const authorMap = extractAuthorsMap(metadataList);
+const authorsMap = extractAuthorsMap(metadataList);
 
-writeAuthorsToFile(authorMap);
+writeAuthorsToFile(authorsMap);
