@@ -122,11 +122,14 @@ export default new Router({
 
     // handle null value #1566
     if (!a || !b) { return a === b; }
+
     const aKeys = Object.keys(a);
     const bKeys = Object.keys(b);
+
     if (aKeys.length !== bKeys.length) {
       return false;
     }
+
     return aKeys.every((key) => {
       const aVal = a[key];
       const bVal = b[key];
@@ -141,15 +144,21 @@ export default new Router({
   isSameRoute(a, b) {
     if (b === START) {
       return a === b;
-    } if (!b) {
+    }
+    
+    if (!b) {
       return false;
-    } if (a.path && b.path) {
+    }
+    
+    if (a.path && b.path) {
       return (
         a.path.replace(trailingSlashRE, '') === b.path.replace(trailingSlashRE, '')
         && a.hash === b.hash
         && this.isObjectEqual(a.query, b.query)
       );
-    } if (a.name && b.name) {
+    }
+    
+    if (a.name && b.name) {
       return (
         a.name === b.name
         && a.hash === b.hash
@@ -157,6 +166,7 @@ export default new Router({
         && this.isObjectEqual(a.params, b.params)
       );
     }
+
     return false;
   },
 });
