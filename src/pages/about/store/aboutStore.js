@@ -12,20 +12,20 @@
  */
 
 import { policies } from '@/pages/about/store/policies/policies';
-import { guidelines } from '@/store/modules/guidelines/guidelines';
+import { guidelines } from '@/pages/about/store/guidelines/guidelines';
 
-const state = {
+const aboutState = {
   policies,
   guidelines,
 };
 
-export const metadata = {
+export const about = {
   namespaced: true,
-  state,
+  state: aboutState,
   getters: {
     policies: state => state.policies,
     guidelines: state => state.guidelines,
   },
-  mutations,
-  actions,
+  // mutations,
+  // actions,
 };

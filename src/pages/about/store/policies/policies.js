@@ -11,8 +11,8 @@
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
-import actions from '@/store/modules/policies/policiesActions';
-import mutations from '@/store/modules/policies/policiesMutations';
+import actions from '@/pages/about/store/policies/policiesActions';
+import mutations from '@/pages/about/store/policies/policiesMutations';
 
 const policiesState = {
   policiesPageBackRoute: '',
