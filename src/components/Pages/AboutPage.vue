@@ -76,10 +76,8 @@ export default {
      * @description beforeRouteEnter is used to change background image of this page.
      * It's called via vue-router.
      */
-  // TODO: Wieso die aktuelle Seite abspeichern? Ist ja im router. + Wenn Bild abhänig von CurrentPage --> im Code so reflektieren
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      console.log(vm, this, vm === this);
       vm.$store.commit(SET_CURRENT_PAGE, ABOUT_PAGENAME);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
     });

@@ -39,7 +39,7 @@ export default {
     );
 
     if (this.getters[`${METADATA_NAMESPACE}/metadatasContentSize`] === 0) {
-      await dispatch(`${METADATA_NAMESPACE}/BULK_LOAD_METADATAS_CONTENT`, null, { root: true })      
+      await dispatch(`${METADATA_NAMESPACE}/BULK_LOAD_METADATAS_CONTENT`, null, { root: true });      
     }
 
     await axios.get(url)

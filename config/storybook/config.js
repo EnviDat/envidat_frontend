@@ -1,25 +1,55 @@
 import Vue from 'vue';
 import { configure, addDecorator, addParameters } from '@storybook/vue';
 import '@/plugins/vuetify';
-import Vuetify, { VApp, VContainer, VLayout, VFlex } from 'vuetify/lib';
+import {
+  VApp, VContainer, VLayout, VFlex,
+} from 'vuetify/lib';
+import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 
-import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import 'material-design-icons-iconfont/dist/material-design-icons.css';
 
-import { createTag } from '@/factories/metadataFilterMethods';
+// import { createTag } from '@/factories/metadataFilterMethods';
 import globalMethods from '@/factories/globalMethods';
-import metaDataFactory from '@/factories/metaDataFactory';
-
-const cardImages = getCardImages(globalMethods);
+import {
+  convertTags,
+  enhanceMetadatas,
+} from '@/factories/metaDataFactory';
 import metadataCards from '@/stories/js/metadata';
+
 import categoryCards from '@/store/modules/metadata/categoryCards';
 
-metadataCards.forEach(element => {
-  element.tags = metaDataFactory.convertTags(element.tags, true);
+function getCardImages() {
+  const imgs = {};
+
+  let imgPaths = require.context('../../src/assets/cards/landscape/', false, /\.jpg$/);
+  imgs.landscape = globalMethods.methods.mixinMethods_importImages(imgPaths);
+
+  imgPaths = require.context('../../src/assets/cards/forest/', false, /\.jpg$/);
+  imgs.forest = globalMethods.methods.mixinMethods_importImages(imgPaths);
+
+  imgPaths = require.context('../../src/assets/cards/snow/', false, /\.jpg$/);
+  imgs.snow = globalMethods.methods.mixinMethods_importImages(imgPaths);
+
+  imgPaths = require.context('../../src/assets/cards/diversity/', false, /\.jpg$/);
+  imgs.diversity = globalMethods.methods.mixinMethods_importImages(imgPaths);
+
+  imgPaths = require.context('../../src/assets/cards/hazard/', false, /\.jpg$/);
+  imgs.hazard = globalMethods.methods.mixinMethods_importImages(imgPaths);
+
+  imgPaths = require.context('../../src/assets/cards/meteo/', false, /\.jpg$/);
+  imgs.meteo = globalMethods.methods.mixinMethods_importImages(imgPaths);
+
+  return imgs;
+}
+
+const cardImages = getCardImages();
+
+metadataCards.forEach((element) => {
+  element.tags = convertTags(element.tags, true);
 });
 
-metaDataFactory.enhanceMetadatas(metadataCards, cardImages, categoryCards);
+enhanceMetadatas(metadataCards, cardImages, categoryCards);
 
-import { configureViewport, INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 
 // const vuetifyViewports = {
 //   VuetifyLg: {
@@ -66,11 +96,11 @@ import { configureViewport, INITIAL_VIEWPORTS } from '@storybook/addon-viewport'
 
 // configureViewport({
 addParameters({
-  viewport : {
+  viewport: {
     // defaultViewport: 'VuetifyMd',
     viewports: {
       // ...vuetifyViewports,
-      ...INITIAL_VIEWPORTS
+      ...INITIAL_VIEWPORTS,
     },
   },
 });
@@ -92,7 +122,7 @@ addDecorator(() => ({
         </v-flex>
       </v-layout>
     </v-container>
-    </v-app>`
+    </v-app>`,
 }));
 
 const req = require.context('@/stories', true, /\.stories.js$/);
@@ -125,35 +155,3 @@ configure(loadStories, module);
 // }
 
 // configure(loadStories, module);
-
-
-function getCardImages(globalMethods) {
-  let cardImages = {};
-
-  // alert(
-  //   'globalMethods ' +
-  //     typeof globalMethods +
-  //     ' globalMethods.methods.mixinMethods_importImages ' +
-  //     typeof globalMethods.methods.mixinMethods_importImages
-  // );
-
-  let imgPaths = require.context('@/assets/cards/landscape/', false, /\.jpg$/);
-  cardImages.landscape = globalMethods.methods.mixinMethods_importImages(imgPaths);
-
-  imgPaths = require.context('@/assets/cards/forest/', false, /\.jpg$/);
-  cardImages.forest = globalMethods.methods.mixinMethods_importImages(imgPaths);
-
-  imgPaths = require.context('@/assets/cards/snow/', false, /\.jpg$/);
-  cardImages.snow = globalMethods.methods.mixinMethods_importImages(imgPaths);
-
-  imgPaths = require.context('@/assets/cards/diversity/', false, /\.jpg$/);
-  cardImages.diversity = globalMethods.methods.mixinMethods_importImages(imgPaths);
-
-  imgPaths = require.context('@/assets/cards/hazard/', false, /\.jpg$/);
-  cardImages.hazard = globalMethods.methods.mixinMethods_importImages(imgPaths);
-
-  imgPaths = require.context('@/assets/cards/meteo/', false, /\.jpg$/);
-  cardImages.meteo = globalMethods.methods.mixinMethods_importImages(imgPaths);
-
-  return cardImages;
-}

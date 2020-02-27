@@ -7,19 +7,22 @@
     <v-card-text v-if="details && details.length > 0">
       <v-form>
         <div v-for="val in details"
-              :key="val.label" >
+              :key="val.label"
+              class="mt-2" >
           <v-text-field v-if="isSingleText(val.text)"
                         :id="val.label"
                         :label="val.label"
                         :name="val.label"
-                        :value="val.text"
+                        :value="val.text.replace(`(${asciiDead})`, '').trim()"
+                        hide-details
                         readonly />
 
           <v-textarea v-if="!isSingleText(val.text)"
                       :id="val.label"
                       :label="val.label"
                       :name="val.label"
-                      :value="val.text"
+                      :value="val.text.replace(`(${asciiDead})`, '').trim()"
+                      hide-details
                       readonly />
         </div>
       </v-form>
@@ -63,6 +66,9 @@
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
+import { mapGetters } from 'vuex';
+import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
+
 
 export default {
   components: {
@@ -78,6 +84,10 @@ export default {
     emptyText: 'No details found for this dataset',
   }),
   computed: {
+    ...mapGetters({
+      asciiDead: `${METADATA_NAMESPACE}/asciiDead`,
+      authorPassedInfo: `${METADATA_NAMESPACE}/authorPassedInfo`,
+    }),
     details() {
       return this.mixinMethods_getGenericProp('details');
     },

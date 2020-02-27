@@ -39,7 +39,7 @@ import {
 } from '@/factories/metadataFilterMethods';
 import {
   getTagsMergedWithExtras,
-  getSelectedTagsMergedWithHidden
+  getSelectedTagsMergedWithHidden,
 } from '@/factories/modeFactory';
 import { urlRewrite } from '@/factories/apiFactory';
 
@@ -150,7 +150,7 @@ export default {
     commit(UPDATE_TAGS);
 
     try {
-        let allWithExtras = allTags;
+        let allWithExtras = [];
 
         const mergedExtraTags = getTagsMergedWithExtras(mode, allTags);
         if (mergedExtraTags) {
@@ -171,7 +171,8 @@ export default {
       commit(UPDATE_TAGS_ERROR, error);
     }
   },
-  async [FILTER_METADATA]({ dispatch, commit }, { selectedTagNames, mode }) {
+  // eslint-disable-next-line consistent-return
+  [FILTER_METADATA]({ dispatch, commit }, { selectedTagNames, mode }) {
     commit(FILTER_METADATA);
 
     const mergedWithHiddenNames = getSelectedTagsMergedWithHidden(mode, selectedTagNames);
@@ -197,24 +198,18 @@ export default {
       }
 
       const filteredContent = [];
-      let keep = false;
 
       for (let i = 0; i < content.length; i++) {
         const entry = content[i];
-        keep = contentFilterAccessibility(entry);
 
-        if (keep && selectedTagNames.length > 0) {
-          keep = contentFilteredByTags(entry, selectedTagNames);
-        }
-
-        if (keep) {
+        if (contentFilteredByTags(entry, selectedTagNames)) {
           filteredContent.push(entry);
         }
       }
 
       commit(FILTER_METADATA_SUCCESS, filteredContent);
 
-      return await dispatch(UPDATE_TAGS, mode);
+      return dispatch(UPDATE_TAGS, mode);
     } catch (error) {
       commit(FILTER_METADATA_ERROR, error);
     }

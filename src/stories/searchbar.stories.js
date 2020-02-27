@@ -18,7 +18,6 @@ import SearchBarView from '../components/Filtering/SearchBarView.vue';
 import SmallSearchBarView from '../components/Filtering/SmallSearchBarView.vue';
 
 
-
 storiesOf('4 Filtering | SearchBarView', module)
   .add('basic', () => ({
     components: { SearchBarView },
@@ -31,7 +30,7 @@ storiesOf('4 Filtering | SearchBarView', module)
           />`,
     methods: {
       onClick(searchTerm) {
-        action('clicked search for "' + searchTerm + '"');
+        action(`clicked search for "${searchTerm}"`);
       },
       onClear() {
         action('cleared Search')(this.searchTerm = '');
@@ -88,10 +87,10 @@ storiesOf('4 Filtering | SearchBarView', module)
         </v-flex>
 
         <v-flex>
-            <v-layout row>
-            <v-flex xs4 px-1>
+            <v-layout row wrap>
+            <v-flex xs6 px-1>
                 <small-search-bar-view
-                            labelText="xs4 no button"
+                            labelText="xs6 no button"
                             :searchTerm="searchTerm"
                             showSearchCount
                             :searchCount='123'
@@ -101,9 +100,9 @@ storiesOf('4 Filtering | SearchBarView', module)
                               />
             </v-flex>
 
-            <v-flex xs3 px-1>
+            <v-flex xs6 px-1>
                 <small-search-bar-view
-                            labelText="xs3 with compactLayout"
+                            labelText="xs6 with compactLayout"
                             :searchTerm="searchTerm"
                             showSearchCount
                             :searchCount='12'
@@ -113,9 +112,9 @@ storiesOf('4 Filtering | SearchBarView', module)
                             />
             </v-flex>
 
-            <v-flex xs3 px-1>
+            <v-flex xs6 px-1>
                 <small-search-bar-view
-                            labelText="xs3 no compactLayout"
+                            labelText="xs6 no compactLayout"
                             :searchTerm="searchTerm"
                             showSearchCount
                             :searchCount='0'
@@ -130,7 +129,7 @@ storiesOf('4 Filtering | SearchBarView', module)
       </v-layout>`,
     methods: {
       onClick(search) {
-        action('clicked search for "' + search + '"');
+        action(`clicked search for "${search}"`);
       },
       onClear() {
         action('cleared Search')(this.searchTerm = '');

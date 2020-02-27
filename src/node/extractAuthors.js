@@ -1,11 +1,16 @@
 const fs = require('fs');
 
-const packagelist = require(__dirname + '/../testdata/packagelist');
+const packagePath = `${__dirname}/../testdata/packagelist`;
+// eslint-disable-next-line import/no-dynamic-require
+const packagelist = require(packagePath);
 const metadataList = packagelist.result;
 
 const outputFileName = 'authorCollection.json';
-const outputPath = __dirname + '/../testdata/';
+const outputPath = `${__dirname}/../testdata/`;
 
+const fullNameList = {
+  'Meile, R.': 'Rolf Meile',
+};
 
 function getDataCredit(author) {
   if (!author.data_credit) {
@@ -15,11 +20,11 @@ function getDataCredit(author) {
   // key: dataCreditName, value: count
   const dataCredits = {};
 
-  if (author.data_credit instanceof Array){
+  if (author.data_credit instanceof Array) {
     for (let i = 0; i < author.data_credit.length; i++) {
       const credit = author.data_credit[i];
       
-      if (dataCredits[credit]){
+      if (dataCredits[credit]) {
         let v = dataCredits[credit];
         v += 1;
         dataCredits[credit] = v;
@@ -31,8 +36,8 @@ function getDataCredit(author) {
   } else if (typeof author.data_credit === 'string') {
     dataCredits[author.data_credit] = 1;
   } else {
-    console.log('Unexpected type for author.data_credit ' + typeof author.data_credit);
-    throw new Error('Unexpected type for author.data_credit ' + typeof author.data_credit);
+    console.log(`Unexpected type for author.data_credit ${typeof author.data_credit}`);
+    throw new Error(`Unexpected type for author.data_credit ${typeof author.data_credit}`);
   }
 
   return dataCredits;
@@ -52,12 +57,12 @@ function getAuthorName(author) {
 
   const nameSpilts = fullName.split(' ');
 
-  let firstName = nameSpilts[0];
+  const firstName = nameSpilts[0];
   let lastName = nameSpilts[1];
 
-  if (nameSpilts.length == 3) {
+  if (nameSpilts.length === 3) {
     // For Names like 'Dude van Dudehood'
-    lastName = nameSpilts[1] + ' ' + nameSpilts[2];
+    lastName = `${nameSpilts[1]} ${nameSpilts[2]}`;
   }
 
   return {
@@ -68,50 +73,52 @@ function getAuthorName(author) {
 }
 
 function getAuthors(dataset) {
-    let authors = null;
+  let authors = null;
 
-    if (typeof dataset.author === 'string') {
-      authors = JSON.parse(dataset.author);
+  if (typeof dataset.author === 'string') {
+    authors = JSON.parse(dataset.author);
+  }
+
+  if (authors && authors instanceof Array) {
+    const authorObjs = [];
+
+    for (let i = 0; i < authors.length; i++) {
+      const author = authors[i];
+
+      const authorName = getAuthorName(author);
+
+      const id = {
+        type: author.identifier_scheme,
+        identifier: author.identifier,
+      };
+      
+      const dataCredit = getDataCredit(author);
+
+      authorObjs.push({
+                        firstName: authorName.firstName,
+                        lastName: authorName.lastName,
+                        fullName: authorName.fullName,
+                        datasetCount: 1,
+                        affiliation: author.affiliation,
+                        id,
+                        email: author.email,
+                        dataCredit, 
+        });
     }
 
-    if (authors && authors instanceof Array) {
-      const authorObjs = [];
+    return authorObjs;
+  }
 
-      for (let i = 0; i < authors.length; i++) {
-          const author = authors[i];
-
-          const authorName = getAuthorName(author);
-
-          const id = {
-            type: author.identifier_scheme,
-            identifier: author.identifier,
-          };
-          
-          const dataCredit = getDataCredit(author);
-
-          authorObjs.push({ firstName: authorName.firstName,
-                            lastName: authorName.lastName,
-                            fullName: authorName.fullName,
-                            datasetCount: 1,
-                            affiliation: author.affiliation,
-                            id,
-                            email: author.email,
-                            dataCredit });
-      }
-
-      return authorObjs;
-    }
-
-    return null;
+  return null;
 }
 
-function extractAuthors() {
+function extractAuthorsMap(datasets) {
 
-  const authorMap = {};
+  const mapAuthors = {};
   let authorCount = 0;
 
-  for (let i = 0; i < metadataList.length; i++) {
-    const dataset = metadataList[i];
+  for (let i = 0; i < datasets.length; i++) {
+    const dataset = datasets[i];
 
     const authors = getAuthors(dataset);
  
@@ -120,13 +127,13 @@ function extractAuthors() {
         const author = authors[j];
 
         const authorName = author.fullName;
-        const existingAuthor = authorMap[authorName];
+        const existingAuthor = mapAuthors[authorName];
 
-        if (existingAuthor){
+        if (existingAuthor) {
           existingAuthor.datasetCount += author.datasetCount;
 
-          if (author.data_credit){
-            if (!existingAuthor.data_credit){
+          if (author.data_credit) {
+            if (!existingAuthor.data_credit) {
               existingAuthor.data_credit = author.data_credit;
             } else {
               const keys = Object.keys(author.data_credit);
@@ -150,44 +157,38 @@ function extractAuthors() {
           }
 
           // console.log('for ' + author.name + ' updated ' + existingAuthor.count);
-          authorMap[authorName] = existingAuthor;
+          mapAuthors[authorName] = existingAuthor;
         } else {
           // console.log('for ' + author.name + ' set ' + author.count);
-          authorMap[authorName] = author;
+          mapAuthors[authorName] = author;
           authorCount++;
         }
       }
     } else {
-      console.log('Dataset ' + dataset.title + ' id ' + dataset.id + ' has no authors?');
+      console.log(`Dataset ${dataset.title} id ${dataset.id} has no authors?`);
     }
 
-    console.log('extracted ' + authorCount + ' authors');
+    console.log(`extracted ${authorCount} authors`);
   }
 
-  return authorMap;
+  return mapAuthors;
 }
 
 function writeAuthorsToFile(authorMap) {
 
   const authorJson = JSON.stringify(authorMap, null, 2);
 
-  fs.writeFile(outputPath + outputFileName, authorJson, function(err) {
+  fs.writeFile(outputPath + outputFileName, authorJson, (err) => {
 
-    if(err) {
+    if (err) {
         return console.log(err);
     }
 
-    console.log("Authors extracted to " + outputPath + outputFileName + ". Wrote " + authorJson.length + " lines.");
+    console.log(`Authors extracted to ${outputPath}${outputFileName}. Wrote ${authorJson.length} lines.`);
   }); 
   
 }
 
-const fullNameList = {
-  'Meile, R.': 'Rolf Meile',
-};
+const authorsMap = extractAuthorsMap(metadataList);
 
-const authorMap = extractAuthors();
-
-writeAuthorsToFile(authorMap);
-
-
+writeAuthorsToFile(authorsMap);

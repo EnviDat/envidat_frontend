@@ -1,3 +1,4 @@
+/* eslint-disable object-property-newline */
 /**
  * @summary story of all the MetadataDetailViews for sandbox testing
  * @author Dominik Haas-Artho
@@ -15,6 +16,7 @@ import { action } from '@storybook/addon-actions';
 import './js/vuetify-components';
 
 /* import App needed for Css classes */
+// eslint-disable-next-line no-unused-vars
 import App from '@/App';
 
 import MetadataHeader from '@/components/Metadata/MetadataHeader.vue';
@@ -24,24 +26,34 @@ import MetadataDetails from '@/components/Metadata/MetadataDetails.vue';
 import MetadataLocation from '@/components/Metadata/MetadataLocation.vue';
 import MetadataPublications from '@/components/Metadata/MetadataPublications.vue';
 import MetadataFunding from '@/components/Metadata/MetadataFunding.vue';
+import MetadataAuthors from '@/components/Metadata/MetadataAuthors.vue';
 
 import doiIcon from '@/assets/icons/doi.png';
 import mailIcon from '@/assets/icons/mail.png';
 import contactIcon from '@/assets/icons/contact2.png';
 import licenseIcon from '@/assets/icons/license.png';
 
-import metaDataFactory from '@/factories/metaDataFactory';
+import {
+  createHeader,
+  createCitation,
+  createDetails,
+  createPublications,
+  createBody,
+  createLocation,
+  createAuthors,
+} from '@/factories/metaDataFactory';
 // metadata gets enhance in the storybook config
 import metadata from './js/metadata';
 
-const smallHeader = metaDataFactory.createHeader(metadata[0], true);
-const largeHeader = metaDataFactory.createHeader(metadata[1], false);
+const smallHeader = createHeader(metadata[0], true);
+const largeHeader = createHeader(metadata[1], false);
 
-const citation1 = metaDataFactory.createCitation(metadata[0]);
-const citation2 = metaDataFactory.createCitation(metadata[2]);
+const citation1 = createCitation(metadata[0]);
+const citation2 = createCitation(metadata[2]);
 
 const genericProps1 = {
-  showPlaceholder: false, id: citation1.id,
+  showPlaceholder: false,
+  id: citation1.id,
   citationText: citation1.citationText,
   citationXmlLink: citation1.citationBibtexXmlLink,
   citationIsoXmlLink: citation1.citationIsoXmlLink,
@@ -51,7 +63,8 @@ const genericProps1 = {
 };
 
 const genericProps2 = {
-  showPlaceholder: false, id: citation2.id,
+  showPlaceholder: false,
+  id: citation2.id,
   citationText: citation2.citationText,
   citationXmlLink: citation2.citationBibtexXmlLink,
   citationIsoXmlLink: citation2.citationIsoXmlLink,
@@ -60,34 +73,34 @@ const genericProps2 = {
   citationRisXmlLink: citation2.citationRisXmlLink,
 };
 
-const details1 = metaDataFactory.createDetails(metadata[0]);
+const details1 = createDetails(metadata[0]);
 metadata[0].related_publications = 'blabla bla';
-const publications1 = metaDataFactory.createPublications(metadata[0]);
-// const details2 = metaDataFactory.createDetails(metadata[1]);
+const publications1 = createPublications(metadata[0]);
+// const details2 = createDetails(metadata[1]);
 
-const publications2 = metaDataFactory.createPublications(metadata[1]);
+const publications2 = createPublications(metadata[1]);
 
-// const funding1 = metaDataFactory.createFunding(metadata[0]);
-const funding1 = [{ grant_number : '', institution: 'Funding not available', institution_url: '' }];
-// const funding2 = metaDataFactory.createFunding(metadata[1]);
+// const funding1 = createFunding(metadata[0]);
+const funding1 = [{ grant_number: '', institution: 'Funding not available', institution_url: '' }];
+// const funding2 = createFunding(metadata[1]);
 const funding2 = [
-  { grant_number : 'XYZ', institution: 'WSL', institution_url: 'https://www.wsl.ch' },
-  { grant_number : 'XZZ', institution: 'EAWAG', institution_url: 'https://www.eawag.ch' },
-  { grant_number : '', institution: 'Aquascope', institution_url: '' },
-  { grant_number : 'XYZ-ZYX', institution: 'EAWAG', institution_url: 'https://www.eawag.ch' },
-  { grant_number : '', institution: 'Someone', institution_url: '' },
-  { grant_number : '', institution: 'Someone you do not know with a long name', institution_url: '' },
+  { grant_number: 'XYZ', institution: 'WSL', institution_url: 'https://www.wsl.ch' },
+  { grant_number: 'XZZ', institution: 'EAWAG', institution_url: 'https://www.eawag.ch' },
+  { grant_number: '', institution: 'Aquascope', institution_url: '' },
+  { grant_number: 'XYZ-ZYX', institution: 'EAWAG', institution_url: 'https://www.eawag.ch' },
+  { grant_number: '', institution: 'Someone', institution_url: '' },
+  { grant_number: '', institution: 'Someone you do not know with a long name', institution_url: '' },
 ];
 
-const body1 = metaDataFactory.createBody(metadata[0]);
-const body2 = metaDataFactory.createBody(metadata[1]);
+const body1 = createBody(metadata[0]);
+const body2 = createBody(metadata[1]);
 
 const genericProps3 = {
   showPlaceholder: false,
   details: details1,
 };
 
-const location1 = metaDataFactory.createLocation(metadata[2]);
+const location1 = createLocation(metadata[2]);
 
 const genericProps4 = {
   showPlaceholder: false,
@@ -101,9 +114,16 @@ const genericProps4 = {
   geoJSON: location1.geoJSON,
 };
 
+const authors = createAuthors(metadata[2]);
+
+const genericProps5 = {
+  showPlaceholder: false,
+  authors,
+};
+
 export const methods = {
   onCardClick: action('clicked on card'),
-  onTagClick: action('clicked on tag')
+  onTagClick: action('clicked on tag'),
 };
 
 storiesOf('6 Detail Views | Metadata', module)
@@ -199,7 +219,7 @@ storiesOf('6 Detail Views | Metadata', module)
         showPlaceholder: false,
         body: body2,
       },
-    })
+    }),
   })).add('Metadata Citation', () => ({
     components: { MetadataCitation },
     template: `
@@ -260,7 +280,8 @@ storiesOf('6 Detail Views | Metadata', module)
         fixedHeight: false,
       },
     }),
-  })).add('Metadata Details', () => ({
+  }))
+.add('Metadata Details', () => ({
     components: { MetadataDetails },
     template: `
     <v-layout row wrap>
@@ -276,28 +297,6 @@ storiesOf('6 Detail Views | Metadata', module)
         />
       </v-flex>
 
-<!--
-      <v-flex xs12 py-3>
-        <metadata-details :genericProps="genericProps2"
-        />
-      </v-flex>
-
-      <v-flex xs12 py-3>
-        <metadata-details :genericProps="genericPropsPlaceholder"
-          :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
-        />
-      </v-flex>
-
-      <v-flex xs12 py-3>
-        <metadata-details :genericProps="genericPropsPlaceholder"
-        />
-      </v-flex>
-
-      <v-flex xs6 py-3>
-        <metadata-details :genericProps="genericPropsPlaceholder"
-        />
-      </v-flex>
--->
     </v-layout>        
     `,
     updated() {
@@ -316,7 +315,8 @@ storiesOf('6 Detail Views | Metadata', module)
         fixedHeight: false,
       },
     }),
-  })).add('Metadata Location', () => ({
+  }))
+.add('Metadata Location', () => ({
     components: { MetadataLocation },
     template: `
     <v-layout row wrap>
@@ -349,7 +349,8 @@ storiesOf('6 Detail Views | Metadata', module)
         fixedHeight: false,
       },
     }),
-  })).add('Metadata Publications', () => ({
+  }))
+.add('Metadata Publications', () => ({
     components: { MetadataPublications },
     template: `
     <v-layout row wrap>
@@ -403,7 +404,8 @@ storiesOf('6 Detail Views | Metadata', module)
         },
       },
     }),
-  })).add('Metadata Funding', () => ({
+  }))
+.add('Metadata Funding', () => ({
     components: { MetadataFunding },
     template: `
     <v-layout row wrap>
@@ -451,4 +453,39 @@ storiesOf('6 Detail Views | Metadata', module)
         showPlaceholder: false,
       },
     }),
-  }));
+  }))
+.add('Metadata Authors', () => ({
+    components: { MetadataAuthors },
+    template: `
+    <v-layout row wrap>
+
+      <v-flex xs12 md6 py-3>
+        <metadata-authors :genericProps="genericProps5" />
+      </v-flex>
+
+      <v-flex xs12 md6 py-3>
+        <metadata-authors :genericProps="genericPropsPlaceholder"
+          :showPlaceholder="genericPropsPlaceholder.showPlaceholder" />
+      </v-flex>
+
+      <v-flex xs12 md6 py-3>
+        <metadata-authors  />
+      </v-flex>
+
+    </v-layout>        
+    `,
+    // updated() {
+    //   this.$children.forEach((child) => {
+    //     child.$forceUpdate();
+    //   });
+    // },
+    methods: {
+    },
+    data: () => ({
+      genericProps5,
+      genericPropsPlaceholder: {
+        authors: [],
+        showPlaceholder: true,
+      },
+    }),
+}));

@@ -81,7 +81,6 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
 .adjustIconSearchbar > .v-input__prepend-outer {
   margin-top: 16px !important;
