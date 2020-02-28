@@ -52,7 +52,7 @@
                     align-center
                     justify-space-between >
 
-            <v-flex xs5 py-0
+            <v-flex xs6 py-0
                     :class="dark ? 'white--text' : 'black--text'" >
               {{ dataCountLabel }} 
             </v-flex>
