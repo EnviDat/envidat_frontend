@@ -38,6 +38,7 @@ import ModeView from '@/components/Layouts/ModeView';
 import UserAvatar from '@/components/Layouts/UserAvatar';
 
 export default {
+  name: 'TheNavigationToolbar',
   components: {
     ModeView,
     UserAvatar,

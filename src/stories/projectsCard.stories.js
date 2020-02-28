@@ -70,7 +70,7 @@ storiesOf('3 Cards | Projects Cards', module)
 
       <v-flex xs3
         v-for="(project, index) in 3"
-        :key="ph_index"
+        :key="'ph_' + index"
       >
         <project-card-placeholder />
       </v-flex>

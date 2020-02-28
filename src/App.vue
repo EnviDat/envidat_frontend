@@ -124,6 +124,7 @@ import NotificationCard from '@/components/Cards/NotificationCard';
 import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
 
 export default {
+  name: 'App',
   beforeCreate() {
     // check for the backend version
     this.$store.dispatch(SET_CONFIG);
