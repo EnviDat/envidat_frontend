@@ -142,7 +142,7 @@
                       py-2 px-0 >
           <v-layout row wrap>
 
-            <v-flex shrink v-if="author.email">
+            <v-flex shrink v-if="author.email && !authorIsDead">
               <v-layout column>
                 <v-flex xs12 py-0
                         class="authorInfoLabel"
@@ -227,6 +227,7 @@ import { BROWSE_PATH } from '@/router/routeConsts';
 // https://github.com/ToxicJojo/SkeletonPlaceholder
 
 export default {
+  name: 'AuthorCard',
   components: {
     DataCreditLayout,
     BaseIconButton,

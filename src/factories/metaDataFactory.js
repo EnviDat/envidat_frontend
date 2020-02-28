@@ -324,7 +324,7 @@ export function createResource(dataset) {
     // "mimetype_inner": null,
     // url_type: "upload",
     id: dataset.id,
-    size: dataset.size ? dataset.size : '',
+    size: dataset.size ? dataset.size : 0,
     mimetype: dataset.mimetype ? dataset.mimetype : '',
     cacheUrl: dataset.cache_url ? dataset.cache_url : '',
     doi: dataset.doi,
