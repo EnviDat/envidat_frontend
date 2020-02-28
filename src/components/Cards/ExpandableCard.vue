@@ -36,11 +36,8 @@
     </v-card-actions>
 
     <v-slide-y-transition>
-      <v-card-text v-show="expanded" class="py-4">
-        <m-markdown-preview
-          :markdown="text"
-          :options="{ html: true, xhtmlOut: true, linkify: true, breaks: true }"
-        />
+      <v-card-text v-if="expanded" class="py-4">
+        {{ markdownText }}
       </v-card-text>
     </v-slide-y-transition>
   </v-card>
@@ -66,14 +63,15 @@
   - Min Height / Max Height etwas kompliziert --> intern lösen
   - Contain als property?
    */
-import MMarkdownPreview from 'm-markdown-preview';
+import remark from 'remark';
+// import remark-parse from 'remark-parse';
+import html from 'remark-html';
 import BaseIconButton from '../BaseElements/BaseIconButton';
 
 export default {
   name: 'ExpandableCard',
   components: {
     BaseIconButton,
-    MMarkdownPreview,
   },
   props: {
     title: String,
@@ -86,6 +84,11 @@ export default {
   data: () => ({
     expanded: false,
   }),
+  computed: {
+    markdownText() {
+      return remark().use(html).processSync(this.text.trim());
+    },
+  },
   methods: {
     toggleExpand() {
       this.expanded = !this.expanded;
