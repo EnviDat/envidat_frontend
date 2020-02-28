@@ -117,6 +117,9 @@
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
+import remark from 'remark';
+import strip from 'strip-markdown';
+
 import TagChip from '@/components/Cards/TagChip';
 import BaseIconCountView from '@/components/BaseElements/BaseIconCountView';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
@@ -235,7 +238,11 @@ export default {
       }
 
       if (this.subtitle !== undefined) {
-        return `${this.subtitle.substring(0, maxLength)}...`;
+        const strippedFile = remark().use(strip).processSync(this.subtitle);
+        const cleanSubtitle = strippedFile.contents;
+        if (cleanSubtitle) {
+          return `${cleanSubtitle.substring(0, maxLength)}...`;
+        }
       }
 
       return '';

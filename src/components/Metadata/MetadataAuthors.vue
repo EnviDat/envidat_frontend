@@ -24,7 +24,9 @@
         <v-flex v-for="author in authors"
                 :key="author.fullName"
                 xs12 sm6 >
-          <author-card :author="author" />
+          <author-card :author="author"
+                      :asciiDead="authorDeadInfo ? authorDeadInfo.asciiDead : ''"
+                      :authorPassedInfo="authorDeadInfo ? authorDeadInfo.authorPassedInfo : ''" />
         </v-flex>
       </v-layout>
     </v-container>
@@ -55,6 +57,7 @@ import AuthorCard from '@/components/Cards/AuthorCard';
 import AuthorCardPlaceholder from '@/components/Cards/AuthorCardPlaceholder';
 
 export default {
+  name: 'MetadataAuthors',
   components: {
     AuthorCard,
     AuthorCardPlaceholder,
@@ -62,6 +65,7 @@ export default {
   props: {
     genericProps: Object,
     showPlaceholder: Boolean,
+    authorDeadInfo: Object,
   },
   mounted() {
     const options = this.options || {};

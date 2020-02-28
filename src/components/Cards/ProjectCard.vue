@@ -82,6 +82,9 @@
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
+import remark from 'remark';
+import strip from 'strip-markdown';
+
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 // checkout skeleton
@@ -140,8 +143,13 @@ export default {
     },
     truncatedDescription() {
       if (this.description !== undefined && this.description.length > 0) {
-        return `${this.description.substring(0, this.maxDescriptionLength)}...`;
+        const strippedFile = remark().use(strip).processSync(this.description);
+        const cleanSubtitle = strippedFile.contents;
+        if (cleanSubtitle) {
+          return `${cleanSubtitle.substring(0, this.maxDescriptionLength)}...`;
+        }
       }
+
       return `No description found for ${this.truncatedTitle}`;
     },
   },

@@ -94,6 +94,7 @@ import {
 // https://codepen.io/suez/pen/dPqxoM
 
 export default {
+  name: 'LandingPage',
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       // console.log("landing beforeRouteEnter to: " + to + " from: " + from + " next: " + next);

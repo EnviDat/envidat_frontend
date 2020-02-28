@@ -36,7 +36,8 @@
                 mb-2 >
           <component :is="entry"
                       :generic-props="entry.genericProps"
-                      :show-placeholder="showPlaceholder" />
+                      :show-placeholder="showPlaceholder"
+                      :authorDeadInfo="entry.name === 'MetadataAuthors' ? authorDeadInfo : null" />
         </v-flex>
       </template>
 
@@ -46,7 +47,8 @@
                 mb-2 >
           <component :is="entry"
                       :generic-props="entry.genericProps"
-                      :show-placeholder="showPlaceholder" />
+                      :show-placeholder="showPlaceholder"
+                      :authorDeadInfo="entry.name === 'MetadataAuthors' ? authorDeadInfo : null" />
         </v-flex>
       </template>
     </two-column-layout>
@@ -112,6 +114,7 @@ import MetadataAuthors from '@/components/Metadata/MetadataAuthors';
 // https://paper-leaf.com/blog/2016/01/creating-blurred-background-using-only-css/
 
 export default {
+  name: 'MetadataDetailPage',
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.commit(SET_CURRENT_PAGE, METADATADETAIL_PAGENAME);
