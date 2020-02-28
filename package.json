@@ -1,6 +1,6 @@
 {
   "name": "envidat.ch",
-  "version": "0.6.7",
+  "version": "0.6.71",
   "private": true,
   "description": "Envidat frontend with vue",
   "author": "Dominik Haas-Artho",
@@ -68,7 +68,7 @@
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",
     "postcss-url": "^8.0.0",
-    "sass-loader": "^7.1.0",
+    "sass-loader": "^8.0.2",
     "style-loader": "^0.23.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",

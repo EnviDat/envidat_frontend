@@ -12,7 +12,7 @@
       </v-flex>
 
       <v-flex v-if="loading"
-              offset-md2
+              offset-md1
               offset-lg1
               shrink
               pt-5 >
@@ -21,7 +21,7 @@
 
 
       <v-flex v-if="!loading"
-                offset-md2
+                offset-md1
                 offset-lg1
                 shrink
                 pt-5 >
