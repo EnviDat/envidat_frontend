@@ -14,11 +14,13 @@
                           'pb-5': $vuetify.breakpoint.smAndDown || showFullDescription, }" >
       <v-container grid-list-xs
                     pa-0 >
-        <v-layout v-bind="{ ['row']: $vuetify.breakpoint.smAndUp,
-                            ['wrap']: $vuetify.breakpoint.smAndUp,
-                            ['column']: $vuetify.breakpoint.xsOnly, }" >
-          <v-flex v-bind="{ [`xs6`]: !this.twoColumnLayout && !showFullDescription,
-                            [`xs12`]: this.twoColumnLayout || showFullDescription }"
+        <v-layout v-bind="{ 'row': $vuetify.breakpoint.smAndUp,
+                            'wrap': $vuetify.breakpoint.smAndUp,
+                            'column': $vuetify.breakpoint.xsOnly,
+                            'pb-5': $vuetify.breakpoint.mdAndUp }" >
+
+          <v-flex v-bind="{ 'xs6': !this.twoColumnLayout && !showFullDescription,
+                            'xs12': this.twoColumnLayout || showFullDescription }"
                   order-xs1
                   order-sm3 >
             <v-layout column>
@@ -30,7 +32,6 @@
 
               <v-flex v-if="!showFullDescription"
                       xs11
-                      pb-5
                       class="resourceCardText" >
                 {{ description | truncate(maxDescriptionLength) }}
               </v-flex>
