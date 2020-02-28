@@ -32,15 +32,9 @@
                             ref="TheNavigationToolbar"
                             class="envidatToolbar"
                             :style="`z-index: ${NavToolbarZIndex}`"
-                            :searchTerm="searchTerm"
                             :loading="loading"
                             :mode="mode"
-                            :modeCloseCallback="catchModeClose"
-                            :searchCount="searchCount"
-                            :showSearchCount="true"
-                            @menuClick="catchMenuClicked"
-                            @searchClick="catchSearchClicked"
-                            @searchCleared="catchSearchCleared" />
+                            :modeCloseCallback="catchModeClose" />
 
     <v-content>
       <v-container fluid
@@ -284,8 +278,7 @@ export default {
       return this.currentPage === LANDING_PAGENAME;
     },
     showToolbar() {
-      return false;
-      // return this.currentPageIsBrowsePage || !this.$vuetify.breakpoint.smAndDown;
+      return this.currentPageIsBrowsePage && this.mode;
     },
     pageStyle() {
       const heightStyle = this.showToolbar ? 'height: calc(100vh - 36px);' : 'height: 100vh;';
