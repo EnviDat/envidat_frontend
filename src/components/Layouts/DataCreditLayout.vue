@@ -4,8 +4,13 @@
     <v-layout row
               wrap >
 
-      <v-flex xs12 v-show="hasDataCreditCounts">
+      <v-flex xs12>
         {{ label }}
+      </v-flex>
+
+      <v-flex xs12 v-if="!hasDataCreditCounts"
+              style="opacity: 0.65">
+        {{ noCreditslabel }}
       </v-flex>
 
       <v-flex v-for="(creditName, index) in dataCreditNames"
@@ -59,6 +64,10 @@ export default {
     label: {
       type: String,
       default: 'Data Credit Badges',
+    },
+    noCreditslabel: {
+      type: String,
+      default: 'No declaration of Data Credits',
     },
   },
   computed: {
