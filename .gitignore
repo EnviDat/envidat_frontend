@@ -94,3 +94,5 @@ storybook-static/
 /.idea/
 
 .vscode/
+
+public/version_*

@@ -211,12 +211,14 @@ export default {
     },
     formatedBytes() {
       if (!this.size) return '';
+
       let sizeNumber = this.size;
+
       if (typeof this.size === 'number') {
         sizeNumber = Number.parseInt(this.size, 10);
       }
-      const bytesString = this.mixinMethods_formatBytes(sizeNumber);
-      return bytesString;
+
+      return this.mixinMethods_formatBytes(sizeNumber);
     },
     isLink() {
       return this.format && (this.format.toLowerCase() === 'link' || this.format.toLowerCase() === 'url');
