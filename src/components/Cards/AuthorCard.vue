@@ -37,8 +37,7 @@
         </v-layout>
       </v-card-title>
 
-      <v-card-title v-if="author.dataCredit"
-                    class="py-1 pb-2 px-2">
+      <v-card-title class="py-1 pb-2 px-2">
         <data-credit-layout class="pa-0"
                             :dataCredit="author.dataCredit"
                             :iconColor="this.dark ? whiteColor : darkColor"
@@ -384,7 +383,7 @@ export default {
   data: () => ({
     dataScoreLabel: 'Data Credit Score',
     dataCountLabel: 'Published datasets',
-    dataCreditScoreInfo: 'The Data Credit Score represents the engangement of an author to declared how on they were involved to a certain publish research dataset.',
+    dataCreditScoreInfo: 'Data Credit Score: represents the dedication of an author to publish data and declare how on their involvement was in a dataset.',
     emailLabel: 'Email',
     affiliationLabel: 'Affiliation',
     idLabel: 'Identifier',
