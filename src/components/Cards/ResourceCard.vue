@@ -11,7 +11,7 @@
 
     <v-card-text class="pt-0"
                 :class="{ 'pb-3': $vuetify.breakpoint.mdAndUp,
-                          'pb-5': $vuetify.breakpoint.smAndDown || showFullDescription, }" >
+                          'pb-5': $vuetify.breakpoint.smAndDown, }" >
       <v-container grid-list-xs
                     pa-0 >
         <v-layout v-bind="{ 'row': $vuetify.breakpoint.smAndUp,
