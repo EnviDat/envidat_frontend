@@ -14,7 +14,6 @@
 
     <v-card-text v-if="fullText"
                   ref="text"
-                  style="overflow-x: hidden;"
                   class="heightAndScroll pb-4"
                   v-html="markdownText" >
     </v-card-text>
@@ -130,5 +129,6 @@ export default {
   .heightAndScroll {
     max-height: 500px;
     overflow-y: auto !important;
+    overflow-x: hidden;
   }
 </style>

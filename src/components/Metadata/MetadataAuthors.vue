@@ -7,6 +7,7 @@
     <v-container v-if="showAuthors"
                 fluid
                 grid-list-md
+                class="heightAndScroll"
                 pa-3 >
 
       <v-layout v-if="showPlaceholder"
@@ -97,3 +98,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+
+  .heightAndScroll {
+    max-height: 750px;
+    overflow-y: auto !important;
+  }
+
+</style>
