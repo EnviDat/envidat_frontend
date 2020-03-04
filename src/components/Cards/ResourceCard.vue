@@ -50,7 +50,8 @@
                             [`xs12`]: this.twoColumnLayout,
                             [`pt-3`]: this.twoColumnLayout }"
                   order-xs3
-                  order-sm1 >
+                  order-sm1
+                  class="resourceInfo" >
             <v-layout column>
               <v-flex v-if="doi"
                       px-0 py-1 >
@@ -335,5 +336,9 @@ export default {
     visibility: visible;
     transition: 0.5s;
     opacity: 1;
+  }
+
+  .resourceInfo {
+    font-size: 10px !important;
   }
 </style>

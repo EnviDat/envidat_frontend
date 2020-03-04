@@ -18,8 +18,9 @@
     </v-card-title>
 
     <v-container v-if="resources && resources.length > 0"
-                fluid grid-list-xs grid-list-md
+                fluid
                 pa-3
+                grid-list-lg
                 class="heightAndScroll" >
 
       <v-layout v-if="showPlaceholder"
@@ -149,4 +150,5 @@ export default {
     max-height: 750px;
     overflow-y: auto !important;
   }
+
 </style>
