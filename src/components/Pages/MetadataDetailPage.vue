@@ -32,7 +32,7 @@
       <template v-slot:leftColumn>
 
         <v-flex v-for="(entry, index) in firstColumn"
-                :key="`left_${index}`"
+                :key="`left_${index}_${keyHash}`"
                 mb-2 >
           <component :is="entry"
                       :generic-props="entry.genericProps"
@@ -43,7 +43,7 @@
 
       <template v-slot:rightColumn>
         <v-flex v-for="(entry, index) in secondColumn"
-                :key="`right_${index}`"
+                :key="`right_${index}_${keyHash}`"
                 mb-2 >
           <component :is="entry"
                       :generic-props="entry.genericProps"
@@ -147,7 +147,7 @@ export default {
    */
   beforeDestroy() {
     // clean current metadata to make be empty for the next to load up
-    this.$store.commit(`metadata/${CLEAN_CURRENT_METADATA}`);
+    this.$store.commit(`${METADATA_NAMESPACE}/${CLEAN_CURRENT_METADATA}`);
   },
   computed: {
     ...mapGetters({
@@ -219,8 +219,11 @@ export default {
     },
   },
   methods: {
+    resetKeyHash() {
+      this.keyHash = Date.now().toString;
+    },
     resize() {
-      this.$forceUpdate();
+      this.resetKeyHash();
     },
     headerHeight() {
       if (!this.showPlaceholder && this.$refs && this.$refs.header) {
@@ -310,7 +313,7 @@ export default {
         components.MetadataDetails,
       ];
 
-      this.$forceUpdate();
+      this.resetKeyHash();
     },
     /**
        * @description
@@ -452,6 +455,7 @@ export default {
     firstCol: [],
     secondCol: [],
     singleCol: [],
+    keyHash: '',
   }),
 };
 </script>
