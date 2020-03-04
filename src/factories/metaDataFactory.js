@@ -13,6 +13,7 @@
  */
 
 import seedrandom from 'seedrandom';
+import { parse, format } from 'date-fns';
 
 import {
   FOREST,
@@ -22,7 +23,6 @@ import {
   DIVERSITY,
   METEO,
 } from '@/store/categoriesConsts';
-
 
 /**
  * Create a psyeudo random integer based on a given seed using the 'seedrandom' lib.
@@ -87,7 +87,7 @@ export function guessTagCategory(tags) {
  * @param {String} date expecting a format like 2017-08-15T15:25:45.175790
  * @return {String} Returns a date string containing the date and hours:minutes:seconds
  */
-export function formateDate(date) {
+export function formatDate(date) {
   // expecting a format like 2017-08-15T15:25:45.175790
   let formatedDate = '';
 
@@ -95,11 +95,15 @@ export function formateDate(date) {
     const split = date.split('T');
     if (split.length > 0) {
       const dateOnly = split[0];
+      const parsedDate = parse(dateOnly, 'yyyy-mm-dd', new Date(date));
+      const newDate = format(parsedDate, 'd. MMM yyyy');
+
       const timeOnly = split[1];
       const timeSplit = timeOnly.split('.');
-      const timeToMinutes = timeSplit[0];
+      let timeToMinutes = timeSplit[0];
+      timeToMinutes = timeToMinutes.substr(0, 5);
 
-      formatedDate = `${dateOnly} ${timeToMinutes}`;
+      formatedDate = `${newDate} ${timeToMinutes}`;
     } else {
       // fallback: just return the input
       formatedDate = date;
@@ -310,11 +314,11 @@ export function createResource(dataset) {
     }
   }
 
-  let format = dataset.format ? dataset.format : '';
-  format = format.replace('.', '').toLowerCase();
+  let fileFormat = dataset.format ? dataset.format : '';
+  fileFormat = fileFormat.replace('.', '').toLowerCase();
 
-  const created = formateDate(dataset.created);
-  const modified = formateDate(dataset.last_modified);
+  const created = formatDate(dataset.created);
+  const modified = formatDate(dataset.last_modified);
 
   return {
     // "hash": "",
@@ -331,7 +335,7 @@ export function createResource(dataset) {
     name: dataset.name,
     url: resURL,
     restricted: dataset.restricted ? dataset.restricted : '',
-    format,
+    format: fileFormat,
     state: dataset.state ? dataset.state : '',
     created,
     lastModified: modified,
@@ -395,10 +399,10 @@ export function createDetails(dataset) {
   details.push({ label: 'DOI', text: dataset.doi, url: `https://doi.org/${dataset.doi}` });
 
 
-  const created = formateDate(dataset.metadata_created);
+  const created = formatDate(dataset.metadata_created);
   details.push({ label: 'Created', text: created });
 
-  const modified = formateDate(dataset.metadata_modified);
+  const modified = formatDate(dataset.metadata_modified);
   details.push({ label: 'Last Modified', text: modified });
 
   const license = createLicense(dataset);
