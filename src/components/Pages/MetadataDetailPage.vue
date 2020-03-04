@@ -287,16 +287,16 @@ export default {
 
       this.firstCol = [
         components.MetadataBody,
+        components.MetadataCitation,
         components.MetadataPublications,
         components.MetadataFunding,
-        components.MetadataCitation,
-        components.MetadataLocation,
+        components.MetadataAuthors,
       ];
 
       this.secondCol = [
         components.MetadataResources,
+        components.MetadataLocation,
         components.MetadataDetails,
-        components.MetadataAuthors,
       ];
 
       this.singleCol = [
