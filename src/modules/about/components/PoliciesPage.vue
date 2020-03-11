@@ -57,7 +57,7 @@ import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
 } from '@/store/mainMutationsConsts';
-import { GET_POLICIES, POLICIES_NAMESPACE } from '@/pages/about/store/policiesMutationsConsts';
+import { GET_POLICIES, POLICIES_NAMESPACE } from '@/modules/about/store/policiesMutationsConsts';
 
 import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
 import policies from '@/assets/about/policies.jpg';

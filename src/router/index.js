@@ -72,7 +72,7 @@ export default new Router({
     {
       path: ABOUT_PATH,
       name: ABOUT_PAGENAME,
-      component: () => import(/* webpackChunkName: "aboutPage" */ '@/pages/about/components/AboutPage'),
+      component: () => import(/* webpackChunkName: "aboutPage" */ '@/modules/about/components/AboutPage'),
     },
     // {
     //   path: POLICIES_PATH,

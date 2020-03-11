@@ -119,8 +119,8 @@ import {
   HIDE_NOTIFICATIONS,
 } from '@/store/mainMutationsConsts';
 
-import { POLICIES_NAMESPACE } from '@/pages/about/store/policiesMutationsConsts';
-import { GUIDELINES_NAMESPACE } from '@/pages/about/store/guidelinesMutationsConsts';
+import { POLICIES_NAMESPACE } from '@/modules/about/store/policiesMutationsConsts';
+import { GUIDELINES_NAMESPACE } from '@/modules/about/store/guidelinesMutationsConsts';
 import { PROJECTS_NAMESPACE } from '@/store/projectsMutationsConsts';
 
 import TheNavigation from '@/components/Navigation/TheNavigation';

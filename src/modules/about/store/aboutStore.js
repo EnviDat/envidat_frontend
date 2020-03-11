@@ -11,8 +11,8 @@
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
-import { policies } from '@/pages/about/store/policies/policies';
-import { guidelines } from '@/pages/about/store/guidelines/guidelines';
+import { policies } from '@/modules/about/store/policies/policies';
+import { guidelines } from '@/modules/about/store/guidelines/guidelines';
 
 export const about = {
   namespaced: true,

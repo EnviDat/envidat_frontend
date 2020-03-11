@@ -17,7 +17,7 @@ import {
   GET_POLICIES,
   GET_POLICIES_SUCCESS,
   GET_POLICIES_ERROR,
-} from '@/pages/about/store/policiesMutationsConsts';
+} from '@/modules/about/store/policiesMutationsConsts';
 
 export default {
   [GET_POLICIES]({ commit }) {
