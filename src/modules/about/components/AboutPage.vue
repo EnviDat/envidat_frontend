@@ -104,31 +104,31 @@ import {
 } from '@/store/mainMutationsConsts';
 import {
   GET_POLICIES,
-} from '@/pages/about/store/policiesMutationsConsts';
+} from '@/modules/about/store/policiesMutationsConsts';
 import {
   GET_GUIDELINES,
-} from '@/pages/about/store/guidelinesMutationsConsts';
+} from '@/modules/about/store/guidelinesMutationsConsts';
 
 
 import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
 
-import teamSmall from '@/assets/about/team_small.jpg';
-import mission from '@/assets/about/mission.jpg';
-import missionSmall from '@/assets/about/mission_small.jpg';
-import handsSmall from '@/assets/about/hands_small.jpg';
-import orga from '@/assets/about/EnviDat_organigram.png';
+import teamSmall from '@/modules/about/assets/team_small.jpg';
+import mission from '@/modules/about/assets/mission.jpg';
+import missionSmall from '@/modules/about/assets/mission_small.jpg';
+import handsSmall from '@/modules/about/assets/hands_small.jpg';
+import orga from '@/modules/about/assets/EnviDat_organigram.png';
 
-import conceptSmall from '@/assets/about/concept_small.jpg';
-import communitySmall from '@/assets/about/community_small.jpg';
-import wslLogo from '@/assets/about/wslLogo.jpg';
-import wslLogoSmall from '@/assets/about/wslLogo_small.jpg';
+import conceptSmall from '@/modules/about/assets/concept_small.jpg';
+import communitySmall from '@/modules/about/assets/community_small.jpg';
+import wslLogo from '@/modules/about/assets/wslLogo.jpg';
+import wslLogoSmall from '@/modules/about/assets/wslLogo_small.jpg';
 
-import policies from '@/assets/about/policies.jpg';
-import policiesSmall from '@/assets/about/policies_small.jpg';
-import guidelines from '@/assets/about/guidelines.jpg';
-import guidelinesSmall from '@/assets/about/guidelines_small.jpg';
+import policies from '@/modules/about/assets/policies.jpg';
+import policiesSmall from '@/modules/about/assets/policies_small.jpg';
+import guidelines from '@/modules/about/assets/guidelines.jpg';
+import guidelinesSmall from '@/modules/about/assets/guidelines_small.jpg';
 
-import ExpandableCard from '@/components/Cards/ExpandableCard';
+import ExpandableCard from '@/modules/about/components/ExpandableCard';
 
 export default {
   name: 'AboutPage',

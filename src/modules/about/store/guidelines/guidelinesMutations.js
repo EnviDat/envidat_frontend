@@ -15,7 +15,7 @@ import {
   GET_GUIDELINES,
   GET_GUIDELINES_SUCCESS,
   GET_GUIDELINES_ERROR,
-} from '@/pages/about/store/guidelinesMutationsConsts';
+} from '@/modules/about/store/guidelinesMutationsConsts';
 import { ADD_USER_NOTIFICATION } from '@/store/mainMutationsConsts';
 import { getSpecificApiError } from '@/factories/notificationFactory';
 

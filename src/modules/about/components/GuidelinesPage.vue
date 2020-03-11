@@ -58,7 +58,7 @@ import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
 } from '@/store/mainMutationsConsts';
-import { GET_GUIDELINES } from '@/pages/about/store/guidelinesMutationsConsts';
+import { GET_GUIDELINES } from '@/modules/about/store/guidelinesMutationsConsts';
 
 import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
 import guidelines from '@/assets/about/guidelines.jpg';

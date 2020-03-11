@@ -11,8 +11,8 @@
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
-import actions from '@/pages/about/store/guidelines/guidelinesActions';
-import mutations from '@/pages/about/store/guidelines/guidelinesMutations';
+import actions from '@/modules/about/store/guidelines/guidelinesActions';
+import mutations from '@/modules/about/store/guidelines/guidelinesMutations';
 
 const guidelinesState = {
   guidelinesPageBackRoute: '',
