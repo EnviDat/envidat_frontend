@@ -133,9 +133,9 @@ import ExpandableCard from '@/modules/about/components/ExpandableCard';
 export default {
   name: 'AboutPage',
   /**
-     * @description beforeRouteEnter is used to change background image of this page.
-     * It's called via vue-router.
-     */
+   * @description beforeRouteEnter is used to change background image of this page.
+   * It's called via vue-router.
+   */
   // TODO: Wieso die aktuelle Seite abspeichern? Ist ja im router. + Wenn Bild abhänig von CurrentPage --> im Code so reflektieren
   beforeRouteEnter(to, from, next) {
     next((vm) => {

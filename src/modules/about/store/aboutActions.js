@@ -19,6 +19,12 @@ import {
   GET_GUIDELINES_ERROR,
 } from '@/modules/about/store/guidelinesMutationsConsts';
 
+import {
+  GET_POLICIES,
+  GET_POLICIES_SUCCESS,
+  GET_POLICIES_ERROR,
+} from '@/modules/about/store/policiesMutationsConsts';
+
 export default {
   [GET_GUIDELINES]({ commit }) {
     commit(GET_GUIDELINES);
@@ -31,6 +37,19 @@ export default {
       })
       .catch((reason) => {
         commit(GET_GUIDELINES_ERROR, reason);
+      });
+  },
+  [GET_POLICIES]({ commit }) {
+    commit(GET_POLICIES);
+
+    const url = `./policies/policies.md?nocache=${new Date().getTime()}`;
+
+    axios.get(url)
+      .then((response) => {
+        commit(GET_POLICIES_SUCCESS, response.data);
+      })
+      .catch((reason) => {
+        commit(GET_POLICIES_ERROR, reason);
       });
   },
 };
