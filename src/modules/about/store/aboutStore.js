@@ -11,13 +11,30 @@
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
-import { policies } from '@/modules/about/store/policies/policies';
-import { guidelines } from '@/modules/about/store/guidelines/guidelines';
+import actions from '@/modules/about/store/aboutActions';
+import mutations from '@/modules/about/store/aboutMutations';
+
+const aboutState = {
+  guidelinesPageBackRoute: '',
+  guidelinesMarkdown: null,
+  guidelinesLoading: false,
+  policiesPageBackRoute: '',
+  policiesMarkdown: null,
+  policiesLoading: false,
+};
+
 
 export const about = {
   namespaced: true,
-  state: { ...policies.state, ...guidelines.state },
-  getters: { ...policies.getters, ...guidelines.getters },
-  mutations: { ...policies.mutations, ...guidelines.mutations },
-  actions: { ...policies.actions, ...guidelines.actions },
+  state: aboutState,
+  getters: {
+    guidelinesMarkdown: state => state.guidelinesMarkdown,
+    guidelinesPageBackRoute: state => state.guidelinesPageBackRoute,
+    guidelinesLoading: state => state.guidelinesLoading,
+    policiesMarkdown: state => state.policiesMarkdown,
+    policiesPageBackRoute: state => state.policiesPageBackRoute,
+    policiesLoading: state => state.policiesLoading,
+  },
+  mutations,
+  actions,
 };
