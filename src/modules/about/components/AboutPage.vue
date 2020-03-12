@@ -3,79 +3,102 @@
     <v-layout row wrap >
 
       <v-flex xs12 lg10 offset-lg1 >
-        <img-and-text-layout :img="missionImg"
-                              :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
-                              title="About EnviDat" />
-      </v-flex>
+        <v-tabs v-model="activeTab"
+                color="transparent"
+                slider-color="accent" 
+                fixed-tabs >
 
-      <v-flex xs12 lg10 offset-lg1 px-3 mt-5 >
-        <v-container grid-list-lg pa-0 >
-          <v-layout row wrap >
+          <v-tab ripple :style="`background-color: ${$vuetify.theme.highlight}`">
+            <!-- About -->
+            <v-icon>info</v-icon>
+          </v-tab>
 
-            <v-flex v-for="(card, index) in aboutCardInfo"
-                    :key="index"
-                    my-2
-                    :class="card.widthClass" >
-
-              <expandable-card :title="card.title"
-                                :text="card.text"
-                                :img="card.img"
-                                :min-height="100"
-                                :max-height="150"
-                                :contain="card.title === 'WSL'" />
+          <v-tab-item >
+            <v-flex xs12 mt-3 >
+              <img-and-text-layout :img="missionImg"
+                                    :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
+                                    title="About EnviDat" />
             </v-flex>
-          </v-layout>
 
-        </v-container>
-      </v-flex>
+            <v-flex xs12 px-3 mt-5 >
 
-      <v-flex xs12 lg10 offset-lg1>
-        <img-and-text-layout :img="guidelineImg"
-                              :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
-                              title="Guidelines" />
-      </v-flex>
+              <v-container grid-list-lg pa-0 >
+                <v-layout row wrap >
 
-      <v-flex v-if="guidelinesLoading"
-              offset-md2
-              offset-lg1
-              shrink
-              pt-5 >
-        Loading Guidelines...
-      </v-flex>
+                  <v-flex v-for="(card, index) in aboutCardInfo"
+                          :key="index"
+                          my-2
+                          :class="card.widthClass" >
 
+                    <expandable-card :title="card.title"
+                                      :text="card.text"
+                                      :img="card.img"
+                                      :min-height="100"
+                                      :max-height="150"
+                                      :contain="card.title === 'WSL'" />
+                  </v-flex>
+                </v-layout>
 
-      <v-flex v-if="!guidelinesLoading"
-                offset-md2
-                offset-lg1
-                shrink
-                pt-5
-                v-html="guidelinesMarkdownText" >
-      </v-flex>
+              </v-container>
+            </v-flex>
+          </v-tab-item>
 
-      <v-flex xs12 lg10 offset-lg1>
-        <img-and-text-layout :img="policiesImg"
-                              :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
-                              title="Policies" />
-      </v-flex>
+          <v-tab ripple :style="`background-color: ${$vuetify.theme.highlight}`">
+            <!-- Guidelines -->
+            <v-icon>local_library</v-icon>
+          </v-tab>
 
-      <v-flex v-if="policiesLoading"
-              offset-md2
-              offset-lg1
-              shrink
-              pt-5 >
-        Loading Policies...
-      </v-flex>
+          <v-tab-item>
+            <v-flex xs12 mt-3 >
+              <img-and-text-layout :img="guidelineImg"
+                                    :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
+                                    title="Guidelines" />
+            </v-flex>
 
-      <v-flex v-if="!policiesLoading"
-                offset-md2
-                offset-lg1
-                shrink
-                pt-5
-                v-html="policiesMarkdownText" >
+            <v-flex v-if="guidelinesLoading"
+                    xs12
+                    pt-5 >
+              Loading Guidelines...
+            </v-flex>
+
+            <v-flex v-if="!guidelinesLoading"
+                    xs12
+                    pt-5
+                    v-html="guidelinesMarkdownText" >
+            </v-flex>
+
+          </v-tab-item>
+
+          <v-tab ripple :style="`background-color: ${$vuetify.theme.highlight}`">
+            <!-- Policies -->
+            <v-icon>policy</v-icon>
+          </v-tab>
+          <v-tab-item >
+                <v-flex xs12 mt-3 >
+                  <img-and-text-layout :img="policiesImg"
+                                        :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
+                                        title="Policies" />
+                </v-flex>
+
+                <v-flex v-if="policiesLoading"
+                        xs12
+                        pt-5 >
+                  Loading Policies...
+                </v-flex>
+
+                <v-flex v-if="!policiesLoading"
+                        xs12
+                        pt-5
+                        v-html="policiesMarkdownText" >
+                </v-flex>
+
+          </v-tab-item>
+        </v-tabs>
       </v-flex>
 
     </v-layout>
   </v-container>
+
 </template>
 
 <script>
@@ -230,6 +253,7 @@ export default {
     wslLogo,
     wslLogoSmall,
     orga,
+    activeTab: null,
   }),
 };
 </script>
