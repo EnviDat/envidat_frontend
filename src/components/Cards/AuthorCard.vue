@@ -58,6 +58,7 @@
 
             <v-flex shrink py-0>
               <base-icon-button class="ma-0"
+                                style="opacity: 0.85;"
                                 material-icon-name="search"
                                 :iconColor="dark ? 'white' : 'black'"
                                 :outlined="dark"

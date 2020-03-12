@@ -24,6 +24,7 @@
             <v-tooltip bottom>
               <v-icon slot="activator"
                       dark :color="iconColor"
+                      class="dataCreditIcon"
                       :class="!dark ? 'white--text' : 'black--text'" >
                 {{ iconLookup(creditName) }}
               </v-icon>
@@ -124,6 +125,10 @@ export default {
 </script>
 
 <style >
+
+ .dataCreditIcon {
+   opacity: 0.75;
+ }
 
  .dataCreditBadge > span {
     bottom: -25px !important;

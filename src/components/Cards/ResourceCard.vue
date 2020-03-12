@@ -340,5 +340,6 @@ export default {
 
   .resourceInfo {
     font-size: 10px !important;
+    opacity: 0.9;
   }
 </style>
