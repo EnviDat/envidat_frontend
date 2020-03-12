@@ -11,7 +11,8 @@
         <v-flex shrink>
           <base-icon-count-view v-if="!showPlaceholder && resources && resources.length > 0"
                                 :count="resources.length"
-                                :icon-string="fileIcon" />
+                                :icon-string="fileIcon"
+                                style="opacity: 0.85;" />
         </v-flex>
       </v-layout>
       </v-container>
