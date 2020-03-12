@@ -23,7 +23,7 @@
       <v-flex hidden-sm-and-up mt-5 >
         <small-search-bar-view :labelText="labelText"
                           :buttonText="buttonText"
-                          :hasButton="true"
+                          :hasButton="$vuetify.breakpoint.smAndUp"
                           @clicked="catchSearchClicked"
                         />
       </v-flex>
@@ -40,6 +40,7 @@
               <base-click-card :title="card.title"
                                 :img="card.img"
                                 :color="card.darkColor"
+                                :contain="card.contain"
                                 @click="catchCategoryClicked(card.type)" />
             </v-flex>
           </v-layout>
@@ -61,7 +62,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-31 08:22:03
+ * Last modified  : 2019-11-29 14:15:57
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -93,6 +94,7 @@ import {
 // https://codepen.io/suez/pen/dPqxoM
 
 export default {
+  name: 'LandingPage',
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       // console.log("landing beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
@@ -113,8 +115,21 @@ export default {
         return;
       }
 
+      if (cardType.includes('mode')) {
+        const splits = cardType.split('_');
+        const modeName = splits[1];
+        this.catchModeClicked(modeName);
+        return;
+      }
+
       const tagsEncoded = this.mixinMethods_encodeTagForUrl([cardType.toUpperCase()]);
-      this.mixinMethods_additiveChangeRoute(BROWSE_PATH, undefined, tagsEncoded);
+      this.mixinMethods_additiveChangeRoute(BROWSE_PATH, '', tagsEncoded);
+    },
+    catchModeClicked(mode) {
+      this.$router.push({
+        path: BROWSE_PATH,
+        query: { mode },
+      });
     },
     catchSearchClicked(search) {
       this.$router.push({
@@ -139,8 +154,6 @@ export default {
     },
     redirectToDashboard() {
       window.open('https://www.envidat.ch/user/reset', '_blank');
-      // window.location.href = 'https://www.envidat.ch/user/reset';
-      // this.$router.push('https://www.envidat.ch/user/reset');
     },
   },
   components: {
@@ -151,8 +164,6 @@ export default {
   },
   data: () => ({
     PageBGImage: './app_b_landingpage.jpg',
-    // TODO: using the browsepage background for the mobile is just an initial fix
-    // TODO: create images for 1024px (ipad pro), 768px (ipad) and 420px (phone) height
     MobileBGImage: './app_b_browsepage.jpg',
     labelText: "Search for research data topics ex. 'Avalanche'",
     buttonText: 'SEARCH',
@@ -173,9 +184,3 @@ export default {
   }),
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
-
-
-</style>

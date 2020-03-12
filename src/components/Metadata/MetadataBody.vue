@@ -1,47 +1,7 @@
 <template>
-  <v-card :class="{ ['pt-2']: this.isOnTop }">
-    <v-card-title class="metadata_title title">Description</v-card-title>
+  <expandable-text-layout v-bind="body"
+                            :showPlaceholder="showPlaceholder" />
 
-    <v-card-text v-if="fullDescription"
-                  ref="description"
-                  style="overflow-x: hidden;"
-                  class="heightAndScroll pb-4" >
-
-      <m-markdown-preview :markdown="fullDescription"
-                          :options="{ html: true,
-                                      xhtmlOut: true,
-                                      linkify: true,
-                                      breaks: true }" />
-    </v-card-text>
-
-    <v-card-text v-if="showPlaceholder && !fullDescription" >
-      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer">
-        <div class="bone bone-type-multiline bone-style-paragraph" />
-      </div>
-    </v-card-text>
-
-    <v-card-text v-if="!showPlaceholder && !fullDescription"
-                  style="color: red;" >
-      {{ emptyText }}
-    </v-card-text>
-
-    <v-card-actions v-if="maxDescriptionLengthReached"
-                    class="ma-0 pa-2"
-                    style="position: absolute; bottom: 5px; right: 0px;" >
-
-      <base-icon-button class="mr-2"
-                        material-icon-name="expand_more"
-                        icon-color="accent"
-                        color="accent"
-                        outlined
-                        :rotateOnClick="true"
-                        :rotateToggle="showFullDescription"
-                        :tooltipText="showFullDescription ? 'Hide full description' : 'Show full description'"
-                        @clicked="showFullDescription = !showFullDescription" />
-
-    </v-card-actions>
-
-  </v-card>
 </template>
 
 <script>
@@ -58,61 +18,39 @@
  * file 'LICENSE.txt', which is part of this source code package.
 */
 
-import MMarkdownPreview from 'm-markdown-preview';
-import BaseIconButton from '@/components/BaseElements/BaseIconButton';
+import ExpandableTextLayout from '@/components/Layouts/ExpandableTextLayout';
 
 export default {
+  name: 'MetadataBody',
   components: {
-    MMarkdownPreview,
-    BaseIconButton,
+    ExpandableTextLayout,
   },
   props: {
     genericProps: Object,
     showPlaceholder: Boolean,
   },
   computed: {
-    description() {
-      return this.mixinMethods_getGenericProp('description');
-    },
-    fullDescription() {
-      if (this.description) {
-        if (this.maxDescriptionLengthReached) {
-          return this.showFullDescription ? this.description.trim() : `${this.description.trim().substring(0, this.maxTextLength)}...`;
-        }
+    body() {
+      let body = this.mixinMethods_getGenericProp('body');
 
-        return this.description.trim();
+      if (!body) {
+        body = { title: 'Description' };
       }
 
-      return '';
+      return body;
     },
-    maxDescriptionLengthReached() {
-      return this.description && this.description.length > this.maxTextLength;
-    },
-  },
-  mounted() {
   },
   methods: {
-    readMore() {
-      this.showFullDescription = !this.showFullDescription;
-    },
-    rightPos() {
-      return this.$refs.description && this.$refs.description.clientHeight >= 500 ? '10px' : '0';
-    },
   },
   data: () => ({
-    isOnTop: false,
-    showFullDescription: false,
-    checkedGenericProps: false,
-    maxTextLength: 1000,
-    emptyText: 'No description found for this dataset.',
   }),
 };
 </script>
 
 <style scoped>
 
-  .heightAndScroll {
+  /* .heightAndScroll {
     max-height: 500px;
     overflow-y: auto !important;
-  }
+  } */
 </style>

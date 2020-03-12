@@ -1,3 +1,4 @@
+/* eslint-disable vue/no-use-v-if-with-v-for */
 <template>
 
   <metadata-list-layout ref="metadataListLayoutComponent"
@@ -18,13 +19,35 @@
     </template>
 
     <template v-slot:controlPanel>
-      <control-panel-view class="fill-height"
-                          :controls="controlsActive"
-                          :enabledControls="enabledControls"
-                          :compactLayout="$vuetify.breakpoint.smAndDown"
-                          :label="controlsLabel"
-                          :flat="$route.name !== BROWSE_PAGENAME"
-                          @controlsChanged="controlsChanged" />
+      <v-card style="min-height: 36px; ">
+        <v-container pa-2 fluid>
+        <v-layout row align-center justify-space-between>
+          <v-flex grow>
+          <small-search-bar-view :compactLayout="$vuetify.breakpoint.smAndDown"
+                                  class="elevation-0"
+                                  :searchTerm="searchTerm"
+                                  :showSearch="showSearch"
+                                  :showSearchCount="true"
+                                  :searchCount="searchCount"
+                                  :isFlat="true"
+                                  :fixedHeight="36"
+                                  :labelText="searchBarPlaceholder"
+                                  :loading="loading"
+                                  @clicked="catchSearchClicked"
+                                  @searchCleared="catchSearchCleared" />
+          </v-flex>
+
+          <v-flex hidden-xs-only
+                  shrink py-0>
+          <list-control-toggle :controls="controlsActive"
+                              :enabledControls="enabledControls"
+                              :compactLayout="$vuetify.breakpoint.smAndDown"
+                              :flat="true"
+                              @controlsChanged="controlsChanged" />
+          </v-flex>
+        </v-layout>
+      </v-container>        
+      </v-card>
     </template>
 
     <template v-slot:filterMap>
@@ -55,16 +78,13 @@
     </template>
 
     <template v-slot:metadataListLayout >
-      <transition-group v-if="!loading"
-                        :name="$vuetify.breakpoint.mdAndUp ? 'itemfade' : ''"
+      <v-layout v-if="!loading"
                         ref="metadataListLayout"
-                        class="layout"
                         :class="{ ['column'] : listView,
                                   ['row'] : !listView,
                                   ['wrap'] : !listView }" >
 
-        <v-flex v-for="(pinnedId, index) in pinnedIds"
-                v-if="showPinnedElements"
+        <v-flex v-for="(pinnedId, index) in pinnedList"
                 :key="'pinned_' + index"
                 v-bind="cardGridClass" >
 
@@ -91,8 +111,7 @@
                           @clickedTag="catchTagClicked" />
         </v-flex>
 
-        <v-flex v-for="(metadata, index) in virtualListContent"
-                v-if="!isPinned(metadata.id)"
+        <v-flex v-for="(metadata, index) in unpinnedFilteredList"
                 :key="'filtered_' + index"
                 v-bind="cardGridClass" >
 
@@ -124,7 +143,7 @@
                             :distance="preloadingDistance"
                             @infinite="infiniteHandler" >
             <div slot="no-results">
-              <BaseRectangleButton v-if="vIndex > 0 && vIndex > vReloadAmount"
+              <BaseRectangleButton v-if="vIndex > 0 && vIndex > reloadAmount"
                                     :buttonText="scrollTopButtonText"
                                     :isSmall="true"
                                     :isFlat="true"
@@ -146,7 +165,7 @@
                                   @clicked="catchCategoryClicked" />
         </v-flex>
 
-      </transition-group>
+      </v-layout>
 
     </template>
 
@@ -164,7 +183,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-27 10:32:11
+ * Last modified  : 2019-11-29 14:15:50
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -174,7 +193,7 @@ import { mapGetters } from 'vuex';
 import { BROWSE_PATH, BROWSE_PAGENAME, METADATADETAIL_PAGENAME } from '@/router/routeConsts';
 import FilterKeywordsView from '@/components/Filtering/FilterKeywordsView';
 import FilterMapView from '@/components/Filtering/FilterMapView';
-import ControlPanelView from '@/components/Filtering/ControlPanelView';
+import ListControlToggle from '@/components/Filtering/ListControlToggle';
 import MetadataCard from '@/components/Cards/MetadataCard';
 import MetadataCardPlaceholder from '@/components/Cards/MetadataCardPlaceholder';
 import NoSearchResultsView from '@/components/Filtering/NoSearchResultsView';
@@ -189,6 +208,7 @@ import {
 
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 import MetadataListLayout from '@/components/Layouts/MetadataListLayout';
+import SmallSearchBarView from '@/components/Filtering/SmallSearchBarView';
 // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
 export default {
@@ -211,7 +231,11 @@ export default {
       type: Boolean,
       default: false,
     },
-    mode: String,
+    mode: String,    
+    showSearch: Boolean,
+    searchTerm: String,
+    searchCount: Number,
+    searchBarPlaceholder: String,
   },
   beforeMount() {
     this.fileIconString = this.mixinMethods_getIcon('file');
@@ -238,12 +262,32 @@ export default {
       updatingTags: `${METADATA_NAMESPACE}/updatingTags`,
       vIndex: `${METADATA_NAMESPACE}/vIndex`,
       vReloadAmount: `${METADATA_NAMESPACE}/vReloadAmount`,
+      vReloadAmountMobile: `${METADATA_NAMESPACE}/vReloadAmountMobile`,
       vReloadDelay: `${METADATA_NAMESPACE}/vReloadDelay`,
       isFilteringContent: `${METADATA_NAMESPACE}/isFilteringContent`,
       categoryCards: `${METADATA_NAMESPACE}/categoryCards`,
     }),
+    reloadAmount() {
+      return this.$vuetify.breakpoint.smAndUp ? this.vReloadAmount : this.vReloadAmountMobile;
+    },
     showPinnedElements() {
       return !this.loading && this.showMapFilter && this.pinnedIds.length > 0;
+    },
+    unpinnedFilteredList() {
+      const listWithoutPins = [];
+      for (let i = 0; i < this.virtualListContent.length; i++) {
+        const metadata = this.virtualListContent[i];
+        if (!this.isPinned(metadata.id)) {
+          listWithoutPins.push(metadata);
+        }
+      }
+
+      return listWithoutPins;
+    },
+    pinnedList() {
+      if (!this.showPinnedElements) return [];
+
+      return this.pinnedIds;
     },
     mergePinnedAndFiltered() {
       const pinnedContent = [];
@@ -295,7 +339,7 @@ export default {
           i = that.vIndex;
         }
 
-        for (;i < that.vIndex + that.vReloadAmount && i < that.contentSize; i++) {
+        for (;i < that.vIndex + that.reloadAmount && i < that.contentSize; i++) {
           that.virtualListContent.push(that.listContent[i]);
         }
 
@@ -322,11 +366,33 @@ export default {
     catchTagCleared() {
       this.$emit('clickedClear');
     },
-    catchCategoryClicked(cardTitle) {
+    catchCategoryClicked(cardType) {
+      if (cardType.includes('login')) {
+        this.catchLoginclick();
+        return;
+      }
+
+      if (cardType.includes('mode')) {
+        const splits = cardType.split('_');
+        const modeName = splits[1];
+        this.catchModeClicked(modeName);
+        return;
+      }
+
+      const tagsEncoded = this.mixinMethods_encodeTagForUrl([cardType.toUpperCase()]);
+      this.mixinMethods_additiveChangeRoute(BROWSE_PATH, '', tagsEncoded);
+    },
+    catchModeClicked(mode) {
       this.$router.push({
         path: BROWSE_PATH,
-        query: { search: cardTitle },
+        query: { mode },
       });
+    },
+    catchLoginclick() {
+      this.redirectToDashboard();
+    },
+    redirectToDashboard() {
+      window.open('https://www.envidat.ch/user/reset', '_blank');
     },
     metaDataClicked(datasetname) {
       this.$store.commit(`${METADATA_NAMESPACE}/${SET_DETAIL_PAGE_BACK_URL}`, this.$route);
@@ -433,6 +499,12 @@ export default {
     onScroll(pos) {
       this.$emit('onScroll', pos);
     },
+    catchSearchClicked(search) {
+      this.$emit('searchClick', search);
+    },
+    catchSearchCleared() {
+      this.$emit('searchCleared');
+    },
   },
   watch: {
     contentSize: function resetVirtualContent() {
@@ -442,9 +514,6 @@ export default {
       this.infiniteHandler();
     },
   },
-  // updated() {
-  //   this.setFilteringComponentsHeight();
-  // },
   data: () => ({
     noResultText: 'Nothing found for these search criterias.',
     suggestionText: 'Change the criterias or try one of these categories',
@@ -453,7 +522,6 @@ export default {
     unlockedIconString: null,
     localTags: [],
     virtualListContent: [],
-    // filteringComponentsHeight: 150,
     vLoading: false,
     infiniteId: +new Date(),
     preloadingDistance: 150,
@@ -471,12 +539,13 @@ export default {
   components: {
     FilterKeywordsView,
     FilterMapView,
-    ControlPanelView,
+    ListControlToggle,
     NoSearchResultsView,
     MetadataCard,
     MetadataCardPlaceholder,
     BaseRectangleButton,
     MetadataListLayout,
+    SmallSearchBarView,
   },
 };
 </script>
@@ -484,7 +553,7 @@ export default {
 <style scoped>
   .itemfade-enter-active,
   .itemfade-leave-active {
-    transition: opacity 0.2s;
+    transition: opacity 0.1s;
     transition-timing-function: linear;
   }
 

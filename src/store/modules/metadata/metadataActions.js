@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-11-27 16:17:35
+ * Last modified  : 2019-11-28 13:53:56
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -39,7 +39,7 @@ import {
 } from '@/factories/metadataFilterMethods';
 import {
   getTagsMergedWithExtras,
-  getSelectedTagsMergedWithHidden
+  getSelectedTagsMergedWithHidden,
 } from '@/factories/modeFactory';
 import { urlRewrite } from '@/factories/apiFactory';
 
@@ -164,13 +164,13 @@ export default {
     commit(UPDATE_TAGS);
 
     try {
-        let allWithExtras = allTags;
+        let allWithExtras = [];
 
         const mergedExtraTags = getTagsMergedWithExtras(mode, allTags);
         if (mergedExtraTags) {
-          const popularTags = getPopularTags(filteredContent, 'SWISS FOREST LAB', 3, filteredContent.length);
+          const popularTags = getPopularTags(filteredContent, 'SWISS FOREST LAB', 5, filteredContent.length);
           const mergedWithPopulars = [...mergedExtraTags, ...popularTags.slice(0, 15)];
-          // remove the dublicates via filter() function
+
           const mergedWithoutDublicates = mergedWithPopulars.filter((item, pos, self) => self.findIndex(v => v.name === item.name) === pos);
           // tags with the same count as the content have no use, remove them
           // allWithExtras = mergedWithoutDublicates.filter((item) => { item.count >= filteredContent.length});
@@ -185,7 +185,8 @@ export default {
       commit(UPDATE_TAGS_ERROR, error);
     }
   },
-  async [FILTER_METADATA]({ dispatch, commit }, { selectedTagNames, mode }) {
+  // eslint-disable-next-line consistent-return
+  [FILTER_METADATA]({ dispatch, commit }, { selectedTagNames, mode }) {
     commit(FILTER_METADATA);
 
     const mergedWithHiddenNames = getSelectedTagsMergedWithHidden(mode, selectedTagNames);
@@ -211,24 +212,18 @@ export default {
       }
 
       const filteredContent = [];
-      let keep = false;
 
       for (let i = 0; i < content.length; i++) {
         const entry = content[i];
-        keep = contentFilterAccessibility(entry);
 
-        if (keep && selectedTagNames.length > 0) {
-          keep = contentFilteredByTags(entry, selectedTagNames);
-        }
-
-        if (keep) {
+        if (contentFilteredByTags(entry, selectedTagNames)) {
           filteredContent.push(entry);
         }
       }
 
       commit(FILTER_METADATA_SUCCESS, filteredContent);
 
-      return await dispatch(UPDATE_TAGS, mode);
+      return dispatch(UPDATE_TAGS, mode);
     } catch (error) {
       commit(FILTER_METADATA_ERROR, error);
     }

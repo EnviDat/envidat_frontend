@@ -33,7 +33,7 @@ export default {
     const details = 'An error occured while loading the policies!';
     const errObj = getSpecificApiError(details, reason);
 
-    state.policiesMarkdown = details + ': ' + reason;
+    state.policiesMarkdown = `${details}: ${reason}`;
 
     if (process.env.NODE_ENV === 'development') {
       state.policiesMarkdown += ' \nThis is normal when developing locally on localhost:8080';

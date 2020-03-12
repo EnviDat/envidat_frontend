@@ -16,11 +16,14 @@ import './js/vuetify-components';
 
 import globalMethods from '@/factories/globalMethods';
 import ProjectCard from '@/components/Cards/ProjectCard.vue';
+import ProjectCardPlaceholder from '@/components/Cards/ProjectCardPlaceholder.vue';
 // get Project test data and enhance it
 import projectJSON from '@/testdata/projects';
-import projectDataFactory from '@/factories/projectsDataFactory';
+import {
+  enhanceSubprojectsFromExtras,
+} from '@/factories/projectsDataFactory';
 
-const enhancedProjects = projectDataFactory.enhanceSubprojectsFromExtras(projectJSON.result);
+const enhancedProjects = enhanceSubprojectsFromExtras(projectJSON.result);
 const projectsCards = enhancedProjects;
 
 
@@ -60,10 +63,17 @@ export const methods = {
 
 storiesOf('3 Cards | Projects Cards', module)
   .add('collection of Parents', () => ({
-    components: { ProjectCard },
+    components: { ProjectCard, ProjectCardPlaceholder },
     template: `
     <v-container grid-list-lg fluid pa-0>
-    <v-layout row wrap>
+    <v-layout row wrap>    
+
+      <v-flex xs3
+        v-for="(project, index) in 3"
+        :key="'ph_' + index"
+      >
+        <project-card-placeholder />
+      </v-flex>
 
       <v-flex xs3
         v-for="(project, index) in projectsCardsParents()"

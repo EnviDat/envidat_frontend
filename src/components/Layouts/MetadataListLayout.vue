@@ -8,9 +8,11 @@
                   && $vuetify.breakpoint.mdAndUp"
             row wrap>
 
-    <v-flex xs4 pb-0>
+    <v-flex xs4 py-0>
+      <v-container fluid
+                    fill-height
+                    pa-0 >
       <v-layout column
-                fill-height
                 ref="metadataListLayoutFiltering">
 
         <v-flex shrink
@@ -27,10 +29,14 @@
         </v-flex>
 
       </v-layout>
+      </v-container>
     </v-flex>
 
-    <v-flex xs8 pb-0>
-      <v-layout column fill-height>
+    <v-flex xs8 py-0>
+      <v-container fluid
+                    fill-height
+                    pa-0 >
+      <v-layout column>
         <v-flex hidden-xs-only
                 shrink 
                 key="controlPanel" >
@@ -43,7 +49,7 @@
                 pb-0
                 v-on:scroll="onScroll()"
                 :class="useDynamicHeight ? 'listScroll' : ''"
-                :style="useDynamicHeight ? `height: calc(100vh - ${ filteringComponentsHeight }px);` : ''" >
+                :style="useDynamicHeight ? `height: calc(100vh - ${filteringComponentsHeight }px);` : ''" >
           
           <slot name="metadataListPlaceholder" />
 
@@ -51,7 +57,7 @@
 
         </v-flex>
       </v-layout>
-
+      </v-container>
     </v-flex>
 
   </v-layout>
@@ -59,16 +65,27 @@
   <v-layout v-else
             column>
     <v-flex >
-      
+      <v-container fluid
+                    pa-0 >
       <v-layout row wrap
                 ref="metadataListLayoutFiltering" >
 
-        <v-flex xs12 sm9
+        <v-flex hidden-sm-and-up
+                xs12
+                py-0
+                key="controlPanel_smallscreen" >
+          <slot name="controlPanel" />
+        </v-flex>
+
+        <v-flex xs12
+                pb-0
                 key="filterKeywords" >
           <slot name="filterKeywords" />
         </v-flex>
 
-        <v-flex hidden-xs-only sm3
+        <v-flex hidden-xs-only
+                xs12
+                pb-0
                 key="controlPanel" >
           <slot name="controlPanel" />
         </v-flex>
@@ -81,18 +98,22 @@
         </v-flex>
 
       </v-layout>
-
+      </v-container>
     </v-flex>
 
     <v-flex ref="metadataListScroll"
             v-on:scroll="onScroll()"
             :class="useDynamicHeight ? 'listScroll' : ''"
-            :style="useDynamicHeight ? `height: calc(100vh - ${ filteringComponentsHeight }px);` : ''" >
-      
+            :style="useDynamicHeight ? `height: calc(100vh - ${filteringComponentsHeight }px);` : ''" >
+
+      <v-container fluid
+                    pa-0 >
+
       <slot name="metadataListPlaceholder" />
 
       <slot name="metadataListLayout" />
 
+      </v-container>
     </v-flex>
   </v-layout>
 

@@ -18,7 +18,13 @@
                     :mapHeight="$vuetify.breakpoint.smAndDown ? 310 : undefined"
                     :useDynamicHeight="true"
                     :mapTopLayout="$vuetify.breakpoint.mdAndUp"
-                    @onScroll="storeScroll" />
+                    @onScroll="storeScroll"
+                    :showSearch="true"
+                    :searchTerm="searchTerm"
+                    :searchCount="searchCount"
+                    :searchBarPlaceholder="searchBarPlaceholder"
+                    @searchClick="catchSearchClicked"
+                    @searchCleared="catchSearchCleared" />
 
   </article>
 </template>
@@ -200,27 +206,48 @@ export default {
         this.$refs.metadataList.setScrollPos(toPos);
       }
     },
+    catchSearchClicked(search) {
+      this.mixinMethods_additiveChangeRoute(BROWSE_PATH, search);
+    },
+    catchSearchCleared() {
+      // the search parameter needs to be '' to clear it
+      this.mixinMethods_additiveChangeRoute(BROWSE_PATH, '');
+    },
   },
   computed: {
     ...mapGetters({
-      metadatasContent: 'metadata/metadatasContent',
-      metadatasContentSize: 'metadata/metadatasContentSize',
-      searchedMetadatasContent: 'metadata/searchedMetadatasContent',
-      searchingMetadatasContent: 'metadata/searchingMetadatasContent',
-      searchingMetadatasContentOK: 'metadata/searchingMetadatasContentOK',
-      loadingMetadataIds: 'metadata/loadingMetadataIds',
-      loadingMetadatasContent: 'metadata/loadingMetadatasContent',
-      filteredContent: 'metadata/filteredContent',
-      isFilteringContent: 'metadata/isFilteringContent',
+      metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
+      metadatasContentSize: `${METADATA_NAMESPACE}/metadatasContentSize`,
+      searchedMetadatasContent: `${METADATA_NAMESPACE}/searchedMetadatasContent`,
+      searchingMetadatasContent: `${METADATA_NAMESPACE}/searchingMetadatasContent`,
+      searchingMetadatasContentOK: `${METADATA_NAMESPACE}/searchingMetadatasContentOK`,
+      loadingMetadataIds: `${METADATA_NAMESPACE}/loadingMetadataIds`,
+      loadingMetadatasContent: `${METADATA_NAMESPACE}/loadingMetadatasContent`,
+      filteredContent: `${METADATA_NAMESPACE}/filteredContent`,
+      isFilteringContent: `${METADATA_NAMESPACE}/isFilteringContent`,
       // tag Object structure: { tag: tagName, count: tagCount }
-      allTags: 'metadata/allTags',
-      detailPageBackRoute: 'metadata/detailPageBackRoute',
-      aboutPageBackRoute: 'metadata/aboutPageBackRoute',
-      updatingTags: 'metadata/updatingTags',
-      scrollPositionDelay: 'metadata/scrollPositionDelay',
+      allTags: `${METADATA_NAMESPACE}/allTags`,
+      detailPageBackRoute: `${METADATA_NAMESPACE}/detailPageBackRoute`,
+      aboutPageBackRoute: `${METADATA_NAMESPACE}/aboutPageBackRoute`,
+      updatingTags: `${METADATA_NAMESPACE}/updatingTags`,
+      scrollPositionDelay: `${METADATA_NAMESPACE}/scrollPositionDelay`,
       browseScrollPosition: 'browseScrollPosition',
       controls: 'controls',
+      searchPlaceholderText: `${METADATA_NAMESPACE}/searchPlaceholderText`,
+      searchPlaceholderTextSmall: `${METADATA_NAMESPACE}/searchPlaceholderTextSmall`,
     }),
+    enabledControls() {
+      let enableds = this.preenabledControls;
+
+      if (this.$vuetify.breakpoint.smAndDown) {
+        enableds = enableds.filter(i => i !== LISTCONTROL_COMPACT_LAYOUT_ACTIVE);
+      }
+
+      return enableds;
+    },
+    searchBarPlaceholder() {
+      return this.$vuetify.breakpoint.mdAndUp ? this.searchPlaceholderText : this.searchPlaceholderTextSmall;
+    },
     keywordsPlaceholder() {
       return this.searchingMetadatasContent || this.updatingTags;
     },
@@ -252,7 +279,7 @@ export default {
       return this.$vuetify.breakpoint.smAndUp;
     },
     searchCount() {
-      return this.filteredContent !== undefined ? this.filteredContent.length : 0;
+      return this.filteredContent !== undefined ? Object.keys(this.filteredContent).length : 0;
     },
     mode() {
       return this.$route.query.mode ? this.$route.query.mode.toLowerCase() : null;
@@ -292,7 +319,7 @@ export default {
     smallMapHeight: 250,
     largeMapHeight: 325,
     mapFilterVisibleIds: [],
-    enabledControls: [
+    preenabledControls: [
       LISTCONTROL_LIST_ACTIVE,
       LISTCONTROL_MAP_ACTIVE,
       LISTCONTROL_COMPACT_LAYOUT_ACTIVE,

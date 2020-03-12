@@ -10,7 +10,7 @@
  */
 
 /* eslint-disable import/no-extraneous-dependencies */
-import { storiesOf } from "@storybook/vue";
+import { storiesOf } from '@storybook/vue';
 import './js/vuetify-components';
 
 import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView.vue';
@@ -125,6 +125,13 @@ storiesOf('1 Lables | IconLabel Collection', module).add('different labels', () 
           alignLeft
           compactLayout
           />
+      </v-flex>
+
+      <v-flex xs4>
+        <base-icon-label-view
+          :icon="fileIcon"
+          iconTooltip="Url test with wsl link"
+          url="https://www.wsl.ch" />
       </v-flex>
 
     </v-layout>
