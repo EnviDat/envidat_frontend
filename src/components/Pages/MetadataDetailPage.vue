@@ -219,11 +219,12 @@ export default {
     },
   },
   methods: {
-    resetKeyHash() {
-      this.keyHash = Date.now().toString;
+    reRenderComponents() {
+      // this.keyHash = Date.now().toString;
+      this.$forceUpdate();
     },
     resize() {
-      this.resetKeyHash();
+      this.reRenderComponents();
     },
     headerHeight() {
       if (!this.showPlaceholder && this.$refs && this.$refs.header) {
@@ -313,7 +314,7 @@ export default {
         components.MetadataDetails,
       ];
 
-      this.resetKeyHash();
+      this.reRenderComponents();
     },
     /**
        * @description
