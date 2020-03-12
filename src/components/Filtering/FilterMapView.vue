@@ -267,15 +267,25 @@ export default {
       }
     },
     addOpenStreetMapLayer(map) {
-      // const baseMap = L.tileLayer(
-      //   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      //   { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' },
-      // )
+      const streetTiles = L.tileLayer(
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' },
+      );
 
-      const baseMap = L.tileLayer.bing({ bingMapsKey: this.bingApiKey })
+      const aerialTiles = L.tileLayer.bing({
+        bingMapsKey: this.bingApiKey,
+        imagerySet: 'AerialWithLabels',
+      });
 
-      this.mapLayerGroup = L.layerGroup([baseMap]);
+      this.mapLayerGroup = L.layerGroup([streetTiles, aerialTiles]);
       this.mapLayerGroup.addTo(map);
+
+      const baseMaps = {
+        'Satellit (Bingmaps)': aerialTiles,
+        'Roads (OpenStreetMaps)': streetTiles,
+      };
+
+      L.control.layers(baseMaps).addTo(map);
     },
     getPointIcon(dataset, modeData, selected) {
       const iconOptions = L.Icon.Default.prototype.options;
