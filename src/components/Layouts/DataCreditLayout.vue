@@ -1,37 +1,46 @@
 <template>
-  <v-container grid-list-xs >
+  <v-container grid-list-xs
+                fluid>
     <v-layout row
               wrap >
 
+      <v-flex xs12>
+        {{ label }}
+      </v-flex>
+
+      <v-flex xs12 v-if="!hasDataCreditCounts"
+              style="opacity: 0.65">
+        {{ noCreditslabel }}
+      </v-flex>
+
       <v-flex v-for="(creditName, index) in dataCreditNames"
               :key="index"
-              shrink pb-5>
+              shrink px-1
+              v-show="showZero || (!showZero && dataCreditCounts[index] > 0)">
 
-        <v-layout column
-                  align-center >
+        <v-layout column >
 
           <v-flex py-0 >
             <v-tooltip bottom>
-              <v-badge slot="activator"
-                        class="dataCreditBadge"
-                        bottom
-                        :class="!dark ? 'white--text' : 'black--text'"
-                        overlap
-                        color="highlight">
-                <span slot="badge" >
-                      {{ dataCreditCounts[index] }}
-                </span>
-                <v-icon dark :color="iconColor" >
-                  {{ iconLookup(creditName) }}
-                </v-icon>
-              </v-badge>
+              <v-icon slot="activator"
+                      dark :color="iconColor"
+                      :class="!dark ? 'white--text' : 'black--text'" >
+                {{ iconLookup(creditName) }}
+              </v-icon>
 
               {{ creditName }}
             </v-tooltip>
           </v-flex>
-          <!-- <v-flex py-0 class="caption">
-            {{ dataCreditCounts[index] }}
-          </v-flex> -->
+
+          <v-flex pt-0 >
+              <v-badge :class="!dark ? 'white--text' : 'black--text'"
+                        color="highlight">
+                <span slot="badge" >
+                      {{ dataCreditCounts[index] }}
+                </span>
+              </v-badge>
+          </v-flex>
+
         </v-layout>
 
       </v-flex>
@@ -48,6 +57,18 @@ export default {
     dataCredit: Object,
     iconColor: String,
     dark: Boolean,
+    showZero: {
+      type: Boolean,
+      default: false,
+    },
+    label: {
+      type: String,
+      default: 'Data Credit Badges',
+    },
+    noCreditslabel: {
+      type: String,
+      default: 'No declaration of Data Credits',
+    },
   },
   computed: {
     dataCreditNames() {
@@ -67,6 +88,16 @@ export default {
       }
 
       return counts;
+    },
+    hasDataCreditCounts() {
+      for (let i = 0; i < this.dataCreditCounts.length; i++) {
+        const count = this.dataCreditCounts[i];
+        if (count > 0) {
+          return true;
+        }
+      }
+
+      return false;
     },
   },
   methods: {

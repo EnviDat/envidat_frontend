@@ -2,50 +2,24 @@
   <v-toolbar app
               clipped-left
               color="white"
-              height="36"
-              :extended="mode && $vuetify.breakpoint.xsOnly"
-              :extension-height="50">
-
-    <template v-slot:extension
-              v-if="mode && $vuetify.breakpoint.xsOnly" >
-      <mode-view :mode="mode"
-                  :compact="true"
-                  :closeCallback="modeCloseCallback" />
-    </template>
-
+              :height="mode && $vuetify.breakpoint.xsOnly ? 50 : 36"
+              >
     <v-layout row
-              align-center >
+              align-center
+              justify-space-between >
 
-      <v-flex md4>
-
-        <v-btn v-if="$vuetify.breakpoint.mdAndUp"
-                icon
-                @click.native="menuClick">
-          <v-icon>menu</v-icon>
-        </v-btn>
-      </v-flex>
-
-      <v-flex md4 >
-        <mode-view v-if="mode && $vuetify.breakpoint.smAndUp"
-                    :mode="mode"
+      <v-flex v-if="mode"
+              grow >
+        <mode-view :mode="mode"
                     :closeCallback="modeCloseCallback" />
       </v-flex>
 
-      <v-flex md4>
-        <small-search-bar-view v-if="showSearch"
-                                :compactLayout="$vuetify.breakpoint.smAndDown"
-                                class="elevation-0"
-                                :searchTerm="searchTerm"
-                                :showSearchCount="showSearchCount"
-                                :searchCount="searchCount"
-                                isFlat
-                                :fixedHeight="36"
-                                :labelText="searchBarPlaceholder"
-                                :loading="loading"
-                                style="align-items: center;"
-                                @clicked="catchSearchClicked"
-                                @searchCleared="catchSearchCleared" />
+      <v-flex v-if="userIsSignedIn"
+              shrink >
+        <user-avatar v-if="$vuetify.breakpoint.smAndUp"
+                    :clickCallback="avatarClickCallback" />
       </v-flex>
+
     </v-layout>
 
     <v-progress-linear v-show="loading"
@@ -59,52 +33,26 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import {
-  METADATA_NAMESPACE,
-} from '@/store/metadataMutationsConsts';
 import Logo from '@/assets/logo/EnviDat_logo_32.png';
-import SmallSearchBarView from '@/components/Filtering/SmallSearchBarView';
 import ModeView from '@/components/Layouts/ModeView';
+import UserAvatar from '@/components/Layouts/UserAvatar';
 
 export default {
+  name: 'TheNavigationToolbar',
   components: {
-    SmallSearchBarView,
     ModeView,
+    UserAvatar,
   },
   props: {
-    searchTerm: String,
-    allTags: Array,
-    selectedTags: Array,
-    showSearchCount: Boolean,
-    searchCount: Number,
-    showSearch: Boolean,
     loading: Boolean,
     mode: String,
     modeCloseCallback: Function,
+    userIsSignedIn: Boolean,
+    avatarClickCallback: Function,
   },
   computed: {
-    ...mapGetters({
-      searchPlaceholderText: `${METADATA_NAMESPACE}/searchPlaceholderText`,
-      searchPlaceholderTextSmall: `${METADATA_NAMESPACE}/searchPlaceholderTextSmall`,
-    }),
-    searchBarPlaceholder() {
-      return this.$vuetify.breakpoint.mdAndUp ? this.searchPlaceholderText : this.searchPlaceholderTextSmall;
-    },
-    filterIconColor() {
-      return !this.selectedTags || this.selectedTags.length <= 0 ? 'grey' : 'primary';
-    },
   },
   methods: {
-    menuClick() {
-      this.$emit('menuClick');
-    },
-    catchSearchClicked(search) {
-      this.$emit('searchClick', search);
-    },
-    catchSearchCleared() {
-      this.$emit('searchCleared');
-    },
     loginClick() {
       this.$emit('loginClick');
     },
@@ -112,26 +60,8 @@ export default {
   data: () => ({
     Logo,
     logoText: 'EnviDat',
-    searchFocused: false,
     expanded: false,
     modeLogo: null,
   }),
 };
 </script>
-
-<style>
-  .envidatLogoText {
-    display: inline;
-    vertical-align: middle;
-    position: relative;
-    bottom: -2px;
-  }
-
-  .envidatNavbarLinksSmall > span > .v-btn--small {
-    font-size: 10px !important;
-  }
-
-  .envidatNavbarTitleSmall {
-    font-size: 18px !important;
-  }
-</style>

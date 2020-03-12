@@ -95,7 +95,7 @@ storiesOf('5 Navigation | Redesigned Navigation', module)
     </v-container>    
   `,
   data: () => ({ navItems }),
-  methods
+  methods,
 }))
 .add('Toolbar', () => ({
   components: { TheNavigationToolbar },
@@ -107,7 +107,8 @@ storiesOf('5 Navigation | Redesigned Navigation', module)
             v-on:loginClick="onLoginClick"
             />`,
   methods,
-})).add('Menu & Toolbar', () => ({
+}))
+.add('Menu & Toolbar', () => ({
   components: { TheNavigation, TheNavigationToolbar },
   template: `
       <the-navigation

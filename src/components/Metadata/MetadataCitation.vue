@@ -5,19 +5,21 @@
     </v-card-title>
 
     <v-card-text v-if="citationText"
-                  style="font-style: italic; " >
-      {{ citationText }}
+                  style="font-style: italic; "
+                  v-html="markdownText" >
+
     </v-card-text>
 
-    <v-card-actions v-if="!showPlaceholder && citationText">
+    <v-card-actions v-if="!showPlaceholder && citationText"
+                    class="px-3">
       <v-container fluid
                     grid-list-md
                     pa-0 >
-        <v-layout justify-end
-                  row wrap >
+        <v-layout row wrap >
 
           <v-flex v-for="link in citationLinks"
-                  :key="link.text" >
+                  :key="link.text"
+                  shrink >
             <base-rectangle-button margin-class="mx-1 citationButton"
                                     :button-text="link.text"
                                     :tool-tip-text="link.tooltipText"
@@ -70,6 +72,8 @@
  * file 'LICENSE.txt', which is part of this source code package.
 */
 
+import remark from 'remark';
+import html from 'remark-html';
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 
 export default {
@@ -84,6 +88,9 @@ export default {
     emptyText: 'No citation found for this dataset',
   }),
   computed: {
+    markdownText() {
+      return remark().use(html).processSync(this.citationText);
+    },
     citationText() {
       return this.mixinMethods_getGenericProp('citationText');
     },

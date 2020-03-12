@@ -83,11 +83,6 @@
                     </v-btn>
                   </v-flex>
 
-                  <!-- <m-markdown-preview :markdown="sub.description"
-                                      :options="{ html: true,
-                                                  xhtmlOut: true,
-                                                  linkify: true,
-                                                  breaks: true }" /> -->
                   <v-flex xs12>Metadata</v-flex>
 
                   <v-flex xs12
@@ -123,13 +118,11 @@
  * file 'LICENSE.txt', which is part of this source code package.
 */
 
-// import MMarkdownPreview from 'm-markdown-preview';
 // import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 export default {
   components: {
     // BaseIconButton,
-    // MMarkdownPreview,
   },
   props: {
     subProjects: Array,

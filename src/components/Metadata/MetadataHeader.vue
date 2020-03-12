@@ -1,12 +1,12 @@
 <template>
     <v-card :class="{
-              'pa-4': $vuetify.breakpoint.smAndUp,
-              'pa-3': $vuetify.breakpoint.xsOnly,
+              'pa-4': $vuetify.breakpoint.lgAndUp,
+              'pa-3': $vuetify.breakpoint.mdAndDown,
             }"
             :dark="dark"
             :color="(showPlaceholder || (!showPlaceholder && !metadataTitle)) ? 'primary' : 'white'" >
 
-      <div v-bind="{['style'] : dynamicCardBackground }" >
+      <div v-bind="{['style'] : $vuetify.breakpoint.mdAndUp ? dynamicCardBackground : ''}" >
         <!-- this loads the background image -->
       </div>
 
@@ -57,7 +57,6 @@
           </div>
         </v-flex>
 
-        <!-- <v-expand-transition @transitionend="expandFinished" @animationend="expandFinished" > -->
           <v-flex v-show="expanded"
                   xs12 >
 
@@ -77,6 +76,8 @@
                                   :key="author.name"
                                   :name="authorName(author)"
                                   :tooltipText="authorToolTipText"
+                                  :asciiDead="asciiDead"
+                                  :authorPassedInfo="authorPassedInfo"
                                   @clicked="catchAuthorClicked($event, authorName(author))" />
               </v-layout>
             </v-flex>
@@ -126,6 +127,7 @@
                         py-0
                         class="headerInfo" >
                   <base-icon-label-view :text="doi"
+                                        :url="doiUrl"
                                         :icon="doiIcon"
                                         icon-tooltip="Data Object Identifier"
                                         :align-left="true"
@@ -184,12 +186,11 @@
               </v-layout>
             </v-flex>
           </v-flex>
-        <!-- </v-expand-transition> -->
 
       </v-layout>
 
       <v-card-actions v-if="maxTagsReached"
-                      style="position: absolute; bottom: 0px; right: 0px;">
+                      style="position: absolute; bottom: 0px; right: 0px; z-index: 2;">
         <base-icon-button v-show="expanded"
                           materialIconName="expand_more"
                           :outlined="true"
@@ -214,7 +215,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-14 17:39:28
+ * Last modified  : 2019-11-28 16:17:23
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -226,7 +227,7 @@ import TagChipPlaceholder from '@/components/Cards/TagChipPlaceholder';
 import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
-import metaDataFactory from '@/factories/metaDataFactory';
+import { getAuthorName } from '@/factories/metaDataFactory';
 
 export default {
   components: {
@@ -256,6 +257,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    authorDeadInfo: {
+      type: Object,
+      default: null,
+    },
   },
   data: () => ({
     showTagsExpanded: false,
@@ -263,10 +268,16 @@ export default {
     blackTopToBottom: 'rgba(80,80,80, 0.1) 0%, rgba(80,80,80, 0.9) 70%',
     // whiteTopToBottom: 'rgba(255,255,255, 0.3) 0%, rgba(255,255,255, 1) 60%',
     whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
-    authorToolTipText: 'Search for more data of this Author',
+    authorToolTipText: 'Search for more data of this author',
     NotFoundTitle: 'No metadata found for',
   }),
   computed: {
+    asciiDead() {
+      return this.authorDeadInfo && this.authorDeadInfo.asciiDead ? this.authorDeadInfo.asciiDead : null;
+    },
+    authorPassedInfo() {
+      return this.authorDeadInfo && this.authorDeadInfo.authorPassedInfo ? this.authorDeadInfo.authorPassedInfo : null;
+    },
     maxTagsReached() {
       return this.tags ? this.tags.length >= this.maxTags : false;
     },
@@ -298,6 +309,9 @@ export default {
 
       return style;
     },
+    doiUrl() {
+      return this.doi ? `https://www.doi.org/${this.doi}` : null;
+    },
   },
   updated() {
     this.$nextTick(() => {
@@ -321,7 +335,7 @@ export default {
       const iconflip = this.dark ? `${icon}_w` : icon;
       return iconflip;
     },
-    authorName: metaDataFactory.getAuthorName,
+    authorName: getAuthorName,
   },
 };
 </script>
@@ -332,6 +346,7 @@ export default {
     font-family: 'Libre Baskerville', serif !important;
     font-weight: 400;
     opacity: 1;
+    line-height: 1 !important;
     text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
   }
 

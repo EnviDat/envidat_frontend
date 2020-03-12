@@ -7,11 +7,10 @@
       Error loading leaflet
     </div>
 
-    <div v-if="!errorLoadingLeaflet"
-          class="fill-height" >
+    <v-container v-if="!errorLoadingLeaflet"
+          fill-height fluid pa-0>
 
-      <v-layout fill-height
-                :class="{ 'column' : topLayout,
+      <v-layout :class="{ 'column' : topLayout,
                           'row' : !topLayout }" >
 
         <v-flex v-if="topLayout"
@@ -70,7 +69,7 @@
 
       </v-layout>
 
-    </div>
+    </v-container>
 
   </v-card>
 </template>
@@ -84,7 +83,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-11-27 13:19:10
+ * Last modified  : 2019-11-28 14:30:32
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -98,7 +97,7 @@ import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet-bing-layer';
 
-import metaDataFactory from '@/factories/metaDataFactory';
+import { createLocation } from '@/factories/metaDataFactory';
 import FilterMapWidget from '@/components/Filtering/FilterMapWidget';
 import { getModeData } from '@/factories/modeFactory';
 
@@ -271,9 +270,9 @@ export default {
       // const baseMap = L.tileLayer(
       //   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       //   { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' },
-      // ).addTo(map);
+      // )
 
-      const baseMap = L.tileLayer.bing({ bingMapsKey: this.bingApiKey }).addTo(map);
+      const baseMap = L.tileLayer.bing({ bingMapsKey: this.bingApiKey })
 
       this.mapLayerGroup = L.layerGroup([baseMap]);
       this.mapLayerGroup.addTo(map);
@@ -377,7 +376,7 @@ export default {
 
         let location = dataset.location;
         if (!location) {
-          location = metaDataFactory.createLocation(dataset);
+          location = createLocation(dataset);
         }
         const selected = this.pinnedIds.includes(location.id);
 
@@ -509,7 +508,6 @@ export default {
         }
       }
 
-      this.clusterLayer.addTo(this.map);
     },
     updateMap() {
       if (!this.clusterLayer) {
@@ -525,6 +523,8 @@ export default {
       this.addElementsToMap(this.pinLayerGroup, this.pinEnabled);
       this.addElementsToMap(this.multiPinLayerGroup, this.multiPinEnabled);
       this.addElementsToMap(this.polygonLayerGroup, this.polygonEnabled, true);
+
+      this.clusterLayer.addTo(this.map);
     },
     updatePins() {
       this.clearLayers(this.map, 'pins');
@@ -541,9 +541,6 @@ export default {
 
       this.addElementsToMap(this.polygonLayerGroup, this.polygonEnabled, true);
     },
-  },
-  updated() {
-    this.setupMap();
   },
   watch: {
     content() {
@@ -591,6 +588,10 @@ export default {
   .swissFL_icon {
     margin-top: -28px !important;
     margin-left: -15px !important;
+  }
+
+  .leaflet-popup-content-wrapper .leaflet-popup-content {
+    font-family: 'Raleway', sans-serif !important;
   }
 
 </style>

@@ -1,5 +1,7 @@
 <template>
-  <div @mouseover="hovered = true" @mouseleave="hovered = false" >
+  <div @mouseover="hovered = true"
+        @mouseleave="hovered = false"
+        style="cursor: pointer;" >
 
     <!-- Top of Card -->
     <v-card ripple
@@ -57,7 +59,7 @@
                             :tooltipText="`Open Subproject ${sub.title}`"
                             tooltipBottom
                             :isSmall="true"
-                            @click="subprojectClick(sub.id)" />
+                            @clicked="subprojectClick(sub.id)" />
           </v-flex>
         </v-layout>
       </v-card-text>
@@ -75,16 +77,15 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-23 14:38:42
+ * Last modified  : 2019-11-28 12:57:06
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
-import BaseIconButton from '@/components/BaseElements/BaseIconButton';
+import remark from 'remark';
+import strip from 'strip-markdown';
 
-/**
- * TODO: Difference defaultImage vs img
- */
+import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 // checkout skeleton
 // https://github.com/ToxicJojo/SkeletonPlaceholder
@@ -142,8 +143,13 @@ export default {
     },
     truncatedDescription() {
       if (this.description !== undefined && this.description.length > 0) {
-        return `${this.description.substring(0, this.maxDescriptionLength)}...`;
+        const strippedFile = remark().use(strip).processSync(this.description);
+        const cleanSubtitle = strippedFile.contents;
+        if (cleanSubtitle) {
+          return `${cleanSubtitle.substring(0, this.maxDescriptionLength)}...`;
+        }
       }
+
       return `No description found for ${this.truncatedTitle}`;
     },
   },
@@ -163,37 +169,3 @@ export default {
   }),
 };
 </script>
-
-<style scoped>
-
-  .placeholder .black_title {
-    background-color: rgba(0,0,0,.87) !important;
-  }
-
-  .placeholder card__title.subheading{
-    color: white !important;
-  }
-
-  .black_title{
-    color: rgba(0,0,0,.87) !important;
-  }
-
-  .white_title{
-    color: rgba(255,255,255,.9) !important;
-  }
-
-  .card_tag_placeholder {
-    opacity: 0.75;
-  }
-
-  .expand-enter-active, .expand-leave-active {
-    transition: all 4s ease;
-    background-color: red;
-  }
-
-  .expand-enter, .expand-leave-to {
-    opacity: 0;
-    background-color: black;
-  }
-
-</style>

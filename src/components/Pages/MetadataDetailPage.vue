@@ -8,6 +8,7 @@
               ref="header"
               style="z-index: 1; position: absolute; left: 0;" 
               :style="headerStyle" >
+
         <metadata-header v-bind="header"
                           :metadataId="metadataId"
                           :showPlaceholder="showPlaceholder"
@@ -35,7 +36,8 @@
                 mb-2 >
           <component :is="entry"
                       :generic-props="entry.genericProps"
-                      :show-placeholder="showPlaceholder" />
+                      :show-placeholder="showPlaceholder"
+                      :authorDeadInfo="entry.name === 'MetadataAuthors' ? authorDeadInfo : null" />
         </v-flex>
       </template>
 
@@ -45,7 +47,8 @@
                 mb-2 >
           <component :is="entry"
                       :generic-props="entry.genericProps"
-                      :show-placeholder="showPlaceholder" />
+                      :show-placeholder="showPlaceholder"
+                      :authorDeadInfo="entry.name === 'MetadataAuthors' ? authorDeadInfo : null" />
         </v-flex>
       </template>
     </two-column-layout>
@@ -61,7 +64,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-15 15:11:04
+ * Last modified  : 2019-11-28 16:03:23
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -87,8 +90,22 @@ import MetadataResources from '@/components/Metadata/MetadataResources';
 import MetadataLocation from '@/components/Metadata/MetadataLocation';
 import MetadataDetails from '@/components/Metadata/MetadataDetails';
 import MetadataCitation from '@/components/Metadata/MetadataCitation';
-import metaDataFactory from '@/factories/metaDataFactory';
+import MetadataPublications from '@/components/Metadata/MetadataPublications';
+import MetadataFunding from '@/components/Metadata/MetadataFunding';
+
+import {
+  createHeader,
+  createBody,
+  createCitation,
+  createLocation,
+  createResources,
+  createDetails,
+  createFunding,
+  createPublications,
+  getFullAuthorsFromDataset,
+} from '@/factories/metaDataFactory';
 import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
+import MetadataAuthors from '@/components/Metadata/MetadataAuthors';
 
 // Might want to check https://css-tricks.com/use-cases-fixed-backgrounds-css/
 // for animations between the different parts of the Metadata
@@ -97,6 +114,7 @@ import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
 // https://paper-leaf.com/blog/2016/01/creating-blurred-background-using-only-css/
 
 export default {
+  name: 'MetadataDetailPage',
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.commit(SET_CURRENT_PAGE, METADATADETAIL_PAGENAME);
@@ -140,10 +158,19 @@ export default {
       currentMetadataContent: `${METADATA_NAMESPACE}/currentMetadataContent`,
       detailPageBackRoute: `${METADATA_NAMESPACE}/detailPageBackRoute`,
       idRemapping: `${METADATA_NAMESPACE}/idRemapping`,
+      authorsMap: `${METADATA_NAMESPACE}/authorsMap`,
       iconImages: 'iconImages',
       cardBGImages: 'cardBGImages',
       appScrollPosition: 'appScrollPosition',
+      asciiDead: `${METADATA_NAMESPACE}/asciiDead`,
+      authorPassedInfo: `${METADATA_NAMESPACE}/authorPassedInfo`,
     }),
+    authorDeadInfo() {
+      return {
+        asciiDead: this.asciiDead,
+        authorPassedInfo: this.authorPassedInfo,
+      };
+    },
     /**
      * @returns {String} the metadataId from the route
      */
@@ -217,16 +244,19 @@ export default {
       this.resources = null;
       this.location = null;
       this.details = null;
+      this.publications = null;
+      this.funding = null;
+      this.authors = null;
 
       if (currentContent && currentContent.title !== undefined) {
 
-        this.header = metaDataFactory.createHeader(currentContent, this.$vuetify.breakpoint.smAndDown);
+        this.header = createHeader(currentContent, this.$vuetify.breakpoint.smAndDown, this.authorDeadInfo);
 
-        this.body = metaDataFactory.createBody(currentContent);
+        this.body = createBody(currentContent);
 
-        this.citation = metaDataFactory.createCitation(currentContent);
+        this.citation = createCitation(currentContent);
 
-        this.resources = metaDataFactory.createResources(currentContent);
+        this.resources = createResources(currentContent);
         this.resources.doiIcon = this.doiIcon;
         this.resources.downloadIcon = this.downloadIcon;
         this.resources.linkIcon = this.linkIcon;
@@ -234,20 +264,31 @@ export default {
         this.resources.dateCreatedIcon = this.dateCreatedIcon;
         this.resources.lastModifiedIcon = this.lastModifiedIcon;
 
-        this.location = metaDataFactory.createLocation(currentContent);
+        this.location = createLocation(currentContent);
 
-        this.details = metaDataFactory.createDetails(currentContent);
+        this.details = createDetails(currentContent);
+
+        this.publications = createPublications(currentContent);
+        this.funding = createFunding(currentContent);
+
+        this.authors = getFullAuthorsFromDataset(this.authorsMap, currentContent);
       }
 
       this.$set(components.MetadataHeader, 'genericProps', this.header);
-      this.$set(components.MetadataBody, 'genericProps', this.body);
+      this.$set(components.MetadataBody, 'genericProps', { body: this.body });
       this.$set(components.MetadataCitation, 'genericProps', this.citation);
       this.$set(components.MetadataResources, 'genericProps', this.resources);
       this.$set(components.MetadataLocation, 'genericProps', this.location);
       this.$set(components.MetadataDetails, 'genericProps', { details: this.details });
+      this.$set(components.MetadataAuthors, 'genericProps', { authors: this.authors });
+
+      this.$set(components.MetadataPublications, 'genericProps', { publications: this.publications });
+      this.$set(components.MetadataFunding, 'genericProps', { funding: this.funding });
 
       this.firstCol = [
         components.MetadataBody,
+        components.MetadataPublications,
+        components.MetadataFunding,
         components.MetadataCitation,
         components.MetadataLocation,
       ];
@@ -255,13 +296,17 @@ export default {
       this.secondCol = [
         components.MetadataResources,
         components.MetadataDetails,
+        components.MetadataAuthors,
       ];
 
       this.singleCol = [
         components.MetadataBody,
         components.MetadataCitation,
+        components.MetadataPublications,
         components.MetadataResources,
+        components.MetadataFunding,
         components.MetadataLocation,
+        components.MetadataAuthors,
         components.MetadataDetails,
       ];
 
@@ -377,7 +422,10 @@ export default {
     MetadataLocation,
     MetadataDetails,
     MetadataCitation,
+    MetadataPublications,
+    MetadataFunding,
     TwoColumnLayout,
+    MetadataAuthors,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
@@ -387,6 +435,9 @@ export default {
     resources: null,
     location: null,
     details: null,
+    publications: null,
+    funding: null,
+    authors: null,
     amountOfResourcesToShowDetailsLeft: 4,
     notFoundBackPath: 'browse',
     downloadIcon: null,

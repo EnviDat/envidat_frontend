@@ -4,7 +4,7 @@
       <div v-for="(notification, index) in visibleNotifications()"
           :key="`notification_${index}`"
           :style="`position: absolute;
-                  right: ${ $vuetify.breakpoint.xsOnly ? 0 : 15}px;
+                  right: ${$vuetify.breakpoint.xsOnly ? 0 : 15}px;
                   top: ${35 + index * 175}px;
                   z-index: ${NotificationZIndex};`" >
 
@@ -17,7 +17,6 @@
 
     <the-navigation v-if="!showSmallNavigation"
                     :style="`z-index: ${NavigationZIndex}`"
-                    :mini="!this.menuItem.active"
                     :navItems="navItems"
                     :version="appVersion"
                     @menuClick="catchMenuClicked"
@@ -33,16 +32,9 @@
                             ref="TheNavigationToolbar"
                             class="envidatToolbar"
                             :style="`z-index: ${NavToolbarZIndex}`"
-                            :searchTerm="searchTerm"
-                            :showSearchCount="currentPageIsBrowsePage"
-                            :searchCount="searchCount"
-                            :showSearch="currentPageIsBrowsePage"
                             :loading="loading"
                             :mode="mode"
-                            :modeCloseCallback="catchModeClose"
-                            @menuClick="catchMenuClicked"
-                            @searchClick="catchSearchClicked"
-                            @searchCleared="catchSearchCleared" />
+                            :modeCloseCallback="catchModeClose" />
 
     <v-content>
       <v-container fluid
@@ -50,7 +42,7 @@
                     fill-height
                     v-on:scroll="updateScroll()"
                     ref="appContainer"
-                    :style="currentPageIsBrowsePage ? '' : 'height: calc(100vh - 36px); overflow-y: auto; scroll-behavior: smooth;'" >
+                    :style="pageStyle" >
         <v-layout column >
           <v-flex xs12 mx-0 >
 
@@ -132,6 +124,7 @@ import NotificationCard from '@/components/Cards/NotificationCard';
 import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
 
 export default {
+  name: 'App',
   beforeCreate() {
     // check for the backend version
     this.$store.dispatch(SET_CONFIG);
@@ -286,7 +279,11 @@ export default {
       return this.currentPage === LANDING_PAGENAME;
     },
     showToolbar() {
-      return !this.currentPageIsLandingPage || !this.$vuetify.breakpoint.smAndDown;
+      return this.currentPageIsBrowsePage && this.mode;
+    },
+    pageStyle() {
+      const heightStyle = this.showToolbar ? 'height: calc(100vh - 36px);' : 'height: 100vh;';
+      return this.currentPageIsBrowsePage ? '' : `${heightStyle} overflow-y: auto; scroll-behavior: smooth;`;
     },
     showSmallNavigation() {
       return this.$vuetify.breakpoint.smAndDown;

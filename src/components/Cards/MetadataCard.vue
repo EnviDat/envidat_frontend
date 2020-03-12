@@ -16,7 +16,7 @@
                   py-0 >
             <v-layout row>
 
-              <v-flex v-if="!maxTitleLengthReached"
+              <v-flex v-if="!maxTitleLengthReached || $vuetify.breakpoint.xsOnly"
                       xs12 >
                 <div class="headline mb-0"
                     :class="titleClass" >
@@ -24,10 +24,9 @@
                 </div>
               </v-flex>
 
-              <v-flex v-if="maxTitleLengthReached"
+              <v-flex v-if="maxTitleLengthReached && !$vuetify.breakpoint.xsOnly"
                       xs12 >
-                <v-tooltip bottom
-                            :disabled="$vuetify.breakpoint.xsOnly" >
+                <v-tooltip bottom >
                   <div slot="activator"
                         class="headline mb-0"
                         :class="titleClass" >
@@ -51,7 +50,7 @@
                         ['pr-5'] : flatLayout,
                         ['pr-4'] : !flatLayout,
                   }" >
-      <!-- TODO: need to strip the markdown characters from the desc -->
+
       <v-layout row wrap>
         <v-flex v-if="!compactLayout"
                   xs12 >
@@ -95,33 +94,9 @@
 
         <v-flex pa-1>
           <base-icon-count-view :count="resourceAmount"
-                                :icon-string="fileIconString"
-                                :tooltipText="`Metadata with ${resourceAmount} resources`" />
+                                :icon-string="fileIconString" />
         </v-flex>
       </v-layout>
-      <!-- <v-tooltip v-if="isRestricted"
-                  bottom
-                  :disabled="$vuetify.breakpoint.xsOnly" >
-        <v-icon slot="activator"
-                color="black" >
-          lock
-        </v-icon>
-        <div v-if="userHasAccess"
-              class="iconCentering" >
-          <img class="envidatIcon"
-                :src="unlockedIconString" >
-          <span>The data of this entry is only accessible with permission.</span>
-        </div>
-
-        <div v-if="userHasAccess"
-              class="iconCentering" >
-          <img class="envidatIcon"
-                :src="lockedIconString" >
-          <span>The data of this entry is only accessible with permission.</span>
-        </div>
-      </v-tooltip> -->
-
-
 
     </v-card-actions>
   </v-card>
@@ -142,6 +117,9 @@
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
+import remark from 'remark';
+import strip from 'strip-markdown';
+
 import TagChip from '@/components/Cards/TagChip';
 import BaseIconCountView from '@/components/BaseElements/BaseIconCountView';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
@@ -260,7 +238,11 @@ export default {
       }
 
       if (this.subtitle !== undefined) {
-        return `${this.subtitle.substring(0, maxLength)}...`;
+        const strippedFile = remark().use(strip).processSync(this.subtitle);
+        const cleanSubtitle = strippedFile.contents;
+        if (cleanSubtitle) {
+          return `${cleanSubtitle.substring(0, maxLength)}...`;
+        }
       }
 
       return '';

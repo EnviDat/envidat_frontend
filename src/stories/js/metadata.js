@@ -9,6 +9,8 @@
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
+/* eslint-disable */
+
 export default [
   {
     maintainer:

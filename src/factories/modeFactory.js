@@ -21,6 +21,27 @@ import {
 
 import globalMethods from '@/factories/globalMethods';
 
+function getSwissflLogo() {
+  // use the relative path to the assets, because it will run in unit tests
+  const swissflImages = require.context('../assets/modes/swissfl', false, /\.jpg$/);
+  const imgLogo = globalMethods.methods.mixinMethods_importImages(swissflImages, 'logo');
+  return imgLogo['./logo.jpg'];
+}
+
+function getSwissflIcons() {
+  // use the relative path to the assets, because it will run in unit tests
+  const swissflPngs = require.context('../assets/modes/swissfl', false, /\.png$/);
+  const iconImgs = globalMethods.methods.mixinMethods_importImages(swissflPngs);
+  const icons = Object.values(iconImgs);
+  const swissflIconMap = {
+    dataset: icons[0],
+    infrastructure: icons[1],
+    model: icons[2],
+  };
+
+  return swissflIconMap;
+}
+
 const swissflLogo = getSwissflLogo();
 const swissflIcons = getSwissflIcons();
 
@@ -33,15 +54,14 @@ const swissflMode = {
   logo: swissflLogo,
   icons: swissflIcons,
   extrasKey: 'swissFL_type',
-}
+};
 
 export function getModeData(mode) {
-  switch (mode) {
-    case SWISSFL_MODE:
-      return swissflMode;
-    default:
-      throw new Error(`Not Mode Objection for mode: "${mode}" implemented`);
+  if (mode === SWISSFL_MODE) {
+    return swissflMode;
   }
+
+  throw new Error(`Not Mode Objection for mode: "${mode}" implemented`);
 }
 
 
@@ -86,31 +106,14 @@ export function getSelectedTagsMergedWithHidden(mode, selectedTagNames) {
   }
 }
 
-function getSwissflLogo() {
-  const swissflImages = require.context('@/assets/modes/swissfl', false, /\.jpg$/);
-  const imgLogo = globalMethods.methods.mixinMethods_importImages(swissflImages, 'logo');
-  return imgLogo['./logo.jpg'];  
-}
-
-function getSwissflIcons() {
-  const swissflPngs = require.context('@/assets/modes/swissfl', false, /\.png$/);
-  const iconImgs = globalMethods.methods.mixinMethods_importImages(swissflPngs);
-  const icons = Object.values(iconImgs);
-  const swissflIconMap = {
-    dataset: icons[0],
-    infrastructure: icons[1],
-    model: icons[2],
-  };
-
-  return swissflIconMap;
-}
 
 let tempModeData = null;
 
 export function enhanceMetadataFromExtras(mode, metdataEntry) {
+  if (!mode || !metdataEntry) return null;
 
   if (typeof metdataEntry.extras === 'object'
-      && metdataEntry.extras instanceof Array) {
+    && metdataEntry.extras instanceof Array) {
 
     if (!tempModeData || (tempModeData && tempModeData.name !== mode)) {
       tempModeData = getModeData(mode);
@@ -120,7 +123,7 @@ export function enhanceMetadataFromExtras(mode, metdataEntry) {
 
     for (let i = 0; i < metdataEntry.extras.length; i++) {
       const extra = metdataEntry.extras[i];
-      
+
       if (extra.key === key) {
         metdataEntry[key] = extra.value;
 

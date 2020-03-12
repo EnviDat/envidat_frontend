@@ -10,32 +10,30 @@
     </v-card-title>
 
     <v-card-text class="pt-0"
-                :class="{
-                  'pb-3': $vuetify.breakpoint.mdAndUp,
-                  'pb-5': $vuetify.breakpoint.smAndDown,
-                }" >
+                :class="{ 'pb-3': $vuetify.breakpoint.mdAndUp,
+                          'pb-5': $vuetify.breakpoint.smAndDown, }" >
       <v-container grid-list-xs
                     pa-0 >
-        <v-layout v-bind="{ ['row']: $vuetify.breakpoint.smAndUp,
-                            ['wrap']: $vuetify.breakpoint.smAndUp,
-                            ['column']: $vuetify.breakpoint.xsOnly,
-                  }" >
-          <v-flex v-bind="{ [`xs6`]: !this.twoColumnLayout && !showFullDescription,
-                            [`xs12`]: this.twoColumnLayout || showFullDescription }"
+        <v-layout v-bind="{ 'row': $vuetify.breakpoint.smAndUp,
+                            'wrap': $vuetify.breakpoint.smAndUp,
+                            'column': $vuetify.breakpoint.xsOnly,
+                            'pb-5': $vuetify.breakpoint.mdAndUp }" >
+
+          <v-flex v-bind="{ 'xs6': !this.twoColumnLayout && !showFullDescription,
+                            'xs12': this.twoColumnLayout || showFullDescription }"
                   order-xs1
                   order-sm3 >
             <v-layout column>
               <v-flex v-if="showFullDescription"
                       xs11
-                      pb-4
-                      class="resourceCardText heightAndScroll" >
-                {{ description }}
+                      class="resourceCardText heightAndScroll"
+                      v-html="markdownText" >
               </v-flex>
 
               <v-flex v-if="!showFullDescription"
                       xs11
                       class="resourceCardText" >
-                {{ description | truncate(maxDescriptionLength) }}
+                {{ markdownTextTruncated }}
               </v-flex>
             </v-layout>
           </v-flex>
@@ -100,35 +98,35 @@
     </v-card-text>
 
     <v-card-actions class="ma-0 pa-2"
-                    style="position: absolute; bottom: 5px; right: 50px;"
-    >
-      <v-spacer />
+                    style="position: absolute; bottom: 0px; right: 50px;" >
 
       <base-icon-button v-if="maxDescriptionLengthReached"
                         class="mr-2"
                         material-icon-name="expand_more"
-                        icon-color="accent"
-                        color="transparent"
+                        :iconColor="showFullDescription ? 'primary' : 'accent'"
+                        color="accent"
+                        :outlined="true"
                         :isToggled="showFullDescription"
                         :rotateOnClick="true"
                         :rotateToggle="showFullDescription"
                         :tooltipText="showFullDescription ? 'Hide full description' : 'Show full description'"
-                        @clicked="showFullDescription = !showFullDescription"
-      />
+                        @clicked="showFullDescription = !showFullDescription" />
     </v-card-actions>
 
     <div class="ma-0 py-3"
           style="position: absolute; bottom: 0px; right: 0px;" >
+
       <div v-if="isProtected"
             class="fabMenu fabPosition elevation-2 ma-2 pl-2 pt-2" >
+
         <v-icon class="pl-1 pt-1">shield</v-icon>
         <p class="pt-2 lockedText black--text resourceCardText"
-            v-html="protectedText"
-        ></p>
+            v-html="protectedText">
+        </p>
       </div>
 
       <base-icon-button v-if="!isProtected"
-                        class="fabPosition ma-3"
+                        class="fabPosition ma-2"
                         style="height: 40px; width: 40px;"
                         :customIcon="isFile ? downloadIcon : linkIcon"
                         color="accent"
@@ -148,11 +146,14 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-30 10:50:04
+ * Last modified  : 2019-11-29 14:39:55
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
+import remark from 'remark';
+import html from 'remark-html';
+import strip from 'strip-markdown';
 
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
@@ -191,10 +192,33 @@ export default {
     audioFormats: ['mp3', 'wav', 'wma', 'ogg'],
   }),
   computed: {
+    markdownText() {
+      return remark().use(html).processSync(this.description.trim());
+    },
+    markdownTextTruncated() {
+      if (this.maxDescriptionLengthReached) {
+        const strippedFile = remark().use(strip).processSync(this.description.trim());
+        const strippedMarkdown = strippedFile.contents;
+
+        if (strippedMarkdown) {
+          return `${strippedMarkdown.substring(0, this.maxDescriptionLength)}...`;
+        }
+
+        return '';
+      }
+
+      return this.description.trim();      
+    },
     formatedBytes() {
       if (!this.size) return '';
-      const bytesString = this.mixinMethods_formatBytes(this.size);
-      return bytesString;
+
+      let sizeNumber = this.size;
+
+      if (typeof this.size === 'number') {
+        sizeNumber = Number.parseInt(this.size, 10);
+      }
+
+      return this.mixinMethods_formatBytes(sizeNumber);
     },
     isLink() {
       return this.format && (this.format.toLowerCase() === 'link' || this.format.toLowerCase() === 'url');
@@ -210,10 +234,9 @@ export default {
 
       return isFile;
     },
-    maxDescriptionLengthReached: function maxDescriptionLengthReached() {
+    maxDescriptionLengthReached() {
       return this.description && this.description.length > this.maxDescriptionLength;
     },
-
     protectedText() {
       if (this.url && this.url.length > 0) {
         return `This resource is protected <a href="${this.url}" target="_blank" >login via the ckan UI to get access</a>.`;
@@ -223,10 +246,10 @@ export default {
     },
   },
   methods: {
-    clicked: function clicked() {
+    clicked() {
       this.$emit('clicked');
     },
-    extensionIcon: function extensionIcon() {
+    extensionIcon() {
       if (typeof this.mixinMethods_getIconFileExtension === 'undefined'
           || typeof this.$store === 'undefined') {
 
@@ -265,9 +288,7 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 
   .black_title{
     color: rgba(0,0,0,.87) !important;
