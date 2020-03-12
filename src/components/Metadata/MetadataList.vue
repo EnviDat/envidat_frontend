@@ -2,11 +2,11 @@
 <template>
 
   <metadata-list-layout ref="metadataListLayoutComponent"
-              :topFilteringLayout="topFilteringLayout"
-              :useDynamicHeight="useDynamicHeight"
-              :showMapFilter="showMapFilter"
-              :mapFilteringPossible="mapFilteringPossible"
-              @onScroll="onScroll" >
+                        :topFilteringLayout="topFilteringLayout"
+                        :useDynamicHeight="useDynamicHeight"
+                        :showMapFilter="showMapFilter"
+                        :mapFilteringPossible="mapFilteringPossible"
+                        @onScroll="onScroll" >
 
     <template v-slot:filterKeywords>
       <filter-keywords-view :compactLayout="$vuetify.breakpoint.smAndDown"
@@ -40,10 +40,10 @@
           <v-flex hidden-xs-only
                   shrink py-0>
           <list-control-toggle :controls="controlsActive"
-                              :enabledControls="enabledControls"
-                              :compactLayout="$vuetify.breakpoint.smAndDown"
-                              :flat="true"
-                              @controlsChanged="controlsChanged" />
+                                :enabledControls="enabledControls"
+                                :compactLayout="$vuetify.breakpoint.smAndDown"
+                                :flat="true"
+                                @controlsChanged="controlsChanged" />
           </v-flex>
         </v-layout>
       </v-container>        
@@ -88,8 +88,8 @@
                 :key="'pinned_' + index"
                 v-bind="cardGridClass" >
 
-          <metadata-card :id="metadatasContent[pinnedId].id"
-                          :ref="metadatasContent[pinnedId].id"
+          <metadata-card :id="pinnedId"
+                          :ref="pinnedId"
                           class="highlighted"
                           :title="metadatasContent[pinnedId].title"
                           :name="metadatasContent[pinnedId].name"
@@ -98,7 +98,6 @@
                           :titleImg="metadatasContent[pinnedId].titleImg"
                           :restricted="hasRestrictedResources(metadatasContent[pinnedId])"
                           :resourceCount="metadatasContent[pinnedId].num_resources"
-                          :dark="false"
                           :mode="mode"
                           :flatLayout="listView"
                           :compactLayout="isActiveControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)"
@@ -124,7 +123,6 @@
                         :titleImg="metadata.titleImg"
                         :restricted="hasRestrictedResources(metadata)"
                         :resourceCount="metadata.num_resources"
-                        :dark="false"
                         :mode="mode"
                         :flatLayout="listView"
                         :compactLayout="isActiveControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)"
