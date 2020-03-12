@@ -66,7 +66,7 @@
 import remark from 'remark';
 // import remark-parse from 'remark-parse';
 import html from 'remark-html';
-import BaseIconButton from '../BaseElements/BaseIconButton';
+import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 export default {
   name: 'ExpandableCard',

@@ -116,7 +116,7 @@ import ProjectBody from '@/components/ProjectDetailViews/ProjectBody';
 import ProjectSubprojects from '@/components/ProjectDetailViews/ProjectSubprojects';
 import MetadataList from '@/components/Metadata/MetadataList';
 
-import missionImg from '@/assets/about/mission.jpg';
+import missionImg from '@/assets/projects/mission.jpg';
 import creator from '@/assets/cards/data_creator.jpg';
 import creatorSmall from '@/assets/cards/data_creator_small.jpg';
 

@@ -82,8 +82,8 @@ import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
 import ProjectCard from '@/components/Cards/ProjectCard';
 import ProjectCardPlaceholder from '@/components/Cards/ProjectCardPlaceholder';
 
-import mission from '@/assets/about/mission.jpg';
-import missionSmall from '@/assets/about/mission_small.jpg';
+import mission from '@/assets/projects/mission.jpg';
+import missionSmall from '@/assets/projects/mission_small.jpg';
 import creator from '@/assets/cards/data_creator.jpg';
 import creatorSmall from '@/assets/cards/data_creator_small.jpg';
 
