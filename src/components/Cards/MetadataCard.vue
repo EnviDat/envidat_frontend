@@ -94,7 +94,8 @@
 
         <v-flex pa-1>
           <base-icon-count-view :count="resourceAmount"
-                                :icon-string="fileIconString" />
+                                :icon-string="fileIconString"
+                                style="opacity: 0.65;" />
         </v-flex>
       </v-layout>
 
