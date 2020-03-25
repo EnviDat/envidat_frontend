@@ -302,6 +302,7 @@ export default {
   .heightAndScroll {
     max-height: 400px;
     overflow-y: auto !important;
+    scrollbar-width: thin;
   }
 
   .fabPosition {

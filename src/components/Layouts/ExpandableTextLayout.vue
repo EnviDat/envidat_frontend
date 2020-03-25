@@ -130,5 +130,6 @@ export default {
     max-height: 500px;
     overflow-y: auto !important;
     overflow-x: hidden;
+    scrollbar-width: thin;
   }
 </style>
