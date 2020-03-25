@@ -150,6 +150,7 @@ export default {
   .heightAndScroll {
     max-height: 750px;
     overflow-y: auto !important;
+    scrollbar-width: thin;
   }
 
 </style>
