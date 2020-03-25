@@ -21,7 +21,7 @@
     <v-container v-if="resources && resources.length > 0"
                 fluid
                 pa-3
-                grid-list-lg
+                grid-list-md
                 class="heightAndScroll" >
 
       <v-layout v-if="showPlaceholder"
