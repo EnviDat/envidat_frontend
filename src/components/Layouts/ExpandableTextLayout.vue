@@ -97,8 +97,8 @@ export default {
     },
     fullText() {
       if (this.text) {
-        if (this.maxTextLengthReached) {
-          return this.showFullText ? this.text.trim() : `${this.text.trim().substring(0, this.maxTextLength)}...`;
+        if (this.maxTextLengthReached && !this.showFullText) {
+          return `${this.text.trim().substring(0, this.maxTextLength)}...`;
         }
 
         return this.text.trim();
