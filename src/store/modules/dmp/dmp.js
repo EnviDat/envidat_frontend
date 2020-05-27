@@ -63,7 +63,6 @@ const mutations = {
 };
 
 const dmpState = {
-  dmpPageBackRoute: '',
   dmpMarkdown: null,
   loading: false,
 };
@@ -74,7 +73,6 @@ export const dmp = {
   state: dmpState,
   getters: {
     dmpMarkdown: state => state.dmpMarkdown,
-    dmpPageBackRoute: state => state.dmpPageBackRoute,
     loading: state => state.loading,
   },
   mutations,

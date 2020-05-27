@@ -51,7 +51,6 @@ import html from 'remark-html';
 import { mapGetters } from 'vuex';
 
 import {
-  BROWSE_PATH,
   GUIDELINES_PAGENAME,
 } from '@/router/routeConsts';
 import {
@@ -84,8 +83,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      guidelinesPageBackRoute: `${GUIDELINES_NAMESPACE}/guidelinesPageBackRoute`,
-      // guidelinesTitle: 'guidelines/guidelinesTitle',
       guidelinesMarkdown: `${GUIDELINES_NAMESPACE}/guidelinesMarkdown`,
       loading: `${GUIDELINES_NAMESPACE}/loading`,
     }),
@@ -97,25 +94,6 @@ export default {
     },
   },
   methods: {
-    /**
-       * @description changes the url to page the user was before. Fallback: BrowsePage
-       */
-    catchBackClicked() {
-      const backRoute = this.guidelinesPageBackRoute;
-
-      if (backRoute) {
-        this.$router.push({
-          path: backRoute.path,
-          query: backRoute.query,
-          params: backRoute.params,
-        });
-        return;
-      }
-
-      this.$router.push({
-        path: BROWSE_PATH,
-      });
-    },
   },
   components: {
     ImgAndTextLayout,

@@ -83,7 +83,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      dmpPageBackRoute: `${DMP_NAMESPACE}/dmpPageBackRoute`,
       dmpMarkdown: `${DMP_NAMESPACE}/dmpMarkdown`,
       loading: `${DMP_NAMESPACE}/loading`,
     }),
