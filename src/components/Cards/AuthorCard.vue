@@ -3,7 +3,7 @@
             :style="dynamicCardBackground"
             @click.native="cardClick" >
 
-      <v-card-title class="px-2 pb-4">
+      <v-card-title class="px-2 pt-2 pb-3">
         <v-layout row wrap>
 
           <v-flex grow py-0 >
@@ -37,51 +37,51 @@
         </v-layout>
       </v-card-title>
 
+      <v-card-title class="py-2 px-2">
+        <v-layout row
+                  align-center
+                  justify-space-between >
+
+          <v-flex xs6
+                  :class="dark ? 'white--text' : 'black--text'" >
+            {{ dataCountLabel }} 
+          </v-flex>
+
+          <v-flex shrink
+                  py-0
+                  style="max-height: 36px;">
+            <base-icon-button class="ma-0"
+                              style="opacity: 0.85;"
+                              material-icon-name="search"
+                              :iconColor="dark ? 'white' : 'black'"
+                              :outlined="true"
+                              :color="dark ? 'white' : 'black'"
+                              :tooltipText="`Search for the datasets of ${author.firstName} ${author.lastName}`"
+                              @clicked="catchSearchAuthor(author.fullName)" />
+
+            <v-badge class="badgesIcon"
+                      :color="dark ? 'white' : 'black'"                    
+                      overlap
+                      style="top: -25px; right: -2px;">
+              <span slot="badge"
+                    :class="!dark ? 'white--text' : 'black--text'" >
+                    {{ author.datasetCount }}
+              </span>
+            </v-badge>
+
+          </v-flex>
+        </v-layout>
+      </v-card-title>
+
       <v-card-title class="py-1 pb-2 px-2">
         <data-credit-layout class="pa-0"
                             :dataCredit="author.dataCredit"
-                            :iconColor="this.dark ? whiteColor : darkColor"
+                            :iconColor="dark ? 'white' : 'black'"
                             :dark="!dark" />
 
       </v-card-title>
 
-      <v-card-title class="py-2 px-2">
-        <v-container pa-0 fluid>
-          <v-layout row wrap
-                    align-center
-                    justify-space-between >
-
-            <v-flex xs6 py-0
-                    :class="dark ? 'white--text' : 'black--text'" >
-              {{ dataCountLabel }} 
-            </v-flex>
-
-            <v-flex shrink py-0>
-              <base-icon-button class="ma-0"
-                                style="opacity: 0.85;"
-                                material-icon-name="search"
-                                :iconColor="dark ? 'white' : 'black'"
-                                :outlined="dark"
-                                :color="dark ? 'white' : 'transparent'"
-                                :tooltipText="`Search for the datasets of ${author.firstName} ${author.lastName}`"
-                                @clicked="catchSearchAuthor(author.fullName)" />
-
-              <v-badge color="highlight"
-                        overlap
-                        style="top: -25px; right: -2px;">
-                <span slot="badge"
-                      :class="dark ? 'white--text' : 'black--text'" >
-                      {{ author.datasetCount }}
-                </span>
-              </v-badge>
-
-            </v-flex>
-          </v-layout>
-        </v-container>
-      </v-card-title>
-
-
-      <v-card-title class="pl-2 py-1 pr-0" >
+      <v-card-title class="pl-2 py-2 pr-0" >
 
         <v-layout row
                   justify-space-between
@@ -95,6 +95,7 @@
           <v-flex grow >
             <v-tooltip bottom>
               <v-icon slot="activator"
+                      class="badgesIcon"
                       dark
                       :class="dark ? 'white--text' : 'black--text'">
                 info_outline
@@ -118,8 +119,7 @@
 
       <v-card-title class="pt-2 pb-0 px-2">
         <v-layout row
-                  align-center
-                  pa-0 >
+                  align-center >
 
           <v-flex grow @click="infosExpanded = !infosExpanded">
             <v-divider :dark="dark" />
@@ -128,8 +128,8 @@
           <v-flex shrink>
             <v-btn flat icon
                     :color="dark ? 'white' : 'black'"
-                    :outline="dark"
-                    class="ma-0"
+                    :outline="true"
+                    class="ma-0 badgesIcon"
                     @click="infosExpanded = !infosExpanded">
               <v-icon> {{ infosExpanded ? 'keyboard_arrow_down' : 'keyboard_arrow_left' }}</v-icon>
             </v-btn>
@@ -201,18 +201,26 @@
         </v-container>
       </v-card-title>
 
-
-      <div v-if="dataCreditLevel >= 1"
-            style="position: absolute; top: 0px; right: 18%;"
+      <!-- <div v-if="dataCreditLevel >= 1"
+            style="position: absolute; top: 0px; right: 23%;"
            :style="bottomToTopStyle(100, 'gold', 'red')" ></div>
 
       <div v-if="dataCreditLevel >= 2"
-            style="position: absolute; top: 0px; right: 12%;"
+            style="position: absolute; top: 0px; right: 19%;"
            :style="bottomToTopStyle(100, 'gold', 'red')" ></div>
 
       <div v-if="dataCreditLevel >= 3"
-            style="position: absolute; top: 0px; right: 6%;"
+            style="position: absolute; top: 0px; right: 15%;"
            :style="bottomToTopStyle(100, 'gold', 'red')" ></div>
+
+      <div v-if="dataCreditLevel >= 4"
+            style="position: absolute; top: 0px; right: 11%;"
+           :style="bottomToTopStyle(100, 'gold', 'red')" ></div>
+
+      <div v-if="dataCreditLevel >= 5"
+            style="position: absolute; top: 0px; right: 7%;"
+           :style="bottomToTopStyle(100, 'gold', 'red')" ></div> -->
+
     </v-card>
 
 </template>
@@ -238,28 +246,36 @@ export default {
     authorPassedInfo: String,
   },
   computed: {
+    // getDataCreditLevel(currentScore) {
+    //   const entires = this.authorDataCreditLevels;
+
+    //   for (let i = 0; i < entires.length; i++) {
+    //     const scoreLvl = entires[i];
+    //     if (currentScore >= scoreLvl.score) {
+    //       return scoreLvl.lvl;
+    //     }
+    //   }
+
+    //   return 0;
+    // },
     dark() {
-      return this.dataCreditLevel === 3;
+      return this.dataCreditLevel >= 5;
     },
     dataCredits() {
       return this.author && this.author.dataCredit ? Object.keys(this.author.dataCredit) : [];
     },
     dataCreditLevel() {
-      let lvl = 0;
+      const entires = this.authorDataCreditLevels;
+      entires.reverse();
 
-      if (this.dataCreditScore >= 20) {
-        lvl = 1;
-
-        if (this.dataCreditScore >= 40) {
-          lvl = 2;
-
-          if (this.dataCreditScore >= 60) {
-            lvl = 3;
-          }
+      for (let i = 0; i < entires.length; i++) {
+        const scoreLvl = entires[i];
+        if (this.dataCreditScore >= scoreLvl.score) {
+          return scoreLvl.lvl;
         }
       }
 
-      return lvl;
+      return 0;
     },
     dataCreditScore() {
       let score = 0;
@@ -319,16 +335,19 @@ export default {
       if (this.dataCreditLevel === 0) {
         return 'background-color: #fff';
       }
-      
-      if (this.dataCreditLevel === 1) {
-        color = '#e02a00FF'; // #e00000
-        toColor = '#ff3d3d64'; // #ff0000
-      } else if (this.dataCreditLevel === 2) {
-        color = '#ffac05FF';
-        toColor = '#ffac0596';
-      } else if (this.dataCreditLevel === 3) {
-        return 'background-color: #111';
-      }
+
+      color = this.colorPalette[this.dataCreditLevel - 1];
+      toColor = this.colorPaletteTo[this.dataCreditLevel - 1];
+
+      // if (this.dataCreditLevel === 1) {
+      //   color = '#e02a00FF'; // #e00000
+      //   toColor = '#ff3d3d64'; // #ff0000
+      // } else if (this.dataCreditLevel === 2) {
+      //   color = '#ffac05FF';
+      //   toColor = '#ffac0596';
+      // } else if (this.dataCreditLevel === 3) {
+      //   return 'background-color: #111';
+      // }
 
       return `background-image: linear-gradient(45deg, ${color} 10%, ${toColor} 90%);
               background-position: center, center; background-size: cover;`;
@@ -372,11 +391,14 @@ export default {
       }
       height = height >= 100 ? 100 : height;
 
-      const width = '1';
+      // const width = '1';
       /* eslint-disable prefer-template */
-      let grd = 'height: ' + height + '%;border-width: ' + width + 'px; border-style: solid;';
-      grd += 'border-image: ';
-      grd += 'linear-gradient(to top, ' + fromColor + ' , ' + toColor + ') 1 ' + toPct + ';';
+      // let grd = 'height: ' + height + '%; border-width: 1px; border-style: solid;';
+      let grd = 'height: ' + height + '%; width: 1px;';
+      // grd += 'border-image: ';
+      grd += 'background-image: ';
+      // grd += 'linear-gradient(to top, ' + fromColor + ' , ' + toColor + ') 1 ' + toPct + ';';
+      grd += 'linear-gradient(' + fromColor + ' , ' + toColor + ');';
 
       return grd;
     },
@@ -393,6 +415,16 @@ export default {
     infosExpanded: false,
     darkColor: '#231F20',
     whiteColor: '#EFEFEF',
+    colorPalette: ['rgb(226, 242, 124)', 'rgb(158, 219, 129)', 'rgb(0, 191, 173)', 'rgb(8, 135, 124)', 'rgb(17, 17, 17)'],
+    colorPaletteTo: ['rgba(226, 242, 124, 0.4)', 'rgba(158, 219, 129, 0.4)', 'rgba(0, 191, 173, 0.4)', 'rgba(8, 135, 124, 0.4)', 'rgba(17, 17, 17, 0.4)'],
+    // colorsPalette: ['#E2F27C', '#9EDB81', '#00BFAD', '#08877C', '#111111'],
+    authorDataCreditLevels: [
+      { score: 10, lvl: 1 },
+      { score: 20, lvl: 2 },
+      { score: 30, lvl: 3 },
+      { score: 50, lvl: 4 },
+      { score: 80, lvl: 5 },
+    ],
   }),
 };
 </script>
@@ -433,6 +465,10 @@ export default {
 
   .subheading {
     font-size: 14px !important;
+  }
+
+  .badgesIcon {
+    opacity: 0.75;
   }
 
   .authorInfoLabel {
