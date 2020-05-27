@@ -58,7 +58,7 @@ import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
 } from '@/store/mainMutationsConsts';
-import { GET_GUIDELINES } from '@/store/guidelinesMutationsConsts';
+import { GET_GUIDELINES, GUIDELINES_NAMESPACE } from '@/store/guidelinesMutationsConsts';
 
 import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
 import guidelines from '@/assets/about/guidelines.jpg';
@@ -73,7 +73,7 @@ export default {
     });
   },
   beforeMount() {
-    this.$store.dispatch(`guidelines/${GET_GUIDELINES}`);
+    this.$store.dispatch(`${GUIDELINES_NAMESPACE}/${GET_GUIDELINES}`);
   },
   /**
    * @description reset the scrolling to the top,
@@ -84,10 +84,10 @@ export default {
   },
   computed: {
     ...mapGetters({
-      guidelinesPageBackRoute: 'guidelines/guidelinesPageBackRoute',
+      guidelinesPageBackRoute: `${GUIDELINES_NAMESPACE}/guidelinesPageBackRoute`,
       // guidelinesTitle: 'guidelines/guidelinesTitle',
-      guidelinesMarkdown: 'guidelines/guidelinesMarkdown',
-      loading: 'guidelines/loading',
+      guidelinesMarkdown: `${GUIDELINES_NAMESPACE}/guidelinesMarkdown`,
+      loading: `${GUIDELINES_NAMESPACE}/loading`,
     }),
     markdownText() {
       return remark().use(html).processSync(this.guidelinesMarkdown);
@@ -101,7 +101,7 @@ export default {
        * @description changes the url to page the user was before. Fallback: BrowsePage
        */
     catchBackClicked() {
-      const backRoute = this.aboutPageBackRoute;
+      const backRoute = this.guidelinesPageBackRoute;
 
       if (backRoute) {
         this.$router.push({
