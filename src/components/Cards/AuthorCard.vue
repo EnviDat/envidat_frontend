@@ -51,16 +51,14 @@
                   py-0
                   style="max-height: 36px;">
             <base-icon-button class="ma-0"
-                              style="opacity: 0.85;"
                               material-icon-name="search"
-                              :iconColor="dark ? 'white' : 'black'"
+                              :iconColor="dark ? 'white' : darkColor"
                               :outlined="true"
-                              :color="dark ? 'white' : 'black'"
+                              :color="dark ? 'white' : darkColor"
                               :tooltipText="`Search for the datasets of ${author.firstName} ${author.lastName}`"
                               @clicked="catchSearchAuthor(author.fullName)" />
 
-            <v-badge class="badgesIcon"
-                      :color="dark ? 'white' : 'black'"                    
+            <v-badge  :color="dark ? 'white' : darkColor"                    
                       overlap
                       style="top: -25px; right: -2px;">
               <span slot="badge"
@@ -77,6 +75,7 @@
         <data-credit-layout class="pa-0"
                             :dataCredit="author.dataCredit"
                             :iconColor="dark ? 'white' : 'black'"
+                            :badgeColor="dark ? 'white' : darkColor"
                             :dark="!dark" />
 
       </v-card-title>
@@ -221,6 +220,29 @@
             style="position: absolute; top: 0px; right: 7%;"
            :style="bottomToTopStyle(100, 'gold', 'red')" ></div> -->
 
+    <div id="wrapper"
+          style="position: absolute; top: 0; right: 0;"
+          class="py-4 px-2">
+      <svg class="progress"
+            :data-progress="levelProgress"
+            x="0px" y="0px"
+            viewBox="0 0 776 628">
+        <path class="track"
+              viewBox="0 0 500 500"
+              d="M723 314L543 625.77 183 625.77 3 314 183 2.23 543 2.23 723 314z">
+        </path>
+        <path ref="progressFill"
+              class="fill"
+              d="M723 314L543 625.77 183 625.77 3 314 183 2.23 543 2.23 723 314z">
+        </path>
+        <text class="value"
+              style="fill: white;"
+              x="50%" y="75%">
+          {{ dataCreditLevel }}
+        </text>
+      </svg>
+    </div>
+
     </v-card>
 
 </template>
@@ -245,6 +267,9 @@ export default {
     asciiDead: String,
     authorPassedInfo: String,
   },
+  mounted() {
+    this.setLevelProgress();
+  },
   computed: {
     // getDataCreditLevel(currentScore) {
     //   const entires = this.authorDataCreditLevels;
@@ -266,7 +291,6 @@ export default {
     },
     dataCreditLevel() {
       const entires = this.authorDataCreditLevels;
-      entires.reverse();
 
       for (let i = 0; i < entires.length; i++) {
         const scoreLvl = entires[i];
@@ -276,6 +300,23 @@ export default {
       }
 
       return 0;
+    },
+    dataCreditLevelColor() {
+      return this.colorPalette[this.dataCreditLevel];
+    },
+    levelProgress() {
+      const levels = this.authorDataCreditLevels;
+      const currentLvl = this.dataCreditLevel;
+      const index = currentLvl > 0 ? this.getDataCreditLevelIndex(currentLvl) : levels.length;
+      const next = index - 1;
+      let progress = 100;
+
+      if (next >= 0 && next < levels.length) {
+        progress = this.dataCreditScore / levels[next].score * 100;
+        // console.log(`progress: ${progress}`);
+      }
+
+      return progress;
     },
     dataCreditScore() {
       let score = 0;
@@ -357,6 +398,23 @@ export default {
     },
   },
   methods: {
+    setLevelProgress() {
+      const max = 2160;
+      const style = `stroke-dashoffset: ${((100 - this.levelProgress) / 100) * max}; stroke: ${this.dataCreditLevelColor} !important;`;
+      this.$refs.progressFill.setAttribute('style', style);
+    },
+    getDataCreditLevelIndex(lvl) {
+      const entires = this.authorDataCreditLevels;
+
+      for (let i = 0; i < entires.length; i++) {
+        const scoreLvl = entires[i];
+        if (lvl === scoreLvl.lvl) {
+          return i;
+        }
+      }
+
+      return -1;
+    },
     isOrcId(id) {
       return id.match(RegExp(/^[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$/g));
     },
@@ -413,17 +471,26 @@ export default {
     blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
     whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
     infosExpanded: false,
-    darkColor: '#231F20',
+    // darkColor: '#231F20',
+    darkColor: '#384753',
     whiteColor: '#EFEFEF',
     colorPalette: ['rgb(226, 242, 124)', 'rgb(158, 219, 129)', 'rgb(0, 191, 173)', 'rgb(8, 135, 124)', 'rgb(17, 17, 17)'],
     colorPaletteTo: ['rgba(226, 242, 124, 0.4)', 'rgba(158, 219, 129, 0.4)', 'rgba(0, 191, 173, 0.4)', 'rgba(8, 135, 124, 0.4)', 'rgba(17, 17, 17, 0.4)'],
     // colorsPalette: ['#E2F27C', '#9EDB81', '#00BFAD', '#08877C', '#111111'],
+    // authorDataCreditLevels: [
+    //   { score: 10, lvl: 1 },
+    //   { score: 20, lvl: 2 },
+    //   { score: 30, lvl: 3 },
+    //   { score: 50, lvl: 4 },
+    //   { score: 80, lvl: 5 },
+    // ],
     authorDataCreditLevels: [
-      { score: 10, lvl: 1 },
-      { score: 20, lvl: 2 },
-      { score: 30, lvl: 3 },
-      { score: 50, lvl: 4 },
-      { score: 80, lvl: 5 },
+      { score: 160, lvl: 5 },
+      { score: 80, lvl: 6 },
+      { score: 40, lvl: 4 },
+      { score: 20, lvl: 3 },
+      { score: 10, lvl: 2 },
+      { score: 1, lvl: 1 },
     ],
   }),
 };
@@ -440,7 +507,7 @@ export default {
     border-radius: 50% !important;
     text-align: center;
     font-size: 32px !important;
-    font-weight: bold !important;
+    /* font-weight: bold !important; */
     position: relative;
     z-index: 1;
     /* border-style: solid; */
@@ -475,5 +542,54 @@ export default {
     opacity: 0.65;
   }
 
+  /* #wrapper{
+    position: relative;
+    top: 80px;
+    width: 404px;
+  } */
+  /* .center {
+    left: 50%;
+    -webkit-transform: translate( -50% );
+    -ms-transform: translate( -50% );
+    transform: translate( -50% );
+  } */
 
+  .progress {
+    width: 60px;
+    height: 60px;
+  }
+  .progress .track, .progress .fill{
+    stroke-width: 30;
+    transform: translate(290px, 800px)rotate(-120deg);
+  }
+  .progress .track{
+    stroke: rgb(56, 71, 83);
+  }
+  .progress .fill {
+    fill: rgb(56, 71, 83);
+    stroke-linecap: round;
+    stroke-dasharray: 2160;
+    stroke-dashoffset: 2160;
+    transition: stroke-dashoffset 1s;
+  }
+
+  .progress .value, .progress .text {
+    fill: 'black';
+    text-anchor: middle;
+  }
+  .progress .value {
+    font-size: 500px;
+  }
+  .progress .text {
+    font-size: 120px;
+  }
+  .noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+  }  
 </style>
