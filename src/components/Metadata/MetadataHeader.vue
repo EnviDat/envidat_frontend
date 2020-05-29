@@ -71,7 +71,8 @@
             <v-flex v-if="authors"
                     xs12
                     key="authors" >
-              <v-layout row wrap >
+              <v-layout row wrap
+                        style="max-height: 100px; overflow-y: scroll;" >
                 <tag-chip-author v-for="author in authors"
                                   :key="author.name"
                                   :name="authorName(author)"
