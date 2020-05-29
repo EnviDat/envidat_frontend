@@ -37,7 +37,7 @@
 
           <v-flex pt-0 >
               <v-badge class="dataCreditIcon"
-                        :color="!dark ? 'white' : 'black'">
+                        :color="badgeColor">
                 <span slot="badge"
                       :class="dark ? 'white--text' : 'black--text'" >
                       {{ dataCreditCounts[index] }}
@@ -60,6 +60,7 @@ export default {
   props: {
     dataCredit: Object,
     iconColor: String,
+    badgeColor: String,
     dark: Boolean,
     showZero: {
       type: Boolean,
