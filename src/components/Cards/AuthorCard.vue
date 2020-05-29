@@ -103,7 +103,7 @@
             </v-tooltip>
           </v-flex>
 
-          <v-flex shrink pa-0>
+          <v-flex shrink px-2>
             <div :style="`background-color: ${!this.dark ? darkColor : whiteColor};`"
                   class="dataCreditScore elevation-5">
 
@@ -222,12 +222,14 @@
 
     <div id="wrapper"
           style="position: absolute; top: 0; right: 0;"
-          class="py-4 px-2">
+          class="pa-4">
+
       <svg class="progress"
             :data-progress="levelProgress"
             x="0px" y="0px"
             viewBox="0 0 776 628">
-        <path class="track"
+        <path ref="progressTrack"
+              class="track"
               viewBox="0 0 500 500"
               d="M723 314L543 625.77 183 625.77 3 314 183 2.23 543 2.23 723 314z">
         </path>
@@ -237,7 +239,7 @@
         </path>
         <text class="value"
               style="fill: white;"
-              x="50%" y="75%">
+              x="50%" y="73%">
           {{ dataCreditLevel }}
         </text>
       </svg>
@@ -284,7 +286,7 @@ export default {
     //   return 0;
     // },
     dark() {
-      return this.dataCreditLevel >= 5;
+      return this.dataCreditLevel >= 6;
     },
     dataCredits() {
       return this.author && this.author.dataCredit ? Object.keys(this.author.dataCredit) : [];
@@ -361,10 +363,10 @@ export default {
       return style;
     },
     dataCreditSize() {
-      let minSize = 55;
+      let minSize = 45;
 
       if (this.dataCreditScore >= 100) {
-        minSize = 60;
+        minSize = 50;
       }
 
       return minSize;
@@ -400,8 +402,10 @@ export default {
   methods: {
     setLevelProgress() {
       const max = 2160;
-      const style = `stroke-dashoffset: ${((100 - this.levelProgress) / 100) * max}; stroke: ${this.dataCreditLevelColor} !important;`;
+      let style = `stroke-dashoffset: ${((100 - this.levelProgress) / 100) * max}; stroke: ${this.$vuetify.theme.accent} !important;`;
       this.$refs.progressFill.setAttribute('style', style);
+      style = `stroke: ${this.dataCreditLevelColor} !important;`;
+      this.$refs.progressTrack.setAttribute('style', style);
     },
     getDataCreditLevelIndex(lvl) {
       const entires = this.authorDataCreditLevels;
@@ -474,19 +478,12 @@ export default {
     // darkColor: '#231F20',
     darkColor: '#384753',
     whiteColor: '#EFEFEF',
-    colorPalette: ['rgb(226, 242, 124)', 'rgb(158, 219, 129)', 'rgb(0, 191, 173)', 'rgb(8, 135, 124)', 'rgb(17, 17, 17)'],
-    colorPaletteTo: ['rgba(226, 242, 124, 0.4)', 'rgba(158, 219, 129, 0.4)', 'rgba(0, 191, 173, 0.4)', 'rgba(8, 135, 124, 0.4)', 'rgba(17, 17, 17, 0.4)'],
+    colorPalette: ['rgb(226, 242, 124)', 'rgb(158, 219, 129)', 'rgb(0, 191, 173)', 'rgb(8, 135, 124)', 'rgb(153, 88, 209)', 'rgb(17, 17, 17)'],
+    colorPaletteTo: ['rgba(226, 242, 124, 0.4)', 'rgba(158, 219, 129, 0.4)', 'rgba(0, 191, 173, 0.4)', 'rgba(8, 135, 124, 0.4)', 'rgba(153, 88, 209, 0.4)', 'rgba(17, 17, 17, 0.4)'],
     // colorsPalette: ['#E2F27C', '#9EDB81', '#00BFAD', '#08877C', '#111111'],
-    // authorDataCreditLevels: [
-    //   { score: 10, lvl: 1 },
-    //   { score: 20, lvl: 2 },
-    //   { score: 30, lvl: 3 },
-    //   { score: 50, lvl: 4 },
-    //   { score: 80, lvl: 5 },
-    // ],
     authorDataCreditLevels: [
-      { score: 160, lvl: 5 },
-      { score: 80, lvl: 6 },
+      { score: 160, lvl: 6 },
+      { score: 80, lvl: 5 },
       { score: 40, lvl: 4 },
       { score: 20, lvl: 3 },
       { score: 10, lvl: 2 },
@@ -506,7 +503,7 @@ export default {
   .dataCreditScore {
     border-radius: 50% !important;
     text-align: center;
-    font-size: 32px !important;
+    font-size: 28px !important;
     /* font-weight: bold !important; */
     position: relative;
     z-index: 1;
@@ -555,18 +552,19 @@ export default {
   } */
 
   .progress {
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
   }
   .progress .track, .progress .fill{
-    stroke-width: 30;
+    stroke-width: 65;
     transform: translate(290px, 800px)rotate(-120deg);
   }
   .progress .track{
-    stroke: rgb(56, 71, 83);
+    /* stroke: rgb(56, 71, 83); */
+    fill: rgb(56, 71, 83);
   }
   .progress .fill {
-    fill: rgb(56, 71, 83);
+    fill: rgba(56, 71, 83, 0);
     stroke-linecap: round;
     stroke-dasharray: 2160;
     stroke-dashoffset: 2160;
