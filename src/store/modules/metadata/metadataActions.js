@@ -154,18 +154,14 @@ export default {
                 API_BASE, PROXY);
 
     if (typeof useTestData === 'string' && useTestData.toLowerCase() === 'true') {
-
-      import('@/testdata/packagelist.js')
-      .then((projectJSON) => {
-        // setTimeout(() => {
+      import('../../../../public/testdata/packagelist.js')
+        .then((projectJSON) => {
           commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, projectJSON.default.result);
           return dispatch(FILTER_METADATA, { selectedTagNames: [] });
-        // }, 1);
-      });
+        });
 
       return;
     }
-
     await axios.get(url)
       .then((response) => {
         // commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, response.data.response.docs, showRestrictedContent);
