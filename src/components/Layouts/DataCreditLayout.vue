@@ -4,11 +4,14 @@
     <v-layout row
               wrap >
 
-      <v-flex xs12>
+      <v-flex xs12
+              :class="!dark ? 'white--text' : 'black--text'" >
         {{ label }}
       </v-flex>
 
-      <v-flex xs12 v-if="!hasDataCreditCounts"
+      <v-flex v-if="!hasDataCreditCounts"
+              xs12
+              :class="!dark ? 'white--text' : 'black--text'"       
               style="opacity: 0.65">
         {{ noCreditslabel }}
       </v-flex>
@@ -21,10 +24,10 @@
         <v-layout column >
 
           <v-flex py-0 >
-            <v-tooltip bottom>
+            <v-tooltip bottom >
               <v-icon slot="activator"
-                      dark :color="iconColor"
-                      :class="!dark ? 'white--text' : 'black--text'" >
+                      :color="iconColor"
+                      class="dataCreditIcon">
                 {{ iconLookup(creditName) }}
               </v-icon>
 
@@ -33,9 +36,10 @@
           </v-flex>
 
           <v-flex pt-0 >
-              <v-badge :class="!dark ? 'white--text' : 'black--text'"
-                        color="highlight">
-                <span slot="badge" >
+              <v-badge class="dataCreditIcon"
+                        :color="badgeColor">
+                <span slot="badge"
+                      :class="dark ? 'white--text' : 'black--text'" >
                       {{ dataCreditCounts[index] }}
                 </span>
               </v-badge>
@@ -56,6 +60,7 @@ export default {
   props: {
     dataCredit: Object,
     iconColor: String,
+    badgeColor: String,
     dark: Boolean,
     showZero: {
       type: Boolean,
@@ -124,6 +129,10 @@ export default {
 </script>
 
 <style >
+
+ .dataCreditIcon {
+   opacity: 0.75;
+ }
 
  .dataCreditBadge > span {
     bottom: -25px !important;

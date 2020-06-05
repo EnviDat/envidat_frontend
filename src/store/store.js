@@ -19,6 +19,7 @@ import createPersist from 'vuex-localstorage';
 import { metadata } from '@/store/modules/metadata/metadata';
 import { policies } from '@/store/modules/policies/policies';
 import { guidelines } from '@/store/modules/guidelines/guidelines';
+import { dmp } from '@/store/modules/dmp/dmp';
 import { projects } from '@/store/modules/projects/projects';
 import mutations from '@/store/mainMutations';
 import actions from '@/store/mainActions';
@@ -84,6 +85,7 @@ const store = new Vuex.Store({
     policies,
     guidelines,
     projects,
+    dmp,
   },
 });
 

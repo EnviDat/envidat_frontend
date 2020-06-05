@@ -28,6 +28,7 @@ import L from 'leaflet';
 // import gL from 'leaflet.gridlayer.googlemutant';
 /* eslint-disable no-unused-vars */
 import 'leaflet/dist/leaflet.css';
+import 'leaflet-bing-layer';
 
 // HACK starts
 // Solution to loading in the imgs correctly via webpack
@@ -65,6 +66,7 @@ export default {
     map: null,
     mapIsSetup: false,
     emptyText: 'No location found for this dataset',
+    bingApiKey: process.env.VUE_APP_BING_API_KEY,
   }),
   computed: {
     title() {
@@ -177,11 +179,26 @@ export default {
         return undefined;
       }
     },
-    addOpenStreetMapLayer: function addOpenStreetMapLayer(map) {
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(map);
+    addOpenStreetMapLayer(map) {
+      const streetTiles = L.tileLayer(
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' },
+      );
+
+      const aerialTiles = L.tileLayer.bing({
+        bingMapsKey: this.bingApiKey,
+        imagerySet: 'AerialWithLabels',
+      });
+
+      this.mapLayerGroup = L.layerGroup([streetTiles, aerialTiles]);
+      this.mapLayerGroup.addTo(map);
+
+      const baseMaps = {
+        'Satellit (Bingmaps)': aerialTiles,
+        'Roads (OpenStreetMaps)': streetTiles,
+      };
+
+      L.control.layers(baseMaps).addTo(map);
     },
     addPoint(map, coords) {
       const iconOptions = L.Icon.Default.prototype.options;
