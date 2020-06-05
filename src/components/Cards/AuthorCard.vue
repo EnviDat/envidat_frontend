@@ -273,7 +273,7 @@ export default {
       return this.colorPalette[this.dataCreditLevel];
     },
     levelProgress() {
-      return getLevelProgress();
+      return getLevelProgress(this.dataCreditScore);
     },
     dataCreditScore() {
       let score = 0;
