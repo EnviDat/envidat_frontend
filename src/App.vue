@@ -98,6 +98,8 @@ import {
   GUIDELINES_PAGENAME,
   POLICIES_PATH,
   POLICIES_PAGENAME,
+  DMP_PATH,
+  DMP_PAGENAME,
   ABOUT_PATH,
   ABOUT_PAGENAME,
   REPORT_PATH,
@@ -283,7 +285,7 @@ export default {
     },
     pageStyle() {
       const heightStyle = this.showToolbar ? 'height: calc(100vh - 36px);' : 'height: 100vh;';
-      return this.currentPageIsBrowsePage ? '' : `${heightStyle} overflow-y: auto; scroll-behavior: smooth;`;
+      return this.currentPageIsBrowsePage ? '' : `${heightStyle} overflow-y: auto; scroll-behavior: smooth; scrollbar-width: thin; `;
     },
     showSmallNavigation() {
       return this.$vuetify.breakpoint.smAndDown;
@@ -361,7 +363,8 @@ export default {
       { title: 'Organizations', icon: 'account_tree', toolTip: 'Overview of the different organizations', active: false, path: 'https://www.envidat.ch/organization', pageName: 'external' },
       { title: 'Guidelines', icon: 'local_library', toolTip: 'Guidlines about the creation of metadata', active: false, path: GUIDELINES_PATH, pageName: GUIDELINES_PAGENAME },
       { title: 'Policies', icon: 'policy', toolTip: 'The rules of EnviDat', active: false, path: POLICIES_PATH, pageName: POLICIES_PAGENAME },
-      { title: 'Login', icon: 'person', toolTip: 'Login to upload data', active: false, path: 'https://www.envidat.ch/user/reset', pageName: 'external' },
+      { title: 'DMP', icon: 'menu_book', toolTip: 'Template for a Data Management Plan', active: false, path: DMP_PATH, pageName: DMP_PAGENAME },
+      { title: 'Login', icon: 'person', toolTip: 'Login to management research data', active: false, path: 'https://www.envidat.ch/user/reset', pageName: 'external' },
       { title: 'About', icon: 'info', toolTip: 'What is EnviDat? How is behind EnviDat?', active: false, path: ABOUT_PATH, pageName: ABOUT_PAGENAME },
       // { title: 'Contact', icon: 'contact_support', toolTip: 'Do you need support?', active: false },
       { title: 'Menu', icon: 'menu', active: false },

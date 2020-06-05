@@ -6,9 +6,9 @@
     <v-layout row wrap >
 
       <v-flex xs12 lg10 offset-lg1>
-        <img-and-text-layout :img="policiesImg"
+        <img-and-text-layout :img="dmpImg"
                               :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
-                              title="Policies" />
+                              title="Data Management Plan" />
       </v-flex>
 
       <v-flex v-if="loading"
@@ -16,8 +16,9 @@
               offset-lg1
               shrink
               pt-5 >
-        Loading Policies...
+        Loading DMP Infos...
       </v-flex>
+
 
       <v-flex v-if="!loading"
                 offset-md1
@@ -32,14 +33,14 @@
 
 <script>
 /**
- * The policies page of EnviDat. It consists of:
+ * The DMP page of EnviDat. It consists of:
  * - TitleImage and Title (ImgAndTextLayout)
  *
- * @summary policies page
+ * @summary guideline page
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-20 11:39:46
+ * Last modified  : 2019-11-15 16:16:28
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -50,27 +51,28 @@ import html from 'remark-html';
 import { mapGetters } from 'vuex';
 
 import {
-  POLICIES_PAGENAME,
+  DMP_PAGENAME,
 } from '@/router/routeConsts';
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
 } from '@/store/mainMutationsConsts';
-import { GET_POLICIES, POLICIES_NAMESPACE } from '@/store/policiesMutationsConsts';
+import { GET_DMP, DMP_NAMESPACE } from '@/store/dmpMutationsConsts';
 
 import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
-import policies from '@/assets/about/policies.jpg';
-import policiesSmall from '@/assets/about/policies_small.jpg';
+import dmp from '@/assets/about/dmp.jpg';
+import dmpSmall from '@/assets/about/dmp_small.jpg';
+
 
 export default {
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.$store.commit(SET_CURRENT_PAGE, POLICIES_PAGENAME);
+      vm.$store.commit(SET_CURRENT_PAGE, DMP_PAGENAME);
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
     });
   },
   beforeMount() {
-    this.$store.dispatch(`${POLICIES_NAMESPACE}/${GET_POLICIES}`);
+    this.$store.dispatch(`${DMP_NAMESPACE}/${GET_DMP}`);
   },
   /**
    * @description reset the scrolling to the top,
@@ -81,14 +83,14 @@ export default {
   },
   computed: {
     ...mapGetters({
-      policiesMarkdown: `${POLICIES_NAMESPACE}/policiesMarkdown`,
-      loading: `${POLICIES_NAMESPACE}/loading`,
+      dmpMarkdown: `${DMP_NAMESPACE}/dmpMarkdown`,
+      loading: `${DMP_NAMESPACE}/loading`,
     }),
     markdownText() {
-      return remark().use(html).processSync(this.policiesMarkdown);
+      return remark().use(html).processSync(this.dmpMarkdown);
     },
-    policiesImg() {
-      return this.$vuetify.breakpoint.mdAndUp ? policies : policiesSmall;
+    dmpImg() {
+      return this.$vuetify.breakpoint.mdAndUp ? dmp : dmpSmall;
     },
   },
   methods: {

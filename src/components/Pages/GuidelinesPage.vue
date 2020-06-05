@@ -51,14 +51,13 @@ import html from 'remark-html';
 import { mapGetters } from 'vuex';
 
 import {
-  BROWSE_PATH,
   GUIDELINES_PAGENAME,
 } from '@/router/routeConsts';
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
 } from '@/store/mainMutationsConsts';
-import { GET_GUIDELINES } from '@/store/guidelinesMutationsConsts';
+import { GET_GUIDELINES, GUIDELINES_NAMESPACE } from '@/store/guidelinesMutationsConsts';
 
 import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
 import guidelines from '@/assets/about/guidelines.jpg';
@@ -73,7 +72,7 @@ export default {
     });
   },
   beforeMount() {
-    this.$store.dispatch(`guidelines/${GET_GUIDELINES}`);
+    this.$store.dispatch(`${GUIDELINES_NAMESPACE}/${GET_GUIDELINES}`);
   },
   /**
    * @description reset the scrolling to the top,
@@ -84,10 +83,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      guidelinesPageBackRoute: 'guidelines/guidelinesPageBackRoute',
-      // guidelinesTitle: 'guidelines/guidelinesTitle',
-      guidelinesMarkdown: 'guidelines/guidelinesMarkdown',
-      loading: 'guidelines/loading',
+      guidelinesMarkdown: `${GUIDELINES_NAMESPACE}/guidelinesMarkdown`,
+      loading: `${GUIDELINES_NAMESPACE}/loading`,
     }),
     markdownText() {
       return remark().use(html).processSync(this.guidelinesMarkdown);
@@ -97,25 +94,6 @@ export default {
     },
   },
   methods: {
-    /**
-       * @description changes the url to page the user was before. Fallback: BrowsePage
-       */
-    catchBackClicked() {
-      const backRoute = this.aboutPageBackRoute;
-
-      if (backRoute) {
-        this.$router.push({
-          path: backRoute.path,
-          query: backRoute.query,
-          params: backRoute.params,
-        });
-        return;
-      }
-
-      this.$router.push({
-        path: BROWSE_PATH,
-      });
-    },
   },
   components: {
     ImgAndTextLayout,

@@ -23,8 +23,11 @@ export default {
   [GET_POLICIES]({ commit }) {
     commit(GET_POLICIES);
 
-    const url = `./policies/policies.md?nocache=${new Date().getTime()}`;
-
+    let url = `./policies/policies.md?nocache=${new Date().getTime()}`;
+    if (process.env.NODE_ENV === 'development') {
+      url = './testdata/policies.md';
+    }
+    
     axios.get(url)
       .then((response) => {
         commit(GET_POLICIES_SUCCESS, response.data);

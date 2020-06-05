@@ -71,9 +71,10 @@
             <v-flex v-if="authors"
                     xs12
                     key="authors" >
-              <v-layout row wrap >
-                <tag-chip-author v-for="author in authors"
-                                  :key="author.name"
+              <v-layout row wrap
+                        style="max-height: 100px; overflow-y: scroll;" >
+                <tag-chip-author v-for="(author, index) in authors"
+                                  :key="index"
                                   :name="authorName(author)"
                                   :tooltipText="authorToolTipText"
                                   :asciiDead="asciiDead"

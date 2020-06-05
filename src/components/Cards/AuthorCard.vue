@@ -3,7 +3,7 @@
             :style="dynamicCardBackground"
             @click.native="cardClick" >
 
-      <v-card-title class="px-2 pb-4">
+      <v-card-title class="px-2 pt-2 pb-3">
         <v-layout row wrap>
 
           <v-flex grow py-0 >
@@ -37,50 +37,50 @@
         </v-layout>
       </v-card-title>
 
+      <v-card-title class="py-2 px-2">
+        <v-layout row
+                  align-center
+                  justify-space-between >
+
+          <v-flex xs6
+                  :class="dark ? 'white--text' : 'black--text'" >
+            {{ dataCountLabel }} 
+          </v-flex>
+
+          <v-flex shrink
+                  py-0
+                  style="max-height: 36px;">
+            <base-icon-button class="ma-0"
+                              material-icon-name="search"
+                              :iconColor="dark ? 'white' : darkColor"
+                              :outlined="true"
+                              :color="dark ? 'white' : darkColor"
+                              :tooltipText="`Search for the datasets of ${author.firstName} ${author.lastName}`"
+                              @clicked="catchSearchAuthor(author.fullName)" />
+
+            <v-badge  :color="dark ? 'white' : darkColor"                    
+                      overlap
+                      style="top: -25px; right: -2px;">
+              <span slot="badge"
+                    :class="!dark ? 'white--text' : 'black--text'" >
+                    {{ author.datasetCount }}
+              </span>
+            </v-badge>
+
+          </v-flex>
+        </v-layout>
+      </v-card-title>
+
       <v-card-title class="py-1 pb-2 px-2">
         <data-credit-layout class="pa-0"
                             :dataCredit="author.dataCredit"
-                            :iconColor="this.dark ? whiteColor : darkColor"
+                            :iconColor="dark ? 'white' : 'black'"
+                            :badgeColor="dark ? 'white' : darkColor"
                             :dark="!dark" />
 
       </v-card-title>
 
-      <v-card-title class="py-2 px-2">
-        <v-container pa-0 fluid>
-          <v-layout row wrap
-                    align-center
-                    justify-space-between >
-
-            <v-flex xs6 py-0
-                    :class="dark ? 'white--text' : 'black--text'" >
-              {{ dataCountLabel }} 
-            </v-flex>
-
-            <v-flex shrink py-0>
-              <base-icon-button class="ma-0"
-                                material-icon-name="search"
-                                :iconColor="dark ? 'white' : 'black'"
-                                :outlined="dark"
-                                :color="dark ? 'white' : 'transparent'"
-                                :tooltipText="`Search for the datasets of ${author.firstName} ${author.lastName}`"
-                                @clicked="catchSearchAuthor(author.fullName)" />
-
-              <v-badge color="highlight"
-                        overlap
-                        style="top: -25px; right: -2px;">
-                <span slot="badge"
-                      :class="dark ? 'white--text' : 'black--text'" >
-                      {{ author.datasetCount }}
-                </span>
-              </v-badge>
-
-            </v-flex>
-          </v-layout>
-        </v-container>
-      </v-card-title>
-
-
-      <v-card-title class="pl-2 py-1 pr-0" >
+      <v-card-title class="pl-2 py-2 pr-0" >
 
         <v-layout row
                   justify-space-between
@@ -94,6 +94,7 @@
           <v-flex grow >
             <v-tooltip bottom>
               <v-icon slot="activator"
+                      class="badgesIcon"
                       dark
                       :class="dark ? 'white--text' : 'black--text'">
                 info_outline
@@ -102,7 +103,7 @@
             </v-tooltip>
           </v-flex>
 
-          <v-flex shrink pa-0>
+          <v-flex shrink px-2>
             <div :style="`background-color: ${!this.dark ? darkColor : whiteColor};`"
                   class="dataCreditScore elevation-5">
 
@@ -117,8 +118,7 @@
 
       <v-card-title class="pt-2 pb-0 px-2">
         <v-layout row
-                  align-center
-                  pa-0 >
+                  align-center >
 
           <v-flex grow @click="infosExpanded = !infosExpanded">
             <v-divider :dark="dark" />
@@ -127,8 +127,8 @@
           <v-flex shrink>
             <v-btn flat icon
                     :color="dark ? 'white' : 'black'"
-                    :outline="dark"
-                    class="ma-0"
+                    :outline="true"
+                    class="ma-0 badgesIcon"
                     @click="infosExpanded = !infosExpanded">
               <v-icon> {{ infosExpanded ? 'keyboard_arrow_down' : 'keyboard_arrow_left' }}</v-icon>
             </v-btn>
@@ -200,18 +200,51 @@
         </v-container>
       </v-card-title>
 
-
-      <div v-if="dataCreditLevel >= 1"
-            style="position: absolute; top: 0px; right: 18%;"
+      <!-- <div v-if="dataCreditLevel >= 1"
+            style="position: absolute; top: 0px; right: 23%;"
            :style="bottomToTopStyle(100, 'gold', 'red')" ></div>
 
       <div v-if="dataCreditLevel >= 2"
-            style="position: absolute; top: 0px; right: 12%;"
+            style="position: absolute; top: 0px; right: 19%;"
            :style="bottomToTopStyle(100, 'gold', 'red')" ></div>
 
       <div v-if="dataCreditLevel >= 3"
-            style="position: absolute; top: 0px; right: 6%;"
+            style="position: absolute; top: 0px; right: 15%;"
            :style="bottomToTopStyle(100, 'gold', 'red')" ></div>
+
+      <div v-if="dataCreditLevel >= 4"
+            style="position: absolute; top: 0px; right: 11%;"
+           :style="bottomToTopStyle(100, 'gold', 'red')" ></div>
+
+      <div v-if="dataCreditLevel >= 5"
+            style="position: absolute; top: 0px; right: 7%;"
+           :style="bottomToTopStyle(100, 'gold', 'red')" ></div> -->
+
+    <div id="wrapper"
+          style="position: absolute; top: 0; right: 0;"
+          class="pa-4">
+
+      <svg class="progress"
+            :data-progress="levelProgress"
+            x="0px" y="0px"
+            viewBox="0 0 776 628">
+        <path ref="progressTrack"
+              class="track"
+              viewBox="0 0 500 500"
+              d="M723 314L543 625.77 183 625.77 3 314 183 2.23 543 2.23 723 314z">
+        </path>
+        <path ref="progressFill"
+              class="fill"
+              d="M723 314L543 625.77 183 625.77 3 314 183 2.23 543 2.23 723 314z">
+        </path>
+        <text class="value"
+              style="fill: white;"
+              x="50%" y="73%">
+          {{ dataCreditLevel }}
+        </text>
+      </svg>
+    </div>
+
     </v-card>
 
 </template>
@@ -236,29 +269,56 @@ export default {
     asciiDead: String,
     authorPassedInfo: String,
   },
+  mounted() {
+    this.setLevelProgress();
+  },
   computed: {
+    // getDataCreditLevel(currentScore) {
+    //   const entires = this.authorDataCreditLevels;
+
+    //   for (let i = 0; i < entires.length; i++) {
+    //     const scoreLvl = entires[i];
+    //     if (currentScore >= scoreLvl.score) {
+    //       return scoreLvl.lvl;
+    //     }
+    //   }
+
+    //   return 0;
+    // },
     dark() {
-      return this.dataCreditLevel === 3;
+      return this.dataCreditLevel >= 6;
     },
     dataCredits() {
       return this.author && this.author.dataCredit ? Object.keys(this.author.dataCredit) : [];
     },
     dataCreditLevel() {
-      let lvl = 0;
+      const entires = this.authorDataCreditLevels;
 
-      if (this.dataCreditScore >= 20) {
-        lvl = 1;
-
-        if (this.dataCreditScore >= 40) {
-          lvl = 2;
-
-          if (this.dataCreditScore >= 60) {
-            lvl = 3;
-          }
+      for (let i = 0; i < entires.length; i++) {
+        const scoreLvl = entires[i];
+        if (this.dataCreditScore >= scoreLvl.score) {
+          return scoreLvl.lvl;
         }
       }
 
-      return lvl;
+      return 0;
+    },
+    dataCreditLevelColor() {
+      return this.colorPalette[this.dataCreditLevel];
+    },
+    levelProgress() {
+      const levels = this.authorDataCreditLevels;
+      const currentLvl = this.dataCreditLevel;
+      const index = currentLvl > 0 ? this.getDataCreditLevelIndex(currentLvl) : levels.length;
+      const next = index - 1;
+      let progress = 100;
+
+      if (next >= 0 && next < levels.length) {
+        progress = this.dataCreditScore / levels[next].score * 100;
+        // console.log(`progress: ${progress}`);
+      }
+
+      return progress;
     },
     dataCreditScore() {
       let score = 0;
@@ -303,10 +363,10 @@ export default {
       return style;
     },
     dataCreditSize() {
-      let minSize = 55;
+      let minSize = 45;
 
       if (this.dataCreditScore >= 100) {
-        minSize = 60;
+        minSize = 50;
       }
 
       return minSize;
@@ -318,16 +378,19 @@ export default {
       if (this.dataCreditLevel === 0) {
         return 'background-color: #fff';
       }
-      
-      if (this.dataCreditLevel === 1) {
-        color = '#e02a00FF'; // #e00000
-        toColor = '#ff3d3d64'; // #ff0000
-      } else if (this.dataCreditLevel === 2) {
-        color = '#ffac05FF';
-        toColor = '#ffac0596';
-      } else if (this.dataCreditLevel === 3) {
-        return 'background-color: #111';
-      }
+
+      color = this.colorPalette[this.dataCreditLevel - 1];
+      toColor = this.colorPaletteTo[this.dataCreditLevel - 1];
+
+      // if (this.dataCreditLevel === 1) {
+      //   color = '#e02a00FF'; // #e00000
+      //   toColor = '#ff3d3d64'; // #ff0000
+      // } else if (this.dataCreditLevel === 2) {
+      //   color = '#ffac05FF';
+      //   toColor = '#ffac0596';
+      // } else if (this.dataCreditLevel === 3) {
+      //   return 'background-color: #111';
+      // }
 
       return `background-image: linear-gradient(45deg, ${color} 10%, ${toColor} 90%);
               background-position: center, center; background-size: cover;`;
@@ -337,6 +400,25 @@ export default {
     },
   },
   methods: {
+    setLevelProgress() {
+      const max = 2160;
+      let style = `stroke-dashoffset: ${((100 - this.levelProgress) / 100) * max}; stroke: ${this.$vuetify.theme.accent} !important;`;
+      this.$refs.progressFill.setAttribute('style', style);
+      style = `stroke: ${this.dataCreditLevelColor} !important;`;
+      this.$refs.progressTrack.setAttribute('style', style);
+    },
+    getDataCreditLevelIndex(lvl) {
+      const entires = this.authorDataCreditLevels;
+
+      for (let i = 0; i < entires.length; i++) {
+        const scoreLvl = entires[i];
+        if (lvl === scoreLvl.lvl) {
+          return i;
+        }
+      }
+
+      return -1;
+    },
     isOrcId(id) {
       return id.match(RegExp(/^[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$/g));
     },
@@ -371,11 +453,14 @@ export default {
       }
       height = height >= 100 ? 100 : height;
 
-      const width = '1';
+      // const width = '1';
       /* eslint-disable prefer-template */
-      let grd = 'height: ' + height + '%;border-width: ' + width + 'px; border-style: solid;';
-      grd += 'border-image: ';
-      grd += 'linear-gradient(to top, ' + fromColor + ' , ' + toColor + ') 1 ' + toPct + ';';
+      // let grd = 'height: ' + height + '%; border-width: 1px; border-style: solid;';
+      let grd = 'height: ' + height + '%; width: 1px;';
+      // grd += 'border-image: ';
+      grd += 'background-image: ';
+      // grd += 'linear-gradient(to top, ' + fromColor + ' , ' + toColor + ') 1 ' + toPct + ';';
+      grd += 'linear-gradient(' + fromColor + ' , ' + toColor + ');';
 
       return grd;
     },
@@ -390,8 +475,20 @@ export default {
     blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
     whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
     infosExpanded: false,
-    darkColor: '#231F20',
+    // darkColor: '#231F20',
+    darkColor: '#384753',
     whiteColor: '#EFEFEF',
+    colorPalette: ['rgb(226, 242, 124)', 'rgb(158, 219, 129)', 'rgb(0, 191, 173)', 'rgb(8, 135, 124)', 'rgb(153, 88, 209)', 'rgb(17, 17, 17)'],
+    colorPaletteTo: ['rgba(226, 242, 124, 0.4)', 'rgba(158, 219, 129, 0.4)', 'rgba(0, 191, 173, 0.4)', 'rgba(8, 135, 124, 0.4)', 'rgba(153, 88, 209, 0.4)', 'rgba(17, 17, 17, 0.4)'],
+    // colorsPalette: ['#E2F27C', '#9EDB81', '#00BFAD', '#08877C', '#111111'],
+    authorDataCreditLevels: [
+      { score: 160, lvl: 6 },
+      { score: 80, lvl: 5 },
+      { score: 40, lvl: 4 },
+      { score: 20, lvl: 3 },
+      { score: 10, lvl: 2 },
+      { score: 1, lvl: 1 },
+    ],
   }),
 };
 </script>
@@ -406,8 +503,8 @@ export default {
   .dataCreditScore {
     border-radius: 50% !important;
     text-align: center;
-    font-size: 32px !important;
-    font-weight: bold !important;
+    font-size: 28px !important;
+    /* font-weight: bold !important; */
     position: relative;
     z-index: 1;
     /* border-style: solid; */
@@ -434,9 +531,63 @@ export default {
     font-size: 14px !important;
   }
 
+  .badgesIcon {
+    opacity: 0.75;
+  }
+
   .authorInfoLabel {
     opacity: 0.65;
   }
 
+  /* #wrapper{
+    position: relative;
+    top: 80px;
+    width: 404px;
+  } */
+  /* .center {
+    left: 50%;
+    -webkit-transform: translate( -50% );
+    -ms-transform: translate( -50% );
+    transform: translate( -50% );
+  } */
 
+  .progress {
+    width: 40px;
+    height: 40px;
+  }
+  .progress .track, .progress .fill{
+    stroke-width: 65;
+    transform: translate(290px, 800px)rotate(-120deg);
+  }
+  .progress .track{
+    /* stroke: rgb(56, 71, 83); */
+    fill: rgb(56, 71, 83);
+  }
+  .progress .fill {
+    fill: rgba(56, 71, 83, 0);
+    stroke-linecap: round;
+    stroke-dasharray: 2160;
+    stroke-dashoffset: 2160;
+    transition: stroke-dashoffset 1s;
+  }
+
+  .progress .value, .progress .text {
+    fill: 'black';
+    text-anchor: middle;
+  }
+  .progress .value {
+    font-size: 500px;
+  }
+  .progress .text {
+    font-size: 120px;
+  }
+  .noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+  }  
 </style>
