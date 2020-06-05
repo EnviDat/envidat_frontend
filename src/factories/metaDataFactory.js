@@ -56,36 +56,34 @@ export function randomInt(min, max, seed = 'For the Horde!') {
  * @return {String} category based on tags array
  */
 export function guessTagCategory(tags) {
-  let category = LAND;
 
-  if (tags) {
-    for (let i = 0; i < tags.length; i++) {
-      const element = tags[i];
+  if (!tags) {
+    return LAND;
+  }
 
-      if (element.name) {
-        if (element.name.includes('HAZARD') || element.name.includes('ACCIDENTS')) {
-          category = HAZARD; break;
-        }
-        if (element.name.includes('DIVERSITY')) {
-          category = DIVERSITY; break;
-        }
-        if (element.name.includes('FOREST')) {
-          category = FOREST; break;
-        }
-        if (element.name.includes('SNOW') || element.name.includes('AVALANCHE')) {
-          category = SNOW; break;
-        }
-        if (element.name.includes('METEO') || element.name.includes('CLIMATE')) {
-          category = METEO; break;
-        }
-        if (element.name.includes('LAND') || element.name.includes('LANDSCAPE')) {
-          category = LAND; break;
-        }
-      }
+  for (let i = 0; i < tags.length; i++) {
+    const element = tags[i];
+    const name = element.name;
+
+    switch (name) {
+      case name.includes('HAZARD') || name.includes('ACCIDENTS'):
+        return HAZARD;
+      case name.includes('DIVERSITY'):
+        return DIVERSITY;
+      case name.includes('FOREST'):
+        return FOREST;
+      case name.includes('SNOW') || name.includes('AVALANCHE'):
+        return SNOW;
+      case name.includes('METEO') || name.includes('CLIMATE'):
+        return METEO;
+      case name.includes('LAND') || name.includes('LANDSCAPE'):
+        return LAND;
+      default:
+        return LAND;
     }
   }
 
-  return category;
+  return LAND;
 }
 
 /**
@@ -391,6 +389,35 @@ export function createDetails(dataset) {
   return details;
 }
 
+function getPolygonPointArray(coordinates) {
+  const points = [];
+
+  for (let i = 0; i < coordinates.length; i++) {
+    const pointElement = coordinates[i];
+    const pointObject = [];
+
+    for (let j = 0; j < pointElement.length; j++) {
+      const coord = pointElement[j];
+      pointObject.push([coord[1], coord[0]]);
+    }
+
+    points.push(pointObject);
+  }
+
+  return points;
+}
+
+function getMultiPointArray(coordinates) {
+  const points = [];
+
+  for (let i = 0; i < coordinates.length; i++) {
+    const pointElement = coordinates[i];
+    const pointObject = [pointElement[1], pointElement[0]];
+    points.push(pointObject);
+  }
+
+  return points;
+}
 
 export function createLocation(dataset) {
   if (!dataset) {
@@ -424,27 +451,10 @@ export function createLocation(dataset) {
         // swap coords for the leaflet map
         location.pointArray = [spatialJSON.coordinates[1], spatialJSON.coordinates[0]];
       } else if (location.isPolygon) {
-        location.pointArray = [];
+        location.pointArray = getPolygonPointArray(spatialJSON.coordinates);
 
-        for (let i = 0; i < spatialJSON.coordinates.length; i++) {
-          const pointElement = spatialJSON.coordinates[i];
-          const pointObject = [];
-
-          for (let j = 0; j < pointElement.length; j++) {
-            const coord = pointElement[j];
-            pointObject.push([coord[1], coord[0]]);
-          }
-
-          location.pointArray.push(pointObject);
-        }
       } else if (location.isMultiPoint) {
-        location.pointArray = [];
-
-        for (let i = 0; i < spatialJSON.coordinates.length; i++) {
-          const pointElement = spatialJSON.coordinates[i];
-          const pointObject = [pointElement[1], pointElement[0]];
-          location.pointArray.push(pointObject);
-        }
+        location.pointArray = getMultiPointArray(spatialJSON.coordinates);
       }
     }
   }
