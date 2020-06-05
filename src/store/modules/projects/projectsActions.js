@@ -33,7 +33,7 @@ export default {
   async [GET_PROJECTS]({ dispatch, commit }) {
     commit(GET_PROJECTS);
 
-    const url = urlRewrite(
+    let url = urlRewrite(
       'group_list?all_fields=true&include_groups=true&include_extras=true&include_datasets=true',
       API_BASE,
       ENVIDAT_PROXY,
@@ -44,12 +44,7 @@ export default {
     }
 
     if (typeof useTestData === 'string' && useTestData.toLowerCase() === 'true') {
-      import('../../../../public/testdata/projects.js')
-      .then((projects) => {
-        commit(GET_PROJECTS_SUCCESS, projects.default.result);
-      });
-
-      return;
+      url = './testdata/projects.json';
     }
 
     await axios.get(url)
