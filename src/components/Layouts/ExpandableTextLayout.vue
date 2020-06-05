@@ -14,7 +14,6 @@
 
     <v-card-text v-if="fullText"
                   ref="text"
-                  style="overflow-x: hidden;"
                   class="heightAndScroll pb-4"
                   v-html="markdownText" >
     </v-card-text>
@@ -98,8 +97,8 @@ export default {
     },
     fullText() {
       if (this.text) {
-        if (this.maxTextLengthReached) {
-          return this.showFullText ? this.text.trim() : `${this.text.trim().substring(0, this.maxTextLength)}...`;
+        if (this.maxTextLengthReached && !this.showFullText) {
+          return `${this.text.trim().substring(0, this.maxTextLength)}...`;
         }
 
         return this.text.trim();
@@ -130,5 +129,7 @@ export default {
   .heightAndScroll {
     max-height: 500px;
     overflow-y: auto !important;
+    overflow-x: hidden;
+    scrollbar-width: thin;
   }
 </style>

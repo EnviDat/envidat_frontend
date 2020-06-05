@@ -14,7 +14,7 @@
                       :class="{ envidatBadgeBigNumber : count > 9,
                                 envidatBadge: count <= 9 }" >
                                                     
-              <span slot="badge">{{ count }}</span>
+              <span slot="badge" >{{ count }}</span>
             </v-badge>
           </v-flex>
 
@@ -35,6 +35,7 @@
           <v-badge :left="!hoverBadge"
                     overlap
                     color="secondary"
+                    style="z-index: 2;"
                     :class="{ envidatBadgeBigNumber : count > 9,
                               envidatBadge: count <= 9 }" >
                                                   
@@ -42,7 +43,7 @@
           </v-badge>
         </v-flex>
 
-        <v-flex pa-0>
+        <v-flex pa-0 style="z-index: 1;" >
           <img class="envidatIcon" :src="iconString" :alt="`${iconString} icon`">
         </v-flex>
       </v-layout>

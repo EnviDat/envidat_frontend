@@ -1,6 +1,7 @@
 <template>
   <expandable-text-layout v-bind="body"
-                            :showPlaceholder="showPlaceholder" />
+                            :showPlaceholder="showPlaceholder"
+                            :maxTextLength="1005" />
 
 </template>
 

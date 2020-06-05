@@ -28,6 +28,8 @@ import {
   POLICIES_PAGENAME,
   GUIDELINES_PATH,
   GUIDELINES_PAGENAME,
+  DMP_PATH,
+  DMP_PAGENAME,
   PROJECTS_PATH,
   PROJECTS_PAGENAME,
   PROJECT_DETAIL_PATH,
@@ -83,6 +85,11 @@ export default new Router({
       path: GUIDELINES_PATH,
       name: GUIDELINES_PAGENAME,
       component: () => import(/* webpackChunkName: "guidelinesPage" */ '@/components/Pages/GuidelinesPage'),
+    },
+    {
+      path: DMP_PATH,
+      name: DMP_PAGENAME,
+      component: () => import(/* webpackChunkName: "dmpPage" */ '@/components/Pages/DMPPage'),
     },
     {
       path: PROJECTS_PATH,

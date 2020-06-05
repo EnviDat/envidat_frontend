@@ -32,7 +32,7 @@ export default {
   async [GET_PROJECTS]({ dispatch, commit }) {
     commit(GET_PROJECTS);
 
-    const url = urlRewrite(
+    let url = urlRewrite(
       'group_list?all_fields=true&include_groups=true&include_extras=true&include_datasets=true',
       API_BASE,
       ENVIDAT_PROXY,
@@ -40,6 +40,10 @@ export default {
 
     if (this.getters[`${METADATA_NAMESPACE}/metadatasContentSize`] === 0) {
       await dispatch(`${METADATA_NAMESPACE}/BULK_LOAD_METADATAS_CONTENT`, null, { root: true });      
+    }
+
+    if (typeof useTestData === 'string' && useTestData.toLowerCase() === 'true') {
+      url = './testdata/projects.json';
     }
 
     await axios.get(url)
