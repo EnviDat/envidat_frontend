@@ -20,6 +20,8 @@ import {
   getAuthorsString,
 } from '@/factories/authorFactory';
 
+import globalMethods from '@/factories/globalMethods';
+
 import {
   FOREST,
   SNOW,
@@ -582,4 +584,18 @@ export function enhanceMetadatas(metadatas, cardBGImages, categoryCards) {
   }
 
   return metadatas;
+}
+
+
+export function getCardBackgrounds() {
+  const bgs = {};
+
+  bgs[LAND] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/landscape/', false, /\.jpg$/));
+  bgs[FOREST] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/forest/', false, /\.jpg$/));
+  bgs[SNOW] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/snow/', false, /\.jpg$/));
+  bgs[DIVERSITY] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/diversity/', false, /\.jpg$/));
+  bgs[HAZARD] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/hazard/', false, /\.jpg$/));
+  bgs[METEO] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/meteo/', false, /\.jpg$/));
+
+  return bgs;
 }
