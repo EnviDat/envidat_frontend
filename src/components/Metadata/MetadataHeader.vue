@@ -73,8 +73,8 @@
                     key="authors" >
               <v-layout row wrap
                         style="max-height: 100px; overflow-y: scroll;" >
-                <tag-chip-author v-for="author in authors"
-                                  :key="author.name"
+                <tag-chip-author v-for="(author, index) in authors"
+                                  :key="index"
                                   :name="authorName(author)"
                                   :tooltipText="authorToolTipText"
                                   :asciiDead="asciiDead"
