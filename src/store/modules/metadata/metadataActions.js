@@ -150,18 +150,13 @@ export default {
   async [BULK_LOAD_METADATAS_CONTENT]({ dispatch, commit }) {
     commit(BULK_LOAD_METADATAS_CONTENT);
 
-    const url = urlRewrite('current_package_list_with_resources?limit=1000&offset=0',
+    let url = urlRewrite('current_package_list_with_resources?limit=1000&offset=0',
                 API_BASE, PROXY);
 
     if (typeof useTestData === 'string' && useTestData.toLowerCase() === 'true') {
-      import('../../../../public/testdata/packagelist.js')
-        .then((projectJSON) => {
-          commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, projectJSON.default.result);
-          return dispatch(FILTER_METADATA, { selectedTagNames: [] });
-        });
-
-      return;
+      url = './testdata/packagelist.json';
     }
+
     await axios.get(url)
       .then((response) => {
         // commit(BULK_LOAD_METADATAS_CONTENT_SUCCESS, response.data.response.docs, showRestrictedContent);
