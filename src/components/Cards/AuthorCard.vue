@@ -237,6 +237,10 @@
 import DataCreditLayout from '@/components/Layouts/DataCreditLayout';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import { BROWSE_PATH } from '@/router/routeConsts';
+import {
+  getLevelProgress,
+  getDataCreditLevel,
+} from '@/factories/authorFactory';
 
 // checkout skeleton
 // https://github.com/ToxicJojo/SkeletonPlaceholder
@@ -263,33 +267,13 @@ export default {
       return this.author && this.author.dataCredit ? Object.keys(this.author.dataCredit) : [];
     },
     dataCreditLevel() {
-      const entires = this.authorDataCreditLevels;
-
-      for (let i = 0; i < entires.length; i++) {
-        const scoreLvl = entires[i];
-        if (this.dataCreditScore >= scoreLvl.score) {
-          return scoreLvl.lvl;
-        }
-      }
-
-      return 0;
+      return getDataCreditLevel(this.dataCreditScore);
     },
     dataCreditLevelColor() {
       return this.colorPalette[this.dataCreditLevel];
     },
     levelProgress() {
-      const levels = this.authorDataCreditLevels;
-      const currentLvl = this.dataCreditLevel;
-      const index = currentLvl > 0 ? this.getDataCreditLevelIndex(currentLvl) : levels.length;
-      const next = index - 1;
-      let progress = 100;
-
-      if (next >= 0 && next < levels.length) {
-        progress = this.dataCreditScore / levels[next].score * 100;
-        // console.log(`progress: ${progress}`);
-      }
-
-      return progress;
+      return getLevelProgress();
     },
     dataCreditScore() {
       let score = 0;
@@ -365,18 +349,6 @@ export default {
       style = `stroke: ${this.dataCreditLevelColor} !important;`;
       this.$refs.progressTrack.setAttribute('style', style);
     },
-    getDataCreditLevelIndex(lvl) {
-      const entires = this.authorDataCreditLevels;
-
-      for (let i = 0; i < entires.length; i++) {
-        const scoreLvl = entires[i];
-        if (lvl === scoreLvl.lvl) {
-          return i;
-        }
-      }
-
-      return -1;
-    },
     isOrcId(id) {
       return id.match(RegExp(/^[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$/g));
     },
@@ -416,14 +388,6 @@ export default {
     colorPalette: ['rgb(226, 242, 124)', 'rgb(158, 219, 129)', 'rgb(0, 191, 173)', 'rgb(8, 135, 124)', 'rgb(153, 88, 209)', 'rgb(17, 17, 17)'],
     colorPaletteTo: ['rgba(226, 242, 124, 0.4)', 'rgba(158, 219, 129, 0.4)', 'rgba(0, 191, 173, 0.4)', 'rgba(8, 135, 124, 0.4)', 'rgba(153, 88, 209, 0.4)', 'rgba(17, 17, 17, 0.4)'],
     // colorsPalette: ['#E2F27C', '#9EDB81', '#00BFAD', '#08877C', '#111111'],
-    authorDataCreditLevels: [
-      { score: 160, lvl: 6 },
-      { score: 80, lvl: 5 },
-      { score: 40, lvl: 4 },
-      { score: 20, lvl: 3 },
-      { score: 10, lvl: 2 },
-      { score: 1, lvl: 1 },
-    ],
   }),
 };
 </script>

@@ -102,8 +102,12 @@ import {
   createDetails,
   createFunding,
   createPublications,
-  getFullAuthorsFromDataset,
 } from '@/factories/metaDataFactory';
+
+import {
+  getFullAuthorsFromDataset,
+} from '@/factories/authorFactory';
+
 import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
 import MetadataAuthors from '@/components/Metadata/MetadataAuthors';
 

@@ -228,7 +228,7 @@ import TagChipPlaceholder from '@/components/Cards/TagChipPlaceholder';
 import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
-import { getAuthorName } from '@/factories/metaDataFactory';
+import { getAuthorName } from '@/factories/authorFactory';
 
 export default {
   components: {
