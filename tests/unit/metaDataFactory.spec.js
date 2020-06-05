@@ -12,6 +12,7 @@ import {
   createAuthors,
   extractAuthorsMap,
   getFullAuthorsFromDataset,
+  formatDate,
 } from '@/factories/metaDataFactory';
 
 import packagelist from '@/testdata/packagelist';
@@ -335,5 +336,20 @@ describe('metaDataFactory - getFullAuthorsFromDataset', () => {
       expect(author.email).toBeDefined();
       expect(author.dataCredit).toBeDefined();
     }
+  });
+});
+
+describe('metaDataFactory - formatDate', () => {
+  it('empty', () => {
+    const date = formatDate();
+    expect(date).toBe('');
+  });
+
+  it('with date in ckan format', () => {
+    const ckanDate = '2017-08-15T15:25:45.175790';
+
+    const date = formatDate(ckanDate);
+    expect(date).toBeDefined();
+    expect(date).toBe('15. Jan 2017 15:25');
   });
 });

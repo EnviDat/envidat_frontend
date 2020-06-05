@@ -76,15 +76,44 @@ function contentFilteredByTags(value, selectedTagNames) {
   return false;
 }
 
+function createSolrQuery(searchTerm) {
+
+  const overallSearchString = `title:"*${searchTerm}*"~2 OR notes:"*${searchTerm}*"~2 OR author:"*${searchTerm}*"~2`;
+
+  const splits = searchTerm.split(' ');
+  if (splits.length <= 0) {
+    return overallSearchString;
+  }
+
+  let solrQuery = overallSearchString;
+
+  for (let i = 0; i < splits.length; i++) {
+    const searchSplit = splits[i];
+
+    solrQuery += ` OR author: "*${searchSplit}*" OR title: "*${searchSplit}*" OR notes: "*${searchSplit}*"`;
+  }
+
+  // https://www.envidat.ch/query?ident=on&q=author:%22Marcia%20Phillips%22~2
+  // %20OR%20author:%22*Marcia*%22%20OR%20author:%22*Phillips*%22&wt=json&rows=1000&fq=capacity:public&fq=state:active
+
+  return solrQuery;
+}
+
 export default {
   async [SEARCH_METADATA]({ commit }, searchTerm) {
     commit(SEARCH_METADATA);
 
-    searchTerm = searchTerm.trim();
+    const originalTerm = searchTerm.trim();
+
+    const solrQuery = createSolrQuery(originalTerm);
+
     // using the envidat "query" action for performance boost (ckan package_search isn't performant)
-    const query = `query?q=title:"${searchTerm}" OR notes:"${searchTerm}" OR author:"${searchTerm}"&wt=json&rows=1000`;
-    const publicOnlyQuery = `${query}&fq=capacity:public&fq=state:active`;
+    // const queryAuthor = `query?q=title:"${searchTerm}" OR notes:"${searchTerm}" OR author:"${searchTerm}"~2&wt=json&rows=1000`;
+    const query = `query?q=${solrQuery}`;
+    const queryAdditions = '&wt=json&rows=1000';
+    const publicOnlyQuery = `${query}${queryAdditions}&fq=capacity:public&fq=state:active`;
     const url = urlRewrite(publicOnlyQuery, '/', PROXY);
+
 
     await axios
       .get(url)
@@ -119,9 +148,12 @@ export default {
   async [BULK_LOAD_METADATAS_CONTENT]({ dispatch, commit }) {
     commit(BULK_LOAD_METADATAS_CONTENT);
 
-    const url = urlRewrite('current_package_list_with_resources?limit=1000&offset=0',
+    let url = urlRewrite('current_package_list_with_resources?limit=1000&offset=0',
                 API_BASE, PROXY);
 
+    if (typeof useTestData === 'string' && useTestData.toLowerCase() === 'true') {
+      url = './testdata/packagelist.json';
+    }
 
     await axios.get(url)
       .then((response) => {

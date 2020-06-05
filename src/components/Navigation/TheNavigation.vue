@@ -29,7 +29,7 @@
                               class="v-list__group__header__prepend-icon px-2" >
 
             <base-icon-button marginClass="ma-0 pa-0"
-                              :tooltipText="item.title"
+                              :tooltipText="item.toolTip"
                               :materialIconName="item.icon"
                               :iconColor="item.active ? 'accent' : 'secondary'"
                               color="transparent"
