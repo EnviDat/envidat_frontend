@@ -43,21 +43,19 @@
               grow
               py-0 >
         <v-tooltip bottom :disabled="$vuetify.breakpoint.xsOnly || !searchToolTipText">
-          <!-- <div > -->
-            <v-text-field slot="activator"
-                          class="envidatSmallSearch"
-                          style="align-items: center;"
-                          :class="{'small': compactLayout}"
-                          v-model="searchText"
-                          single-line
-                          hide-details
-                          primary
-                          :flat="isFlat"
-                          :placeholder="labelText"
-                          @keyup.enter="clicked"
-                          append-icon="clear"
-                          @click:append="clearClicked" />
-          <!-- </div> -->
+          <v-text-field slot="activator"
+                        class="envidatSmallSearch"
+                        style="align-items: center;"
+                        :class="{'small': compactLayout}"
+                        v-model="searchText"
+                        single-line
+                        hide-details
+                        primary
+                        :flat="isFlat"
+                        :placeholder="labelText"
+                        @keyup.enter="clicked"
+                        append-icon="clear"
+                        @click:append="clearClicked" />
 
           <span>{{ searchToolTipText }}</span>
         </v-tooltip>
@@ -169,35 +167,35 @@ export default {
 </script>
 
 <style>
-.smallSearchBar > label {
-  top: inherit !important;
-}
+  .smallSearchBar > label {
+    top: inherit !important;
+  }
 
-.smallSearchBar .input-group__details {
-  min-height: 0px !important;
-}
+  .smallSearchBar .input-group__details {
+    min-height: 0px !important;
+  }
 
-.envidatSmallSearch {
-  padding: 0px !important;
-  margin: 0px !important;
-}
+  .envidatSmallSearch {
+    padding: 0px !important;
+    margin: 0px !important;
+  }
 
-.envidatSmallSearch > .v-input__control {
-  max-height: 40px !important;
-  margin-bottom: 2px !important;
-}
+  .envidatSmallSearch > .v-input__control {
+    max-height: 40px !important;
+    margin-bottom: 2px !important;
+  }
 
-.envidatSmallSearch > .v-input__control > .v-input__slot > .v-text-field__slot > input {
-  padding: 0;
-}
+  .envidatSmallSearch > .v-input__control > .v-input__slot > .v-text-field__slot > input {
+    padding: 0;
+  }
 
-.envidatSmallSearch.small > .v-input__control {
-  margin-bottom: 2px !important;
-  /* min-height: 32px !important; */
-  font-size: 12px !important;
-}
+  .envidatSmallSearch.small > .v-input__control {
+    margin-bottom: 2px !important;
+    /* min-height: 32px !important; */
+    font-size: 12px !important;
+  }
 
-.envidatSmallSearch > .v-input__append-outer {
-  margin: auto !important;
-}
+  .envidatSmallSearch > .v-input__append-outer {
+    margin: auto !important;
+  }
 </style>

@@ -15,7 +15,7 @@ import {
   formatDate,
 } from '@/factories/metaDataFactory';
 
-import packagelist from '@/testdata/packagelist';
+import packagelist from '@/../public/testdata/packagelist';
 import categoryCards from '@/store/modules/metadata/categoryCards';
 
 // const metadatasContent = {};

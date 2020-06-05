@@ -642,40 +642,35 @@ export function createAuthors(dataset) {
     authors = JSON.parse(dataset.author);
   }
 
-  if (authors && authors instanceof Array) {
-    const authorObjs = [];
-
-    for (let i = 0; i < authors.length; i++) {
-      const author = authors[i];
-
-      // const authorName = getAuthorName(author);
-      // console.log('authorName: ' + authorName);
-      const firstName = author.given_name;
-      const lastName = author.name;
-
-      const id = {
-        type: author.identifier_scheme,
-        identifier: author.identifier,
-      };
-
-      const dataCredit = getDataCredit(author);
-
-      authorObjs.push({
-        firstName,
-        lastName,
-        fullName: `${firstName} ${lastName}`,
-        datasetCount: 1,
-        affiliation: author.affiliation,
-        id,
-        email: author.email,
-        dataCredit,
-      });
-    }
-
-    return authorObjs;
+  if (!authors || !(authors instanceof Array)) {
+    return null;
   }
 
-  return null;
+  const authorObjs = [];
+
+  for (let i = 0; i < authors.length; i++) {
+    const author = authors[i];
+    const firstName = author.given_name;
+    const lastName = author.name;
+
+    const dataCredit = getDataCredit(author);
+
+    authorObjs.push({
+      firstName,
+      lastName,
+      fullName: `${firstName} ${lastName}`,
+      datasetCount: 1,
+      affiliation: author.affiliation,
+      id: {
+        type: author.identifier_scheme,
+        identifier: author.identifier,
+      },
+      email: author.email,
+      dataCredit,
+    });
+  }
+
+  return authorObjs;
 }
 
 export function extractAuthorsMap(datasets) {
@@ -731,7 +726,7 @@ export function extractAuthorsMap(datasets) {
           // authorCount++;
         }
       }
-    } else {
+    // } else {
       // console.log(`Dataset ${dataset.title} id ${dataset.id} has no authors?`);
     }
 

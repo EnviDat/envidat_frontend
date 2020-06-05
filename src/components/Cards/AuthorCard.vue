@@ -200,50 +200,33 @@
         </v-container>
       </v-card-title>
 
-      <!-- <div v-if="dataCreditLevel >= 1"
-            style="position: absolute; top: 0px; right: 23%;"
-           :style="bottomToTopStyle(100, 'gold', 'red')" ></div>
+      <div id="wrapper"
+            style="position: absolute; top: 0; right: 0;"
+            class="pa-4">
 
-      <div v-if="dataCreditLevel >= 2"
-            style="position: absolute; top: 0px; right: 19%;"
-           :style="bottomToTopStyle(100, 'gold', 'red')" ></div>
+        <svg class="progress"
+              :data-progress="levelProgress"
+              x="0px" y="0px"
+              viewBox="0 0 776 628">
 
-      <div v-if="dataCreditLevel >= 3"
-            style="position: absolute; top: 0px; right: 15%;"
-           :style="bottomToTopStyle(100, 'gold', 'red')" ></div>
+          <path ref="progressTrack"
+                class="track"
+                viewBox="0 0 500 500"
+                d="M723 314L543 625.77 183 625.77 3 314 183 2.23 543 2.23 723 314z">
+          </path>
 
-      <div v-if="dataCreditLevel >= 4"
-            style="position: absolute; top: 0px; right: 11%;"
-           :style="bottomToTopStyle(100, 'gold', 'red')" ></div>
-
-      <div v-if="dataCreditLevel >= 5"
-            style="position: absolute; top: 0px; right: 7%;"
-           :style="bottomToTopStyle(100, 'gold', 'red')" ></div> -->
-
-    <div id="wrapper"
-          style="position: absolute; top: 0; right: 0;"
-          class="pa-4">
-
-      <svg class="progress"
-            :data-progress="levelProgress"
-            x="0px" y="0px"
-            viewBox="0 0 776 628">
-        <path ref="progressTrack"
-              class="track"
-              viewBox="0 0 500 500"
-              d="M723 314L543 625.77 183 625.77 3 314 183 2.23 543 2.23 723 314z">
-        </path>
-        <path ref="progressFill"
-              class="fill"
-              d="M723 314L543 625.77 183 625.77 3 314 183 2.23 543 2.23 723 314z">
-        </path>
-        <text class="value"
-              style="fill: white;"
-              x="50%" y="73%">
-          {{ dataCreditLevel }}
-        </text>
-      </svg>
-    </div>
+          <path ref="progressFill"
+                class="fill"
+                d="M723 314L543 625.77 183 625.77 3 314 183 2.23 543 2.23 723 314z">
+          </path>
+          
+          <text class="value"
+                style="fill: white;"
+                x="50%" y="73%">
+            {{ dataCreditLevel }}
+          </text>
+        </svg>
+      </div>
 
     </v-card>
 
@@ -273,18 +256,6 @@ export default {
     this.setLevelProgress();
   },
   computed: {
-    // getDataCreditLevel(currentScore) {
-    //   const entires = this.authorDataCreditLevels;
-
-    //   for (let i = 0; i < entires.length; i++) {
-    //     const scoreLvl = entires[i];
-    //     if (currentScore >= scoreLvl.score) {
-    //       return scoreLvl.lvl;
-    //     }
-    //   }
-
-    //   return 0;
-    // },
     dark() {
       return this.dataCreditLevel >= 6;
     },
@@ -372,25 +343,12 @@ export default {
       return minSize;
     },
     dynamicCardBackground() {
-      let color = 'white';
-      let toColor = '#efefef';
-
       if (this.dataCreditLevel === 0) {
         return 'background-color: #fff';
       }
 
-      color = this.colorPalette[this.dataCreditLevel - 1];
-      toColor = this.colorPaletteTo[this.dataCreditLevel - 1];
-
-      // if (this.dataCreditLevel === 1) {
-      //   color = '#e02a00FF'; // #e00000
-      //   toColor = '#ff3d3d64'; // #ff0000
-      // } else if (this.dataCreditLevel === 2) {
-      //   color = '#ffac05FF';
-      //   toColor = '#ffac0596';
-      // } else if (this.dataCreditLevel === 3) {
-      //   return 'background-color: #111';
-      // }
+      const color = this.colorPalette[this.dataCreditLevel - 1];
+      const toColor = this.colorPaletteTo[this.dataCreditLevel - 1];
 
       return `background-image: linear-gradient(45deg, ${color} 10%, ${toColor} 90%);
               background-position: center, center; background-size: cover;`;
@@ -440,29 +398,6 @@ export default {
     },
     verticalLineStyle(color) {
       return `border-left: thick solid ${color}`;
-    },
-    bottomToTopStyle(height, fromColor, toColor, toPct) {
-      if (!toColor) {
-        toColor = 'transparent';
-      }
-      if (!toPct) {
-        toPct = '100%';
-      }
-      if (!height) {
-        height = 100;
-      }
-      height = height >= 100 ? 100 : height;
-
-      // const width = '1';
-      /* eslint-disable prefer-template */
-      // let grd = 'height: ' + height + '%; border-width: 1px; border-style: solid;';
-      let grd = 'height: ' + height + '%; width: 1px;';
-      // grd += 'border-image: ';
-      grd += 'background-image: ';
-      // grd += 'linear-gradient(to top, ' + fromColor + ' , ' + toColor + ') 1 ' + toPct + ';';
-      grd += 'linear-gradient(' + fromColor + ' , ' + toColor + ');';
-
-      return grd;
     },
   },
   data: () => ({
@@ -539,18 +474,6 @@ export default {
     opacity: 0.65;
   }
 
-  /* #wrapper{
-    position: relative;
-    top: 80px;
-    width: 404px;
-  } */
-  /* .center {
-    left: 50%;
-    -webkit-transform: translate( -50% );
-    -ms-transform: translate( -50% );
-    transform: translate( -50% );
-  } */
-
   .progress {
     width: 40px;
     height: 40px;
@@ -578,16 +501,5 @@ export default {
   .progress .value {
     font-size: 500px;
   }
-  .progress .text {
-    font-size: 120px;
-  }
-  .noselect {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    cursor: default;
-  }  
+
 </style>
