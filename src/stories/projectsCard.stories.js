@@ -18,7 +18,7 @@ import globalMethods from '@/factories/globalMethods';
 import ProjectCard from '@/components/Cards/ProjectCard.vue';
 import ProjectCardPlaceholder from '@/components/Cards/ProjectCardPlaceholder.vue';
 // get Project test data and enhance it
-import projectJSON from '@/testdata/projects';
+import projectJSON from '@/../public/testdata/projects.json';
 import {
   enhanceSubprojectsFromExtras,
 } from '@/factories/projectsDataFactory';
