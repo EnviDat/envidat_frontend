@@ -49,8 +49,8 @@ import {
   enhanceMetadataEntry,
   enhanceTags,
   createLocation,
-  extractAuthorsMap,
 } from '@/factories/metaDataFactory';
+import { extractAuthorsMap } from '@/factories/authorFactory';
 import { solrResultToCKANJSON } from '@/factories/apiFactory';
 
 import { enhanceMetadataFromExtras } from '@/factories/modeFactory';

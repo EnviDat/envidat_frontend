@@ -16,6 +16,11 @@ import seedrandom from 'seedrandom';
 import { parse, format } from 'date-fns';
 
 import {
+  getAuthorName,
+  getAuthorsString,
+} from '@/factories/authorFactory';
+
+import {
   FOREST,
   SNOW,
   LAND,
@@ -111,37 +116,6 @@ export function formatDate(date) {
   }
 
   return formatedDate;
-}
-
-export function getAuthorName(author) {
-  return `${author.given_name ? author.given_name : ''} ${author.name ? author.name : ''}`.trim();
-}
-
-export function getAuthorsString(dataset) {
-  if (!dataset) {
-    return null;
-  }
-
-  let authors = '';
-
-  if (dataset.author !== undefined) {
-    let { author } = dataset;
-
-    if (typeof dataset.author === 'string') {
-      author = JSON.parse(dataset.author);
-    }
-
-    author.forEach((element) => {
-      authors += ` ${getAuthorName(element)};`;
-    });
-
-    // cut of the last ';'
-    if (authors.length > 1) {
-      authors = authors.substring(0, authors.length - 1);
-    }
-  }
-
-  return authors.trim();
 }
 
 export function createLicense(dataset) {
@@ -598,164 +572,4 @@ export function enhanceMetadatas(metadatas, cardBGImages, categoryCards) {
   }
 
   return metadatas;
-}
-
-export function getDataCredit(author) {
-  if (!author.data_credit) {
-    return null;
-  }
-
-  // key: dataCreditName, value: count
-  const dataCredits = {};
-
-  if (author.data_credit instanceof Array) {
-    for (let i = 0; i < author.data_credit.length; i++) {
-      const credit = author.data_credit[i];
-
-      if (dataCredits[credit]) {
-        let v = dataCredits[credit];
-        v += 1;
-        dataCredits[credit] = v;
-      } else {
-        dataCredits[credit] = 1;
-      }
-    }
-
-  } else if (typeof author.data_credit === 'string') {
-    dataCredits[author.data_credit] = 1;
-  } else {
-    console.log(`Unexpected type for author.data_credit ${typeof author.data_credit}`);
-    throw new Error(`Unexpected type for author.data_credit ${typeof author.data_credit}`);
-  }
-
-  return dataCredits;
-}
-
-export function createAuthors(dataset) {
-  if (!dataset) {
-    return null;
-  }
-
-  let authors = null;
-
-  if (typeof dataset.author === 'string') {
-    authors = JSON.parse(dataset.author);
-  }
-
-  if (!authors || !(authors instanceof Array)) {
-    return null;
-  }
-
-  const authorObjs = [];
-
-  for (let i = 0; i < authors.length; i++) {
-    const author = authors[i];
-    const firstName = author.given_name;
-    const lastName = author.name;
-
-    const dataCredit = getDataCredit(author);
-
-    authorObjs.push({
-      firstName,
-      lastName,
-      fullName: `${firstName} ${lastName}`,
-      datasetCount: 1,
-      affiliation: author.affiliation,
-      id: {
-        type: author.identifier_scheme,
-        identifier: author.identifier,
-      },
-      email: author.email,
-      dataCredit,
-    });
-  }
-
-  return authorObjs;
-}
-
-export function extractAuthorsMap(datasets) {
-  if (!datasets) { return null; }
-
-  const authorMap = {};
-  // let authorCount = 0;
-
-  for (let i = 0; i < datasets.length; i++) {
-    const dataset = datasets[i];
-
-    const authors = createAuthors(dataset);
-
-    if (authors) {
-      for (let j = 0; j < authors.length; j++) {
-        const author = authors[j];
-
-        const authorName = author.fullName;
-        const existingAuthor = authorMap[authorName];
-
-        if (existingAuthor) {
-          existingAuthor.datasetCount += author.datasetCount;
-
-          if (author.data_credit) {
-            if (!existingAuthor.data_credit) {
-              existingAuthor.data_credit = author.data_credit;
-            } else {
-              const keys = Object.keys(author.data_credit);
-
-              for (let k = 0; k < keys.length; k++) {
-                const key = keys[k];
-                const value = author.data_credit[key];
-
-                let existingValue = existingAuthor.data_credit[key];
-
-                if (existingValue) {
-                  existingValue += value;
-                } else {
-                  existingValue = value;
-                }
-
-                // console.log('for ' + author.name + ' set ' + key + ' ' + existingValue);
-                existingAuthor.data_credit[key] = existingValue;
-              }
-            }
-          }
-
-          // console.log('for ' + author.name + ' updated ' + existingAuthor.count);
-          authorMap[authorName] = existingAuthor;
-        } else {
-          // console.log('for ' + author.name + ' set ' + author.count);
-          authorMap[authorName] = author;
-          // authorCount++;
-        }
-      }
-    // } else {
-      // console.log(`Dataset ${dataset.title} id ${dataset.id} has no authors?`);
-    }
-
-    // console.log(`extracted ${authorCount} authors`);
-  }
-
-  return authorMap;
-}
-
-/**
- * 
- * @param {Object} authorMap 
- * @param {Array} dataset 
- */
-export function getFullAuthorsFromDataset(authorMap, dataset) {
-  if (!authorMap || !dataset) { return null; }
-
-  const authors = createAuthors(dataset);
-  const fullAuthors = [];
-
-  for (let i = 0; i < authors.length; i++) {
-    const author = authors[i];
-
-    const fullAuthor = authorMap[author.fullName];
-    if (fullAuthor) {
-      fullAuthors.push(fullAuthor);
-    }
-    
-  }
-
-  return fullAuthors;
 }
