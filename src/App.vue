@@ -118,6 +118,7 @@ import {
 import { POLICIES_NAMESPACE } from '@/store/policiesMutationsConsts';
 import { GUIDELINES_NAMESPACE } from '@/store/guidelinesMutationsConsts';
 import { PROJECTS_NAMESPACE } from '@/store/projectsMutationsConsts';
+import { importImages } from '@/factories/metaDataFactory';
 
 import TheNavigation from '@/components/Navigation/TheNavigation';
 import TheNavigationSmall from '@/components/Navigation/TheNavigationSmall';
@@ -135,7 +136,7 @@ export default {
     this.loadAllMetadata();
 
     const bgImgs = require.context('./assets/', false, /\.jpg$/);
-    this.appBGImages = this.mixinMethods_importImages(bgImgs, 'app_b');
+    this.appBGImages = importImages(bgImgs, 'app_b');
   },
   updated() {
     this.updateActiveStateOnNavItems();
