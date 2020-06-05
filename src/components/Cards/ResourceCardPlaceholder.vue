@@ -14,15 +14,9 @@
     </v-card-title>
 
     <v-card-text class="pt-0">
-      <v-container grid-list-xs>
-        <v-layout
-          row
-          wrap
-        >
-          <v-flex
-            v-bind="{ [`xs8`]: !this.twoColumnLayout ,
-                      [`xs12`]: this.twoColumnLayout }"
-          >
+      <v-container grid-list-xs pa-0 pr-5>
+        <v-layout row wrap >
+          <v-flex >
             <v-layout column>
               <v-flex xs11>
                 <div class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-shimmer">
@@ -32,33 +26,16 @@
             </v-layout>
           </v-flex>
 
-          <v-flex
-            v-bind="{ [`xs4`]: !this.twoColumnLayout ,
-                      [`xs12`]: this.twoColumnLayout,
-                      [`pt-3`]: this.twoColumnLayout }"
-          >
-            <v-layout column>
-              <v-flex px-0>
-                <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer">
-                  <div class="bone bone-type-multiline " />
-                </div>
-              </v-flex>
-            </v-layout>
-          </v-flex>
         </v-layout>
       </v-container>
     </v-card-text>
 
-    <v-card-actions
-      class="mb-2 py-0"
-      style="position: absolute; bottom: 0; right: 0;"
-    >
+    <v-card-actions class="mb-2 py-0"
+                    style="position: absolute; bottom: 0; right: 0;" >
       <v-spacer />
 
-      <div
-        color="accent"
-        class="skeleton skeleton-size-big skeleton-color-yellow skeleton-animation-shimmer"
-      >
+      <div color="accent"
+            class="skeleton skeleton-size-big skeleton-color-yellow skeleton-animation-shimmer" >
         <div
           style="width: 32px; height: 32px;"
           class="bone bone-type-image bone-style-round"
