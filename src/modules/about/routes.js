@@ -7,6 +7,6 @@ export const aboutRoutes = [
   {
     path: ABOUT_PATH,
     name: ABOUT_PAGENAME,
-    component: () => import(/* webpackChunkName: "aboutPage" */ '@/modules/about/components/AboutPage'),
+    component: () => import(/* webpackPrefetch: true, webpackChunkName: "aboutPage" */ '@/modules/about/components/AboutPage'),
   },
 ];
