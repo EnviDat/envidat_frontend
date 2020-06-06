@@ -109,13 +109,14 @@ import {
 import MetadataList from '@/components/Metadata/MetadataList';
 
 import missionImg from '@/assets/projects/mission.jpg';
-import creator from '@/assets/cards/data_creator.jpg';
 import creatorSmall from '@/assets/cards/data_creator_small.jpg';
 
 import {
   tagsIncludedInSelectedTags,
   createTag,
 } from '@/factories/metadataFilterMethods';
+
+import creator from '../assets/data_creator.jpg';
 
 import ProjectSubprojects from './ProjectDetailViews/ProjectSubprojects';
 import ProjectBody from './ProjectDetailViews/ProjectBody';
