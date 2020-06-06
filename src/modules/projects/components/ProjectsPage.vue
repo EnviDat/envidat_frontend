@@ -72,20 +72,22 @@
 import { mapGetters } from 'vuex';
 import { PROJECTS_PAGENAME, PROJECT_DETAIL_PAGENAME } from '@/router/routeConsts';
 import { SET_APP_BACKGROUND, SET_CURRENT_PAGE } from '@/store/mainMutationsConsts';
-import {
-  GET_PROJECTS,
-  PROJECTS_NAMESPACE,
-  SET_PROJECTDETAIL_PAGE_BACK_URL,
-} from '@/store/projectsMutationsConsts';
 
 import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
-import ProjectCard from '@/components/Cards/ProjectCard';
-import ProjectCardPlaceholder from '@/components/Cards/ProjectCardPlaceholder';
 
 import mission from '@/assets/projects/mission.jpg';
 import missionSmall from '@/assets/projects/mission_small.jpg';
 import creator from '@/assets/cards/data_creator.jpg';
 import creatorSmall from '@/assets/cards/data_creator_small.jpg';
+
+import ProjectCardPlaceholder from './ProjectCardPlaceholder';
+import ProjectCard from './ProjectCard';
+
+import {
+  GET_PROJECTS,
+  PROJECTS_NAMESPACE,
+  SET_PROJECTDETAIL_PAGE_BACK_URL,
+} from '../store/projectsMutationsConsts';
 
 export default {
   name: 'ProjectPage',

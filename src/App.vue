@@ -111,7 +111,7 @@ import {
 
 import { POLICIES_NAMESPACE } from '@/modules/about/store/policiesMutationsConsts';
 import { GUIDELINES_NAMESPACE } from '@/modules/about/store/guidelinesMutationsConsts';
-import { PROJECTS_NAMESPACE } from '@/store/projectsMutationsConsts';
+import { PROJECTS_NAMESPACE } from '@/modules/projects/store/projectsMutationsConsts';
 
 import TheNavigation from '@/components/Navigation/TheNavigation';
 import TheNavigationSmall from '@/components/Navigation/TheNavigationSmall';

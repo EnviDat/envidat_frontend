@@ -99,11 +99,6 @@ import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
 } from '@/store/mainMutationsConsts';
-import {
-  GET_PROJECTS,
-  PROJECTS_NAMESPACE,
-  SET_PROJECTDETAIL_PAGE_BACK_URL,
-} from '@/store/projectsMutationsConsts';
 
 import {
   METADATA_NAMESPACE,
@@ -111,9 +106,6 @@ import {
   LISTCONTROL_MAP_ACTIVE,
 } from '@/store/metadataMutationsConsts';
 
-import ProjectHeader from '@/components/ProjectDetailViews/ProjectHeader';
-import ProjectBody from '@/components/ProjectDetailViews/ProjectBody';
-import ProjectSubprojects from '@/components/ProjectDetailViews/ProjectSubprojects';
 import MetadataList from '@/components/Metadata/MetadataList';
 
 import missionImg from '@/assets/projects/mission.jpg';
@@ -124,6 +116,16 @@ import {
   tagsIncludedInSelectedTags,
   createTag,
 } from '@/factories/metadataFilterMethods';
+
+import ProjectSubprojects from './ProjectDetailViews/ProjectSubprojects';
+import ProjectBody from './ProjectDetailViews/ProjectBody';
+import ProjectHeader from './ProjectDetailViews/ProjectHeader';
+
+import {
+  GET_PROJECTS,
+  PROJECTS_NAMESPACE,
+  SET_PROJECTDETAIL_PAGE_BACK_URL,
+} from '../store/projectsMutationsConsts';
 
 export default {
   /**

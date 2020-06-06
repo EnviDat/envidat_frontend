@@ -10,21 +10,22 @@
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
+import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
+import { ADD_USER_NOTIFICATION } from '@/store/mainMutationsConsts';
+
+import {
+  enhanceSubprojectsFromExtras,
+  enhanceProjectsDatasets,
+} from '@/factories/projectsDataFactory';
+
+import { getSpecificApiError } from '@/factories/notificationFactory';
 
 import {
   GET_PROJECTS,
   GET_PROJECTS_SUCCESS,
   GET_PROJECTS_ERROR,
   SET_PROJECTDETAIL_PAGE_BACK_URL,
-} from '@/store/projectsMutationsConsts';
-
-import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
-import { ADD_USER_NOTIFICATION } from '@/store/mainMutationsConsts';
-import {
-  enhanceSubprojectsFromExtras,
-  enhanceProjectsDatasets,
-} from '@/factories/projectsDataFactory';
-import { getSpecificApiError } from '@/factories/notificationFactory';
+} from './projectsMutationsConsts';
 
 export default {
   [GET_PROJECTS](state) {

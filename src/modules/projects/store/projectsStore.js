@@ -11,8 +11,8 @@
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
-import actions from '@/store/modules/projects/projectsActions';
-import mutations from '@/store/modules/projects/projectsMutations';
+import actions from './projectsActions';
+import mutations from './projectsMutations';
 
 const projectsState = {
   projects: [],

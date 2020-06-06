@@ -57,7 +57,7 @@
  * file 'LICENSE.txt', which is part of this source code package.
 */
 
-import ProjectCard from '@/components/Cards/ProjectCard';
+import ProjectCard from '../ProjectCard';
 
 export default {
   components: {

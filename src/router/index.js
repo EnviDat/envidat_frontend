@@ -22,15 +22,13 @@ import {
   METADATADETAIL_PAGENAME,
   GCMD_PATH,
   GCMD_PAGENAME,
-  PROJECTS_PATH,
-  PROJECTS_PAGENAME,
-  PROJECT_DETAIL_PATH,
-  PROJECT_DETAIL_PAGENAME,
   REPORT_PATH,
   REPORT_PAGENAME,
 } from '@/router/routeConsts';
 
 import { aboutRoutes } from '@/modules/about/routes';
+import { projectsRoutes } from '@/modules/projects/routes';
+// import { projectsRoutes } from '@/modules/projects/routes';
 
 Vue.use(Router);
 
@@ -64,16 +62,6 @@ const routes = [
     component: () => import(/* webpackChunkName: "gcmdPage" */ '@/components/Pages/GCMDPage'),
   },
   {
-    path: PROJECTS_PATH,
-    name: PROJECTS_PAGENAME,
-    component: () => import(/* webpackChunkName: "projectsPage" */ '@/components/Pages/ProjectsPage'),
-  },
-  {
-    path: `${PROJECT_DETAIL_PATH}/:id`,
-    name: PROJECT_DETAIL_PAGENAME,
-    component: () => import(/* webpackChunkName: "projectDetailPage" */ '@/components/Pages/ProjectDetailPage'),
-  },
-  {
     path: REPORT_PATH,
     name: REPORT_PAGENAME,
     component: () => import(/* webpackChunkName: "guidelinesPage", webpackPrefetch: true */ '@/components/Pages/ReportPage'),
@@ -82,7 +70,8 @@ const routes = [
 
 
 export default new Router({
-  routes: [...routes, ...aboutRoutes],
+  routes: [...routes, ...projectsRoutes, ...aboutRoutes],
+  // routes: [...routes, ...aboutRoutes],
   scrollBehavior(to, from, savedPosition) {
     return new Promise((resolve) => {
       setTimeout(() => {
