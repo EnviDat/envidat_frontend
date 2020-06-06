@@ -23,6 +23,12 @@ import {
   GET_POLICIES_ERROR,
 } from '@/modules/about/store/policiesMutationsConsts';
 
+import {
+  GET_DMP,
+  GET_DMP_SUCCESS,
+  GET_DMP_ERROR,
+} from '@/modules/about/store/dmpMutationsConsts';
+
 import { ADD_USER_NOTIFICATION } from '@/store/mainMutationsConsts';
 import { getSpecificApiError } from '@/factories/notificationFactory';
 
@@ -65,6 +71,26 @@ export default {
 
     if (process.env.NODE_ENV === 'development') {
       state.policiesMarkdown += ' \nThis is normal when developing locally on localhost:8080';
+    }
+
+    this.commit(ADD_USER_NOTIFICATION, errObj);
+  },
+  [GET_DMP](state) {
+    state.loading = true;
+  },
+  [GET_DMP_SUCCESS](state, payload) {
+    state.dmpMarkdown = payload;
+    state.loading = false;
+  },
+  [GET_DMP_ERROR](state, reason) {
+    state.loading = false;
+
+    const details = 'An error occured while loading the dmp infos!';
+    const errObj = getSpecificApiError(details, reason);
+    state.dmpMarkdown = `${details}: ${reason}`;
+
+    if (process.env.NODE_ENV === 'development') {
+      state.dmpMarkdown += ' \nThis is normal when developing locally on localhost:8080';
     }
 
     this.commit(ADD_USER_NOTIFICATION, errObj);

@@ -35,6 +35,24 @@ if (typeof errReport === 'string') {
   errorReportingEnabled = errReport.toLowerCase() === 'true';
 }
 
+const cardBGImages = getCardBackgrounds();
+
+function getIcons() {
+  const icons = {};
+  const imgPaths = require.context('../assets/icons/', false, /\.png$/);
+  const images = globalMethods.methods.mixinMethods_importImages(imgPaths);
+
+  const keys = Object.keys(images);
+  keys.forEach((key) => {
+    // console.log('icon ' + key + ' value ' + images[key]);
+    icons[key] = images[key];
+  });
+
+  return icons;
+}
+
+const iconImages = getIcons();
+
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -43,8 +61,8 @@ const store = new Vuex.Store({
     currentPage: '',
     // use a './' before the img for the img name for the local path
     appBGImage: '',
-    cardBGImages: {},
-    iconImages: {},
+    cardBGImages,
+    iconImages,
     controls: [LISTCONTROL_MAP_ACTIVE],
     appScrollPosition: 0,
     browseScrollPosition: 0,
@@ -76,7 +94,6 @@ const store = new Vuex.Store({
     metadata,
     about,
     projects,
-    dmp,
   },
 });
 
@@ -93,18 +110,5 @@ const persistPlugin = createPersist({
 
 store.plugins = [persistPlugin];
 
-function importIcons() {
-  const imgPaths = require.context('../assets/icons/', false, /\.png$/);
-  const images = globalMethods.methods.mixinMethods_importImages(imgPaths);
-
-  const keys = Object.keys(images);
-  keys.forEach((key) => {
-    // console.log('icon ' + key + ' value ' + images[key]);
-    store.state.iconImages[key] = images[key];
-  });
-}
-
-store.state.cardBGImages = getCardBackgrounds();
-importIcons();
 
 export default store;
