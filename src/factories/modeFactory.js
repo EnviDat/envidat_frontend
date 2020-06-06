@@ -17,7 +17,7 @@ import { SWISSFL_MODE } from '@/store/metadataMutationsConsts';
 import {
   swissFLTag,
   swissFLExtraTags,
-} from '@/store/modules/metadata/swissForestLabTags';
+} from '@/modules/browse/store/swissForestLabTags';
 
 import globalMethods from '@/factories/globalMethods';
 

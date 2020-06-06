@@ -16,8 +16,6 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import {
   LANDING_PATH,
-  BROWSE_PATH,
-  BROWSE_PAGENAME,
   METADATADETAIL_PATH,
   METADATADETAIL_PAGENAME,
   GCMD_PATH,
@@ -28,7 +26,7 @@ import {
 
 import { aboutRoutes } from '@/modules/about/routes';
 import { projectsRoutes } from '@/modules/projects/routes';
-// import { projectsRoutes } from '@/modules/projects/routes';
+import { browseRoutes } from '@/modules/browse/routes';
 
 Vue.use(Router);
 
@@ -40,11 +38,6 @@ const routes = [
     name: 'LandingPage',
     component: () => import(/* webpackChunkName: "landingPage" */ '@/components/Pages/LandingPage'),
     // component: () => import('@/components/Pages/LandingPage'),
-  },
-  {
-    path: BROWSE_PATH,
-    name: BROWSE_PAGENAME,
-    component: () => import(/* webpackChunkName: "browsePage" */ '@/components/Pages/BrowsePage'),
   },
   {
     path: `${METADATADETAIL_PATH}/:metadataid`,
@@ -70,7 +63,12 @@ const routes = [
 
 
 export default new Router({
-  routes: [...routes, ...projectsRoutes, ...aboutRoutes],
+  routes: [
+    ...routes,
+    ...browseRoutes,
+    ...projectsRoutes,
+    ...aboutRoutes,
+  ],
   // routes: [...routes, ...aboutRoutes],
   scrollBehavior(to, from, savedPosition) {
     return new Promise((resolve) => {
