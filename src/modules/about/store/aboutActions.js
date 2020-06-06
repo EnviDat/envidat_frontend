@@ -25,6 +25,12 @@ import {
   GET_POLICIES_ERROR,
 } from '@/modules/about/store/policiesMutationsConsts';
 
+import {
+  GET_DMP,
+  GET_DMP_SUCCESS,
+  GET_DMP_ERROR,
+} from '@/modules/about/store/dmpMutationsConsts';
+
 export default {
   [GET_GUIDELINES]({ commit }) {
     commit(GET_GUIDELINES);
@@ -45,7 +51,10 @@ export default {
   [GET_POLICIES]({ commit }) {
     commit(GET_POLICIES);
 
-    const url = `./policies/policies.md?nocache=${new Date().getTime()}`;
+    let url = `./policies/policies.md?nocache=${new Date().getTime()}`;
+    if (process.env.NODE_ENV === 'development') {
+      url = './testdata/policies.md';
+    }
 
     axios.get(url)
       .then((response) => {
@@ -53,6 +62,22 @@ export default {
       })
       .catch((reason) => {
         commit(GET_POLICIES_ERROR, reason);
+      });
+  },
+  [GET_DMP]({ commit }) {
+    commit(GET_DMP);
+
+    let url = `./guidelines/dmp.md?nocache=${new Date().getTime()}`;
+    if (process.env.NODE_ENV === 'development') {
+      url = './testdata/dmp.md';
+    }
+
+    axios.get(url)
+      .then((response) => {
+        commit(GET_DMP_SUCCESS, response.data);
+      })
+      .catch((reason) => {
+        commit(GET_DMP_ERROR, reason);
       });
   },
 };

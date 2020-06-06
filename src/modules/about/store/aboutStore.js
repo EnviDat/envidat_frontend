@@ -15,12 +15,12 @@ import actions from '@/modules/about/store/aboutActions';
 import mutations from '@/modules/about/store/aboutMutations';
 
 const aboutState = {
-  guidelinesPageBackRoute: '',
   guidelinesMarkdown: null,
   guidelinesLoading: false,
-  policiesPageBackRoute: '',
   policiesMarkdown: null,
   policiesLoading: false,
+  dmpMarkdown: null,
+  dmpLoading: false,
 };
 
 
@@ -29,11 +29,11 @@ export const about = {
   state: aboutState,
   getters: {
     guidelinesMarkdown: state => state.guidelinesMarkdown,
-    guidelinesPageBackRoute: state => state.guidelinesPageBackRoute,
     guidelinesLoading: state => state.guidelinesLoading,
     policiesMarkdown: state => state.policiesMarkdown,
-    policiesPageBackRoute: state => state.policiesPageBackRoute,
     policiesLoading: state => state.policiesLoading,
+    dmpMarkdown: state => state.dmpMarkdown,
+    dmpLoading: state => state.dmpLoading,
   },
   mutations,
   actions,

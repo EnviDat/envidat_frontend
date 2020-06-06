@@ -6,6 +6,7 @@
         <v-tabs v-model="activeTab"
                 color="transparent"
                 slider-color="accent" 
+                grow
                 fixed-tabs >
 
           <v-tab ripple :style="`background-color: ${$vuetify.theme.highlight}`">
@@ -73,26 +74,56 @@
             <!-- Policies -->
             <v-icon>policy</v-icon>
           </v-tab>
+
           <v-tab-item >
-                <v-flex xs12 mt-3 >
-                  <img-and-text-layout :img="policiesImg"
-                                        :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
-                                        title="Policies" />
-                </v-flex>
+            <v-flex xs12 mt-3 >
+              <img-and-text-layout :img="policiesImg"
+                                    :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
+                                    title="Policies" />
+            </v-flex>
 
-                <v-flex v-if="policiesLoading"
-                        xs12
-                        pt-5 >
-                  Loading Policies...
-                </v-flex>
+            <v-flex v-if="policiesLoading"
+                    xs12
+                    pt-5 >
+              Loading Policies...
+            </v-flex>
 
-                <v-flex v-if="!policiesLoading"
-                        xs12
-                        pt-5
-                        v-html="policiesMarkdownText" >
-                </v-flex>
-
+            <v-flex v-if="!policiesLoading"
+                    xs12
+                    pt-5
+                    v-html="policiesMarkdownText" >
+            </v-flex>
           </v-tab-item>
+
+          <v-tab ripple :style="`background-color: ${$vuetify.theme.highlight}`">
+            <!-- DMP -->
+            <v-icon>menu_book</v-icon>
+          </v-tab>
+
+          <v-tab-item>
+            <v-flex xs12 mt-3>
+              <img-and-text-layout :img="dmpImg"
+                                    :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
+                                    title="Data Management Plan" />
+            </v-flex>
+
+            <v-flex v-if="dmpLoading"
+                    offset-md1
+                    offset-lg1
+                    shrink
+                    pt-5 >
+              Loading DMP Infos...
+            </v-flex>
+
+
+            <v-flex v-if="!dmpLoading"
+                    xs12
+                    pt-5
+                    v-html="dmpMarkdownText" >
+            </v-flex>
+          </v-tab-item>
+
+
         </v-tabs>
       </v-flex>
 
@@ -131,6 +162,9 @@ import {
 import {
   GET_GUIDELINES,
 } from '@/modules/about/store/guidelinesMutationsConsts';
+import {
+  GET_DMP,
+} from '@/modules/about/store/dmpMutationsConsts';
 
 
 import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
@@ -152,6 +186,9 @@ import guidelines from '@/modules/about/assets/guidelines.jpg';
 import guidelinesSmall from '@/modules/about/assets/guidelines_small.jpg';
 
 import ExpandableCard from '@/modules/about/components/ExpandableCard';
+import dmp from '../assets/dmp.jpg';
+import dmpSmall from '../assets/dmp_small.jpg';
+
 
 export default {
   name: 'AboutPage',
@@ -169,6 +206,7 @@ export default {
   beforeMount() {
     this.$store.dispatch(`about/${GET_POLICIES}`);
     this.$store.dispatch(`about/${GET_GUIDELINES}`);
+    this.$store.dispatch(`about/${GET_DMP}`);
   },
   /**
    * @description reset the scrolling to the top,
@@ -179,13 +217,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      guidelinesPageBackRoute: 'about/guidelinesPageBackRoute',
-      // guidelinesTitle: 'guidelines/guidelinesTitle',
       guidelinesMarkdown: 'about/guidelinesMarkdown',
       guidelinesLoading: 'about/guidelinesLoading',
-      policiesPageBackRoute: 'about/policiesPageBackRoute',
       policiesMarkdown: 'about/policiesMarkdown',
       policiesLoading: 'about/policiesLoading',
+      dmpMarkdown: 'about/dmpMarkdown',
+      dmpLoading: 'about/dmpLoading',
     }),
     missionImg() {
       return this.$vuetify.breakpoint.mdAndUp ? mission : missionSmall;
@@ -236,6 +273,12 @@ export default {
     },
     guidelineImg() {
       return this.$vuetify.breakpoint.mdAndUp ? guidelines : guidelinesSmall;
+    },
+    dmpImg() {
+      return this.$vuetify.breakpoint.mdAndUp ? dmp : dmpSmall;
+    },
+    dmpMarkdownText() {
+      return remark().use(html).processSync(this.dmpMarkdown);
     },
   },
   components: {
