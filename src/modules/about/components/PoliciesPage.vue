@@ -12,7 +12,7 @@
       </v-flex>
 
       <v-flex v-if="loading"
-              offset-md2
+              offset-md1
               offset-lg1
               shrink
               pt-5 >
@@ -20,7 +20,7 @@
       </v-flex>
 
       <v-flex v-if="!loading"
-                offset-md2
+                offset-md1
                 offset-lg1
                 shrink
                 pt-5
@@ -50,7 +50,6 @@ import html from 'remark-html';
 import { mapGetters } from 'vuex';
 
 import {
-  BROWSE_PATH,
   POLICIES_PAGENAME,
 } from '@/router/routeConsts';
 import {
@@ -82,7 +81,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      policiesPageBackRoute: `${POLICIES_NAMESPACE}/policiesPageBackRoute`,
       policiesMarkdown: `${POLICIES_NAMESPACE}/policiesMarkdown`,
       loading: `${POLICIES_NAMESPACE}/loading`,
     }),
@@ -94,25 +92,6 @@ export default {
     },
   },
   methods: {
-    /**
-       * @description changes the url to page the user was before. Fallback: BrowsePage
-       */
-    catchBackClicked() {
-      const backRoute = this.policiesPageBackRoute;
-
-      if (backRoute) {
-        this.$router.push({
-          path: backRoute.path,
-          query: backRoute.query,
-          params: backRoute.params,
-        });
-        return;
-      }
-
-      this.$router.push({
-        path: BROWSE_PATH,
-      });
-    },
   },
   components: {
     ImgAndTextLayout,

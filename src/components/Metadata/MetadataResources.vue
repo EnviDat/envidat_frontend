@@ -1,12 +1,29 @@
 <template>
   <v-card :class="{ ['pt-2']: this.isOnTop }">
-    <v-card-title class="title metadata_title">
-      Data and resources
+    <v-card-title >
+      <v-container pa-0>
+      <v-layout row justify-end>
+        <v-flex grow
+                class="title metadata_title">
+          Data and resources
+        </v-flex>
+
+        <v-flex shrink>
+          <base-icon-count-view v-if="!showPlaceholder && resources && resources.length > 0"
+                                :count="resources.length"
+                                :icon-string="fileIcon"
+                                style="opacity: 0.85;" />
+        </v-flex>
+      </v-layout>
+      </v-container>
     </v-card-title>
 
     <v-container v-if="resources && resources.length > 0"
-                fluid grid-list-xs grid-list-md
-                pa-3 >
+                fluid
+                pa-3
+                grid-list-md
+                class="heightAndScroll" >
+
       <v-layout v-if="showPlaceholder"
                   row wrap >
         <v-flex v-for="n in 2"
@@ -61,11 +78,13 @@
 
 import ResourceCard from '@/components/Cards/ResourceCard';
 import ResourceCardPlaceholder from '@/components/Cards/ResourceCardPlaceholder';
+import BaseIconCountView from '@/components/BaseElements/BaseIconCountView';
 
 export default {
   components: {
     ResourceCard,
     ResourceCardPlaceholder,
+    BaseIconCountView,
   },
   props: {
     genericProps: Object,
@@ -100,6 +119,9 @@ export default {
     fileSizeIcon() {
       return this.mixinMethods_getGenericProp('fileSizeIcon');
     },
+    fileIcon() {
+      return this.mixinMethods_getIcon('file');
+    },
     dateCreatedIcon() {
       return this.mixinMethods_getGenericProp('dateCreatedIcon');
     },
@@ -122,3 +144,13 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+
+  .heightAndScroll {
+    max-height: 750px;
+    overflow-y: auto !important;
+    scrollbar-width: thin;
+  }
+
+</style>

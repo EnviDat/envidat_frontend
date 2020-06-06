@@ -13,6 +13,7 @@
 import { storiesOf } from '@storybook/vue';
 import { action } from '@storybook/addon-actions';
 import './js/vuetify-components';
+import projectJSON from '@/../public/testdata/projects.json';
 import globalMethods from '@/factories/globalMethods';
 
 import ProjectHeader from '@/components/ProjectDetailViews/ProjectHeader.vue';
@@ -23,7 +24,6 @@ import ProjectBody from '@/components/ProjectDetailViews/ProjectBody.vue';
 // import MetadataDetailPage from '@/components/Pages/MetadataDetailPage.vue';
 
 // get Project test data and enhance it
-import projectJSON from '@/testdata/projects';
 import {
   enhanceSubprojectsFromExtras,
 } from '@/factories/projectsDataFactory';

@@ -3,8 +3,8 @@ import {
   enhanceProjectsDatasets,
 } from '../../src/factories/projectsDataFactory';
 
-import packagelist from '@/testdata/packagelist';
-import projectJSON from '@/testdata/projects';
+import packagelist from '@/../public/testdata/packagelist';
+import projectJSON from '@/../public/testdata/projects';
 
 const metadatasContent = {};
 packagelist.result.forEach((entry) => {

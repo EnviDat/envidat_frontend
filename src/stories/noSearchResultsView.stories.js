@@ -13,6 +13,10 @@ storiesOf('4 Filtering | NoSearchResultsView ', module).add('NoSearchResultView'
   components: { NoSearchResultsView },
   template: `
     <v-layout row wrap>
+      <v-flex xs12 pa-2>
+        <no-search-results-view :categoryCards="categoryCards"
+                                  @clickedCategory="onClick" />
+      </v-flex>
       <v-flex xs6 pa-2>
         <no-search-results-view :categoryCards="categoryCards"
                                   @clickedCategory="onClick" />

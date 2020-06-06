@@ -50,7 +50,7 @@
                         ['pr-5'] : flatLayout,
                         ['pr-4'] : !flatLayout,
                   }" >
-      <!-- TODO: need to strip the markdown characters from the desc -->
+
       <v-layout row wrap>
         <v-flex v-if="!compactLayout"
                   xs12 >
@@ -94,7 +94,8 @@
 
         <v-flex pa-1>
           <base-icon-count-view :count="resourceAmount"
-                                :icon-string="fileIconString" />
+                                :icon-string="fileIconString"
+                                style="opacity: 0.65;" />
         </v-flex>
       </v-layout>
 
@@ -328,7 +329,7 @@ export default {
     compactTagtextLength: 60,
     flatTagtextLength: 170,
     blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
-    whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
+    whiteTopToBottom: 'rgba(255,255,255, 0.7) 0%, rgba(255,255,255, 0.99) 70%',
   }),
 };
 </script>

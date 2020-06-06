@@ -1,5 +1,5 @@
 /* eslint-disable */
-"tags": [
+export const tags = [
     "BIOGEOGRAPHICAL",
     "ECONOMIC",
     "FOREST",

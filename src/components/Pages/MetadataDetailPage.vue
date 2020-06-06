@@ -32,21 +32,23 @@
       <template v-slot:leftColumn>
 
         <v-flex v-for="(entry, index) in firstColumn"
-                :key="`left_${index}`"
+                :key="`left_${index}_${keyHash}`"
                 mb-2 >
           <component :is="entry"
                       :generic-props="entry.genericProps"
-                      :show-placeholder="showPlaceholder" />
+                      :show-placeholder="showPlaceholder"
+                      :authorDeadInfo="entry.name === 'MetadataAuthors' ? authorDeadInfo : null" />
         </v-flex>
       </template>
 
       <template v-slot:rightColumn>
         <v-flex v-for="(entry, index) in secondColumn"
-                :key="`right_${index}`"
+                :key="`right_${index}_${keyHash}`"
                 mb-2 >
           <component :is="entry"
                       :generic-props="entry.genericProps"
-                      :show-placeholder="showPlaceholder" />
+                      :show-placeholder="showPlaceholder"
+                      :authorDeadInfo="entry.name === 'MetadataAuthors' ? authorDeadInfo : null" />
         </v-flex>
       </template>
     </two-column-layout>
@@ -100,8 +102,12 @@ import {
   createDetails,
   createFunding,
   createPublications,
-  getFullAuthorsFromDataset,
 } from '@/factories/metaDataFactory';
+
+import {
+  getFullAuthorsFromDataset,
+} from '@/factories/authorFactory';
+
 import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
 import MetadataAuthors from '@/components/Metadata/MetadataAuthors';
 
@@ -112,6 +118,7 @@ import MetadataAuthors from '@/components/Metadata/MetadataAuthors';
 // https://paper-leaf.com/blog/2016/01/creating-blurred-background-using-only-css/
 
 export default {
+  name: 'MetadataDetailPage',
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.commit(SET_CURRENT_PAGE, METADATADETAIL_PAGENAME);
@@ -144,7 +151,7 @@ export default {
    */
   beforeDestroy() {
     // clean current metadata to make be empty for the next to load up
-    this.$store.commit(`metadata/${CLEAN_CURRENT_METADATA}`);
+    this.$store.commit(`${METADATA_NAMESPACE}/${CLEAN_CURRENT_METADATA}`);
   },
   computed: {
     ...mapGetters({
@@ -216,8 +223,12 @@ export default {
     },
   },
   methods: {
-    resize() {
+    reRenderComponents() {
+      // this.keyHash = Date.now().toString;
       this.$forceUpdate();
+    },
+    resize() {
+      this.reRenderComponents();
     },
     headerHeight() {
       if (!this.showPlaceholder && this.$refs && this.$refs.header) {
@@ -284,16 +295,16 @@ export default {
 
       this.firstCol = [
         components.MetadataBody,
+        components.MetadataCitation,
         components.MetadataPublications,
         components.MetadataFunding,
-        components.MetadataCitation,
-        components.MetadataLocation,
+        components.MetadataAuthors,
       ];
 
       this.secondCol = [
         components.MetadataResources,
+        components.MetadataLocation,
         components.MetadataDetails,
-        components.MetadataAuthors,
       ];
 
       this.singleCol = [
@@ -307,7 +318,7 @@ export default {
         components.MetadataDetails,
       ];
 
-      this.$forceUpdate();
+      this.reRenderComponents();
     },
     /**
        * @description
@@ -449,6 +460,7 @@ export default {
     firstCol: [],
     secondCol: [],
     singleCol: [],
+    keyHash: '',
   }),
 };
 </script>

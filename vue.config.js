@@ -8,13 +8,31 @@
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
+/* eslint-disable no-console */
 
+const fs = require('fs');
 const dotenv = require('dotenv');
 
 dotenv.config();
 process.env.VUE_APP_VERSION = require('./package.json').version;
 
-console.log(`starting ${process.env.VUE_APP_VERSION} with use of testdata '${process.env.VUE_APP_USE_TESTDATA}' on ${process.env.NODE_ENV}`);
+const version = process.env.VUE_APP_VERSION;
+
+if (process.env.NODE_ENV === 'production') {
+  const fileName = `version_${version}.txt`;
+  const filePath = `${__dirname}/public/${fileName}`;
+
+  fs.writeFile(filePath, version, (err) => {
+
+    if (err) {
+      return console.log(`Tried to created file ${fileName}. Error: ${err}`);
+    }
+
+    return console.log(`Created version file ${fileName} for easy build version highlight.`);
+  });
+}
+
+console.log(`starting ${version} with use of testdata '${process.env.VUE_APP_USE_TESTDATA}' on ${process.env.NODE_ENV}`);
 
 module.exports = {
   publicPath: './',

@@ -9,40 +9,16 @@ import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
 
 // import { createTag } from '@/factories/metadataFilterMethods';
-import globalMethods from '@/factories/globalMethods';
 import {
   convertTags,
   enhanceMetadatas,
+  getCardBackgrounds,
 } from '@/factories/metaDataFactory';
 import metadataCards from '@/stories/js/metadata';
 
 import categoryCards from '@/store/modules/metadata/categoryCards';
 
-function getCardImages() {
-  const imgs = {};
-
-  let imgPaths = require.context('../../src/assets/cards/landscape/', false, /\.jpg$/);
-  imgs.landscape = globalMethods.methods.mixinMethods_importImages(imgPaths);
-
-  imgPaths = require.context('../../src/assets/cards/forest/', false, /\.jpg$/);
-  imgs.forest = globalMethods.methods.mixinMethods_importImages(imgPaths);
-
-  imgPaths = require.context('../../src/assets/cards/snow/', false, /\.jpg$/);
-  imgs.snow = globalMethods.methods.mixinMethods_importImages(imgPaths);
-
-  imgPaths = require.context('../../src/assets/cards/diversity/', false, /\.jpg$/);
-  imgs.diversity = globalMethods.methods.mixinMethods_importImages(imgPaths);
-
-  imgPaths = require.context('../../src/assets/cards/hazard/', false, /\.jpg$/);
-  imgs.hazard = globalMethods.methods.mixinMethods_importImages(imgPaths);
-
-  imgPaths = require.context('../../src/assets/cards/meteo/', false, /\.jpg$/);
-  imgs.meteo = globalMethods.methods.mixinMethods_importImages(imgPaths);
-
-  return imgs;
-}
-
-const cardImages = getCardImages();
+const cardImages = getCardBackgrounds();
 
 metadataCards.forEach((element) => {
   element.tags = convertTags(element.tags, true);

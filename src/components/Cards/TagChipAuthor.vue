@@ -66,6 +66,7 @@ export default {
 </script>
 
 <style scoped>
+
   .authorTag {
     opacity: 0.85;
     height: 24px !important;

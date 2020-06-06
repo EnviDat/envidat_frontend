@@ -87,10 +87,6 @@ import strip from 'strip-markdown';
 
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
-/**
- * TODO: Difference defaultImage vs img
- */
-
 // checkout skeleton
 // https://github.com/ToxicJojo/SkeletonPlaceholder
 
@@ -173,37 +169,3 @@ export default {
   }),
 };
 </script>
-
-<style scoped>
-
-  .placeholder .black_title {
-    background-color: rgba(0,0,0,.87) !important;
-  }
-
-  .placeholder card__title.subheading{
-    color: white !important;
-  }
-
-  .black_title{
-    color: rgba(0,0,0,.87) !important;
-  }
-
-  .white_title{
-    color: rgba(255,255,255,.9) !important;
-  }
-
-  .card_tag_placeholder {
-    opacity: 0.75;
-  }
-
-  .expand-enter-active, .expand-leave-active {
-    transition: all 4s ease;
-    background-color: red;
-  }
-
-  .expand-enter, .expand-leave-to {
-    opacity: 0;
-    background-color: black;
-  }
-
-</style>

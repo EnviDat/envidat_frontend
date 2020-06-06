@@ -94,6 +94,7 @@ import {
 // https://codepen.io/suez/pen/dPqxoM
 
 export default {
+  name: 'LandingPage',
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       // console.log("landing beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
@@ -163,8 +164,6 @@ export default {
   },
   data: () => ({
     PageBGImage: './app_b_landingpage.jpg',
-    // TODO: using the browsepage background for the mobile is just an initial fix
-    // TODO: create images for 1024px (ipad pro), 768px (ipad) and 420px (phone) height
     MobileBGImage: './app_b_browsepage.jpg',
     labelText: "Search for research data topics ex. 'Avalanche'",
     buttonText: 'SEARCH',
