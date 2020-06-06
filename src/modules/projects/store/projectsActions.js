@@ -13,16 +13,17 @@
 
 import axios from 'axios';
 
-import {
-  GET_PROJECTS,
-  GET_PROJECTS_SUCCESS,
-  GET_PROJECTS_ERROR,
-} from '@/store/projectsMutationsConsts';
 
 import {
   METADATA_NAMESPACE,
 } from '@/store/metadataMutationsConsts';
 import { urlRewrite } from '@/factories/apiFactory';
+
+import {
+  GET_PROJECTS,
+  GET_PROJECTS_SUCCESS,
+  GET_PROJECTS_ERROR,
+} from './projectsMutationsConsts';
 
 const API_BASE = '/api/action/';
 const ENVIDAT_PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
