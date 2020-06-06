@@ -7,6 +7,7 @@
     <v-container v-if="showAuthors"
                 fluid
                 grid-list-md
+                class="heightAndScroll"
                 pa-3 >
 
       <v-layout v-if="showPlaceholder"
@@ -24,7 +25,9 @@
         <v-flex v-for="author in authors"
                 :key="author.fullName"
                 xs12 sm6 >
-          <author-card :author="author" />
+          <author-card :author="author"
+                      :asciiDead="authorDeadInfo ? authorDeadInfo.asciiDead : ''"
+                      :authorPassedInfo="authorDeadInfo ? authorDeadInfo.authorPassedInfo : ''" />
         </v-flex>
       </v-layout>
     </v-container>
@@ -55,6 +58,7 @@ import AuthorCard from '@/components/Cards/AuthorCard';
 import AuthorCardPlaceholder from '@/components/Cards/AuthorCardPlaceholder';
 
 export default {
+  name: 'MetadataAuthors',
   components: {
     AuthorCard,
     AuthorCardPlaceholder,
@@ -62,6 +66,7 @@ export default {
   props: {
     genericProps: Object,
     showPlaceholder: Boolean,
+    authorDeadInfo: Object,
   },
   mounted() {
     const options = this.options || {};
@@ -93,3 +98,13 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+
+  .heightAndScroll {
+    max-height: 750px;
+    overflow-y: auto !important;
+    scrollbar-width: thin;
+  }
+
+</style>

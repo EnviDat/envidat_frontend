@@ -40,8 +40,8 @@ import {
   createPublications,
   createBody,
   createLocation,
-  createAuthors,
 } from '@/factories/metaDataFactory';
+import { createAuthors } from '@/factories/authorFactory';
 // metadata gets enhance in the storybook config
 import metadata from './js/metadata';
 

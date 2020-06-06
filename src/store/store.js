@@ -21,15 +21,9 @@ import { about } from '@/modules/about/store/aboutStore';
 import { projects } from '@/store/modules/projects/projects';
 import mutations from '@/store/mainMutations';
 import actions from '@/store/mainActions';
-import {
-  FOREST,
-  SNOW,
-  LAND,
-  HAZARD,
-  DIVERSITY,
-  METEO,
-} from '@/store/categoriesConsts';
 
+
+import { getCardBackgrounds } from '@/factories/metaDataFactory';
 import { LISTCONTROL_MAP_ACTIVE } from '@/store/metadataMutationsConsts';
 import globalMethods from '@/factories/globalMethods';
 
@@ -82,6 +76,7 @@ const store = new Vuex.Store({
     metadata,
     about,
     projects,
+    dmp,
   },
 });
 
@@ -98,21 +93,6 @@ const persistPlugin = createPersist({
 
 store.plugins = [persistPlugin];
 
-function setImages(categoryName, imgPaths) {
-  const images = globalMethods.methods.mixinMethods_importImages(imgPaths);
-  store.state.cardBGImages[categoryName] = images;
-  // this._vm(store.state.cardBGImages, categoryName, images);
-}
-
-function importCardBackgrounds() {
-  setImages(LAND, require.context('@/assets/cards/landscape/', false, /\.jpg$/));
-  setImages(FOREST, require.context('@/assets/cards/forest/', false, /\.jpg$/));
-  setImages(SNOW, require.context('@/assets/cards/snow/', false, /\.jpg$/));
-  setImages(DIVERSITY, require.context('@/assets/cards/diversity/', false, /\.jpg$/));
-  setImages(HAZARD, require.context('@/assets/cards/hazard/', false, /\.jpg$/));
-  setImages(METEO, require.context('@/assets/cards/meteo/', false, /\.jpg$/));
-}
-
 function importIcons() {
   const imgPaths = require.context('../assets/icons/', false, /\.png$/);
   const images = globalMethods.methods.mixinMethods_importImages(imgPaths);
@@ -124,7 +104,7 @@ function importIcons() {
   });
 }
 
-importCardBackgrounds();
+store.state.cardBGImages = getCardBackgrounds();
 importIcons();
 
 export default store;

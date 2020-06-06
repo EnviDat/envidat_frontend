@@ -17,7 +17,7 @@ import './js/vuetify-components';
 import WindowVerticalView from '@/components/ProjectDetailViews/WindowVerticalView.vue';
 import WindowView from '@/components/ProjectDetailViews/WindowView.vue';
 
-import projectJSON from '@/testdata/projects';
+import projectJSON from '@/../public/testdata/projects.json';
 import {
   enhanceSubprojectsFromExtras,
 } from '@/factories/projectsDataFactory';

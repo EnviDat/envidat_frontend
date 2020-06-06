@@ -7,11 +7,11 @@ import './js/vuetify-components';
 
 import AuthorCard from '@/components/Cards/AuthorCard.vue';
 
-import authorCollection from '@/testdata/authorCollection.json';
+import authorCollection from '@/../public/testdata/authorCollection.json';
 
 export const methods = {
   authors() {
-    const items = Object.values(this.authorCollection);
+    const items = Object.values(authorCollection);
     return items.splice(0, items.length / 2);
   },
 };

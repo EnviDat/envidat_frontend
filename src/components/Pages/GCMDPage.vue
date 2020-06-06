@@ -40,6 +40,7 @@ import {
 } from '@/store/mainMutationsConsts';
 
 export default {
+  name: 'GCMDPage',
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       // console.log("beforeRouteEnter to: " + to + " from: " + from + " next: " + next);

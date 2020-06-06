@@ -29,8 +29,11 @@ export default {
   [GET_GUIDELINES]({ commit }) {
     commit(GET_GUIDELINES);
 
-    const url = `./guidelines/guidelines.md?nocache=${new Date().getTime()}`;
-
+    let url = `./guidelines/guidelines.md?nocache=${new Date().getTime()}`;
+    if (process.env.NODE_ENV === 'development') {
+      url = './testdata/guidelines.md';
+    }
+    
     axios.get(url)
       .then((response) => {
         commit(GET_GUIDELINES_SUCCESS, response.data);

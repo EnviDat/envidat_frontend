@@ -128,8 +128,9 @@ export function enhanceMetadataFromExtras(mode, metdataEntry) {
         metdataEntry[key] = extra.value;
 
         const extraTag = createTag(extra.value.toUpperCase());
+        const tagIndex = metdataEntry.tags.findIndex(t => t.name === extraTag.name);
 
-        if (metdataEntry.tags.findIndex(t => t.name === extraTag.name) < 0) {
+        if (tagIndex < 0) {
           metdataEntry.tags.push(extraTag);
         }
       }

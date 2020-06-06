@@ -11,14 +11,16 @@
 
     <v-card-text class="pt-0"
                 :class="{ 'pb-3': $vuetify.breakpoint.mdAndUp,
-                          'pb-5': $vuetify.breakpoint.smAndDown || showFullDescription, }" >
+                          'pb-5': $vuetify.breakpoint.smAndDown, }" >
       <v-container grid-list-xs
                     pa-0 >
-        <v-layout v-bind="{ ['row']: $vuetify.breakpoint.smAndUp,
-                            ['wrap']: $vuetify.breakpoint.smAndUp,
-                            ['column']: $vuetify.breakpoint.xsOnly, }" >
-          <v-flex v-bind="{ [`xs6`]: !this.twoColumnLayout && !showFullDescription,
-                            [`xs12`]: this.twoColumnLayout || showFullDescription }"
+        <v-layout v-bind="{ 'row': $vuetify.breakpoint.smAndUp,
+                            'wrap': $vuetify.breakpoint.smAndUp,
+                            'column': $vuetify.breakpoint.xsOnly,
+                            'pb-5': $vuetify.breakpoint.mdAndUp }" >
+
+          <v-flex v-bind="{ 'xs6': !this.twoColumnLayout && !showFullDescription,
+                            'xs12': this.twoColumnLayout || showFullDescription }"
                   order-xs1
                   order-sm3 >
             <v-layout column>
@@ -30,7 +32,6 @@
 
               <v-flex v-if="!showFullDescription"
                       xs11
-                      pb-5
                       class="resourceCardText" >
                 {{ markdownTextTruncated }}
               </v-flex>
@@ -49,7 +50,8 @@
                             [`xs12`]: this.twoColumnLayout,
                             [`pt-3`]: this.twoColumnLayout }"
                   order-xs3
-                  order-sm1 >
+                  order-sm1
+                  class="resourceInfo" >
             <v-layout column>
               <v-flex v-if="doi"
                       px-0 py-1 >
@@ -210,12 +212,14 @@ export default {
     },
     formatedBytes() {
       if (!this.size) return '';
+
       let sizeNumber = this.size;
+
       if (typeof this.size === 'number') {
         sizeNumber = Number.parseInt(this.size, 10);
       }
-      const bytesString = this.mixinMethods_formatBytes(sizeNumber);
-      return bytesString;
+
+      return this.mixinMethods_formatBytes(sizeNumber);
     },
     isLink() {
       return this.format && (this.format.toLowerCase() === 'link' || this.format.toLowerCase() === 'url');
@@ -298,6 +302,7 @@ export default {
   .heightAndScroll {
     max-height: 400px;
     overflow-y: auto !important;
+    scrollbar-width: thin;
   }
 
   .fabPosition {
@@ -332,5 +337,10 @@ export default {
     visibility: visible;
     transition: 0.5s;
     opacity: 1;
+  }
+
+  .resourceInfo {
+    font-size: 10px !important;
+    opacity: 0.9;
   }
 </style>

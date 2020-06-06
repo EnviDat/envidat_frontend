@@ -18,7 +18,7 @@ import globalMethods from '@/factories/globalMethods';
 import ProjectCard from '@/components/Cards/ProjectCard.vue';
 import ProjectCardPlaceholder from '@/components/Cards/ProjectCardPlaceholder.vue';
 // get Project test data and enhance it
-import projectJSON from '@/testdata/projects';
+import projectJSON from '@/../public/testdata/projects.json';
 import {
   enhanceSubprojectsFromExtras,
 } from '@/factories/projectsDataFactory';
@@ -70,7 +70,7 @@ storiesOf('3 Cards | Projects Cards', module)
 
       <v-flex xs3
         v-for="(project, index) in 3"
-        :key="ph_index"
+        :key="'ph_' + index"
       >
         <project-card-placeholder />
       </v-flex>

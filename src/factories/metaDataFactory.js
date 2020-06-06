@@ -13,6 +13,14 @@
  */
 
 import seedrandom from 'seedrandom';
+import { parse, format } from 'date-fns';
+
+import {
+  getAuthorName,
+  getAuthorsString,
+} from '@/factories/authorFactory';
+
+import globalMethods from '@/factories/globalMethods';
 
 import {
   FOREST,
@@ -22,7 +30,6 @@ import {
   DIVERSITY,
   METEO,
 } from '@/store/categoriesConsts';
-
 
 /**
  * Create a psyeudo random integer based on a given seed using the 'seedrandom' lib.
@@ -51,43 +58,41 @@ export function randomInt(min, max, seed = 'For the Horde!') {
  * @return {String} category based on tags array
  */
 export function guessTagCategory(tags) {
-  let category = LAND;
 
-  if (tags) {
-    for (let i = 0; i < tags.length; i++) {
-      const element = tags[i];
+  if (!tags) {
+    return LAND;
+  }
 
-      if (element.name) {
-        if (element.name.includes('HAZARD') || element.name.includes('ACCIDENTS')) {
-          category = HAZARD; break;
-        }
-        if (element.name.includes('DIVERSITY')) {
-          category = DIVERSITY; break;
-        }
-        if (element.name.includes('FOREST')) {
-          category = FOREST; break;
-        }
-        if (element.name.includes('SNOW') || element.name.includes('AVALANCHE')) {
-          category = SNOW; break;
-        }
-        if (element.name.includes('METEO') || element.name.includes('CLIMATE')) {
-          category = METEO; break;
-        }
-        if (element.name.includes('LAND') || element.name.includes('LANDSCAPE')) {
-          category = LAND; break;
-        }
-      }
+  for (let i = 0; i < tags.length; i++) {
+    const element = tags[i];
+    const name = element.name;
+
+    switch (name) {
+      case name.includes('HAZARD') || name.includes('ACCIDENTS'):
+        return HAZARD;
+      case name.includes('DIVERSITY'):
+        return DIVERSITY;
+      case name.includes('FOREST'):
+        return FOREST;
+      case name.includes('SNOW') || name.includes('AVALANCHE'):
+        return SNOW;
+      case name.includes('METEO') || name.includes('CLIMATE'):
+        return METEO;
+      case name.includes('LAND') || name.includes('LANDSCAPE'):
+        return LAND;
+      default:
+        return LAND;
     }
   }
 
-  return category;
+  return LAND;
 }
 
 /**
  * @param {String} date expecting a format like 2017-08-15T15:25:45.175790
  * @return {String} Returns a date string containing the date and hours:minutes:seconds
  */
-export function formateDate(date) {
+export function formatDate(date) {
   // expecting a format like 2017-08-15T15:25:45.175790
   let formatedDate = '';
 
@@ -95,11 +100,15 @@ export function formateDate(date) {
     const split = date.split('T');
     if (split.length > 0) {
       const dateOnly = split[0];
+      const parsedDate = parse(dateOnly, 'yyyy-mm-dd', new Date(date));
+      const newDate = format(parsedDate, 'd. MMM yyyy');
+
       const timeOnly = split[1];
       const timeSplit = timeOnly.split('.');
-      const timeToMinutes = timeSplit[0];
+      let timeToMinutes = timeSplit[0];
+      timeToMinutes = timeToMinutes.substr(0, 5);
 
-      formatedDate = `${dateOnly} ${timeToMinutes}`;
+      formatedDate = `${newDate} ${timeToMinutes}`;
     } else {
       // fallback: just return the input
       formatedDate = date;
@@ -107,37 +116,6 @@ export function formateDate(date) {
   }
 
   return formatedDate;
-}
-
-export function getAuthorName(author) {
-  return `${author.given_name ? author.given_name : ''} ${author.name ? author.name : ''}`.trim();
-}
-
-export function getAuthorsString(dataset) {
-  if (!dataset) {
-    return null;
-  }
-
-  let authors = '';
-
-  if (dataset.author !== undefined) {
-    let { author } = dataset;
-
-    if (typeof dataset.author === 'string') {
-      author = JSON.parse(dataset.author);
-    }
-
-    author.forEach((element) => {
-      authors += ` ${getAuthorName(element)};`;
-    });
-
-    // cut of the last ';'
-    if (authors.length > 1) {
-      authors = authors.substring(0, authors.length - 1);
-    }
-  }
-
-  return authors.trim();
 }
 
 export function createLicense(dataset) {
@@ -310,11 +288,11 @@ export function createResource(dataset) {
     }
   }
 
-  let format = dataset.format ? dataset.format : '';
-  format = format.replace('.', '').toLowerCase();
+  let fileFormat = dataset.format ? dataset.format : '';
+  fileFormat = fileFormat.replace('.', '').toLowerCase();
 
-  const created = formateDate(dataset.created);
-  const modified = formateDate(dataset.last_modified);
+  const created = formatDate(dataset.created);
+  const modified = formatDate(dataset.last_modified);
 
   return {
     // "hash": "",
@@ -324,14 +302,14 @@ export function createResource(dataset) {
     // "mimetype_inner": null,
     // url_type: "upload",
     id: dataset.id,
-    size: dataset.size ? dataset.size : '',
+    size: dataset.size ? dataset.size : 0,
     mimetype: dataset.mimetype ? dataset.mimetype : '',
     cacheUrl: dataset.cache_url ? dataset.cache_url : '',
     doi: dataset.doi,
     name: dataset.name,
     url: resURL,
     restricted: dataset.restricted ? dataset.restricted : '',
-    format,
+    format: fileFormat,
     state: dataset.state ? dataset.state : '',
     created,
     lastModified: modified,
@@ -395,10 +373,10 @@ export function createDetails(dataset) {
   details.push({ label: 'DOI', text: dataset.doi, url: `https://doi.org/${dataset.doi}` });
 
 
-  const created = formateDate(dataset.metadata_created);
+  const created = formatDate(dataset.metadata_created);
   details.push({ label: 'Created', text: created });
 
-  const modified = formateDate(dataset.metadata_modified);
+  const modified = formatDate(dataset.metadata_modified);
   details.push({ label: 'Last Modified', text: modified });
 
   const license = createLicense(dataset);
@@ -413,6 +391,35 @@ export function createDetails(dataset) {
   return details;
 }
 
+function getPolygonPointArray(coordinates) {
+  const points = [];
+
+  for (let i = 0; i < coordinates.length; i++) {
+    const pointElement = coordinates[i];
+    const pointObject = [];
+
+    for (let j = 0; j < pointElement.length; j++) {
+      const coord = pointElement[j];
+      pointObject.push([coord[1], coord[0]]);
+    }
+
+    points.push(pointObject);
+  }
+
+  return points;
+}
+
+function getMultiPointArray(coordinates) {
+  const points = [];
+
+  for (let i = 0; i < coordinates.length; i++) {
+    const pointElement = coordinates[i];
+    const pointObject = [pointElement[1], pointElement[0]];
+    points.push(pointObject);
+  }
+
+  return points;
+}
 
 export function createLocation(dataset) {
   if (!dataset) {
@@ -446,27 +453,10 @@ export function createLocation(dataset) {
         // swap coords for the leaflet map
         location.pointArray = [spatialJSON.coordinates[1], spatialJSON.coordinates[0]];
       } else if (location.isPolygon) {
-        location.pointArray = [];
+        location.pointArray = getPolygonPointArray(spatialJSON.coordinates);
 
-        for (let i = 0; i < spatialJSON.coordinates.length; i++) {
-          const pointElement = spatialJSON.coordinates[i];
-          const pointObject = [];
-
-          for (let j = 0; j < pointElement.length; j++) {
-            const coord = pointElement[j];
-            pointObject.push([coord[1], coord[0]]);
-          }
-
-          location.pointArray.push(pointObject);
-        }
       } else if (location.isMultiPoint) {
-        location.pointArray = [];
-
-        for (let i = 0; i < spatialJSON.coordinates.length; i++) {
-          const pointElement = spatialJSON.coordinates[i];
-          const pointObject = [pointElement[1], pointElement[0]];
-          location.pointArray.push(pointObject);
-        }
+        location.pointArray = getMultiPointArray(spatialJSON.coordinates);
       }
     }
   }
@@ -596,167 +586,16 @@ export function enhanceMetadatas(metadatas, cardBGImages, categoryCards) {
   return metadatas;
 }
 
-export function getDataCredit(author) {
-  if (!author.data_credit) {
-    return null;
-  }
 
-  // key: dataCreditName, value: count
-  const dataCredits = {};
+export function getCardBackgrounds() {
+  const bgs = {};
 
-  if (author.data_credit instanceof Array) {
-    for (let i = 0; i < author.data_credit.length; i++) {
-      const credit = author.data_credit[i];
+  bgs[LAND] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/landscape/', false, /\.jpg$/));
+  bgs[FOREST] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/forest/', false, /\.jpg$/));
+  bgs[SNOW] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/snow/', false, /\.jpg$/));
+  bgs[DIVERSITY] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/diversity/', false, /\.jpg$/));
+  bgs[HAZARD] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/hazard/', false, /\.jpg$/));
+  bgs[METEO] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/meteo/', false, /\.jpg$/));
 
-      if (dataCredits[credit]) {
-        let v = dataCredits[credit];
-        v += 1;
-        dataCredits[credit] = v;
-      } else {
-        dataCredits[credit] = 1;
-      }
-    }
-
-  } else if (typeof author.data_credit === 'string') {
-    dataCredits[author.data_credit] = 1;
-  } else {
-    console.log(`Unexpected type for author.data_credit ${typeof author.data_credit}`);
-    throw new Error(`Unexpected type for author.data_credit ${typeof author.data_credit}`);
-  }
-
-  return dataCredits;
-}
-
-export function createAuthors(dataset) {
-  if (!dataset) {
-    return null;
-  }
-
-  let authors = null;
-
-  if (typeof dataset.author === 'string') {
-    authors = JSON.parse(dataset.author);
-  }
-
-  if (authors && authors instanceof Array) {
-    const authorObjs = [];
-
-    for (let i = 0; i < authors.length; i++) {
-      const author = authors[i];
-
-      // const authorName = getAuthorName(author);
-      // console.log('authorName: ' + authorName);
-      const firstName = author.given_name;
-      const lastName = author.name;
-
-      const id = {
-        type: author.identifier_scheme,
-        identifier: author.identifier,
-      };
-
-      const dataCredit = getDataCredit(author);
-
-      authorObjs.push({
-        firstName,
-        lastName,
-        fullName: `${firstName} ${lastName}`,
-        datasetCount: 1,
-        affiliation: author.affiliation,
-        id,
-        email: author.email,
-        dataCredit,
-      });
-    }
-
-    return authorObjs;
-  }
-
-  return null;
-}
-
-export function extractAuthorsMap(datasets) {
-  if (!datasets) { return null; }
-
-  const authorMap = {};
-  // let authorCount = 0;
-
-  for (let i = 0; i < datasets.length; i++) {
-    const dataset = datasets[i];
-
-    const authors = createAuthors(dataset);
-
-    if (authors) {
-      for (let j = 0; j < authors.length; j++) {
-        const author = authors[j];
-
-        const authorName = author.fullName;
-        const existingAuthor = authorMap[authorName];
-
-        if (existingAuthor) {
-          existingAuthor.datasetCount += author.datasetCount;
-
-          if (author.data_credit) {
-            if (!existingAuthor.data_credit) {
-              existingAuthor.data_credit = author.data_credit;
-            } else {
-              const keys = Object.keys(author.data_credit);
-
-              for (let k = 0; k < keys.length; k++) {
-                const key = keys[k];
-                const value = author.data_credit[key];
-
-                let existingValue = existingAuthor.data_credit[key];
-
-                if (existingValue) {
-                  existingValue += value;
-                } else {
-                  existingValue = value;
-                }
-
-                // console.log('for ' + author.name + ' set ' + key + ' ' + existingValue);
-                existingAuthor.data_credit[key] = existingValue;
-              }
-            }
-          }
-
-          // console.log('for ' + author.name + ' updated ' + existingAuthor.count);
-          authorMap[authorName] = existingAuthor;
-        } else {
-          // console.log('for ' + author.name + ' set ' + author.count);
-          authorMap[authorName] = author;
-          // authorCount++;
-        }
-      }
-    } else {
-      // console.log(`Dataset ${dataset.title} id ${dataset.id} has no authors?`);
-    }
-
-    // console.log(`extracted ${authorCount} authors`);
-  }
-
-  return authorMap;
-}
-
-/**
- * 
- * @param {Object} authorMap 
- * @param {Array} dataset 
- */
-export function getFullAuthorsFromDataset(authorMap, dataset) {
-  if (!authorMap || !dataset) { return null; }
-
-  const authors = createAuthors(dataset);
-  const fullAuthors = [];
-
-  for (let i = 0; i < authors.length; i++) {
-    const author = authors[i];
-
-    const fullAuthor = authorMap[author.fullName];
-    if (fullAuthor) {
-      fullAuthors.push(fullAuthor);
-    }
-    
-  }
-
-  return fullAuthors;
+  return bgs;
 }
