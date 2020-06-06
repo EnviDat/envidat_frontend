@@ -15,10 +15,10 @@
 
 import { getTagColor } from '@/factories/metaDataFactory';
 
-import mutations from '@/store/modules/metadata/metadataMutations';
-import actions from '@/store/modules/metadata/metadataActions';
-import categoryCards from '@/store/modules/metadata/categoryCards';
-import tags from '@/store/modules/metadata/metadataTags';
+import mutations from './metadataMutations';
+import actions from './metadataActions';
+import categoryCards from './categoryCards';
+import tags from './metadataTags';
 
 for (let i = 0; i < tags.length; i++) {
   const tag = tags[i];

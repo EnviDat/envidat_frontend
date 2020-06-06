@@ -16,9 +16,10 @@ import Vuex from 'vuex';
 import createPersist from 'vuex-localstorage';
 
 /* eslint-disable no-unused-vars */
-import { metadata } from '@/store/modules/metadata/metadata';
 import { about } from '@/modules/about/store/aboutStore';
 import { projects } from '@/modules/projects/store/projectsStore';
+import { metadata } from '@/modules/browse/store/metadataStore';
+
 import mutations from '@/store/mainMutations';
 import actions from '@/store/mainActions';
 
