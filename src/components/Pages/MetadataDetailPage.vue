@@ -6,7 +6,7 @@
       <v-flex xs12
               elevation-5
               ref="header"
-              style="z-index: 1; position: absolute; left: 0;" 
+              style="z-index: 1; position: absolute; left: 0;"
               :style="headerStyle" >
 
         <metadata-header v-bind="header"
@@ -87,6 +87,7 @@ import {
 import MetadataHeader from '@/components/Metadata/MetadataHeader';
 import MetadataBody from '@/components/Metadata/MetadataBody';
 import MetadataResources from '@/components/Metadata/MetadataResources';
+import MetadataGeo from '@/components/Metadata/MetadataGeo';
 import MetadataLocation from '@/components/Metadata/MetadataLocation';
 import MetadataDetails from '@/components/Metadata/MetadataDetails';
 import MetadataCitation from '@/components/Metadata/MetadataCitation';
@@ -224,7 +225,6 @@ export default {
   },
   methods: {
     reRenderComponents() {
-      // this.keyHash = Date.now().toString;
       this.$forceUpdate();
     },
     resize() {
@@ -281,11 +281,13 @@ export default {
 
         this.authors = getFullAuthorsFromDataset(this.authorsMap, currentContent);
       }
-
+      const res = this.currentMetadataContent && this.currentMetadataContent.resources ? this.currentMetadataContent.resources : null;
+      const geoConfig = res ? res.find(src => src.name === 'geoservices_config.json') : null;
       this.$set(components.MetadataHeader, 'genericProps', this.header);
       this.$set(components.MetadataBody, 'genericProps', { body: this.body });
       this.$set(components.MetadataCitation, 'genericProps', this.citation);
       this.$set(components.MetadataResources, 'genericProps', this.resources);
+      this.$set(components.MetadataGeo, 'genericProps', { ...this.location, config: geoConfig });
       this.$set(components.MetadataLocation, 'genericProps', this.location);
       this.$set(components.MetadataDetails, 'genericProps', { details: this.details });
       this.$set(components.MetadataAuthors, 'genericProps', { authors: this.authors });
@@ -302,6 +304,7 @@ export default {
       ];
 
       this.secondCol = [
+        components.MetadataGeo,
         components.MetadataResources,
         components.MetadataLocation,
         components.MetadataDetails,
@@ -313,6 +316,7 @@ export default {
         components.MetadataPublications,
         components.MetadataResources,
         components.MetadataFunding,
+        components.MetadataGeo,
         components.MetadataLocation,
         components.MetadataAuthors,
         components.MetadataDetails,
@@ -427,6 +431,7 @@ export default {
     MetadataHeader,
     MetadataBody,
     MetadataResources,
+    MetadataGeo,
     MetadataLocation,
     MetadataDetails,
     MetadataCitation,
