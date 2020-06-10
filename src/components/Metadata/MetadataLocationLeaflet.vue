@@ -31,6 +31,7 @@
       outlineWidth: Number,
     },
     data: () => ({
+      bingApiKey: process.env.VUE_APP_BING_API_KEY,
       marker,
       marker2x,
       markerShadow,
@@ -50,6 +51,8 @@
       iconOptions.iconRetinaUrl = this.marker2x;
       iconOptions.shadowUrl = this.markerShadow;
       const icon = L.icon(iconOptions);
+
+      this.addBasemaps();
 
       // Add geodata to map
       L.geoJSON(this.geom, {
@@ -80,6 +83,30 @@
       if (this.map) {
         this.map.remove();
       }
+    },
+    methods: {
+      addBasemaps() {
+        const streetTiles = L.tileLayer(
+          'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' },
+        );
+
+        const aerialTiles = L.tileLayer.bing({
+          bingMapsKey: this.bingApiKey,
+          imagerySet: 'AerialWithLabels',
+        });
+
+        this.mapLayerGroup = L.layerGroup([streetTiles, aerialTiles]);
+        this.mapLayerGroup.addTo(this.map);
+
+        const baseMaps = {
+          'Satellit (Bingmaps)': aerialTiles,
+          'Roads (OpenStreetMaps)': streetTiles,
+        };
+
+        L.control.layers(baseMaps)
+          .addTo(this.map);
+      },
     },
   };
 </script>
