@@ -54,8 +54,8 @@
  * file 'LICENSE.txt', which is part of this source code package.
 */
 
-import AuthorCard from '@/components/Cards/AuthorCard';
-import AuthorCardPlaceholder from '@/components/Cards/AuthorCardPlaceholder';
+import AuthorCard from '../AuthorCard';
+import AuthorCardPlaceholder from '../AuthorCardPlaceholder';
 
 export default {
   name: 'MetadataAuthors',

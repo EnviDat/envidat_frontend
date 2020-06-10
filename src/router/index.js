@@ -15,15 +15,13 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import {
-  LANDING_PATH,
-  METADATADETAIL_PATH,
-  METADATADETAIL_PAGENAME,
   GCMD_PATH,
   GCMD_PAGENAME,
   REPORT_PATH,
   REPORT_PAGENAME,
 } from '@/router/routeConsts';
 
+import { homeRoutes } from '@/modules/home/routes';
 import { aboutRoutes } from '@/modules/about/routes';
 import { projectsRoutes } from '@/modules/projects/routes';
 import { browseRoutes } from '@/modules/browse/routes';
@@ -33,22 +31,6 @@ Vue.use(Router);
 const START = '/';
 const trailingSlashRE = /\/?$/;
 const routes = [
-  {
-    path: LANDING_PATH,
-    name: 'LandingPage',
-    component: () => import(/* webpackChunkName: "landingPage" */ '@/components/Pages/LandingPage'),
-    // component: () => import('@/components/Pages/LandingPage'),
-  },
-  {
-    path: `${METADATADETAIL_PATH}/:metadataid`,
-    name: METADATADETAIL_PAGENAME,
-    component: () => import(/* webpackChunkName: "metadataDetailPage" */ '@/components/Pages/MetadataDetailPage'),
-  },
-  // {
-  //   path: `${METADATADETAIL_PATH}/:metadataid/resource/:resourceid`,
-  //   name: 'ResourceDetailPage',
-  //   component: () => import(/* webpackChunkName: "resourceDetailPage" */ '@/components/Pages/ResourceDetailPage'),
-  // },
   {
     path: GCMD_PATH,
     name: GCMD_PAGENAME,
@@ -65,6 +47,7 @@ const routes = [
 export default new Router({
   routes: [
     ...routes,
+    ...homeRoutes,
     ...browseRoutes,
     ...projectsRoutes,
     ...aboutRoutes,

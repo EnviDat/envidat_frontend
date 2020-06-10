@@ -84,15 +84,6 @@ import {
   LOAD_METADATA_CONTENT_BY_ID,
   CLEAN_CURRENT_METADATA,
 } from '@/store/metadataMutationsConsts';
-import MetadataHeader from '@/components/Metadata/MetadataHeader';
-import MetadataBody from '@/components/Metadata/MetadataBody';
-import MetadataResources from '@/components/Metadata/MetadataResources';
-import MetadataLocation from '@/components/Metadata/MetadataLocation';
-import MetadataDetails from '@/components/Metadata/MetadataDetails';
-import MetadataCitation from '@/components/Metadata/MetadataCitation';
-import MetadataPublications from '@/components/Metadata/MetadataPublications';
-import MetadataFunding from '@/components/Metadata/MetadataFunding';
-
 import {
   createHeader,
   createBody,
@@ -103,13 +94,20 @@ import {
   createFunding,
   createPublications,
 } from '@/factories/metaDataFactory';
-
 import {
   getFullAuthorsFromDataset,
 } from '@/factories/authorFactory';
-
 import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
-import MetadataAuthors from '@/components/Metadata/MetadataAuthors';
+
+import MetadataHeader from './Metadata/MetadataHeader';
+import MetadataBody from './Metadata/MetadataBody';
+import MetadataResources from './Metadata/MetadataResources';
+import MetadataLocation from './Metadata/MetadataLocation';
+import MetadataDetails from './Metadata/MetadataDetails';
+import MetadataCitation from './Metadata/MetadataCitation';
+import MetadataPublications from './Metadata/MetadataPublications';
+import MetadataFunding from './Metadata/MetadataFunding';
+import MetadataAuthors from './Metadata/MetadataAuthors';
 
 // Might want to check https://css-tricks.com/use-cases-fixed-backgrounds-css/
 // for animations between the different parts of the Metadata

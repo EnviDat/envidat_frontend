@@ -71,6 +71,7 @@ import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
 
 
 export default {
+  name: 'MetadataDetails',
   components: {
   },
   props: {

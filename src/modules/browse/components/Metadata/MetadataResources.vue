@@ -76,11 +76,12 @@
  * file 'LICENSE.txt', which is part of this source code package.
 */
 
-import ResourceCard from '@/components/Cards/ResourceCard';
-import ResourceCardPlaceholder from '@/components/Cards/ResourceCardPlaceholder';
 import BaseIconCountView from '@/components/BaseElements/BaseIconCountView';
+import ResourceCard from '../ResourceCard';
+import ResourceCardPlaceholder from '../ResourceCardPlaceholder';
 
 export default {
+  name: 'MetadataResources',
   components: {
     ResourceCard,
     ResourceCardPlaceholder,

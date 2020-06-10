@@ -231,6 +231,7 @@ import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import { getAuthorName } from '@/factories/authorFactory';
 
 export default {
+  name: 'MetadataHeader',
   components: {
     TagChip,
     TagChipAuthor,
