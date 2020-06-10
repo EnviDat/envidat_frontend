@@ -2,111 +2,113 @@
   <v-card>
     <v-card-title class="title metadata_title">Location</v-card-title>
 
-    <v-card-text v-if="isEmpty && !showPlaceholder" style="color: red;">{{ emptyText }}</v-card-text>
+    <v-card-text v-if="!hasGeom" style="color: red;">{{ emptyText }}</v-card-text>
 
-    <v-card-text v-if="showPlaceholder" >
-      <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer">
-        <div v-bind="mapSize"
-              class='bone bone-type-image' />
-      </div>
-    </v-card-text>
+    <v-card-text v-else-if="hasGeom">
 
-    <v-card-text v-if="!showPlaceholder && !isEmpty">
-      <!-- can't get it to work with the v-show for now
-            because leaflet needs the ref
-      to the mapcontainer to correctly initialize-->
-      <div id="mapcontainer" ref="mapcontainer">
-        <div id="map" ref="map" v-bind="mapSize" />
-      </div>
+      <metadata-location-cesium
+        v-show="show3d"
+        v-bind="mapSize"
+        :geom="geom"
+        :bbox="bbox"
+        :centroid="centroid"
+        :zoomExtent="zoomExtent"
+        :color="color"
+        :fillAlpha="fillAlpha"
+        :outline-width="outlineWidth"
+      >
+        <v-btn v-if="enabled3d" fab small @click="show3d = false">2D</v-btn>
+      </metadata-location-cesium>
+      <metadata-location-leaflet
+        v-show="!show3d"
+        v-bind="mapSize"
+        :geom="geom"
+        :zoomExtent="zoomExtent"
+        :color="color"
+        :fillAlpha="fillAlpha"
+        :outline-width="outlineWidth"
+      >
+        <v-btn v-if="enabled3d" fab small @click="show3d = true">3D</v-btn>
+      </metadata-location-leaflet>
     </v-card-text>
 
   </v-card>
 </template>
 
 <script>
-import L from 'leaflet';
-// import gL from 'leaflet.gridlayer.googlemutant';
-/* eslint-disable no-unused-vars */
-import 'leaflet/dist/leaflet.css';
-import 'leaflet-bing-layer';
+  // eslint-disable new-cap
 
-// HACK starts
-// Solution to loading in the imgs correctly via webpack
-// see more https://github.com/PaulLeCam/react-leaflet/issues/255
-// stupid hack so that leaflet's images work after going through webpack
-import marker from '@/assets/map/marker-icon.png';
-import marker2x from '@/assets/map/marker-icon-2x.png';
-import markerShadow from '@/assets/map/marker-shadow.png';
+  import {
+ rewind as tRewind, centroid as tCentroid, distance as tDistance, buffer as tBuffer, envelope as tEnvelope,
+} from '@turf/turf';
 
-/* eslint-disable no-underscore-dangle */
-// delete L.Icon.Default.prototype.mixinMethods_getIconUrl;
+const MetadataLocationCesium = () => import('./MetadataLocationCesium');
+const MetadataLocationLeaflet = () => import('./MetadataLocationLeaflet');
 
-// L.Icon.Default.mergeOptions({
-//   iconRetinaUrl: marker2x,
-//   iconUrl: marker,
-//   shadowUrl: markerShadow,
-// });
-
-// HACK end
 
 export default {
   name: 'MetadataLocation',
-<<<<<<< HEAD
   components: { MetadataLocationLeaflet, MetadataLocationCesium },
-=======
-  components: {},
->>>>>>> develop
   props: {
     genericProps: Object,
-    showPlaceholder: Boolean,
   },
   data: () => ({
-    smallSize: 300,
-    mediumSize: 500,
-    largeSize: 725,
-    fullWidthSize: 875,
-    marker,
-    marker2x,
-    markerShadow,
-    map: null,
-    mapIsSetup: false,
+    show3d: false,
+    color: '#FFDA00',
+    fillAlpha: 0.5,
+    outlineWidth: 3,
     emptyText: 'No location found for this dataset',
-    bingApiKey: process.env.VUE_APP_BING_API_KEY,
   }),
   computed: {
+    geom() {
+      return this.genericProps ? tRewind(JSON.parse(this.genericProps.geoJSON)) : null;
+    },
+    centroid() {
+      return tCentroid(this.geom);
+    },
+    bbox() {
+      return tEnvelope(this.geom);
+    },
+    lat() {
+      return this.centroid.geometry.coordinates[1];
+    },
+    zoomExtent() {
+      let dist = tDistance(this.bbox.geometry.coordinates[0][0], this.bbox.geometry.coordinates[0][2]);
+      if (dist === 0) { dist = 100; }
+      if (Math.abs(this.lat) > 60) { dist = 10000; }
+
+      let enve = tBuffer(this.bbox, ((dist + 1) / 4), { units: 'kilometers' });
+      enve = tEnvelope(enve);
+      return {
+        minX: enve.geometry.coordinates[0][0][0],
+        minY: enve.geometry.coordinates[0][0][1],
+        maxX: enve.geometry.coordinates[0][2][0],
+        maxY: enve.geometry.coordinates[0][2][1],
+      };
+    },
+    enabled3d() {
+      return Math.abs(this.lat) > 60;
+    },
     title() {
       return this.mixinMethods_getGenericProp('title');
     },
-    isPolygon() {
-      return this.mixinMethods_getGenericProp('isPolygon');
-    },
-    isPoint() {
-      return this.mixinMethods_getGenericProp('isPoint');
-    },
-    isMultiPoint() {
-      return this.mixinMethods_getGenericProp('isMultiPoint');
-    },
-    pointArray() {
-      return this.mixinMethods_getGenericProp('pointArray');
-    },
-    geoJSON() {
-      return this.mixinMethods_getGenericProp('geoJSON');
-    },
-    isEmpty() {
-      return !this.pointArray && !this.geoJSON;
+    hasGeom() {
+      return !!this.geom;
     },
     mapSize() {
-      let width = this.largeSize;
-      let height = this.mediumSize;
+      const heightSm = 300;
+      const heightMd = 500;
 
-      if (this.$vuetify.breakpoint.xsOnly) {
-        width = this.mediumSize;
-        height = this.smallSize;
-      } else if (this.$vuetify.breakpoint.smAndDown) {
-        width = this.fullWidthSize;
-        height = this.smallSize;
-      } else if (this.$vuetify.breakpoint.mdAndDown) {
-        width = this.fullWidthSize;
+      const fullWidth = 875;
+      const lgWidth = 725;
+      const mdWidth = 500;
+
+      let width = lgWidth;
+      if (this.$vuetify.breakpoint.xsOnly) { width = mdWidth; } else if (this.$vuetify.breakpoint.mdAndDown) { width = fullWidth; }
+
+      let height = heightMd;
+      if (this.$vuetify.breakpoint.smAndDown) {
+        height = heightSm;
       }
 
       return {
@@ -116,146 +118,9 @@ export default {
       };
     },
   },
-  updated() {
-    this.setupMap();
-  },
-  beforeDestroy() {
-    if (this.map) {
-      this.map.remove();
-    }
-  },
-  methods: {
-    setupMap() {
-      if (this.mapIsSetup || this.isEmpty) return;
-
-      this.map = this.initLeaflet(this.$refs.map, this.pointArray);
-      this.addOpenStreetMapLayer(this.map);
-
-      const validGeoJSON = this.parseGeoJSON(this.geoJSON);
-
-      if (validGeoJSON) {
-        L.geoJSON(this.geoJSON).addTo(this.map);
-      } else if (this.pointArray) {
-        if (this.isPoint) {
-          this.addPoint(this.map, this.pointArray);
-        }
-
-        if (this.isPolygon) {
-          this.addPolygon(this.map, this.pointArray);
-        }
-
-        if (this.isMultiPoint) {
-          this.addMultiPoint(this.map, this.pointArray);
-        }
-      }
-
-      this.map.on({ click: this.onMapClick });
-
-      this.mapIsSetup = true;
-    },
-    initLeaflet: function initLeaflet(mapElement, coords) {
-      const map = L.map(mapElement, {
-        scrollWheelZoom: false,
-      });
-
-      if (coords) {
-        let viewCoords = coords;
-
-        if (this.isPolygon) {
-          viewCoords = coords[0][0];
-        } else if (this.isMultiPoint) {
-          viewCoords = coords[0];
-        }
-
-        map.setView(viewCoords, 9);
-      }
-
-      return map;
-    },
-    parseGeoJSON: function parseGeoJSON(geoJsonString) {
-      if (!geoJsonString) {
-        return undefined;
-      }
-
-      try {
-        return L.geoJSON(geoJsonString);
-      } catch (error) {
-        // console.log(`Tried to parse GeoJSON ${geoJsonString} failed with ${error}`);
-        return undefined;
-      }
-    },
-    addOpenStreetMapLayer(map) {
-      const streetTiles = L.tileLayer(
-        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' },
-      );
-
-      const aerialTiles = L.tileLayer.bing({
-        bingMapsKey: this.bingApiKey,
-        imagerySet: 'AerialWithLabels',
-      });
-
-      this.mapLayerGroup = L.layerGroup([streetTiles, aerialTiles]);
-      this.mapLayerGroup.addTo(map);
-
-      const baseMaps = {
-        'Satellit (Bingmaps)': aerialTiles,
-        'Roads (OpenStreetMaps)': streetTiles,
-      };
-
-      L.control.layers(baseMaps).addTo(map);
-    },
-    addPoint(map, coords) {
-      const iconOptions = L.Icon.Default.prototype.options;
-      // delete iconOptions.mixinMethods_getIconUrl;
-      // use the defaultoptions to ensure that all untouched defaults stay in place
-
-      iconOptions.iconUrl = this.marker;
-      iconOptions.iconRetinaUrl = this.marker2x;
-      iconOptions.shadowUrl = this.markerShadow;
-
-      const icon = L.icon(iconOptions);
-
-      const point = L.marker(coords, {
-        icon,
-        opacity: 0.65,
-        riseOnHover: true,
-      }).addTo(map);
-
-      point.id = this.title;
-      point.on({ mouseover: this.catchHover });
-      point.on({ mouseout: this.catchHoverLeave });
-
-      return point;
-    },
-    addPolygon: function addPolygon(map, coords) {
-      // create a red polygon from an array of LatLng points
-      // var latlngs = [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]];
-      const polygon = L.polygon(coords, { color: 'red' }).addTo(map);
-
-      polygon.id = this.title;
-      polygon.on({ mouseover: this.catchHover });
-      polygon.on({ mouseout: this.catchHoverLeave });
-
-      // zoom the map to the polygon
-      map.fitBounds(polygon.getBounds());
-
-      return polygon;
-    },
-    addMultiPoint: function addMultiPoint(map, coords) {
-      for (let i = 0; i < coords.length; i++) {
-        const pointCoord = coords[i];
-        this.addPoint(map, pointCoord);
-      }
-
-      map.fitBounds(coords);
-    },
-    catchHover: function catchHover(e) {
-      e.target.bindPopup(`<p>${e.target.id}</p>`).openPopup();
-    },
-    catchHoverLeave: function catchHoverLeave(e) {
-      e.target.closePopup();
-    },
-  },
 };
 </script>
+
+<style scoped>
+
+</style>
