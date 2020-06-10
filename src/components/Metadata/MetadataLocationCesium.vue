@@ -5,6 +5,9 @@
         <zoom-btn @zoomIn="zoomIn" @zoomOut="zoomOut" @zoomToGeometry="zoomToGeometry" />
       </transition>
     </div>
+    <div style="position: absolute; z-index: 9999; bottom: 40px;">
+      <slot></slot>
+    </div>
     <div id="credits">
       <a style="padding-right: 10px;" href="https://cesium.com/cesiumjs/" target="_blank">CesiumJS</a>
       <a href="https://www.bing.com/maps/" target="_blank">Bilder &copy; Bing Maps</a>
@@ -134,7 +137,7 @@
   .zoom {
     position: absolute;
     padding: 20px;
-    z-index: 99999;
+    z-index: 999;
   }
 
   #credits {
@@ -144,7 +147,7 @@
     right: 0;
     padding: 0 6px 0 6px;
     margin: 16px;
-    z-index: 9999999;
+    z-index: 999;
     background-color: aliceblue;
   }
 

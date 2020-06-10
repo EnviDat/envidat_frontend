@@ -1,5 +1,8 @@
 <template>
   <div id="map" ref="map">
+    <div style="position: absolute; z-index: 9999; bottom: 20px;">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
