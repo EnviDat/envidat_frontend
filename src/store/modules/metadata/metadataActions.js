@@ -48,8 +48,6 @@ import metadataTags from '@/store/modules/metadata/metadataTags';
 /* eslint-disable no-unused-vars  */
 const PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
 const API_BASE = '/api/action/';
-const useTestData = process.env.VUE_APP_USE_TESTDATA;
-
 
 function contentSize(content) {
   return content !== undefined ? Object.keys(content).length : 0;
@@ -153,7 +151,7 @@ export default {
     let url = urlRewrite('current_package_list_with_resources?limit=1000&offset=0',
                 API_BASE, PROXY);
 
-    if (typeof useTestData === 'string' && useTestData.toLowerCase() === 'true') {
+    if (process.env.NODE_ENV === 'development') {
       url = './testdata/packagelist.json';
     }
 

@@ -101,8 +101,8 @@ export function createAuthors(dataset) {
 
   for (let i = 0; i < authors.length; i++) {
     const author = authors[i];
-    const firstName = author.given_name;
-    const lastName = author.name;
+    const firstName = author.given_name.trim();
+    const lastName = author.name.trim();
 
     const dataCredit = getDataCredit(author);
 
