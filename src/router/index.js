@@ -22,9 +22,10 @@ import {
 } from '@/router/routeConsts';
 
 import { homeRoutes } from '@/modules/home/routes';
-import { aboutRoutes } from '@/modules/about/routes';
+import { browseRoutes } from '@/modules/browse/routes';
+import { metadataRoutes } from '@/modules/metadata/routes';
 import { projectsRoutes } from '@/modules/projects/routes';
-import { browseRoutes } from '@/modules/metadata/routes';
+import { aboutRoutes } from '@/modules/about/routes';
 
 Vue.use(Router);
 
@@ -49,6 +50,7 @@ export default new Router({
     ...routes,
     ...homeRoutes,
     ...browseRoutes,
+    ...metadataRoutes,
     ...projectsRoutes,
     ...aboutRoutes,
   ],
