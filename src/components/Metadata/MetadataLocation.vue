@@ -5,6 +5,7 @@
     <v-card-text v-if="!hasGeom" style="color: red;">{{ emptyText }}</v-card-text>
 
     <v-card-text v-else-if="hasGeom">
+
       <metadata-location-cesium
         v-show="show3d"
         v-bind="mapSize"
@@ -15,7 +16,9 @@
         :color="color"
         :fillAlpha="fillAlpha"
         :outline-width="outlineWidth"
-      />
+      >
+        <v-btn v-if="enabled3d" fab small @click="show3d = false">2D</v-btn>
+      </metadata-location-cesium>
       <metadata-location-leaflet
         v-show="!show3d"
         v-bind="mapSize"
@@ -24,7 +27,9 @@
         :color="color"
         :fillAlpha="fillAlpha"
         :outline-width="outlineWidth"
-      />
+      >
+        <v-btn v-if="enabled3d" fab small @click="show3d = true">3D</v-btn>
+      </metadata-location-leaflet>
     </v-card-text>
 
   </v-card>
@@ -48,6 +53,7 @@ export default {
     genericProps: Object,
   },
   data: () => ({
+    show3d: false,
     color: '#FFDA00',
     fillAlpha: 0.5,
     outlineWidth: 3,
@@ -80,7 +86,7 @@ export default {
         maxY: enve.geometry.coordinates[0][2][1],
       };
     },
-    show3d() {
+    enabled3d() {
       return Math.abs(this.lat) > 60;
     },
     title() {
