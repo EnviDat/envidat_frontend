@@ -1,6 +1,5 @@
 <template>
-  <v-container fluid
-               pa-0>
+  <div style="height: 100%; width: 100%;" v-if="configFile">
     <base-icon-button class="ma-2"
                       style="position: absolute; top: 0; right: 50px; z-index: 200;"
                       material-icon-name="close"
@@ -9,20 +8,34 @@
                       outlined
                       tool-tip-text="Close Metadata"
                       :tool-tip-bottom="true"
-                      @clicked="close" />
-    <v-layout>
-      <div id="my_map_geo"
-           style="top: 0; bottom: 0; left: 0; right: 0; z-index: 100; position: absolute;">
-        <v-card class="layers" v-if="configFile">
-          <div v-for="(layer, key) in configFile.layers" :key="key" @click.stop="selectLayer(layer.name)"
-               :class="{selected: layer.name === selectedLayer }">
-            {{layer.title}}
-          </div>
-        </v-card>
+                      @clicked="close"/>
+    <v-layout v-if="splitScreen" style="height: 100%;" pa-0 ma-0 :key="'split'">
+      <div style="width: 50%; left: 0; height: 100%;">
+        <Map :config-file="configFile" :default-layer="layer" :map-div-id="'map1'" @changeLayer="setLayer" :key="'map1'">
+          <v-btn icon color="red" @click="quitSplitFrom(1)">
+            <v-icon>close</v-icon>
+          </v-btn>
+        </Map>
       </div>
-
+      <div style=" border: 1px solid gray;"></div>
+      <div style="width: 50%; right: 0;">
+        <Map :config-file="configFile" :default-layer="layerSplit" :map-div-id="'map2'" @changeLayer="setLayerSplit" :key="'map2'">
+          <v-btn icon color="red" @click="quitSplitFrom(2)">
+            <v-icon>close</v-icon>
+          </v-btn>
+        </Map>
+      </div>
     </v-layout>
-  </v-container>
+    <v-layout v-else style="height: 100%;" pa-0 ma-0 :key="'single'">
+    <div style="width: 100%;">
+          <Map :config-file="configFile" :default-layer="layer" :map-div-id="'map0'" @changeLayer="setLayer">
+            <v-btn icon color="primary" @click="splitScreen = true">
+              <v-icon>vertical_split</v-icon>
+            </v-btn>
+          </Map>
+      </div>
+    </v-layout>
+  </div>
 </template>
 
 <script>
@@ -31,7 +44,7 @@
   /* eslint-disable no-unused-vars */
   import 'leaflet/dist/leaflet.css';
   import 'leaflet-bing-layer';
-  import { BROWSE_PATH, METADATADETAIL_PAGENAME } from '@/router/routeConsts';
+  import { METADATADETAIL_PAGENAME } from '@/router/routeConsts';
   import { SET_APP_BACKGROUND, SET_CURRENT_PAGE } from '@/store/mainMutationsConsts';
   import {
     CLEAN_CURRENT_METADATA,
@@ -39,20 +52,23 @@
     METADATA_NAMESPACE,
   } from '@/store/metadataMutationsConsts';
   import axios from 'axios';
-  import L from 'leaflet';
   import BaseIconButton from '../BaseElements/BaseIconButton';
+  import Map from '../Metadata/Map';
 
   export default {
     name: 'MetadataMapPage',
-    components: { BaseIconButton },
+    components: {
+      Map,
+      BaseIconButton,
+    },
     data: () => ({
+      layer: null,
+      layerSplit: null,
+      splitScreen: true,
       geoConfig: null,
       PageBGImage: './app_b_browsepage.jpg',
       configFile: null,
       map: null,
-      mapLayer: null,
-      selectedLayer: null,
-      bingApiKey: process.env.VUE_APP_BING_API_KEY,
     }),
     beforeRouteEnter(to, from, next) {
       next((vm) => {
@@ -62,17 +78,12 @@
     },
     mounted() {
       this.loadMetaDataContent();
-      this.setupMap();
     },
     beforeDestroy() {
       // clean current metadata to make be empty for the next to load up
       this.$store.commit(`${METADATA_NAMESPACE}/${CLEAN_CURRENT_METADATA}`);
     },
     computed: {
-      ready() {
-        if (this.geoConfig) { return true; }
-        return false;
-      },
       ...mapGetters({
         metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
         metadatasContentSize: `${METADATA_NAMESPACE}/metadatasContentSize`,
@@ -97,79 +108,31 @@
       /**
        * @returns {Boolean} if the placeHolders should be shown be somethings are still loading
        */
-      showPlaceholder() {
+      loading() {
         return this.loadingMetadatasContent || this.loadingCurrentMetadataContent;
       },
     },
     methods: {
-      selectLayer(name) {
-        this.selectedLayer = name;
+      setLayer(name) {
+        console.log(name);
+        this.layer = name;
+      },
+      setLayerSplit(name) {
+        this.layerSplit = name;
+      },
+      quitSplitFrom(mapId) {
+        if (mapId === 1) {
+          this.layer = this.layerSplit;
+        }
+        this.splitScreen = false;
       },
       loadConfig() {
         const url = this.geoConfig.url;
         axios.get(url)
           .then((res) => {
             this.configFile = res.data;
-            this.selectedLayer = this.configFile.layers.find(layer => layer.visibility).name;
-            const bbox = this.configFile.bbox;
-            const corner1 = L.latLng(bbox.miny, bbox.minx);
-            const corner2 = L.latLng(bbox.maxy, bbox.maxx);
-            const bounds = L.latLngBounds(corner1, corner2);
-            this.map.fitBounds(bounds);
-
-            const mapLayers = this.configFile.layers.map(layer => new L.tileLayer.wms(this.configFile.baseURL, {
-                layers: layer,
-                transparent: true,
-                format: 'image/png',
-              }));
-            const mapLayerGroup = L.layerGroup(mapLayers);
-            L.control.layers(mapLayerGroup)
-              .addTo(this.map);
-
             return 'Success';
           });
-      },
-      setupMap() {
-        if (this.mapIsSetup) return;
-        this.map = new L.Map('my_map_geo', {});
-        this.map.setView(L.latLng(46.57591, 7.84956), 8);
-        this.addOpenStreetMapLayer();
-        L.control.scale().addTo(this.map);
-        this.mapIsSetup = true;
-      },
-      addLayerToMap() {
-        if (this.mapLayer) {
-          this.map.removeLayer(this.mapLayer);
-        }
-        this.mapLayer = new L.tileLayer.wms(this.configFile.baseURL, {
-          layers: this.selectedLayer,
-          transparent: true,
-          format: 'image/png',
-        });
-        this.map.addLayer(this.mapLayer);
-        this.mapLayer.bringToFront();
-      },
-      addOpenStreetMapLayer() {
-        const streetTiles = L.tileLayer(
-          'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-          { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' },
-        );
-
-        const aerialTiles = L.tileLayer.bing({
-          bingMapsKey: this.bingApiKey,
-          imagerySet: 'AerialWithLabels',
-        });
-
-        this.mapLayerGroup = L.layerGroup([streetTiles, aerialTiles]);
-        this.mapLayerGroup.addTo(this.map);
-
-        const baseMaps = {
-          'Satellit (Bingmaps)': aerialTiles,
-          'Roads (OpenStreetMaps)': streetTiles,
-        };
-
-        L.control.layers(baseMaps)
-          .addTo(this.map);
       },
       rerender() {
         this.$forceUpdate();
@@ -191,11 +154,7 @@
       isCurrentIdOrName(idOrName) {
         return this.currentMetadataContent.id === idOrName || this.currentMetadataContent.name === idOrName;
       },
-      /**
-       * @description
-       */
       close() {
-        console.log(this.$route);
         this.$router.push({
           name: this.$route.matched[this.$route.matched.length - 1].name,
         });
@@ -216,10 +175,9 @@
       },
     },
     watch: {
-      ready() {
-        this.loadConfig();
-        if (this.ready) {
-          this.setupMap();
+      geoConfig() {
+        if (this.geoConfig) {
+          this.loadConfig();
         }
       },
       selectedLayer() {
@@ -247,14 +205,5 @@
 </script>
 
 <style scoped>
-  .layers {
-    position: absolute;
-    top: 70px;
-    right: 5px;
-    padding: 3px;
-    z-index: 9999;
-  }
-  .selected {
-    background-color: cadetblue;
-  }
+
 </style>
