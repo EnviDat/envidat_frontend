@@ -13,6 +13,13 @@
 const fs = require('fs');
 const dotenv = require('dotenv');
 
+const path = require('path');
+const webpack = require('webpack');
+
+const cesiumSource = 'node_modules/cesium/Source';
+const cesiumWorkers = '../Build/Cesium/Workers';
+const CopywebpackPlugin = require('copy-webpack-plugin');
+
 dotenv.config();
 process.env.VUE_APP_VERSION = require('./package.json').version;
 
@@ -44,7 +51,7 @@ module.exports = {
     sourceMap: true,
     // loaderOptions: {
     //   css: {
-    //     url: true, 
+    //     url: true,
     //     // import: true,
     //     // localIdentName: '[local]_[hash:base64:8]',
     //   },
@@ -75,7 +82,23 @@ module.exports = {
         maxSize: 250000,
       },
     },
-  },  
+    node: {
+      fs: 'empty', // Resolve node module use of fs
+    },
+    resolve: {
+      alias: {
+        // CesiumJS module name
+        cesium: path.resolve(__dirname, cesiumSource),
+      },
+    },
+    plugins: [
+      // Copy Cesium Assets, and Workers to a static directory
+      new CopywebpackPlugin([{ from: path.join(cesiumSource, cesiumWorkers), to: 'Workers' }]),
+      new CopywebpackPlugin([{ from: path.join(cesiumSource, 'Assets'), to: 'Assets', ignore: ['Images/**', 'Textures/**', 'IAU2006_XYS/**'] }]),
+      // Define relative base path in cesium for loading assets
+      new webpack.DefinePlugin({ CESIUM_BASE_URL: JSON.stringify('') })
+    ],
+  },
   // devServer: {
   //   // assetsSubDirectory: "static",
   //   // assetsPublicPath: "/",
