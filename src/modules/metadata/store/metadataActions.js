@@ -43,7 +43,7 @@ import {
 } from '@/factories/modeFactory';
 import { urlRewrite } from '@/factories/apiFactory';
 
-import metadataTags from '@/modules/browse/store/metadataTags';
+import metadataTags from '@/modules/metadata/store/metadataTags';
 
 /* eslint-disable no-unused-vars  */
 const PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
