@@ -365,7 +365,7 @@ export default {
       { title: 'Policies', icon: 'policy', toolTip: 'The rules of EnviDat', active: false, path: POLICIES_PATH, pageName: POLICIES_PAGENAME },
       { title: 'DMP', icon: 'menu_book', toolTip: 'Template for a Data Management Plan', active: false, path: DMP_PATH, pageName: DMP_PAGENAME },
       { title: 'Login', icon: 'person', toolTip: 'Login to management research data', active: false, path: 'https://www.envidat.ch/user/reset', pageName: 'external' },
-      { title: 'About', icon: 'info', toolTip: 'What is EnviDat? How is behind EnviDat?', active: false, path: ABOUT_PATH, pageName: ABOUT_PAGENAME },
+      { title: 'About', icon: 'info', toolTip: 'What is EnviDat? Who is behind EnviDat?', active: false, path: ABOUT_PATH, pageName: ABOUT_PAGENAME },
       // { title: 'Contact', icon: 'contact_support', toolTip: 'Do you need support?', active: false },
       { title: 'Menu', icon: 'menu', active: false },
     ],
