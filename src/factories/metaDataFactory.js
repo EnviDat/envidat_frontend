@@ -68,7 +68,7 @@ export function guessTagCategory(tags) {
     const name = element.name;
 
     switch (name) {
-      case name.includes('HAZARD') || name.includes('ACCIDENTS'):
+      case name.includes('HAZARD') || name.includes('ACCIDENTS') || name.includes('FATALITIES'):
         return HAZARD;
       case name.includes('DIVERSITY'):
         return DIVERSITY;
