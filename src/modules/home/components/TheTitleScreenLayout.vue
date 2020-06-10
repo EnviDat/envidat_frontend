@@ -85,11 +85,10 @@
  * file 'LICENSE.txt', which is part of this source code package.
 */
 
-import SloganCard from '@/components/Cards/SloganCard';
-// import xsLogo from '@/assets/logo/EnviDat_logo_32.png';
-import smLogo from '@/assets/logo/EnviDat_logo_64.png';
-import mdLogo from '@/assets/logo/EnviDat_logo_128.png';
-import lgLogo from '@/assets/logo/EnviDat_logo_256.png';
+import SloganCard from './SloganCard';
+import smLogo from '../assets/EnviDat_logo_64.png';
+import mdLogo from '../assets/EnviDat_logo_128.png';
+import lgLogo from '../assets/EnviDat_logo_256.png';
 
 export default {
   components: {
