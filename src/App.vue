@@ -231,7 +231,7 @@ export default {
     },
     loadAllMetadata() {
       if (!this.loadingMetadatasContent && this.metadatasContentSize <= 0) {
-        this.$store.dispatch(`metadata/${BULK_LOAD_METADATAS_CONTENT}`);
+        this.$store.dispatch(`${METADATA_NAMESPACE}/${BULK_LOAD_METADATAS_CONTENT}`);
       }
     },
     dialogVersionText() {
