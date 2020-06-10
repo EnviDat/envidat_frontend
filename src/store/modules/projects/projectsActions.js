@@ -26,7 +26,6 @@ import { urlRewrite } from '@/factories/apiFactory';
 
 const API_BASE = '/api/action/';
 const ENVIDAT_PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
-const useTestData = process.env.VUE_APP_USE_TESTDATA;
 
 
 export default {
@@ -43,7 +42,7 @@ export default {
       await dispatch(`${METADATA_NAMESPACE}/BULK_LOAD_METADATAS_CONTENT`, null, { root: true });      
     }
 
-    if (typeof useTestData === 'string' && useTestData.toLowerCase() === 'true') {
+    if (process.env.NODE_ENV === 'development') {
       url = './testdata/projects.json';
     }
 
