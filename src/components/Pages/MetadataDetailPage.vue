@@ -83,6 +83,7 @@ import {
   METADATA_NAMESPACE,
   LOAD_METADATA_CONTENT_BY_ID,
   CLEAN_CURRENT_METADATA,
+  CLEAR_SEARCH_METADATA,
 } from '@/store/metadataMutationsConsts';
 import MetadataHeader from '@/components/Metadata/MetadataHeader';
 import MetadataBody from '@/components/Metadata/MetadataBody';
@@ -335,6 +336,10 @@ export default {
       const tagsEncoded = this.mixinMethods_encodeTagForUrl(tagNames);
       const query = {};
       query.tags = tagsEncoded;
+
+      // clear the search result here, in case this metadata entry
+      // was part of a full text search
+      this.$store.commit(`${METADATA_NAMESPACE}/${CLEAR_SEARCH_METADATA}`);
 
       this.$router.push({
         path: BROWSE_PATH,
