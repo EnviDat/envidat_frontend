@@ -14,7 +14,7 @@ import {
 
 
 import packagelist from '@/../public/testdata/packagelist';
-import categoryCards from '@/store/modules/metadata/categoryCards';
+import categoryCards from '@/modules/browse/store/categoryCards';
 
 // const metadatasContent = {};
 // packagelist.result.forEach((entry) => {
