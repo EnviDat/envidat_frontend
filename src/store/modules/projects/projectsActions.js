@@ -42,7 +42,7 @@ export default {
       await dispatch(`${METADATA_NAMESPACE}/BULK_LOAD_METADATAS_CONTENT`, null, { root: true });      
     }
 
-    if (typeof useTestData === 'string' && useTestData.toLowerCase() === 'true') {
+    if (process.env.NODE_ENV === 'development') {
       url = './testdata/projects.json';
     }
 

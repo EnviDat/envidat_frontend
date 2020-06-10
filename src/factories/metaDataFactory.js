@@ -650,8 +650,8 @@ export function createAuthors(dataset) {
 
       // const authorName = getAuthorName(author);
       // console.log('authorName: ' + authorName);
-      const firstName = author.given_name;
-      const lastName = author.name;
+      const firstName = author.given_name.trim();
+      const lastName = author.name.trim();
 
       const id = {
         type: author.identifier_scheme,

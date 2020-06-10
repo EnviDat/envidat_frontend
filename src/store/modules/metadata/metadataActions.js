@@ -151,7 +151,7 @@ export default {
     let url = urlRewrite('current_package_list_with_resources?limit=1000&offset=0',
                 API_BASE, PROXY);
 
-    if (typeof useTestData === 'string' && useTestData.toLowerCase() === 'true') {
+    if (process.env.NODE_ENV === 'development') {
       url = './testdata/packagelist.json';
     }
 
