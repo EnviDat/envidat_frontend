@@ -50,6 +50,7 @@ import markerShadow from '@/assets/map/marker-shadow.png';
 // HACK end
 
 export default {
+  name: 'MetadataLocation',
   components: {},
   props: {
     genericProps: Object,

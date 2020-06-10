@@ -77,6 +77,7 @@ import html from 'remark-html';
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 
 export default {
+  name: 'MetadataCitation',
   components: {
     BaseRectangleButton,
   },

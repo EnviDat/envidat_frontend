@@ -106,7 +106,7 @@ import {
   LISTCONTROL_MAP_ACTIVE,
 } from '@/store/metadataMutationsConsts';
 
-import MetadataList from '@/components/Metadata/MetadataList';
+import MetadataList from '@/components/MetadataList';
 
 import missionImg from '@/assets/projects/mission.jpg';
 import creatorSmall from '@/assets/cards/data_creator_small.jpg';

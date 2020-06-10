@@ -64,7 +64,7 @@ import {
   SET_BROWSE_SCROLL_POSITION,
 } from '@/store/mainMutationsConsts';
 
-import MetadataList from '@/components/Metadata/MetadataList';
+import MetadataList from '@/components/MetadataList';
 
 export default {
   name: 'BrowsePage',
