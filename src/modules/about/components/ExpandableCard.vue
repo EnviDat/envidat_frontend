@@ -36,8 +36,7 @@
     </v-card-actions>
 
     <v-slide-y-transition>
-      <v-card-text v-if="expanded" class="py-4">
-        {{ markdownText }}
+      <v-card-text v-if="expanded" class="py-4" v-html="markdownText">
       </v-card-text>
     </v-slide-y-transition>
   </v-card>
