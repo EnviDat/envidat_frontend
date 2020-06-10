@@ -188,7 +188,7 @@
 */
 
 import { mapGetters } from 'vuex';
-import { BROWSE_PATH, BROWSE_PAGENAME, METADATADETAIL_PAGENAME } from '@/router/routeConsts';
+import { METADATA_MODULE_PATH, METADATA_MODULE_PAGENAME, METADATADETAIL_PAGENAME } from '@/router/routeConsts';
 import FilterKeywordsView from '@/components/Filtering/FilterKeywordsView';
 import FilterMapView from '@/components/Filtering/FilterMapView';
 import ListControlToggle from '@/components/Filtering/ListControlToggle';
@@ -378,11 +378,11 @@ export default {
       }
 
       const tagsEncoded = this.mixinMethods_encodeTagForUrl([cardType.toUpperCase()]);
-      this.mixinMethods_additiveChangeRoute(BROWSE_PATH, '', tagsEncoded);
+      this.mixinMethods_additiveChangeRoute(METADATA_MODULE_PATH, '', tagsEncoded);
     },
     catchModeClicked(mode) {
       this.$router.push({
-        path: BROWSE_PATH,
+        path: METADATA_MODULE_PATH,
         query: { mode },
       });
     },
@@ -529,7 +529,7 @@ export default {
     listView: false,
     showMapFilter: false,
     pinnedIds: [],
-    BROWSE_PAGENAME,
+    METADATA_MODULE_PAGENAME,
     LISTCONTROL_LIST_ACTIVE,
     LISTCONTROL_MAP_ACTIVE,
     LISTCONTROL_COMPACT_LAYOUT_ACTIVE,
