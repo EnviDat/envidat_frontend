@@ -75,13 +75,13 @@ import {
   ABOUT_PATH,
 } from '@/router/routeConsts';
 import BaseClickCard from '@/components/BaseElements/BaseClickCard';
-import TheTitleScreenLayout from '@/components/Layouts/TheTitleScreenLayout';
-import SearchBarView from '@/components/Filtering/SearchBarView';
 import SmallSearchBarView from '@/components/Filtering/SmallSearchBarView';
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
 } from '@/store/mainMutationsConsts';
+import TheTitleScreenLayout from './TheTitleScreenLayout';
+import SearchBarView from './SearchBarView';
 
 
 // Login & Register form and animation

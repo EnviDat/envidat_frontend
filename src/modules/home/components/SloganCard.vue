@@ -67,8 +67,8 @@
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
-import fingertipsImg from '@/assets/cards/fingertips_small.jpg';
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
+import fingertipsImg from '../assets/fingertips_small.jpg';
 
 export default {
   name: 'SloganCard',
