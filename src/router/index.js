@@ -15,98 +15,46 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import {
-  LANDING_PATH,
-  BROWSE_PATH,
-  BROWSE_PAGENAME,
-  METADATADETAIL_PATH,
-  METADATADETAIL_PAGENAME,
   GCMD_PATH,
   GCMD_PAGENAME,
-  ABOUT_PATH,
-  ABOUT_PAGENAME,
-  POLICIES_PATH,
-  POLICIES_PAGENAME,
-  GUIDELINES_PATH,
-  GUIDELINES_PAGENAME,
-  DMP_PATH,
-  DMP_PAGENAME,
-  PROJECTS_PATH,
-  PROJECTS_PAGENAME,
-  PROJECT_DETAIL_PATH,
-  PROJECT_DETAIL_PAGENAME,
   REPORT_PATH,
   REPORT_PAGENAME,
 } from '@/router/routeConsts';
+
+import { homeRoutes } from '@/modules/home/routes';
+import { browseRoutes } from '@/modules/browse/routes';
+import { metadataRoutes } from '@/modules/metadata/routes';
+import { projectsRoutes } from '@/modules/projects/routes';
+import { aboutRoutes } from '@/modules/about/routes';
 
 Vue.use(Router);
 
 const START = '/';
 const trailingSlashRE = /\/?$/;
+const routes = [
+  {
+    path: GCMD_PATH,
+    name: GCMD_PAGENAME,
+    component: () => import(/* webpackChunkName: "gcmdPage" */ '@/components/Pages/GCMDPage'),
+  },
+  {
+    path: REPORT_PATH,
+    name: REPORT_PAGENAME,
+    component: () => import(/* webpackChunkName: "guidelinesPage", webpackPrefetch: true */ '@/components/Pages/ReportPage'),
+  },
+];
+
 
 export default new Router({
   routes: [
-    {
-      path: LANDING_PATH,
-      name: 'LandingPage',
-      component: () => import(/* webpackChunkName: "landingPage" */ '@/components/Pages/LandingPage'),
-      // component: () => import('@/components/Pages/LandingPage'),
-    },
-    {
-      path: BROWSE_PATH,
-      name: BROWSE_PAGENAME,
-      component: () => import(/* webpackChunkName: "browsePage" */ '@/components/Pages/BrowsePage'),
-    },
-    {
-      path: `${METADATADETAIL_PATH}/:metadataid`,
-      name: METADATADETAIL_PAGENAME,
-      component: () => import(/* webpackChunkName: "metadataDetailPage" */ '@/components/Pages/MetadataDetailPage'),
-    },
-    // {
-    //   path: `${METADATADETAIL_PATH}/:metadataid/resource/:resourceid`,
-    //   name: 'ResourceDetailPage',
-    //   component: () => import(/* webpackChunkName: "resourceDetailPage" */ '@/components/Pages/ResourceDetailPage'),
-    // },
-    {
-      path: GCMD_PATH,
-      name: GCMD_PAGENAME,
-      component: () => import(/* webpackChunkName: "gcmdPage" */ '@/components/Pages/GCMDPage'),
-    },
-    {
-      path: ABOUT_PATH,
-      name: ABOUT_PAGENAME,
-      component: () => import(/* webpackChunkName: "aboutPage" */ '@/components/Pages/AboutPage'),
-    },
-    {
-      path: POLICIES_PATH,
-      name: POLICIES_PAGENAME,
-      component: () => import(/* webpackChunkName: "policiesPage" */ '@/components/Pages/PoliciesPage'),
-    },
-    {
-      path: GUIDELINES_PATH,
-      name: GUIDELINES_PAGENAME,
-      component: () => import(/* webpackChunkName: "guidelinesPage" */ '@/components/Pages/GuidelinesPage'),
-    },
-    {
-      path: DMP_PATH,
-      name: DMP_PAGENAME,
-      component: () => import(/* webpackChunkName: "dmpPage" */ '@/components/Pages/DMPPage'),
-    },
-    {
-      path: PROJECTS_PATH,
-      name: PROJECTS_PAGENAME,
-      component: () => import(/* webpackChunkName: "projectsPage" */ '@/components/Pages/ProjectsPage'),
-    },
-    {
-      path: `${PROJECT_DETAIL_PATH}/:id`,
-      name: PROJECT_DETAIL_PAGENAME,
-      component: () => import(/* webpackChunkName: "projectDetailPage" */ '@/components/Pages/ProjectDetailPage'),
-    },
-    {
-      path: REPORT_PATH,
-      name: REPORT_PAGENAME,
-      component: () => import(/* webpackChunkName: "guidelinesPage" */ '@/components/Pages/ReportPage'),
-    },
+    ...routes,
+    ...homeRoutes,
+    ...browseRoutes,
+    ...metadataRoutes,
+    ...projectsRoutes,
+    ...aboutRoutes,
   ],
+  // routes: [...routes, ...aboutRoutes],
   scrollBehavior(to, from, savedPosition) {
     return new Promise((resolve) => {
       setTimeout(() => {
