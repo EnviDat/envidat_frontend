@@ -24,7 +24,7 @@ import {
 import { homeRoutes } from '@/modules/home/routes';
 import { aboutRoutes } from '@/modules/about/routes';
 import { projectsRoutes } from '@/modules/projects/routes';
-import { browseRoutes } from '@/modules/browse/routes';
+import { browseRoutes } from '@/modules/metadata/routes';
 
 Vue.use(Router);
 
