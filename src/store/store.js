@@ -16,11 +16,10 @@ import Vuex from 'vuex';
 import createPersist from 'vuex-localstorage';
 
 /* eslint-disable no-unused-vars */
-import { metadata } from '@/store/modules/metadata/metadata';
-import { policies } from '@/store/modules/policies/policies';
-import { guidelines } from '@/store/modules/guidelines/guidelines';
-import { dmp } from '@/store/modules/dmp/dmp';
-import { projects } from '@/store/modules/projects/projects';
+import { about } from '@/modules/about/store/aboutStore';
+import { projects } from '@/modules/projects/store/projectsStore';
+import { metadata } from '@/modules/metadata/store/metadataStore';
+
 import mutations from '@/store/mainMutations';
 import actions from '@/store/mainActions';
 
@@ -93,10 +92,8 @@ const store = new Vuex.Store({
   actions,
   modules: {
     metadata,
-    policies,
-    guidelines,
+    about,
     projects,
-    dmp,
   },
 });
 

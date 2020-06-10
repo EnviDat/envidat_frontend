@@ -14,7 +14,7 @@ import { storiesOf } from '@storybook/vue';
 import { action } from '@storybook/addon-actions';
 import './js/vuetify-components';
 
-import SearchBarView from '../components/Filtering/SearchBarView.vue';
+import SearchBarView from '@/modules/home/components/SearchBarView.vue';
 import SmallSearchBarView from '../components/Filtering/SmallSearchBarView.vue';
 
 

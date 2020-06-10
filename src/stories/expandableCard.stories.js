@@ -13,14 +13,14 @@
 import { storiesOf } from '@storybook/vue';
 import './js/vuetify-components';
 
-import ExpandableCard from '@/components/Cards/ExpandableCard';
-import teamSmall from '@/assets/about/team_small.jpg';
-import mission from '@/assets/about/mission.jpg';
-import missionSmall from '@/assets/about/mission_small.jpg';
-import handsSmall from '@/assets/about/hands_small.jpg';
-import orga from '@/assets/about/EnviDat_organigram.png';
-import conceptSmall from '@/assets/about/concept_small.jpg';
-import communitySmall from '@/assets/about/community_small.jpg';
+import ExpandableCard from '@/moduldes/about/components/ExpandableCard';
+import teamSmall from '@/moduldes/about/assets/team_small.jpg';
+import mission from '@/assets/projects/mission.jpg';
+import missionSmall from '@/assets/projects/mission_small.jpg';
+import handsSmall from '@/moduldes/about/assets/hands_small.jpg';
+import orga from '@/moduldes/about/assets/EnviDat_organigram.png';
+import conceptSmall from '@/moduldes/about/assets/concept_small.jpg';
+import communitySmall from '@/moduldes/about/assets/community_small.jpg';
 
 export const computed = {
   missionImg() {

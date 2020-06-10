@@ -2,7 +2,7 @@
 import { storiesOf } from '@storybook/vue';
 import './js/vuetify-components';
 import { action } from '@storybook/addon-actions';
-import SloganCard from '../components/Cards/SloganCard';
+import SloganCard from '@/modules/home/components/SloganCard';
 
 
 export const methods = {
