@@ -9,6 +9,7 @@
 <script>
   import L from 'leaflet';
   import 'leaflet/dist/leaflet.css';
+  import 'leaflet-bing-layer';
 
   // HACK starts
   // Solution to loading in the imgs correctly via webpack
