@@ -22,7 +22,7 @@
           <v-list-tile-action v-if="item.icon === 'envidat'"
                               style="margin-left: 5px;">
             <v-btn icon class="ma-0"
-                  :color="item.active ? 'accent' : 'trasparent'"
+                  :color="item.active ? 'accent' : 'transparent'"
                   @click.stop="itemClick(item)" >
               <img :src="Logo" alt="envidat_logo" />
             </v-btn>

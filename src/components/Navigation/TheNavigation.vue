@@ -19,7 +19,7 @@
 
           <v-list-tile-action v-if="item.icon === 'envidat'" >
             <v-btn icon class="ma-0"
-                  :color="item.active ? 'accent' : 'trasparent'"
+                  :color="item.active ? 'accent' : 'transparent'"
                   @click.stop="itemClick(item)" >
               <img :src="Logo" alt="envidat_logo" />
             </v-btn>
@@ -44,7 +44,7 @@
 
               <v-flex xs3>
                 <v-btn icon class="ma-0"
-                      :color="item.active ? 'accent' : 'trasparent'"
+                      :color="item.active ? 'accent' : 'transparent'"
                       @click.stop="itemClick(item)" >
                   <img :src="Logo" alt="envidat_logo" />
                 </v-btn>
@@ -59,7 +59,7 @@
                   </v-flex>
                   <v-flex v-if="version"
                           xs4
-                          style="font-size: 6px; position: relative; left: 2px;">
+                          style="font-size: 8px; position: relative; left: 2px;">
                     Version {{ version }}
                   </v-flex>
                 </v-layout>
