@@ -4,10 +4,16 @@
     <div class="my-slot">
         <slot></slot>
     </div>
-            <v-card class="layers" v-if="configFile" style="z-index: 1000;">
+            <v-card class="layers" v-if="configFile" style="z-index: 1000; cursor: default;">
               <div v-for="(layer, key) in configFile.layers" :key="key" @click.stop="selectLayer(layer.name)"
                    :class="{selected: layer.name === selectedLayer }">
                 {{layer.title}}
+                <v-tooltip bottom max-width="300" v-if="layer.abstract">
+                  <template v-slot:activator="{ on }">
+                    <v-icon color="primary" dark v-on="on" small>info</v-icon>
+                  </template>
+                  {{layer.abstract}}
+                </v-tooltip>
               </div>
             </v-card>
   </div>

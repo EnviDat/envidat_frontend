@@ -64,7 +64,7 @@
     data: () => ({
       layer: null,
       layerSplit: null,
-      splitScreen: true,
+      splitScreen: false,
       geoConfig: null,
       PageBGImage: './app_b_browsepage.jpg',
       configFile: null,
