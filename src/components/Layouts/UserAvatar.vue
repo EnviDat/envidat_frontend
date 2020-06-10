@@ -18,10 +18,9 @@
 
 <script>
 /**
- * TheTitleScreenLayout.vue shows the EnviDat logo and the SloganCard
- * with different layouts for the differen screen sizes.
+ * UserAvatar.vue 
  *
- * @summary responsive layout for the title screen with logo and SloganCard
+ * @summary 
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
