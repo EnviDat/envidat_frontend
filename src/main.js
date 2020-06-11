@@ -15,9 +15,7 @@
 import 'babel-polyfill';
 import Vue from 'vue';
 
-import './plugins/vuetify';
 import axios from 'axios';
-
 import Vue2Filters from 'vue2-filters';
 import InfiniteLoading from 'vue-infinite-loading';
 import store from '@/store/store';
@@ -26,6 +24,8 @@ import {
   handleGenericError,
   handleGenericAPIError,
 } from '@/factories/notificationFactory';
+
+import vuetify from './plugins/vuetify';
 import router from './router';
 import globalMethods from './factories/globalMethods';
 
@@ -76,6 +76,7 @@ new Vue({
   el: '#app',
   router,
   store,
+  vuetify,
   components: { App },
   template: '<App/>',
 });

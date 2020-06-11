@@ -10,17 +10,10 @@
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
-
 import Vue from 'vue';
-
-// vuetify loader installation https://vuetifyjs.com/en/getting-started/quick-start#vuetify-loader-installation
-// importing from lib should only load the components which are used
 import Vuetify from 'vuetify/lib';
 
-// Full installation https://vuetifyjs.com/en/getting-started/quick-start#full-installation
-// import Vuetify from 'vuetify/dist/vuetify.min';
-
-import 'vuetify/dist/vuetify.min.css';
+Vue.use(Vuetify);
 
 // icons are imported in the App.vue via sass/scss
 // Icons list: https://jossef.github.io/material-design-icons-iconfont/
@@ -53,10 +46,12 @@ const theme = {
   accent: '#FFD740', // amber accent-2
 };
 
-Vue.use(Vuetify, {
+export default new Vuetify({
   theme,
   options: {
     customProperties: true,
   },
-  iconfont: 'mdi',
+  icons: {
+    iconfont: 'mdi',
+  },
 });

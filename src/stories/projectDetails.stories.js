@@ -16,8 +16,8 @@ import './js/vuetify-components';
 import projectJSON from '@/../public/testdata/projects.json';
 import globalMethods from '@/factories/globalMethods';
 
-import ProjectHeader from '@/components/ProjectDetailViews/ProjectHeader.vue';
-import ProjectBody from '@/components/ProjectDetailViews/ProjectBody.vue';
+import ProjectHeader from '@/modules/projects/components/ProjectDetailViews/ProjectHeader.vue';
+import ProjectBody from '@/modules/projects/components/ProjectDetailViews/ProjectBody.vue';
 
 // import for css classes
 // import App from '@/App.vue';

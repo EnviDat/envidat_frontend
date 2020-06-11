@@ -19,14 +19,14 @@ import './js/vuetify-components';
 // eslint-disable-next-line no-unused-vars
 import App from '@/App';
 
-import MetadataHeader from '@/components/Metadata/MetadataHeader.vue';
-import MetadataBody from '@/components/Metadata/MetadataBody.vue';
-import MetadataCitation from '@/components/Metadata/MetadataCitation.vue';
-import MetadataDetails from '@/components/Metadata/MetadataDetails.vue';
-import MetadataLocation from '@/components/Metadata/MetadataLocation.vue';
-import MetadataPublications from '@/components/Metadata/MetadataPublications.vue';
-import MetadataFunding from '@/components/Metadata/MetadataFunding.vue';
-import MetadataAuthors from '@/components/Metadata/MetadataAuthors.vue';
+import MetadataHeader from '@/modules/metadata/components/Metadata/MetadataHeader.vue';
+import MetadataBody from '@/modules/metadata/components/Metadata/MetadataBody.vue';
+import MetadataCitation from '@/modules/metadata/components/Metadata/MetadataCitation.vue';
+import MetadataDetails from '@/modules/metadata/components/Metadata/MetadataDetails.vue';
+import MetadataLocation from '@/modules/metadata/components/Metadata/MetadataLocation.vue';
+import MetadataPublications from '@/modules/metadata/components/Metadata/MetadataPublications.vue';
+import MetadataFunding from '@/modules/metadata/components/Metadata/MetadataFunding.vue';
+import MetadataAuthors from '@/modules/metadata/components/Metadata/MetadataAuthors.vue';
 
 import doiIcon from '@/assets/icons/doi.png';
 import mailIcon from '@/assets/icons/mail.png';

@@ -181,10 +181,10 @@ function writeAuthorsToFile(authorMap) {
   fs.writeFile(outputPath + outputFileName, authorJson, (err) => {
 
     if (err) {
-        return console.log(err);
+      return console.log(err);
     }
 
-    console.log(`Authors extracted to ${outputPath}${outputFileName}. Wrote ${authorJson.length} lines.`);
+    return console.log(`Authors extracted to ${outputPath}${outputFileName}. Wrote ${authorJson.length} lines.`);
   }); 
   
 }

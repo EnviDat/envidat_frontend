@@ -5,7 +5,7 @@ import {
 } from '@storybook/addon-knobs';
 import './js/vuetify-components';
 
-import AuthorCard from '@/components/Cards/AuthorCard.vue';
+import AuthorCard from '@/modules/metadata/components/AuthorCard.vue';
 
 import authorCollection from '@/../public/testdata/authorCollection.json';
 
