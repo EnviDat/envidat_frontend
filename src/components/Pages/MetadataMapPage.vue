@@ -1,7 +1,7 @@
 <template>
   <div style="height: 100%; width: 100%;" v-if="configFile">
+    <v-card style="position: absolute; top: 0; right: 0px; z-index: 200; background-color: rgba(255, 255, 255, 0.6);" class="ma-2">
     <base-icon-button class="ma-2"
-                      style="position: absolute; top: 0; right: 50px; z-index: 200;"
                       material-icon-name="close"
                       icon-color="primary"
                       color="primary"
@@ -9,6 +9,7 @@
                       tool-tip-text="Close Metadata"
                       :tool-tip-bottom="true"
                       @clicked="close"/>
+    </v-card>
     <v-layout v-if="splitScreen" style="height: 100%;" pa-0 ma-0 :key="'split'">
       <div style="width: 50%; left: 0; height: 100%;">
         <Map :config-file="configFile" :default-layer="layer" :map-div-id="'map1'" @changeLayer="setLayer" :key="'map1'">
@@ -114,7 +115,6 @@
     },
     methods: {
       setLayer(name) {
-        console.log(name);
         this.layer = name;
       },
       setLayerSplit(name) {
