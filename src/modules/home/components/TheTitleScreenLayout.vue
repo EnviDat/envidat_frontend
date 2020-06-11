@@ -2,7 +2,7 @@
   <v-row>
     <v-col cols="12" md="6" offset-md="6" >
 
-      <v-row column>
+      <v-row >
 
         <v-col cols="12">
           <v-row align="center" >

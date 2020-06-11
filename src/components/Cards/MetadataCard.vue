@@ -7,13 +7,11 @@
     <v-img :style="!flatLayout ? dynamicCardBackground : `background-color: ${this.categoryColor}`"
             :height="flatLayout ? '55px' : $vuetify.breakpoint.smAndDown ? '90px' : '115px'" >
 
-      <v-container class="fill-height px-3 pt-3 pb-0" fluid
-                    
-                    >
-        <v-row column>
+      <v-container class="fill-height px-3 pt-3 pb-0"
+                    fluid >
+        <v-row >
 
-          <v-col class="py-0" cols="12"
-                  >
+          <v-col class="py-0" cols="12" >
             <v-row >
 
               <v-col v-if="!maxTitleLengthReached || $vuetify.breakpoint.xsOnly"
@@ -53,12 +51,12 @@
 
       <v-row >
         <v-col v-if="!compactLayout"
-                  cols="12" >
+                cols="12" >
           {{ truncatedSubtitle }}
         </v-col>
-        <v-col class="px-1" v-if="tags"
+        <v-col v-if="tags"
+                class="px-1" 
                 cols="12"
-                
                 style="overflow: hidden;">
 
             <tag-chip py-0
@@ -71,20 +69,18 @@
 
             <tag-chip v-if="maxTagsReached"
                       py-0
-                      name="..."
-            />
+                      name="..." />
 
         </v-col>
       </v-row>
     </v-card-text>
 
-
     <v-card-actions class="ma-0 pa-2"
                     style="position: absolute; bottom: 5px; right: 5px;" >
 
-      <v-row column>
-        <v-col class="pa-1" v-if="modeData" 
-                >
+      <v-row >
+        <v-col v-if="modeData"
+                class="pa-1" >
           <base-icon-button isFlat
                               isSmall
                               color="transparent"

@@ -1,8 +1,6 @@
 <template>
-  <v-row 
-            justify="center"
-            justify="space-between"
-            align="center">
+  <v-row justify="space-between"
+          align="center">
     <div v-if="compact"
           class="item body-2">
       {{ modeInfoPrefix }}:

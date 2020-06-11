@@ -1,14 +1,12 @@
 <template>
   <v-container fluid>
-    <v-row column>
+    <v-row >
       <h1>EnviDat Global Change Master Directory Exchange Platform</h1>
 
       <v-col class="py-2"
         v-for="metadata in metadatasContent"
         :key="metadata.id"
-        
-        cols="6"
-      >
+        cols="6" >
         <a :href="gcdmLink(metadata)">
           {{ gcdmLink(metadata) }}
         </a>

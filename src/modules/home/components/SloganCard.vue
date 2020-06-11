@@ -2,8 +2,7 @@
   <v-card ripple hover
             @click="buttonCallback" >
 
-    <v-container class="pa-0" grid-list-md
-                    >
+    <v-container class="pa-0" >
       <v-row v-bind="{ 'row' : $vuetify.breakpoint.xsOnly ? false : true,
                           'column' : $vuetify.breakpoint.xsOnly ? true : false, }" >
         <v-col class="py-0" cols="5"

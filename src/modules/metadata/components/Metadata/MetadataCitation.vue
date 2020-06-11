@@ -12,9 +12,8 @@
 
     <v-card-actions v-if="!showPlaceholder && citationText"
                     class="px-3">
-      <v-container class="pa-0" fluid
-                    grid-list-md
-                    >
+      <v-container class="pa-0"
+                    fluid >
         <v-row  >
 
           <v-col class="shrink" v-for="link in citationLinks"

@@ -37,13 +37,12 @@
                             :modeCloseCallback="catchModeClose" />
 
     <v-content>
-      <v-container class="pa-2 fill-height" fluid
-                    
-                    
+      <v-container class="pa-2 fill-height"
+                    fluid
                     v-on:scroll="updateScroll()"
                     ref="appContainer"
                     :style="pageStyle" >
-        <v-row column >
+        <v-row >
           <v-col class="mx-0" cols="12" >
 
             <transition name="fade" mode="out-in">

@@ -1,11 +1,9 @@
 <template>
-  <v-row 
-            
-            style="z-index: 0;" >
+  <v-row style="z-index: 0;" >
 
     <v-col v-bind="firstColWidth" >
 
-      <v-row column>
+      <v-row >
         <slot name="leftColumn" />
       </v-row>
 
@@ -15,7 +13,7 @@
     <v-col v-if="secondColumn"
             v-bind="secondColWidth" >
 
-      <v-row column>
+      <v-row >
         <slot name="rightColumn" />
       </v-row>
 

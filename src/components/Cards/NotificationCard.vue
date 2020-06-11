@@ -4,8 +4,8 @@
           :color="notification.color">
 
     <v-card-title class="pb-0">
-      <v-container class="pa-0" grid-list-md>
-        <v-row  align-content="center">
+      <v-container class="pa-0" >
+        <v-row align-content="center">
 
           <v-col cols="1" >
             <v-icon>{{ notification.icon }}</v-icon>
@@ -25,22 +25,22 @@
     </v-card-title>
 
     <v-card-text class="px-2 py-1">
-    <v-row class="fill-height"  align="end" justify="end">
-      <v-col class="shrink" v-if="showReportButton"
-              >
-        <base-rectangle-button buttonText="Report"
-                                isSmall
-                                @clicked="$emit('clickedReport')" />
-      </v-col>
+      <v-row class="fill-height"  align="end" justify="end">
+        <v-col class="shrink" v-if="showReportButton"
+                >
+          <base-rectangle-button buttonText="Report"
+                                  isSmall
+                                  @clicked="$emit('clickedReport')" />
+        </v-col>
 
-      <v-col class="shrink" >
-      <base-rectangle-button color="black"
-                              buttonText="Close"
-                              isSmall
-                              marginClass="white--text"
-                              @clicked="$emit('clickedClose')" />
-      </v-col>
-    </v-row>
+        <v-col class="shrink" >
+          <base-rectangle-button color="black"
+                                  buttonText="Close"
+                                  isSmall
+                                  marginClass="white--text"
+                                  @clicked="$emit('clickedClose')" />
+        </v-col>
+      </v-row>
     </v-card-text>
 
   </v-card>
