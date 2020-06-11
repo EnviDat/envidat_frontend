@@ -34,7 +34,7 @@ Vue.use(Vuetify);
 // created via https://vis4.net/palettes/#/6|d|00897b,4db6ac,b2dfdb|99ebff,4caf50,ffc107|1|0
 // for the error and accent colors: https://vis4.net/palettes/#/6|d|00897b,4db6ac,b2dfdb|ff5252,ff8a80,ffd740|1|0
 // colorblind ready theme
-const theme = {
+const lightColorblind = {
   primary: '#00897b',
   secondary: '#35a89d',
   highlight: '#71c5bd',
@@ -47,7 +47,11 @@ const theme = {
 };
 
 export default new Vuetify({
-  theme,
+  theme: {
+    themes: {
+      light: lightColorblind,
+    },
+  },
   options: {
     customProperties: true,
   },
