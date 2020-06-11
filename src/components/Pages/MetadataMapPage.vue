@@ -180,8 +180,8 @@
           this.loadConfig();
         }
       },
-      selectedLayer() {
-        this.addLayerToMap();
+      layer() {
+        if (!this.splitScreen) { this.layerSplit = this.layer; }
       },
       /* eslint-disable no-unused-vars */
       $route: function watchRouteChanges(to, from) {
