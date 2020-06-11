@@ -6,33 +6,36 @@
     <v-tooltip v-if="$vuetify.breakpoint.mdAndUp && tooltipText"
                 v-bind="{ top: !tooltipBottom, bottom: tooltipBottom }" >
 
-      <v-btn slot="activator"
-            style="margin: 0 !important;"
-            :icon="!isElevated"
-            :fab="isElevated"
-            :small="isSmall || isElevated"
-            :outline="outlined && !isToggled"
-            :color="color ? color : disabled ? '' : 'primary'"
-            :href="url"
-            :disabled="disabled"
-            v-bind="{['target'] : '_blank' }"
-            @click.stop="onClick" >
+      <template v-slot:activator="{ on }">
+        <v-btn v-on="on"
+              style="margin: 0 !important;"
+              :icon="!isElevated"
+              :fab="isElevated"
+              :small="isSmall || isElevated"
+              :outlined="outlined && !isToggled"
+              :color="color ? color : disabled ? '' : 'primary'"
+              :href="url"
+              :disabled="disabled"
+              v-bind="{['target'] : '_blank' }"
+              @click.stop="onClick" >
 
 
-        <div v-if="customIcon"
-              class="iconCentering" >
+          <div v-if="customIcon"
+                class="iconCentering" >
 
-          <img class="envidatIcon"
-              :alt="`${customIcon} icon`"
-              :src="customIcon" >
-        </div>
+            <img class="envidatIcon"
+                :alt="`${customIcon} icon`"
+                :src="customIcon" >
+          </div>
 
-        <v-icon v-if="materialIconName"
-                :color="iconColor ? iconColor : 'primary'"
-                :style="rotateOnClick && rotateToggle ? 'transform: rotate(-180deg);' : ''" >
-          {{ materialIconName }}
-        </v-icon>
-      </v-btn>
+          <v-icon v-if="materialIconName"
+                  :color="iconColor ? iconColor : 'primary'"
+                  :style="rotateOnClick && rotateToggle ? 'transform: rotate(-180deg);' : ''" >
+            {{ materialIconName }}
+          </v-icon>
+        </v-btn>
+      </template >
+
       <span>{{ tooltipText }}</span>
     </v-tooltip>
 
@@ -41,7 +44,7 @@
           :icon="!isElevated"
           :fab="isElevated"
           :small="isSmall || isElevated"
-          :outline="outlined && !isToggled"
+          :outlined="outlined && !isToggled"
           :color="color ? color : disabled ? '' : 'primary'"
           :href="url"
           :disabled="disabled"

@@ -1,69 +1,77 @@
 <template>
   <v-card >
-    <v-container class="pa-0" fluid >
-    <v-row align="center" justify="space-between">
+    <v-container class="pa-0"
+                fluid >
+    <v-row align="center"
+            justify="space-between">
 
-      <v-col class="shrink" v-if="loading"
-              style="min-width: 60px; text-align: center;"
-              >
+      <v-col v-if="loading"
+              class="shrink"
+              style="min-width: 60px; text-align: center;" >
         <v-progress-circular indeterminate
                               size="20"
                               width="2"
                               color="primary" />
       </v-col>
 
-      <v-col class="shrink" v-if="showSearchCount && !loading"
-              
+      <v-col v-if="showSearchCount && !loading"
+              class="shrink" 
               style="min-width: 60px; text-align: center;" >
 
-        <v-tooltip bottom :disabled="$vuetify.breakpoint.xsOnly">
-          <tag-chip slot="activator"
-                    :style="$vuetify.breakpoint.xsOnly ? 'font-size: 0.65rem !important;' : 'font-size: 0.8rem !important;'"
-                    :name="searchCount ? searchCount.toString() : '0'"
-                    :selectable="false"
-                    :highlighted="searchCount > 0"
-                    :closeable="false" />
+        <v-tooltip bottom
+                    :disabled="$vuetify.breakpoint.xsOnly">
+          <template v-slot:activator="{ on }">
+            <tag-chip v-on="on"
+                      :style="$vuetify.breakpoint.xsOnly ? 'font-size: 0.65rem !important;' : 'font-size: 0.8rem !important;'"
+                      :name="searchCount ? searchCount.toString() : '0'"
+                      :selectable="false"
+                      :highlighted="searchCount > 0"
+                      :closeable="false" />
+          </template>
 
           <span>{{ searchCount }} metadata entries found</span>
         </v-tooltip>
       </v-col>
 
-      <v-col class="shrink pa-0" v-if="showSearch && !hasButton"
-                
-                >
+      <v-col v-if="showSearch && !hasButton"
+              class="shrink pa-0" >
         <base-icon-button materialIconName="search"
                           marginClass="ma-0"
                           color="transparent"
                           :isToggled="!searchTerm"
-                          @clicked="clicked"
-        />
+                          @clicked="clicked" />
       </v-col>
 
-      <v-col class="grow py-0" v-if="showSearch"
-              
-              >
-        <v-tooltip bottom :disabled="$vuetify.breakpoint.xsOnly || !searchToolTipText">
-          <v-text-field slot="activator"
-                        class="envidatSmallSearch"
-                        style="align-items: center;"
-                        :class="{'small': compactLayout}"
-                        v-model="searchText"
-                        single-line
-                        hide-details
-                        primary
-                        :flat="isFlat"
-                        :placeholder="labelText"
-                        @keyup.enter="clicked"
-                        append-icon="clear"
-                        @click:append="clearClicked" />
+      <v-col v-if="showSearch"
+              class="grow py-0" >
+
+        <v-tooltip bottom
+                    :disabled="$vuetify.breakpoint.xsOnly || !searchToolTipText">
+          <template v-slot:activator="{ on }">
+            <v-text-field v-on="on"
+                          class="envidatSmallSearch"
+                          style="align-items: center;"
+                          :class="{'small': compactLayout}"
+                          v-model="searchText"
+                          single-line
+                          hide-details
+                          primary
+                          :flat="isFlat"
+                          :placeholder="labelText"
+                          @keyup.enter="clicked"
+                          append-icon="clear"
+                          @click:append="clearClicked" />
+          </template>
 
           <span>{{ searchToolTipText }}</span>
         </v-tooltip>
       </v-col>
 
-      <v-col class="shrink" v-if="showSearch && hasButton"
-              >
-        <base-rectangle-button :button-text="buttonText" :is-small="true" @clicked="clicked" />
+      <v-col v-if="showSearch && hasButton"
+              class="shrink" >
+        <base-rectangle-button :button-text="buttonText"
+                                :is-small="true"
+                                @clicked="clicked" />
       </v-col>
 
     </v-row>
