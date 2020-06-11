@@ -3,7 +3,7 @@
     fluid
     :class="$vuetify.breakpoint.smAndDown ? 'pa-1' : 'py-0 px-2'"
   >
-    <v-layout column>
+    <v-row column>
       <the-title-screen-layout :title="envidatTitle"
                                 :slogan="envidatSlogan"
                                 :subSlogan="envidatSubSlogan"
@@ -12,41 +12,41 @@
                                 :moreButtonText="sloganMoreButtonText"
                                 :moreButtonCallback="catchMoreClicked" />
 
-      <v-flex hidden-xs-only mt-5 offset-md6 >
+      <v-col class="hidden-xs-only mt-5" offset-md="6" >
         <search-bar-view :labelText="labelText"
                           :buttonText="buttonText"
                           :hasButton="true"
                           @clicked="catchSearchClicked"
                         />
-      </v-flex>
+      </v-col>
 
-      <v-flex hidden-sm-and-up mt-5 >
+      <v-col class="hidden-sm-and-up mt-5" >
         <small-search-bar-view :labelText="labelText"
                           :buttonText="buttonText"
                           :hasButton="$vuetify.breakpoint.smAndUp"
                           @clicked="catchSearchClicked"
                         />
-      </v-flex>
+      </v-col>
 
-      <v-flex mt-5 offset-md6 >
-        <v-container fluid
+      <v-col class="mt-5" offset-md="6" >
+        <v-container class="pa-0" fluid
                       grid-list-md
-                      pa-0 >
-          <v-layout row wrap >
+                      >
+          <v-row  >
 
-            <v-flex v-for="card in categoryCards"
+            <v-col class="my-1" v-for="card in categoryCards"
                     :key="card.title"
-                    my-1 xs6 >
+                    cols="6" >
               <base-click-card :title="card.title"
                                 :img="card.img"
                                 :color="card.darkColor"
                                 :contain="card.contain"
                                 @click="catchCategoryClicked(card.type)" />
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </v-container>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

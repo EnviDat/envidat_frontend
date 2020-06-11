@@ -1,38 +1,38 @@
 <template>
-  <v-container tag="article"
+  <v-container class="fill-height pa-0" tag="article"
                 fluid
-                fill-height
-                pa-0>
-    <v-layout row wrap>
+                
+                >
+    <v-row >
 
-      <v-flex xs12 lg10 offset-lg1>
+      <v-col cols="12" lg="10" offset-lg="1">
         <img-and-text-layout :img="missionImg"
                               :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
                               title="Research Projects" />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12 lg10 offset-lg1 mt-5>
+      <v-col class="mt-5" cols="12" lg="10" offset-lg="1" >
 
-        <v-container v-if="loading"
-                      fluid grid-list-lg pa-1 >
-          <v-layout wrap>
+        <v-container class="pa-1" v-if="loading"
+                      fluid grid-list-lg >
+          <v-row >
 
-            <v-flex v-for="(project, index) in 3"
+            <v-col v-for="(project, index) in 3"
                     :key="index"
-                    xs12 sm6 md4 xl3 >
+                    cols="12" sm="6" md="4" xl="3" >
               <project-card-placeholder />
-            </v-flex>
+            </v-col>
 
-          </v-layout>
+          </v-row>
         </v-container>
 
-        <v-container v-else
-                    fluid grid-list-lg pa-1 >
-          <v-layout wrap>
+        <v-container class="pa-1" v-else
+                    fluid grid-list-lg >
+          <v-row >
 
-            <v-flex v-for="(project, index) in projectsCardsParents"
+            <v-col v-for="(project, index) in projectsCardsParents"
                     :key="index"
-                    xs12 sm6 md4 xl3
+                    cols="12" sm="6" md="4" xl="3"
                      >
               <project-card :id="project.id"
                             :title="project.title"
@@ -43,14 +43,14 @@
                             @cardClick="onCardClick"
                             @subprojectClick="onSubprojectClick"
               />
-            </v-flex>
+            </v-col>
 
-          </v-layout>
+          </v-row>
         </v-container>
 
-      </v-flex>
+      </v-col>
 
-    </v-layout>
+    </v-row>
   </v-container>
 </template>
 

@@ -3,14 +3,14 @@
     hover
     raised
   >
-    <v-layout
-      row
-      align-center
-      justify-space-between
+    <v-row
+      
+      align="center"
+      justify="space-between"
     >
-      <v-flex
-        grow
-        pl-2
+      <v-col class="grow pl-2"
+        
+        
       >
         <v-text-field
           class="adjustIconSearchbar"
@@ -22,20 +22,20 @@
           @click:prepend="clicked"
           @keyup.enter="clicked"
         />
-      </v-flex>
+      </v-col>
 
-      <v-flex
-        shrink
-        pl-2
+      <v-col class="shrink pl-2"
+        
+        
       >
         <base-rectangle-button
           :button-text="buttonText"
           :is-small="true"
           @clicked="clicked"
         />
-      </v-flex>
+      </v-col>
 
-    </v-layout>
+    </v-row>
 
   </v-card>
 </template>

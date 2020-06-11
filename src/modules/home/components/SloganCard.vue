@@ -2,19 +2,19 @@
   <v-card ripple hover
             @click="buttonCallback" >
 
-    <v-container grid-list-md
-                    pa-0 >
-      <v-layout v-bind="{ 'row' : $vuetify.breakpoint.xsOnly ? false : true,
+    <v-container class="pa-0" grid-list-md
+                    >
+      <v-row v-bind="{ 'row' : $vuetify.breakpoint.xsOnly ? false : true,
                           'column' : $vuetify.breakpoint.xsOnly ? true : false, }" >
-        <v-flex xs5
-                py-0 >
+        <v-col class="py-0" cols="5"
+                >
           <v-img
             :src="fingertipsImg"
             :style="{ 'max-height': '200px', 'min-height': '100%' }"
           />
-        </v-flex>
+        </v-col>
 
-        <v-flex xs7 pa-2>
+        <v-col class="pa-2" cols="7" >
           <div class="hidden-sm-and-down envidatSlogan display-1"
                 v-html="slogan">
           </div>
@@ -30,8 +30,8 @@
                 :style="$vuetify.breakpoint.mdAndUp ? 'font-size: 14px !important;' : '' " >
             {{ subSlogan }}
           </div>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-container>
 
 

@@ -1,31 +1,31 @@
 <template>
-  <v-layout column>
-    <v-flex xs12 py-4 class="error">
+  <v-row column>
+    <v-col cols="12" class="error py-4">
       <h2>{{ noResultText }}</h2>
-    </v-flex>
+    </v-col>
 
-    <v-flex xs12>
+    <v-col cols="12">
       <h3>{{ suggestionText }}</h3>
-    </v-flex>
+    </v-col>
 
-    <v-flex xs12 pt-2>
-      <v-container fluid grid-list-md pa-0>
-        <v-layout row wrap>
+    <v-col class="pt-2" cols="12" >
+      <v-container class="pa-0" fluid grid-list-md >
+        <v-row >
 
-          <v-flex v-for="card in categoryCards"
+          <v-col class="my-2 px-1" v-for="card in categoryCards"
                   :key="card.title"
-                  my-2 px-1
-                  xs6 md4 >
+                  
+                  cols="6" md="4" >
               <base-click-card :title="card.title"
                                 :img="card.img"
                                 :color="card.darkColor"
                                 :contain="card.contain"
                                 @click="catchCategoryClicked(card.type)" />
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
 

@@ -37,22 +37,22 @@
                             :modeCloseCallback="catchModeClose" />
 
     <v-content>
-      <v-container fluid
-                    pa-2 
-                    fill-height
+      <v-container class="pa-2 fill-height" fluid
+                    
+                    
                     v-on:scroll="updateScroll()"
                     ref="appContainer"
                     :style="pageStyle" >
-        <v-layout column >
-          <v-flex xs12 mx-0 >
+        <v-row column >
+          <v-col class="mx-0" cols="12" >
 
             <transition name="fade" mode="out-in">
               <router-view />
             </transition>
 
-          </v-flex>
+          </v-col>
 
-        </v-layout>
+        </v-row>
       </v-container>
 
       <v-dialog v-model="showReloadDialog" persistent max-width="290">

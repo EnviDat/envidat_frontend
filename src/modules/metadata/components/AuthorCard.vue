@@ -4,17 +4,17 @@
             @click.native="cardClick" >
 
       <v-card-title class="px-2 pt-2 pb-3">
-        <v-layout row wrap>
+        <v-row >
 
-          <v-flex grow py-0 >
+          <v-col class="grow py-0" >
             <div class="authorTitle"
                   :class="dark ? 'white--text' : 'black--text'" >
               {{ author.firstName }}
             </div>
-          </v-flex>
+          </v-col>
 
-          <v-flex v-if="authorIsDead"
-                  shrink py-0>
+          <v-col class="shrink py-0" v-if="authorIsDead"
+                  >
 
             <v-tooltip bottom>
               <v-icon slot="activator"
@@ -25,30 +25,30 @@
               {{ authorPassedInfo }}
             </v-tooltip>
 
-          </v-flex>
+          </v-col>
 
-          <v-flex xs12 py-0>
+          <v-col class="py-0" cols="12" >
             <div class="authorTitle"
                   :class="dark ? 'white--text' : 'black--text'" >
               {{ authorIsDead ? author.lastName.replace(`(${asciiDead})`, '') : author.lastName }}
             </div>
-          </v-flex>
+          </v-col>
 
-        </v-layout>
+        </v-row>
       </v-card-title>
 
       <v-card-title class="py-2 px-2">
-        <v-layout row
-                  align-center
-                  justify-space-between >
+        <v-row 
+                  align="center"
+                  justify="space-between" >
 
-          <v-flex xs6
+          <v-col cols="6"
                   :class="dark ? 'white--text' : 'black--text'" >
             {{ dataCountLabel }} 
-          </v-flex>
+          </v-col>
 
-          <v-flex shrink
-                  py-0
+          <v-col class="shrink py-0" 
+                  
                   style="max-height: 36px;">
             <base-icon-button class="ma-0"
                               material-icon-name="search"
@@ -67,8 +67,8 @@
               </span>
             </v-badge>
 
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-card-title>
 
       <v-card-title class="py-1 pb-2 px-2">
@@ -82,16 +82,16 @@
 
       <v-card-title class="pl-2 py-2 pr-0" >
 
-        <v-layout row
-                  justify-space-between
-                  align-center >
+        <v-row 
+                  justify="space-between"
+                  align="center" >
 
-          <v-flex shrink
+          <v-col class="shrink" 
                   :class="dark ? 'white--text' : 'black--text'" >
             {{ dataScoreLabel }}
-          </v-flex>
+          </v-col>
 
-          <v-flex grow >
+          <v-col class="grow" >
             <v-tooltip bottom>
               <v-icon slot="activator"
                       class="badgesIcon"
@@ -101,9 +101,9 @@
               </v-icon>
               {{ dataCreditScoreInfo }}
             </v-tooltip>
-          </v-flex>
+          </v-col>
 
-          <v-flex shrink px-2>
+          <v-col class="shrink px-2" >
             <div :style="`background-color: ${!this.dark ? darkColor : whiteColor};`"
                   class="dataCreditScore elevation-5">
 
@@ -112,19 +112,19 @@
                 {{ dataCreditScore }}
               </div>
             </div>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-card-title>
 
       <v-card-title class="pt-2 pb-0 px-2">
-        <v-layout row
-                  align-center >
+        <v-row 
+                  align="center" >
 
-          <v-flex grow @click="infosExpanded = !infosExpanded">
+          <v-col class="grow" @click="infosExpanded = !infosExpanded">
             <v-divider :dark="dark" />
-          </v-flex>
+          </v-col>
 
-          <v-flex shrink>
+          <v-col class="shrink" >
             <v-btn flat icon
                     :color="dark ? 'white' : 'black'"
                     :outline="true"
@@ -132,41 +132,41 @@
                     @click="infosExpanded = !infosExpanded">
               <v-icon> {{ infosExpanded ? 'keyboard_arrow_down' : 'keyboard_arrow_left' }}</v-icon>
             </v-btn>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
 
-        <v-container v-if="infosExpanded"
+        <v-container class="py-2 px-0 align" v-if="infosExpanded"
                       fluid
-                      grid-list-lg align-end
-                      py-2 px-0 >
-          <v-layout row wrap>
+                      grid-list-lg 
+                      >
+          <v-row >
 
-            <v-flex shrink v-if="author.email && !authorIsDead">
-              <v-layout column>
-                <v-flex xs12 py-0
-                        class="authorInfoLabel"
+            <v-col class="shrink" v-if="author.email && !authorIsDead">
+              <v-row column>
+                <v-col cols="12" 
+                        class="authorInfoLabel py-0"
                         :class="dark ? 'white--text' : 'black--text'" >
                   {{ emailLabel }}
-                </v-flex>
+                </v-col>
 
-                <v-flex xs12 py-0
-                        class="authorInfo"
+                <v-col cols="12" 
+                        class="authorInfo py-0"
                         :class="dark ? 'white--text' : 'black--text'" >
                   {{ author.email }}
-                </v-flex>
-              </v-layout>
-            </v-flex>
+                </v-col>
+              </v-row>
+            </v-col>
 
-            <v-flex shrink v-if="author.id && author.id.identifier">
-              <v-layout column>
-                <v-flex xs12 py-0
-                        class="authorInfoLabel"
+            <v-col class="shrink" v-if="author.id && author.id.identifier">
+              <v-row column>
+                <v-col cols="12" 
+                        class="authorInfoLabel py-0"
                         :class="dark ? 'white--text' : 'black--text'" >
                   {{ author.id.type ? author.id.type : idLabel }}
-                </v-flex>
+                </v-col>
 
-                <v-flex xs12 py-0
-                        class="authorInfo"
+                <v-col cols="12" 
+                        class="authorInfo py-0"
                         :class="dark ? 'white--text' : 'black--text'" >
 
                   <a v-if="(author.id.type && author.id.type === 'orcid') || isOrcId(formatIdentifier(author.id.identifier))"
@@ -176,26 +176,26 @@
                   </a>
                   <div v-else>{{ formatIdentifier(author.id.identifier) }}</div>
 
-                </v-flex>
-              </v-layout>
-            </v-flex>
+                </v-col>
+              </v-row>
+            </v-col>
 
-            <v-flex shrink v-if="author.affiliation">
-              <v-layout column>
-                <v-flex xs6 py-0
-                        class="authorInfoLabel"
+            <v-col class="shrink" v-if="author.affiliation">
+              <v-row column>
+                <v-col cols="6" 
+                        class="authorInfoLabel py-0"
                         :class="dark ? 'white--text' : 'black--text'" >
                   {{ affiliationLabel }}
-                </v-flex>
+                </v-col>
 
-                <v-flex xs6 py-0
-                        class="authorInfo"
+                <v-col cols="6" 
+                        class="authorInfo py-0"
                         :class="dark ? 'white--text' : 'black--text'" >
                   {{ author.affiliation }}
-                </v-flex>
-              </v-layout>
-            </v-flex>
-          </v-layout>
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
 
         </v-container>
       </v-card-title>

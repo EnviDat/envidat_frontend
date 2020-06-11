@@ -1,25 +1,25 @@
 <template>
   <v-card ripple hover :expanded="expanded">
-    <v-container grid-list-md pa-0 @click="toggleExpand">
-      <v-layout row align-center>
-        <v-flex xs5 py-0>
+    <v-container class="pa-0" grid-list-md @click="toggleExpand">
+      <v-row align="center">
+        <v-col class="py-0" cols="5" >
           <v-img
             class="imagezoom"
             :contain="contain"
             :height=" $vuetify.breakpoint.xsOnly ? minHeight + 'px' : maxHeight + 'px' "
             :src="img"
           />
-        </v-flex>
+        </v-col>
 
-        <v-flex xs7 mx-1 mt-1>
+        <v-col class="mx-1 mt-1" cols="7" >
           <div
             class="headline"
             :class="{ 'compactTitle' : this.$vuetify.breakpoint.xsOnly }"
           >
             {{ title }}
           </div>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-container>
 
     <v-card-actions class="ma-0 pa-2" style="position: absolute; bottom: 5px; right: 5px;">

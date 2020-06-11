@@ -4,10 +4,10 @@
                 bottom >
       <div slot="activator"
             class="metadataInfoIcon" >
-        <v-layout row
+        <v-row 
                     @mouseover="hoverBadge = true"
                     @mouseleave="hoverBadge = false" >
-          <v-flex pa-0>
+          <v-col class="pa-0" >
             <v-badge :left="!hoverBadge"
                       overlap
                       color="secondary"
@@ -16,22 +16,22 @@
                                                     
               <span slot="badge" >{{ count }}</span>
             </v-badge>
-          </v-flex>
+          </v-col>
 
-          <v-flex pa-0>
+          <v-col class="pa-0" >
             <img class="envidatIcon" :src="iconString" :alt="`${iconString} icon`">
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </div>
       <span>{{ tooltipText }}</span>
     </v-tooltip>
 
     <div v-else
           class="metadataInfoIcon" >
-      <v-layout row
+      <v-row 
                   @mouseover="hoverBadge = true"
                   @mouseleave="hoverBadge = false" >
-        <v-flex pa-0>
+        <v-col class="pa-0" >
           <v-badge :left="!hoverBadge"
                     overlap
                     color="secondary"
@@ -41,12 +41,12 @@
                                                   
             <span slot="badge">{{ count }}</span>
           </v-badge>
-        </v-flex>
+        </v-col>
 
-        <v-flex pa-0 style="z-index: 1;" >
+        <v-col class="pa-0" style="z-index: 1;" >
           <img class="envidatIcon" :src="iconString" :alt="`${iconString} icon`">
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </div>
 
   </div>

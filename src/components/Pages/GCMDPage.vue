@@ -1,19 +1,19 @@
 <template>
   <v-container fluid>
-    <v-layout column>
+    <v-row column>
       <h1>EnviDat Global Change Master Directory Exchange Platform</h1>
 
-      <v-flex
+      <v-col class="py-2"
         v-for="metadata in metadatasContent"
         :key="metadata.id"
-        py-2
-        xs6
+        
+        cols="6"
       >
         <a :href="gcdmLink(metadata)">
           {{ gcdmLink(metadata) }}
         </a>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

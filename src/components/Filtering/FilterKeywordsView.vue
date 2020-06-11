@@ -1,34 +1,34 @@
 <template>
   <v-card raised >
 
-    <v-container fluid
-                  pa-2 >
-      <v-layout column >
+    <v-container class="pa-2" fluid
+                  >
+      <v-row column >
 
-        <v-flex v-if="!filterExpanded"
-                hidden-sm-and-up
-                xs12 px-2 py-2 >
+        <v-col class="hidden-sm-and-up px-2 py-2" v-if="!filterExpanded"
+                
+                cols="12" >
           <div class="mx-3">Filter for Keywords</div>
-        </v-flex>
+        </v-col>
 
-        <v-flex v-if="filterExpanded || $vuetify.breakpoint.smAndUp"
-                xs12 pb-0>
-          <v-layout row >
+        <v-col class="pb-0" v-if="filterExpanded || $vuetify.breakpoint.smAndUp"
+                cols="12" >
+          <v-row >
 
-            <v-flex class="metadataInfoIcon" >
+            <v-col class="metadataInfoIcon" >
               <v-img :src="tagsIcon" height="24" width="24" />
-            </v-flex>
+            </v-col>
 
-            <v-flex v-if="showPlaceholder"
-                    xs12 >
+            <v-col v-if="showPlaceholder"
+                    cols="12" >
 
               <tag-chip-placeholder v-for="n in 6"
                                     :key="n"
                                     class="envidatChip" />
-            </v-flex>
+            </v-col>
 
-            <v-flex v-if="!showPlaceholder"
-                    xs12 >
+            <v-col v-if="!showPlaceholder"
+                    cols="12" >
 
               <tag-chip v-for="tag in unselectedTags"
                         :key="tag.name"
@@ -38,20 +38,20 @@
                         :closeable="false"
                         :color="tag.color"
                         @clicked="catchTagClicked($event, tag.name)" />
-            </v-flex>
-          </v-layout>
-        </v-flex>
+            </v-col>
+          </v-row>
+        </v-col>
 
-        <v-flex v-if="filterExpanded || $vuetify.breakpoint.smAndUp"
-                xs12 >
-          <v-layout row >
+        <v-col v-if="filterExpanded || $vuetify.breakpoint.smAndUp"
+                cols="12" >
+          <v-row >
 
-            <v-flex pl-2 class="metadataInfoIcon" >
+            <v-col class="metadataInfoIcon pl-2" >
               <v-img :src="tagIcon" height="24" width="24" />
-            </v-flex>
+            </v-col>
 
-            <v-flex v-if="selectedTags.length > 0"
-                    xs12
+            <v-col v-if="selectedTags.length > 0"
+                    cols="12"
                     :class="$vuetify.breakpoint.smAndDown ? '' : 'px-2'" >
 
               <tag-chip v-for="tag in selectedTags"
@@ -62,11 +62,11 @@
                         :closeable="true"
                         @clickedClose="catchTagCloseClicked($event, tag.name)"
                         @clicked="catchTagCloseClicked($event, tag.name)" />
-            </v-flex>
+            </v-col>
 
-          </v-layout>
-        </v-flex>
-      </v-layout>
+          </v-row>
+        </v-col>
+      </v-row>
     </v-container>
 
     <v-card-actions v-if="$vuetify.breakpoint.xsOnly"

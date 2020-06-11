@@ -16,8 +16,8 @@
           :class="{ 'blur_parallax' : blur }"
           :style="blur ? 'opacity: 0.8' : ''" />
 
-    <v-layout align-center justify-center column fill-height
-              mx-2
+    <v-row class="fill-height mx-2" align="center" justify="center" column 
+              
               :style="`position: relative; top: -${height }px;
                       text-align: center;`" >
 
@@ -48,7 +48,7 @@
           {{ subTitle }}
         </span>
       </div>
-    </v-layout>
+    </v-row>
   </div>
 </template>
 

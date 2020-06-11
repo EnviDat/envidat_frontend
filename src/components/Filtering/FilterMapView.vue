@@ -7,14 +7,14 @@
       Error loading leaflet
     </div>
 
-    <v-container v-if="!errorLoadingLeaflet"
-          fill-height fluid pa-0>
+    <v-container class="fill-height pa-0" v-if="!errorLoadingLeaflet"
+          fluid >
 
-      <v-layout :class="{ 'column' : topLayout,
+      <v-row :class="{ 'column' : topLayout,
                           'row' : !topLayout }" >
 
-        <v-flex v-if="topLayout"
-                xs2 py-0>
+        <v-col class="py-0" v-if="topLayout"
+                cols="2" >
 
           <filter-map-widget style="height: 100%"
                               :pinnedIds="pinnedIds"
@@ -34,17 +34,17 @@
                               @clickedPolygon="catchPolygonClicked"
                               @clickedClear="catchClearClicked" />
 
-        </v-flex>
+        </v-col>
 
-        <v-flex py-0 fill-height
+        <v-col class="py-0 fill-height" 
                 :class="{ 'pr-0' : !topLayout }">
           <div id="map"
                 ref="map"
                 v-bind="mapViewHeight" />
-        </v-flex>
+        </v-col>
 
-        <v-flex v-if="!topLayout"
-                xs2 py-0 pl-0 >
+        <v-col class="py-0 pl-0" v-if="!topLayout"
+                cols="2" >
 
           <filter-map-widget style="height: 100%"
                               :title="modeTitle"
@@ -65,9 +65,9 @@
                               @clickedPolygon="catchPolygonClicked"
                               @clickedClear="catchClearClicked" />
 
-        </v-flex>
+        </v-col>
 
-      </v-layout>
+      </v-row>
 
     </v-container>
 

@@ -10,8 +10,8 @@
             style="z-index: 1;"
             @click.native="cardClick" >
 
-      <v-layout fill-height style="max-width: 100%; background-color: white; border-radius: 2px;" class="ma-0" >
-          <v-flex xs6 pa-0 >
+      <v-row style="max-width: 100%; background-color: white; border-radius: 2px;" class="ma-0 fill-height" >
+          <v-col class="pa-0" cols="6" >
             <v-img style="border-radius: 2px 0px 0px 2px;"
                     :contain="headerImg ? headerImg.width > headerImg.height : false"
                     :cover="headerImg ? headerImg.width < headerImg.height : false"
@@ -19,18 +19,18 @@
                     :src="headerImg ? headerImg.src : ''"
                     :lazy-src="defaultImg"
                     />
-          </v-flex>
+          </v-col>
 
-        <v-flex xs6 ma-auto>
+        <v-col class="ma-auto" cols="6" >
           <div class="title"
                 style="word-break: break-word;"
                 :class="dark ? 'white--text' : 'black--text'"
           >
             {{ truncatedTitle }}
           </div>
-        </v-flex>
+        </v-col>
 
-      </v-layout>
+      </v-row>
     </v-card>
 
     <!-- Bottom of Card -->
@@ -50,9 +50,9 @@
       </v-card-text>
 
       <v-card-text v-if="subProjects" >
-        <v-layout v-for="sub in subProjects" :key="sub.id" wrap align-center pr-2>
-          <v-flex xs11 py-0>{{ sub.title }}</v-flex>
-          <v-flex xs1 py-0>
+        <v-row class="pr-2" v-for="sub in subProjects" :key="sub.id"  align="center" >
+          <v-col class="py-0" cols="11" >{{ sub.title }}</v-col>
+          <v-col class="py-0" cols="1" >
             <base-icon-button materialIconName="find_in_page"
                             color="transparent"
                             iconColor="secondary"
@@ -60,8 +60,8 @@
                             tooltipBottom
                             :isSmall="true"
                             @clicked="subprojectClick(sub.id)" />
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-card-text>
     </v-card>
   </div>

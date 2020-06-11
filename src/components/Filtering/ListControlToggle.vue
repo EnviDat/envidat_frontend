@@ -1,8 +1,8 @@
 <template>
 
-  <v-container pa-0>
-    <v-layout row>
-      <v-flex v-if="isEnabledControl(LISTCONTROL_MAP_ACTIVE)" >
+  <v-container class="pa-0" >
+    <v-row >
+      <v-col v-if="isEnabledControl(LISTCONTROL_MAP_ACTIVE)" >
         <v-btn-toggle v-model="controlsActive">
           <v-btn flat
                   @click="catchControlClick(LISTCONTROL_MAP_ACTIVE)"
@@ -11,9 +11,9 @@
             <v-icon>map</v-icon>
           </v-btn>
         </v-btn-toggle>
-      </v-flex>
+      </v-col>
 
-      <v-flex v-if="isEnabledControl(LISTCONTROL_LIST_ACTIVE)
+      <v-col v-if="isEnabledControl(LISTCONTROL_LIST_ACTIVE)
                     || isEnabledControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)" >
         <v-btn-toggle v-model="controlsActive" >
 
@@ -42,8 +42,8 @@
           </v-btn>
 
         </v-btn-toggle>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

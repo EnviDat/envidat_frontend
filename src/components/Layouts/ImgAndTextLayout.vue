@@ -1,20 +1,20 @@
 <template>
-  <v-container pa-0 style="position: relative;">
-    <v-layout column>
+  <v-container class="pa-0" style="position: relative;">
+    <v-row column>
         <v-sheet :height="height">
 
           <v-parallax :height="height" :src="img" style="opacity: 0.8; filter: blur(2px);" />
 
-          <v-layout align-center justify-center fill-height
+          <v-row class="fill-height" align="center" justify="center" 
                     :style="`position: relative; top: -${height }px; text-align: center;`" >
-            <v-flex class="text"
+            <v-col class="text"
                     :class="{ 'display-3' : $vuetify.breakpoint.mdAndUp,
                               'display-1' : $vuetify.breakpoint.smAndDown, }">
               {{ title }}
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </v-sheet>
-    </v-layout>
+    </v-row>
   </v-container>
 </template>
 
