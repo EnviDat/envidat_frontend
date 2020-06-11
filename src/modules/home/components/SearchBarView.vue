@@ -1,17 +1,9 @@
 <template>
-  <v-card
-    hover
-    raised
-  >
-    <v-row
-      
-      align="center"
-      justify="space-between"
-    >
-      <v-col class="grow pl-2"
-        
-        
-      >
+  <v-card hover
+          raised >
+    <v-row align="center"
+            justify="space-between" >
+      <v-col class="grow pl-2" >
         <v-text-field
           class="adjustIconSearchbar"
           v-model="searchText"
@@ -20,19 +12,14 @@
           prepend-icon="search"
           :label="labelText"
           @click:prepend="clicked"
-          @keyup.enter="clicked"
-        />
+          @keyup.enter="clicked" />
       </v-col>
 
-      <v-col class="shrink pl-2"
-        
-        
-      >
+      <v-col class="shrink pl-2" >
         <base-rectangle-button
           :button-text="buttonText"
           :is-small="true"
-          @clicked="clicked"
-        />
+          @clicked="clicked" />
       </v-col>
 
     </v-row>

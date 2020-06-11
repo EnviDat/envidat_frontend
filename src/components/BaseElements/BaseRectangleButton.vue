@@ -1,28 +1,30 @@
 <template>
   <v-tooltip bottom :disabled="$vuetify.breakpoint.smAndDown || !tooltipText">
-    <v-btn slot="activator"
-            :small="isSmall"
-            :class="marginClass"
-            :outline="isOutlined"
-            :flat="isFlat"
-            :color="color ? color : 'primary'"
-            :disabled="disabled"
-            :href="url"
-            target="_blank"
-            @click.stop="onClick" >
+    <template v-slot:activator="{ on }">
+      <v-btn v-on="on"
+              :small="isSmall"
+              :class="marginClass"
+              :outlined="isOutlined"
+              :text="isFlat"
+              :color="color ? color : 'primary'"
+              :disabled="disabled"
+              :href="url"
+              target="_blank"
+              @click.stop="onClick" >
 
-      <div v-if="customIcon" class="iconCentering">
-        <img class="envidatIcon" :src="customIcon" :alt="`${iconString} icon`" />
-      </div>
+        <div v-if="customIcon" class="iconCentering">
+          <img class="envidatIcon" :src="customIcon" :alt="`${iconString} icon`" />
+        </div>
 
-      <v-icon v-if="materialIconName"
-              left
-              :color="iconColor ? iconColor : 'primary'" >
-        {{ materialIconName }}
-      </v-icon>
+        <v-icon v-if="materialIconName"
+                left
+                :color="iconColor ? iconColor : 'primary'" >
+          {{ materialIconName }}
+        </v-icon>
 
-      {{ buttonText }}
-    </v-btn>
+        {{ buttonText }}
+      </v-btn>
+    </template >
 
     <span>{{ tooltipText }}</span>
   </v-tooltip>
