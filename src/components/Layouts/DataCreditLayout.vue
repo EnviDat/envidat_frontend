@@ -1,8 +1,6 @@
 <template>
-  <v-container grid-list-xs
-                fluid>
-    <v-row 
-               >
+  <v-container fluid>
+    <v-row >
 
       <v-col cols="12"
               :class="!dark ? 'white--text' : 'black--text'" >
@@ -16,12 +14,12 @@
         {{ noCreditslabel }}
       </v-col>
 
-      <v-col class="shrink px-1" v-for="(creditName, index) in dataCreditNames"
+      <v-col v-show="showZero || (!showZero && dataCreditCounts[index] > 0)"
+              v-for="(creditName, index) in dataCreditNames"
               :key="index"
-              
-              v-show="showZero || (!showZero && dataCreditCounts[index] > 0)">
+              class="shrink px-1" >
 
-        <v-row column >
+        <v-row >
 
           <v-col class="py-0" >
             <v-tooltip bottom >

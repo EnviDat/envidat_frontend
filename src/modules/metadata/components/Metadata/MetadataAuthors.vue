@@ -6,9 +6,7 @@
 
     <v-container v-if="showAuthors"
                 fluid
-                grid-list-md
-                class="heightAndScroll pa-3"
-                >
+                class="heightAndScroll pa-3" >
 
       <v-row v-if="showPlaceholder"
                    >

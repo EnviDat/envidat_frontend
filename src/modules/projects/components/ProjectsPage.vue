@@ -1,7 +1,6 @@
 <template>
   <v-container class="fill-height pa-0" tag="article"
-                fluid
-                
+                fluid                
                 >
     <v-row >
 
@@ -13,8 +12,9 @@
 
       <v-col class="mt-5" cols="12" lg="10" offset-lg="1" >
 
-        <v-container class="pa-1" v-if="loading"
-                      fluid grid-list-lg >
+        <v-container v-if="loading"
+                      class="pa-1"
+                      fluid>
           <v-row >
 
             <v-col v-for="(project, index) in 3"
@@ -26,8 +26,9 @@
           </v-row>
         </v-container>
 
-        <v-container class="pa-1" v-else
-                    fluid grid-list-lg >
+        <v-container  v-else
+                      class="pa-1"
+                      fluid >
           <v-row >
 
             <v-col v-for="(project, index) in projectsCardsParents"

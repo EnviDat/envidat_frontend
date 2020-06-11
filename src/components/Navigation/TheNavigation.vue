@@ -51,7 +51,9 @@
               </v-col>
 
               <v-col cols="9">
-                <v-row class="fill-height" column align="start" justify="end" >
+                <v-row class="fill-height" 
+                        align="start"
+                        justify="end" >
                   <v-col cols="4"></v-col>
                   <v-col cols="4"
                           class="headline envidatNavbarTitleSmall">

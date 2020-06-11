@@ -1,21 +1,22 @@
 <template>
-  <v-card ripple hover :expanded="expanded">
-    <v-container class="pa-0" grid-list-md @click="toggleExpand">
+  <v-card ripple
+          hover
+          :expanded="expanded">
+    <v-container class="pa-0" 
+                  @click="toggleExpand">
+
       <v-row align="center">
         <v-col class="py-0" cols="5" >
           <v-img
             class="imagezoom"
             :contain="contain"
             :height=" $vuetify.breakpoint.xsOnly ? minHeight + 'px' : maxHeight + 'px' "
-            :src="img"
-          />
+            :src="img" />
         </v-col>
 
         <v-col class="mx-1 mt-1" cols="7" >
-          <div
-            class="headline"
-            :class="{ 'compactTitle' : this.$vuetify.breakpoint.xsOnly }"
-          >
+          <div class="headline"
+                :class="{ 'compactTitle' : this.$vuetify.breakpoint.xsOnly }" >
             {{ title }}
           </div>
         </v-col>
@@ -31,8 +32,7 @@
                         :rotateOnClick="true"
                         :rotateToggle="expanded"
                         :tooltipText="expanded ? 'Hide info' : 'Show info'"
-                        @clicked="toggleExpand"
-      />
+                        @clicked="toggleExpand" />
     </v-card-actions>
 
     <v-slide-y-transition>

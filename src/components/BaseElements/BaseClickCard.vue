@@ -2,8 +2,7 @@
   <v-card ripple
           hover
           @click.native="clicked" >
-    <v-container class="pa-0" grid-list-md
-                  >
+    <v-container class="pa-0" >
       <v-row align="center" >
         <!-- Image -->
         <v-col class="py-0" cols="5"

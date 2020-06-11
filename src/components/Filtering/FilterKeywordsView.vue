@@ -1,17 +1,18 @@
 <template>
   <v-card raised >
 
-    <v-container class="pa-2" fluid
-                  >
-      <v-row column >
+    <v-container class="pa-2"
+                  fluid >
+      <v-row >
 
-        <v-col class="hidden-sm-and-up px-2 py-2" v-if="!filterExpanded"
-                
+        <v-col v-if="!filterExpanded"
+                class="hidden-sm-and-up px-2 py-2"
                 cols="12" >
           <div class="mx-3">Filter for Keywords</div>
         </v-col>
 
-        <v-col class="pb-0" v-if="filterExpanded || $vuetify.breakpoint.smAndUp"
+        <v-col v-if="filterExpanded || $vuetify.breakpoint.smAndUp"
+                class="pb-0"
                 cols="12" >
           <v-row >
 

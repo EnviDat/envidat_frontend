@@ -12,8 +12,7 @@
     <v-card-text class="pt-0"
                 :class="{ 'pb-3': $vuetify.breakpoint.mdAndUp,
                           'pb-5': $vuetify.breakpoint.smAndDown, }" >
-      <v-container class="pa-0" grid-list-xs
-                    >
+      <v-container class="pa-0" >
         <v-row v-bind="{ 'row': $vuetify.breakpoint.smAndUp,
                             'wrap': $vuetify.breakpoint.smAndUp,
                             'column': $vuetify.breakpoint.xsOnly,
@@ -23,7 +22,7 @@
                             'xs12': this.twoColumnLayout || showFullDescription }"
                   order="1"
                   order-sm="3" >
-            <v-row column>
+            <v-row >
               <v-col v-if="showFullDescription"
                       cols="11"
                       class="resourceCardText heightAndScroll"
@@ -52,7 +51,7 @@
                   order="3"
                   order-sm="1"
                   class="resourceInfo" >
-            <v-row column>
+            <v-row >
               <v-col class="px-0 py-1" v-if="doi"
                       >
                 <base-icon-label-view :text="doi"

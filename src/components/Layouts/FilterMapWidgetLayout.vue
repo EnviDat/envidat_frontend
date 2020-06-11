@@ -45,117 +45,107 @@
 
     <v-container :class="mdScreen ? 'px-3' : 'py-2 px-3'" >
 
-    <v-row v-if="topLayout"
-              
-              align="center" justify="end">
+      <v-row v-if="topLayout"
+                
+                align="center" justify="end">
 
-      <v-col class="shrink" >
-        <slot name="focus" />
-      </v-col>              
-      <v-col class="shrink" v-if="hasPins"
-              >
-        <slot name="pinEnabled" />
-      </v-col>              
-      <v-col class="shrink" v-if="hasMultiPins"
-              >
-        <slot name="multiPinEnabled" />
-      </v-col>              
-      <v-col class="shrink" v-if="hasPolygons"
-              >
-        <slot name="polygonEnabled" />
-      </v-col>              
-    </v-row>
+        <v-col class="shrink" >
+          <slot name="focus" />
+        </v-col>              
+        <v-col class="shrink" v-if="hasPins"
+                >
+          <slot name="pinEnabled" />
+        </v-col>              
+        <v-col class="shrink" v-if="hasMultiPins"
+                >
+          <slot name="multiPinEnabled" />
+        </v-col>              
+        <v-col class="shrink" v-if="hasPolygons"
+                >
+          <slot name="polygonEnabled" />
+        </v-col>              
+      </v-row>
 
-    <v-row v-if="!topLayout"
-              
-              :column="mdScreen"
-              
+                <!-- :column="mdScreen" -->
+      <v-row v-if="!topLayout"
               align="center">
 
-      <v-col class="pa-0" v-if="mdScreen"
-              >
-        <v-row align="center">
-          <v-col class="shrink" >
-            <div :style="`color:${pinnedAmount > 0 ? $vuetify.theme.primary : 'rgba(0,0,0,.47)'};`">
-              {{ filterText + pinnedAmount }}
-            </div>
-          </v-col>
-          <v-col class="grow" >
+        <v-col v-if="mdScreen"
+                class="pa-0" >
+          <v-row align="center">
+            <v-col class="shrink" >
+              <div :style="`color:${pinnedAmount > 0 ? $vuetify.theme.primary : 'rgba(0,0,0,.47)'};`">
+                {{ filterText + pinnedAmount }}
+              </div>
+            </v-col>
+            <v-col class="grow" >
 
-            <slot name="clearPins" />
+              <slot name="clearPins" />
 
-          </v-col>
-        </v-row>
-      </v-col>
+            </v-col>
+          </v-row>
+        </v-col>
 
-      <v-col class="grow py-1" v-if="!mdScreen"
-              
-              >
-        <div :style="`color:${pinnedAmount > 0 ? $vuetify.theme.primary : 'rgba(0,0,0,.47)'};`">
-          {{ filterText + pinnedAmount }}
-        </div>
-      </v-col>
+        <v-col v-if="!mdScreen"
+                class="grow py-1" >
+          <div :style="`color:${pinnedAmount > 0 ? $vuetify.theme.primary : 'rgba(0,0,0,.47)'};`">
+            {{ filterText + pinnedAmount }}
+          </div>
+        </v-col>
 
-      <v-col class="py-1" v-if="!mdScreen"
-              
-              :class="mdScreen ? 'shrink' : 'lg3'">
+        <v-col v-if="!mdScreen"
+                class="py-1"
+                :class="mdScreen ? 'shrink' : 'lg3'" >
 
-        <slot name="clearPins" />
+          <slot name="clearPins" />
 
-      </v-col>
+        </v-col>
 
+        <v-col class="hidden-md-and-down py-1" lg="9" >
+          {{ focusText }}
+        </v-col>
 
-      <v-col class="hidden-md-and-down py-1" lg="9"
-              >
-        {{ focusText }}
-      </v-col>
+        <v-col class="py-1" md="12" lg="3" >
+          <slot name="focus" />
+        </v-col>
 
-      <v-col class="py-1" md="12" lg="3"
-              >
-        <slot name="focus" />
-      </v-col>
+        <v-col v-if="hasPins"
+                class="hidden-md-and-down py-1"
+                lg="9" >
+          {{ pinText }}
+        </v-col>
 
-      <v-col class="hidden-md-and-down py-1" v-if="hasPins"
-              
-              lg="9"
-              >
-        {{ pinText }}
-      </v-col>
+        <v-col v-if="hasPins"
+                class="py-1"
+                md="12" lg="3" >
+          <slot name="pinEnabled" />
+        </v-col>
 
-      <v-col class="py-1" v-if="hasPins"
-              md="12" lg="3"
-              >
-        <slot name="pinEnabled" />
-      </v-col>
+        <v-col v-if="hasMultiPins"
+                class="hidden-md-and-down py-1"
+                lg="9" >
+          {{ multiPinText }}
+        </v-col>
 
-      <v-col class="hidden-md-and-down py-1" v-if="hasMultiPins"
-              
-              lg="9"
-              >
-        {{ multiPinText }}
-      </v-col>
+        <v-col v-if="hasMultiPins"
+                class="py-1"
+                md="12" lg="3" >
+          <slot name="multiPinEnabled" />
+        </v-col>
 
-      <v-col class="py-1" v-if="hasMultiPins"
-              md="12" lg="3"
-              >
-        <slot name="multiPinEnabled" />
-      </v-col>
+        <v-col v-if="hasPolygons"
+                class="hidden-md-and-down py-1"
+                lg="9" >
+          {{ polygonText }}
+        </v-col>
 
-      <v-col class="hidden-md-and-down py-1" v-if="hasPolygons"
-              
-              lg="9"
-              >
-        {{ polygonText }}
-      </v-col>
+        <v-col v-if="hasPolygons"
+                class="py-1"
+                md="12" lg="3" >
+          <slot name="polygonEnabled" />
+        </v-col>
 
-      <v-col class="py-1" v-if="hasPolygons"
-              md="12" lg="3"
-              >
-        <slot name="polygonEnabled" />
-      </v-col>
-
-
-    </v-row>
+      </v-row>
     </v-container>
 
   </v-card>

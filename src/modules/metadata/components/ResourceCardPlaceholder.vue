@@ -14,10 +14,10 @@
     </v-card-title>
 
     <v-card-text class="pt-0">
-      <v-container class="pa-0 pr-5" grid-list-xs >
+      <v-container class="pa-0 pr-5">
         <v-row  >
           <v-col >
-            <v-row column>
+            <v-row >
               <v-col cols="11">
                 <div class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-shimmer">
                   <div class="bone bone-type-multiline bone-style-paragraph" />

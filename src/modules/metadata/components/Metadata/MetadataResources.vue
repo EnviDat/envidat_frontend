@@ -20,8 +20,6 @@
 
     <v-container v-if="resources && resources.length > 0"
                 fluid
-                
-                grid-list-md
                 class="heightAndScroll pa-3" >
 
       <v-row v-if="showPlaceholder"

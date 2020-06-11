@@ -1,19 +1,19 @@
 <template>
   <v-container class="pa-0" style="position: relative;">
-    <v-row column>
-        <v-sheet :height="height">
+    <v-row >
+      <v-sheet :height="height">
 
-          <v-parallax :height="height" :src="img" style="opacity: 0.8; filter: blur(2px);" />
+        <v-parallax :height="height" :src="img" style="opacity: 0.8; filter: blur(2px);" />
 
-          <v-row class="fill-height" align="center" justify="center" 
-                    :style="`position: relative; top: -${height }px; text-align: center;`" >
-            <v-col class="text"
-                    :class="{ 'display-3' : $vuetify.breakpoint.mdAndUp,
-                              'display-1' : $vuetify.breakpoint.smAndDown, }">
-              {{ title }}
-            </v-col>
-          </v-row>
-        </v-sheet>
+        <v-row class="fill-height" align="center" justify="center" 
+                  :style="`position: relative; top: -${height }px; text-align: center;`" >
+          <v-col class="text"
+                  :class="{ 'display-3' : $vuetify.breakpoint.mdAndUp,
+                            'display-1' : $vuetify.breakpoint.smAndDown, }">
+            {{ title }}
+          </v-col>
+        </v-row>
+      </v-sheet>
     </v-row>
   </v-container>
 </template>

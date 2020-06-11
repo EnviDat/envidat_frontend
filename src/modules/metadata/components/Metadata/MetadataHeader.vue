@@ -32,7 +32,7 @@
                           'display-2': $vuetify.breakpoint.xlAndUp,
                           'display-1': $vuetify.breakpoint.mdAndUp,
                           'headline': $vuetify.breakpoint.smOnly,
-                          'subheading': $vuetify.breakpoint.xsOnly,
+                          'subtitle-1': $vuetify.breakpoint.xsOnly,
                         }" >
             {{ metadataTitle }}
           </div>

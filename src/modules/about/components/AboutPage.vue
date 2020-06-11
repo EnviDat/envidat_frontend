@@ -1,5 +1,7 @@
 <template>
-  <v-container class="fill-height pa-0" tag="article" fluid >
+  <v-container class="fill-height pa-0"
+                tag="article"
+                fluid >
     <v-row  >
 
       <v-col cols="12" lg="10" offset-lg="1" >
@@ -23,8 +25,8 @@
 
             <v-col class="px-3 mt-5" cols="12" >
 
-              <v-container class="pa-0" grid-list-lg >
-                <v-row  >
+              <v-container class="pa-0" >
+                <v-row >
 
                   <v-col class="my-2" v-for="(card, index) in aboutCardInfo"
                           :key="index"

@@ -1,9 +1,7 @@
 <template>
   <v-card >
-    <v-container class="fill-height pb-0" 
-                grid-list-xs
-                >
-      <v-row column>
+    <v-container class="fill-height pb-0" >
+      <v-row >
         <v-col cols="12">
           <div class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-shimmer">
             <div class="bone bone-type-heading bone-style-paragraph" />

@@ -1,21 +1,15 @@
 <template>
   <v-card ripple
           hover
-          style="height: 100%; max-height: 375px !important;"
-  >
+          style="height: 100%; max-height: 375px !important;" >
     <v-img background-color="primary"
-            :height="flatLayout ? '65px' : $vuetify.breakpoint.smAndDown ? '100px' : '125px'"
-    >
+            :height="flatLayout ? '65px' : $vuetify.breakpoint.smAndDown ? '100px' : '125px'" >
 
-      <v-container class="fill-height pb-0" style="position: absolute;"
-                  
-                  grid-list-xs
-                  >
-        <v-row column>
-          <v-col class="py-0" cols="12"
-                  >
-            <v-row 
-                      align="start" >
+      <v-container class="fill-height pb-0"
+                    style="position: absolute;" >
+        <v-row >
+          <v-col class="py-0" cols="12" >
+            <v-row align="start" >
               <v-col cols="12">
                 <div class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-shimmer">
                   <div class="bone bone-type-multiline bone-style-steps" />
@@ -36,8 +30,7 @@
       </div>
 
       <v-row class="fill-height" 
-                
-                align="end" >
+              align="end" >
         <v-col v-for="n in 3"
                 :key="n">
           <tag-chip-placeholder py-0

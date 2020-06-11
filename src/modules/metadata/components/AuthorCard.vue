@@ -136,13 +136,11 @@
         </v-row>
 
         <v-container class="py-2 px-0 align" v-if="infosExpanded"
-                      fluid
-                      grid-list-lg 
-                      >
+                      fluid >
           <v-row >
 
             <v-col class="shrink" v-if="author.email && !authorIsDead">
-              <v-row column>
+              <v-row >
                 <v-col cols="12" 
                         class="authorInfoLabel py-0"
                         :class="dark ? 'white--text' : 'black--text'" >
@@ -158,7 +156,7 @@
             </v-col>
 
             <v-col class="shrink" v-if="author.id && author.id.identifier">
-              <v-row column>
+              <v-row >
                 <v-col cols="12" 
                         class="authorInfoLabel py-0"
                         :class="dark ? 'white--text' : 'black--text'" >
@@ -181,7 +179,7 @@
             </v-col>
 
             <v-col class="shrink" v-if="author.affiliation">
-              <v-row column>
+              <v-row >
                 <v-col cols="6" 
                         class="authorInfoLabel py-0"
                         :class="dark ? 'white--text' : 'black--text'" >

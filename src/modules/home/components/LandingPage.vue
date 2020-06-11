@@ -1,9 +1,7 @@
 <template>
-  <v-container
-    fluid
-    :class="$vuetify.breakpoint.smAndDown ? 'pa-1' : 'py-0 px-2'"
-  >
-    <v-row column>
+  <v-container fluid
+                :class="$vuetify.breakpoint.smAndDown ? 'pa-1' : 'py-0 px-2'" >
+    <v-row >
       <the-title-screen-layout :title="envidatTitle"
                                 :slogan="envidatSlogan"
                                 :subSlogan="envidatSubSlogan"
@@ -16,23 +14,20 @@
         <search-bar-view :labelText="labelText"
                           :buttonText="buttonText"
                           :hasButton="true"
-                          @clicked="catchSearchClicked"
-                        />
+                          @clicked="catchSearchClicked" />
       </v-col>
 
       <v-col class="hidden-sm-and-up mt-5" >
         <small-search-bar-view :labelText="labelText"
                           :buttonText="buttonText"
                           :hasButton="$vuetify.breakpoint.smAndUp"
-                          @clicked="catchSearchClicked"
-                        />
+                          @clicked="catchSearchClicked" />
       </v-col>
 
       <v-col class="mt-5" offset-md="6" >
-        <v-container class="pa-0" fluid
-                      grid-list-md
-                      >
-          <v-row  >
+        <v-container class="pa-0"
+                      fluid >
+          <v-row >
 
             <v-col class="my-1" v-for="card in categoryCards"
                     :key="card.title"
