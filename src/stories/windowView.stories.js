@@ -14,8 +14,8 @@ import { storiesOf } from '@storybook/vue';
 import { action } from '@storybook/addon-actions';
 import './js/vuetify-components';
 
-import WindowVerticalView from '@/components/ProjectDetailViews/WindowVerticalView.vue';
-import WindowView from '@/components/ProjectDetailViews/WindowView.vue';
+import WindowVerticalView from '@/modules/projects/components/ProjectDetailViews/WindowVerticalView.vue';
+import WindowView from '@/modules/projects/components/ProjectDetailViews/WindowView.vue';
 
 import projectJSON from '@/../public/testdata/projects.json';
 import {

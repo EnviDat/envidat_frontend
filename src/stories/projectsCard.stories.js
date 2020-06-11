@@ -15,8 +15,8 @@ import { action } from '@storybook/addon-actions';
 import './js/vuetify-components';
 
 import globalMethods from '@/factories/globalMethods';
-import ProjectCard from '@/components/Cards/ProjectCard.vue';
-import ProjectCardPlaceholder from '@/components/Cards/ProjectCardPlaceholder.vue';
+import ProjectCard from '@/modules/projects/components/ProjectCard.vue';
+import ProjectCardPlaceholder from '@/modules/projects/components/ProjectCardPlaceholder.vue';
 // get Project test data and enhance it
 import projectJSON from '@/../public/testdata/projects.json';
 import {

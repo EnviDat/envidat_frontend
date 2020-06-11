@@ -1,10 +1,10 @@
+
+import packagelist from '@/../public/testdata/packagelist';
+import projectJSON from '@/../public/testdata/projects';
 import {
   enhanceSubprojectsFromExtras,
   enhanceProjectsDatasets,
 } from '../../src/factories/projectsDataFactory';
-
-import packagelist from '@/../public/testdata/packagelist';
-import projectJSON from '@/../public/testdata/projects';
 
 const metadatasContent = {};
 packagelist.result.forEach((entry) => {

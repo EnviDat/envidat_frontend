@@ -6,8 +6,8 @@ import Vue2Filters from 'vue2-filters';
 import './js/vuetify-components';
 import globalMethods from '@/factories/globalMethods';
 
-import ResourceCard from '@/components/Cards/ResourceCard.vue';
-import ResourceCardPlaceholder from '@/components/Cards/ResourceCardPlaceholder.vue';
+import ResourceCard from '@/modules/metadata/components/ResourceCard.vue';
+import ResourceCardPlaceholder from '@/modules/metadata/components/ResourceCardPlaceholder.vue';
 
 import fileSizeIcon from '@/assets/icons/fileSize.png';
 import doiIcon from '@/assets/icons/doi.png';

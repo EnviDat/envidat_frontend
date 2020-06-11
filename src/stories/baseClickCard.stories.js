@@ -15,7 +15,7 @@ import { action } from '@storybook/addon-actions';
 import './js/vuetify-components';
 
 import BaseClickCard from '@/components/BaseElements/BaseClickCard.vue';
-import categoryCards from '@/store/modules/metadata/categoryCards';
+import categoryCards from '@/modules/metadata/store/categoryCards';
 
 export const methods = {
   onClick: action('clicked'),

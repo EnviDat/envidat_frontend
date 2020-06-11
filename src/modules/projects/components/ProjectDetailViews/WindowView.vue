@@ -37,7 +37,7 @@
 */
 
 // import BaseIconButton from '@/components/BaseElements/BaseIconButton';
-import ProjectCard from '@/components/Cards/ProjectCard';
+import ProjectCard from '@/modules/projects/components/ProjectCard';
 
 export default {
   components: {
