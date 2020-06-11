@@ -20,9 +20,9 @@
 
     <template v-slot:controlPanel>
       <v-card style="min-height: 36px; ">
-        <v-container pa-2 fluid>
-        <v-layout row align-center justify-space-between>
-          <v-flex grow>
+        <v-container class="pa-2" fluid>
+        <v-row align="center" justify="space-between">
+          <v-col class="grow" >
           <small-search-bar-view :compactLayout="$vuetify.breakpoint.smAndDown"
                                   class="elevation-0"
                                   :searchTerm="searchTerm"
@@ -35,17 +35,17 @@
                                   :loading="loading"
                                   @clicked="catchSearchClicked"
                                   @searchCleared="catchSearchCleared" />
-          </v-flex>
+          </v-col>
 
-          <v-flex hidden-xs-only
-                  shrink py-0>
+          <v-col class="hidden-xs-only shrink py-0" 
+                  >
           <list-control-toggle :controls="controlsActive"
                                 :enabledControls="enabledControls"
                                 :compactLayout="$vuetify.breakpoint.smAndDown"
                                 :flat="true"
                                 @controlsChanged="controlsChanged" />
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>        
       </v-card>
     </template>
@@ -62,29 +62,29 @@
     </template>
 
     <template v-slot:metadataListPlaceholder>
-      <v-layout v-if="loading"
+      <v-row v-if="loading"
                 ref="metadataListPlaceholder"
                 :class="{ ['column'] : listView,
                           ['row'] : !listView,
                           ['wrap'] : !listView }" >
 
-        <v-flex v-for="(n, index) in placeHolderAmount"
+        <v-col v-for="(n, index) in placeHolderAmount"
                 :key="'placeHolder_' + index"
                 v-bind="cardGridClass" >
 
           <metadata-card-placeholder :dark="false" />
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </template>
 
     <template v-slot:metadataListLayout >
-      <v-layout v-if="!loading"
+      <v-row v-if="!loading"
                         ref="metadataListLayout"
                         :class="{ ['column'] : listView,
                                   ['row'] : !listView,
                                   ['wrap'] : !listView }" >
 
-        <v-flex v-for="(pinnedId, index) in pinnedList"
+        <v-col v-for="(pinnedId, index) in pinnedList"
                 :key="'pinned_' + index"
                 v-bind="cardGridClass" >
 
@@ -108,9 +108,9 @@
                           :categoryCards="categoryCards"
                           @clickedEvent="metaDataClicked"
                           @clickedTag="catchTagClicked" />
-        </v-flex>
+        </v-col>
 
-        <v-flex v-for="(metadata, index) in unpinnedFilteredList"
+        <v-col v-for="(metadata, index) in unpinnedFilteredList"
                 :key="'filtered_' + index"
                 v-bind="cardGridClass" >
 
@@ -132,10 +132,10 @@
                         :categoryColor="metadata.categoryColor"
                         @clickedEvent="metaDataClicked"
                         @clickedTag="catchTagClicked" />
-        </v-flex>
+        </v-col>
 
-        <v-flex key="infiniteLoader"
-                xs12 mx-2>
+        <v-col class="mx-2" key="infiniteLoader"
+                cols="12" >
           <infinite-loading spinner="waveDots"
                             :identifier="infiniteId"
                             :distance="preloadingDistance"
@@ -154,16 +154,16 @@
                                   @clicked="setScrollPos(0)" />
             </div>
           </infinite-loading>
-        </v-flex>
+        </v-col>
 
-        <v-flex v-if="!loading && contentSize <= 0"
+        <v-col class="mx-2" v-if="!loading && contentSize <= 0"
                 key="noSearchResultsView"
-                xs12 mx-2 >
+                cols="12" >
           <no-search-results-view :categoryCards="categoryCards"
                                   @clicked="catchCategoryClicked" />
-        </v-flex>
+        </v-col>
 
-      </v-layout>
+      </v-row>
 
     </template>
 

@@ -40,31 +40,31 @@
         <div v-if="!mini" style="width: 100%; height: 100%;">
 
           <v-list-tile-action v-if="item.icon === 'envidat'">
-            <v-layout row wrap>
+            <v-row >
 
-              <v-flex xs3>
+              <v-col cols="3">
                 <v-btn icon class="ma-0"
                       :color="item.active ? 'accent' : 'transparent'"
                       @click.stop="itemClick(item)" >
                   <img :src="Logo" alt="envidat_logo" />
                 </v-btn>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs9>
-                <v-layout column fill-height align-start justify-end >
-                  <v-flex xs4></v-flex>
-                  <v-flex xs4
+              <v-col cols="9">
+                <v-row class="fill-height" column align="start" justify="end" >
+                  <v-col cols="4"></v-col>
+                  <v-col cols="4"
                           class="headline envidatNavbarTitleSmall">
                     {{ logoText }}
-                  </v-flex>
-                  <v-flex v-if="version"
-                          xs4
+                  </v-col>
+                  <v-col v-if="version"
+                          cols="4"
                           style="font-size: 8px; position: relative; left: 2px;">
                     Version {{ version }}
-                  </v-flex>
-                </v-layout>
-              </v-flex>
-            </v-layout>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
           </v-list-tile-action>
 
           <v-list-tile-content v-if="item.icon !== 'envidat'" >

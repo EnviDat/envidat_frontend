@@ -1,8 +1,8 @@
 <template>
-  <v-layout row
-            :justify-center="!compact"
-            :justify-space-between="compact"
-            align-center>
+  <v-row 
+            justify="center"
+            justify="space-between"
+            align="center">
     <div v-if="compact"
           class="item body-2">
       {{ modeInfoPrefix }}:
@@ -49,7 +49,7 @@
                         @clicked="closeCallback" />
     </div>
 
-  </v-layout>
+  </v-row>
 </template>
 
 <script>

@@ -7,25 +7,25 @@
     <v-img :style="!flatLayout ? dynamicCardBackground : `background-color: ${this.categoryColor}`"
             :height="flatLayout ? '55px' : $vuetify.breakpoint.smAndDown ? '90px' : '115px'" >
 
-      <v-container fluid
-                    fill-height
-                    px-3 pt-3 pb-0 >
-        <v-layout column>
+      <v-container class="fill-height px-3 pt-3 pb-0" fluid
+                    
+                    >
+        <v-row column>
 
-          <v-flex xs12
-                  py-0 >
-            <v-layout row>
+          <v-col class="py-0" cols="12"
+                  >
+            <v-row >
 
-              <v-flex v-if="!maxTitleLengthReached || $vuetify.breakpoint.xsOnly"
-                      xs12 >
+              <v-col v-if="!maxTitleLengthReached || $vuetify.breakpoint.xsOnly"
+                      cols="12" >
                 <div class="headline mb-0"
                     :class="titleClass" >
                   {{ truncatedTitle }}
                 </div>
-              </v-flex>
+              </v-col>
 
-              <v-flex v-if="maxTitleLengthReached && !$vuetify.breakpoint.xsOnly"
-                      xs12 >
+              <v-col v-if="maxTitleLengthReached && !$vuetify.breakpoint.xsOnly"
+                      cols="12" >
                 <v-tooltip bottom >
                   <div slot="activator"
                         class="headline mb-0"
@@ -35,12 +35,12 @@
 
                   <span>{{ title }}</span>
                 </v-tooltip>
-              </v-flex>
+              </v-col>
 
-            </v-layout>
-          </v-flex>
+            </v-row>
+          </v-col>
 
-        </v-layout>
+        </v-row>
       </v-container>
     </v-img>
 
@@ -51,14 +51,14 @@
                         ['pr-4'] : !flatLayout,
                   }" >
 
-      <v-layout row wrap>
-        <v-flex v-if="!compactLayout"
-                  xs12 >
+      <v-row >
+        <v-col v-if="!compactLayout"
+                  cols="12" >
           {{ truncatedSubtitle }}
-        </v-flex>
-        <v-flex v-if="tags"
-                xs12
-                px-1
+        </v-col>
+        <v-col class="px-1" v-if="tags"
+                cols="12"
+                
                 style="overflow: hidden;">
 
             <tag-chip py-0
@@ -74,30 +74,30 @@
                       name="..."
             />
 
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-card-text>
 
 
     <v-card-actions class="ma-0 pa-2"
                     style="position: absolute; bottom: 5px; right: 5px;" >
 
-      <v-layout column>
-        <v-flex v-if="modeData" 
-                pa-1>
+      <v-row column>
+        <v-col class="pa-1" v-if="modeData" 
+                >
           <base-icon-button isFlat
                               isSmall
                               color="transparent"
                               :disabled="true"
                               :customIcon="modeEntryIcon" />
-        </v-flex>
+        </v-col>
 
-        <v-flex pa-1>
+        <v-col class="pa-1" >
           <base-icon-count-view :count="resourceAmount"
                                 :icon-string="fileIconString"
                                 style="opacity: 0.65;" />
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
 
     </v-card-actions>
   </v-card>

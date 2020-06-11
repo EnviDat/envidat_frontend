@@ -1,14 +1,14 @@
 <template>
-  <v-layout row
-            wrap >
-    <v-flex
+  <v-row 
+             >
+    <v-col class="my-2"
       v-for="(info, index) in textArray"
       :key="index"
-      xs12
-      my-2
+      cols="12"
+      
       v-html="markdownText(info)" >
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

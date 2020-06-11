@@ -3,9 +3,9 @@
 
     <v-card-title>Subprojects</v-card-title>
 
-    <v-layout row wrap>
+    <v-row >
 
-      <v-flex v-for="(project, index) in subProjects" :key="'sub_' + index">
+      <v-col v-for="(project, index) in subProjects" :key="'sub_' + index">
         <project-card :id="project.id"
                       :title="project.title"
                       :img="project.image_display_url"
@@ -14,9 +14,9 @@
                       :subProjects="project.subProjects"
                       @cardClick="onCardClick"
                       @subprojectClick="onSubprojectClick" />
-      </v-flex>
+      </v-col>
 
-    </v-layout>
+    </v-row>
 
   </v-card>
 </template>

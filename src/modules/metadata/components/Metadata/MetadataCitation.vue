@@ -12,14 +12,14 @@
 
     <v-card-actions v-if="!showPlaceholder && citationText"
                     class="px-3">
-      <v-container fluid
+      <v-container class="pa-0" fluid
                     grid-list-md
-                    pa-0 >
-        <v-layout row wrap >
+                    >
+        <v-row  >
 
-          <v-flex v-for="link in citationLinks"
+          <v-col class="shrink" v-for="link in citationLinks"
                   :key="link.text"
-                  shrink >
+                  >
             <base-rectangle-button margin-class="mx-1 citationButton"
                                     :button-text="link.text"
                                     :tool-tip-text="link.tooltipText"
@@ -27,8 +27,8 @@
                                     :is-small="true"
                                     icon-color="white"
                                     :url="link.url" />
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
     </v-card-actions>
 

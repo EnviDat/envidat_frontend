@@ -35,7 +35,7 @@
 
 
     <v-card-text v-if="showPlaceholder" >
-      <v-layout row wrap
+      <v-row 
                 v-for="n in 5"
                 :key="n + 'label'" >
 
@@ -46,7 +46,7 @@
           <div class="flex xs10 pl-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
             <div class="bone bone-type-text " />
           </div>
-      </v-layout>
+      </v-row>
     </v-card-text>
 
   </v-card>

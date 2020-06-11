@@ -6,13 +6,13 @@
     <v-card-text v-if="subProjects"
                   pa-3 >
 
-          <v-container grid-list-lg fluid
-                        pa-0 >
-          <v-layout row wrap>
+          <v-container class="pa-0" grid-list-lg fluid
+                        >
+          <v-row >
 
-            <v-flex v-for="(project, index) in subProjects"
+            <v-col v-for="(project, index) in subProjects"
                     :key="'sub_' + index"
-                    xs12 sm6 md4 xl3 >
+                    cols="12" sm="6" md="4" xl="3" >
 
               <project-card :id="project.id"
                             :title="project.title"
@@ -22,9 +22,9 @@
                             :subProjects="project.subProjects"
                             @cardClick="onCardClick"
                             @subprojectClick="onSubprojectClick" />
-            </v-flex>
+            </v-col>
 
-          </v-layout>
+          </v-row>
           </v-container>
     </v-card-text>
 

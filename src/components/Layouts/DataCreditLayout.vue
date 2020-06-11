@@ -1,29 +1,29 @@
 <template>
   <v-container grid-list-xs
                 fluid>
-    <v-layout row
-              wrap >
+    <v-row 
+               >
 
-      <v-flex xs12
+      <v-col cols="12"
               :class="!dark ? 'white--text' : 'black--text'" >
         {{ label }}
-      </v-flex>
+      </v-col>
 
-      <v-flex v-if="!hasDataCreditCounts"
-              xs12
+      <v-col v-if="!hasDataCreditCounts"
+              cols="12"
               :class="!dark ? 'white--text' : 'black--text'"       
               style="opacity: 0.65">
         {{ noCreditslabel }}
-      </v-flex>
+      </v-col>
 
-      <v-flex v-for="(creditName, index) in dataCreditNames"
+      <v-col class="shrink px-1" v-for="(creditName, index) in dataCreditNames"
               :key="index"
-              shrink px-1
+              
               v-show="showZero || (!showZero && dataCreditCounts[index] > 0)">
 
-        <v-layout column >
+        <v-row column >
 
-          <v-flex py-0 >
+          <v-col class="py-0" >
             <v-tooltip bottom >
               <v-icon slot="activator"
                       :color="iconColor"
@@ -33,9 +33,9 @@
 
               {{ creditName }}
             </v-tooltip>
-          </v-flex>
+          </v-col>
 
-          <v-flex pt-0 >
+          <v-col class="pt-0" >
               <v-badge class="dataCreditIcon"
                         :color="badgeColor">
                 <span slot="badge"
@@ -43,12 +43,12 @@
                       {{ dataCreditCounts[index] }}
                 </span>
               </v-badge>
-          </v-flex>
+          </v-col>
 
-        </v-layout>
+        </v-row>
 
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

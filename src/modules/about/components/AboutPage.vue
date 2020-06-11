@@ -1,8 +1,8 @@
 <template>
-  <v-container tag="article" fluid fill-height pa-0 >
-    <v-layout row wrap >
+  <v-container class="fill-height pa-0" tag="article" fluid >
+    <v-row  >
 
-      <v-flex xs12 lg10 offset-lg1 >
+      <v-col cols="12" lg="10" offset-lg="1" >
         <v-tabs v-model="activeTab"
                 color="transparent"
                 slider-color="accent" 
@@ -15,20 +15,20 @@
           </v-tab>
 
           <v-tab-item >
-            <v-flex xs12 mt-3 >
+            <v-col class="mt-3" cols="12" >
               <img-and-text-layout :img="missionImg"
                                     :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
                                     title="About EnviDat" />
-            </v-flex>
+            </v-col>
 
-            <v-flex xs12 px-3 mt-5 >
+            <v-col class="px-3 mt-5" cols="12" >
 
-              <v-container grid-list-lg pa-0 >
-                <v-layout row wrap >
+              <v-container class="pa-0" grid-list-lg >
+                <v-row  >
 
-                  <v-flex v-for="(card, index) in aboutCardInfo"
+                  <v-col class="my-2" v-for="(card, index) in aboutCardInfo"
                           :key="index"
-                          my-2
+                          
                           :class="card.widthClass" >
 
                     <expandable-card :title="card.title"
@@ -37,11 +37,11 @@
                                       :min-height="100"
                                       :max-height="150"
                                       :contain="card.title === 'WSL'" />
-                  </v-flex>
-                </v-layout>
+                  </v-col>
+                </v-row>
 
               </v-container>
-            </v-flex>
+            </v-col>
           </v-tab-item>
 
           <v-tab ripple :style="`background-color: ${$vuetify.theme.highlight}`">
@@ -50,23 +50,23 @@
           </v-tab>
 
           <v-tab-item>
-            <v-flex xs12 mt-3 >
+            <v-col class="mt-3" cols="12" >
               <img-and-text-layout :img="guidelineImg"
                                     :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
                                     title="Guidelines" />
-            </v-flex>
+            </v-col>
 
-            <v-flex v-if="guidelinesLoading"
-                    xs12
-                    pt-5 >
+            <v-col class="pt-5" v-if="guidelinesLoading"
+                    cols="12"
+                    >
               Loading Guidelines...
-            </v-flex>
+            </v-col>
 
-            <v-flex v-if="!guidelinesLoading"
-                    xs12
-                    pt-5
+            <v-col class="pt-5" v-if="!guidelinesLoading"
+                    cols="12"
+                    
                     v-html="guidelinesMarkdownText" >
-            </v-flex>
+            </v-col>
 
           </v-tab-item>
 
@@ -76,23 +76,23 @@
           </v-tab>
 
           <v-tab-item >
-            <v-flex xs12 mt-3 >
+            <v-col class="mt-3" cols="12" >
               <img-and-text-layout :img="policiesImg"
                                     :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
                                     title="Policies" />
-            </v-flex>
+            </v-col>
 
-            <v-flex v-if="policiesLoading"
-                    xs12
-                    pt-5 >
+            <v-col class="pt-5" v-if="policiesLoading"
+                    cols="12"
+                    >
               Loading Policies...
-            </v-flex>
+            </v-col>
 
-            <v-flex v-if="!policiesLoading"
-                    xs12
-                    pt-5
+            <v-col class="pt-5" v-if="!policiesLoading"
+                    cols="12"
+                    
                     v-html="policiesMarkdownText" >
-            </v-flex>
+            </v-col>
           </v-tab-item>
 
           <v-tab ripple :style="`background-color: ${$vuetify.theme.highlight}`">
@@ -101,33 +101,33 @@
           </v-tab>
 
           <v-tab-item>
-            <v-flex xs12 mt-3>
+            <v-col class="mt-3" cols="12" >
               <img-and-text-layout :img="dmpImg"
                                     :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
                                     title="Data Management Plan" />
-            </v-flex>
+            </v-col>
 
-            <v-flex v-if="dmpLoading"
-                    offset-md1
-                    offset-lg1
-                    shrink
-                    pt-5 >
+            <v-col class="shrink pt-5" v-if="dmpLoading"
+                    offset-md="1"
+                    offset-lg="1"
+                    
+                    >
               Loading DMP Infos...
-            </v-flex>
+            </v-col>
 
 
-            <v-flex v-if="!dmpLoading"
-                    xs12
-                    pt-5
+            <v-col class="pt-5" v-if="!dmpLoading"
+                    cols="12"
+                    
                     v-html="dmpMarkdownText" >
-            </v-flex>
+            </v-col>
           </v-tab-item>
 
 
         </v-tabs>
-      </v-flex>
+      </v-col>
 
-    </v-layout>
+    </v-row>
   </v-container>
 
 </template>

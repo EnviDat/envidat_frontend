@@ -4,23 +4,23 @@
               color="white"
               :height="mode && $vuetify.breakpoint.xsOnly ? 50 : 36"
               >
-    <v-layout row
-              align-center
-              justify-space-between >
+    <v-row 
+              align="center"
+              justify="space-between" >
 
-      <v-flex v-if="mode"
-              grow >
+      <v-col class="grow" v-if="mode"
+              >
         <mode-view :mode="mode"
                     :closeCallback="modeCloseCallback" />
-      </v-flex>
+      </v-col>
 
-      <v-flex v-if="userIsSignedIn"
-              shrink >
+      <v-col class="shrink" v-if="userIsSignedIn"
+              >
         <user-avatar v-if="$vuetify.breakpoint.smAndUp"
                     :clickCallback="avatarClickCallback" />
-      </v-flex>
+      </v-col>
 
-    </v-layout>
+    </v-row>
 
     <v-progress-linear v-show="loading"
                         indeterminate

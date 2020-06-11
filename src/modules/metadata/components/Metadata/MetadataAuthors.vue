@@ -7,29 +7,29 @@
     <v-container v-if="showAuthors"
                 fluid
                 grid-list-md
-                class="heightAndScroll"
-                pa-3 >
+                class="heightAndScroll pa-3"
+                >
 
-      <v-layout v-if="showPlaceholder"
-                  row wrap >
-        <v-flex v-for="n in 2"
+      <v-row v-if="showPlaceholder"
+                   >
+        <v-col v-for="n in 2"
                   :key="n"
-                  xs12 sm6 >
+                  cols="12" sm="6" >
           <author-card-placeholder />
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
 
-      <v-layout v-if="!showPlaceholder && authors && authors.length > 0"
-                row wrap >
+      <v-row v-if="!showPlaceholder && authors && authors.length > 0"
+                 >
 
-        <v-flex v-for="author in authors"
+        <v-col v-for="author in authors"
                 :key="author.fullName"
-                xs12 sm6 >
+                cols="12" sm="6" >
           <author-card :author="author"
                       :asciiDead="authorDeadInfo ? authorDeadInfo.asciiDead : ''"
                       :authorPassedInfo="authorDeadInfo ? authorDeadInfo.authorPassedInfo : ''" />
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-container>
 
     <v-card-text v-if="!showPlaceholder && (!authors || authors.length <= 0)"

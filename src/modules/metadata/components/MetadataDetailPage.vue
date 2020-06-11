@@ -1,10 +1,10 @@
 <template>
-  <v-container fluid
+  <v-container class="pa-0" fluid
                 tag="article"
-                pa-0 >
-    <v-layout row wrap  >
-      <v-flex xs12
-              elevation-5
+                >
+    <v-row   >
+      <v-col class="elevation-5" cols="12"
+              
               ref="header"
               style="z-index: 1; position: absolute; left: 0;" 
               :style="headerStyle" >
@@ -21,8 +21,8 @@
                           @clickedAuthor="catchAuthorClicked"
                           @checkSize="resize"
                           :expanded="headerExpanded" />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
 
     <two-column-layout :style="`position: relative; top: ${headerHeight()}px`"
                         :first-column="firstColumn"
@@ -31,25 +31,25 @@
 
       <template v-slot:leftColumn>
 
-        <v-flex v-for="(entry, index) in firstColumn"
+        <v-col class="mb-2" v-for="(entry, index) in firstColumn"
                 :key="`left_${index}_${keyHash}`"
-                mb-2 >
+                >
           <component :is="entry"
                       :generic-props="entry.genericProps"
                       :show-placeholder="showPlaceholder"
                       :authorDeadInfo="entry.name === 'MetadataAuthors' ? authorDeadInfo : null" />
-        </v-flex>
+        </v-col>
       </template>
 
       <template v-slot:rightColumn>
-        <v-flex v-for="(entry, index) in secondColumn"
+        <v-col class="mb-2" v-for="(entry, index) in secondColumn"
                 :key="`right_${index}_${keyHash}`"
-                mb-2 >
+                >
           <component :is="entry"
                       :generic-props="entry.genericProps"
                       :show-placeholder="showPlaceholder"
                       :authorDeadInfo="entry.name === 'MetadataAuthors' ? authorDeadInfo : null" />
-        </v-flex>
+        </v-col>
       </template>
     </two-column-layout>
   </v-container>

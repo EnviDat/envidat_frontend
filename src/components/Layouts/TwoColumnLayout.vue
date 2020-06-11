@@ -1,26 +1,26 @@
 <template>
-  <v-layout row
-            wrap
+  <v-row 
+            
             style="z-index: 0;" >
 
-    <v-flex v-bind="firstColWidth" >
+    <v-col v-bind="firstColWidth" >
 
-      <v-layout column>
+      <v-row column>
         <slot name="leftColumn" />
-      </v-layout>
+      </v-row>
 
-    </v-flex>
+    </v-col>
 
 
-    <v-flex v-if="secondColumn"
+    <v-col v-if="secondColumn"
             v-bind="secondColWidth" >
 
-      <v-layout column>
+      <v-row column>
         <slot name="rightColumn" />
-      </v-layout>
+      </v-row>
 
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

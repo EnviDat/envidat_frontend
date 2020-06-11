@@ -1,12 +1,12 @@
 <template>
-  <v-container tag="article"
+  <v-container class="pa-0" tag="article"
                 fluid
-                pa-0 >
+                >
 
-    <v-layout row wrap>
+    <v-row >
 
-      <v-flex xs12
-              elevation-5
+      <v-col class="elevation-5" cols="12"
+              
               ref="header"
               style="z-index: 1; position: absolute; left: 0;" 
               :style="headerStyle" >
@@ -16,31 +16,31 @@
                         :defaultImg="missionImg"
                         :showPlaceholder="loading"
                         @clickedBack="catchBackClicked" />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
 
-    <v-layout row wrap
+    <v-row 
               :style="`z-index: 0; position: relative; top: ${headerHeight()}px`" >
 
-      <v-flex xs12 lg10 offset-lg1
-              px-3 >
+      <v-col class="px-3" cols="12" lg="10" offset-lg="1"
+              >
 
         <project-body v-bind="currentProject"
                       :showPlaceholder="loading" />
-      </v-flex>
+      </v-col>
 
-      <v-flex v-if="loading || (!loading && currentProject && currentProject.subProjects)"
-              xs12 lg10 offset-lg1
-              py-2 px-3 >
+      <v-col class="py-2 px-3" v-if="loading || (!loading && currentProject && currentProject.subProjects)"
+              cols="12" lg="10" offset-lg="1"
+              >
         <project-subprojects v-bind="currentProject"
                               :defaultImg="creatorImg"
                               :showPlaceholder="loading"
                               @projectClick="catchProjectClick"
                               @subprojectClick="catchSubprojectClick" />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12 lg10 offset-lg1
-              py-2 px-3 >
+      <v-col class="py-2 px-3" cols="12" lg="10" offset-lg="1"
+              >
 
         <v-card>
           <v-card-title class="metadataList_title title">{{ metadataListTitle }}</v-card-title>
@@ -73,9 +73,9 @@
           </div>
 
         </v-card>
-      </v-flex>
+      </v-col>
 
-    </v-layout>
+    </v-row>
   </v-container>
 </template>
 

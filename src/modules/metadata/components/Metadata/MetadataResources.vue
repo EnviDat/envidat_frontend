@@ -1,44 +1,44 @@
 <template>
   <v-card :class="{ ['pt-2']: this.isOnTop }">
     <v-card-title >
-      <v-container pa-0>
-      <v-layout row justify-end>
-        <v-flex grow
-                class="title metadata_title">
+      <v-container class="pa-0" >
+      <v-row justify="end">
+        <v-col 
+                class="title metadata_title grow">
           Data and resources
-        </v-flex>
+        </v-col>
 
-        <v-flex shrink>
+        <v-col class="shrink" >
           <base-icon-count-view v-if="!showPlaceholder && resources && resources.length > 0"
                                 :count="resources.length"
                                 :icon-string="fileIcon"
                                 style="opacity: 0.85;" />
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
       </v-container>
     </v-card-title>
 
     <v-container v-if="resources && resources.length > 0"
                 fluid
-                pa-3
+                
                 grid-list-md
-                class="heightAndScroll" >
+                class="heightAndScroll pa-3" >
 
-      <v-layout v-if="showPlaceholder"
-                  row wrap >
-        <v-flex v-for="n in 2"
+      <v-row v-if="showPlaceholder"
+                   >
+        <v-col v-for="n in 2"
                   :key="n"
-                  xs12 sm6 >
+                  cols="12" sm="6" >
           <resource-card-placeholder :two-column-layout="twoColumnLayout" />
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
 
-      <v-layout v-if="!showPlaceholder"
-                row wrap >
+      <v-row v-if="!showPlaceholder"
+                 >
 
-        <v-flex v-for="res in resources"
+        <v-col v-for="res in resources"
                 :key="res.id"
-                xs12 sm6 >
+                cols="12" sm="6" >
           <resource-card v-bind="res"
                           :doiIcon="doiIcon"
                           :linkIcon="linkIcon"
@@ -48,8 +48,8 @@
                           :lastModifiedIcon="lastModifiedIcon"
                           :twoColumnLayout="twoColumnLayout"
                           @clicked="resClicked(res)" />
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-container>
 
     <v-card-text

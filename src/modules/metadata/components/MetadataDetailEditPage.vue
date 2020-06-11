@@ -1,8 +1,8 @@
 <template>
-  <v-container fluid
+  <v-container class="pa-0" fluid
                 tag="article"
-                pa-0 >
-    <v-layout row wrap  >
+                >
+    <v-row   >
       Edit Page
       <!-- <v-flex xs12
               elevation-5
@@ -23,7 +23,7 @@
                           @checkSize="resize"
                           :expanded="headerExpanded" />
       </v-flex> -->
-    </v-layout>
+    </v-row>
 
     <two-column-layout :style="`position: relative; top: ${headerHeight()}px`"
                         :first-column="firstColumn"

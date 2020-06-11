@@ -1,15 +1,15 @@
 <template>
   <v-card >
-    <v-container fill-height
+    <v-container class="fill-height pb-0" 
                 grid-list-xs
-                pb-0 >
-      <v-layout column>
-        <v-flex xs12>
+                >
+      <v-row column>
+        <v-col cols="12">
           <div class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-shimmer">
             <div class="bone bone-type-heading bone-style-paragraph" />
           </div>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-container>
 
     <v-card-text >

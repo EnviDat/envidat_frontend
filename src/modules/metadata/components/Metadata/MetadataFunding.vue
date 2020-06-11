@@ -17,12 +17,12 @@
                   style="overflow-x: hidden;"
                   class="heightAndScroll pb-4" >
 
-      <v-layout row wrap>
-        <v-flex xs12 py-1>
+      <v-row >
+        <v-col class="py-1" cols="12" >
           {{ preText }}
-        </v-flex>
-        <v-flex xs6 md4
-                py-1
+        </v-col>
+        <v-col class="py-1" cols="6" md="4"
+                
                 v-for="(item, index) in fundingItems"
                 :key="index" >
 
@@ -39,8 +39,8 @@
             <div v-if="item.grant_number">(Grant/Award:{{ item.grant_number }})</div>
           </div>
 
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
 
     </v-card-text>
 

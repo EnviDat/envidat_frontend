@@ -1,19 +1,19 @@
 <template>
   <v-card >
-    <v-container fluid pa-0 >
-    <v-layout row align-center justify-space-between>
+    <v-container class="pa-0" fluid >
+    <v-row align="center" justify="space-between">
 
-      <v-flex v-if="loading"
+      <v-col class="shrink" v-if="loading"
               style="min-width: 60px; text-align: center;"
-              shrink >
+              >
         <v-progress-circular indeterminate
                               size="20"
                               width="2"
                               color="primary" />
-      </v-flex>
+      </v-col>
 
-      <v-flex v-if="showSearchCount && !loading"
-              shrink
+      <v-col class="shrink" v-if="showSearchCount && !loading"
+              
               style="min-width: 60px; text-align: center;" >
 
         <v-tooltip bottom :disabled="$vuetify.breakpoint.xsOnly">
@@ -26,22 +26,22 @@
 
           <span>{{ searchCount }} metadata entries found</span>
         </v-tooltip>
-      </v-flex>
+      </v-col>
 
-      <v-flex v-if="showSearch && !hasButton"
-                shrink
-                pa-0 >
+      <v-col class="shrink pa-0" v-if="showSearch && !hasButton"
+                
+                >
         <base-icon-button materialIconName="search"
                           marginClass="ma-0"
                           color="transparent"
                           :isToggled="!searchTerm"
                           @clicked="clicked"
         />
-      </v-flex>
+      </v-col>
 
-      <v-flex v-if="showSearch"
-              grow
-              py-0 >
+      <v-col class="grow py-0" v-if="showSearch"
+              
+              >
         <v-tooltip bottom :disabled="$vuetify.breakpoint.xsOnly || !searchToolTipText">
           <v-text-field slot="activator"
                         class="envidatSmallSearch"
@@ -59,14 +59,14 @@
 
           <span>{{ searchToolTipText }}</span>
         </v-tooltip>
-      </v-flex>
+      </v-col>
 
-      <v-flex v-if="showSearch && hasButton"
-              shrink >
+      <v-col class="shrink" v-if="showSearch && hasButton"
+              >
         <base-rectangle-button :button-text="buttonText" :is-small="true" @clicked="clicked" />
-      </v-flex>
+      </v-col>
 
-    </v-layout>
+    </v-row>
     </v-container>
   </v-card>
 </template>

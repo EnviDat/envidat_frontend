@@ -1,5 +1,5 @@
 <template>
-  <v-layout row ma-0 pa-0 >
+  <v-row class="ma-0 pa-0" >
     <v-tooltip bottom
                 :disabled="$vuetify.breakpoint.xsOnly || !iconTooltip" >
 
@@ -15,9 +15,9 @@
                 :alt="`${icon} icon`" >
         </div>
 
-        <v-flex v-if="icon && !iconTooltip"
-                xs2
-                pr-2
+        <v-col class="pr-2" v-if="icon && !iconTooltip"
+                cols="2"
+                
                 style="max-width: 100%" >
           <div class="iconCentering">
             <img class="envidatIcon"
@@ -25,34 +25,34 @@
                   :src="icon"
                   :alt="`${icon} icon`" >
           </div>
-        </v-flex>
+        </v-col>
 
-        <v-flex v-if="label"
-                xs4
+        <v-col v-if="label"
+                cols="4"
                 :style="textStyle" >
           {{ label }}
-        </v-flex>
+        </v-col>
 
-        <v-flex v-if="text && !url"
+        <v-col v-if="text && !url"
                 :style="textStyle" >
           {{ text }}
-        </v-flex>
+        </v-col>
 
-        <v-flex v-if="url"
+        <v-col v-if="url"
                 :style="textStyle" >
           <a :href="url" target="_blank" rel="noopener noreferrer">{{ text ? text : url }}</a>
-        </v-flex>
+        </v-col>
 
-        <v-flex v-if="!text && usePlaceholder">
+        <v-col v-if="!text && usePlaceholder">
           <div class="pr-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
             <div class="bone bone-type-text bone-style-steps" />
           </div>
-        </v-flex>
+        </v-col>
       </div>
 
       <span>{{ iconTooltip }}</span>
     </v-tooltip>
-  </v-layout>
+  </v-row>
 </template>
 
 <script>

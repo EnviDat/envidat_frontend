@@ -96,7 +96,7 @@ module.exports = {
       new CopywebpackPlugin([{ from: path.join(cesiumSource, cesiumWorkers), to: 'Workers' }]),
       new CopywebpackPlugin([{ from: path.join(cesiumSource, 'Assets'), to: 'Assets', ignore: ['Images/**', 'Textures/**', 'IAU2006_XYS/**'] }]),
       // Define relative base path in cesium for loading assets
-      new webpack.DefinePlugin({ CESIUM_BASE_URL: JSON.stringify('') })
+      new webpack.DefinePlugin({ CESIUM_BASE_URL: JSON.stringify('') }),
     ],
   },
   // devServer: {
