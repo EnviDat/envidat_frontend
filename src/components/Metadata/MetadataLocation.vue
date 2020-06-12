@@ -85,6 +85,7 @@ export default {
       return this.mixinMethods_getGenericProp('pointArray');
     },
     geoJSON() {
+      console.log(this.mixinMethods_getGenericProp('geoJSON'));
       return this.mixinMethods_getGenericProp('geoJSON');
     },
     isEmpty() {
