@@ -15,10 +15,6 @@ import { storiesOf } from '@storybook/vue';
 import { action } from '@storybook/addon-actions';
 import './js/vuetify-components';
 
-/* import App needed for Css classes */
-// eslint-disable-next-line no-unused-vars
-import App from '@/App';
-
 import MetadataHeader from '@/modules/metadata/components/Metadata/MetadataHeader.vue';
 import MetadataBody from '@/modules/metadata/components/Metadata/MetadataBody.vue';
 import MetadataCitation from '@/modules/metadata/components/Metadata/MetadataCitation.vue';
@@ -42,6 +38,11 @@ import {
   createLocation,
 } from '@/factories/metaDataFactory';
 import { createAuthors } from '@/factories/authorFactory';
+
+/* import App needed for Css classes */
+// eslint-disable-next-line no-unused-vars
+// import App from '../App';
+
 // metadata gets enhance in the storybook config
 import metadata from './js/metadata';
 
