@@ -1,39 +1,47 @@
 <template>
   <div style="height: 100%; width: 100%;" v-if="configFile">
-    <v-card style="position: absolute; top: 0; right: 0px; z-index: 200; background-color: rgba(255, 255, 255, 0.6);" class="ma-2">
-    <base-icon-button class="ma-2"
-                      material-icon-name="close"
-                      icon-color="primary"
-                      color="primary"
-                      outlined
-                      tool-tip-text="Close Metadata"
-                      :tool-tip-bottom="true"
-                      @clicked="close"/>
+    <v-card
+      style="position: absolute; top: 0; right: 0px; z-index: 200; background-color: rgba(255, 255, 255, 0.6);"
+      class="ma-2">
+      <base-icon-button class="ma-2"
+                        material-icon-name="close"
+                        icon-color="primary"
+                        color="primary"
+                        outlined
+                        tool-tip-text="Close Metadata"
+                        :tool-tip-bottom="true"
+                        @clicked="close"/>
     </v-card>
     <v-layout v-if="splitScreen" style="height: 100%;" pa-0 ma-0 :key="'split'">
-      <div style="width: 50%; left: 0; height: 100%;">
-        <Map :config-file="configFile" :default-layer="layer" :map-div-id="'map1'" @changeLayer="setLayer" :key="'map1'">
-          <v-btn icon color="red" @click="quitSplitFrom(1)">
-            <v-icon>close</v-icon>
-          </v-btn>
-        </Map>
+      <div style="width: 50%; float: left; height: 100%;">
+        <Map2 :config="configFile" :default-layer="layer" :map-div-id="'map1'"
+             @changeLayer="setLayer" :key="'map1'" :selected="layer">
+          <template v-slot:top>
+            <v-btn icon color="red" @click="quitSplitFrom(1)">
+              <v-icon>close</v-icon>
+            </v-btn>
+          </template>
+        </Map2>
       </div>
       <div style=" border: 1px solid gray;"></div>
-      <div style="width: 50%; right: 0;">
-        <Map :config-file="configFile" :default-layer="layerSplit" :map-div-id="'map2'" @changeLayer="setLayerSplit" :key="'map2'">
-          <v-btn icon color="red" @click="quitSplitFrom(2)">
-            <v-icon>close</v-icon>
-          </v-btn>
-        </Map>
+      <div style="width: 50%; float: left;">
+        <Map2 :config="configFile" :default-layer="layerSplit" :map-div-id="'map2'"
+              @changeLayer="setLayerSplit" :key="'map2'" :selected="layerSplit">
+          <template v-slot:top>
+            <v-btn icon color="red" @click="quitSplitFrom(2)">
+              <v-icon>close</v-icon>
+            </v-btn>
+          </template>
+        </Map2>
       </div>
     </v-layout>
-    <v-layout v-else style="height: 100%;" pa-0 ma-0 :key="'single'">
-    <div style="width: 100%;">
-          <Map :config-file="configFile" :default-layer="layer" :map-div-id="'map0'" @changeLayer="setLayer">
-            <v-btn icon color="primary" @click="splitScreen = true">
-              <v-icon>vertical_split</v-icon>
-            </v-btn>
-          </Map>
+    <v-layout v-else style="height: 100%;" pa-0 ma-0 :map-div-id="'single'" :key="'map0'">
+      <div style="width: 100%;">
+        <Map2 :config="configFile" @changeLayer="setLayer" :map-div-id="'map0'" :selected="layer">
+          <v-btn icon color="primary" @click="splitScreen = true">
+            <v-icon>vertical_split</v-icon>
+          </v-btn>
+        </Map2>
       </div>
     </v-layout>
   </div>
@@ -54,12 +62,14 @@
   } from '@/store/metadataMutationsConsts';
   import axios from 'axios';
   import BaseIconButton from '../BaseElements/BaseIconButton';
-  import Map from '../Metadata/Map';
+  import Map2 from '../Metadata/Map2';
+  // import Timeslider from '../Metadata/Timeslider';
 
   export default {
     name: 'MetadataMapPage',
     components: {
-      Map,
+      Map2,
+      // Timeslider,
       BaseIconButton,
     },
     data: () => ({
@@ -181,7 +191,9 @@
         }
       },
       layer() {
-        if (!this.splitScreen) { this.layerSplit = this.layer; }
+        if (!this.splitScreen) {
+          this.layerSplit = this.layer;
+        }
       },
       /* eslint-disable no-unused-vars */
       $route: function watchRouteChanges(to, from) {

@@ -4,6 +4,9 @@
     <div class="my-slot">
       <slot></slot>
     </div>
+    <div class="timeslider">
+      <slot name="timeslider"></slot>
+    </div>
     <v-card class="layers" v-if="configFile" style="z-index: 1000; cursor: default;">
       <div v-for="(layer, key) in configFile.layers" :key="key"
            @click.stop="selectLayer(layer.name)"
@@ -57,7 +60,6 @@
             bingMapsKey: this.bingApiKey,
             imagerySet: 'AerialWithLabels',
           });
-
       },
     },
     methods: {
@@ -120,6 +122,16 @@
     padding: 2px;
     width:54px;
     height: 54px;
+  }
+
+  .timeslider {
+    position: absolute;
+    z-index: 9999;
+    cursor: pointer;
+    bottom: 50px;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
   .layers {
