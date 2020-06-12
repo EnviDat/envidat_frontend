@@ -93,8 +93,19 @@ module.exports = {
     },
     plugins: [
       // Copy Cesium Assets, and Workers to a static directory
-      new CopywebpackPlugin([{ from: path.join(cesiumSource, cesiumWorkers), to: 'Workers' }]),
-      new CopywebpackPlugin([{ from: path.join(cesiumSource, 'Assets'), to: 'Assets', ignore: ['Images/**', 'Textures/**', 'IAU2006_XYS/**'] }]),
+      new CopywebpackPlugin({
+        patterns: [{
+          from: path.join(cesiumSource, cesiumWorkers),
+          to: 'Workers',
+        },
+        {
+          from: path.join(cesiumSource, 'Assets'),
+          to: 'Assets',
+          globOptions: {
+            ignore: ['Images/**', 'Textures/**', 'IAU2006_XYS/**'],
+          },
+        }],
+      }),
       // Define relative base path in cesium for loading assets
       new webpack.DefinePlugin({ CESIUM_BASE_URL: JSON.stringify('') }),
     ],
