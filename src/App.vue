@@ -36,7 +36,7 @@
                             :mode="mode"
                             :modeCloseCallback="catchModeClose" />
 
-    <v-content>
+    <v-main>
       <v-container class="pa-2 fill-height"
                     fluid
                     v-on:scroll="updateScroll()"
@@ -65,7 +65,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </v-content>
+    </v-main>
 
   </v-app>
 </template>
