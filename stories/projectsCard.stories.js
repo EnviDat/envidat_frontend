@@ -18,16 +18,17 @@ import globalMethods from '@/factories/globalMethods';
 import ProjectCard from '@/modules/projects/components/ProjectCard.vue';
 import ProjectCardPlaceholder from '@/modules/projects/components/ProjectCardPlaceholder.vue';
 // get Project test data and enhance it
-import projectJSON from '@/../public/testdata/projects.json';
 import {
   enhanceSubprojectsFromExtras,
 } from '@/factories/projectsDataFactory';
+
+import projectJSON from '../public/testdata/projects.json';
 
 const enhancedProjects = enhanceSubprojectsFromExtras(projectJSON.result);
 const projectsCards = enhancedProjects;
 
 
-const imgPaths = require.context('../assets/cards/forest/', false, /\.jpg$/);
+const imgPaths = require.context('../src/assets/cards/forest/', false, /\.jpg$/);
 const imgName = 'c_b_forest_texture_bark2';
 const images = globalMethods.methods.mixinMethods_importImages(imgPaths, imgName);
 const defaultImg = images[`./${imgName}.jpg`];

@@ -17,10 +17,11 @@ import './js/vuetify-components';
 import WindowVerticalView from '@/modules/projects/components/ProjectDetailViews/WindowVerticalView.vue';
 import WindowView from '@/modules/projects/components/ProjectDetailViews/WindowView.vue';
 
-import projectJSON from '@/../public/testdata/projects.json';
 import {
   enhanceSubprojectsFromExtras,
 } from '@/factories/projectsDataFactory';
+
+import projectJSON from '../public/testdata/projects.json';
 
 const enhancedProjects = enhanceSubprojectsFromExtras(projectJSON.result);
 const projects = enhancedProjects;

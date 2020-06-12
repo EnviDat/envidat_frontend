@@ -13,7 +13,6 @@
 import { storiesOf } from '@storybook/vue';
 import { action } from '@storybook/addon-actions';
 import './js/vuetify-components';
-import projectJSON from '@/../public/testdata/projects.json';
 import globalMethods from '@/factories/globalMethods';
 
 import ProjectHeader from '@/modules/projects/components/ProjectDetailViews/ProjectHeader.vue';
@@ -28,11 +27,13 @@ import {
   enhanceSubprojectsFromExtras,
 } from '@/factories/projectsDataFactory';
 
+import projectJSON from '../public/testdata/projects.json';
+
 const enhancedProjects = enhanceSubprojectsFromExtras(projectJSON.result);
 const projects = enhancedProjects;
 
 
-const imgPaths = require.context('../assets/about/', false, /\.jpg$/);
+const imgPaths = require.context('../src/modules/projects/assets/', false, /\.jpg$/);
 const imgName = 'mission';
 const images = globalMethods.methods.mixinMethods_importImages(imgPaths, imgName);
 const defaultImg = images[`./${imgName}.jpg`];

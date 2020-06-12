@@ -15,7 +15,7 @@ import { action } from '@storybook/addon-actions';
 import './js/vuetify-components';
 
 import SearchBarView from '@/modules/home/components/SearchBarView.vue';
-import SmallSearchBarView from '../components/Filtering/SmallSearchBarView.vue';
+import SmallSearchBarView from '../src/components/Filtering/SmallSearchBarView.vue';
 
 
 storiesOf('4 Filtering | SearchBarView', module)
@@ -25,9 +25,8 @@ storiesOf('4 Filtering | SearchBarView', module)
     <search-bar-view labelText="Search for something"
                     buttonText="SEARCH"
                     hasButton
-          @clicked="onClick"
-          @searchCleared="onClear"
-          />`,
+                    @clicked="onClick"
+                    @searchCleared="onClear" />`,
     methods: {
       onClick(searchTerm) {
         action(`clicked search for "${searchTerm}"`);

@@ -7,7 +7,7 @@ import './js/vuetify-components';
 
 import AuthorCard from '@/modules/metadata/components/AuthorCard.vue';
 
-import authorCollection from '@/../public/testdata/authorCollection.json';
+import authorCollection from '../public/testdata/authorCollection.json';
 
 export const methods = {
   authors() {
