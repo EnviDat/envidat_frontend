@@ -4,12 +4,6 @@
       <img width="50" height="50" v-if="basemap==='streets'" src="./satellite-icon.png" @click="basemap='satellite'">
       <img width="50" height="50" v-if="basemap==='satellite'" src="./streets-icon.png" @click="basemap='streets'">
     </v-card>
-    <div style="position: absolute; top: 70px; right: 0px; z-index: 999999;">
-      <slot name="layerControl"></slot>
-    </div>
-    <div style="position: absolute; bottom: 70px; width: 90%; z-index: 999999;">
-      <slot name="timeslider"></slot>
-    </div>
     <div style="position: absolute; bottom: 80px; right: 20px; z-index: 99999;">
       <slot></slot>
     </div>
