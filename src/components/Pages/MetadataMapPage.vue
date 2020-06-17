@@ -12,8 +12,8 @@
                         :tool-tip-bottom="true"
                         @clicked="close"/>
     </v-card>
-    <v-layout v-if="splitScreen" style="height: 100%;" pa-0 ma-0 :key="'split'">
-      <div style="width: 50%; float: left; height: 100%;">
+    <v-layout v-if="splitScreen" style="height: 100%; position: relative;" pa-0 ma-0 :key="'split'">
+      <div style="width: 50%;max-width: 50%; float: left; height: 100%;">
         <Map2 :config="configFile" :default-layer="layer" :map-div-id="'map1'"
              @changeLayer="setLayer" :key="'map1'" :selected="layer">
           <template v-slot:top>
@@ -35,12 +35,17 @@
         </Map2>
       </div>
     </v-layout>
+
+
     <v-layout v-else style="height: 100%;" pa-0 ma-0 :map-div-id="'single'" :key="'map0'">
       <div style="width: 100%;">
         <Map2 :config="configFile" @changeLayer="setLayer" :map-div-id="'map0'" :selected="layer">
           <v-btn icon color="primary" @click="splitScreen = true">
             <v-icon>vertical_split</v-icon>
           </v-btn>
+<!--          <template v-slot:timeslider>-->
+<!--            <timeslider @change="setLayer"></timeslider>-->
+<!--          </template>-->
         </Map2>
       </div>
     </v-layout>
@@ -63,13 +68,11 @@
   import axios from 'axios';
   import BaseIconButton from '../BaseElements/BaseIconButton';
   import Map2 from '../Metadata/Map2';
-  // import Timeslider from '../Metadata/Timeslider';
 
   export default {
     name: 'MetadataMapPage',
     components: {
       Map2,
-      // Timeslider,
       BaseIconButton,
     },
     data: () => ({

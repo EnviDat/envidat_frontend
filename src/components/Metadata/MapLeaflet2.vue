@@ -7,6 +7,9 @@
     <div style="position: absolute; top: 70px; right: 0px; z-index: 999999;">
       <slot name="layerControl"></slot>
     </div>
+    <div style="position: absolute; bottom: 70px; width: 90%; z-index: 999999;">
+      <slot name="timeslider"></slot>
+    </div>
     <div style="position: absolute; bottom: 80px; right: 20px; z-index: 99999;">
       <slot></slot>
     </div>
