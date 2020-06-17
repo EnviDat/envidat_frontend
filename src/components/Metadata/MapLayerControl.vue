@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <v-card style="overflow-y: auto;">
       <v-list dense>
         <v-list-tile
           v-for="(layer, key) in layers"

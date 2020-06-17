@@ -5,9 +5,6 @@
         <zoom-btn @zoomIn="zoomIn" @zoomOut="zoomOut" />
       </transition>
     </div>
-    <div style="position: absolute; top: 70px; right: 20px; z-index: 999999;">
-      <slot name="layerControl"></slot>
-    </div>
     <div style="position: absolute; bottom: 80px; right: 20px; z-index: 999999;">
       <slot></slot>
     </div>
