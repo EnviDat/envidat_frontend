@@ -29,7 +29,4 @@
 </script>
 
 <style scoped>
-  .selected {
-    background-color: cadetblue;
-  }
 </style>
