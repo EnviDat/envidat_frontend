@@ -90,10 +90,10 @@ Please provide between 5 to 10 keywords; avoid combinations of multiple words in
 ### Content License
 
  You have to actively choose a license for your data:
-    + The WSL Data Policy asks data users to **attribute and precludes data redistribution unless otherwise agreed with data originators**: 
-      *Users may not share WSL research data or place them in data repositories that are accessible to third parties without the prior consent of the WSL data producers. Exclusive rights to reuse or publish WSL research data may not be transferred to commercial publishers or their agents. WSL reserves the right to use its research data itself or make it accessible to third parties for reuse.*
-    + The Open Database License (ODC-ODbL) asks data users to **attribute**, **share-alike** and **keep open**; (see https://opendatacommons.org/licenses/odbl/) for details.
-    + "Other" license. In this case, please define in the description all rights, permissions and restrictions that you would like the users of the research data to adhere to.
+  * The WSL Data Policy asks data users to **attribute and precludes data redistribution unless otherwise agreed with data originators**: 
+    *Users may not share WSL research data or place them in data repositories that are accessible to third parties without the prior consent of the WSL data producers. Exclusive rights to reuse or publish WSL research data may not be transferred to commercial publishers or their agents. WSL reserves the right to use its research data itself or make it accessible to third parties for reuse.*
+  * The Open Database License (ODC-ODbL) asks data users to **attribute**, **share-alike** and **keep open**; (see https://opendatacommons.org/licenses/odbl/) for details.
+  * "Other" license. In this case, please define in the description all rights, permissions and restrictions that you would like the users of the research data to adhere to.
  
  The license defines the terms of use for the data. Irrespective of the chosen license, content items may also be **restricted** (see *Research Data Upload* below) and data users will need to contact you in order to receive access.
 
