@@ -80,7 +80,7 @@
 
       </v-card-title>
 
-      <v-card-title class="pl-2 py-2 pr-0" >
+      <!-- <v-card-title class="pl-2 py-2 pr-0" >
 
         <v-layout row
                   justify-space-between
@@ -114,7 +114,7 @@
             </div>
           </v-flex>
         </v-layout>
-      </v-card-title>
+      </v-card-title> -->
 
       <v-card-title class="pt-2 pb-0 px-2">
         <v-layout row
@@ -200,7 +200,7 @@
         </v-container>
       </v-card-title>
 
-      <div id="wrapper"
+      <!-- <div id="wrapper"
             style="position: absolute; top: 0; right: 0;"
             class="pa-4">
 
@@ -226,7 +226,7 @@
             {{ dataCreditLevel }}
           </text>
         </svg>
-      </div>
+      </div> -->
 
     </v-card>
 
@@ -257,9 +257,21 @@ export default {
     authorPassedInfo: String,
   },
   mounted() {
-    this.setLevelProgress();
+    // this.setLevelProgress();
   },
   computed: {
+    // getDataCreditLevel(currentScore) {
+    //   const entires = this.authorDataCreditLevels;
+
+    //   for (let i = 0; i < entires.length; i++) {
+    //     const scoreLvl = entires[i];
+    //     if (currentScore >= scoreLvl.score) {
+    //       return scoreLvl.lvl;
+    //     }
+    //   }
+
+    //   return 0;
+    // },
     dark() {
       return this.dataCreditLevel >= 6;
     },
