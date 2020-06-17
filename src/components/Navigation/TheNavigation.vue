@@ -11,26 +11,22 @@
 
       <v-list-item v-for="(item, index) in navItemsMenuExcluded"
                   :key="index"
-                  link >
+                  link
+                  :class="`${item.icon === 'envidat' ? mini ? 'px-2' : 'px-3' : '' }`"  >
 
-        <v-list-item-action v-if="item.icon === 'envidat'" >
+        <v-list-item-action v-if="item.icon === 'envidat'"
+                            @click.stop="itemClick(item)" >
           <v-btn icon
                   class="ma-0"
-                  :color="item.active ? 'accent' : 'transparent'"
+                  :style="`background-color: ${ item.active ? $vuetify.theme.themes.light.accent : 'transparent' }`"
                   @click.stop="itemClick(item)" >
             <img :src="Logo"
-                  alt="envidat_logo" />|
+                  alt="envidat_logo" />
           </v-btn>
         </v-list-item-action>
 
-        <v-list-item-icon v-if="item.icon !== 'envidat'"
-                          @click="item.icon === 'menu' ? item.active = !item.active : itemClick(item)" >
-          <v-icon :color="item.active ? 'accent' : 'secondary'">
-            {{ item.icon }}
-          </v-icon>
-        </v-list-item-icon>
-
-        <v-list-item-content v-if="item.icon === 'envidat'">
+        <v-list-item-content v-if="item.icon === 'envidat'"
+                              @click.stop="itemClick(item)">
           <v-row class="fill-height" 
                   align="start"
                   justify="end" >
@@ -47,10 +43,17 @@
           </v-row>
         </v-list-item-content>
 
+        <v-list-item-icon v-if="item.icon !== 'envidat'"
+                          @click="itemClick(item)" >
+                          <!-- @click="item.icon === 'menu' ? item.active = !item.active : itemClick(item)" > -->
+          <v-icon :color="item.active ? 'accent' : 'secondary'">
+            {{ item.icon }}
+          </v-icon>
+        </v-list-item-icon>
+
         <v-list-item-content v-if="item.icon !== 'envidat'"
                               class=""
-                              @click="item.icon === 'menu' ? item.active = !item.active : itemClick(item)"
-                              >
+                              @click="itemClick(item)" >
           {{ item.title }}
         </v-list-item-content>
       </v-list-item>
