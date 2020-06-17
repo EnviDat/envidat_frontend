@@ -1,12 +1,13 @@
 <template>
-  <div style="height: 100%; width: 100%; max-height: 100%; z-index: 100; max-width: 100%;">
+  <div style="height: 100%; width: 100%; z-index: 100; max-width: 100%;">
 
-    <div class="map-container">
+    <div :class="config.timeseries ? 'map-container-timeslider' : 'map-container'">
       <v-layout class="top-slot">
         <slot name="top"></slot>
       </v-layout>
 
       <map-layer-control
+        v-if="!config.timeseries"
         :layers="config.layers"
         :selected="selectedLayerName"
         @select="select"
@@ -23,7 +24,7 @@
         <v-btn fab small @click="show3d = false">2D</v-btn>
       </map-cesium2>
     </div>
-    <div class="timeslider-container">
+    <div class="timeslider-container" v-if="config.timeseries">
       <timeslider
         style="height: 120px; z-index: 10000;"
         @select="select"
@@ -60,9 +61,6 @@
       selectedLayerName: null,
     }),
     computed: {
-      // heightMap() {
-      //   return this.config.timeseries ?
-      // },
       selectedLayer() {
         if (!this.selectedLayerName) {
           return null;
@@ -88,7 +86,6 @@
       },
     },
     mounted() {
-      console.log(this.config);
       if (this.selected) {
         this.select(this.selected);
       } else {
@@ -110,6 +107,10 @@
   }
 
   .map-container {
+    height: 100%;
+  }
+
+  .map-container-timeslider {
     height: calc(100% - 120px);
   }
 
