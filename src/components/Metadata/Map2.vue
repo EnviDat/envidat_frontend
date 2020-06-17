@@ -5,9 +5,6 @@
       <v-layout class="top-slot justify-center">
         <slot name="top"></slot>
       </v-layout>
-      <div class="timeslider">
-        <slot name="timeslider"></slot>
-      </div>
       <div class="default-slot">
         <slot></slot>
       </div>
@@ -16,14 +13,11 @@
         :layers="config.layers"
         :selected="selectedLayerName"
         @select="select"
-        style="position: absolute; left: 0; z-index: 9999999; margin: 20px; top: 100px; bottom: 150px;"
+        style="position: absolute; z-index: 9999999; margin: 20px; top: 100px; bottom: 150px;"
       ></map-layer-control>
 
       <div v-if="!hasGeom" style="color: red;">{{ 'No data to show' }}</div>
       <map-leaflet2 v-if="!show3d" :layer="selectedLayer" :map-div-id="mapDivId">
-        <!--      <template v-slot:timeslider v-if="config.timeseries">-->
-        <!--        <timeslider style="position: absolute; height: 120px; z-index: 10000; width: 100%;" @select="select" :chart-data="config.layers" :div-id="`timeslider_${mapDivId}`"></timeslider>-->
-        <!--      </template>-->
         <v-btn fab small @click="show3d = true">3D</v-btn>
       </map-leaflet2>
       <map-cesium2 v-if="show3d" :layer="selectedLayer" :map-div-id="mapDivId">
@@ -32,7 +26,7 @@
     </div>
     <div class="timeslider-container">
       <timeslider
-        style="position: absolute; height: 120px; z-index: 10000; width: 100%;"
+        style="height: 120px; z-index: 10000;"
         @select="select"
         :chart-data="config.layers"
         :div-id="`timeslider_${mapDivId}`"
@@ -113,19 +107,8 @@
     z-index: 100000;
   }
 
-  .timeslider {
-    position: absolute;
-    z-index: 9999;
-    cursor: pointer;
-    bottom: 50px;
-    width: 90%;
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
-  /* TODO: Hack: width of slot is 50%, should be 100% */
   .top-slot {
-    width: 50%;
+    width: 100%;
     position: absolute;
     z-index: 9999;
     cursor: pointer;

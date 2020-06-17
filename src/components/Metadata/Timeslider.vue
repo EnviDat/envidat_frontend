@@ -1,16 +1,16 @@
 <template>
-  <v-card>
+  <v-card style="width: 100%; max-width: 100%;">
     <v-layout fill-height align-center>
       <v-flex>
         <v-btn icon small @click="previous()" :disabled="this.currentIndex <= 0">
           <v-icon>arrow_left</v-icon>
         </v-btn>
       </v-flex>
-    <div :id="divId" style="width: 100%; height: 100%;"></div>
+      <div :id="divId" style="width: 100%; height: 100%;"></div>
       <v-flex>
-    <v-btn icon small @click="next()" :disabled="this.currentIndex > this.nDataPoints - 1">
-      <v-icon>arrow_right</v-icon>
-    </v-btn>
+        <v-btn icon small @click="next()" :disabled="this.currentIndex > this.nDataPoints - 1">
+          <v-icon>arrow_right</v-icon>
+        </v-btn>
       </v-flex>
     </v-layout>
   </v-card>
