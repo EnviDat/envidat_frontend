@@ -2,12 +2,9 @@
   <div style="height: 100%; width: 100%; max-height: 100%; z-index: 100; max-width: 100%;">
 
     <div class="map-container">
-      <v-layout class="top-slot justify-center">
+      <v-layout class="top-slot">
         <slot name="top"></slot>
       </v-layout>
-      <div class="default-slot">
-        <slot></slot>
-      </div>
 
       <map-layer-control
         :layers="config.layers"
@@ -16,11 +13,13 @@
         style="position: absolute; z-index: 9999999; margin: 20px; top: 100px; bottom: 150px;"
       ></map-layer-control>
 
-      <div v-if="!hasGeom" style="color: red;">{{ 'No data to show' }}</div>
+      <div v-if="!hasGeom" style="color: red;">No data to show</div>
       <map-leaflet2 v-if="!show3d" :layer="selectedLayer" :map-div-id="mapDivId">
+        <slot></slot><br>
         <v-btn fab small @click="show3d = true">3D</v-btn>
       </map-leaflet2>
       <map-cesium2 v-if="show3d" :layer="selectedLayer" :map-div-id="mapDivId">
+        <slot></slot><br>
         <v-btn fab small @click="show3d = false">2D</v-btn>
       </map-cesium2>
     </div>
@@ -101,14 +100,9 @@
 </script>
 
 <style scoped>
-  .default-slot {
-    position: absolute;
-    right: 30px;
-    z-index: 100000;
-  }
 
   .top-slot {
-    width: 100%;
+    left: 50%;
     position: absolute;
     z-index: 9999;
     cursor: pointer;
