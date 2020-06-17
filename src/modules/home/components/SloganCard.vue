@@ -4,13 +4,11 @@
 
     <v-container class="pa-0" >
       <v-row v-bind="{ 'row' : $vuetify.breakpoint.xsOnly ? false : true,
-                          'column' : $vuetify.breakpoint.xsOnly ? true : false, }" >
-        <v-col class="py-0" cols="5"
-                >
-          <v-img
-            :src="fingertipsImg"
-            :style="{ 'max-height': '200px', 'min-height': '100%' }"
-          />
+                        'column' : $vuetify.breakpoint.xsOnly ? true : false, }" >
+
+        <v-col class="py-0" cols="5" >
+          <v-img :src="fingertipsImg"
+                  style="max-height: 200px; min-height: 100%; border-bottom-left-radius: 4px; border-top-left-radius: 4px;" />
         </v-col>
 
         <v-col class="pa-2" cols="7" >
@@ -24,6 +22,17 @@
                 style="text-align: center;"
                 v-html="slogan" >
           </div>
+
+          <!-- <v-card-title v-html="slogan" >
+            
+          </v-card-title>
+
+          <v-card-text class="pt-3 pb-5"
+                :class="{'px-2': $vuetify.breakpoint.smAndDown }"
+                :style="$vuetify.breakpoint.mdAndUp ? 'font-size: 14px !important;' : '' " >
+            {{ subSlogan }}
+          </v-card-text> -->
+
           <div class="pt-3 pb-5"
                 :class="{'px-2': $vuetify.breakpoint.smAndDown }"
                 :style="$vuetify.breakpoint.mdAndUp ? 'font-size: 14px !important;' : '' " >
@@ -38,7 +47,7 @@
                     style="position: absolute; bottom: 0; right: 0;" >
 
       <base-rectangle-button v-if="moreButtonText && moreButtonCallback"
-                                class="mr-3"
+                                marginClass="mr-3"
                                 :buttonText="moreButtonText"
                                 :isSmall="true"
                                 :isFlat="true"
