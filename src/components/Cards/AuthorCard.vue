@@ -270,7 +270,7 @@ export default {
     authorPassedInfo: String,
   },
   mounted() {
-    this.setLevelProgress();
+    // this.setLevelProgress();
   },
   computed: {
     // getDataCreditLevel(currentScore) {
