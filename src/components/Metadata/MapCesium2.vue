@@ -5,7 +5,7 @@
         <zoom-btn @zoomIn="zoomIn" @zoomOut="zoomOut" />
       </transition>
     </div>
-    <div style="position: absolute; bottom: 80px; right: 20px; z-index: 999999;">
+    <div style="position: absolute; bottom: 80px; right: 20px; z-index: 99999;">
       <slot></slot>
     </div>
     <div id="credits">
@@ -65,7 +65,7 @@
           maximumRenderTimeChange: Infinity,
         });
         // Hide default credits
-        document.getElementsByClassName('cesium-credit-logoContainer')[0].style.display = 'none';
+        document.getElementsByClassName('cesium-widget-credits')[0].style.display = 'none';
         this.replaceLayer();
         this.zoomToExtent(this.layer.bbox);
       },
@@ -106,11 +106,12 @@
 
 <style scoped>
   .cesiumContainer {
-    width: 100%;
+    position: relative;
+    line-height:0;
     height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
+    width: 100%;
+    z-index: 100;
+    max-height: 100%;
   }
   .zoom {
     position: absolute;
@@ -122,15 +123,8 @@
     position: absolute;
     bottom: 0;
     right: 0;
-    padding: 0 6px 0 6px;
-    margin: 16px;
+    padding: 8px 6px 10px 6px;
     z-index: 999;
     background-color: aliceblue;
-  }
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity .3s;
-  }
-  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-    opacity: 0;
   }
 </style>
