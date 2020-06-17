@@ -1,5 +1,6 @@
 <template>
-  <v-tooltip bottom :disabled="$vuetify.breakpoint.smAndDown || !tooltipText">
+  <v-tooltip bottom
+              :disabled="$vuetify.breakpoint.smAndDown || !tooltipText">
     <template v-slot:activator="{ on }">
       <v-btn v-on="on"
               :small="isSmall"

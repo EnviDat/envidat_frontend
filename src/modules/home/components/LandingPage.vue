@@ -1,6 +1,6 @@
 <template>
   <v-container fluid
-                :class="$vuetify.breakpoint.smAndDown ? 'pa-1' : 'py-0 px-2'" >
+                :class="$vuetify.breakpoint.smAndDown ? 'pa-1' : 'py-0'" >
     <v-row >
       <the-title-screen-layout :title="envidatTitle"
                                 :slogan="envidatSlogan"
@@ -10,28 +10,29 @@
                                 :moreButtonText="sloganMoreButtonText"
                                 :moreButtonCallback="catchMoreClicked" />
 
-      <v-col class="hidden-xs-only mt-5" offset-md="6" >
+      <v-col class="hidden-xs-only px-0 mt-5" offset-md="6" >
         <search-bar-view :labelText="labelText"
                           :buttonText="buttonText"
                           :hasButton="true"
                           @clicked="catchSearchClicked" />
       </v-col>
 
-      <v-col class="hidden-sm-and-up mt-5" >
+      <v-col class="hidden-sm-and-up px-0 mt-5" >
         <small-search-bar-view :labelText="labelText"
                           :buttonText="buttonText"
                           :hasButton="$vuetify.breakpoint.smAndUp"
                           @clicked="catchSearchClicked" />
       </v-col>
 
-      <v-col class="mt-5" offset-md="6" >
+      <v-col class="mt-5 px-0" offset-md="6" >
         <v-container class="pa-0"
                       fluid >
           <v-row >
 
-            <v-col class="my-1" v-for="card in categoryCards"
+            <v-col v-for="card in categoryCards"
                     :key="card.title"
                     cols="6" >
+
               <base-click-card :title="card.title"
                                 :img="card.img"
                                 :color="card.darkColor"

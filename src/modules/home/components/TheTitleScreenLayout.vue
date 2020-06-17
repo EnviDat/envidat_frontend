@@ -1,10 +1,10 @@
 <template>
-  <v-row>
-    <v-col cols="12" md="6" offset-md="6" >
+  <!-- <v-row> -->
+    <v-col cols="12" md="6" offset-md="6" class="pa-0" >
 
-      <v-row >
+      <!-- <v-row > -->
 
-        <v-col cols="12">
+        <v-col cols="12" class="px-0" >
           <v-row align="center" >
 
             <v-col class="hidden-sm-and-down" 
@@ -13,7 +13,6 @@
             </v-col>
 
             <v-col class="hidden-xs-only hidden-md-and-up" 
-                    
                     cols="1" >
               <img :src="smLogo"
                     :alt="alternativeText" >
@@ -25,36 +24,29 @@
             </v-col>
 
             <v-col cols="8" lg="9"
-                    
-                    
                     class="envidatTitle display-4 pl-5 hidden-md-and-down"
                     style="font-size: 80px !important;" >
               {{ title }}
             </v-col>
 
             <v-col cols="8"
-                    
-                    
                     class="envidatTitle display-3 pl-2 hidden-sm-and-down hidden-lg-and-up" >
               {{ title }}
             </v-col>
 
             <v-col cols="8"
-                    
-                    
                     class="envidatTitle display-2 pl-2 hidden-xs-only hidden-md-and-up" >
               {{ title }}
             </v-col>
 
             <v-col cols="9"
-                    
                     class="envidatTitle display-3 hidden-sm-and-up" >
               {{ title }}
             </v-col>
           </v-row>
         </v-col>
 
-        <v-col class="pt-5" >
+        <v-col class="px-0 pt-5" >
           <slogan-card :slogan="slogan"
                         :subSlogan="subSlogan"
                         :buttonText="buttonText"
@@ -63,9 +55,9 @@
                         :moreButtonCallback="moreButtonCallback" />
         </v-col>
 
-      </v-row>
+      <!-- </v-row> -->
     </v-col>
-  </v-row>
+  <!-- </v-row> -->
 </template>
 
 <script>

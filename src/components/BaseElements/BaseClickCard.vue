@@ -10,6 +10,7 @@
           <v-img class="imagezoom"
                   :contain="contain"
                   :height=" $vuetify.breakpoint.smAndDown ? '65px' : '100px' "
+                  style="border-bottom-left-radius: 4px; border-top-left-radius: 4px;"
                   :src="img" />
         </v-col>
 
@@ -22,8 +23,8 @@
           </div>
 
           <div v-if="color"
-                class="py-0 mr-1 my-0 "
-                :style="`height: 5px; background-color: ${color}; margin-left: -5px;`" >
+                class="py-0 my-0 "
+                :style="`height: 5px; background-color: ${color}; margin-left: -12px; margin-right: 11.5px;`" >
           </div>
 
         </v-col>
