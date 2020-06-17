@@ -1,17 +1,25 @@
 <template>
-  <div style="height: 100%; width: 100%; z-index: 100; max-width: 100%;">
+  <div style="height: 100%; width: 100%; max-height: 100%; z-index: 100; max-width: 100%;">
+
+    <div class="map-container">
     <v-layout class="top-slot justify-center">
       <slot name="top"></slot>
     </v-layout>
     <div class="default-slot">
       <slot></slot>
     </div>
+    <div class="timeslider">
+      <slot name="timeslider"></slot>
+    </div>
 
     <div v-if="!hasGeom" style="color: red;">{{ 'No data to show' }}</div>
     <map-leaflet2 v-if="!show3d" :layer="selectedLayer" :map-div-id="mapDivId">
-      <template v-slot:layerControl>
+      <template v-slot:layerControl v-if="!config.timeseries">
         <map-layer-control :layers="config.layers" :selected="selectedLayerName" @select="select"></map-layer-control>
       </template>
+<!--      <template v-slot:timeslider v-if="config.timeseries">-->
+<!--        <timeslider style="position: absolute; height: 120px; z-index: 10000; width: 100%;" @select="select" :chart-data="config.layers" :div-id="`timeslider_${mapDivId}`"></timeslider>-->
+<!--      </template>-->
       <v-btn fab small @click="show3d = true">3D</v-btn>
     </map-leaflet2>
     <map-cesium2 v-if="show3d" :layer="selectedLayer" :map-div-id="mapDivId">
@@ -20,6 +28,16 @@
       </template>
       <v-btn fab small @click="show3d = false">2D</v-btn>
     </map-cesium2>
+    </div>
+    <div class="timeslider-container">
+      <timeslider
+        style="position: absolute; height: 120px; z-index: 10000; width: 100%;"
+        @select="select"
+        :chart-data="config.layers"
+        :div-id="`timeslider_${mapDivId}`"
+        :selected="selectedLayerName"
+      ></timeslider>
+    </div>
 
   </div>
 </template>
@@ -28,10 +46,16 @@
     import MapLeaflet2 from './MapLeaflet2';
     import MapCesium2 from './MapCesium2';
     import MapLayerControl from './MapLayerControl';
+    import Timeslider from './Timeslider';
 
     export default {
       name: 'Map2',
-      components: { MapLayerControl, MapCesium2, MapLeaflet2 },
+      components: {
+        Timeslider,
+ MapLayerControl,
+MapCesium2,
+MapLeaflet2,
+},
       props: {
         config: { type: Object, required: true },
         mapDivId: { type: String, required: true },
@@ -42,6 +66,9 @@
         selectedLayerName: null,
       }),
       computed: {
+        // heightMap() {
+        //   return this.config.timeseries ?
+        // },
         selectedLayer() {
           if (!this.selectedLayerName) {
             return null;
@@ -67,6 +94,7 @@
         },
       },
       mounted() {
+        console.log(this.config);
         if (this.selected) {
           this.select(this.selected);
         } else {
@@ -84,6 +112,16 @@
     right: 30px;
     z-index: 100000;
   }
+  .timeslider {
+    position: absolute;
+    z-index: 9999;
+    cursor: pointer;
+    bottom: 50px;
+    width: 90%;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
   /* TODO: Hack: width of slot is 50%, should be 100% */
   .top-slot {
     width: 50%;
@@ -92,4 +130,13 @@
     cursor: pointer;
     top: 15px;
   }
+  .map-container {
+    height: calc(100% - 120px);
+  }
+
+  .timeslider-container {
+    height: 120px;
+  }
+
+
 </style>
