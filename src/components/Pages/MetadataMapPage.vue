@@ -1,7 +1,7 @@
 <template>
   <div style="height: 100%; width: 100%;" v-if="configFile">
     <v-card
-      style="position: absolute; top: 0; right: 0px; z-index: 200; background-color: rgba(255, 255, 255, 0.6);"
+      style="position: absolute; top: 0; right: 0; z-index: 200; background-color: rgba(255, 255, 255, 0.6);"
       class="ma-2">
       <base-icon-button class="ma-2"
                         material-icon-name="close"
@@ -17,7 +17,7 @@
         <Map2 :config="configFile" :default-layer="layer" :map-div-id="'map1'"
              @changeLayer="setLayer" :key="'map1'" :selected="layer">
           <template v-slot:top>
-            <v-btn icon color="red" @click="quitSplitFrom(1)">
+            <v-btn icon color="red" style="display: inline-block" @click="quitSplitFrom(1)">
               <v-icon>close</v-icon>
             </v-btn>
           </template>
@@ -40,12 +40,9 @@
     <v-layout v-else style="height: 100%;" pa-0 ma-0 :map-div-id="'single'" :key="'map0'">
       <div style="width: 100%;">
         <Map2 :config="configFile" @changeLayer="setLayer" :map-div-id="'map0'" :selected="layer">
-          <v-btn icon color="primary" @click="splitScreen = true">
-            <v-icon>vertical_split</v-icon>
+          <v-btn color="primary" @click="splitScreen = true" fab small>
+            <v-icon style="height:auto;">vertical_split</v-icon>
           </v-btn>
-<!--          <template v-slot:timeslider>-->
-<!--            <timeslider @change="setLayer"></timeslider>-->
-<!--          </template>-->
         </Map2>
       </div>
     </v-layout>
