@@ -10,7 +10,7 @@
 
     <div class="py-0 my-0 "
           :class="mdScreen ? 'px-1 mb-1' : 'px-3'"
-          :style="`background-color: ${$vuetify.theme.highlight};`" >
+          :style="`background-color: ${$vuetify.themes.light.highlight};`" >
 
       <v-row class="my-0" v-if="topLayout"
                   
@@ -74,7 +74,7 @@
                 class="pa-0" >
           <v-row align="center">
             <v-col class="shrink" >
-              <div :style="`color:${pinnedAmount > 0 ? $vuetify.theme.primary : 'rgba(0,0,0,.47)'};`">
+              <div :style="`color:${pinnedAmount > 0 ? $vuetify.themes.light.primary : 'rgba(0,0,0,.47)'};`">
                 {{ filterText + pinnedAmount }}
               </div>
             </v-col>
@@ -88,7 +88,7 @@
 
         <v-col v-if="!mdScreen"
                 class="grow py-1" >
-          <div :style="`color:${pinnedAmount > 0 ? $vuetify.theme.primary : 'rgba(0,0,0,.47)'};`">
+          <div :style="`color:${pinnedAmount > 0 ? $vuetify.themes.light.primary : 'rgba(0,0,0,.47)'};`">
             {{ filterText + pinnedAmount }}
           </div>
         </v-col>
