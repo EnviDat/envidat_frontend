@@ -1,18 +1,18 @@
 <template>
-  <v-container class="elevation-10 pa-0 unselectable">
-    <v-layout justify-center class="btn zoom_in" @click="$emit('zoomIn')">
-      <v-icon>
+  <v-container class="pa-0 unselectable">
+    <v-layout justify-center class="btn zoom_in elevation-10" @click="$emit('zoomIn')">
+      <v-icon class="icon">
         add
       </v-icon>
     </v-layout>
     <v-divider light></v-divider>
-    <v-layout justify-center class="btn zoom_out" @click="$emit('zoomOut')">
-      <v-icon>
+    <v-layout justify-center class="btn zoom_out elevation-10" @click="$emit('zoomOut')">
+      <v-icon class="icon">
         remove
       </v-icon>
     </v-layout>
-    <v-layout justify-center class="btn zoom_geom mt-1" @click="$emit('zoomToGeometry')">
-      <v-icon>
+    <v-layout justify-center class="btn zoom_geom mt-1 elevation-10" @click="$emit('zoomToGeometry')">
+      <v-icon class="icon">
         zoom_out_map
       </v-icon>
     </v-layout>
@@ -27,25 +27,34 @@
 
 <style scoped>
   .btn {
+    height: 25px;
+    width: 25px;
     font-weight: bold;
     cursor: pointer;
     font-size: 10pt;
     background-color: white;
     transition: all 0.2s;
   }
+  .icon {
+    height:auto;
+    align-self: center;
+    color: black;
+    font-weight: bold;
+    font-size: 14pt;
+  }
   .btn:hover {
     background-color: gainsboro;
   }
   .zoom_in {
-    border-top-right-radius: 5px;
-    border-top-left-radius: 5px;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
   }
   .zoom_out {
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
   }
   .zoom_geom {
-    border-radius: 5px;
+    border-radius: 4px;
   }
   .unselectable {
     -webkit-touch-callout: none;
@@ -54,5 +63,6 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    background-color: transparent;
   }
 </style>
