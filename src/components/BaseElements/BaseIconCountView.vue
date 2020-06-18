@@ -2,27 +2,29 @@
   <div>
     <v-tooltip v-if="$vuetify.breakpoint.mdAndUp && tooltipText"
                 bottom >
-      <div slot="activator"
-            class="metadataInfoIcon" >
-        <v-row 
-                    @mouseover="hoverBadge = true"
-                    @mouseleave="hoverBadge = false" >
-          <v-col class="pa-0" >
-            <v-badge :left="!hoverBadge"
-                      overlap
-                      color="secondary"
-                      :class="{ envidatBadgeBigNumber : count > 9,
-                                envidatBadge: count <= 9 }" >
-                                                    
-              <span slot="badge" >{{ count }}</span>
-            </v-badge>
-          </v-col>
+      <template v-slot:activator="{ on }">
+        <div v-on="on"
+              class="metadataInfoIcon" >
+          <v-row @mouseover="hoverBadge = true"
+                  @mouseleave="hoverBadge = false" >
+            <v-col class="pa-0" >
+              <v-badge :left="!hoverBadge"
+                        overlap
+                        color="secondary"
+                        :class="{ envidatBadgeBigNumber : count > 9,
+                                  envidatBadge: count <= 9 }" >
+                                                      
+                <span slot="badge" >{{ count }}</span>
+              </v-badge>
+            </v-col>
 
-          <v-col class="pa-0" >
-            <img class="envidatIcon" :src="iconString" :alt="`${iconString} icon`">
-          </v-col>
-        </v-row>
-      </div>
+            <v-col class="pa-0" >
+              <img class="envidatIcon" :src="iconString" :alt="`${iconString} icon`">
+            </v-col>
+          </v-row>
+        </div>
+      </template>
+
       <span>{{ tooltipText }}</span>
     </v-tooltip>
 
