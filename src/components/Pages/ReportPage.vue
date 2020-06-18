@@ -105,7 +105,7 @@ export default {
       error: 'error',
     }),
     color() {
-      return this.error ? this.$vuetify.theme.error : this.$vuetify.theme.highlight;
+      return this.error ? this.$vuetify.themes.light.error : this.$vuetify.themes.light.highlight;
     },
   },
   methods: {

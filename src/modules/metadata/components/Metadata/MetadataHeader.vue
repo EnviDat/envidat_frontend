@@ -41,7 +41,7 @@
         <v-col v-if="!metadataTitle && !showPlaceholder"
                 cols="12" >
           <div class="headerTitle py-3"
-                :style="`color: ${$vuetify.theme.error}`"
+                :style="`color: ${$vuetify.themes.light.error}`"
                 :class="{ 'display-2': $vuetify.breakpoint.lgAndUp,
                           'display-1': $vuetify.breakpoint.mdAndDown,
                           'headline': $vuetify.breakpoint.smAndDown,
