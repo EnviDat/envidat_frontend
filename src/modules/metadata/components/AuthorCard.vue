@@ -74,6 +74,7 @@
       <v-card-title class="py-1 pb-2 px-2">
         <data-credit-layout class="pa-0"
                             :dataCredit="author.dataCredit"
+                            badgesLabel="Data Credit Contributions"
                             :iconColor="dark ? 'white' : 'black'"
                             :badgeColor="dark ? 'white' : darkColor"
                             :dark="!dark" />

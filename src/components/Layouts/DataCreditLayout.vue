@@ -6,7 +6,7 @@
 
       <v-flex xs12
               :class="!dark ? 'white--text' : 'black--text'" >
-        {{ label }}
+        {{ badgesLabel }}
       </v-flex>
 
       <v-flex v-if="!hasDataCreditCounts"
@@ -66,7 +66,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    label: {
+    badgesLabel: {
       type: String,
       default: 'Data Credit Badges',
     },
