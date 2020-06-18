@@ -1,8 +1,8 @@
 <template>
-  <v-card v-bind="mapSize">
+  <v-card>
     <v-card-title class="title metadata_title">Location Geoservices</v-card-title>
 
-    <v-card-text v-if="configFile" style="width: 100%; height: 100%; position: relative;">
+    <v-card-text v-if="configFile" style="width: 100%; height: 500px; position: relative;">
       <Map2 :config="configFile" :map-div-id="'map-small'">
         <v-btn fab small color="primary" @click.native.stop="openFullscreen">
           <v-icon medium style="height:auto;">fullscreen</v-icon>
@@ -41,22 +41,15 @@
         return this.mixinMethods_getGenericProp('title');
       },
       mapSize() {
-        let width = this.largeSize;
         let height = this.mediumSize;
 
         if (this.$vuetify.breakpoint.xsOnly) {
-          width = this.mediumSize;
           height = this.smallSize;
         } else if (this.$vuetify.breakpoint.smAndDown) {
-          width = this.fullWidthSize;
           height = this.smallSize;
-        } else if (this.$vuetify.breakpoint.mdAndDown) {
-          width = this.fullWidthSize;
         }
-
         return {
-          style: `width: ${width}px !important;
-                  max-width: 100%;
+          style: `max-width: 100%;
                   height: ${height}px !important;`,
         };
       },

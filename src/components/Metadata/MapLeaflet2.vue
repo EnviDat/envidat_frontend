@@ -41,6 +41,7 @@
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             {
               attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            noWrap: true,
             },
           );
         },
@@ -48,6 +49,7 @@
           return L.tileLayer.bing({
             bingMapsKey: this.bingApiKey,
             imagerySet: 'AerialWithLabels',
+            noWrap: true,
           });
         },
       },
