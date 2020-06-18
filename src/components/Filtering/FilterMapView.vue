@@ -355,7 +355,7 @@ export default {
       // create a polygon from an array of LatLng points
       // var latlngs = [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]];
       const polygon = L.polygon(coords, {
-        color: selected ? this.$vuetify.theme.themes.light.primary : this.$vuetify.themes.light.accent,
+        color: selected ? this.$vuetify.theme.themes.light.primary : this.$vuetify.theme.themes.light.accent,
         opacity: 0.45,
         fillOpacity: 0,
       });

@@ -11,7 +11,7 @@
                 grow
                 fixed-tabs >
 
-          <v-tab ripple :style="`background-color: ${$vuetify.themes.light.highlight}`">
+          <v-tab ripple :style="`background-color: ${$vuetify.theme.themes.light.highlight}`">
             <!-- About -->
             <v-icon>info</v-icon>
           </v-tab>
@@ -46,7 +46,7 @@
             </v-col>
           </v-tab-item>
 
-          <v-tab ripple :style="`background-color: ${$vuetify.themes.light.highlight}`">
+          <v-tab ripple :style="`background-color: ${$vuetify.theme.themes.light.highlight}`">
             <!-- Guidelines -->
             <v-icon>local_library</v-icon>
           </v-tab>
@@ -72,7 +72,7 @@
 
           </v-tab-item>
 
-          <v-tab ripple :style="`background-color: ${$vuetify.themes.light.highlight}`">
+          <v-tab ripple :style="`background-color: ${$vuetify.theme.themes.light.highlight}`">
             <!-- Policies -->
             <v-icon>policy</v-icon>
           </v-tab>
@@ -97,7 +97,7 @@
             </v-col>
           </v-tab-item>
 
-          <v-tab ripple :style="`background-color: ${$vuetify.themes.light.highlight}`">
+          <v-tab ripple :style="`background-color: ${$vuetify.theme.themes.light.highlight}`">
             <!-- DMP -->
             <v-icon>menu_book</v-icon>
           </v-tab>
