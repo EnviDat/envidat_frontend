@@ -3,10 +3,11 @@
     <v-container class="pa-0"
                 fluid >
     <v-row align="center"
-            justify="space-between">
+            justify="space-between"
+            no-gutters >
 
       <v-col v-if="loading"
-              class="shrink"
+              class="shrink py-0"
               style="min-width: 60px; text-align: center;" >
         <v-progress-circular indeterminate
                               size="20"
@@ -15,7 +16,7 @@
       </v-col>
 
       <v-col v-if="showSearchCount && !loading"
-              class="shrink" 
+              class="shrink py-0" 
               style="min-width: 60px; text-align: center;" >
 
         <v-tooltip bottom
