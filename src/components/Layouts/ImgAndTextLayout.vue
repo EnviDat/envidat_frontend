@@ -1,28 +1,37 @@
 <template>
-  <v-container class="pa-0" style="position: relative;">
-    <v-row >
-      <v-sheet :height="height">
+  <!-- <v-container class="pa-0" style="position: relative;"> -->
+    <!-- <v-row > -->
+      <v-col cols="12" class="pa-0">
+        <!-- <v-parallax :src="require('@/assets/projects/mission.jpg')"
+                    style="opacity: 0.8; filter: blur(2px);" >
+        </v-parallax> -->
 
-        <v-parallax :height="height" :src="img" style="opacity: 0.8; filter: blur(2px);" />
+        <!-- <v-sheet :height="height"> -->
+            <!-- <v-row align="center"
+                    justify="center" > -->
+              <v-col class="text black--text"
+                      cols="12"
+                      :class="{ 'display-3' : $vuetify.breakpoint.mdAndUp,
+                                'display-1' : $vuetify.breakpoint.smAndDown }">
+                {{ title }}
+              </v-col>
+            <!-- </v-row> -->
 
-        <v-row class="fill-height" align="center" justify="center" 
-                  :style="`position: relative; top: -${height }px; text-align: center;`" >
-          <v-col class="text"
-                  :class="{ 'display-3' : $vuetify.breakpoint.mdAndUp,
-                            'display-1' : $vuetify.breakpoint.smAndDown, }">
-            {{ title }}
-          </v-col>
-        </v-row>
-      </v-sheet>
-    </v-row>
-  </v-container>
+          <v-parallax :height="height"
+                      :src="img"
+                      style="opacity: 0.8; filter: blur(2px);" >
+          </v-parallax>
+        <!-- </v-sheet> -->
+      </v-col>
+    <!-- </v-row> -->
+  <!-- </v-container> -->
 </template>
 
 <script>
 /**
- * TagChipPlaceholder.vue is a placeholder to show the placement any tag while the page is loading.
+ * ImgAndTextLayout.vue is a placeholder to show the placement any tag while the page is loading.
  *
- * @summary placeholder for tags
+ * @summary Title Layout
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
