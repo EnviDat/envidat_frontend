@@ -3,7 +3,7 @@
 
     <v-container class="pa-2"
                   fluid >
-      <v-row >
+      <v-row class="fill-height" >
 
         <v-col v-if="!filterExpanded"
                 class="hidden-sm-and-up px-2 py-2"
@@ -12,16 +12,16 @@
         </v-col>
 
         <v-col v-if="filterExpanded || $vuetify.breakpoint.smAndUp"
-                class="pb-0"
+                class="py-0"
                 cols="12" >
           <v-row >
 
-            <v-col class="metadataInfoIcon" >
+            <v-col class="py-0 metadataInfoIcon shrink" >
               <v-img :src="tagsIcon" height="24" width="24" />
             </v-col>
 
             <v-col v-if="showPlaceholder"
-                    cols="12" >
+                    class="py-0 grow" >
 
               <tag-chip-placeholder v-for="n in 6"
                                     :key="n"
@@ -29,7 +29,7 @@
             </v-col>
 
             <v-col v-if="!showPlaceholder"
-                    cols="12" >
+                    class="py-0 grow" >
 
               <tag-chip v-for="tag in unselectedTags"
                         :key="tag.name"
@@ -44,16 +44,16 @@
         </v-col>
 
         <v-col v-if="filterExpanded || $vuetify.breakpoint.smAndUp"
+                class="py-0"
                 cols="12" >
           <v-row >
 
-            <v-col class="metadataInfoIcon pl-2" >
+            <v-col class="metadataInfoIcon pb-0 shrink" >
               <v-img :src="tagIcon" height="24" width="24" />
             </v-col>
 
             <v-col v-if="selectedTags.length > 0"
-                    cols="12"
-                    :class="$vuetify.breakpoint.smAndDown ? '' : 'px-2'" >
+                    class="pb-0 grow" >
 
               <tag-chip v-for="tag in selectedTags"
                         :key="tag.name"
@@ -108,6 +108,7 @@ import TagChip from '@/components/Cards/TagChip';
 import TagChipPlaceholder from '@/components/Cards/TagChipPlaceholder';
 
 export default {
+  name: 'FilterKeywordsView',
   components: {
     BaseIconButton,
     TagChip,

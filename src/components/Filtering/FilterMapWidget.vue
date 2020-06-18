@@ -1,5 +1,5 @@
 <template>
-  <v-card class="elevation-0" >
+  <!-- <v-card class="elevation-0" > -->
 
     <filter-map-widget-layout :title="title"
                               :highlightedText="highlightedText"
@@ -48,9 +48,8 @@
         <base-icon-button :count="multiPinNumber"
                           :customIcon="multiPinIcon"
                           color="secondary"
-                          :outlined="true"
+                          :outlined="multiPinEnabled"
                           :isSmall="mdScreen"
-                          :isToggled="multiPinEnabled"
                           :tooltipText="multiPinText"
                           @clicked="catchMultipinClicked()" />
       </template>
@@ -60,16 +59,16 @@
                           materialIconName="layers"
                           iconColor="black"
                           color="secondary"
+                          :outlined="true"
                           :isSmall="mdScreen"
                           :isToggled="polygonEnabled"
-                          :outlined="true"
                           :tooltipText="polygonText"
                           @clicked="catchPolygonClicked()" />
       </template>
 
     </filter-map-widget-layout>
 
-  </v-card>
+  <!-- </v-card> -->
 </template>
 
 <script>
@@ -90,6 +89,7 @@ import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import FilterMapWidgetLayout from '@/components/Layouts/FilterMapWidgetLayout';
 
 export default {
+  name: 'FilterMapWidget',
   props: {
     title: {
       type: String,

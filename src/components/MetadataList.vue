@@ -20,9 +20,11 @@
 
     <template v-slot:controlPanel>
       <v-card style="min-height: 36px; ">
-        <v-container class="pa-2" fluid>
-        <v-row align="center" justify="space-between">
-          <v-col class="grow" >
+        <v-container class="px-2 py-0"
+                      fluid>
+        <v-row align="center"
+                justify="space-between">
+          <v-col class="py-0" cols="10">
           <small-search-bar-view :compactLayout="$vuetify.breakpoint.smAndDown"
                                   class="elevation-0"
                                   :searchTerm="searchTerm"
@@ -37,13 +39,12 @@
                                   @searchCleared="catchSearchCleared" />
           </v-col>
 
-          <v-col class="hidden-xs-only shrink py-0" 
-                  >
-          <list-control-toggle :controls="controlsActive"
-                                :enabledControls="enabledControls"
-                                :compactLayout="$vuetify.breakpoint.smAndDown"
-                                :flat="true"
-                                @controlsChanged="controlsChanged" />
+          <v-col class="hidden-xs-only py-0" cols="2" >
+            <list-control-toggle :controls="controlsActive"
+                                  :enabledControls="enabledControls"
+                                  :compactLayout="$vuetify.breakpoint.smAndDown"
+                                  :flat="true"
+                                  @controlsChanged="controlsChanged" />
           </v-col>
         </v-row>
       </v-container>        
@@ -63,10 +64,10 @@
 
     <template v-slot:metadataListPlaceholder>
       <v-row v-if="loading"
-                ref="metadataListPlaceholder"
-                :class="{ ['column'] : listView,
-                          ['row'] : !listView,
-                          ['wrap'] : !listView }" >
+              ref="metadataListPlaceholder" >
+              <!-- :class="{ ['column'] : listView,
+                              ['row'] : !listView,
+                              ['wrap'] : !listView }" > -->
 
         <v-col v-for="(n, index) in placeHolderAmount"
                 :key="'placeHolder_' + index"
@@ -79,14 +80,15 @@
 
     <template v-slot:metadataListLayout >
       <v-row v-if="!loading"
-                        ref="metadataListLayout"
-                        :class="{ ['column'] : listView,
-                                  ['row'] : !listView,
-                                  ['wrap'] : !listView }" >
+              ref="metadataListLayout" >
+              <!-- :class="{ ['column'] : listView,
+                        ['row'] : !listView,
+                        ['wrap'] : !listView }" > -->
 
         <v-col v-for="(pinnedId, index) in pinnedList"
                 :key="'pinned_' + index"
-                v-bind="cardGridClass" >
+                v-bind="cardGridClass"
+                class="py-1" >
 
           <metadata-card :id="pinnedId"
                           :ref="pinnedId"
@@ -112,7 +114,8 @@
 
         <v-col v-for="(metadata, index) in unpinnedFilteredList"
                 :key="'filtered_' + index"
-                v-bind="cardGridClass" >
+                v-bind="cardGridClass" 
+                class="py-1" >
 
           <metadata-card :id="metadata.id"
                         :ref="metadata.id"
@@ -134,7 +137,8 @@
                         @clickedTag="catchTagClicked" />
         </v-col>
 
-        <v-col class="mx-2" key="infiniteLoader"
+        <v-col class="mx-2"
+                key="infiniteLoader"
                 cols="12" >
           <infinite-loading spinner="waveDots"
                             :identifier="infiniteId"
@@ -156,7 +160,8 @@
           </infinite-loading>
         </v-col>
 
-        <v-col class="mx-2" v-if="!loading && contentSize <= 0"
+        <v-col v-if="!loading && contentSize <= 0"
+                class="mx-2"
                 key="noSearchResultsView"
                 cols="12" >
           <no-search-results-view :categoryCards="categoryCards"

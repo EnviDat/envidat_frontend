@@ -1,5 +1,6 @@
 <template>
-  <v-card class="elevation-0" >
+  <v-card class="elevation-0"  
+          id="FilterMapWidgetLayout" >
 
     <v-card-title :class="mdScreen ? 'pa-2' : 'pb-2'" >
       <div class="mb-0"
@@ -10,27 +11,24 @@
 
     <div class="py-0 my-0 "
           :class="mdScreen ? 'px-1 mb-1' : 'px-3'"
-          :style="`background-color: ${$vuetify.theme.themes.light.highlight};`" >
+          :style="`background-color: ${ $vuetify.theme.themes.light.highlight };`" >
 
-      <v-row class="my-0" v-if="topLayout"
-                  
-                  align="center"
-                  >
+      <v-row v-if="topLayout"
+              class="fill-height my-0"
+              align="center" >
+
         <v-col class="grow py-0" 
-                
                 :class="mdScreen ? 'caption' : 'body-2'" >
           {{ highlightedText }}
         </v-col>
 
-        <v-col class="shrink py-0" 
-                >
+        <v-col class="shrink py-0" >
           <div :style="`color:${pinnedAmount > 0 ? 'black' : 'rgba(0,0,0,.47)'};`">
             {{ filterText + pinnedAmount }}
           </div>
         </v-col>
 
-        <v-col class="shrink py-0" 
-                >
+        <v-col class="shrink py-0" >
           <slot name="clearPins" />
         </v-col>
       </v-row>
@@ -46,33 +44,36 @@
     <v-container :class="mdScreen ? 'px-3' : 'py-2 px-3'" >
 
       <v-row v-if="topLayout"
-                
-                align="center" justify="end">
+              class="fill-height"
+              align="center"
+              justify="end">
 
-        <v-col class="shrink" >
+        <v-col class="shrink py-0" >
           <slot name="focus" />
-        </v-col>              
-        <v-col class="shrink" v-if="hasPins"
-                >
+        </v-col>
+        
+        <v-col v-if="hasPins"
+                class="shrink py-0">
           <slot name="pinEnabled" />
         </v-col>              
-        <v-col class="shrink" v-if="hasMultiPins"
-                >
+        <v-col v-if="hasMultiPins"
+                class="shrink py-0">
           <slot name="multiPinEnabled" />
         </v-col>              
-        <v-col class="shrink" v-if="hasPolygons"
-                >
+        <v-col v-if="hasPolygons"
+                class="shrink py-0" >
           <slot name="polygonEnabled" />
         </v-col>              
       </v-row>
 
                 <!-- :column="mdScreen" -->
       <v-row v-if="!topLayout"
-              align="center">
+              align="center fill-height">
 
         <v-col v-if="mdScreen"
                 class="pa-0" >
           <v-row align="center">
+
             <v-col class="shrink" >
               <div :style="`color:${pinnedAmount > 0 ? $vuetify.theme.themes.light.primary : 'rgba(0,0,0,.47)'};`">
                 {{ filterText + pinnedAmount }}
@@ -166,6 +167,7 @@
  */
 
 export default {
+  name: 'FilterMapWidgetLayout',
   props: {
     title: String,
     highlightedText: String,
