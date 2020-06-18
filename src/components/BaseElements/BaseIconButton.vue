@@ -12,7 +12,7 @@
               :icon="!isElevated"
               :fab="isElevated"
               :small="isSmall || isElevated"
-              :outlined="outlined && !isToggled"
+              :outlined="isToggled"
               :color="color ? color : disabled ? '' : 'primary'"
               :href="url"
               :disabled="disabled"
@@ -44,7 +44,7 @@
           :icon="!isElevated"
           :fab="isElevated"
           :small="isSmall || isElevated"
-          :outlined="outlined && !isToggled"
+          :outlined="isToggled"
           :color="color ? color : disabled ? '' : 'primary'"
           :href="url"
           :disabled="disabled"
@@ -93,8 +93,7 @@
  * Use the @prop tooltipBottom to set it to appear beneath the button.
  *
  * When the @prop isToggled is true the background is filled with the @prop color.
- * If @prop outlined is true the button only has an outline in the @prop color,
- * it'sonly visible when @prop isToggled is false.
+ * If @prop isToggled is true the button only has an outline in the @prop color,
  * The @prop iconColor only works for material icons.
  *
  * Set the @prop rotateOnClick to true for the icon to rotate 180° once clicked
@@ -123,7 +122,6 @@ export default {
     materialIconName: String,
     tooltipText: String,
     tooltipBottom: Boolean,
-    outlined: Boolean,
     color: String,
     iconColor: String,
     isToggled: Boolean,
