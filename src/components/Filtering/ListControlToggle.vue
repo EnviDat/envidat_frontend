@@ -1,47 +1,60 @@
 <template>
 
-  <v-container class="pa-0" >
-    <v-row >
-      <v-col v-if="isEnabledControl(LISTCONTROL_MAP_ACTIVE)" >
-        <v-btn-toggle v-model="controlsActive">
-          <v-btn flat
-                  @click="catchControlClick(LISTCONTROL_MAP_ACTIVE)"
+  <v-container id="ListControlToggle"
+                class="pa-0" >
+    <v-row align="center">
+      <!-- <v-col > -->
+      <v-col v-if="isEnabledControl(LISTCONTROL_MAP_ACTIVE)"
+            class="shrink py-0" >
+
+        <v-btn-toggle v-if="isEnabledControl(LISTCONTROL_MAP_ACTIVE)"
+                      v-model="controlsActive"
+                      dense >
+          <v-btn @click="catchControlClick(LISTCONTROL_MAP_ACTIVE)"
                   :class="isActiveControl(LISTCONTROL_MAP_ACTIVE) ? 'secondary' : ''"
-                  :style="compactLayout ? 'height: 32px !important' : ''" >
-            <v-icon>map</v-icon>
+                  :style="compactLayout ? 'height: 32px !important' : ''"
+                  small >
+            <v-icon >map</v-icon>
           </v-btn>
         </v-btn-toggle>
+
       </v-col>
 
       <v-col v-if="isEnabledControl(LISTCONTROL_LIST_ACTIVE)
-                    || isEnabledControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)" >
-        <v-btn-toggle v-model="controlsActive" >
+              || isEnabledControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)"
+            class="grow py-0" >
+
+        <v-btn-toggle v-if="isEnabledControl(LISTCONTROL_LIST_ACTIVE)
+                        || isEnabledControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)"
+                      v-model="controlsActive"
+                      dense >
 
           <v-btn v-if="isEnabledControl(LISTCONTROL_LIST_ACTIVE)"
-                  flat
                   @click="catchControlClick(LISTCONTROL_LIST_ACTIVE)"
                   :class="isActiveControl(LISTCONTROL_LIST_ACTIVE) ? 'secondary' : ''"
-                  :style="compactLayout ? 'height: 32px !important' : ''" >
+                  :style="compactLayout ? 'height: 32px !important' : ''"
+                  small >
             <v-icon >view_headline</v-icon>
           </v-btn>
 
           <v-btn v-if="isEnabledControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)"
-                  flat
                   @click="catchControlClick(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)"
                   :class="isActiveControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE) ? 'secondary' : ''"
-                  :style="compactLayout ? 'height: 32px !important' : ''" >
-            <v-icon>view_comfortable</v-icon>
+                  :style="compactLayout ? 'height: 32px !important' : ''"
+                  small >
+            <v-icon >view_comfortable</v-icon>
           </v-btn>
 
           <v-btn v-if="isEnabledControl(3)"
-                  flat
                   @click="catchControlClick(3)"
                   :class="isActiveControl(3) ? 'highlight' : ''"
-                  :style="compactLayout ? 'height: 32px !important' : ''" >
-            <v-icon>view_stream</v-icon>
+                  :style="compactLayout ? 'height: 32px !important' : ''"
+                  small >
+            <v-icon >view_stream</v-icon>
           </v-btn>
 
         </v-btn-toggle>
+
       </v-col>
     </v-row>
   </v-container>
@@ -68,8 +81,7 @@ import {
 } from '@/store/metadataMutationsConsts';
 
 export default {
-  components: {
-  },
+  name: 'ListControlToggle',
   props: {
     compactLayout: Boolean,
     controls: Array,
