@@ -87,7 +87,7 @@ import {
 import MetadataHeader from '@/components/Metadata/MetadataHeader';
 import MetadataBody from '@/components/Metadata/MetadataBody';
 import MetadataResources from '@/components/Metadata/MetadataResources';
-import MetadataGeo from '@/components/Metadata/MetadataGeo';
+import MetadataGeo2 from '@/components/Metadata/MetadataGeo2';
 import MetadataLocation from '@/components/Metadata/MetadataLocation';
 import MetadataDetails from '@/components/Metadata/MetadataDetails';
 import MetadataCitation from '@/components/Metadata/MetadataCitation';
@@ -287,7 +287,7 @@ export default {
       this.$set(components.MetadataBody, 'genericProps', { body: this.body });
       this.$set(components.MetadataCitation, 'genericProps', this.citation);
       this.$set(components.MetadataResources, 'genericProps', this.resources);
-      this.$set(components.MetadataGeo, 'genericProps', { ...this.location, config: geoConfig });
+      this.$set(components.MetadataGeo2, 'genericProps', { ...this.location, config: geoConfig });
       this.$set(components.MetadataLocation, 'genericProps', this.location);
       this.$set(components.MetadataDetails, 'genericProps', { details: this.details });
       this.$set(components.MetadataAuthors, 'genericProps', { authors: this.authors });
@@ -304,7 +304,7 @@ export default {
       ];
 
       this.secondCol = [
-        components.MetadataGeo,
+        components.MetadataGeo2,
         components.MetadataResources,
         components.MetadataLocation,
         components.MetadataDetails,
@@ -316,7 +316,7 @@ export default {
         components.MetadataPublications,
         components.MetadataResources,
         components.MetadataFunding,
-        components.MetadataGeo,
+        components.MetadataGeo2,
         components.MetadataLocation,
         components.MetadataAuthors,
         components.MetadataDetails,
@@ -431,7 +431,7 @@ export default {
     MetadataHeader,
     MetadataBody,
     MetadataResources,
-    MetadataGeo,
+    MetadataGeo2,
     MetadataLocation,
     MetadataDetails,
     MetadataCitation,
