@@ -161,7 +161,7 @@ export default {
   data: () => ({
     PageBGImage: './app_b_landingpage.jpg',
     MobileBGImage: './app_b_browsepage.jpg',
-    labelText: "Search for research data topics ex. 'Avalanche'",
+    labelText: 'Search for research terms and topics like forest, avalanche or rockfall',
     buttonText: 'SEARCH',
     envidatTitle: 'EnviDat',
     // envidatSlogan: 'Browse a comprehensive collection of environmental data from Switzerland',
