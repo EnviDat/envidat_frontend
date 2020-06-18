@@ -25,11 +25,13 @@
               <v-col v-if="maxTitleLengthReached && !$vuetify.breakpoint.xsOnly"
                       cols="12" >
                 <v-tooltip bottom >
-                  <div slot="activator"
-                        class="headline mb-0"
-                        :class="titleClass" >
-                    {{ truncatedTitle }}
-                  </div>
+                  <template v-slot:activator="{ on }">
+                    <div v-on="on"
+                          class="headline mb-0"
+                          :class="titleClass" >
+                      {{ truncatedTitle }}
+                    </div>
+                  </template>
 
                   <span>{{ title }}</span>
                 </v-tooltip>

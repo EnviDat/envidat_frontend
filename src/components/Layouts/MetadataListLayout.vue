@@ -1,45 +1,58 @@
 <template>
 <v-container class="fill-height pa-0"
+              id="MetadataListLayout"
               fluid >
 
-  <v-row v-if="!topFilteringLayout && showMapFilter
-                  && $vuetify.breakpoint.mdAndUp" >
+  <v-row v-if="mapLayout"
+          class="fill-height" >
 
-    <v-col class="py-0" cols="4" >
+    <v-col class="py-0 pr-2"
+            cols="4" >
       <v-container class="fill-height pa-0"
+                    id="metadataListLayoutFiltering_map"
                     fluid >
-        <v-row ref="metadataListLayoutFiltering">
-
-          <v-col class="shrink" 
+        <v-row ref="metadataListLayoutFiltering"
+                no-gutters >
+          <v-col cols="12"
                   key="filterKeywords" >
             <slot name="filterKeywords" />
           </v-col>
+        </v-row>
 
-          <v-col v-if="showMapFilter && mapFilteringPossible"
-                  class="grow pb-0"
+        <v-row v-if="showMapFilter && mapFilteringPossible"
+                class="fill-height" >
+          <v-col cols="12"
+                  class="pb-0"
                   key="filterMap" >
 
             <slot name="filterMap" />
 
           </v-col>
-
         </v-row>
+
       </v-container>
     </v-col>
 
-    <v-col class="py-0" cols="8" >
+    <v-col class="py-0 pl-2"
+            cols="8" >
       <v-container class="fill-height pa-0"
+                    id="metadataListScroll"
                     fluid >
-        <v-row >
-          <v-col class="hidden-xs-only shrink" 
-                  key="controlPanel" >
-            <slot name="controlPanel" />
-          </v-col>
-          
 
-          <v-col class="grow pb-0" ref="metadataListScroll"
+        <v-row ref="controlPanel" >
+          <v-col class="hidden-xs-only py-0" 
+                  key="controlPanel"
+                  cols="12" >
+            <slot name="controlPanel" />
+          </v-col>          
+        </v-row>
+
+        <v-row >
+          <v-col class="py-0"
+                  cols="12"
+                  ref="metadataListScroll"
                   v-on:scroll="onScroll()"
-                  :class="useDynamicHeight ? 'listScroll' : ''"
+                  :class="useDynamicHeight ? 'listScroll' : ''" 
                   :style="useDynamicHeight ? `height: calc(100vh - ${filteringComponentsHeight }px);` : ''" >
             
             <slot name="metadataListPlaceholder" />
@@ -53,11 +66,15 @@
 
   </v-row>
 
-  <v-row v-else >
-    <v-col >
+  <v-row v-if="!mapLayout" >
+
+    <v-col cols="12"
+            class="py-0">
       <v-container class="pa-0"
+                    id="metadataListLayoutFiltering_without_map"
                     fluid >
-        <v-row ref="metadataListLayoutFiltering" >
+        <v-row ref="metadataListLayoutFiltering"
+                class="fill-height" >
 
           <v-col class="hidden-sm-and-up py-0" 
                   cols="12"
@@ -65,7 +82,8 @@
             <slot name="controlPanel" />
           </v-col>
 
-          <v-col class="pb-0" cols="12"
+          <v-col class="py-0"
+                  cols="12"
                   key="filterKeywords" >
             <slot name="filterKeywords" />
           </v-col>
@@ -86,7 +104,10 @@
         </v-row>
       </v-container>
     </v-col>
+  </v-row>
 
+  <v-row v-if="!mapLayout"
+          class="fill-height" >
     <v-col ref="metadataListScroll"
             v-on:scroll="onScroll()"
             :class="useDynamicHeight ? 'listScroll' : ''"
@@ -136,6 +157,11 @@ export default {
   updated() {
     this.setFilteringComponentsHeight();
   },
+  computed: {
+    mapLayout() {
+      return !this.topFilteringLayout && this.showMapFilter && this.$vuetify.breakpoint.mdAndUp;
+    },
+  },
   methods: {
     setFilteringComponentsHeight() {
       const FilterKeywordViewHeight = 88;
@@ -143,9 +169,9 @@ export default {
       const padding = 8;
       let height = FilterKeywordViewHeight;
 
-      if (this.showMapFilter && this.$refs && this.$refs.metadataListLayoutFiltering) {
+      if (this.showMapFilter && this.$refs && this.$refs.controlPanel) {
         // around 455px
-        height = this.$refs.metadataListLayoutFiltering.clientHeight;
+        height = this.$refs.controlPanel.clientHeight;
       }
 
       this.filteringComponentsHeight = height + TheNavigationToolbar + padding;

@@ -42,15 +42,16 @@
                     v-on:scroll="updateScroll()"
                     ref="appContainer"
                     :style="pageStyle" >
-        <v-row >
-          <v-col class="mx-0 py-0" cols="12" >
+
+        <v-row class="fill-height" >
+          <v-col class="mx-0 py-0"
+                  cols="12" >
 
             <transition name="fade" mode="out-in">
               <router-view />
             </transition>
 
           </v-col>
-
         </v-row>
       </v-container>
 

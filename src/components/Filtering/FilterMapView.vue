@@ -1,21 +1,21 @@
 <template>
   <v-card raised
-          v-bind="mapViewHeight" >
+          v-bind="mapViewHeight"
+          id="FilterMapView" >
 
     <div v-if="errorLoadingLeaflet"
           v-bind="mapViewHeight" >
       Error loading leaflet
     </div>
 
-    <v-container class="fill-height pa-0" v-if="!errorLoadingLeaflet"
-          fluid >
+    <v-container v-if="!errorLoadingLeaflet"
+                  class="fill-height pa-0"
+                  fluid >
 
-      <v-row :class="{ 'column' : topLayout,
-                          'row' : !topLayout }" >
+      <v-row v-if="topLayout" >
 
-        <v-col class="py-0" v-if="topLayout"
-                cols="2" >
-
+        <v-col class="py-0"
+                cols="12" >
           <filter-map-widget style="height: 100%"
                               :pinnedIds="pinnedIds"
                               :hasPins="hasPins"
@@ -33,17 +33,31 @@
                               @clickedMultipin="catchMultipinClicked"
                               @clickedPolygon="catchPolygonClicked"
                               @clickedClear="catchClearClicked" />
-
         </v-col>
+      </v-row>
 
+      <v-row v-if="topLayout"
+              class="fill-height" >
         <v-col class="py-0 fill-height" 
+                cols="12"
                 :class="{ 'pr-0' : !topLayout }">
           <div id="map"
                 ref="map"
                 v-bind="mapViewHeight" />
         </v-col>
 
-        <v-col class="py-0 pl-0" v-if="!topLayout"
+      </v-row>
+
+      <v-row v-if="!topLayout"
+              class="fill-height" >
+
+        <v-col class="grow pr-0 py-0 fill-height" >
+          <div id="map"
+                ref="map"
+                v-bind="mapViewHeight" />
+        </v-col>
+
+        <v-col class="py-0 pl-0"
                 cols="2" >
 
           <filter-map-widget style="height: 100%"
@@ -115,6 +129,7 @@ import markerShadow from '@/assets/map/marker-shadow.png';
 
 
 export default {
+  name: 'FilterMapView',
   props: {
     content: Array,
     totalHeight: Number,
@@ -137,6 +152,9 @@ export default {
     }
   },
   computed: {
+    name() {
+      return this.name;
+    },
     ...mapGetters({
       metadataIds: 'metadata/metadataIds',
       metadatasContent: 'metadata/metadatasContent',
