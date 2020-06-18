@@ -6,12 +6,16 @@
         <slot name="top"></slot>
       </v-layout>
 
+      <v-icon @click="layerControlOpen = !layerControlOpen" class="icon elevation-5" style="position: absolute; top: 95px; color: black; background-color: white; z-index: 999; margin-left: 10px; border-radius: 4px;">
+        layers
+      </v-icon>
+
       <map-layer-control
-        v-if="config.timeseries"
+        v-if="layerControlOpen"
         :layers="config.layers"
         :selected="selectedLayerName"
         @select="select"
-        style="position: absolute; z-index: 9999; margin: 10px; top: 60px; bottom: 150px;"
+        style="position: absolute; z-index: 999; top: 95px; bottom: 150px; left: 35px;"
       ></map-layer-control>
 
       <div v-if="!hasGeom" style="color: red;">No data to show</div>
@@ -57,6 +61,7 @@
       selected: { type: String },
     },
     data: () => ({
+      layerControlOpen: false,
       show3d: false,
       selectedLayerName: null,
     }),
