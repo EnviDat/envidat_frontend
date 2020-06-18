@@ -7,6 +7,7 @@ export function leafletLayer(config) {
       layers: config.name,
       transparent: true,
       format: 'image/png',
+      noWrap: true,
     });
   }
   return null;
