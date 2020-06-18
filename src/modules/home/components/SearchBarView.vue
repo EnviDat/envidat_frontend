@@ -16,7 +16,7 @@
                         @keyup.enter="clicked" />
         </v-col>
 
-        <v-col class="shrink" >
+        <v-col class="shrink py-0" >
           <base-rectangle-button :button-text="buttonText"
                                   :is-small="true"
                                   @clicked="clicked" />
