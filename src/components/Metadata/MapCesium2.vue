@@ -1,11 +1,9 @@
 <template>
   <div :id="mapDivId" class="cesiumContainer">
     <div class="zoom">
-      <transition name="fade">
         <zoom-btn @zoomIn="zoomIn" @zoomOut="zoomOut" />
-      </transition>
     </div>
-    <div style="position: absolute; bottom: 80px; right: 20px; z-index: 99999;">
+    <div style="position: absolute; bottom: 20px; right: 10px; z-index: 99999;">
       <slot></slot>
     </div>
     <div id="credits">
@@ -42,7 +40,7 @@
       mounted() {
         const bing = new BingMapsImageryProvider({
           url: 'https://dev.virtualearth.net',
-          key: 'AgjSmnaR47Jnx7SWyxGFEJkp9QXCFyj6DwFZw9le12QdVl_ePXbuWb2DHPu8Uqdh',
+          key: process.env.VUE_APP_BING_API_KEY,
           mapStyle: BingMapsStyle.AERIAL,
         });
         this.viewer = new Viewer(this.mapDivId, {
@@ -115,7 +113,7 @@
   }
   .zoom {
     position: absolute;
-    padding: 20px;
+    padding: 10px;
     z-index: 999;
   }
   #credits {

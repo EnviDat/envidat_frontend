@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 100%; width: 100%; z-index: 100; max-width: 100%;">
+  <div style="height: 100%; width: 100%; z-index: 100; max-width: 100%; position: relative;">
 
     <div :class="config.timeseries ? 'map-container-timeslider' : 'map-container'">
       <v-layout class="top-slot">
@@ -7,11 +7,11 @@
       </v-layout>
 
       <map-layer-control
-        v-if="!config.timeseries"
+        v-if="config.timeseries"
         :layers="config.layers"
         :selected="selectedLayerName"
         @select="select"
-        style="position: absolute; z-index: 9999999; margin: 20px; top: 100px; bottom: 150px;"
+        style="position: absolute; z-index: 9999; margin: 10px; top: 60px; bottom: 150px;"
       ></map-layer-control>
 
       <div v-if="!hasGeom" style="color: red;">No data to show</div>
@@ -24,9 +24,9 @@
         <v-btn fab small @click="show3d = false">2D</v-btn>
       </map-cesium2>
     </div>
-    <div class="timeslider-container" v-if="config.timeseries">
+    <div class="timeslider-container" v-if="config.timeseries" style="position: relative;">
       <timeslider
-        style="height: 120px; z-index: 10000;"
+        style="height: 120px; z-index: 10000; position: relative;"
         @select="select"
         :chart-data="config.layers"
         :div-id="`timeslider_${mapDivId}`"
