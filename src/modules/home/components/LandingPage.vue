@@ -24,7 +24,7 @@
                           @clicked="catchSearchClicked" />
       </v-col>
 
-      <v-col class="mt-5 px-0" offset-md="6" >
+      <v-col class="mt-5 pa-0" offset-md="6" >
         <v-container class="pa-0"
                       fluid >
           <v-row >
