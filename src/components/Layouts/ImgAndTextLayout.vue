@@ -12,10 +12,11 @@
           </v-col>
         </v-row>
 
-          <v-parallax :height="height"
-                      :src="img"
-                      class="blurred" >
-          </v-parallax>
+        <!-- Using img instead of parallax, because parallax has problems loading src dynamically -->
+        <v-img :height="height"
+               :src="img"
+               class="blurred">
+        </v-img>
       </v-col>
 </template>
 
@@ -39,6 +40,11 @@ export default {
     height: Number,
     title: String,
     img: String,
+  },
+  watch: {
+    img() {
+      console.log(this.img);
+    },
   },
 };
 </script>
