@@ -5,10 +5,10 @@
 
     <v-row >
 
-      <v-col class="elevation-5" cols="12"
-              
+      <v-col class="elevation-5 pa-0" cols="12"
+
               ref="header"
-              style="z-index: 1; position: absolute; left: 0;" 
+              style="z-index: 1; position: absolute; left: 0;"
               :style="headerStyle" >
 
         <project-header :title="currentProject ? currentProject.title : null"
@@ -19,7 +19,7 @@
       </v-col>
     </v-row>
 
-    <v-row 
+    <v-row
               :style="`z-index: 0; position: relative; top: ${headerHeight()}px`" >
 
       <v-col class="px-3" cols="12" lg="10" offset-lg="1"
@@ -355,7 +355,7 @@ export default {
       this.selectedTagNames = [];
     },
     setScrollPos(toPos) {
-      
+
       if (this.$root.$children && this.$root.$children[0].$refs.appContainer) {
         this.$root.$children[0].$refs.appContainer.scrollTop = toPos;
       }
