@@ -470,7 +470,7 @@ export default {
 }
 
 .envidatChip {
-  height: 1.3rem !important;
+  height: 1.1rem !important;
   font-size: 0.65rem !important;
   margin: 1px 2px !important;
   /* opacity: 0.85 !important; */
