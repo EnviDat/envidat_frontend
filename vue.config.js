@@ -42,26 +42,12 @@ if (process.env.NODE_ENV === 'production') {
 console.log(`starting ${version} with use of testdata '${process.env.VUE_APP_USE_TESTDATA}' on ${process.env.NODE_ENV}`);
 
 module.exports = {
+  transpileDependencies: ['vuetify'],
   publicPath: './',
   assetsDir: './static',
   runtimeCompiler: true,
   css: {
-    // extract: { filename: 'styles.css' },
-    modules: false,
     sourceMap: true,
-    // loaderOptions: {
-    //   css: {
-    //     url: true,
-    //     // import: true,
-    //     // localIdentName: '[local]_[hash:base64:8]',
-    //   },
-    //   // postcss: {
-    //   //   // "postcss-import": {},
-    //   //   // "postcss-url": {},
-    //   //   // to edit target browsers: use "browserslist" field in package.json
-    //   //   "autoprefixer": {}
-    //   // }
-    // }
   },
   pluginOptions: {
     storybook: {
