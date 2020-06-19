@@ -125,9 +125,9 @@
           </v-col>
 
           <v-col class="shrink" >
-            <v-btn flat icon
+            <v-btn icon
                     :color="dark ? 'white' : 'black'"
-                    :outline="true"
+                    outlined
                     class="ma-0 badgesIcon"
                     @click="infosExpanded = !infosExpanded">
               <v-icon> {{ infosExpanded ? 'keyboard_arrow_down' : 'keyboard_arrow_left' }}</v-icon>
