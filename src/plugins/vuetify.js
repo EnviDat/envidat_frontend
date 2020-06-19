@@ -11,7 +11,7 @@
  * file 'LICENSE.txt', which is part of this source code package.
  */
 import Vue from 'vue';
-import Vuetify from 'vuetify/lib';
+import Vuetify from 'vuetify/lib/framework';
 
 Vue.use(Vuetify);
 
