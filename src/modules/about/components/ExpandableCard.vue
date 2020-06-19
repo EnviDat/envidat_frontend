@@ -86,7 +86,7 @@ export default {
 
   .headline {
     font-family: "Libre Baskerville", serif !important;
-    font-size: 1.45em !important;
+    font-size: 1.75em !important;
     overflow: inherit !important;
     text-overflow: inherit !important;
     max-height: inherit !important;
