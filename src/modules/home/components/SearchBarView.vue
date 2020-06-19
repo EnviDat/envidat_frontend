@@ -5,7 +5,7 @@
       <v-row align="center"
               justify="space-between" >
 
-        <v-col class="grow py-0" >
+        <v-col class="grow py-1" >
           <v-text-field class="ma-0"
                         v-model="searchText"
                         prepend-icon="search"
