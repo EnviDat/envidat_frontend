@@ -5,7 +5,7 @@
     <v-img background-color="primary"
             :height="flatLayout ? '65px' : $vuetify.breakpoint.smAndDown ? '100px' : '125px'" >
 
-      <v-container class="fill-height pb-0"
+      <v-container class="fill-height py-0"
                     style="position: absolute;" >
         <v-row >
           <v-col class="py-0" cols="12" >
