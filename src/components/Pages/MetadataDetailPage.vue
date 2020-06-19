@@ -287,8 +287,11 @@ export default {
       this.$set(components.MetadataBody, 'genericProps', { body: this.body });
       this.$set(components.MetadataCitation, 'genericProps', this.citation);
       this.$set(components.MetadataResources, 'genericProps', this.resources);
+      if (geoConfig) {
       this.$set(components.MetadataGeo2, 'genericProps', { ...this.location, config: geoConfig });
+      } else {
       this.$set(components.MetadataLocation, 'genericProps', this.location);
+      }
       this.$set(components.MetadataDetails, 'genericProps', { details: this.details });
       this.$set(components.MetadataAuthors, 'genericProps', { authors: this.authors });
 
@@ -304,9 +307,8 @@ export default {
       ];
 
       this.secondCol = [
-        components.MetadataGeo2,
+        geoConfig ? components.MetadataGeo2 : components.MetadataLocation,
         components.MetadataResources,
-        components.MetadataLocation,
         components.MetadataDetails,
       ];
 
@@ -316,8 +318,7 @@ export default {
         components.MetadataPublications,
         components.MetadataResources,
         components.MetadataFunding,
-        components.MetadataGeo2,
-        components.MetadataLocation,
+        geoConfig ? components.MetadataGeo2 : components.MetadataLocation,
         components.MetadataAuthors,
         components.MetadataDetails,
       ];
