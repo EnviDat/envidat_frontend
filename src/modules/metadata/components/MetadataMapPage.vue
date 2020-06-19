@@ -63,8 +63,8 @@
     METADATA_NAMESPACE,
   } from '@/store/metadataMutationsConsts';
   import axios from 'axios';
-  import BaseIconButton from '../BaseElements/BaseIconButton';
-  import Map2 from '../Metadata/Map2';
+  import BaseIconButton from '../../../components/BaseElements/BaseIconButton';
+  import Map2 from '../../../components/Metadata/Map2';
 
   export default {
     name: 'MetadataMapPage',

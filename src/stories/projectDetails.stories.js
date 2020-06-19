@@ -21,7 +21,6 @@ import ProjectBody from '@/components/ProjectDetailViews/ProjectBody.vue';
 
 // import for css classes
 // import App from '@/App.vue';
-// import MetadataDetailPage from '@/components/Pages/MetadataDetailPage.vue';
 
 // get Project test data and enhance it
 import {
@@ -70,7 +69,7 @@ storiesOf('6 Detail Views | Projects', module)
           :titleImg="header1.image_url"
           :defaultImg="defaultImg"
         />
-      </v-flex>        
+      </v-flex>
 
       <v-flex xs12 py-3>
         <project-header
@@ -78,7 +77,7 @@ storiesOf('6 Detail Views | Projects', module)
         :titleImg="header2.image_url"
         :defaultImg="defaultImg"
         />
-      </v-flex>        
+      </v-flex>
 
       <v-flex xs12 py-3>
         <project-header
@@ -86,9 +85,9 @@ storiesOf('6 Detail Views | Projects', module)
         :titleImg="header3.image_url"
         :defaultImg="defaultImg"
         />
-      </v-flex>        
+      </v-flex>
 
-    </v-layout>        
+    </v-layout>
     `,
     methods,
     data: () => ({
@@ -117,23 +116,23 @@ storiesOf('6 Detail Views | Projects', module)
           :description="body1.description"
           :subProjects="body1.subProjects"
         />
-      </v-flex>        
+      </v-flex>
 
       <v-flex xs12 py-3>
         <project-body
           :description="body2.description"
           :subProjects="body2.subProjects"
         />
-      </v-flex>        
+      </v-flex>
 
       <v-flex xs12 py-3>
         <project-body
           :description="body3.description"
           :subProjects="body3.subProjects"
         />
-      </v-flex>        
+      </v-flex>
 
-    </v-layout>        
+    </v-layout>
     `,
     methods,
     data: () => ({
