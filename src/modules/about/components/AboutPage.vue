@@ -1,23 +1,15 @@
 <template>
-  <v-container class="fill-height pa-0"
-                tag="article"
-                fluid >
-    <v-row  >
+  <v-container class="pa-0" tag="article">
+        <v-tabs v-model="activeTab" slider-color="accent" grow background-color="highlight">
 
-      <v-col cols="12" lg="10" offset-lg="1" >
-        <v-tabs v-model="activeTab"
-                color="transparent"
-                slider-color="accent" 
-                grow
-                fixed-tabs >
-
-          <v-tab ripple :style="`background-color: ${$vuetify.theme.themes.light.highlight}`">
-            <!-- About -->
-            <v-icon>info</v-icon>
+          <v-tab v-for="tab in tabs" :key="tab.name">
+            <v-icon>{{tab.icon}}</v-icon>
           </v-tab>
 
-          <v-tab-item >
-            <v-col class="mt-3" cols="12" >
+        </v-tabs>
+        <v-tabs-items v-model="activeTab">
+          <v-tab-item>
+            <v-col class="mt-3" cols="12">
               <img-and-text-layout :img="missionImg"
                                     :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
                                     title="About EnviDat" />
@@ -25,12 +17,11 @@
 
             <v-col class="px-3 mt-5" cols="12" >
 
-              <v-container class="pa-0" >
+              <v-container class="pa-0">
                 <v-row >
 
                   <v-col class="my-2" v-for="(card, index) in aboutCardInfo"
                           :key="index"
-                          
                           :class="card.widthClass" >
 
                     <expandable-card :title="card.title"
@@ -45,11 +36,6 @@
               </v-container>
             </v-col>
           </v-tab-item>
-
-          <v-tab ripple :style="`background-color: ${$vuetify.theme.themes.light.highlight}`">
-            <!-- Guidelines -->
-            <v-icon>local_library</v-icon>
-          </v-tab>
 
           <v-tab-item>
             <v-col class="mt-3" cols="12" >
@@ -66,16 +52,11 @@
 
             <v-col class="pt-5" v-if="!guidelinesLoading"
                     cols="12"
-                    
+
                     v-html="guidelinesMarkdownText" >
             </v-col>
 
           </v-tab-item>
-
-          <v-tab ripple :style="`background-color: ${$vuetify.theme.themes.light.highlight}`">
-            <!-- Policies -->
-            <v-icon>policy</v-icon>
-          </v-tab>
 
           <v-tab-item >
             <v-col class="mt-3" cols="12" >
@@ -92,15 +73,9 @@
 
             <v-col class="pt-5" v-if="!policiesLoading"
                     cols="12"
-                    
                     v-html="policiesMarkdownText" >
             </v-col>
           </v-tab-item>
-
-          <v-tab ripple :style="`background-color: ${$vuetify.theme.themes.light.highlight}`">
-            <!-- DMP -->
-            <v-icon>menu_book</v-icon>
-          </v-tab>
 
           <v-tab-item>
             <v-col class="mt-3" cols="12" >
@@ -112,7 +87,7 @@
             <v-col class="shrink pt-5" v-if="dmpLoading"
                     offset-md="1"
                     offset-lg="1"
-                    
+
                     >
               Loading DMP Infos...
             </v-col>
@@ -120,16 +95,11 @@
 
             <v-col class="pt-5" v-if="!dmpLoading"
                     cols="12"
-                    
                     v-html="dmpMarkdownText" >
             </v-col>
           </v-tab-item>
+</v-tabs-items>
 
-
-        </v-tabs>
-      </v-col>
-
-    </v-row>
   </v-container>
 
 </template>
@@ -299,6 +269,28 @@ export default {
     wslLogoSmall,
     orga,
     activeTab: null,
+    tabs: [{
+      name: 'about',
+      icon: 'info',
+    },
+      {
+      name: 'guidlines',
+      icon: 'local_library',
+    },
+      {
+      name: 'policies',
+      icon: 'policy',
+    },
+      {
+      name: 'dmp',
+      icon: 'menu_book',
+    }],
   }),
 };
 </script>
+<style scoped>
+ /* Overwrite default vuetify background class */
+  .theme--light.v-tabs-items {
+    background-color: transparent;
+  }
+</style>
