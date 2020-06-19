@@ -5,6 +5,8 @@
       <template v-slot:activator="{ on }">
         <div v-on="on"
               class="metadataInfoIcon" >
+          <v-container fluid
+                    class="py-0">
           <v-row @mouseover="hoverBadge = true"
                   @mouseleave="hoverBadge = false" >
             <v-col class="pa-0" >
@@ -22,6 +24,7 @@
               <img class="envidatIcon" :src="iconString" :alt="`${iconString} icon`">
             </v-col>
           </v-row>
+          </v-container>
         </div>
       </template>
 
@@ -30,9 +33,10 @@
 
     <div v-else
           class="metadataInfoIcon" >
-      <v-row 
-                  @mouseover="hoverBadge = true"
-                  @mouseleave="hoverBadge = false" >
+      <v-container fluid
+                    class="py-0">
+      <v-row @mouseover="hoverBadge = true"
+              @mouseleave="hoverBadge = false" >
         <v-col class="pa-0" >
           <v-badge :left="!hoverBadge"
                     overlap
@@ -49,6 +53,7 @@
           <img class="envidatIcon" :src="iconString" :alt="`${iconString} icon`">
         </v-col>
       </v-row>
+      </v-container>
     </div>
 
   </div>

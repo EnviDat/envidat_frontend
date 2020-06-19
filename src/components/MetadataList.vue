@@ -63,32 +63,36 @@
     </template>
 
     <template v-slot:metadataListPlaceholder>
-      <v-row v-if="loading"
-              ref="metadataListPlaceholder" >
+      <v-container v-show="loading"
+                    fluid class="fill-height py-0 px-2">
+      <v-row ref="metadataListPlaceholder" >
               <!-- :class="{ ['column'] : listView,
                               ['row'] : !listView,
                               ['wrap'] : !listView }" > -->
 
         <v-col v-for="(n, index) in placeHolderAmount"
                 :key="'placeHolder_' + index"
-                v-bind="cardGridClass" >
+                :class="cardGridClass"
+                class="pa-2" >
 
           <metadata-card-placeholder :dark="false" />
         </v-col>
       </v-row>
+      </v-container>
     </template>
 
     <template v-slot:metadataListLayout >
-      <v-row v-if="!loading"
-              ref="metadataListLayout" >
+      <v-container v-if="!loading"
+                  fluid class="fill-height py-0 px-2">
+      <v-row ref="metadataListLayout" >
               <!-- :class="{ ['column'] : listView,
                         ['row'] : !listView,
                         ['wrap'] : !listView }" > -->
 
         <v-col v-for="(pinnedId, index) in pinnedList"
                 :key="'pinned_' + index"
-                v-bind="cardGridClass"
-                class="py-1" >
+                :class="cardGridClass"
+                class="pa-1" >
 
           <metadata-card :id="pinnedId"
                           :ref="pinnedId"
@@ -114,8 +118,8 @@
 
         <v-col v-for="(metadata, index) in unpinnedFilteredList"
                 :key="'filtered_' + index"
-                v-bind="cardGridClass" 
-                class="py-1" >
+                :class="cardGridClass"
+                class="pa-2" >
 
           <metadata-card :id="metadata.id"
                         :ref="metadata.id"
@@ -169,6 +173,7 @@
         </v-col>
 
       </v-row>
+      </v-container>
 
     </template>
 
@@ -309,11 +314,11 @@ export default {
     },
     cardGridClass() {
       const fullSize = {
-        xs12: true,
-        sm6: true,
-        md4: true,
-        lg3: true,
-        xl2: !this.isActiveControl(LISTCONTROL_MAP_ACTIVE)
+        'col-xs-12': true,
+        'col-sm-6': true,
+        'col-md-4': true,
+        'col-lg-3': true,
+        'col-xl-2': !this.isActiveControl(LISTCONTROL_MAP_ACTIVE)
               && this.isActiveControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE),
       };
 

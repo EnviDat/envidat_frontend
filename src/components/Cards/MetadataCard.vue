@@ -3,46 +3,41 @@
           hover
           style="height: 100%;"
           @click.native="cardClick" >
+          
+
+    <v-card-title primary-title class="pa-0">
 
     <v-img :style="!flatLayout ? dynamicCardBackground : `background-color: ${this.categoryColor}`"
             :height="flatLayout ? '55px' : $vuetify.breakpoint.smAndDown ? '90px' : '115px'" >
 
-      <v-container class="fill-height px-3 pt-3 pb-0"
-                    fluid >
-        <v-row >
-
-          <v-col class="py-0" cols="12" >
-            <v-row >
-
-              <v-col v-if="!maxTitleLengthReached || $vuetify.breakpoint.xsOnly"
-                      cols="12" >
-                <div class="headline mb-0"
-                    :class="titleClass" >
-                  {{ truncatedTitle }}
-                </div>
-              </v-col>
-
-              <v-col v-if="maxTitleLengthReached && !$vuetify.breakpoint.xsOnly"
-                      cols="12" >
-                <v-tooltip bottom >
-                  <template v-slot:activator="{ on }">
-                    <div v-on="on"
-                          class="headline mb-0"
-                          :class="titleClass" >
-                      {{ truncatedTitle }}
-                    </div>
-                  </template>
-
-                  <span>{{ title }}</span>
-                </v-tooltip>
-              </v-col>
-
-            </v-row>
+      <v-container fluid >
+        <v-row no-gutters>
+          <v-col v-if="!maxTitleLengthReached || $vuetify.breakpoint.xsOnly"
+                  cols="12" >
+            <div class="headline mb-0"
+                :class="titleClass" >
+              {{ truncatedTitle }}
+            </div>
           </v-col>
 
+          <v-col v-if="maxTitleLengthReached && !$vuetify.breakpoint.xsOnly"
+                  cols="12" >
+            <v-tooltip bottom >
+              <template v-slot:activator="{ on }">
+                <div v-on="on"
+                      class="headline mb-0"
+                      :class="titleClass" >
+                  {{ truncatedTitle }}
+                </div>
+              </template>
+
+              <span>{{ title }}</span>
+            </v-tooltip>
+          </v-col>
         </v-row>
       </v-container>
     </v-img>
+    </v-card-title>
 
     <v-card-text py-2 
                   :class="{['cardText'] : $vuetify.breakpoint.mdAndUp,
@@ -51,11 +46,18 @@
                         ['pr-4'] : !flatLayout,
                   }" >
 
+      <v-container fluid class="pa-0 justify-between" >
       <v-row >
         <v-col v-if="!compactLayout"
-                cols="12" >
+                cols="12"
+                class="pa-2" >
           {{ truncatedSubtitle }}
         </v-col>
+      </v-row>
+
+      <v-spacer></v-spacer>
+
+      <v-row >
         <v-col v-if="tags"
                 class="px-1" 
                 cols="12"
@@ -75,11 +77,13 @@
 
         </v-col>
       </v-row>
+      </v-container>
     </v-card-text>
 
-    <v-card-actions class="ma-0 pa-2"
-                    style="position: absolute; bottom: 5px; right: 5px;" >
+    <v-card-actions class="ma-0 py-0 px-2"
+                    style="position: absolute; bottom: 0px; right: 5px;" >
 
+      <v-container fluid class="pa-0">        
       <v-row >
         <v-col v-if="modeData"
                 class="pa-1" >
@@ -96,6 +100,7 @@
                                 style="opacity: 0.65;" />
         </v-col>
       </v-row>
+      </v-container>
 
     </v-card-actions>
   </v-card>
