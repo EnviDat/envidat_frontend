@@ -19,14 +19,14 @@
       ></map-layer-control>
 
       <div v-if="!hasGeom" style="color: red;">No data to show</div>
-      <map-leaflet2 v-if="!show3d" :layer="selectedLayer" :map-div-id="mapDivId">
+      <map-leaflet v-if="!show3d" :layer="selectedLayer" :map-div-id="mapDivId">
         <slot></slot><br>
         <v-btn fab small @click="show3d = true">3D</v-btn>
-      </map-leaflet2>
-      <map-cesium2 v-if="show3d" :layer="selectedLayer" :map-div-id="mapDivId">
+      </map-leaflet>
+      <map-cesium v-if="show3d" :layer="selectedLayer" :map-div-id="mapDivId">
         <slot></slot><br>
         <v-btn fab small @click="show3d = false">2D</v-btn>
-      </map-cesium2>
+      </map-cesium>
     </div>
     <div class="timeslider-container" v-if="config.timeseries" style="position: relative;">
       <timeslider
@@ -42,18 +42,18 @@
 </template>
 
 <script>
-  import MapLeaflet2 from './MapLeaflet2';
-  import MapCesium2 from './MapCesium2';
+  import MapLeaflet from './MapLeaflet';
+  import MapCesium from './MapCesium';
   import MapLayerControl from './MapLayerControl';
   import Timeslider from './Timeslider';
 
   export default {
-    name: 'Map2',
+    name: 'Map',
     components: {
       Timeslider,
       MapLayerControl,
-      MapCesium2,
-      MapLeaflet2,
+      MapCesium,
+      MapLeaflet,
     },
     props: {
       config: { type: Object, required: true },

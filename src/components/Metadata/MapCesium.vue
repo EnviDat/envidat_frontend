@@ -25,7 +25,7 @@
     import { cesiumLayer } from './layer-cesium';
 
     export default {
-      name: 'MapCesium2',
+      name: 'MapCesium',
       components: { ZoomBtn },
       props: {
         layer: Object,

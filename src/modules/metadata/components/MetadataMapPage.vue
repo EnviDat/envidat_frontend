@@ -14,36 +14,36 @@
     </v-card>
     <v-layout v-if="splitScreen" style="height: 100%;" pa-0 ma-0 :key="'split'">
       <div style="width: 50%; max-width: 50%; float: left; height: 100%; position: relative;">
-        <Map2 :config="configFile" :default-layer="layer" :map-div-id="'map1'"
+        <Map :config="configFile" :default-layer="layer" :map-div-id="'map1'"
              @changeLayer="setLayer" :key="'map1'" :selected="layer">
           <template v-slot:top>
             <v-btn icon color="red" style="display: inline-block" @click="quitSplitFrom(1)">
               <v-icon>close</v-icon>
             </v-btn>
           </template>
-        </Map2>
+        </Map>
       </div>
       <div style=" border: 1px solid gray;"></div>
       <div style="width: 50%; float: left; position:relative;">
-        <Map2 :config="configFile" :default-layer="layerSplit" :map-div-id="'map2'"
+        <Map :config="configFile" :default-layer="layerSplit" :map-div-id="'map2'"
               @changeLayer="setLayerSplit" :key="'map2'" :selected="layerSplit">
           <template v-slot:top>
             <v-btn icon color="red" @click="quitSplitFrom(2)">
               <v-icon>close</v-icon>
             </v-btn>
           </template>
-        </Map2>
+        </Map>
       </div>
     </v-layout>
 
 
     <v-layout v-else style="height: 100%;" pa-0 ma-0 :map-div-id="'single'" :key="'map0'">
       <div style="width: 100%;">
-        <Map2 :config="configFile" @changeLayer="setLayer" :map-div-id="'map0'" :selected="layer">
+        <Map :config="configFile" @changeLayer="setLayer" :map-div-id="'map0'" :selected="layer">
           <v-btn color="primary" @click="splitScreen = true" fab small>
             <v-icon style="height:auto;">vertical_split</v-icon>
           </v-btn>
-        </Map2>
+        </Map>
       </div>
     </v-layout>
   </div>
@@ -64,12 +64,12 @@
   } from '@/store/metadataMutationsConsts';
   import axios from 'axios';
   import BaseIconButton from '../../../components/BaseElements/BaseIconButton';
-  import Map2 from '../../../components/Metadata/Map2';
+  import Map from '../../../components/Metadata/Map';
 
   export default {
     name: 'MetadataMapPage',
     components: {
-      Map2,
+      Map,
       BaseIconButton,
     },
     data: () => ({

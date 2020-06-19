@@ -109,7 +109,7 @@ import MetadataCitation from './Metadata/MetadataCitation';
 import MetadataPublications from './Metadata/MetadataPublications';
 import MetadataFunding from './Metadata/MetadataFunding';
 import MetadataAuthors from './Metadata/MetadataAuthors';
-import MetadataGeo2 from '../../../components/Metadata/MetadataGeo2';
+import MetadataGeo from '../../../components/Metadata/MetadataGeo';
 
 
 // Might want to check https://css-tricks.com/use-cases-fixed-backgrounds-css/
@@ -290,7 +290,7 @@ export default {
       this.$set(components.MetadataCitation, 'genericProps', this.citation);
       this.$set(components.MetadataResources, 'genericProps', this.resources);
       if (geoConfig) {
-        this.$set(components.MetadataGeo2, 'genericProps', { ...this.location, config: geoConfig });
+        this.$set(components.MetadataGeo, 'genericProps', { ...this.location, config: geoConfig });
       } else {
         this.$set(components.MetadataLocation, 'genericProps', this.location);
       }
@@ -310,7 +310,7 @@ export default {
 
       this.secondCol = [
         components.MetadataResources,
-        geoConfig ? components.MetadataGeo2 : components.MetadataLocation,
+        geoConfig ? components.MetadataGeo : components.MetadataLocation,
         components.MetadataDetails,
       ];
 
@@ -320,7 +320,7 @@ export default {
         components.MetadataPublications,
         components.MetadataResources,
         components.MetadataFunding,
-        geoConfig ? components.MetadataGeo2 : components.MetadataLocation,
+        geoConfig ? components.MetadataGeo : components.MetadataLocation,
         components.MetadataAuthors,
         components.MetadataDetails,
       ];
@@ -445,7 +445,7 @@ export default {
     MetadataFunding,
     TwoColumnLayout,
     MetadataAuthors,
-    MetadataGeo2,
+    MetadataGeo,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
