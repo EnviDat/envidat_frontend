@@ -2,7 +2,7 @@
   <v-card ripple
           hover
           :expanded="expanded">
-    <v-container class="pa-0" 
+    <v-container class="pa-0"
                   @click="toggleExpand">
 
       <v-row align="center">
