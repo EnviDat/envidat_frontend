@@ -1,14 +1,12 @@
 <template>
-  <v-chip
-    slot="activator"
-    class="authorTag"
-    :class="{ 'white--text': highlighted ? true : false,
-              'smallChip': $vuetify.breakpoint.smAndDown ? true : false,
-    }"
-    :style="{'height' : $vuetify.breakpoint.xsOnly ? '15px' : '' }"
-    @click.stop="clicked"
-  >
-    <v-avatar>
+  <v-chip class="authorTag"
+          :class="{ 'white--text': highlighted ? true : false,
+                    'smallChip': $vuetify.breakpoint.smAndDown ? true : false,
+          }"
+          :style="{'height' : $vuetify.breakpoint.xsOnly ? '15px' : '' }"
+          @click.stop="clicked"
+          small >
+    <v-avatar left >
       <v-icon>account_circle</v-icon>
     </v-avatar>
 
@@ -16,10 +14,11 @@
 
     <v-tooltip v-if="authorIsDead"
                 bottom>
-      <v-icon slot="activator"
-              small >
-        hourglass_empty
-      </v-icon>
+      <template v-slot:activator="{ on }">
+        <v-icon v-on="on" >
+          hourglass_empty
+        </v-icon>
+      </template>
       {{ authorPassedInfo }}
     </v-tooltip>
 
@@ -69,13 +68,16 @@ export default {
 
   .authorTag {
     opacity: 0.85;
-    height: 24px !important;
     background-color: #f8f8f8 !important;
-    margin: 1px 2px !important;
+    margin: 0px 2px !important;
   }
 
   .authorTag > .v-chip__content > .v-avatar {
-    margin-left: -16px !important;
+    margin-left: -12px !important;
+  }
+
+  .authorTag > .v-chip__content > .v-avatar > .v-icon {
+    color: rgba(0, 0, 0, 0.87) !important;
   }
 
 </style>

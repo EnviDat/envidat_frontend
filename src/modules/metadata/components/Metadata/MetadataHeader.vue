@@ -1,8 +1,5 @@
 <template>
-    <v-card :class="{
-              'pa-4': $vuetify.breakpoint.lgAndUp,
-              'pa-3': $vuetify.breakpoint.mdAndDown,
-            }"
+    <v-card id="MetadataHeader"
             :dark="dark"
             :color="(showPlaceholder || (!showPlaceholder && !metadataTitle)) ? 'primary' : 'white'" >
 
@@ -15,13 +12,18 @@
                         material-icon-name="close"
                         icon-color="primary"
                         color="primary"
-                        outlined
+                        isToggled
                         tool-tip-text="Close Metadata"
                         :tool-tip-bottom="true"
                         @clicked="catchBackClicked" />
 
-      <v-row 
-                :style="`position: relative; z-index: 1;`">
+      <v-container fluid
+                    :class="{
+                      'pa-4': $vuetify.breakpoint.lgAndUp,
+                      'pa-3': $vuetify.breakpoint.mdAndDown,
+                    }">
+      <v-row no-gutters
+              :style="`position: relative; z-index: 1;`">
 
         <v-col v-if="metadataTitle"
                 cols="12" >
@@ -62,6 +64,8 @@
 
             <v-col v-if="authors"
                     cols="12"
+                    class="pa-0"
+                    id="authors_divier"
                     key="authors_divier" >
               <v-divider :dark="dark"
                         :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
@@ -70,9 +74,11 @@
 
             <v-col v-if="authors"
                     cols="12"
+                    class="py-0"
+                    id="authors"
                     key="authors" >
-              <v-row 
-                        style="max-height: 100px; overflow-y: scroll;" >
+              <v-row style="max-height: 100px; overflow-y: scroll;" >
+
                 <tag-chip-author v-for="(author, index) in authors"
                                   :key="index"
                                   :name="authorName(author)"
@@ -85,6 +91,8 @@
 
             <v-col v-if="!authors && showPlaceholder"
                     cols="12"
+                    class="py-0"
+                    id="authors_placeholder"
                     key="authors_placeholder" >
               <v-row  >
                 <tag-chip-placeholder v-for="n in 5"
@@ -94,6 +102,8 @@
             </v-col>
 
             <v-col cols="12"
+                    class="pa-0"
+                    id="headerinfo_divier"
                     key="headerinfo_divier" >
               <v-divider :dark="dark"
                         :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
@@ -101,10 +111,11 @@
             </v-col>
 
             <v-col cols="12"
+                    class="py-0"
+                    id="headerinfo"
                     key="headerinfo" >
               <v-row  >
                 <v-col cols="12" sm="6" md="6" lg="3"
-                        
                         class="headerInfo py-0" >
                   <base-icon-label-view :text="contactName"
                                         :icon="contactIcon"
@@ -114,7 +125,6 @@
                 </v-col>
 
                 <v-col cols="12" sm="6" md="6" lg="3"
-                        
                         class="headerInfo py-0" >
                   <base-icon-label-view :text="contactEmail"
                                         :icon="mailIcon"
@@ -125,7 +135,6 @@
                 </v-col>
 
                 <v-col cols="12" sm="6" md="6" lg="3"
-                        
                         class="headerInfo py-0" >
                   <base-icon-label-view :text="doi"
                                         :url="doiUrl"
@@ -137,7 +146,6 @@
                 </v-col>
 
                 <v-col cols="12" sm="6" md="6" lg="3"
-                        
                         class="headerInfo py-0" >
                   <base-icon-label-view :text="license"
                                         :icon="licenseIcon"
@@ -150,6 +158,8 @@
 
             <v-col v-if="!showPlaceholder && tags"
                     cols="12"
+                    class="py-0"
+                    id="tags_divier"
                     key="tags_divier" >
               <v-divider :dark="dark"
                         :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
@@ -158,6 +168,8 @@
 
             <v-col v-if="tags"
                     cols="12"
+                    class="py-0"
+                    id="tags"
                     key="tags" >
               <v-row  >
                 <tag-chip v-for="tag in slicedTags"
@@ -179,6 +191,8 @@
 
             <v-col v-if="!tags && showPlaceholder"
                     cols="12"
+                    class="py-0"
+                    id="tags_placeholder"
                     key="tags_placeholder" >
               <v-row  >
                 <tag-chip-placeholder v-for="n in 5"
@@ -189,6 +203,7 @@
           </v-col>
 
       </v-row>
+      </v-container>
 
       <v-card-actions v-if="maxTagsReached"
                       style="position: absolute; bottom: 0px; right: 0px; z-index: 2;">
@@ -223,12 +238,12 @@
 */
 
 import TagChip from '@/components/Cards/TagChip';
-import TagChipAuthor from '@/components/Cards/TagChipAuthor';
 import TagChipPlaceholder from '@/components/Cards/TagChipPlaceholder';
 import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 import { getAuthorName } from '@/factories/authorFactory';
+import TagChipAuthor from '../TagChipAuthor';
 
 export default {
   name: 'MetadataHeader',

@@ -3,7 +3,9 @@
     <v-tooltip bottom
                 :disabled="$vuetify.breakpoint.xsOnly || !iconTooltip" >
 
-      <div slot="activator" class="layout row align-center">
+      <template v-slot:activator="{ on }">
+      <div v-on="on"
+            class="layout row align-center">
         <div v-if="icon && iconTooltip"
               :class="alignClass"
               class="iconCentering"
@@ -29,16 +31,19 @@
 
         <v-col v-if="label"
                 cols="4"
+                class="py-0"
                 :style="textStyle" >
           {{ label }}
         </v-col>
 
         <v-col v-if="text && !url"
+                class="py-0"
                 :style="textStyle" >
           {{ text }}
         </v-col>
 
         <v-col v-if="url"
+                class="py-0"
                 :style="textStyle" >
           <a :href="url" target="_blank" rel="noopener noreferrer">{{ text ? text : url }}</a>
         </v-col>
@@ -49,6 +54,7 @@
           </div>
         </v-col>
       </div>
+      </template>
 
       <span>{{ iconTooltip }}</span>
     </v-tooltip>
