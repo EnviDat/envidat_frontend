@@ -158,7 +158,7 @@
 
           <v-col v-if="!showPlaceholder && tags"
                   cols="12"
-                  class="py-0"
+                  class="pa-0"
                   id="tags_divier"
                   key="tags_divier" >
             <v-divider :dark="dark"

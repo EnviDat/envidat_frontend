@@ -5,20 +5,21 @@
     </v-card-title>
 
     <v-card-text v-if="citationText"
+                  class="readableText"
                   style="font-style: italic; "
                   v-html="markdownText" >
 
     </v-card-text>
 
     <v-card-actions v-if="!showPlaceholder && citationText"
-                    class="px-3">
+                    class="pt-0 pb-3">
       <v-container class="pa-0"
                     fluid >
-        <v-row  >
+        <v-row no-gutters justify="space-around">
 
           <v-col class="shrink" v-for="link in citationLinks"
-                  :key="link.text"
-                  >
+                  :key="link.text" >
+
             <base-rectangle-button margin-class="mx-1 citationButton"
                                     :button-text="link.text"
                                     :tool-tip-text="link.tooltipText"

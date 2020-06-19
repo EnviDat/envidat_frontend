@@ -1,10 +1,9 @@
 <template>
   <v-container class="pa-0" fluid
-                tag="article"
-                >
-    <v-row   >
-      <v-col class="elevation-5" cols="12"
-              
+                tag="article" >
+    <v-row >
+      <v-col class="elevation-5 pa-0"
+              cols="12"
               ref="header"
               style="z-index: 1; position: absolute; left: 0;" 
               :style="headerStyle" >
@@ -31,25 +30,31 @@
 
       <template v-slot:leftColumn>
 
-        <v-col class="mb-2" v-for="(entry, index) in firstColumn"
+        <v-row v-for="(entry, index) in firstColumn"
                 :key="`left_${index}_${keyHash}`"
-                >
+                no-gutters >
+          <v-col class="mb-2 px-0">
+
           <component :is="entry"
                       :generic-props="entry.genericProps"
                       :show-placeholder="showPlaceholder"
                       :authorDeadInfo="entry.name === 'MetadataAuthors' ? authorDeadInfo : null" />
-        </v-col>
+          </v-col>
+        </v-row>
       </template>
 
       <template v-slot:rightColumn>
-        <v-col class="mb-2" v-for="(entry, index) in secondColumn"
+        <v-row v-for="(entry, index) in secondColumn"
                 :key="`right_${index}_${keyHash}`"
-                >
+                no-gutters >
+          <v-col class="mb-2 px-0">
+
           <component :is="entry"
                       :generic-props="entry.genericProps"
                       :show-placeholder="showPlaceholder"
                       :authorDeadInfo="entry.name === 'MetadataAuthors' ? authorDeadInfo : null" />
-        </v-col>
+          </v-col>
+        </v-row>
       </template>
     </two-column-layout>
   </v-container>
