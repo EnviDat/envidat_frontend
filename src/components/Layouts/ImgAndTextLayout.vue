@@ -1,30 +1,22 @@
 <template>
-  <!-- <v-container class="pa-0" style="position: relative;"> -->
-    <!-- <v-row > -->
-      <v-col cols="12" class="pa-0">
-        <!-- <v-parallax :src="require('@/assets/projects/mission.jpg')"
-                    style="opacity: 0.8; filter: blur(2px);" >
-        </v-parallax> -->
-
-        <!-- <v-sheet :height="height"> -->
-            <!-- <v-row align="center"
-                    justify="center" > -->
-              <v-col class="text black--text"
-                      cols="12"
-                      :class="{ 'display-3' : $vuetify.breakpoint.mdAndUp,
+      <v-col cols="12" class="pa-0" style="position: relative;">
+        <v-row
+          class="text-container"
+          align="center"
+          justify="center"
+        >
+          <v-col class="text-center text" cols="12"
+                 :class="{ 'display-3' : $vuetify.breakpoint.mdAndUp,
                                 'display-1' : $vuetify.breakpoint.smAndDown }">
-                {{ title }}
-              </v-col>
-            <!-- </v-row> -->
+            {{ title }}
+          </v-col>
+        </v-row>
 
           <v-parallax :height="height"
                       :src="img"
-                      style="opacity: 0.8; filter: blur(2px);" >
+                      class="blurred" >
           </v-parallax>
-        <!-- </v-sheet> -->
       </v-col>
-    <!-- </v-row> -->
-  <!-- </v-container> -->
 </template>
 
 <script>
@@ -57,4 +49,22 @@ export default {
     letter-spacing: 0em !important;
     text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.7);
   }
+  .text-container {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    z-index: 999;
+  }
+
+  .blurred {
+    opacity: 0.8;
+    filter: blur(2px);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
 </style>
