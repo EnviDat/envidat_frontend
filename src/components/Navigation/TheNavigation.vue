@@ -12,7 +12,8 @@
       <v-list-item v-for="(item, index) in navItemsMenuExcluded"
                   :key="index"
                   link
-                  :class="`${item.icon === 'envidat' ? mini ? 'px-2' : 'px-3' : '' }`"  >
+                  :class="`${item.icon === 'envidat' ? mini ? 'px-2' : 'px-3' : '' }`"
+                   @click.stop="itemClick(item)" >
 
         <v-list-item-action v-if="item.icon === 'envidat'"
                             @click.stop="itemClick(item)" >
