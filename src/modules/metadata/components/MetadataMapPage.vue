@@ -64,7 +64,7 @@
   } from '@/store/metadataMutationsConsts';
   import axios from 'axios';
   import BaseIconButton from '../../../components/BaseElements/BaseIconButton';
-  import Map from '../../../components/Metadata/Map';
+  import Map from './Geoservices/Map';
 
   export default {
     name: 'MetadataMapPage',

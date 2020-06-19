@@ -109,7 +109,7 @@ import MetadataCitation from './Metadata/MetadataCitation';
 import MetadataPublications from './Metadata/MetadataPublications';
 import MetadataFunding from './Metadata/MetadataFunding';
 import MetadataAuthors from './Metadata/MetadataAuthors';
-import MetadataGeo from '../../../components/Metadata/MetadataGeo';
+import MetadataGeo from './Geoservices/MetadataGeo';
 
 
 // Might want to check https://css-tricks.com/use-cases-fixed-backgrounds-css/
