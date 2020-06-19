@@ -22,7 +22,7 @@
   import ZoomBtn from './ZoomBtn';
 
     export default {
-        name: 'MapLeaflet2',
+        name: 'MapLeaflet',
       components: { ZoomBtn },
       data: () => ({
         bingApiKey: process.env.VUE_APP_BING_API_KEY,

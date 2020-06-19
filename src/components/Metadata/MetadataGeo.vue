@@ -3,11 +3,11 @@
     <v-card-title class="title metadata_title">Location Geoservices</v-card-title>
 
     <v-card-text v-if="configFile" style="width: 100%; height: 500px; position: relative;">
-      <Map2 :config="configFile" :map-div-id="'map-small'">
+      <Map :config="configFile" :map-div-id="'map-small'">
         <v-btn fab small color="primary" @click.native.stop="openFullscreen">
           <v-icon medium style="height:auto;">fullscreen</v-icon>
         </v-btn>
-      </Map2>
+      </Map>
     </v-card-text>
 
   </v-card>
@@ -15,11 +15,11 @@
 
 <script>
   import axios from 'axios';
-  import Map2 from './Map2';
+  import Map from './Map';
 
   export default {
-    name: 'MetadataGeo2',
-    components: { Map2 },
+    name: 'MetadataGeo',
+    components: { Map },
     props: {
       genericProps: Object,
     },
