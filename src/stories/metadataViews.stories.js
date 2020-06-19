@@ -23,7 +23,7 @@ import MetadataHeader from '@/components/Metadata/MetadataHeader.vue';
 import MetadataBody from '@/components/Metadata/MetadataBody.vue';
 import MetadataCitation from '@/components/Metadata/MetadataCitation.vue';
 import MetadataDetails from '@/components/Metadata/MetadataDetails.vue';
-import MetadataLocation from '@/components/Metadata/MetadataLocation.vue';
+// import MetadataLocation from '@/components/Metadata/MetadataLocation.vue';
 import MetadataPublications from '@/components/Metadata/MetadataPublications.vue';
 import MetadataFunding from '@/components/Metadata/MetadataFunding.vue';
 import MetadataAuthors from '@/components/Metadata/MetadataAuthors.vue';
@@ -156,7 +156,7 @@ storiesOf('6 Detail Views | Metadata', module)
           :mailIcon="mailIcon"
           :licenseIcon="licenseIcon"
         />
-      </v-flex>        
+      </v-flex>
 
       <v-flex xs12 py-3>
         <metadata-header
@@ -166,9 +166,9 @@ storiesOf('6 Detail Views | Metadata', module)
           :mailIcon="mailIcon"
           :licenseIcon="licenseIcon"
         />
-      </v-flex>        
+      </v-flex>
 
-    </v-layout>        
+    </v-layout>
     `,
     methods,
     data: () => ({
@@ -203,7 +203,7 @@ storiesOf('6 Detail Views | Metadata', module)
         <metadata-body :genericProps="genericPropsBodyLongDesc" />
       </v-flex>
 
-    </v-layout>        
+    </v-layout>
     `,
     methods,
     data: () => ({
@@ -263,7 +263,7 @@ storiesOf('6 Detail Views | Metadata', module)
         />
       </v-flex>
 
-    </v-layout>        
+    </v-layout>
     `,
     updated() {
       this.$children.forEach((child) => {
@@ -297,7 +297,7 @@ storiesOf('6 Detail Views | Metadata', module)
         />
       </v-flex>
 
-    </v-layout>        
+    </v-layout>
     `,
     updated() {
       this.$children.forEach((child) => {
@@ -316,40 +316,40 @@ storiesOf('6 Detail Views | Metadata', module)
       },
     }),
   }))
-.add('Metadata Location', () => ({
-    components: { MetadataLocation },
-    template: `
-    <v-layout row wrap>
-
-      <v-flex xs6 py-3>
-        <metadata-location :genericProps="genericProps4"
-        />
-      </v-flex>
-
-      <v-flex xs6 py-3>
-        <metadata-location :genericProps="genericPropsPlaceholder"
-          :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
-        />
-      </v-flex>
-
-    </v-layout>        
-    `,
-    updated() {
-      this.$children.forEach((child) => {
-        child.$forceUpdate();
-      });
-    },
-    methods: {
-    },
-    data: () => ({
-      genericProps4,
-      genericPropsPlaceholder: {
-        details: [],
-        showPlaceholder: true,
-        fixedHeight: false,
-      },
-    }),
-  }))
+// .add('Metadata Location', () => ({
+//     components: { MetadataLocation },
+//     template: `
+//     <v-layout row wrap>
+//
+//       <v-flex xs6 py-3>
+//         <metadata-location :genericProps="genericProps4"
+//         />
+//       </v-flex>
+//
+//       <v-flex xs6 py-3>
+//         <metadata-location :genericProps="genericPropsPlaceholder"
+//           :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
+//         />
+//       </v-flex>
+//
+//     </v-layout>
+//     `,
+//     updated() {
+//       this.$children.forEach((child) => {
+//         child.$forceUpdate();
+//       });
+//     },
+//     methods: {
+//     },
+//     data: () => ({
+//       genericProps4,
+//       genericPropsPlaceholder: {
+//         details: [],
+//         showPlaceholder: true,
+//         fixedHeight: false,
+//       },
+//     }),
+//   }))
 .add('Metadata Publications', () => ({
     components: { MetadataPublications },
     template: `
@@ -372,8 +372,8 @@ storiesOf('6 Detail Views | Metadata', module)
       <v-flex xs6 py-3>
         <metadata-publications />
       </v-flex>
-      
-    </v-layout>        
+
+    </v-layout>
     `,
     updated() {
     },
@@ -432,8 +432,8 @@ storiesOf('6 Detail Views | Metadata', module)
       <v-flex xs6 py-3>
         <metadata-funding />
       </v-flex>
-      
-    </v-layout>        
+
+    </v-layout>
     `,
     updated() {
     },
@@ -472,7 +472,7 @@ storiesOf('6 Detail Views | Metadata', module)
         <metadata-authors  />
       </v-flex>
 
-    </v-layout>        
+    </v-layout>
     `,
     // updated() {
     //   this.$children.forEach((child) => {
