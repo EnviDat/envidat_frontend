@@ -83,8 +83,17 @@ import {
   METADATA_NAMESPACE,
   LOAD_METADATA_CONTENT_BY_ID,
   CLEAN_CURRENT_METADATA,
-  CLEAR_SEARCH_METADATA,
 } from '@/store/metadataMutationsConsts';
+import MetadataHeader from '@/components/Metadata/MetadataHeader';
+import MetadataBody from '@/components/Metadata/MetadataBody';
+import MetadataResources from '@/components/Metadata/MetadataResources';
+import MetadataGeo2 from '@/components/Metadata/MetadataGeo2';
+import MetadataLocation from '@/components/Metadata/MetadataLocation';
+import MetadataDetails from '@/components/Metadata/MetadataDetails';
+import MetadataCitation from '@/components/Metadata/MetadataCitation';
+import MetadataPublications from '@/components/Metadata/MetadataPublications';
+import MetadataFunding from '@/components/Metadata/MetadataFunding';
+
 import {
   createHeader,
   createBody,
@@ -95,22 +104,13 @@ import {
   createFunding,
   createPublications,
 } from '@/factories/metaDataFactory';
+
 import {
   getFullAuthorsFromDataset,
 } from '@/factories/authorFactory';
+
 import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
-
-import MetadataHeader from './Metadata/MetadataHeader';
-import MetadataBody from './Metadata/MetadataBody';
-import MetadataResources from './Metadata/MetadataResources';
-import MetadataLocation from './Metadata/MetadataLocation';
-import MetadataDetails from './Metadata/MetadataDetails';
-import MetadataCitation from './Metadata/MetadataCitation';
-import MetadataPublications from './Metadata/MetadataPublications';
-import MetadataFunding from './Metadata/MetadataFunding';
-import MetadataAuthors from './Metadata/MetadataAuthors';
-import MetadataGeo2 from '../../../components/Metadata/MetadataGeo2';
-
+import MetadataAuthors from '@/components/Metadata/MetadataAuthors';
 
 // Might want to check https://css-tricks.com/use-cases-fixed-backgrounds-css/
 // for animations between the different parts of the Metadata
@@ -225,7 +225,6 @@ export default {
   },
   methods: {
     reRenderComponents() {
-      // this.keyHash = Date.now().toString;
       this.$forceUpdate();
     },
     resize() {
@@ -284,15 +283,14 @@ export default {
       }
       const res = this.currentMetadataContent && this.currentMetadataContent.resources ? this.currentMetadataContent.resources : null;
       const geoConfig = res ? res.find(src => src.name === 'geoservices_config.json') : null;
-
       this.$set(components.MetadataHeader, 'genericProps', this.header);
       this.$set(components.MetadataBody, 'genericProps', { body: this.body });
       this.$set(components.MetadataCitation, 'genericProps', this.citation);
       this.$set(components.MetadataResources, 'genericProps', this.resources);
       if (geoConfig) {
-        this.$set(components.MetadataGeo2, 'genericProps', { ...this.location, config: geoConfig });
+      this.$set(components.MetadataGeo2, 'genericProps', { ...this.location, config: geoConfig });
       } else {
-        this.$set(components.MetadataLocation, 'genericProps', this.location);
+      this.$set(components.MetadataLocation, 'genericProps', this.location);
       }
       this.$set(components.MetadataDetails, 'genericProps', { details: this.details });
       this.$set(components.MetadataAuthors, 'genericProps', { authors: this.authors });
@@ -309,8 +307,8 @@ export default {
       ];
 
       this.secondCol = [
-        components.MetadataResources,
         geoConfig ? components.MetadataGeo2 : components.MetadataLocation,
+        components.MetadataResources,
         components.MetadataDetails,
       ];
 
@@ -346,10 +344,6 @@ export default {
       const tagsEncoded = this.mixinMethods_encodeTagForUrl(tagNames);
       const query = {};
       query.tags = tagsEncoded;
-
-      // clear the search result here, in case this metadata entry
-      // was part of a full text search
-      this.$store.commit(`${METADATA_NAMESPACE}/${CLEAR_SEARCH_METADATA}`);
 
       this.$router.push({
         path: BROWSE_PATH,
@@ -438,6 +432,7 @@ export default {
     MetadataHeader,
     MetadataBody,
     MetadataResources,
+    MetadataGeo2,
     MetadataLocation,
     MetadataDetails,
     MetadataCitation,
@@ -445,7 +440,6 @@ export default {
     MetadataFunding,
     TwoColumnLayout,
     MetadataAuthors,
-    MetadataGeo2,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',

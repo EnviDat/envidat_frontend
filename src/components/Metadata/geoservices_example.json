@@ -1,0 +1,27 @@
+{
+  "baseURL": "http://map.wsl.ch/cgi-bin/envidat/map.fcgi",
+  "bbox": {
+    "minx": 0.659965,
+    "miny": 45.4183,
+    "maxx": 10.8344,
+    "maxy": 48.7495
+  },
+  "layers": [
+    {
+      "name": "CHELSA_bio01_-100_V.1.0",
+      "title": "CHELSA -100",
+      "abstract":"Als Kulturgüter von nationaler Bedeutung im Inventar von 2009 gelten rund 3200 Objekte (Einzelbauten / Sammlungen in Museeen, Archiven und Bibliotheken sowie Archäologie).",
+      "visibility": true
+    },
+    {
+      "name": "CHELSA_bio01_-101_V.1.0",
+      "title": "CHELSA -101",
+      "visibility": false
+    },
+    {
+      "name": "CHELSA_bio01_-102_V.1.0",
+      "title": "CHELSA -102",
+      "visibility": false
+    }
+  ]
+}

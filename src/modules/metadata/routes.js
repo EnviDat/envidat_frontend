@@ -28,6 +28,11 @@ export const metadataRoutes = [
           // },
         // ],
       },
+      {
+        path: `${METADATADETAIL_PATH}/:metadataid/map`,
+        name: METADATADETAIL_PAGENAME,
+        component: () => import(/* webpackChunkName: "metadataDetailPage" */ '../../components/Pages/MetadataMapPage'),
+      },
     ],
   },
 ];
