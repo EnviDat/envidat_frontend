@@ -1,7 +1,5 @@
 <template>
-  <v-container class="fill-height pa-0"
-                tag="article"
-                fluid >
+  <v-container class="pa-0" tag="article" fluid>
     <v-row >
 
       <v-col cols="12" lg="10" offset-lg="1">
