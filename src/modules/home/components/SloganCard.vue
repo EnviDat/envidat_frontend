@@ -1,6 +1,5 @@
 <template>
-  <v-card ripple hover
-            @click="buttonCallback" >
+  <v-card ripple hover @click="buttonCallback" >
 
     <v-container class="pa-0" >
       <v-row v-bind="{ 'row' : $vuetify.breakpoint.xsOnly ? false : true,
@@ -23,19 +22,9 @@
                 v-html="slogan" >
           </div>
 
-          <!-- <v-card-title v-html="slogan" >
-            
-          </v-card-title>
-
-          <v-card-text class="pt-3 pb-5"
-                :class="{'px-2': $vuetify.breakpoint.smAndDown }"
-                :style="$vuetify.breakpoint.mdAndUp ? 'font-size: 14px !important;' : '' " >
-            {{ subSlogan }}
-          </v-card-text> -->
-
           <div class="pt-3 pb-5"
-                :class="{'px-2': $vuetify.breakpoint.smAndDown }"
-                :style="$vuetify.breakpoint.mdAndUp ? 'font-size: 14px !important;' : '' " >
+               :class="{'px-2 mb-2': $vuetify.breakpoint.smAndDown }"
+               :style="$vuetify.breakpoint.mdAndUp ? 'font-size: 14px !important;' : '' " >
             {{ subSlogan }}
           </div>
         </v-col>
