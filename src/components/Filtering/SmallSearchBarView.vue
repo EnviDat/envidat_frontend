@@ -16,7 +16,7 @@
       </v-col>
 
       <v-col v-if="showSearchCount && !loading"
-              class="shrink py-0" 
+              class="shrink py-0"
               style="min-width: 60px; text-align: center;" >
 
         <v-tooltip bottom
@@ -43,26 +43,27 @@
                           @clicked="clicked" />
       </v-col>
 
-      <v-col v-if="showSearch"
-              class="grow py-0" >
+        <v-col v-if="showSearch" class="grow py-0 mr-2" >
 
-        <v-tooltip bottom
-                    :disabled="$vuetify.breakpoint.xsOnly || !searchToolTipText">
-          <template v-slot:activator="{ on }">
-            <v-text-field v-on="on"
-                          class="envidatSmallSearch"
-                          style="align-items: center;"
-                          :class="{'small': compactLayout}"
-                          v-model="searchText"
-                          single-line
-                          hide-details
-                          primary
-                          :flat="isFlat"
-                          :placeholder="labelText"
-                          @keyup.enter="clicked"
-                          append-icon="clear"
-                          @click:append="clearClicked" />
-          </template>
+          <v-tooltip bottom
+                     :disabled="$vuetify.breakpoint.xsOnly || !searchToolTipText">
+            <template v-slot:activator="{ on }">
+
+              <v-text-field v-on="on"
+                            class="envidatSmallSearch"
+                            style="align-items: center;"
+                            :class="{'small': compactLayout}"
+                            v-model="searchText"
+                            single-line
+                            hide-details
+                            primary
+                            :clearable="searchText && searchText.length > 0"
+                            :flat="isFlat"
+                            :placeholder="labelText"
+                            @keyup.enter="clicked"
+                            clear-icon="clear"
+                            @click:clear="clearClicked" />
+            </template>
 
           <span>{{ searchToolTipText }}</span>
         </v-tooltip>

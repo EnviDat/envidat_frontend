@@ -1,9 +1,6 @@
 <template>
-  <v-container class="pa-0" tag="article"
-                fluid
-                >
-
-    <v-row >
+  <v-container class="pa-0" tag="article" fluid>
+    <v-row no-gutters>
 
       <v-col class="elevation-5 pa-0" cols="12"
 
@@ -19,11 +16,9 @@
       </v-col>
     </v-row>
 
-    <v-row
-              :style="`z-index: 0; position: relative; top: ${headerHeight()}px`" >
+    <v-row :style="`z-index: 0; position: relative; top: ${headerHeight()}px`" >
 
-      <v-col class="px-3" cols="12" lg="10" offset-lg="1"
-              >
+      <v-col class="px-3" cols="12" lg="10" offset-lg="1">
 
         <project-body v-bind="currentProject"
                       :showPlaceholder="loading" />

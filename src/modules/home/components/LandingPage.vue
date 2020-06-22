@@ -17,17 +17,17 @@
                           @clicked="catchSearchClicked" />
       </v-col>
 
-      <v-col class="hidden-sm-and-up px-0 mt-5" >
-        <small-search-bar-view :labelText="labelText"
-                          :buttonText="buttonText"
-                          :hasButton="$vuetify.breakpoint.smAndUp"
-                          @clicked="catchSearchClicked" />
-      </v-col>
-
       <v-col class="mt-5 pa-0" offset-md="6" >
-        <v-container class="pa-0"
-                      fluid >
-          <v-row >
+        <v-row class="hidden-sm-and-up px-0 mt-5">
+          <v-col>
+            <small-search-bar-view :labelText="labelText"
+                                   :buttonText="buttonText"
+                                   :hasButton="$vuetify.breakpoint.smAndUp"
+                                   @clicked="catchSearchClicked" />
+          </v-col>
+        </v-row>
+        <v-container class="pa-0" fluid >
+          <v-row>
 
             <v-col v-for="card in categoryCards"
                     :key="card.title"
