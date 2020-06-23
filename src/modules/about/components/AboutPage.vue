@@ -1,9 +1,9 @@
 <template>
-  <v-container class="pa-0" tag="article">
+  <v-container class="pa-0 ma-0" tag="article">
 
     <!-- Tabs -->
         <v-tabs v-model="activeTab" slider-color="accent" grow background-color="highlight">
-          <v-tab v-for="tab in tabs" :key="tab.name">
+          <v-tab v-for="tab in tabs" :key="tab.name" class="pa-0">
             <v-icon>{{tab.icon}}</v-icon>
           </v-tab>
         </v-tabs>
@@ -279,6 +279,12 @@ export default {
   }),
 };
 </script>
+<style>
+  /* Overwrite tab style vuetify, needed for smallscreen */
+  .v-slide-group__prev--disabled {
+      display: none !important;
+  }
+</style>
 <style scoped>
  /* Overwrite default vuetify background class */
   .theme--light.v-tabs-items {

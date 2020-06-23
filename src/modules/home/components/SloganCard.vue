@@ -2,8 +2,8 @@
   <v-card ripple hover @click="buttonCallback" >
 
     <v-container class="pa-0" >
-      <v-row v-bind="{ 'row' : $vuetify.breakpoint.xsOnly ? false : true,
-                        'column' : $vuetify.breakpoint.xsOnly ? true : false, }" >
+      <v-row v-bind="{ 'row' : !$vuetify.breakpoint.xsOnly,
+                        'column' : $vuetify.breakpoint.xsOnly, }" >
 
         <v-col class="py-0" cols="5" >
           <v-img :src="fingertipsImg"

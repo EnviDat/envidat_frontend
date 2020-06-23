@@ -1,18 +1,15 @@
 <template>
-  <!-- <v-row> -->
     <v-col cols="12" md="6" offset-md="6" class="pa-0" >
-
-      <!-- <v-row > -->
 
         <v-col cols="12" class="px-0" >
           <v-row align="center" >
 
-            <v-col class="hidden-sm-and-down" 
+            <v-col class="hidden-sm-and-down"
                     cols="3" >
               <img :src="mdLogo" :alt="alternativeText">
             </v-col>
 
-            <v-col class="hidden-xs-only hidden-md-and-up" 
+            <v-col class="hidden-xs-only hidden-md-and-up"
                     cols="1" >
               <img :src="smLogo"
                     :alt="alternativeText" >
@@ -55,9 +52,7 @@
                         :moreButtonCallback="moreButtonCallback" />
         </v-col>
 
-      <!-- </v-row> -->
     </v-col>
-  <!-- </v-row> -->
 </template>
 
 <script>
@@ -94,7 +89,6 @@ export default {
     moreButtonCallback: Function,
   },
   data: () => ({
-    // xsLogo,
     smLogo,
     mdLogo,
     lgLogo,
