@@ -14,7 +14,7 @@
 
     <v-card-text v-if="fullText"
                   ref="text"
-                  class="heightAndScroll pb-4"
+                  class="readableText heightAndScroll pb-4"
                   v-html="markdownText" >
     </v-card-text>
 

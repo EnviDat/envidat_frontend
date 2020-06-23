@@ -13,79 +13,82 @@
                 :class="{ 'pb-3': $vuetify.breakpoint.mdAndUp,
                           'pb-5': $vuetify.breakpoint.smAndDown, }" >
       <v-container class="pa-0" >
-        <v-row v-bind="{ 'row': $vuetify.breakpoint.smAndUp,
-                            'wrap': $vuetify.breakpoint.smAndUp,
-                            'column': $vuetify.breakpoint.xsOnly,
-                            'pb-5': $vuetify.breakpoint.mdAndUp }" >
+        <v-row :class="{ 'pb-5': $vuetify.breakpoint.mdAndUp }" >
 
-          <v-col v-bind="{ 'xs6': !this.twoColumnLayout && !showFullDescription,
-                            'xs12': this.twoColumnLayout || showFullDescription }"
+          <v-col :class="{ 'cols-xs-6': !this.twoColumnLayout && !showFullDescription,
+                           'cols-xs-12': this.twoColumnLayout || showFullDescription }"
                   order="1"
                   order-sm="3" >
             <v-row >
               <v-col v-if="showFullDescription"
-                      cols="11"
-                      class="resourceCardText heightAndScroll"
+                      class="white_text readableText resourceCardText heightAndScroll"
                       v-html="markdownText" >
               </v-col>
 
               <v-col v-if="!showFullDescription"
-                      cols="11"
-                      class="resourceCardText" >
+                      class="white_text readableText resourceCardText" >
                 {{ markdownTextTruncated }}
               </v-col>
             </v-row>
           </v-col>
 
-          <v-col class="hidden-sm-and-up" v-if="!showFullDescription"
-                  order="2"
-                  >
+          <v-col v-if="!showFullDescription"
+                  class="hidden-sm-and-up"
+                  order="2" >
             <v-divider :dark="dark"
                         class="my-1" />
           </v-col>
 
           <v-col v-if="!showFullDescription"
-                  v-bind="{ [`xs6`]: !this.twoColumnLayout ,
-                            [`xs12`]: this.twoColumnLayout,
+                  :class="{ [`cols-xs-6`]: !this.twoColumnLayout ,
+                            [`cols-xs-12`]: this.twoColumnLayout,
                             [`pt-3`]: this.twoColumnLayout }"
                   order="3"
                   order-sm="1"
                   class="resourceInfo" >
-            <v-row >
-              <v-col class="px-0 py-1" v-if="doi"
-                      >
+            <v-row v-if="doi"
+                    no-gutters>
+              <v-col class="px-0 py-1 white_text" >
                 <base-icon-label-view :text="doi"
                                       :icon="doiIcon"
                                       icon-tooltip="Data Object Identifier"
                                       :align-left="twoColumnLayout" />
               </v-col>
+            </v-row >
 
-              <v-col class="px-0 py-1" v-if="format"
-                      >
+            <v-row v-if="format" 
+                    no-gutters>
+              <v-col class="px-0 py-1 white_text" >
                 <base-icon-label-view :text="format"
                                       :icon="extensionIcon()"
                                       icon-tooltip="Format of the file"
                                       :align-left="twoColumnLayout" />
               </v-col>
+            </v-row >
 
-              <v-col class="px-0 py-1" v-if="size"
-                      >
+            <v-row v-if="size"
+                    no-gutters>
+              <v-col class="px-0 py-1 white_text" >
                 <base-icon-label-view :text="formatedBytes"
                                       :icon="fileSizeIcon"
                                       icon-tooltip="Filesize"
                                       :align-left="twoColumnLayout" />
               </v-col>
+            </v-row >
 
-              <v-col class="px-0 py-1" v-if="created"
-                      >
+            <v-row v-if="created"
+                    no-gutters >
+              <v-col class="px-0 py-1 white_text" >
                 <base-icon-label-view :text="created"
                                       :icon="dateCreatedIcon"
                                       icon-tooltip="Date of file creation"
                                       :align-left="twoColumnLayout" />
               </v-col>
+            </v-row >
 
-              <v-col class="px-0 py-1" v-if="lastModified"
-                      >
+            <v-row v-if="lastModified"
+                    no-gutters>
+              <v-col class="px-0 py-1 white_text" >
                 <base-icon-label-view :text="lastModified"
                                       :icon="lastModifiedIcon"
                                       icon-tooltip="Date of last modification"
@@ -290,11 +293,15 @@ export default {
 
 <style scoped>
 
-  .black_title{
+  .black_title {
     color: rgba(0,0,0,.87) !important;
   }
 
-  .white_title{
+  .white_text {
+    color: rgba(255, 255, 255, 1) !important;
+  }
+
+  .white_title {
     color: rgba(255,255,255,.9) !important;
   }
 
