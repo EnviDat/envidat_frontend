@@ -417,6 +417,10 @@ export default {
   line-height: 1.25em;
 }
 
+.readableText {
+  line-height: 1.2rem;
+}
+
 .imagezoom,
 .imagezoom img {
   transition: all 0.2s;

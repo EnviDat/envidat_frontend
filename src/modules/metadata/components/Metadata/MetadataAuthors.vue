@@ -6,26 +6,28 @@
 
     <v-container v-if="showAuthors"
                 fluid
-                class="heightAndScroll pa-3" >
+                class="heightAndScroll px-3 py-0" >
 
-      <v-row v-if="showPlaceholder"
-                   >
+      <v-row v-if="showPlaceholder" >
         <v-col v-for="n in 2"
                   :key="n"
                   cols="12" sm="6" >
+
           <author-card-placeholder />
+
         </v-col>
       </v-row>
 
-      <v-row v-if="!showPlaceholder && authors && authors.length > 0"
-                 >
+      <v-row v-if="!showPlaceholder && authors && authors.length > 0" >
 
         <v-col v-for="author in authors"
                 :key="author.fullName"
                 cols="12" sm="6" >
+
           <author-card :author="author"
                       :asciiDead="authorDeadInfo ? authorDeadInfo.asciiDead : ''"
                       :authorPassedInfo="authorDeadInfo ? authorDeadInfo.authorPassedInfo : ''" />
+
         </v-col>
       </v-row>
     </v-container>

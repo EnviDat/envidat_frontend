@@ -1,22 +1,17 @@
 <template>
   <v-row style="z-index: 0;" >
 
-    <v-col v-bind="firstColWidth" >
-
-      <v-row >
-        <slot name="leftColumn" />
-      </v-row>
-
+    <v-col :class="firstColWidth"
+            class="pt-0"
+            cols="6" >
+      <slot name="leftColumn" />
     </v-col>
 
-
     <v-col v-if="secondColumn"
-            v-bind="secondColWidth" >
-
-      <v-row >
-        <slot name="rightColumn" />
-      </v-row>
-
+            class="pt-0"
+            :class="secondColWidth"
+            cols="6" >
+      <slot name="rightColumn" />
     </v-col>
   </v-row>
 </template>
@@ -65,65 +60,65 @@ export default {
 
       return bindings;
     },
-    textFontSizeStyle: function textFontSizeStyle() {
+    textFontSizeStyle() {
       return this.textFontSize ? `font-size: ${this.textFontSize}px !important;` : '';
     },
-    leftOrFullWidth: function leftOrFullWidth() {
+    leftOrFullWidth() {
       return this.firstColumn && this.firstColumn.length > 0 ? this.halfWidthLeft : this.fullWidthPadding;
     },
     rightOrFullWidth() {
       return this.secondColumn && this.secondColumn.length > 0 ? this.halfWidthRight : this.fullWidthPadding;
     },
     fullwidthPadding() {
-      const json = {};
+      const cssClasses = {};
 
       if (this.$vuetify.breakpoint.xsOnly) {
-        json['px-1'] = true;
+        cssClasses['px-1'] = true;
       } else if (this.$vuetify.breakpoint.mdAndUp
           && this.$vuetify.breakpoint.lgAndDown) {
-        json['px-2'] = true;
+        cssClasses['px-2'] = true;
       } else if (this.$vuetify.breakpoint.lgAndUp) {
-        json['px-3'] = true;
+        cssClasses['px-3'] = true;
       }
 
-      return json;
+      return cssClasses;
     },
     halfWidthLeft() {
-      const json = {
-        lg5: true,
-        'offset-lg1': true,
+      const cssClasses = {
+        'col-lg-5': true,
+        'offset-lg-1': true,
       };
 
       if (this.$vuetify.breakpoint.xsOnly) {
-        json['px-1'] = true;
+        cssClasses['px-1'] = true;
       } else if (this.$vuetify.breakpoint.mdAndUp
           && this.$vuetify.breakpoint.lgAndDown) {
-        json['pl-2'] = true;
-        json['pr-1'] = true;
+        cssClasses['pl-2'] = true;
+        cssClasses['pr-1'] = true;
       } else if (this.$vuetify.breakpoint.lgAndUp) {
-        json['pl-3'] = true;
-        json['pr-1'] = true;
+        cssClasses['pl-3'] = true;
+        cssClasses['pr-1'] = true;
       }
 
-      return json;
+      return cssClasses;
     },
     halfWidthRight() {
-      const json = {
-        lg5: true,
+      const cssClasses = {
+        'col-lg-5': true,
       };
 
       if (this.$vuetify.breakpoint.xsOnly) {
-        json['px-1'] = true;
+        cssClasses['px-1'] = true;
       } else if (this.$vuetify.breakpoint.mdAndUp
           && this.$vuetify.breakpoint.lgAndDown) {
-        json['pl-1'] = true;
-        json['pr-2'] = true;
+        cssClasses['pl-1'] = true;
+        cssClasses['pr-2'] = true;
       } else if (this.$vuetify.breakpoint.lgAndUp) {
-        json['pl-1'] = true;
-        json['pr-3'] = true;
+        cssClasses['pl-1'] = true;
+        cssClasses['pr-3'] = true;
       }
 
-      return json;
+      return cssClasses;
     },
   },
   updated() {

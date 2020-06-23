@@ -2,9 +2,9 @@
   <v-card :class="{ ['pt-2']: this.isOnTop }">
     <v-card-title >
       <v-container class="pa-0" >
-      <v-row justify="end">
-        <v-col 
-                class="title metadata_title grow">
+      <v-row justify="end"
+              no-gutters>
+        <v-col class="title metadata_title grow">
           Data and resources
         </v-col>
 
@@ -20,23 +20,25 @@
 
     <v-container v-if="resources && resources.length > 0"
                 fluid
-                class="heightAndScroll pa-3" >
+                class="heightAndScroll px-5 py-0" >
 
-      <v-row v-if="showPlaceholder"
-                   >
+      <v-row v-if="showPlaceholder" >
         <v-col v-for="n in 2"
                   :key="n"
-                  cols="12" sm="6" >
+                  cols="12" sm="6"
+                  class="pa-1" >
+
           <resource-card-placeholder :two-column-layout="twoColumnLayout" />
         </v-col>
       </v-row>
 
-      <v-row v-if="!showPlaceholder"
-                 >
+      <v-row v-if="!showPlaceholder" >
 
         <v-col v-for="res in resources"
                 :key="res.id"
-                cols="12" sm="6" >
+                cols="12" sm="6"
+                class="pa-1" >
+
           <resource-card v-bind="res"
                           :doiIcon="doiIcon"
                           :linkIcon="linkIcon"
@@ -50,10 +52,8 @@
       </v-row>
     </v-container>
 
-    <v-card-text
-      v-if="!showPlaceholder && (!resources || resources.length <= 0)"
-      style="color: red;"
-    >
+    <v-card-text v-if="!showPlaceholder && (!resources || resources.length <= 0)"
+                  style="color: red;" >
       {{ emptyText }}
     </v-card-text>
 
