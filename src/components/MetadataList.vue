@@ -1,4 +1,3 @@
-/* eslint-disable vue/no-use-v-if-with-v-for */
 <template>
 
   <metadata-list-layout ref="metadataListLayoutComponent"
@@ -15,7 +14,7 @@
                             :showPlaceholder="loading || updatingTags"
                             @clickedTag="catchTagClicked"
                             @clickedTagClose="catchTagCloseClicked"
-                            @clickedClear="catchTagCleared" />
+                            @clickedClear="catchTagCleared" class="my-1" />
     </template>
 
     <template v-slot:controlPanel>
@@ -66,9 +65,6 @@
       <v-container v-show="loading"
                     fluid class="fill-height py-0 px-2">
       <v-row ref="metadataListPlaceholder" >
-              <!-- :class="{ ['column'] : listView,
-                              ['row'] : !listView,
-                              ['wrap'] : !listView }" > -->
 
         <v-col v-for="(n, index) in placeHolderAmount"
                 :key="'placeHolder_' + index"
@@ -85,9 +81,6 @@
       <v-container v-if="!loading"
                   fluid class="fill-height py-0 px-2">
       <v-row ref="metadataListLayout" >
-              <!-- :class="{ ['column'] : listView,
-                        ['row'] : !listView,
-                        ['wrap'] : !listView }" > -->
 
         <v-col v-for="(pinnedId, index) in pinnedList"
                 :key="'pinned_' + index"
