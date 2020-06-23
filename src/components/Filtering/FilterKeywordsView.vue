@@ -5,7 +5,7 @@
       <v-row class="fill-height" >
 
         <v-col v-if="!filterExpanded"
-                class="hidden-sm-and-up px-2 py-2"
+                class="hidden-sm-and-up px-2 py-0"
                 cols="12" >
           <div class="mx-3">Filter for Keywords</div>
         </v-col>
@@ -69,20 +69,19 @@
       </v-row>
     </v-container>
 
-    <v-card-actions v-if="$vuetify.breakpoint.xsOnly"
-                    class="ma-0 pa-1"
-                    style="position: absolute; bottom: 0px; right: 0px;" >
-      <base-icon-button :count="selectedTags.length"
+      <base-icon-button
+        v-if="$vuetify.breakpoint.xsOnly"
+        :count="selectedTags.length"
+                        style="position: absolute; bottom: 0px; right: 0px;"
                         material-icon-name="expand_more"
                         color="secondary"
                         icon-color="secondary"
-                        class="ma-3"
+                        class="ma-1"
                         :outlined="true"
                         :is-small="true"
                         :rotate-on-click="true"
                         :rotate-toggle="filterExpanded"
                         @clicked="catchExpandClicked" />
-    </v-card-actions>
   </v-card>
 </template>
 
