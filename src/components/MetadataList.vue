@@ -20,11 +20,9 @@
 
     <template v-slot:controlPanel>
       <v-card style="min-height: 36px; ">
-        <v-container class="px-2 py-0"
-                      fluid>
-        <v-row align="center"
-                justify="space-between">
-          <v-col class="py-0" cols="10">
+        <v-container class="px-2 py-0" fluid>
+        <v-row align="center" justify="space-between">
+          <v-col class="py-0">
           <small-search-bar-view :compactLayout="$vuetify.breakpoint.smAndDown"
                                   class="elevation-0"
                                   :searchTerm="searchTerm"
@@ -36,18 +34,20 @@
                                   :labelText="searchBarPlaceholder"
                                   :loading="loading"
                                   @clicked="catchSearchClicked"
-                                  @searchCleared="catchSearchCleared" />
-          </v-col>
-
-          <v-col class="hidden-xs-only py-0" cols="2" >
-            <list-control-toggle :controls="controlsActive"
-                                  :enabledControls="enabledControls"
-                                  :compactLayout="$vuetify.breakpoint.smAndDown"
-                                  :flat="true"
-                                  @controlsChanged="controlsChanged" />
+                                 @searchCleared="catchSearchCleared">
+            <template v-slot:append-outer>
+              <v-col class="hidden-xs-only pa-0 ml-2" style="white-space: nowrap">
+                <list-control-toggle :controls="controlsActive"
+                                     :enabledControls="enabledControls"
+                                     :compactLayout="$vuetify.breakpoint.smAndDown"
+                                     :flat="true"
+                                     @controlsChanged="controlsChanged" />
+              </v-col>
+            </template>
+          </small-search-bar-view>
           </v-col>
         </v-row>
-      </v-container>        
+      </v-container>
       </v-card>
     </template>
 
@@ -239,7 +239,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    mode: String,    
+    mode: String,
     showSearch: Boolean,
     searchTerm: String,
     searchCount: Number,
@@ -438,7 +438,7 @@ export default {
 
       for (let i = 0; i < metadata.resources.length; i++) {
         const res = metadata.resources[i];
-        
+
         if (res.restricted !== undefined
         && (res.restricted.allowed_users !== undefined
             || (res.restricted.level !== undefined
