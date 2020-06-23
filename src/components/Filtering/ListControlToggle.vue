@@ -1,12 +1,8 @@
 <template>
 
-  <v-container id="ListControlToggle"
-                class="pa-0" >
-    <v-row align="center">
-      <!-- <v-col > -->
-      <v-col v-if="isEnabledControl(LISTCONTROL_MAP_ACTIVE)"
-            class="shrink py-0" >
-
+    <v-row align="center" justify="end" no-gutters
+           :class="{'width-large': enabledControls.length === 3,
+                    'width-small': enabledControls.length === 2}">
         <v-btn-toggle v-if="isEnabledControl(LISTCONTROL_MAP_ACTIVE)"
                       v-model="controlsActive"
                       dense >
@@ -14,15 +10,9 @@
                   :class="isActiveControl(LISTCONTROL_MAP_ACTIVE) ? 'secondary' : ''"
                   :style="compactLayout ? 'height: 32px !important' : ''"
                   small >
-            <v-icon >map</v-icon>
+            <v-icon>map</v-icon>
           </v-btn>
         </v-btn-toggle>
-
-      </v-col>
-
-      <v-col v-if="isEnabledControl(LISTCONTROL_LIST_ACTIVE)
-              || isEnabledControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)"
-            class="grow py-0" >
 
         <v-btn-toggle v-if="isEnabledControl(LISTCONTROL_LIST_ACTIVE)
                         || isEnabledControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)"
@@ -54,10 +44,7 @@
           </v-btn>
 
         </v-btn-toggle>
-
-      </v-col>
     </v-row>
-  </v-container>
 </template>
 
 <script>
@@ -143,5 +130,12 @@ export default {
 .envidatControlInfos > .v-input__append-outer {
   margin: auto !important;
 }
+
+  .width-small {
+    width: 100px;
+  }
+  .width-large {
+    width: 150px;
+  }
 
 </style>

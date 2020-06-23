@@ -1,10 +1,7 @@
 <template>
   <v-card >
-    <v-container class="pa-0"
-                fluid >
-    <v-row align="center"
-            justify="space-between"
-            no-gutters >
+    <v-container class="pa-0" fluid >
+    <v-row align="center" justify="space-between" no-gutters >
 
       <v-col v-if="loading"
               class="shrink py-0"
@@ -62,7 +59,11 @@
                             :placeholder="labelText"
                             @keyup.enter="clicked"
                             clear-icon="clear"
-                            @click:clear="clearClicked" />
+                            @click:clear="clearClicked">
+                <template v-slot:append-outer>
+                  <slot name="append-outer"></slot>
+                </template>
+              </v-text-field>
             </template>
 
           <span>{{ searchToolTipText }}</span>

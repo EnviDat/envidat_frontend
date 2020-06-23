@@ -1,8 +1,7 @@
 <template>
-  <v-card raised >
+  <v-card raised>
 
-    <v-container class="pa-2"
-                  fluid >
+    <v-container class="pa-2" fluid >
       <v-row class="fill-height" >
 
         <v-col v-if="!filterExpanded"
@@ -77,6 +76,7 @@
                         material-icon-name="expand_more"
                         color="secondary"
                         icon-color="secondary"
+                        class="ma-3"
                         :outlined="true"
                         :is-small="true"
                         :rotate-on-click="true"
