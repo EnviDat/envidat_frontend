@@ -9,7 +9,7 @@
 
       <v-col v-if="icon && iconTooltip"
             :class="alignClass"
-            class="py-0 px-1 iconCentering"
+            class="py-0 px-1 iconCentering shrink"
             style="position: relative: top: 2px; max-width: 100%" >
 
         <img class="envidatIcon"
@@ -19,7 +19,7 @@
       </v-col>
 
       <v-col v-if="icon && !iconTooltip"
-              class="pr-2"
+              class="pr-1"
               cols="2"
               style="max-width: 100%" >
         <div class="iconCentering">
@@ -50,7 +50,7 @@
       </v-col>
 
       <v-col v-if="!text && usePlaceholder">
-        <div class="pr-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
+        <div class="pr-1 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
           <div class="bone bone-type-text bone-style-steps" />
         </div>
       </v-col>
@@ -96,9 +96,8 @@ export default {
         flex: !this.alignLeft,
         'col-xs-3': !this.alignLeft,
         'col-md-2': !this.alignLeft,
-        'pr-3': this.alignLeft,
+        'pr-1': this.alignLeft,
         'pl-1': this.alignLeft,
-        'py-0': true,
       };
     },
     textStyle() {
