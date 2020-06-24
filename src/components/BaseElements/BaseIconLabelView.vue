@@ -1,65 +1,64 @@
 <template>
-  <v-row class="ma-0 pa-0" >
-    <v-tooltip bottom
-                :disabled="$vuetify.breakpoint.xsOnly || !iconTooltip" >
+  <v-tooltip bottom
+              id="BaseIconLabelView"
+              :disabled="$vuetify.breakpoint.xsOnly || !iconTooltip" >
 
-      <template v-slot:activator="{ on }">
-      <v-row v-on="on"
-            align="center" >
+    <template v-slot:activator="{ on }">
+    <v-row v-on="on"
+          align="center" >
 
-        <v-col v-if="icon && iconTooltip"
-              :class="alignClass"
-              class="iconCentering"
-              style="position: relative: top: 2px; max-width: 100%" >
+      <v-col v-if="icon && iconTooltip"
+            :class="alignClass"
+            class="py-0 px-1 iconCentering"
+            style="position: relative: top: 2px; max-width: 100%" >
 
+        <img class="envidatIcon"
+              :class="compactLayout ? 'small' : ''"
+              :src="icon"
+              :alt="`${icon} icon`" >
+      </v-col>
+
+      <v-col v-if="icon && !iconTooltip"
+              class="pr-2"
+              cols="2"
+              style="max-width: 100%" >
+        <div class="iconCentering">
           <img class="envidatIcon"
                 :class="compactLayout ? 'small' : ''"
                 :src="icon"
                 :alt="`${icon} icon`" >
-        </v-col>
+        </div>
+      </v-col>
 
-        <v-col v-if="icon && !iconTooltip"
-                class="pr-2"
-                cols="2"
-                style="max-width: 100%" >
-          <div class="iconCentering">
-            <img class="envidatIcon"
-                  :class="compactLayout ? 'small' : ''"
-                  :src="icon"
-                  :alt="`${icon} icon`" >
-          </div>
-        </v-col>
+      <v-col v-if="label"
+              cols="4"
+              class="py-0 px-1"
+              :style="textStyle" >
+        {{ label }}
+      </v-col>
 
-        <v-col v-if="label"
-                cols="4"
-                class="py-0"
-                :style="textStyle" >
-          {{ label }}
-        </v-col>
+      <v-col v-if="text && !url"
+              class="py-0 px-1"
+              :style="textStyle" >
+        {{ text }}
+      </v-col>
 
-        <v-col v-if="text && !url"
-                class="py-0"
-                :style="textStyle" >
-          {{ text }}
-        </v-col>
+      <v-col v-if="url"
+              class="py-0 px-1"
+              :style="textStyle" >
+        <a :href="url" target="_blank" rel="noopener noreferrer">{{ text ? text : url }}</a>
+      </v-col>
 
-        <v-col v-if="url"
-                class="py-0"
-                :style="textStyle" >
-          <a :href="url" target="_blank" rel="noopener noreferrer">{{ text ? text : url }}</a>
-        </v-col>
+      <v-col v-if="!text && usePlaceholder">
+        <div class="pr-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
+          <div class="bone bone-type-text bone-style-steps" />
+        </div>
+      </v-col>
+    </v-row>
+    </template>
 
-        <v-col v-if="!text && usePlaceholder">
-          <div class="pr-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
-            <div class="bone bone-type-text bone-style-steps" />
-          </div>
-        </v-col>
-      </v-row>
-      </template>
-
-      <span>{{ iconTooltip }}</span>
-    </v-tooltip>
-  </v-row>
+    <span>{{ iconTooltip }}</span>
+  </v-tooltip>
 </template>
 
 <script>
