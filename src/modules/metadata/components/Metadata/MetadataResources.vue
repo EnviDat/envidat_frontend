@@ -26,7 +26,7 @@
         <v-col v-for="n in 2"
                   :key="n"
                   cols="12" sm="6"
-                  class="px-2 py-0" >
+                  class="pa-2" >
 
           <resource-card-placeholder :two-column-layout="twoColumnLayout" />
         </v-col>
@@ -38,7 +38,7 @@
         <v-col v-for="res in resources"
                 :key="res.id"
                 cols="12" sm="6"
-                class="px-2 py-0" >
+                class="pa-2" >
 
           <resource-card v-bind="res"
                           :doiIcon="doiIcon"

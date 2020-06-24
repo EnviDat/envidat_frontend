@@ -13,7 +13,7 @@
         <v-col v-for="n in 2"
                   :key="n"
                   cols="12" sm="6"
-                  class="px-2 py-0" >
+                  class="pa-2" >
 
           <author-card-placeholder />
 
@@ -26,7 +26,7 @@
         <v-col v-for="author in authors"
                 :key="author.fullName"
                 cols="12" sm="6"
-                class="px-2 py-0" >
+                class="pa-2" >
 
           <author-card :author="author"
                       :asciiDead="authorDeadInfo ? authorDeadInfo.asciiDead : ''"
