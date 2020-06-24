@@ -96,8 +96,7 @@
 
         <v-col class="pa-1" >
           <base-icon-count-view :count="resourceAmount"
-                                :icon-string="fileIconString"
-                                style="opacity: 0.65;" />
+                                :icon-string="fileIconString" />
         </v-col>
       </v-row>
       </v-container>
