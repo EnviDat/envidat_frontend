@@ -15,18 +15,13 @@
                             @clickedReport="catchReportClicked(notification.key)" />
       </div>
 
-    <the-navigation v-if="!showSmallNavigation"
-                    :style="`z-index: ${NavigationZIndex}`"
+    <the-navigation :style="`z-index: ${NavigationZIndex}`"
                     :navItems="navItems"
                     :version="appVersion"
+                    :offset-top="showToolbar ? 9 : 2"
                     @menuClick="catchMenuClicked"
-                    @itemClick="catchItemClicked" />
-
-    <the-navigation-small v-if="showSmallNavigation"
-                          :navItems="navItems"
-                          :style="`z-index: ${NavigationZIndex}`"
-                          class="envidatSmallNavigation elevation-3"
-                          @itemClick="catchItemClicked" />
+                    @itemClick="catchItemClicked"
+    />
 
     <the-navigation-toolbar v-if="showToolbar"
                             ref="TheNavigationToolbar"
@@ -114,7 +109,6 @@ import { GUIDELINES_NAMESPACE } from '@/modules/about/store/guidelinesMutationsC
 import { PROJECTS_NAMESPACE } from '@/modules/projects/store/projectsMutationsConsts';
 
 import TheNavigation from '@/components/Navigation/TheNavigation';
-import TheNavigationSmall from '@/components/Navigation/TheNavigationSmall';
 import TheNavigationToolbar from '@/components/Navigation/TheNavigationToolbar';
 import NotificationCard from '@/components/Cards/NotificationCard';
 import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
@@ -144,8 +138,6 @@ export default {
       this.$store.commit(SET_APP_SCROLL_POSITION, scrollY);
     },
     updateActiveStateOnNavItems() {
-      // console.log(this.currentPage);
-
       for (let i = 0; i < this.navItems.length; i++) {
         const item = this.navItems[i];
 
@@ -271,9 +263,6 @@ export default {
     currentPageIsBrowsePage() {
       return this.currentPage === BROWSE_PAGENAME;
     },
-    currentPageIsLandingPage() {
-      return this.currentPage === LANDING_PAGENAME;
-    },
     showToolbar() {
       return this.currentPageIsBrowsePage && this.mode;
     },
@@ -327,7 +316,6 @@ export default {
   },
   components: {
     TheNavigation,
-    TheNavigationSmall,
     TheNavigationToolbar,
     NotificationCard,
   },

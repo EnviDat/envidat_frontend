@@ -4,7 +4,7 @@
               color="white"
               :height="mode && $vuetify.breakpoint.xsOnly ? 50 : 36"
               >
-    <v-row 
+    <v-row
               align="center"
               justify="space-between" >
 
