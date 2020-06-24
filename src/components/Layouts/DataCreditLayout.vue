@@ -36,13 +36,12 @@
           <v-tooltip bottom >
             <template v-slot:activator="{ on }">
               <v-icon v-on="on"
-                      :color="iconColor"
-                      class="dataCreditIcon">
+                      :color="iconColor" >
                 {{ iconLookup(creditName) }}
               </v-icon>
             </template >
 
-            {{ creditName }}
+            {{ `Author made ${dataCreditCounts[index]} ${creditName} contributions for data` }}
           </v-tooltip>
         </v-badge>
         </v-hover>
