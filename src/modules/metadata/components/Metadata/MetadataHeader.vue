@@ -77,6 +77,7 @@
                   class="py-0"
                   id="authors"
                   key="authors" >
+
             <v-row style="max-height: 100px; overflow-y: scroll;" >
 
               <tag-chip-author v-for="(author, index) in authors"
@@ -95,6 +96,7 @@
                   id="authors_placeholder"
                   key="authors_placeholder" >
             <v-row  >
+
               <tag-chip-placeholder v-for="n in 5"
                                     :key="n"
                                     class="headerTag" />

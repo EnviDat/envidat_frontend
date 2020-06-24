@@ -8,16 +8,16 @@
 
       <template v-slot:activator="{ on }">
         <v-btn v-on="on"
-              style="margin: 0 !important;"
-              :icon="!isElevated"
-              :fab="isElevated"
-              :small="isSmall || isElevated"
-              :outlined="isToggled"
-              :color="color ? color : disabled ? '' : 'primary'"
-              :href="url"
-              :disabled="disabled"
-              v-bind="{['target'] : '_blank' }"
-              @click.stop="onClick" >
+                style="margin: 0 !important;"
+                :icon="!isElevated"
+                :fab="isElevated"
+                :small="isSmall || isElevated"
+                :outlined="isToggled"
+                :color="color ? color : disabled ? '' : 'primary'"
+                :href="url"
+                :disabled="disabled"
+                v-bind="{['target'] : '_blank' }"
+                @click.stop="onClick" >
 
 
           <div v-if="customIcon"
