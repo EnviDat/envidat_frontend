@@ -1,17 +1,17 @@
 <template>
-  <v-row justify="space-between"
-          align="center">
-    <div v-if="compact"
+  <span align="center">
+    <v-col v-if="compact"
           class="item body-2">
+      {{'compact'}}
       {{ modeInfoPrefix }}:
       <br />
       {{ modeTitle }}
-    </div>
+    </v-col>
 
-    <div v-else 
+    <v-col v-else
           class="item title">
       {{ modeInfo }}
-    </div>
+    </v-col>
 
     <div v-if="modeLogo"
           class="item"
@@ -47,7 +47,7 @@
                         @clicked="closeCallback" />
     </div>
 
-  </v-row>
+  </span>
 </template>
 
 <script>
@@ -67,6 +67,7 @@ import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import { getModeData } from '@/factories/modeFactory';
 
 export default {
+  // TODO: Component is not in use. Moved content to TheNavigationToolbar while upgrading to vuetify2
   components: {
     BaseIconButton,
   },

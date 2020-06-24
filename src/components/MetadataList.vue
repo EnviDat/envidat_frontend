@@ -51,9 +51,7 @@
     </template>
 
     <template v-slot:filterMap>
-      <filter-map-view :class="!mapHeight ? 'fill-height' : ''"
-                        :style="mapHeight ? `height: ${mapHeight}px;` : 'height: 100%;'"
-                        :content="listContent"
+      <filter-map-view :content="listContent"
                         :pinnedIds="pinnedIds"
                         :topLayout="mapTopLayout"
                         :mode="mode"
