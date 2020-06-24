@@ -4,7 +4,7 @@
                 bottom >
       <template v-slot:activator="{ on }">
         <div v-on="on"
-              class="metadataInfoIcon" >
+              class="iconCountView" >
           <v-container fluid
                     class="py-0">
           <v-row @mouseover="hoverBadge = true"
@@ -32,11 +32,12 @@
     </v-tooltip>
 
     <div v-else
-          class="metadataInfoIcon" >
+          class="iconCountView" >
       <v-container fluid
                     class="py-0">
       <v-row @mouseover="hoverBadge = true"
               @mouseleave="hoverBadge = false" >
+
         <v-col class="pa-0" >
           <v-badge :left="!hoverBadge"
                     overlap
@@ -52,6 +53,7 @@
         <v-col class="pa-0" style="z-index: 1;" >
           <img class="envidatIcon" :src="iconString" :alt="`${iconString} icon`">
         </v-col>
+
       </v-row>
       </v-container>
     </div>
@@ -85,3 +87,12 @@ export default {
   }),
 };
 </script>
+
+<style >
+  .iconCountView {
+    opacity: 0.5;
+    /* line-height has to be based on the root (1rem) because of the
+    use in ex. v-card-title */
+    line-height: 1rem;
+  }
+</style>
