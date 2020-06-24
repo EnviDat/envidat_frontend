@@ -15,7 +15,6 @@ import { action } from '@storybook/addon-actions';
 import './js/vuetify-components';
 
 import TheNavigation from '@/components/Navigation/TheNavigation.vue';
-import TheNavigationSmall from '@/components/Navigation/TheNavigationSmall.vue';
 import TheNavigationToolbar from '@/components/Navigation/TheNavigationToolbar.vue';
 
 export const methods = {
@@ -66,7 +65,7 @@ storiesOf('5 Navigation | Redesigned Navigation', module)
     <v-container>
       <the-navigation :navItems="navItems" :version="appVersion" />
 
-      <p v-for="(item, index) in navItems" :key="index" 
+      <p v-for="(item, index) in navItems" :key="index"
           v-show="item.active"
           style="margin: 100px;" >
         {{ item.title }}
@@ -77,24 +76,6 @@ storiesOf('5 Navigation | Redesigned Navigation', module)
     navItems,
     appVersion,
   }),
-  methods,
-}))
-.add('Menu small screens', () => ({
-  components: { TheNavigationSmall },
-  template: `
-    <v-container>
-      <the-navigation-small :navItems="navItems"
-                        style="position: fixed; top: auto; left: auto; bottom: 25px; right: 25px;"
-                        class="elevation-2"
-                        />
-      <p v-for="(item, index) in navItems" :key="index" 
-          v-show="item.active">
-        {{ item.title }}
-      </p>
-
-    </v-container>    
-  `,
-  data: () => ({ navItems }),
   methods,
 }))
 .add('Toolbar', () => ({
@@ -113,7 +94,7 @@ storiesOf('5 Navigation | Redesigned Navigation', module)
   template: `
       <the-navigation
         :navItems="navItems"
-      />  
+      />
       <the-navigation-toolbar
                   labelText="Search for something"
             @menuClick="onMenuClick"
