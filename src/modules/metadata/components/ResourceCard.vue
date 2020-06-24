@@ -1,32 +1,32 @@
 <template>
   <v-card color="primary"
-          class="metadataResourceCard white--text"
+          class="metadataResourceCard"
           style="height: 100%;" >
 
-    <v-card-title>
-      <div class="headline">
-        {{ name }}
-      </div>
+    <v-card-title class="headline white--text">
+      {{ name }}
     </v-card-title>
 
-    <v-card-text class="pt-0"
-                :class="{ 'pb-3': $vuetify.breakpoint.mdAndUp,
-                          'pb-5': $vuetify.breakpoint.smAndDown, }" >
-      <v-container class="pa-0" >
-        <v-row :class="{ 'pb-5': $vuetify.breakpoint.mdAndUp }" >
+    <v-card-text class="pt-0 white--text"
+                  :class="{ 'pb-3': $vuetify.breakpoint.mdAndUp,
+                            'pb-5': $vuetify.breakpoint.smAndDown, }" >
+      <v-container :class="{ 'pb-5': $vuetify.breakpoint.mdAndUp }"
+                    class="px-1 py-0"
+                    fluid >
+        <v-row no-gutters >
 
-          <v-col :class="{ 'cols-xs-6': !this.twoColumnLayout && !showFullDescription,
-                           'cols-xs-12': this.twoColumnLayout || showFullDescription }"
+          <v-col :class="{ 'cols-6': !this.twoColumnLayout && !showFullDescription,
+                            'cols-12': this.twoColumnLayout || showFullDescription }"
                   order="1"
                   order-sm="3" >
-            <v-row >
+            <v-row no-gutters >
               <v-col v-if="showFullDescription"
-                      class="white_text readableText resourceCardText heightAndScroll"
+                      class="readableText resourceCardText heightAndScroll"
                       v-html="markdownText" >
               </v-col>
 
               <v-col v-if="!showFullDescription"
-                      class="white_text readableText resourceCardText" >
+                      class="readableText resourceCardText" >
                 {{ markdownTextTruncated }}
               </v-col>
             </v-row>
@@ -40,26 +40,28 @@
           </v-col>
 
           <v-col v-if="!showFullDescription"
-                  :class="{ [`cols-xs-6`]: !this.twoColumnLayout ,
-                            [`cols-xs-12`]: this.twoColumnLayout,
+                  :class="{ [`cols-6`]: !this.twoColumnLayout ,
+                            [`cols-12`]: this.twoColumnLayout,
                             [`pt-3`]: this.twoColumnLayout }"
                   order="3"
                   order-sm="1"
                   class="resourceInfo" >
             <v-row v-if="doi"
-                    no-gutters>
-              <v-col class="px-0 py-1 white_text" >
-                <base-icon-label-view :text="doi"
+                    no-gutters >
+              <v-col >
+                <base-icon-label-view v-if="doi"
+                                      :text="doi"
                                       :icon="doiIcon"
                                       icon-tooltip="Data Object Identifier"
                                       :align-left="twoColumnLayout" />
               </v-col>
             </v-row >
 
-            <v-row v-if="format" 
-                    no-gutters>
-              <v-col class="px-0 py-1 white_text" >
-                <base-icon-label-view :text="format"
+            <v-row v-if="format"
+                    no-gutters  >
+              <v-col >
+                <base-icon-label-view v-if="format" 
+                                      :text="format"
                                       :icon="extensionIcon()"
                                       icon-tooltip="Format of the file"
                                       :align-left="twoColumnLayout" />
@@ -67,9 +69,10 @@
             </v-row >
 
             <v-row v-if="size"
-                    no-gutters>
-              <v-col class="px-0 py-1 white_text" >
-                <base-icon-label-view :text="formatedBytes"
+                    no-gutters  >
+              <v-col >
+                <base-icon-label-view v-if="size" 
+                                      :text="formatedBytes"
                                       :icon="fileSizeIcon"
                                       icon-tooltip="Filesize"
                                       :align-left="twoColumnLayout" />
@@ -77,9 +80,10 @@
             </v-row >
 
             <v-row v-if="created"
-                    no-gutters >
-              <v-col class="px-0 py-1 white_text" >
-                <base-icon-label-view :text="created"
+                    no-gutters  >
+              <v-col >
+                <base-icon-label-view v-if="created" 
+                                      :text="created"
                                       :icon="dateCreatedIcon"
                                       icon-tooltip="Date of file creation"
                                       :align-left="twoColumnLayout" />
@@ -87,9 +91,10 @@
             </v-row >
 
             <v-row v-if="lastModified"
-                    no-gutters>
-              <v-col class="px-0 py-1 white_text" >
-                <base-icon-label-view :text="lastModified"
+                    no-gutters  >
+              <v-col >
+                <base-icon-label-view v-if="lastModified" 
+                                      :text="lastModified"
                                       :icon="lastModifiedIcon"
                                       icon-tooltip="Date of last modification"
                                       :align-left="twoColumnLayout" />
@@ -104,12 +109,10 @@
                     style="position: absolute; bottom: 0px; right: 50px;" >
 
       <base-icon-button v-if="maxDescriptionLengthReached"
-                        class="mr-2"
                         material-icon-name="expand_more"
-                        :iconColor="showFullDescription ? 'primary' : 'accent'"
+                        iconColor="accent"
                         color="accent"
-                        :outlined="true"
-                        :isToggled="showFullDescription"
+                        :isToggled="true"
                         :rotateOnClick="true"
                         :rotateToggle="showFullDescription"
                         :tooltipText="showFullDescription ? 'Hide full description' : 'Show full description'"
@@ -297,10 +300,6 @@ export default {
     color: rgba(0,0,0,.87) !important;
   }
 
-  .white_text {
-    color: rgba(255, 255, 255, 1) !important;
-  }
-
   .white_title {
     color: rgba(255,255,255,.9) !important;
   }
@@ -346,7 +345,7 @@ export default {
   }
 
   .resourceInfo {
-    font-size: 10px !important;
+    font-size: 12px !important;
     opacity: 0.9;
   }
 </style>
