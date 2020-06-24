@@ -1,5 +1,5 @@
 <template>
-  <v-card class="elevation-0"  
+  <v-card class="elevation-0"
           id="FilterMapWidgetLayout" >
 
     <v-card-title :class="mdScreen ? 'pa-2' : 'pb-2'" >
@@ -13,11 +13,9 @@
           :class="mdScreen ? 'px-1 mb-1' : 'px-3'"
           :style="`background-color: ${ $vuetify.theme.themes.light.highlight };`" >
 
-      <v-row v-if="topLayout"
-              class="fill-height my-0"
-              align="center" >
+      <v-row v-if="topLayout" class="fill-height my-0" align="center" no-gutters>
 
-        <v-col class="grow py-0" 
+        <v-col class="grow py-0"
                 :class="mdScreen ? 'caption' : 'body-2'" >
           {{ highlightedText }}
         </v-col>
@@ -41,45 +39,35 @@
 
     </div>
 
-    <v-container :class="mdScreen ? 'px-3' : 'py-2 px-3'" >
+    <v-container :class="mdScreen ? 'px-3 py-0' : 'py-0 px-2'" >
 
-      <v-row v-if="topLayout"
-              class="fill-height"
-              align="center"
-              justify="end">
+      <v-row v-if="topLayout" no-gutters class="my-2">
 
-        <v-col class="shrink py-0" >
+        <v-col>
           <slot name="focus" />
         </v-col>
-        
-        <v-col v-if="hasPins"
-                class="shrink py-0">
+
+        <v-col v-if="hasPins">
           <slot name="pinEnabled" />
-        </v-col>              
-        <v-col v-if="hasMultiPins"
-                class="shrink py-0">
+        </v-col>
+        <v-col v-if="hasMultiPins">
           <slot name="multiPinEnabled" />
-        </v-col>              
-        <v-col v-if="hasPolygons"
-                class="shrink py-0" >
+        </v-col>
+        <v-col v-if="hasPolygons">
           <slot name="polygonEnabled" />
-        </v-col>              
+        </v-col>
       </v-row>
 
-                <!-- :column="mdScreen" -->
-      <v-row v-if="!topLayout"
-              align="center fill-height">
+      <v-row v-if="!topLayout" no-gutters class="direction-column">
+        <v-col v-if="mdScreen" class="pa-0">
+          <v-row align="center" no-gutters>
 
-        <v-col v-if="mdScreen"
-                class="pa-0" >
-          <v-row align="center">
-
-            <v-col class="shrink" >
+            <v-col class="shrink" cols="10">
               <div :style="`color:${pinnedAmount > 0 ? $vuetify.theme.themes.light.primary : 'rgba(0,0,0,.47)'};`">
                 {{ filterText + pinnedAmount }}
               </div>
             </v-col>
-            <v-col class="grow" >
+            <v-col class="grow" cols="2">
 
               <slot name="clearPins" />
 
@@ -87,8 +75,7 @@
           </v-row>
         </v-col>
 
-        <v-col v-if="!mdScreen"
-                class="grow py-1" >
+        <v-col v-if="!mdScreen" class="grow py-1" >
           <div :style="`color:${pinnedAmount > 0 ? $vuetify.theme.themes.light.primary : 'rgba(0,0,0,.47)'};`">
             {{ filterText + pinnedAmount }}
           </div>
@@ -102,46 +89,46 @@
 
         </v-col>
 
-        <v-col class="hidden-md-and-down py-1" lg="9" >
+        <v-col class="hidden-md-and-down py-1 mx-3" lg="9" >
           {{ focusText }}
         </v-col>
 
-        <v-col class="py-1" md="12" lg="3" >
+        <v-col class="py-1 mx-3" md="12" lg="3" >
           <slot name="focus" />
         </v-col>
 
         <v-col v-if="hasPins"
-                class="hidden-md-and-down py-1"
+                class="hidden-md-and-down py-1 mx-3"
                 lg="9" >
           {{ pinText }}
         </v-col>
 
         <v-col v-if="hasPins"
-                class="py-1"
+                class="py-1 mx-3"
                 md="12" lg="3" >
           <slot name="pinEnabled" />
         </v-col>
 
         <v-col v-if="hasMultiPins"
-                class="hidden-md-and-down py-1"
+                class="hidden-md-and-down py-1 mx-3"
                 lg="9" >
           {{ multiPinText }}
         </v-col>
 
         <v-col v-if="hasMultiPins"
-                class="py-1"
+                class="py-1 mx-3"
                 md="12" lg="3" >
           <slot name="multiPinEnabled" />
         </v-col>
 
         <v-col v-if="hasPolygons"
-                class="hidden-md-and-down py-1"
+                class="hidden-md-and-down py-1 mx-3"
                 lg="9" >
           {{ polygonText }}
         </v-col>
 
         <v-col v-if="hasPolygons"
-                class="py-1"
+                class="py-1 mx-3"
                 md="12" lg="3" >
           <slot name="polygonEnabled" />
         </v-col>
@@ -201,3 +188,11 @@ export default {
   },
 };
 </script>
+<style scoped>
+  .direction-column {
+    flex-direction: column;
+  }
+  .direction-row {
+    flex-direction: row;
+  }
+</style>
