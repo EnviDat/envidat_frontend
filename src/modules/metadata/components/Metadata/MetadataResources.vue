@@ -11,8 +11,7 @@
         <v-col class="shrink" >
           <base-icon-count-view v-if="!showPlaceholder && resources && resources.length > 0"
                                 :count="resources.length"
-                                :icon-string="fileIcon"
-                                style="opacity: 0.85;" />
+                                :icon-string="fileIcon" />
         </v-col>
       </v-row>
       </v-container>
