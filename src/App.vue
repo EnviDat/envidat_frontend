@@ -466,11 +466,11 @@ export default {
 }
 
 .envidatBadge span {
-  font-size: 0.95em !important;
+  font-size: 0.8rem !important;
 }
 
 .envidatBadgeBigNumber span {
-  font-size: 0.9em !important;
+  font-size: 0.9rem !important;
 }
 
 .envidatChip {
