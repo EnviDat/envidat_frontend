@@ -1,13 +1,19 @@
 <template>
+  <span>
+    <v-btn fab left fixed style="z-index: 9999999;" bottom v-if="smallScreen && !show" @click="show = true">
+      <v-icon>
+        menu
+      </v-icon>
+    </v-btn>
   <v-navigation-drawer app
-                        permanent
+                       :permanent="!smallScreen"
                         clipped
-                        :mini-variant.sync="mini"
+                        :mini-variant="mini"
+                       v-model="show"
                         mini-variant-width="60"
                         width="190" >
 
-    <v-list class="pt-1"
-            dense >
+    <v-list dense >
 
       <v-list-item v-for="(item, index) in navItemsMenuExcluded"
                   :key="index"
@@ -28,7 +34,7 @@
 
         <v-list-item-content v-if="item.icon === 'envidat'"
                               @click.stop="itemClick(item)">
-          <v-row class="fill-height" 
+          <v-row class="fill-height"
                   align="start"
                   justify="end" >
             <v-col cols="12"
@@ -59,8 +65,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item link
-                    @click.stop="mini = !mini">
+      <v-list-item link @click.stop="show =!show">
         <v-list-item-icon >
           <v-icon color="primary">
             {{ mini ? 'chevron_right' : 'chevron_left' }}
@@ -71,12 +76,11 @@
     </v-list>
 
   </v-navigation-drawer>
+  </span>
 </template>
 
 <script>
 import Logo from '@/assets/logo/EnviDat_logo_32.png';
-// import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
-// import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 export default {
   props: {
@@ -86,9 +90,15 @@ export default {
   data: () => ({
     Logo,
     logoText: 'EnviDat',
-    mini: true,
+    show: false,
   }),
   computed: {
+    mini() {
+      return !this.show && !this.smallScreen;
+    },
+    smallScreen() {
+      return this.$vuetify.breakpoint.smAndDown;
+    },
     navItemsMenuExcluded() {
       const actives = [];
 
@@ -117,10 +127,6 @@ export default {
     itemClick(item) {
       this.$emit('itemClick', item);
     },
-  },
-  components: {
-    // BaseRectangleButton,
-    // BaseIconButton,
   },
 };
 </script>

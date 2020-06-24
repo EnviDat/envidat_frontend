@@ -1,26 +1,16 @@
 <template>
-  <!-- <v-layout row
-            :justify-center="!compact"
-            :justify-space-between="compact"
-            align-center>
-
-    <div class="item"> -->
       <base-icon-button materialIconName="account_circle"
                         tooltipBottom
                         color="highlight"
                         iconColor="black"
                         isSmall />
-                        <!-- :tooltipText="`${tooltipText} ${modeTitle}`" -->
-    <!-- </div> -->
-
-  <!-- </v-layout> -->
 </template>
 
 <script>
 /**
- * UserAvatar.vue 
+ * UserAvatar.vue
  *
- * @summary 
+ * @summary
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27

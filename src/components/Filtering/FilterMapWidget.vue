@@ -1,6 +1,4 @@
 <template>
-  <!-- <v-card class="elevation-0" > -->
-
     <filter-map-widget-layout :title="title"
                               :highlightedText="highlightedText"
                               :pinnedAmount="pinnedIds.length"
@@ -67,8 +65,6 @@
       </template>
 
     </filter-map-widget-layout>
-
-  <!-- </v-card> -->
 </template>
 
 <script>
