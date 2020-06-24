@@ -13,7 +13,7 @@
                         mini-variant-width="60"
                         width="190" >
 
-    <v-list :class="`pt-${offsetTop}`" dense >
+    <v-list dense >
 
       <v-list-item v-for="(item, index) in navItemsMenuExcluded"
                   :key="index"
@@ -86,7 +86,6 @@ export default {
   props: {
     navItems: Array,
     version: String,
-    offsetTop: Number,
   },
   data: () => ({
     Logo,

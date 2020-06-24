@@ -18,7 +18,6 @@
     <the-navigation :style="`z-index: ${NavigationZIndex}`"
                     :navItems="navItems"
                     :version="appVersion"
-                    :offset-top="showToolbar ? 9 : 2"
                     @menuClick="catchMenuClicked"
                     @itemClick="catchItemClicked"
     />
