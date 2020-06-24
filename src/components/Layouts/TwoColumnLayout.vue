@@ -2,15 +2,13 @@
   <v-row style="z-index: 0;" >
 
     <v-col :class="firstColWidth"
-            class="pt-0"
-            cols="6" >
+            class="pt-0" >
       <slot name="leftColumn" />
     </v-col>
 
     <v-col v-if="secondColumn"
             class="pt-0"
-            :class="secondColWidth"
-            cols="6" >
+            :class="secondColWidth" >
       <slot name="rightColumn" />
     </v-col>
   </v-row>
