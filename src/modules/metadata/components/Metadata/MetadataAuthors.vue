@@ -6,23 +6,27 @@
 
     <v-container v-if="showAuthors"
                 fluid
-                class="heightAndScroll px-3 py-0" >
+                class="heightAndScroll pa-2 pt-0" >
 
-      <v-row v-if="showPlaceholder" >
+      <v-row v-if="showPlaceholder"
+              no-gutters >
         <v-col v-for="n in 2"
                   :key="n"
-                  cols="12" sm="6" >
+                  cols="12" sm="6"
+                  class="px-2 py-0" >
 
           <author-card-placeholder />
 
         </v-col>
       </v-row>
 
-      <v-row v-if="!showPlaceholder && authors && authors.length > 0" >
+      <v-row v-if="!showPlaceholder && authors && authors.length > 0"
+              no-gutters >
 
         <v-col v-for="author in authors"
                 :key="author.fullName"
-                cols="12" sm="6" >
+                cols="12" sm="6"
+                class="px-2 py-0" >
 
           <author-card :author="author"
                       :asciiDead="authorDeadInfo ? authorDeadInfo.asciiDead : ''"

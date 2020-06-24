@@ -1,10 +1,13 @@
 <template>
-    <v-card class="authorCard pa-3"
+    <v-card class="authorCard pa-4"
             :style="dynamicCardBackground"
             @click.native="cardClick" >
 
-      <v-card-title class="px-2 pt-2 pb-3">
-        <v-row >
+      <v-container fluid
+                    class="pa-0" >
+
+        <v-row no-gutters
+                class="pb-3">
 
           <v-col class="grow py-0" >
             <div class="authorTitle"
@@ -13,21 +16,25 @@
             </div>
           </v-col>
 
-          <v-col class="shrink py-0" v-if="authorIsDead"
-                  >
+          <v-col v-if="authorIsDead"
+                  class="shrink py-0" >
 
             <v-tooltip bottom>
-              <v-icon slot="activator"
-                      dark
-                      :class="dark ? 'white--text' : 'black--text'">
-                hourglass_empty
-              </v-icon>
+              <template v-slot:activator="{ on }">
+                <v-icon v-on="on"
+                        dark
+                        :class="dark ? 'white--text' : 'black--text'">
+                  hourglass_empty
+                </v-icon>
+              </template >
+
               {{ authorPassedInfo }}
             </v-tooltip>
 
           </v-col>
 
-          <v-col class="py-0" cols="12" >
+          <v-col class="py-0"
+                  cols="12" >
             <div class="authorTitle"
                   :class="dark ? 'white--text' : 'black--text'" >
               {{ authorIsDead ? author.lastName.replace(`(${asciiDead})`, '') : author.lastName }}
@@ -35,25 +42,24 @@
           </v-col>
 
         </v-row>
-      </v-card-title>
 
-      <v-card-title class="py-2 px-2">
-        <v-row 
-                  align="center"
-                  justify="space-between" >
+        <v-row no-gutters
+                class="py-1 readableText"
+                align="center"
+                justify="space-between" >
 
           <v-col cols="6"
                   :class="dark ? 'white--text' : 'black--text'" >
             {{ dataCountLabel }} 
           </v-col>
 
-          <v-col class="shrink py-0" 
-                  
+          <v-col class="shrink py-0"                  
                   style="max-height: 36px;">
+
             <base-icon-button class="ma-0"
                               material-icon-name="search"
                               :iconColor="dark ? 'white' : darkColor"
-                              :outlined="true"
+                              :isToggled="true"
                               :color="dark ? 'white' : darkColor"
                               :tooltipText="`Search for the datasets of ${author.firstName} ${author.lastName}`"
                               @clicked="catchSearchAuthor(author.fullName)" />
@@ -69,42 +75,40 @@
 
           </v-col>
         </v-row>
-      </v-card-title>
 
-      <v-card-title class="py-1 pb-2 px-2">
-        <data-credit-layout class="pa-0"
+        <data-credit-layout class="px-0 py-1 readableText"
                             :dataCredit="author.dataCredit"
                             :iconColor="dark ? 'white' : 'black'"
                             :badgeColor="dark ? 'white' : darkColor"
                             :dark="!dark" />
 
-      </v-card-title>
+        <v-row no-gutters
+                class="py-1 readableText"
+                justify="space-between"
+                align="center" >
 
-      <v-card-title class="pl-2 py-2 pr-0" >
-
-        <v-row 
-                  justify="space-between"
-                  align="center" >
-
-          <v-col class="shrink" 
+          <v-col class="grow" 
                   :class="dark ? 'white--text' : 'black--text'" >
             {{ dataScoreLabel }}
           </v-col>
 
-          <v-col class="grow" >
+          <v-col class="shrink" >
             <v-tooltip bottom>
-              <v-icon slot="activator"
-                      class="badgesIcon"
-                      dark
-                      :class="dark ? 'white--text' : 'black--text'">
-                info_outline
-              </v-icon>
+              <template v-slot:activator="{ on }">
+                <v-icon v-on="on"
+                        class="badgesIcon"
+                        dark
+                        :class="dark ? 'white--text' : 'black--text'">
+                  info_outline
+                </v-icon>
+              </template>
+
               {{ dataCreditScoreInfo }}
             </v-tooltip>
           </v-col>
 
-          <v-col class="shrink px-2" >
-            <div :style="`background-color: ${!this.dark ? darkColor : whiteColor};`"
+          <v-col class="shrink pl-2" >
+            <div :style="`background-color: ${ !this.dark ? darkColor : whiteColor };`"
                   class="dataCreditScore elevation-5">
 
               <div :style="bigCountStyling"
@@ -114,13 +118,12 @@
             </div>
           </v-col>
         </v-row>
-      </v-card-title>
 
-      <v-card-title class="pt-2 pb-0 px-2">
-        <v-row 
-                  align="center" >
+        <v-row no-gutters
+                class="py-1 readableText"
+                align="center" >
 
-          <v-col class="grow" @click="infosExpanded = !infosExpanded">
+          <v-col class="grow pr-5" @click="infosExpanded = !infosExpanded">
             <v-divider :dark="dark" />
           </v-col>
 
@@ -135,68 +138,71 @@
           </v-col>
         </v-row>
 
-        <v-container class="py-2 px-0 align" v-if="infosExpanded"
-                      fluid >
-          <v-row >
+        <v-row  v-if="infosExpanded"
+                class="py-1 readableText"
+                no-gutters
+                align="start">
 
-            <v-col class="shrink" v-if="author.email && !authorIsDead">
-              <v-row >
-                <v-col cols="12" 
-                        class="authorInfoLabel py-0"
-                        :class="dark ? 'white--text' : 'black--text'" >
-                  {{ emailLabel }}
-                </v-col>
+          <v-col v-if="author.email && !authorIsDead"
+                  cols="6" >
+            <v-row no-gutters>
+              <v-col cols="12" 
+                      class="authorInfoLabel py-0"
+                      :class="dark ? 'white--text' : 'black--text'" >
+                {{ emailLabel }}
+              </v-col>
 
-                <v-col cols="12" 
-                        class="authorInfo py-0"
-                        :class="dark ? 'white--text' : 'black--text'" >
-                  {{ author.email }}
-                </v-col>
-              </v-row>
-            </v-col>
+              <v-col cols="12" 
+                      class="authorInfo py-0"
+                      :class="dark ? 'white--text' : 'black--text'" >
+                {{ author.email }}
+              </v-col>
+            </v-row>
+          </v-col>
 
-            <v-col class="shrink" v-if="author.id && author.id.identifier">
-              <v-row >
-                <v-col cols="12" 
-                        class="authorInfoLabel py-0"
-                        :class="dark ? 'white--text' : 'black--text'" >
-                  {{ author.id.type ? author.id.type : idLabel }}
-                </v-col>
+          <v-col v-if="author.id && author.id.identifier"
+                  cols="6" >
+            <v-row no-gutters>
+              <v-col cols="12" 
+                      class="authorInfoLabel py-0"
+                      :class="dark ? 'white--text' : 'black--text'" >
+                {{ author.id.type ? author.id.type : idLabel }}
+              </v-col>
 
-                <v-col cols="12" 
-                        class="authorInfo py-0"
-                        :class="dark ? 'white--text' : 'black--text'" >
+              <v-col cols="12" 
+                      class="authorInfo py-0"
+                      :class="dark ? 'white--text' : 'black--text'" >
 
-                  <a v-if="(author.id.type && author.id.type === 'orcid') || isOrcId(formatIdentifier(author.id.identifier))"
-                      :href="`https://orcid.org/${formatIdentifier(author.id.identifier)}`"
-                      target="_blank" >
-                      {{ formatIdentifier(author.id.identifier) }}
-                  </a>
-                  <div v-else>{{ formatIdentifier(author.id.identifier) }}</div>
+                <a v-if="(author.id.type && author.id.type === 'orcid') || isOrcId(formatIdentifier(author.id.identifier))"
+                    :href="`https://orcid.org/${formatIdentifier(author.id.identifier)}`"
+                    target="_blank" >
+                    {{ formatIdentifier(author.id.identifier) }}
+                </a>
+                <div v-else>{{ formatIdentifier(author.id.identifier) }}</div>
 
-                </v-col>
-              </v-row>
-            </v-col>
+              </v-col>
+            </v-row>
+          </v-col>
 
-            <v-col class="shrink" v-if="author.affiliation">
-              <v-row >
-                <v-col cols="6" 
-                        class="authorInfoLabel py-0"
-                        :class="dark ? 'white--text' : 'black--text'" >
-                  {{ affiliationLabel }}
-                </v-col>
+          <v-col v-if="author.affiliation"
+                  cols="6">
+            <v-row no-gutters>
+              <v-col cols="12" 
+                      class="authorInfoLabel py-0"
+                      :class="dark ? 'white--text' : 'black--text'" >
+                {{ affiliationLabel }}
+              </v-col>
 
-                <v-col cols="6" 
-                        class="authorInfo py-0"
-                        :class="dark ? 'white--text' : 'black--text'" >
-                  {{ author.affiliation }}
-                </v-col>
-              </v-row>
-            </v-col>
-          </v-row>
+              <v-col cols="12" 
+                      class="authorInfo py-0"
+                      :class="dark ? 'white--text' : 'black--text'" >
+                {{ author.affiliation }}
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
 
-        </v-container>
-      </v-card-title>
+      </v-container>
 
       <div id="wrapper"
             style="position: absolute; top: 0; right: 0;"
@@ -298,7 +304,7 @@ export default {
       return score;
     },
     bigCountStyling() {
-      let style = `width: ${this.dataCreditSize}px; height: ${this.dataCreditSize}px;`;
+      let style = `width: ${this.dataCreditSize}px; height: ${this.dataCreditSize}px; line-height: 42px; `;
 
       if (this.dataCreditScore >= 100) {
         style = `${style}position: relative; top: 3px;`;
@@ -409,9 +415,7 @@ export default {
 
   .authorCard {
     border-radius: 20px;
-    /* min-width: 300px; */
-    /* max-width: 400px; */
-    /* min-height: 350px; */
+    line-height: 1rem;
   }
 
   .authorTitle {

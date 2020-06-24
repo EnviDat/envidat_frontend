@@ -1,14 +1,17 @@
 <template>
-  <v-container fluid>
-    <v-row >
+  <v-container fluid style="min-height: 67px;">
 
+    <v-row no-gutters>
       <v-col cols="12"
               :class="!dark ? 'white--text' : 'black--text'" >
         {{ label }}
       </v-col>
+    </v-row>
 
+    <v-row no-gutters>
       <v-col v-if="!hasDataCreditCounts"
               cols="12"
+              class="pt-4"
               :class="!dark ? 'white--text' : 'black--text'"       
               style="opacity: 0.65">
         {{ noCreditslabel }}
@@ -17,34 +20,33 @@
       <v-col v-show="showZero || (!showZero && dataCreditCounts[index] > 0)"
               v-for="(creditName, index) in dataCreditNames"
               :key="index"
-              class="shrink px-1" >
+              class="shrink pt-4 px-3" >
 
-        <v-row >
+      <v-hover v-slot:default="{ hover }" >
+        <v-badge class="dataCreditIcon"
+                  bordered
+                  :overlap="!hover"
+                  :color="badgeColor">
 
-          <v-col class="py-0" >
-            <v-tooltip bottom >
-              <v-icon slot="activator"
+          <span slot="badge"
+                :class="dark ? 'white--text' : 'black--text'" >
+                {{ dataCreditCounts[index] }}
+          </span>
+
+          <v-tooltip bottom >
+            <template v-slot:activator="{ on }">
+              <v-icon v-on="on"
                       :color="iconColor"
                       class="dataCreditIcon">
                 {{ iconLookup(creditName) }}
               </v-icon>
+            </template >
 
-              {{ creditName }}
-            </v-tooltip>
-          </v-col>
-
-          <v-col class="pt-0" >
-              <v-badge class="dataCreditIcon"
-                        :color="badgeColor">
-                <span slot="badge"
-                      :class="dark ? 'white--text' : 'black--text'" >
-                      {{ dataCreditCounts[index] }}
-                </span>
-              </v-badge>
-          </v-col>
-
-        </v-row>
-
+            {{ creditName }}
+          </v-tooltip>
+        </v-badge>
+        </v-hover>
+        
       </v-col>
     </v-row>
   </v-container>
@@ -53,6 +55,7 @@
 <script>
 
 export default {
+  name: 'DataCreditLayout',
   components: {
   },
   props: {
