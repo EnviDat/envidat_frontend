@@ -19,24 +19,26 @@
 
     <v-container v-if="resources && resources.length > 0"
                 fluid
-                class="heightAndScroll px-5 py-0" >
+                class="heightAndScroll pa-2 pt-0" >
 
-      <v-row v-if="showPlaceholder" >
+      <v-row v-if="showPlaceholder"
+              no-gutters >
         <v-col v-for="n in 2"
                   :key="n"
                   cols="12" sm="6"
-                  class="pa-1" >
+                  class="px-2 py-0" >
 
           <resource-card-placeholder :two-column-layout="twoColumnLayout" />
         </v-col>
       </v-row>
 
-      <v-row v-if="!showPlaceholder" >
+      <v-row v-if="!showPlaceholder"
+              no-gutters >
 
         <v-col v-for="res in resources"
                 :key="res.id"
                 cols="12" sm="6"
-                class="pa-1" >
+                class="px-2 py-0" >
 
           <resource-card v-bind="res"
                           :doiIcon="doiIcon"
