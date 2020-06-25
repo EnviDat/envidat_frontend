@@ -8,22 +8,25 @@
                         @onScroll="onScroll" >
 
     <template v-slot:filterKeywords>
-      <filter-keywords-view :compactLayout="$vuetify.breakpoint.smAndDown"
+      <filter-keywords-view class="my-1" 
+                            :compactLayout="$vuetify.breakpoint.smAndDown"
                             :allTags="allTags"
                             :selectedTagNames="selectedTagNames"
                             :showPlaceholder="loading || updatingTags"
                             @clickedTag="catchTagClicked"
                             @clickedTagClose="catchTagCloseClicked"
-                            @clickedClear="catchTagCleared" class="my-1" />
+                            @clickedClear="catchTagCleared" />
     </template>
 
     <template v-slot:controlPanel>
       <v-card style="min-height: 36px; ">
-        <v-container class="px-2 py-0" fluid>
-        <v-row align="center" justify="space-between">
+        <v-container class="px-2 py-0"
+                      fluid>
+        <v-row align="center"
+                justify="space-between">
           <v-col class="py-0">
-          <small-search-bar-view :compactLayout="$vuetify.breakpoint.smAndDown"
-                                  class="elevation-0"
+          <small-search-bar-view class="elevation-0"
+                                  :compactLayout="$vuetify.breakpoint.smAndDown"
                                   :searchTerm="searchTerm"
                                   :showSearch="showSearch"
                                   :showSearchCount="true"
@@ -34,6 +37,7 @@
                                   :loading="loading"
                                   @clicked="catchSearchClicked"
                                  @searchCleared="catchSearchCleared">
+
             <template v-slot:append-outer>
               <v-col class="hidden-xs-only pa-0 ml-2" style="white-space: nowrap">
                 <list-control-toggle :controls="controlsActive"
@@ -61,7 +65,8 @@
 
     <template v-slot:metadataListPlaceholder>
       <v-container v-show="loading"
-                    fluid class="fill-height py-0 px-2">
+                    fluid
+                    class="py-0 px-1">
       <v-row ref="metadataListPlaceholder" >
 
         <v-col v-for="(n, index) in placeHolderAmount"
@@ -77,17 +82,18 @@
 
     <template v-slot:metadataListLayout >
       <v-container v-if="!loading"
-                  fluid class="fill-height py-0 px-2">
+                  fluid
+                  class="py-0 px-1">
       <v-row ref="metadataListLayout" >
 
         <v-col v-for="(pinnedId, index) in pinnedList"
                 :key="'pinned_' + index"
                 :class="cardGridClass"
-                class="pa-1" >
+                class="pa-2" >
 
-          <metadata-card :id="pinnedId"
+          <metadata-card class="highlighted"
+                          :id="pinnedId"
                           :ref="pinnedId"
-                          class="highlighted"
                           :title="metadatasContent[pinnedId].title"
                           :name="metadatasContent[pinnedId].name"
                           :subtitle="metadatasContent[pinnedId].notes"
@@ -102,7 +108,6 @@
                           :lockedIconString="lockedIconString"
                           :unlockedIconString="unlockedIconString"
                           :categoryColor="metadatasContent[pinnedId].categoryColor"
-                          :categoryCards="categoryCards"
                           @clickedEvent="metaDataClicked"
                           @clickedTag="catchTagClicked" />
         </v-col>
@@ -562,7 +567,7 @@ export default {
   }
 
   .highlighted {
-    box-shadow: #4db6ac 0px 0px 5px 5px;
+    box-shadow: #4db6ac 0px 0px 5px 5px !important;
   }
 
 </style>
