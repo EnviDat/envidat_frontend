@@ -1,6 +1,6 @@
 <template>
   <span>
-    <v-btn fab left fixed style="z-index: 9999999;" bottom v-if="smallScreen && !show" @click="show = true">
+    <v-btn fab left fixed style="z-index: 9999999;" bottom v-if="smallScreen && !show" @click="setShow(true)">
       <v-icon>
         menu
       </v-icon>
@@ -8,8 +8,10 @@
   <v-navigation-drawer app
                        :permanent="!smallScreen"
                         clipped
-                        :mini-variant="mini"
-                       v-model="show"
+                       :mini-variant="mini"
+                       :value="show"
+                       @change="setShow"
+                       @input="onInput"
                         mini-variant-width="60"
                         width="190" >
 
@@ -65,7 +67,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item link @click.stop="show =!show">
+      <v-list-item link @click.stop="setShow(!show)">
         <v-list-item-icon >
           <v-icon color="primary">
             {{ mini ? 'chevron_right' : 'chevron_left' }}
@@ -94,7 +96,7 @@ export default {
   }),
   computed: {
     mini() {
-      return !this.show && !this.smallScreen;
+      return !this.smallScreen && !this.show;
     },
     smallScreen() {
       return this.$vuetify.breakpoint.smAndDown;
@@ -124,6 +126,15 @@ export default {
     },
   },
   methods: {
+    setShow(value) {
+      this.show = value;
+    },
+    // Hack: NavigationDrawer Input events should only take effect on smallScreen
+    onInput(value) {
+      if (this.smallScreen) {
+        this.setShow(value);
+      }
+    },
     itemClick(item) {
       this.$emit('itemClick', item);
     },
