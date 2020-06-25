@@ -39,21 +39,21 @@
 
     </div>
 
-    <v-container :class="mdScreen ? 'px-3 py-0' : 'py-0 px-2'" >
+    <v-container :class="mdScreen ? 'px-1 py-0' : 'py-0 px-2'" >
 
-      <v-row v-if="topLayout" no-gutters class="my-2">
+      <v-row v-if="topLayout" no-gutters class="my-2" justify="end">
 
-        <v-col>
+        <v-col class="shrink mx-3">
           <slot name="focus" />
         </v-col>
 
-        <v-col v-if="hasPins">
+        <v-col v-if="hasPins" class="shrink mx-3">
           <slot name="pinEnabled" />
         </v-col>
-        <v-col v-if="hasMultiPins">
+        <v-col v-if="hasMultiPins" class="shrink mx-3">
           <slot name="multiPinEnabled" />
         </v-col>
-        <v-col v-if="hasPolygons">
+        <v-col v-if="hasPolygons" class="shrink mx-3">
           <slot name="polygonEnabled" />
         </v-col>
       </v-row>
@@ -93,42 +93,47 @@
           {{ focusText }}
         </v-col>
 
-        <v-col class="py-1 mx-3" md="12" lg="3" >
+        <v-col class="py-1" md="12" lg="3" :class="!topLayout ? 'mx-8' : 'mx-3'">
           <slot name="focus" />
         </v-col>
-
         <v-col v-if="hasPins"
+               :class="!topLayout ? 'mx-8' : 'mx-3'"
                 class="hidden-md-and-down py-1 mx-3"
                 lg="9" >
           {{ pinText }}
         </v-col>
 
         <v-col v-if="hasPins"
-                class="py-1 mx-3"
+               :class="!topLayout ? 'mx-8' : 'mx-3'"
+                class="py-1"
                 md="12" lg="3" >
           <slot name="pinEnabled" />
         </v-col>
 
         <v-col v-if="hasMultiPins"
+               :class="!topLayout ? 'mx-8' : 'mx-3'"
                 class="hidden-md-and-down py-1 mx-3"
                 lg="9" >
           {{ multiPinText }}
         </v-col>
 
         <v-col v-if="hasMultiPins"
-                class="py-1 mx-3"
+               :class="!topLayout ? 'mx-8' : 'mx-3'"
+                class="py-1"
                 md="12" lg="3" >
           <slot name="multiPinEnabled" />
         </v-col>
 
         <v-col v-if="hasPolygons"
-                class="hidden-md-and-down py-1 mx-3"
+               :class="!topLayout ? 'mx-8' : 'mx-3'"
+                class="hidden-md-and-down py-1"
                 lg="9" >
           {{ polygonText }}
         </v-col>
 
         <v-col v-if="hasPolygons"
-                class="py-1 mx-3"
+                class="py-1"
+               :class="!topLayout ? 'mx-8' : 'mx-3'"
                 md="12" lg="3" >
           <slot name="polygonEnabled" />
         </v-col>
