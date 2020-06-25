@@ -26,7 +26,7 @@
                           iconColor="black"
                           color="highlight"
                           :isSmall="mdScreen"
-                          :outlined="true"
+                          :isToggled="true"
                           :tooltipText="focusText"
                           @clicked="catchFocusClicked()" />
       </template>
@@ -35,9 +35,9 @@
         <base-icon-button :count="pinNumber"
                           :customIcon="pinIcon"
                           color="secondary"
-                          :outlined="true"
+                          :fillColor="pinEnabled ? $vuetify.theme.themes.light.primary : 'transparent'"
                           :isSmall="mdScreen"
-                          :isToggled="pinEnabled"
+                          :isToggled="true"
                           :tooltipText="pinText"
                           @clicked="catchPinClicked()" />
       </template>
@@ -46,7 +46,8 @@
         <base-icon-button :count="multiPinNumber"
                           :customIcon="multiPinIcon"
                           color="secondary"
-                          :outlined="multiPinEnabled"
+                          :fillColor="multiPinEnabled ? $vuetify.theme.themes.light.primary : 'transparent'"
+                          :isToggled="true"
                           :isSmall="mdScreen"
                           :tooltipText="multiPinText"
                           @clicked="catchMultipinClicked()" />
@@ -57,9 +58,9 @@
                           materialIconName="layers"
                           iconColor="black"
                           color="secondary"
-                          :outlined="true"
+                          :fillColor="polygonEnabled ? $vuetify.theme.themes.light.primary : 'transparent'"
                           :isSmall="mdScreen"
-                          :isToggled="polygonEnabled"
+                          :isToggled="true"
                           :tooltipText="polygonText"
                           @clicked="catchPolygonClicked()" />
       </template>

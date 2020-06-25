@@ -1,13 +1,14 @@
 <template>
   <div :style="isSmall ? 'height: 28px;' : 'height: 36px;'"
         @mouseover="hoverBadge = true"
-        @mouseleave="hoverBadge = false" >
+        @mouseleave="hoverBadge = false">
 
     <v-tooltip v-if="$vuetify.breakpoint.mdAndUp && tooltipText"
                 v-bind="{ top: !tooltipBottom, bottom: tooltipBottom }" >
 
       <template v-slot:activator="{ on }">
         <v-btn v-on="on"
+               :style="{backgroundColor: fillColor ? fillColor : ''}"
                 style="margin: 0 !important;"
                 :icon="!isElevated"
                 :fab="isElevated"
@@ -20,8 +21,7 @@
                 @click.stop="onClick" >
 
 
-          <div v-if="customIcon"
-                class="iconCentering" >
+          <div v-if="customIcon">
 
             <img class="envidatIcon"
                 :alt="`${customIcon} icon`"
@@ -40,6 +40,7 @@
     </v-tooltip>
 
     <v-btn v-else
+           :style="{backgroundColor: fillColor ? fillColor : ''}"
           style="margin: 0 !important;"
           :icon="!isElevated"
           :fab="isElevated"
@@ -50,7 +51,6 @@
           :disabled="disabled"
           v-bind="{['target'] : '_blank' }"
           @click.stop="onClick" >
-
 
       <div v-if="customIcon"
             class="iconCentering" >
@@ -118,6 +118,7 @@
 export default {
   name: 'BaseIconButton',
   props: {
+    fillColor: String,
     customIcon: String,
     materialIconName: String,
     tooltipText: String,
