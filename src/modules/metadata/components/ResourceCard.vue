@@ -10,98 +10,64 @@
     <v-card-text class="pt-0 white--text"
                   :class="{ 'pb-3': $vuetify.breakpoint.mdAndUp,
                             'pb-5': $vuetify.breakpoint.smAndDown, }" >
-      <v-container :class="{ 'pb-5': $vuetify.breakpoint.mdAndUp }"
-                    class="px-1 py-0"
+
+      <v-container class="pa-0"
                     fluid >
         <v-row no-gutters >
-
-          <v-col :class="{ 'cols-6': !this.twoColumnLayout && !showFullDescription,
-                            'cols-12': this.twoColumnLayout || showFullDescription }"
-                  order="1"
-                  order-sm="3" >
-            <v-row no-gutters >
-              <v-col v-if="showFullDescription"
-                      class="readableText resourceCardText heightAndScroll"
-                      v-html="markdownText" >
-              </v-col>
-
-              <v-col v-if="!showFullDescription"
-                      class="readableText resourceCardText" >
-                {{ markdownTextTruncated }}
-              </v-col>
-            </v-row>
+          <v-col v-if="showFullDescription"
+                  class="readableText resourceCardText heightAndScroll"
+                  v-html="markdownText" >
           </v-col>
 
           <v-col v-if="!showFullDescription"
-                  class="hidden-sm-and-up"
-                  order="2" >
-            <v-divider :dark="dark"
-                        class="my-1" />
-          </v-col>
-
-          <v-col v-if="!showFullDescription"
-                  :class="{ [`cols-6`]: !this.twoColumnLayout ,
-                            [`cols-12`]: this.twoColumnLayout,
-                            [`pt-3`]: this.twoColumnLayout }"
-                  order="3"
-                  order-sm="1"
-                  class="resourceInfo" >
-            <v-row v-if="doi"
-                    no-gutters >
-              <v-col >
-                <base-icon-label-view v-if="doi"
-                                      :text="doi"
-                                      :icon="doiIcon"
-                                      icon-tooltip="Data Object Identifier"
-                                      :align-left="twoColumnLayout" />
-              </v-col>
-            </v-row >
-
-            <v-row v-if="format"
-                    no-gutters  >
-              <v-col >
-                <base-icon-label-view v-if="format" 
-                                      :text="format"
-                                      :icon="extensionIcon()"
-                                      icon-tooltip="Format of the file"
-                                      :align-left="twoColumnLayout" />
-              </v-col>
-            </v-row >
-
-            <v-row v-if="size"
-                    no-gutters  >
-              <v-col >
-                <base-icon-label-view v-if="size" 
-                                      :text="formatedBytes"
-                                      :icon="fileSizeIcon"
-                                      icon-tooltip="Filesize"
-                                      :align-left="twoColumnLayout" />
-              </v-col>
-            </v-row >
-
-            <v-row v-if="created"
-                    no-gutters  >
-              <v-col >
-                <base-icon-label-view v-if="created" 
-                                      :text="created"
-                                      :icon="dateCreatedIcon"
-                                      icon-tooltip="Date of file creation"
-                                      :align-left="twoColumnLayout" />
-              </v-col>
-            </v-row >
-
-            <v-row v-if="lastModified"
-                    no-gutters  >
-              <v-col >
-                <base-icon-label-view v-if="lastModified" 
-                                      :text="lastModified"
-                                      :icon="lastModifiedIcon"
-                                      icon-tooltip="Date of last modification"
-                                      :align-left="twoColumnLayout" />
-              </v-col>
-            </v-row>
+                  class="readableText resourceCardText" >
+            {{ markdownTextTruncated }}
           </v-col>
         </v-row>
+
+        <v-row v-if="!showFullDescription"
+                no-gutters >
+          <v-col >
+            <v-divider :dark="dark"
+                        class="my-2" />
+          </v-col>
+        </v-row>
+
+        <v-row v-if="!showFullDescription"
+                no-gutters >
+          <v-col class="resourceInfo" >
+            <base-icon-label-view v-if="doi"
+                                  :text="doi"
+                                  :icon="doiIcon"
+                                  icon-tooltip="Data Object Identifier"
+                                  :align-left="twoColumnLayout" />
+
+            <base-icon-label-view v-if="format" 
+                                  :text="format"
+                                  :icon="extensionIcon()"
+                                  icon-tooltip="Format of the file"
+                                  :align-left="twoColumnLayout" />
+
+            <base-icon-label-view v-if="size" 
+                                  :text="formatedBytes"
+                                  :icon="fileSizeIcon"
+                                  icon-tooltip="Filesize"
+                                  :align-left="twoColumnLayout" />
+
+            <base-icon-label-view v-if="created" 
+                                  :text="created"
+                                  :icon="dateCreatedIcon"
+                                  icon-tooltip="Date of file creation"
+                                  :align-left="twoColumnLayout" />
+
+            <base-icon-label-view v-if="lastModified" 
+                                  :text="lastModified"
+                                  :icon="lastModifiedIcon"
+                                  icon-tooltip="Date of last modification"
+                                  :align-left="twoColumnLayout" />
+          </v-col>
+        </v-row>
+
       </v-container>
     </v-card-text>
 
@@ -109,6 +75,7 @@
                     style="position: absolute; bottom: 0px; right: 50px;" >
 
       <base-icon-button v-if="maxDescriptionLengthReached"
+                        :class="isProtected ? 'mr-2' : ''"
                         material-icon-name="expand_more"
                         iconColor="accent"
                         color="accent"
@@ -345,6 +312,7 @@ export default {
 
   .resourceInfo {
     font-size: 12px !important;
+    line-height: 0.8rem !important;
     opacity: 0.9;
   }
 </style>

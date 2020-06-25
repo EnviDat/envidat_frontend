@@ -28,7 +28,7 @@
                   cols="12" sm="6"
                   class="pa-2" >
 
-          <resource-card-placeholder :two-column-layout="twoColumnLayout" />
+          <resource-card-placeholder />
         </v-col>
       </v-row>
 
