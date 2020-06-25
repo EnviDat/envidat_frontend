@@ -42,8 +42,6 @@
 
           <resource-card v-bind="res"
                           :doiIcon="doiIcon"
-                          :linkIcon="linkIcon"
-                          :downloadIcon="downloadIcon"
                           :fileSizeIcon="fileSizeIcon"
                           :dateCreatedIcon="dateCreatedIcon"
                           :lastModifiedIcon="lastModifiedIcon"
@@ -109,12 +107,6 @@ export default {
     },
     doiIcon() {
       return this.mixinMethods_getGenericProp('doiIcon');
-    },
-    downloadIcon() {
-      return this.mixinMethods_getGenericProp('downloadIcon');
-    },
-    linkIcon() {
-      return this.mixinMethods_getGenericProp('linkIcon');
     },
     fileSizeIcon() {
       return this.mixinMethods_getGenericProp('fileSizeIcon');
