@@ -4,28 +4,26 @@
           style="height: 100%;"
           @click.native="cardClick" >
           
+    <!-- <v-card-title primary-title class="pa-0"> -->
 
-    <v-card-title primary-title class="pa-0">
+    <v-container fluid class="pa-0">
+      <v-row no-gutters>
+        <v-col >
 
-    <v-img :style="headerImageStyle"
-            :height="flatLayout ? '55px' : $vuetify.breakpoint.smAndDown ? '90px' : '115px'" >
+          <v-img :style="headerImageStyle"
+                  :height="flatLayout ? '55px' : $vuetify.breakpoint.smAndDown ? '90px' : '115px'" >
 
-      <v-container fluid >
-        <v-row no-gutters>
-          <v-col v-if="!maxTitleLengthReached || $vuetify.breakpoint.xsOnly"
-                  cols="12" >
-            <div class="headline mb-0"
+            <div v-if="!maxTitleLengthReached || $vuetify.breakpoint.xsOnly"
+                class="pa-4 headline mb-0"
                 :class="titleClass" >
               {{ truncatedTitle }}
             </div>
-          </v-col>
 
-          <v-col v-if="maxTitleLengthReached && !$vuetify.breakpoint.xsOnly"
-                  cols="12" >
-            <v-tooltip bottom >
+            <v-tooltip v-if="maxTitleLengthReached && !$vuetify.breakpoint.xsOnly"
+                        bottom >
               <template v-slot:activator="{ on }">
                 <div v-on="on"
-                      class="headline mb-0"
+                      class="pa-4 headline mb-0"
                       :class="titleClass" >
                   {{ truncatedTitle }}
                 </div>
@@ -33,46 +31,48 @@
 
               <span>{{ title }}</span>
             </v-tooltip>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-img>
-    </v-card-title>
+          </v-img>
+        </v-col>
+      </v-row>
+    </v-container>
+    <!-- </v-card-title> -->
 
     <v-card-text py-2 
                   :class="{['cardText'] : $vuetify.breakpoint.mdAndUp,
                         ['compactText'] : flatLayout || $vuetify.breakpoint.smAndDown,
                         ['pr-5'] : flatLayout,
-                        ['pr-4'] : !flatLayout,
                   }" >
 
-      <v-container fluid class="pa-0 justify-between" >
-      <v-row >
-        <v-col v-if="!compactLayout"
-                cols="12"
-                class="pa-2" >
+      <v-container fluid class="pa-0 fill-height" >
+      <v-row v-if="!compactLayout"
+              no-gutters >
+        <v-col cols="12" >
           {{ truncatedSubtitle }}
         </v-col>
       </v-row>
 
-      <v-spacer></v-spacer>
-
       <v-row >
-        <v-col v-if="tags"
-                class="px-1" 
-                cols="12"
-                style="overflow: hidden;">
+        <v-col cols="12">
+          <v-spacer></v-spacer>
+        </v-col>
+      </v-row>
 
-            <tag-chip py-0
-                      v-for="(tag, index) in tags.slice (0, maxTagNumber)"
-                      :key="index"
+      <v-row v-if="tags"
+              no-gutters >
+        <v-col v-for="(tag, index) in tags.slice (0, maxTagNumber)"
+                :key="index"
+                class="shrink" >
+
+            <tag-chip class="py-0"
                       :name="tag.name"
                       :selectable="true"
                       :color="tag.color"
                       @clicked="catchTagClicked($event, tag.name)" />
 
-            <tag-chip v-if="maxTagsReached"
-                      py-0
+        </v-col>
+        <v-col v-if="maxTagsReached"
+                class="shrink" >
+            <tag-chip class="py-0"
                       name="..." />
 
         </v-col>
