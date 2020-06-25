@@ -134,7 +134,8 @@
       <base-icon-button v-if="!isProtected"
                         class="fabPosition ma-2"
                         style="height: 40px; width: 40px;"
-                        :customIcon="isFile ? downloadIcon : linkIcon"
+                        :materialIconName="isFile ? 'file_download' : 'link'"
+                        iconColor="black"
                         color="accent"
                         :isElevated="true"
                         :tooltipText="isFile ? 'Download file' : 'Open link'"
@@ -182,8 +183,6 @@ export default {
     twoColumnLayout: Boolean,
     height: String,
     dark: Boolean,
-    downloadIcon: String,
-    linkIcon: String,
     doiIcon: String,
     fileSizeIcon: String,
     dateCreatedIcon: String,

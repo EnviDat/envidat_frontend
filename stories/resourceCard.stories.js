@@ -11,8 +11,6 @@ import ResourceCardPlaceholder from '@/modules/metadata/components/ResourceCardP
 
 import fileSizeIcon from '@/assets/icons/fileSize.png';
 import doiIcon from '@/assets/icons/doi.png';
-import linkIcon from '@/assets/icons/link.png';
-import downloadIcon from '@/assets/icons/download.png';
 import dateCreatedIcon from '@/assets/icons/dateCreated.png';
 import lastModifiedIcon from '@/assets/icons/dateModified.png';
 import unFormatedMetadataCards from '@/stories/js/metadata';
@@ -79,8 +77,6 @@ storiesOf('3 Cards | Resource Cards', module)
         <resource-card
           v-bind="res"
           :doiIcon="doiIcon"
-          :linkIcon="linkIcon"
-          :downloadIcon="downloadIcon"
           :fileSizeIcon="fileSizeIcon"
           :dateCreatedIcon="dateCreatedIcon"
           :lastModifiedIcon="lastModifiedIcon"
@@ -103,8 +99,6 @@ storiesOf('3 Cards | Resource Cards', module)
       v-bind="res"
       :doiIcon="doiIcon"
       :linkIcon="linkIcon"
-      :downloadIcon="downloadIcon"
-      :fileSizeIcon="fileSizeIcon"
       :dateCreatedIcon="dateCreatedIcon"
       :lastModifiedIcon="lastModifiedIcon"
       :fileExtensionIcon="iconFiles"
@@ -126,8 +120,6 @@ storiesOf('3 Cards | Resource Cards', module)
       v-bind="res"
       :doiIcon="doiIcon"
       :linkIcon="linkIcon"
-      :downloadIcon="downloadIcon"
-      :fileSizeIcon="fileSizeIcon"
       :dateCreatedIcon="dateCreatedIcon"
       :lastModifiedIcon="lastModifiedIcon"
       twoColumnLayout
@@ -144,8 +136,6 @@ storiesOf('3 Cards | Resource Cards', module)
     data: () => ({
       metadataCards,
       doiIcon,
-      linkIcon,
-      downloadIcon,
       fileSizeIcon,
       dateCreatedIcon,
       lastModifiedIcon,
@@ -168,8 +158,6 @@ storiesOf('3 Cards | Resource Cards', module)
           v-bind="res"
           :doiIcon="doiIcon"
           :linkIcon="linkIcon"
-          :downloadIcon="downloadIcon"
-          :fileSizeIcon="fileSizeIcon"
           :dateCreatedIcon="dateCreatedIcon"
           :lastModifiedIcon="lastModifiedIcon"
           :fileExtensionIcon="iconFiles"
@@ -190,8 +178,6 @@ storiesOf('3 Cards | Resource Cards', module)
       v-bind="res"
       :doiIcon="doiIcon"
       :linkIcon="linkIcon"
-      :downloadIcon="downloadIcon"
-      :fileSizeIcon="fileSizeIcon"
       :dateCreatedIcon="dateCreatedIcon"
       :lastModifiedIcon="lastModifiedIcon"
       :fileExtensionIcon="iconFiles"
@@ -212,8 +198,6 @@ storiesOf('3 Cards | Resource Cards', module)
       v-bind="res"
       :doiIcon="doiIcon"
       :linkIcon="linkIcon"
-      :downloadIcon="downloadIcon"
-      :fileSizeIcon="fileSizeIcon"
       :dateCreatedIcon="dateCreatedIcon"
       :lastModifiedIcon="lastModifiedIcon"
       :fileExtensionIcon="iconFiles"
@@ -229,8 +213,6 @@ storiesOf('3 Cards | Resource Cards', module)
     data: () => ({
       metadataCards,
       doiIcon,
-      linkIcon,
-      downloadIcon,
       fileSizeIcon,
       dateCreatedIcon,
       lastModifiedIcon,
