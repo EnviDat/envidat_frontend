@@ -64,7 +64,6 @@ export default {
   components: {
   },
   props: {
-    twoColumnLayout: Boolean,
   },
   data: () => ({
   }),
