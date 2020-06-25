@@ -5,11 +5,12 @@
 
     <template v-slot:activator="{ on }">
     <v-row v-on="on"
+          no-gutters
           align="center" >
 
       <v-col v-if="icon && iconTooltip"
             :class="alignClass"
-            class="py-0 px-1 iconCentering shrink"
+            class="iconCentering shrink"
             style="position: relative: top: 2px; max-width: 100%" >
 
         <img class="envidatIcon"
@@ -32,19 +33,16 @@
 
       <v-col v-if="label"
               cols="4"
-              class="py-0 px-1"
               :style="textStyle" >
         {{ label }}
       </v-col>
 
       <v-col v-if="text && !url"
-              class="py-0 px-1"
               :style="textStyle" >
         {{ text }}
       </v-col>
 
       <v-col v-if="url"
-              class="py-0 px-1"
               :style="textStyle" >
         <a :href="url" target="_blank" rel="noopener noreferrer">{{ text ? text : url }}</a>
       </v-col>
