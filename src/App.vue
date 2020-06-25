@@ -19,8 +19,7 @@
                     :navItems="navItems"
                     :version="appVersion"
                     @menuClick="catchMenuClicked"
-                    @itemClick="catchItemClicked"
-    />
+                    @itemClick="catchItemClicked" />
 
     <the-navigation-toolbar v-if="showToolbar"
                             ref="TheNavigationToolbar"
@@ -473,7 +472,7 @@ export default {
 }
 
 .smallChip {
-  height: 1.2rem !important;
+  height: 1.25rem !important;
   font-size: 0.55rem !important;
 }
 .smallChip > .v-chip__content > .v-chip__close > .v-icon {
