@@ -7,7 +7,7 @@
 
     <v-card-title primary-title class="pa-0">
 
-    <v-img :style="!flatLayout ? dynamicCardBackground : `background-color: ${this.categoryColor}`"
+    <v-img :style="headerImageStyle"
             :height="flatLayout ? '55px' : $vuetify.breakpoint.smAndDown ? '90px' : '115px'" >
 
       <v-container fluid >
@@ -175,6 +175,12 @@ export default {
     mode: String,
   },
   computed: {
+    headerImageStyle() {
+      const topBorderStyle = 'border-top-left-radius: 4px; border-top-right-radius: 4px; ';
+      const imgStyle = !this.flatLayout ? this.dynamicCardBackground : `background-color: ${this.categoryColor}; `;
+
+      return `${topBorderStyle} ${imgStyle}`;
+    },
     dynamicCardBackground() {
       const gradient = this.dark ? this.blackTopToBottom : this.whiteTopToBottom;
 
