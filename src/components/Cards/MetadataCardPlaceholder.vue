@@ -30,9 +30,11 @@
       </div>
 
       <v-row class="fill-height" 
-              align="end" >
+              align="end"
+              no-gutters >
         <v-col v-for="n in 3"
-                :key="n">
+                :key="n"
+                class="shrink">
           <tag-chip-placeholder py-0
                                 class="envidatChip" />
         </v-col>
