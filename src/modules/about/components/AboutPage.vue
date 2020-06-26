@@ -1,30 +1,34 @@
 <template>
   <v-container class="pa-0 ma-0" tag="article">
+      <!-- Tabs -->
+      <v-tabs v-model="activeTab" slider-color="accent" grow background-color="highlight">
+        <v-tab v-for="tab in tabs" :key="tab.name" class="pa-0">
+          <v-icon>{{tab.icon}}</v-icon>
+        </v-tab>
+      </v-tabs>
 
-    <!-- Tabs -->
-        <v-tabs v-model="activeTab" slider-color="accent" grow background-color="highlight">
-          <v-tab v-for="tab in tabs" :key="tab.name" class="pa-0">
-            <v-icon>{{tab.icon}}</v-icon>
-          </v-tab>
-        </v-tabs>
+      <!-- Tab contents -->
+      <v-tabs-items v-model="activeTab">
 
-    <!-- Tab contents -->
-    <v-tabs-items v-model="activeTab">
+        <!-- About -->
+        <v-tab-item :key="tabs[0].name">
 
-          <!-- About -->
-          <v-tab-item :key="tabs[0].name">
-            <v-col class="mt-3" cols="12">
+          <v-row no-gutters
+                 :class="{'px-4': $vuetify.breakpoint.mdAndUp,
+                          'px-3': $vuetify.breakpoint.sm }" >
+
+            <v-col class="pt-3" cols="12">
               <img-and-text-layout :img="missionImg"
                                     :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
                                     title="About EnviDat" />
             </v-col>
 
-            <v-col class="px-3 mt-5" cols="12" >
+            <v-col class="pt-5" cols="12" >
 
               <v-container class="pa-0">
-                <v-row>
+                <v-row >
 
-                  <v-col class="my-2" v-for="(card, index) in aboutCardInfo"
+                  <v-col v-for="(card, index) in aboutCardInfo"
                           :key="index"
                           :class="card.widthClass" >
 
@@ -39,59 +43,43 @@
 
               </v-container>
             </v-col>
-          </v-tab-item>
+          </v-row>
+        </v-tab-item>
 
-          <!-- Guidelines -->
-          <v-tab-item :key="tabs[1].name">
-            <v-col class="mt-3" cols="12" >
-              <img-and-text-layout :img="guidelineImg"
-                                    :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
-                                    title="Guidelines" />
-            </v-col>
+        <!-- Guidelines -->
+        <v-tab-item :key="tabs[1].name">
 
-            <v-col class="pt-5" v-if="guidelinesLoading" cols="12">
-              Loading Guidelines...
-            </v-col>
-            <v-col class="pt-5" v-else cols="12" v-html="guidelinesMarkdownText">
-            </v-col>
+          <about-tab-layout title="Guidelines"
+                            :titleImage="guidelineImg"
+                            :loading="guidelinesLoading"
+                            loadingText="Loading Guidelines..."
+                            :markdownContent="guidelinesMarkdownText" />
 
-          </v-tab-item>
+        </v-tab-item>
 
-          <!-- Policies -->
-          <v-tab-item :key="tabs[2].name">
-            <v-col class="mt-3" cols="12" >
-              <img-and-text-layout :img="policiesImg"
-                                    :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
-                                    title="Policies" />
-            </v-col>
+        <!-- Policies -->
+        <v-tab-item :key="tabs[2].name">
 
-            <v-col class="pt-5" v-if="policiesLoading" cols="12">
-              Loading Policies...
-            </v-col>
-            <v-col class="pt-5" v-else
-                    cols="12"
-                    v-html="policiesMarkdownText" >
-            </v-col>
-          </v-tab-item>
+          <about-tab-layout title="Policies"
+                            :titleImage="policiesImg"
+                            :loading="policiesLoading"
+                            loadingText="Loading Policies..."
+                            :markdownContent="policiesMarkdownText" />
 
-          <!-- DMP -->
-          <v-tab-item :key="tabs[3].name">
-            <v-col class="mt-3" cols="12" >
-              <img-and-text-layout :img="dmpImg"
-                                    :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
-                                    title="Data Management Plan" />
-            </v-col>
+        </v-tab-item>
 
-            <v-col class="shrink pt-5" v-if="dmpLoading" offset-md="1" offset-lg="1">
-              Loading DMP Infos...
-            </v-col>
+        <!-- DMP -->
+        <v-tab-item :key="tabs[3].name">
 
-            <v-col class="pt-5" v-if="!dmpLoading"
-                    cols="12"
-                    v-html="dmpMarkdownText" >
-            </v-col>
-          </v-tab-item>
-    </v-tabs-items>
+          <about-tab-layout title="Data Management Plan"
+                            :titleImage="dmpImg"
+                            :loading="dmpLoading"
+                            loadingText="Loading Data Management Plan infos..."
+                            :markdownContent="dmpMarkdownText" />
+
+        </v-tab-item>
+      </v-tabs-items>
+
   </v-container>
 </template>
 
@@ -149,6 +137,7 @@ import guidelines from '@/modules/about/assets/guidelines.jpg';
 import guidelinesSmall from '@/modules/about/assets/guidelines_small.jpg';
 
 import ExpandableCard from '@/modules/about/components/ExpandableCard';
+import AboutTabLayout from './AboutTabLayout';
 import dmp from '../assets/dmp.jpg';
 import dmpSmall from '../assets/dmp_small.jpg';
 
@@ -196,32 +185,32 @@ export default {
           title: 'Our Mission',
           text: 'EnviDat is the environmental data portal and repository developed by the Swiss Federal Research Institute WSL. We have the capability to integrate, host and publish data sets. We make environmental monitoring and research data accessible. <p><a href="https://www.wsl.ch/en/about-wsl/programmes-and-initiatives/envidat.html" target="_blank" onclick="event.stopPropagation();" >More about EnviDat as Program of WSL</a></p>',
           img: this.handsSmall,
-          widthClass: 'xs12 sm6 md4',
+          widthClass: 'col-xs-12 col-sm-6 col-md-4',
         },
         {
           title: 'Concept',
           text: 'EnviDat supports the user-friendly registration, documentation, storage, publication, search and retrieval of data sets from the environmental domain. We provide various services to our users and we follow a set of principles as summarized in our concept image below. Additional detailed information can be found in our <a href="https://www.dora.lib4ri.ch/wsl/islandora/object/wsl:18703" target="_blank" onclick="event.stopPropagation();" >concept paper on DORA</a>.',
           img: this.conceptSmall,
-          widthClass: 'xs12 sm6 md4',
+          widthClass: 'col-xs-12 col-sm-6 col-md-4',
         },
         {
           title: 'Community',
           text: 'With EnviDat, WSL aims to disseminate its data sets as broadly as possible in order to foster international research cooperation in the field of environmental science and contribute to the ongoing cultural evolution in research towards openness, shared data and opportunities for collaboration. Consequently, we are registered in <a href="https://fairsharing.org/biodbcore-001178/" target="_blank" onclick="event.stopPropagation();" >FAIRsharing.org</a> and <a href="https://www.re3data.org/repository/r3d100012587" target="_blank" onclick="event.stopPropagation();" >re3data.org</a> and a contributor community to <a href="http://geoportal.org/community/envidat-community" target="_blank" onclick="event.stopPropagation();" >ESA Geoportal </a>, <a href="https://gcmd.nasa.gov/search/Titles.do?AutoDisplayTitles=true&subset=envidat#titles" target="_blank" onclick="event.stopPropagation();" >NASA GCMD</a> and <a href="http://b2find.eudat.eu/dataset?groups=envidat" target="_blank" onclick="event.stopPropagation();" >EOSC-Hub via B2FIND</a>. ',
           img: this.communitySmall,
-          widthClass: 'xs12 sm6 md4',
+          widthClass: 'col-xs-12 col-sm-6 col-md-4',
         },
         {
           title: 'WSL',
           text: 'The Swiss Federal Institute for Forest, Snow and Landscape Research is concerned with the use, development and protection of natural and urban spaces. The focus of our research is on solving problems to do with the responsible use of landscapes and forests and a prudent approach to natural hazards, especially those common in mountainous countries. WSL occupies a leading position internationally in these research areas. We also provide groundwork for sustainable environmental policies in Switzerland. <p><a href="https://www.wsl.ch" target="_blank" onclick="event.stopPropagation();" >For more information have a look at the Website of WSL</a></p>',
           img: this.wslLogoSmall,
-          widthClass: 'xs12 sm6 md4',
+          widthClass: 'col-xs-12 col-sm-6 col-md-4',
         },
         {
           title: 'Team',
           /* eslint-disable prefer-template */
           text: '<img src="' + this.orga + '" style="width: 100%; height: 100%;" />',
           img: this.teamSmall,
-          widthClass: 'xs12 sm12 md8',
+          widthClass: 'col-xs-12 col-sm-12 col-md-8',
         },
       ];
     },
@@ -247,6 +236,7 @@ export default {
   components: {
     ImgAndTextLayout,
     ExpandableCard,
+    AboutTabLayout,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
