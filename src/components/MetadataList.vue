@@ -8,7 +8,7 @@
                         @onScroll="onScroll" >
 
     <template v-slot:filterKeywords>
-      <filter-keywords-view class="my-1" 
+      <filter-keywords-view class="my-1"
                             :compactLayout="$vuetify.breakpoint.smAndDown"
                             :allTags="allTags"
                             :selectedTagNames="selectedTagNames"
