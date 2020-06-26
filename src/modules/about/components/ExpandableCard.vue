@@ -1,16 +1,22 @@
 <template>
   <v-card ripple hover :expanded="expanded">
-    <v-container class="pa-0" @click="toggleExpand">
+
+    <v-container class="pa-0"
+                  @click="toggleExpand">
+
       <v-row no-gutters class="pa-0">
-        <v-col cols="5"><v-img
-          class="imagezoom"
-          :contain="contain"
-          :height=" $vuetify.breakpoint.xsOnly ? minHeight + 'px' : maxHeight + 'px' "
-          :src="img" /></v-col>
+
+        <v-col cols="5">
+          <v-img class="imagezoom"
+                  :contain="contain"
+                  :height=" $vuetify.breakpoint.xsOnly ? minHeight + 'px' : maxHeight + 'px' "
+                  style="border-bottom-left-radius: 4px; border-top-left-radius: 4px;"
+                  :src="img" />
+        </v-col>
+
         <v-col cols="7" class="headline px-2"
                align-self="center"
-               :class="{ 'compactTitle' : this.$vuetify.breakpoint.xsOnly }"
-        >
+               :class="{ 'compactTitle' : this.$vuetify.breakpoint.xsOnly }" >
           {{ title }}
         </v-col>
       </v-row>
