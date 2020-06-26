@@ -43,7 +43,7 @@
                     fluid >
 
         <v-row ref="controlPanel" >
-          <v-col class="hidden-xs-only py-0" 
+          <v-col class="hidden-xs-only" 
                   key="controlPanel"
                   cols="12" >
             <slot name="controlPanel" />
@@ -85,7 +85,7 @@
             <slot name="controlPanel" />
           </v-col>
 
-          <v-col class="py-0"
+          <v-col class="pb-0"
                   cols="12"
                   key="filterKeywords" >
             <slot name="filterKeywords" />

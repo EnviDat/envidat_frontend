@@ -19,12 +19,13 @@
     </template>
 
     <template v-slot:controlPanel>
-      <v-card style="min-height: 36px; ">
-        <v-container class="px-2 py-0"
+      <v-card style="height: 36px; " id="controlPanel" >
+        <v-container class="px-2 py-0 fill-height"
                       fluid>
         <v-row align="center"
-                justify="space-between">
-          <v-col class="py-0">
+                justify="space-between"
+                no-gutters>
+          <v-col >
           <small-search-bar-view class="elevation-0"
                                   :compactLayout="$vuetify.breakpoint.smAndDown"
                                   :searchTerm="searchTerm"
@@ -36,7 +37,7 @@
                                   :labelText="searchBarPlaceholder"
                                   :loading="loading"
                                   @clicked="catchSearchClicked"
-                                 @searchCleared="catchSearchCleared">
+                                  @searchCleared="catchSearchCleared">
 
             <template v-slot:append-outer>
               <v-col class="hidden-xs-only pa-0 ml-2" style="white-space: nowrap">
