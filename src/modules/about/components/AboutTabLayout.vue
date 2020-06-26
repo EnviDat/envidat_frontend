@@ -23,6 +23,8 @@
 
     </v-col>
 
+    <slot v-if="hasSoltConent" />
+
   </v-row>
 
 </template>
@@ -48,6 +50,11 @@ export default {
     loading: Boolean,
     loadingText: String,
     markdownContent: String,
+  },
+  computed: {
+    hasSoltConent() {
+      return !!this.$slots.default && !!this.$slots.default[0];
+    },
   },
   components: {
     ImgAndTextLayout,

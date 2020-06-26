@@ -13,37 +13,29 @@
         <!-- About -->
         <v-tab-item :key="tabs[0].name">
 
-          <v-row no-gutters
-                 :class="{'px-4': $vuetify.breakpoint.mdAndUp,
-                          'px-3': $vuetify.breakpoint.sm }" >
+          <about-tab-layout title="About EnviDat"
+                            :titleImage="missionImg" >
 
-            <v-col class="pt-3" cols="12">
-              <img-and-text-layout :img="missionImg"
-                                    :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
-                                    title="About EnviDat" />
-            </v-col>
+            <v-container class="pa-0 pt-5">
+              <v-row >
 
-            <v-col class="pt-5" cols="12" >
+                <v-col v-for="(card, index) in aboutCardInfo"
+                        :key="index"
+                        :class="card.widthClass" >
 
-              <v-container class="pa-0">
-                <v-row >
+                  <expandable-card :title="card.title"
+                                    :text="card.text"
+                                    :img="card.img"
+                                    :min-height="100"
+                                    :max-height="150"
+                                    :contain="card.title === 'WSL'" />
+                </v-col>
+              </v-row>
 
-                  <v-col v-for="(card, index) in aboutCardInfo"
-                          :key="index"
-                          :class="card.widthClass" >
+            </v-container>
 
-                    <expandable-card :title="card.title"
-                                      :text="card.text"
-                                      :img="card.img"
-                                      :min-height="100"
-                                      :max-height="150"
-                                      :contain="card.title === 'WSL'" />
-                  </v-col>
-                </v-row>
+          </about-tab-layout>
 
-              </v-container>
-            </v-col>
-          </v-row>
         </v-tab-item>
 
         <!-- Guidelines -->
@@ -118,7 +110,7 @@ import {
 } from '@/modules/about/store/dmpMutationsConsts';
 
 
-import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
+// import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
 
 import teamSmall from '@/modules/about/assets/team_small.jpg';
 import mission from '@/modules/about/assets/mission.jpg';
@@ -234,7 +226,7 @@ export default {
     },
   },
   components: {
-    ImgAndTextLayout,
+    // ImgAndTextLayout,
     ExpandableCard,
     AboutTabLayout,
   },
