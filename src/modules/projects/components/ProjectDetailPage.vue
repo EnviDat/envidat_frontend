@@ -18,15 +18,15 @@
 
     <v-row :style="`z-index: 0; position: relative; top: ${headerHeight()}px`" no-gutters>
 
-      <v-col class="px-3" cols="12" lg="10" offset-lg="1">
+      <v-col :class="{ 'px-3' : $vuetify.breakpoint.smAndUp }"
+              cols="12" lg="10" offset-lg="1">
 
         <project-body v-bind="currentProject"
                       :showPlaceholder="loading" />
       </v-col>
 
       <v-col class="py-2 px-3" v-if="loading || (!loading && currentProject && currentProject.subProjects)"
-              cols="12" lg="10" offset-lg="1"
-              >
+              cols="12" lg="10" offset-lg="1" >
         <project-subprojects v-bind="currentProject"
                               :defaultImg="creatorImg"
                               :showPlaceholder="loading"
@@ -34,8 +34,9 @@
                               @subprojectClick="catchSubprojectClick" />
       </v-col>
 
-      <v-col class="py-2 px-3" cols="12" lg="10" offset-lg="1"
-              >
+      <v-col :class="{ 'px-3' : $vuetify.breakpoint.smAndUp }"
+              class="py-2"
+              cols="12" lg="10" offset-lg="1" >
 
         <v-card>
           <v-card-title class="metadataList_title title">{{ metadataListTitle }}</v-card-title>
