@@ -16,6 +16,7 @@
                     :defaultListControls="controls"
                     :enabledControls="enabledControls"
                     :mapHeight="$vuetify.breakpoint.smAndDown ? 310 : undefined"
+                    :keywordsHeigth="150"
                     :useDynamicHeight="true"
                     :mapTopLayout="$vuetify.breakpoint.mdAndUp"
                     @onScroll="storeScroll"

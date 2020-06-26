@@ -6,13 +6,14 @@
   <v-row v-if="mapLayout"
           class="fill-height" >
 
-    <v-col class="py-0 pr-2"
+    <v-col class="py-0 pr-2 "
             cols="4" >
       <v-container class="fill-height pa-0"
                     id="metadataListLayoutFiltering_map"
                     fluid >
         <v-row ref="metadataListLayoutFiltering"
                 no-gutters >
+
           <v-col cols="12"
                   key="filterKeywords" >
             <slot name="filterKeywords" />
@@ -20,9 +21,11 @@
         </v-row>
 
         <v-row v-if="showMapFilter && mapFilteringPossible"
-                class="fill-height" >
+                no-gutters  >
+
           <v-col cols="12"
-                  class="pb-0"
+                  class="pt-3"
+                  :style="useDynamicHeight ? `height: calc(100vh - ${filterMapHeight }px);` : ''"
                   key="filterMap" >
 
             <slot name="filterMap" />
@@ -33,7 +36,7 @@
       </v-container>
     </v-col>
 
-    <v-col class="py-0 pl-2"
+    <v-col class="py-0 pl-2 "
             cols="8" >
       <v-container class="fill-height pa-0"
                     id="metadataListScroll"
@@ -152,10 +155,14 @@ export default {
       type: Boolean,
       default: false,
     },
-    // filteringComponentsHeight: Number,
+    filterKeywordHeight: {
+      type: Number,
+      default: 150,
+    },
   },
   updated() {
     this.setFilteringComponentsHeight();
+    this.setFilterMapHeight();
   },
   computed: {
     mapLayout() {
@@ -164,17 +171,27 @@ export default {
   },
   methods: {
     setFilteringComponentsHeight() {
-      const FilterKeywordViewHeight = 88;
-      const TheNavigationToolbar = 36;
-      const padding = 8;
-      let height = FilterKeywordViewHeight;
+      const searchViewHeight = 36;
+      const TheNavigationToolbar = 0; // when active: 36;
+      const padding = 16 + 8 + 8;
+      let height = searchViewHeight;
 
       if (this.showMapFilter && this.$refs && this.$refs.controlPanel) {
-        // around 455px
         height = this.$refs.controlPanel.clientHeight;
       }
 
       this.filteringComponentsHeight = height + TheNavigationToolbar + padding;
+    },
+    setFilterMapHeight() {
+      const TheNavigationToolbar = 0; // when active: 36;
+      const padding = 16 + 8 + 8;
+      let height = this.filterKeywordHeight;
+
+      if (this.showMapFilter && this.$refs && this.$refs.metadataListLayoutFiltering) {
+        height = this.$refs.metadataListLayoutFiltering.clientHeight;
+      }
+
+      this.filterMapHeight = height + TheNavigationToolbar + padding;
     },
     setScrollPos(toPos) {
       if (this.$refs && this.$refs.metadataListScroll) {
@@ -187,6 +204,7 @@ export default {
   },
   data: () => ({
     filteringComponentsHeight: 150,
+    filterMapHeight: 150,
   }),
 };
 </script>

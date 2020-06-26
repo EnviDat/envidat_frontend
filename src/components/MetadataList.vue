@@ -8,7 +8,7 @@
                         @onScroll="onScroll" >
 
     <template v-slot:filterKeywords>
-      <filter-keywords-view class="my-1"
+      <filter-keywords-view :height="keywordsHeigth"
                             :compactLayout="$vuetify.breakpoint.smAndDown"
                             :allTags="allTags"
                             :selectedTagNames="selectedTagNames"
@@ -227,6 +227,10 @@ export default {
     mapTopLayout: {
       type: Boolean,
       default: false,
+    },
+    keywordsHeigth: {
+      type: Number,
+      default: null,
     },
     defaultListControls: Array,
     enabledControls: Array,

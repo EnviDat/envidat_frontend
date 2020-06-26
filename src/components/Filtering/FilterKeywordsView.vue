@@ -1,7 +1,10 @@
 <template>
-  <v-card raised>
+  <v-card raised
+          :height="height > 0 ? height : ''"
+          id="FilterKeywordsView" >
 
-    <v-container class="pa-2" fluid >
+    <v-container class="pa-2 fill-height"
+                fluid >
       <v-row class="fill-height" >
 
         <v-col v-if="!filterExpanded"
@@ -116,6 +119,7 @@ export default {
   props: {
     selectedTagNames: Array,
     allTags: Array,
+    height: Number,
     // expanded: Boolean,
     // expandButtonText: String,
     // expandedButtonText: String,
