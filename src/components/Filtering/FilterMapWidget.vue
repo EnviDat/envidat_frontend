@@ -83,7 +83,7 @@
  */
 
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
-import FilterMapWidgetLayout from '@/components/Layouts/FilterMapWidgetLayout';
+import FilterMapWidgetLayout from '@/components/Filtering/FilterMapWidgetLayout';
 
 export default {
   name: 'FilterMapWidget',
