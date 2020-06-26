@@ -1,7 +1,11 @@
 <template>
   <v-card style="width: 100%;">
-    <v-container class="pa-0" fluid >
-    <v-row align="center" justify="space-between" no-gutters >
+    <v-container class="pa-0 fill-height"
+                  fluid >
+    <v-row align="center"
+            justify="space-between"
+            no-gutters
+            class="fill-height" >
 
       <v-col v-if="loading"
               class="shrink py-0"
