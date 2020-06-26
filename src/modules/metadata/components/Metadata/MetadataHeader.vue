@@ -12,7 +12,7 @@
                       material-icon-name="close"
                       icon-color="primary"
                       color="primary"
-                      isToggled
+                      outlined
                       tool-tip-text="Close Metadata"
                       :tool-tip-bottom="true"
                       @clicked="catchBackClicked" />
@@ -237,7 +237,7 @@
                         materialIconName="expand_more"
                         color="primary"
                         :iconColor="showTagsExpanded ? 'accent' : 'primary'"
-                        :isToggled="true"
+                        outlined
                         :rotateOnClick="true"
                         :rotateToggle="showTagsExpanded"
                         :tooltipText="showTagsExpanded ? 'Hide all tags' : 'Show all tags'"

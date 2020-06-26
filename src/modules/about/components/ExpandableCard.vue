@@ -16,10 +16,9 @@
       </v-row>
       <v-card-actions class="ma-0 pa-2" style="position: absolute; bottom: 5px; right: 5px;">
         <base-icon-button materialIconName="expand_more"
-                          :outlined="false"
+                          :outlined="true"
                           color="transparent"
-                          iconColor="grey"
-                          :isToggled="expanded"
+                          :iconColor="expanded ? 'accent' : 'primary'"
                           :rotateOnClick="true"
                           :rotateToggle="expanded"
                           :tooltipText="expanded ? 'Hide info' : 'Show info'"

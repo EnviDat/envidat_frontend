@@ -77,9 +77,10 @@
       <base-icon-button v-if="maxDescriptionLengthReached"
                         :class="isProtected ? 'mr-2' : ''"
                         material-icon-name="expand_more"
-                        iconColor="accent"
+                        :iconColor="showFullDescription ? 'primary' : 'accent'"
                         color="accent"
-                        :isToggled="true"
+                        :fillColor="showFullDescription ? $vuetify.theme.themes.light.accent : ''"
+                        outlined
                         :rotateOnClick="true"
                         :rotateToggle="showFullDescription"
                         :tooltipText="showFullDescription ? 'Hide full description' : 'Show full description'"
