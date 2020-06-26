@@ -1,5 +1,7 @@
 <template>
-  <v-card raised :class="{'height-column': topLayout, 'height-row': !topLayout }">
+  <v-card raised
+          class="fill-height"
+          id="FilterMapView" >
 
     <div v-if="errorLoadingLeaflet">
       Error loading leaflet
@@ -7,13 +9,16 @@
 
     <v-container v-else class="fill-height pa-0" fluid>
 
-      <v-row class="fill-height" no-gutters :class="{'direction-column': topLayout, 'direction-row': !topLayout }">
+      <v-row class="fill-height"
+            no-gutters
+            :class="{'direction-column': topLayout, 'direction-row': !topLayout }">
 
         <v-col class="grow pa-0 fill-height">
           <div id="map" ref="map" style="width: 100%; height: 100%;" />
         </v-col>
 
-        <v-col :class="{'filter-row': !topLayout }" class="shrink">
+        <v-col :class="{'filter-row': !topLayout }"
+                class="shrink">
 
           <filter-map-widget :title="modeTitle"
                              :pinnedIds="pinnedIds"
