@@ -133,8 +133,6 @@ export default {
      * @description load all the icons once before the first component's rendering.
      */
   beforeMount() {
-    this.downloadIcon = this.mixinMethods_getIcon('download');
-    this.linkIcon = this.mixinMethods_getIcon('link');
     this.doiIcon = this.mixinMethods_getIcon('doi');
     this.fileSizeIcon = this.mixinMethods_getIcon('fileSize');
     this.dateCreatedIcon = this.mixinMethods_getIcon('dateCreated');
@@ -270,8 +268,6 @@ export default {
 
         this.resources = createResources(currentContent);
         this.resources.doiIcon = this.doiIcon;
-        this.resources.downloadIcon = this.downloadIcon;
-        this.resources.linkIcon = this.linkIcon;
         this.resources.fileSizeIcon = this.fileSizeIcon;
         this.resources.dateCreatedIcon = this.dateCreatedIcon;
         this.resources.lastModifiedIcon = this.lastModifiedIcon;
@@ -456,8 +452,6 @@ export default {
     authors: null,
     amountOfResourcesToShowDetailsLeft: 4,
     notFoundBackPath: 'browse',
-    downloadIcon: null,
-    linkIcon: null,
     doiIcon: null,
     fileSizeIcon: null,
     dateCreatedIcon: null,

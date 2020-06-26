@@ -13,7 +13,7 @@
                 :icon="!isElevated"
                 :fab="isElevated"
                 :small="isSmall || isElevated"
-                :outlined="isToggled"
+                :outlined="outlined"
                 :color="color ? color : disabled ? '' : 'primary'"
                 :href="url"
                 :disabled="disabled"
@@ -45,7 +45,7 @@
           :icon="!isElevated"
           :fab="isElevated"
           :small="isSmall || isElevated"
-          :outlined="isToggled"
+          :outlined="outlined"
           :color="color ? color : disabled ? '' : 'primary'"
           :href="url"
           :disabled="disabled"
@@ -92,12 +92,9 @@
  * Fill the @prop tooltipText for a tooltip when hovering over the Button.
  * Use the @prop tooltipBottom to set it to appear beneath the button.
  *
- * When the @prop isToggled is true the background is filled with the @prop color.
- * If @prop isToggled is true the button only has an outline in the @prop color,
  * The @prop iconColor only works for material icons.
  *
  * Set the @prop rotateOnClick to true for the icon to rotate 180° once clicked
- * works together with the @prop isToggled
  *
  * If @prop count is > 0 a little Circle with the number is appear in the bottom left of the icon Button.
  *
@@ -125,7 +122,7 @@ export default {
     tooltipBottom: Boolean,
     color: String,
     iconColor: String,
-    isToggled: Boolean,
+    outlined: Boolean,
     isSmall: Boolean,
     rotateOnClick: Boolean,
     rotateToggle: Boolean,
@@ -133,7 +130,6 @@ export default {
     isElevated: Boolean,
     disabled: Boolean,
     count: Number,
-    marginClass: String,
   },
   data: () => ({
     hoverBadge: false,

@@ -34,15 +34,17 @@
                     class="ma-0 pa-2"
                     :style="`position: absolute; bottom: 5px; right: ${rightPos()};`" >
 
-      <v-avatar class="extendButton"
-                :color="showFullText ? 'transparent' : 'primary'"
-                :style="`border: ${showFullText ? '1px' : '0px'} solid; border-color: ${ $vuetify.theme.themes.light.accent } !important; `"
-                size="36"
-                @click="readMore" >
-        <v-icon :color="showFullText ? 'primary' : 'accent'" >
-          {{ showFullText ? 'expand_less' : 'expand_more' }}
-        </v-icon>
-      </v-avatar>
+     <base-icon-button class="mr-2"
+                        material-icon-name="expand_more"
+                        :iconColor="showFullText ? 'primary' : 'accent'"
+                        :fillColor="showFullText ? '' : $vuetify.theme.themes.light.primary"
+                        :color="showFullText ? 'accent' : 'transparent'"
+                        :outlined="showFullText"
+                        :rotateOnClick="true"
+                        :rotateToggle="showFullText"
+                        :tooltipText="showFullText ? 'Collaspe text' : 'Show full text'"
+                        @clicked="readMore" />
+
 
     </v-card-actions>
 
@@ -66,10 +68,12 @@
 
 import remark from 'remark';
 import html from 'remark-html';
+import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 export default {
   name: 'ExpandableTextLayout',
   components: {
+    BaseIconButton,
   },
   props: {
     title: String,
@@ -131,9 +135,4 @@ export default {
     scrollbar-width: thin;
   }
 
-  .extendButton {
-    cursor: pointer;
-    border-radius: 50%;
-    transition: 0.3s;
-  }
 </style>

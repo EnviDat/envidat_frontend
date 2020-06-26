@@ -13,7 +13,7 @@
       <template v-slot:clearPins>
         <base-icon-button materialIconName="close"
                           iconColor="red"
-                          :color="topLayout ? 'transparent' : ''"
+                          :color="topLayout ? 'transparent' : 'primary'"
                           :outlined="!topLayout && pinnedIds.length > 0 "
                           :isSmall="mdScreen || topLayout"
                           :disabled="pinnedIds.length <= 0"
@@ -26,7 +26,7 @@
                           iconColor="black"
                           color="highlight"
                           :isSmall="mdScreen"
-                          :isToggled="true"
+                          outlined
                           :tooltipText="focusText"
                           @clicked="catchFocusClicked()" />
       </template>
@@ -37,7 +37,7 @@
                           color="secondary"
                           :fillColor="pinEnabled ? $vuetify.theme.themes.light.primary : 'transparent'"
                           :isSmall="mdScreen"
-                          :isToggled="true"
+                          outlined
                           :tooltipText="pinText"
                           @clicked="catchPinClicked()" />
       </template>
@@ -47,7 +47,7 @@
                           :customIcon="multiPinIcon"
                           color="secondary"
                           :fillColor="multiPinEnabled ? $vuetify.theme.themes.light.primary : 'transparent'"
-                          :isToggled="true"
+                          outlined
                           :isSmall="mdScreen"
                           :tooltipText="multiPinText"
                           @clicked="catchMultipinClicked()" />
@@ -60,7 +60,7 @@
                           color="secondary"
                           :fillColor="polygonEnabled ? $vuetify.theme.themes.light.primary : 'transparent'"
                           :isSmall="mdScreen"
-                          :isToggled="true"
+                          outlined
                           :tooltipText="polygonText"
                           @clicked="catchPolygonClicked()" />
       </template>
