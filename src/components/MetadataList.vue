@@ -211,7 +211,7 @@ import {
 } from '@/store/metadataMutationsConsts';
 
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
-import MetadataListLayout from '@/components/Layouts/MetadataListLayout';
+import MetadataListLayout from '@/components/MetadataListLayout';
 import SmallSearchBarView from '@/components/Filtering/SmallSearchBarView';
 // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
