@@ -59,7 +59,7 @@
             <base-icon-button class="ma-0"
                               material-icon-name="search"
                               :iconColor="dark ? 'white' : darkColor"
-                              :isToggled="true"
+                              outlined
                               :color="dark ? 'white' : darkColor"
                               :tooltipText="`Search for the datasets of ${author.firstName} ${author.lastName}`"
                               @clicked="catchSearchAuthor(author.fullName)" />
