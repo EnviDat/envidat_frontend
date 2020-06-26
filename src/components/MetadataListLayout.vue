@@ -43,7 +43,7 @@
                     fluid >
 
         <v-row ref="controlPanel" >
-          <v-col class="hidden-xs-only" 
+          <v-col class="hidden-xs-only py-0"
                   key="controlPanel"
                   cols="12" >
             <slot name="controlPanel" />
