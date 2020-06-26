@@ -28,7 +28,7 @@
                   cols="12" sm="6"
                   class="pa-2" >
 
-          <resource-card-placeholder :two-column-layout="twoColumnLayout" />
+          <resource-card-placeholder />
         </v-col>
       </v-row>
 
@@ -42,8 +42,6 @@
 
           <resource-card v-bind="res"
                           :doiIcon="doiIcon"
-                          :linkIcon="linkIcon"
-                          :downloadIcon="downloadIcon"
                           :fileSizeIcon="fileSizeIcon"
                           :dateCreatedIcon="dateCreatedIcon"
                           :lastModifiedIcon="lastModifiedIcon"
@@ -109,12 +107,6 @@ export default {
     },
     doiIcon() {
       return this.mixinMethods_getGenericProp('doiIcon');
-    },
-    downloadIcon() {
-      return this.mixinMethods_getGenericProp('downloadIcon');
-    },
-    linkIcon() {
-      return this.mixinMethods_getGenericProp('linkIcon');
     },
     fileSizeIcon() {
       return this.mixinMethods_getGenericProp('fileSizeIcon');

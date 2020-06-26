@@ -36,7 +36,7 @@
         <base-icon-button materialIconName="search"
                           marginClass="ma-0"
                           color="transparent"
-                          :isToggled="!searchTerm"
+                          :outlined="!searchTerm"
                           @clicked="clicked" />
       </v-col>
 

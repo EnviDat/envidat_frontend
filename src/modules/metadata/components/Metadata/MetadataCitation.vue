@@ -6,19 +6,28 @@
 
     <v-card-text v-if="citationText"
                   class="readableText"
+                  :class="{
+                    'pb-3' : $vuetify.breakpoint.mdAndUp,
+                    'pb-2' : $vuetify.breakpoint.smAndDown,
+                   }"                  
                   style="font-style: italic; "
                   v-html="markdownText" >
 
     </v-card-text>
 
     <v-card-actions v-if="!showPlaceholder && citationText"
-                    class="pt-0 pb-3">
+                    class="pt-0 pb-2">
       <v-container class="pa-0"
                     fluid >
-        <v-row no-gutters justify="space-around">
+        <v-row justify="space-around">
 
-          <v-col class="shrink" v-for="link in citationLinks"
-                  :key="link.text" >
+          <v-col v-for="link in citationLinks"
+                  :key="link.text"
+                  class="shrink"
+                  :class="{
+                    'pa-1' : $vuetify.breakpoint.mdAndUp,
+                    'py-2 px-1' : $vuetify.breakpoint.smAndDown,
+                   }" >
 
             <base-rectangle-button margin-class="mx-1 citationButton"
                                     :button-text="link.text"

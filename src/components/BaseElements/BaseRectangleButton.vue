@@ -46,7 +46,6 @@
  * The @prop iconColor only works for material icons.
  *
  * Set the @prop rotateOnClick to true for the icon to rotate 180° once clicked
- * works together with the @prop isToggled
  *
  * Use @prop marginClass to apply any css-class to the button, because it's wrapped in the tooltip element.
  *
