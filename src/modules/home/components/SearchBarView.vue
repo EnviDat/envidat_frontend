@@ -1,9 +1,8 @@
 <template>
-  <v-card hover
-          raised >
-    <v-container >
+  <v-card hover raised style="width: 100%;">
+    <v-container fluid style="width: 100%;">
       <v-row align="center"
-              justify="space-between" >
+              justify="space-between" class="grow" >
 
         <v-col class="grow py-1" >
           <v-text-field class="ma-0"

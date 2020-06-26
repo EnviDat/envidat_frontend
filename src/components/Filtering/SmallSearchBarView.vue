@@ -1,5 +1,5 @@
 <template>
-  <v-card >
+  <v-card style="width: 100%;">
     <v-container class="pa-0" fluid >
     <v-row align="center" justify="space-between" no-gutters >
 

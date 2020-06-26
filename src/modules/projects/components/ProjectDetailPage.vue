@@ -16,7 +16,7 @@
       </v-col>
     </v-row>
 
-    <v-row :style="`z-index: 0; position: relative; top: ${headerHeight()}px`" >
+    <v-row :style="`z-index: 0; position: relative; top: ${headerHeight()}px`" no-gutters>
 
       <v-col class="px-3" cols="12" lg="10" offset-lg="1">
 
