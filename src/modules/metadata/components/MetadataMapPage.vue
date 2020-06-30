@@ -15,7 +15,7 @@
     <v-layout v-if="splitScreen" style="height: 100%;" pa-0 ma-0 :key="'split'">
       <div style="width: 50%; max-width: 50%; float: left; height: 100%; position: relative;">
         <Map :config="configFile" :map-div-id="'map1'"
-             @changeLayer="setLayer" :key="'map1'" :selected="selectedLayer">
+             @changeLayer="setLayer" :key="'map1'" :selected-layer-name="selectedLayer">
           <template v-slot:top>
             <v-btn icon color="red" style="display: inline-block" @click="quitSplitFrom(1)">
               <v-icon>close</v-icon>
@@ -26,7 +26,7 @@
       <div style=" border: 1px solid gray;"></div>
       <div style="width: 50%; float: left; position:relative;">
         <Map :config="configFile" :map-div-id="'map2'"
-              @changeLayer="setLayerSplit" :key="'map2'" :selected="splitLayer">
+              @changeLayer="setLayerSplit" :key="'map2'" :selected-layer-name="splitLayer">
           <template v-slot:top>
             <v-btn icon color="red" @click="quitSplitFrom(2)">
               <v-icon>close</v-icon>
@@ -39,7 +39,7 @@
 
     <v-layout v-else style="height: 100%;" pa-0 ma-0 :map-div-id="'single'" :key="'map0'">
       <div style="width: 100%;">
-        <Map :config="configFile" @changeLayer="setLayer" :map-div-id="'map0'" :selected="selectedLayer">
+        <Map :config="configFile" @changeLayer="setLayer" :map-div-id="'map0'" :selected-layer-name="selectedLayer">
           <v-btn color="primary" @click="splitScreen = true" fab small>
             <v-icon style="height:auto;">vertical_split</v-icon>
           </v-btn>
@@ -72,7 +72,6 @@
       BaseIconButton,
     },
     data: () => ({
-      splitScreen: false,
       geoConfig: null,
       PageBGImage: './app_b_browsepage.jpg',
       map: null,
@@ -91,10 +90,19 @@
       this.$store.commit(`${METADATA_NAMESPACE}/${CLEAN_CURRENT_METADATA}`);
     },
     computed: {
+      splitScreen: {
+        get() {
+          return this.$store.state.geoservices.splitScreen;
+        },
+        set(value) {
+          this.$store.commit('setSplitScreen', value);
+        },
+      },
       selectedLayer() {
         return this.$store.state.geoservices.selectedLayer;
       },
       splitLayer() {
+        console.log(this.$store.state.geoservices.splitLayer);
         return this.$store.state.geoservices.splitLayer;
       },
       configFile() {
@@ -136,7 +144,7 @@
         if (mapId === 1) {
           this.$store.commit('setSelectedLayer', this.splitLayer);
         }
-        this.splitScreen = false;
+        this.$store.commit('setSplitScreen', false);
       },
       rerender() {
         this.$forceUpdate();

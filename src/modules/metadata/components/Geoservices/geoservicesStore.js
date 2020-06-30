@@ -6,6 +6,7 @@ export const geoservices = {
     config: null,
     selectedLayer: null,
     splitLayer: null,
+    splitScreen: false,
   },
   getters: {
 
@@ -19,6 +20,9 @@ export const geoservices = {
     },
     setSplitLayer(state, payload) {
       state.splitLayer = payload;
+    },
+    setSplitScreen(state, payload) {
+      state.splitScreen = payload;
     },
   },
   actions: {

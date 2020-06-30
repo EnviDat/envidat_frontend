@@ -81,17 +81,9 @@
     },
     methods: {
       select(layerName) {
-        this.$store.commit('setSelectedLayer', layerName);
+        this.$emit('changeLayer', layerName);
       },
     },
-    // mounted() {
-    //   if (this.selected) {
-    //     this.select(this.selected);
-    //   } else {
-    //     const layer = this.config.layers.find(l => l.visibility);
-    //     this.select(layer.name);
-    //   }
-    // },
   };
 </script>
 

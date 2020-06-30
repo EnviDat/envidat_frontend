@@ -3,7 +3,11 @@
     <div class="zoom">
         <zoom-btn @zoomIn="zoomIn" @zoomOut="zoomOut" />
     </div>
-    <div style="position: absolute; bottom: 20px; right: 10px; z-index: 99999;">
+    <v-card ripple class="basemap-toggle">
+      <img width="40" height="40" v-if="basemap==='streets'" src="./satellite-icon.png" @click="basemap='satellite'">
+      <img width="40" height="40" v-if="basemap==='satellite'" src="./streets-icon.png" @click="basemap='streets'">
+    </v-card>
+    <div style="position: absolute; bottom: 70px; right: 10px; z-index: 99999;">
       <slot></slot>
     </div>
     <div id="credits">
@@ -16,6 +20,7 @@
 <script>
     /* eslint-disable new-cap */
     import Viewer from 'cesium/Widgets/Viewer/Viewer';
+    import OpenStreetMapImageryProvider from 'cesium/Scene/OpenStreetMapImageryProvider';
     import BingMapsImageryProvider from 'cesium/Scene/BingMapsImageryProvider';
     import BingMapsStyle from 'cesium/Scene/BingMapsStyle';
     import Rectangle from 'cesium/Core/Rectangle';
@@ -35,18 +40,29 @@
         return {
           viewer: null,
           mapLayer: null,
+          basemap: 'streets',
+          basemapLayer: null,
         };
       },
+      computed: {
+        streets() {
+          return new OpenStreetMapImageryProvider({
+            url: 'https://a.tile.openstreetmap.org/',
+          });
+        },
+        satellite() {
+          return new BingMapsImageryProvider({
+            url: 'https://dev.virtualearth.net',
+            key: process.env.VUE_APP_BING_API_KEY,
+            mapStyle: BingMapsStyle.AERIAL,
+          });
+        },
+      },
       mounted() {
-        const bing = new BingMapsImageryProvider({
-          url: 'https://dev.virtualearth.net',
-          key: process.env.VUE_APP_BING_API_KEY,
-          mapStyle: BingMapsStyle.AERIAL,
-        });
         this.viewer = new Viewer(this.mapDivId, {
           animation: false,
+          imageryProvider: false,
           baseLayerPicker: false,
-          imageryProvider: bing,
           fullscreenButton: false,
           vrButton: false,
           geocoder: false,
@@ -62,6 +78,7 @@
           requestRenderMode: true,
           maximumRenderTimeChange: Infinity,
         });
+        this.basemap = 'streets';
         // Hide default credits
         document.getElementsByClassName('cesium-widget-credits')[0].style.display = 'none';
         this.replaceLayer();
@@ -95,6 +112,14 @@
           },
           deep: true,
         },
+        basemap() {
+          if (this.basemapLayer) {
+            this.viewer.imageryLayers.remove(this.basemapLayer);
+            this.basemapLayer = null;
+          }
+          this.basemapLayer = this.basemap === 'streets' ? this.streets : this.satellite;
+          this.basemapLayer = this.viewer.imageryLayers.addImageryProvider(this.basemapLayer, 0);
+        },
       },
       beforeDestroy() {
         this.viewer.destroy();
@@ -124,5 +149,15 @@
     padding: 8px 6px 10px 6px;
     z-index: 999;
     background-color: aliceblue;
+  }
+  .basemap-toggle {
+    position: absolute;
+    bottom: 20px;
+    right: 15px;
+    z-index: 10000;
+    cursor: pointer;
+    padding: 2px;
+    width:44px;
+    height: 44px;
   }
 </style>
