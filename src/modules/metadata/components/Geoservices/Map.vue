@@ -58,12 +58,11 @@
     props: {
       config: { type: Object, required: true },
       mapDivId: { type: String, required: true },
-      selected: { type: String },
+      selectedLayerName: { type: String },
     },
     data: () => ({
       layerControlOpen: false,
       show3d: false,
-      selectedLayerName: null,
     }),
     computed: {
       selectedLayer() {
@@ -82,22 +81,17 @@
     },
     methods: {
       select(layerName) {
-        this.selectedLayerName = layerName;
+        this.$store.commit('setSelectedLayer', layerName);
       },
     },
-    watch: {
-      selectedLayerName() {
-        this.$emit('changeLayer', this.selectedLayerName);
-      },
-    },
-    mounted() {
-      if (this.selected) {
-        this.select(this.selected);
-      } else {
-        const layer = this.config.layers.find(l => l.visibility);
-        this.select(layer.name);
-      }
-    },
+    // mounted() {
+    //   if (this.selected) {
+    //     this.select(this.selected);
+    //   } else {
+    //     const layer = this.config.layers.find(l => l.visibility);
+    //     this.select(layer.name);
+    //   }
+    // },
   };
 </script>
 

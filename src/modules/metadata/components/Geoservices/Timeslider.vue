@@ -45,6 +45,18 @@
           this.$emit('select', this.chart.chart.dataProvider[this.currentIndex - 1].name);
         }
       },
+      updateSelection() {
+        this.chart.chart.dataProvider.forEach((dataPoint) => {
+          if (dataPoint.name !== this.selected) {
+            dataPoint.selectedColor = undefined;
+            dataPoint.selectedSize = undefined;
+          } else {
+            dataPoint.selectedColor = '#8198b4';
+            dataPoint.selectedSize = '20';
+          }
+        });
+        this.chart.chart.validateData(); // update chart
+      },
     },
     computed: {
       currentIndex() {
@@ -127,19 +139,11 @@
 
       // eslint-disable-next-line no-undef
       AmCharts.makeChart(this.divId, config);
+      this.updateSelection();
     },
     watch: {
       selected() {
-        this.chart.chart.dataProvider.forEach((dataPoint) => {
-          if (dataPoint.name !== this.selected) {
-            dataPoint.selectedColor = undefined;
-            dataPoint.selectedSize = undefined;
-          } else {
-            dataPoint.selectedColor = '#8198b4';
-            dataPoint.selectedSize = '20';
-          }
-        });
-        this.chart.chart.validateData(); // update chart
+        this.updateSelection();
       },
     },
   };
