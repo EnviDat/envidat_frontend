@@ -1,5 +1,5 @@
 <template>
-  <v-card raised :class="{'height-column': topLayout, 'height-row': !topLayout }">
+  <v-card raised :class="{'height-column': topLayout, 'height-row': !topLayout }" style="height: 100%; width: 100%;">
 
     <div v-if="errorLoadingLeaflet">
       Error loading leaflet
