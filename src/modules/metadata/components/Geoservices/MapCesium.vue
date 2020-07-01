@@ -40,11 +40,18 @@
         return {
           viewer: null,
           mapLayer: null,
-          basemap: 'streets',
           basemapLayer: null,
         };
       },
       computed: {
+        basemap: {
+          get() {
+            return this.$store.state.geoservices.basemap;
+          },
+          set(value) {
+            this.$store.commit('setBasemap', value);
+          },
+        },
         streets() {
           return new OpenStreetMapImageryProvider({
             url: 'https://a.tile.openstreetmap.org/',
@@ -78,10 +85,10 @@
           requestRenderMode: true,
           maximumRenderTimeChange: Infinity,
         });
-        this.basemap = 'streets';
         // Hide default credits
         document.getElementsByClassName('cesium-widget-credits')[0].style.display = 'none';
         this.replaceLayer();
+        this.replaceBasemap();
         this.zoomToExtent(this.layer.bbox);
       },
       methods: {
@@ -104,6 +111,14 @@
           // Attention: new WebMapServiceImageryProvider can not be used as removable layer object
           this.mapLayer = this.viewer.imageryLayers.addImageryProvider(cesiumLayer(this.layer));
         },
+        replaceBasemap() {
+          if (this.basemapLayer) {
+            this.viewer.imageryLayers.remove(this.basemapLayer);
+            this.basemapLayer = null;
+          }
+          this.basemapLayer = this.basemap === 'streets' ? this.streets : this.satellite;
+          this.basemapLayer = this.viewer.imageryLayers.addImageryProvider(this.basemapLayer, 0);
+        },
       },
       watch: {
         layer: {
@@ -113,12 +128,7 @@
           deep: true,
         },
         basemap() {
-          if (this.basemapLayer) {
-            this.viewer.imageryLayers.remove(this.basemapLayer);
-            this.basemapLayer = null;
-          }
-          this.basemapLayer = this.basemap === 'streets' ? this.streets : this.satellite;
-          this.basemapLayer = this.viewer.imageryLayers.addImageryProvider(this.basemapLayer, 0);
+          this.replaceBasemap();
         },
       },
       beforeDestroy() {

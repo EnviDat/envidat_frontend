@@ -28,7 +28,6 @@
         bingApiKey: process.env.VUE_APP_BING_API_KEY,
         map: null,
         mapLayer: null,
-        basemap: null, // 'streets', 'satellite'
         basemapLayer: null,
       }),
       props: {
@@ -36,6 +35,14 @@
         mapDivId: String,
       },
       computed: {
+        basemap: {
+          get() {
+            return this.$store.state.geoservices.basemap;
+          },
+          set(value) {
+            this.$store.commit('setBasemap', value);
+          },
+        },
         streets() {
           return L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -63,10 +70,10 @@
         setupMap() {
           this.map = new L.Map(this.mapDivId, { zoomControl: false });
           this.map.setView(L.latLng(46.57591, 7.84956), 8);
-          this.basemap = 'streets';
           L.control.scale()
             .addTo(this.map);
           this.replaceLayer();
+          this.replaceBasemap();
         },
         zoomToExtent(bbox) {
           this.map.fitBounds([
@@ -86,6 +93,14 @@
             this.zoomToExtent(this.layer.bbox);
           }
         },
+        replaceBasemap() {
+          if (this.basemapLayer) {
+            this.map.removeLayer(this.basemapLayer);
+          }
+          this.basemapLayer = this.basemap === 'streets' ? this.streets : this.satellite;
+          this.map.addLayer(this.basemapLayer);
+          this.basemapLayer.bringToBack();
+        },
       },
       watch: {
           layer: {
@@ -95,12 +110,7 @@
             deep: true,
           },
         basemap() {
-          if (this.basemapLayer) {
-            this.map.removeLayer(this.basemapLayer);
-          }
-          this.basemapLayer = this.basemap === 'streets' ? this.streets : this.satellite;
-          this.map.addLayer(this.basemapLayer);
-          this.basemapLayer.bringToBack();
+          this.replaceBasemap();
         },
       },
       mounted() {

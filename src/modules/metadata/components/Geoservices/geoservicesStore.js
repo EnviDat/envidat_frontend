@@ -2,11 +2,12 @@ import axios from 'axios';
 
 export const geoservices = {
   state: {
-    basemap: null,
+    basemap: 'streets',
     config: null,
     selectedLayer: null,
     splitLayer: null,
     splitScreen: false,
+    show3d: false,
   },
   getters: {
 
@@ -23,6 +24,12 @@ export const geoservices = {
     },
     setSplitScreen(state, payload) {
       state.splitScreen = payload;
+    },
+    setBasemap(state, payload) {
+      state.basemap = payload;
+    },
+    setShow3d(state, payload) {
+      state.show3d = payload;
     },
   },
   actions: {

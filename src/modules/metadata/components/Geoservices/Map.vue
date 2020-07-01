@@ -62,9 +62,16 @@
     },
     data: () => ({
       layerControlOpen: false,
-      show3d: false,
     }),
     computed: {
+      show3d: {
+        get() {
+          return this.$store.state.geoservices.show3d;
+        },
+        set(value) {
+          this.$store.commit('setShow3d', value);
+        },
+      },
       selectedLayer() {
         if (!this.selectedLayerName) {
           return null;
