@@ -85,8 +85,10 @@
           requestRenderMode: true,
           maximumRenderTimeChange: Infinity,
         });
-        // Hide default credits
-        document.getElementsByClassName('cesium-widget-credits')[0].style.display = 'none';
+        // Hide default credits from all existing cesium maps
+        const cesiumWidgets = document.getElementsByClassName('cesium-widget-credits');
+        cesiumWidgets.forEach((w) => { w.style.display = 'none'; });
+
         this.replaceLayer();
         this.replaceBasemap();
         this.zoomToExtent(this.layer.bbox);

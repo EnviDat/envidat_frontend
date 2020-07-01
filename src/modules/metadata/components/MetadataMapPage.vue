@@ -120,7 +120,6 @@
         if (this.idRemapping.has(id)) {
           id = this.idRemapping.get(id);
         }
-
         return id;
       },
       loading() {
