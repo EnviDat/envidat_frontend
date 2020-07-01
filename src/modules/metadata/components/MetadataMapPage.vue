@@ -131,7 +131,7 @@
         this.$store.dispatch('startSplitScreen');
       },
       setLayer(name) {
-        this.$store.dispatch('setSelectedLayer', name);
+        this.$store.commit('setSelectedLayer', name);
       },
       setLayerSplit(name) {
         this.$store.commit('setSplitLayer', name);

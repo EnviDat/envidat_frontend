@@ -69,7 +69,6 @@
         },
         setupMap() {
           this.map = new L.Map(this.mapDivId, { zoomControl: false });
-          this.map.setView(L.latLng(46.57591, 7.84956), 8);
           L.control.scale()
             .addTo(this.map);
           this.replaceLayer();
