@@ -17,8 +17,10 @@
           <div id="map" ref="map" style="width: 100%; height: 100%;" />
         </v-col>
 
-        <v-col :class="{'filter-row': !topLayout }"
-                class="shrink">
+        <v-col :class="{
+                  shrink: topLayout,
+                  'col-xs-2 col-sm-2 col-md-3': !topLayout,
+                }" >
 
           <filter-map-widget :title="modeTitle"
                              :pinnedIds="pinnedIds"
@@ -576,18 +578,5 @@
     flex-direction: row;
   }
 
-  .height-column {
-    height: 500px;
-    max-height: 100%;
-  }
-
-  .height-row {
-    height: 310px;
-  }
-
-  .filter-row {
-    min-width: 150px;
-    max-width: 150px;
-  }
 
 </style>
