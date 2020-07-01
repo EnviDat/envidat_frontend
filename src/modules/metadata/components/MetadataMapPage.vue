@@ -40,7 +40,7 @@
     <v-layout v-else style="height: 100%;" pa-0 ma-0 :map-div-id="'single'" :key="'map0'">
       <div style="width: 100%;">
         <Map :config="configFile" @changeLayer="setLayer" :map-div-id="'map0'" :selected-layer-name="selectedLayer">
-          <v-btn color="primary" @click="splitScreen = true" fab small>
+          <v-btn color="primary" @click="startSplitScreen" fab small>
             <v-icon style="height:auto;">vertical_split</v-icon>
           </v-btn>
         </Map>
@@ -90,13 +90,8 @@
       this.$store.commit(`${METADATA_NAMESPACE}/${CLEAN_CURRENT_METADATA}`);
     },
     computed: {
-      splitScreen: {
-        get() {
-          return this.$store.state.geoservices.splitScreen;
-        },
-        set(value) {
-          this.$store.commit('setSplitScreen', value);
-        },
+      splitScreen() {
+        return this.$store.state.geoservices.splitScreen;
       },
       selectedLayer() {
         return this.$store.state.geoservices.selectedLayer;
@@ -133,8 +128,11 @@
       },
     },
     methods: {
+      startSplitScreen() {
+        this.$store.dispatch('startSplitScreen');
+      },
       setLayer(name) {
-        this.$store.commit('setSelectedLayer', name);
+        this.$store.dispatch('setSelectedLayer', name);
       },
       setLayerSplit(name) {
         this.$store.commit('setSplitLayer', name);

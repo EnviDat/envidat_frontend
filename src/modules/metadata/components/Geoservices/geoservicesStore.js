@@ -42,5 +42,9 @@ export const geoservices = {
           });
       }
     },
+    startSplitScreen({ state, commit }) {
+      commit('setSplitLayer', state.selectedLayer);
+      commit('setSplitScreen', true);
+    },
   },
 };
