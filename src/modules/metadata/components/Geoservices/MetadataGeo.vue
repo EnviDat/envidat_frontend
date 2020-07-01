@@ -3,7 +3,7 @@
     <v-card-title class="title metadata_title">Location Geoservices</v-card-title>
 
     <v-card-text v-if="configFile" style="width: 100%; height: 500px; position: relative;">
-      <Map :config="configFile" :map-div-id="'map-small'" :selected-layer-name="selectedLayer">
+      <Map :config="configFile" :map-div-id="'map-small'" :selected-layer-name="selectedLayer" @changeLayer="setLayer">
         <v-btn fab small color="primary" @click.native.stop="openFullscreen">
           <v-icon medium style="height: auto;">fullscreen</v-icon>
         </v-btn>
@@ -67,6 +67,9 @@
       },
     },
     methods: {
+      setLayer(name) {
+        this.$store.commit('setSelectedLayer', name);
+      },
       openFullscreen() {
         this.$router.push({ path: '/metadata/dataset-for-testing-geoservices/map' });
       },

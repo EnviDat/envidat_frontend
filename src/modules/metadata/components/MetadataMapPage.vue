@@ -102,7 +102,6 @@
         return this.$store.state.geoservices.selectedLayer;
       },
       splitLayer() {
-        console.log(this.$store.state.geoservices.splitLayer);
         return this.$store.state.geoservices.splitLayer;
       },
       configFile() {

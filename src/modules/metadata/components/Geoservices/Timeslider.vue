@@ -8,7 +8,7 @@
       </v-flex>
       <div :id="divId" style="width: 100%; height: 100%;"></div>
       <v-flex>
-        <v-btn icon small @click="next()" :disabled="this.currentIndex > this.nDataPoints - 1">
+        <v-btn icon small @click="next()" :disabled="this.currentIndex >= this.nDataPoints - 1">
           <v-icon>arrow_right</v-icon>
         </v-btn>
       </v-flex>

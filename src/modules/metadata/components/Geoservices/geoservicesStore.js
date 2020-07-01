@@ -33,12 +33,14 @@ export const geoservices = {
     },
   },
   actions: {
-    fetchConfig({ commit }, url) {
-      axios.get(url)
-        .then((res) => {
-          commit('setConfig', res.data);
-          commit('setSelectedLayer', res.data.layers.find(layer => layer.visibility).name);
-        });
+    fetchConfig({ state, commit }, url) {
+      if (!state.config) {
+        axios.get(url)
+          .then((res) => {
+            commit('setConfig', res.data);
+            commit('setSelectedLayer', res.data.layers.find(layer => layer.visibility).name);
+          });
+      }
     },
   },
 };
