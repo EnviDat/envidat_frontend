@@ -15,7 +15,7 @@
                       fluid>
           <v-row >
 
-            <v-col v-for="(project, index) in 3"
+            <v-col v-for="(project, index) in 4"
                     :key="index"
                     cols="12" sm="6" md="4" xl="3" >
               <project-card-placeholder />

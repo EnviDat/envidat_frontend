@@ -3,6 +3,7 @@
   <metadata-list-layout id="metadataListLayoutComponent"
                         ref="metadataListLayoutComponent"
                         :topFilteringLayout="topFilteringLayout"
+                        :minMapHeight="minMapHeight"
                         :useDynamicHeight="useDynamicHeight"
                         :showMapFilter="showMapFilter"
                         :mapFilteringPossible="mapFilteringPossible"

@@ -55,7 +55,7 @@
                             @clickedClear="catchTagCleared"
                             :defaultListControls="defaultControls"
                             :enabledControls="enabledControls"
-                            :mapHeight="mapFilterHeight"
+                            :minMapHeight="mapFilterHeight"
                             :topFilteringLayout="true"
                             :showSearch="false"
                             :searchCount="filteredListContent.length"

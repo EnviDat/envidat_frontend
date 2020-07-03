@@ -86,6 +86,7 @@
 
             <v-col v-if="showMapFilter && mapFilteringPossible"
                     cols="12"
+                    :style="minMapHeight ? `min-height: ${minMapHeight}px;` : 'height: 100%;'"
                     key="filterMap" >
               <slot name="filterMap" />
             </v-col>
@@ -136,6 +137,7 @@ export default {
   props: {
     showMapFilter: Boolean,
     mapFilteringPossible: Boolean,
+    minMapHeight: Number,
     useDynamicHeight: Boolean,
     topFilteringLayout: {
       type: Boolean,
