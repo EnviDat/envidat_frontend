@@ -1,8 +1,15 @@
 <template>
-  <v-container class="pa-0 ma-0" tag="article">
+  <v-container class="pa-0 ma-0"
+                tag="article"
+                id="AboutPage" >
       <!-- Tabs -->
-      <v-tabs v-model="activeTab" slider-color="accent" grow background-color="highlight">
-        <v-tab v-for="tab in tabs" :key="tab.name" class="pa-0">
+      <v-tabs v-model="activeTab"
+              slider-color="accent"
+              grow
+              background-color="highlight">
+        <v-tab v-for="tab in tabs"
+              :key="tab.name"
+              class="pa-0">
           <v-icon>{{tab.icon}}</v-icon>
         </v-tab>
       </v-tabs>
@@ -79,7 +86,7 @@
 /**
  * The about page of EnviDat. It consists of:
  * - TitleImage and Title (ImgAndTextLayout)
-   * - Different Card with infomation about some about topics (ExpandableCard)
+ * - Different Card with infomation about some about topics (ExpandableCard)
  *
  * @summary about page
  * @author Dominik Haas-Artho
@@ -109,8 +116,6 @@ import {
   GET_DMP,
 } from '@/modules/about/store/dmpMutationsConsts';
 
-
-// import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
 
 import teamSmall from '@/modules/about/assets/team_small.jpg';
 import mission from '@/modules/about/assets/mission.jpg';
@@ -207,13 +212,13 @@ export default {
       ];
     },
     policiesMarkdownText() {
-      return remark().use(html).processSync(this.policiesMarkdown);
+      return remark().use(html).processSync(this.policiesMarkdown).toString();
     },
     policiesImg() {
       return this.$vuetify.breakpoint.mdAndUp ? policies : policiesSmall;
     },
     guidelinesMarkdownText() {
-      return remark().use(html).processSync(this.guidelinesMarkdown);
+      return remark().use(html).processSync(this.guidelinesMarkdown).toString();
     },
     guidelineImg() {
       return this.$vuetify.breakpoint.mdAndUp ? guidelines : guidelinesSmall;
@@ -222,11 +227,10 @@ export default {
       return this.$vuetify.breakpoint.mdAndUp ? dmp : dmpSmall;
     },
     dmpMarkdownText() {
-      return remark().use(html).processSync(this.dmpMarkdown);
+      return remark().use(html).processSync(this.dmpMarkdown).toString();
     },
   },
   components: {
-    // ImgAndTextLayout,
     ExpandableCard,
     AboutTabLayout,
   },
