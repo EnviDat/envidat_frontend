@@ -457,7 +457,7 @@ export default {
 }
 
 .envidatBadgeBigNumber span {
-  font-size: 0.9rem !important;
+  font-size: 0.7rem !important;
 }
 
 .envidatChip {
