@@ -38,7 +38,7 @@
         </v-row>
 
         <v-row>
-          <v-col class="pt-2"
+          <v-col class="mt-2 py-0"
                   cols="12"
                   ref="metadataListScroll"
                   v-on:scroll="onScroll()"
