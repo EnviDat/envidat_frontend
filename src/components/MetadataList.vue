@@ -87,7 +87,7 @@
       <v-container v-if="!loading"
                   fluid
                   class="py-0 px-1">
-      <v-row ref="metadataListLayout" no-gutters>
+      <v-row ref="metadataListLayout" >
 
         <v-col v-for="(pinnedId, index) in pinnedList"
                 :key="'pinned_' + index"

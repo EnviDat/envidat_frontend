@@ -2,7 +2,7 @@
   <v-card class="elevation-0"
           id="FilterMapWidgetLayout" >
 
-    <v-card-title :class="mdScreen ? 'pa-2' : 'pb-2'" >
+    <v-card-title :class="mdScreen ? 'pa-4' : 'pb-2'" >
       <div class="mb-0"
           :class="mdScreen ? 'body-2 font-weight-bold' : 'title '" >
         {{ title }}
@@ -11,7 +11,7 @@
 
 
     <div class="py-0 my-0 "
-          :class="mdScreen ? 'px-1 mb-1' : 'px-3'"
+          :class="mdScreen ? 'px-4 mb-1' : 'px-3'"
           :style="`background-color: ${ $vuetify.theme.themes.light.highlight };`" >
 
       <v-row v-if="topLayout"
