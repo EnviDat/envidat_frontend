@@ -3,8 +3,7 @@
           id="FilterMapWidgetLayout" >
 
     <v-card-title :class="mdScreen ? 'pa-4' : 'pb-2'" >
-      <div class="mb-0"
-          :class="mdScreen ? 'body-2 font-weight-bold' : 'title '" >
+      <div class="mb-0 title" >
         {{ title }}
       </div>
     </v-card-title>
@@ -45,6 +44,7 @@
 
     <v-container :class="{
                     'pa-0': mdScreen,
+                    'pa-4': mdScreen && !topLayout,
                     'py-0 px-4': !mdScreen,
                     }" >
 
