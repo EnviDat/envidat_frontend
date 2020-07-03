@@ -40,7 +40,7 @@
                                   @searchCleared="catchSearchCleared">
 
             <template v-slot:append-outer>
-              <v-col class="hidden-xs-only pa-0 ml-2" style="white-space: nowrap">
+              <v-col class="hidden-xs-only pa-0 ml-2 fill-height" style="white-space: nowrap">
                 <list-control-toggle :controls="controlsActive"
                                      :enabledControls="enabledControls"
                                      :compactLayout="$vuetify.breakpoint.smAndDown"
@@ -87,7 +87,7 @@
       <v-container v-if="!loading"
                   fluid
                   class="py-0 px-1">
-      <v-row ref="metadataListLayout" >
+      <v-row ref="metadataListLayout" no-gutters>
 
         <v-col v-for="(pinnedId, index) in pinnedList"
                 :key="'pinned_' + index"
