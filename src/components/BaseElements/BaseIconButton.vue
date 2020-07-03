@@ -68,7 +68,9 @@
     </v-btn>
 
     <v-badge v-if="count > 0"
-            overlap
+            :overlap="!isSmall"
+            :left="isSmall"
+            :style="isSmall ? 'position: relative; bottom: 10px;' : ''"
             color="highlight"
             :class="{ envidatBadgeBigNumber : count > 9,
                       envidatBadge: count <= 9 }"
