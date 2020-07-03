@@ -1,5 +1,6 @@
 <template>
-  <v-app class="application" :style="dynamicBackground">
+  <v-app class="application"
+          :style="dynamicBackground">
 
       <div v-for="(notification, index) in visibleNotifications()"
           :key="`notification_${index}`"
@@ -30,7 +31,7 @@
                             :modeCloseCallback="catchModeClose" />
 
     <v-main>
-      <v-container class="py-2 fill-height"
+      <v-container class="pa-3 fill-height"
                     fluid
                     v-on:scroll="updateScroll()"
                     ref="appContainer"
