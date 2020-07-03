@@ -20,6 +20,8 @@ module.exports = {
       resolve: {
         alias: {
           '@': path.resolve(__dirname, '../src'),
+          vue: 'vue/dist/vue.js',
+          'vue$': 'vue/dist/vue.esm.js',          
           cesium: path.resolve(__dirname, '../node_modules/cesium/Source'),
         },
       },
