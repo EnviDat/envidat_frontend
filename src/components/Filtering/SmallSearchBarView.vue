@@ -62,12 +62,8 @@
                             :flat="isFlat"
                             :placeholder="labelText"
                             @keyup.enter="clicked"
-                            clear-icon="clear"
-                            @click:clear="clearClicked">
-                <template v-slot:append-outer>
-                  <slot name="append-outer"></slot>
-                </template>
-              </v-text-field>
+                            append-icon="clear"
+                            @click:append="clearClicked" />
             </template>
 
           <span>{{ searchToolTipText }}</span>
