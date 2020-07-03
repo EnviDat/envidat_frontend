@@ -26,7 +26,7 @@
                 ref="mapWidget"
                 :class="{
                   shrink: topLayout,
-                  'col-xs-2 col-sm-2 col-md-3': !topLayout,
+                  'col-2 col-sm-3 col-md-2': !topLayout,
                 }" >
 
           <filter-map-widget :title="modeTitle"
@@ -99,7 +99,6 @@
     name: 'FilterMapView',
     props: {
       content: Array,
-      minMapHeight: Number,
       pinnedIds: Array,
       topLayout: Boolean,
       mode: String,
