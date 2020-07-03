@@ -21,35 +21,32 @@
 
     <template v-slot:controlPanel>
       <v-card style="height: 36px; " id="controlPanel" >
-        <v-container class="px-2 py-0 fill-height"
-                      fluid>
+      <v-container class="px-2 py-0 fill-height"
+                      fluid> 
         <v-row align="center"
                 justify="space-between"
                 no-gutters>
-          <v-col >
-          <small-search-bar-view class="elevation-0"
+          <v-col class="py-0" cols="10">
+            <small-search-bar-view class="elevation-0"
+                                    :compactLayout="$vuetify.breakpoint.smAndDown"
+                                    :searchTerm="searchTerm"
+                                    :showSearch="showSearch"
+                                    :showSearchCount="true"
+                                    :searchCount="searchCount"
+                                    :isFlat="true"
+                                    :fixedHeight="36"
+                                    :labelText="searchBarPlaceholder"
+                                    :loading="loading"
+                                    @clicked="catchSearchClicked"
+                                    @searchCleared="catchSearchCleared" />
+          </v-col>
+          <v-col class="hidden-xs-only ml-2 py-0 fill-height" >
+            <list-control-toggle style="height: 36px;"
+                                  :controls="controlsActive"
+                                  :enabledControls="enabledControls"
                                   :compactLayout="$vuetify.breakpoint.smAndDown"
-                                  :searchTerm="searchTerm"
-                                  :showSearch="showSearch"
-                                  :showSearchCount="true"
-                                  :searchCount="searchCount"
-                                  :isFlat="true"
-                                  :fixedHeight="36"
-                                  :labelText="searchBarPlaceholder"
-                                  :loading="loading"
-                                  @clicked="catchSearchClicked"
-                                  @searchCleared="catchSearchCleared">
-
-            <template v-slot:append-outer>
-              <v-col class="hidden-xs-only pa-0 ml-2 fill-height" style="white-space: nowrap">
-                <list-control-toggle :controls="controlsActive"
-                                     :enabledControls="enabledControls"
-                                     :compactLayout="$vuetify.breakpoint.smAndDown"
-                                     :flat="true"
-                                     @controlsChanged="controlsChanged" />
-              </v-col>
-            </template>
-          </small-search-bar-view>
+                                  :flat="true"
+                                  @controlsChanged="controlsChanged" />
           </v-col>
         </v-row>
       </v-container>
