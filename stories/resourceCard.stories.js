@@ -13,7 +13,7 @@ import fileSizeIcon from '@/assets/icons/fileSize.png';
 import doiIcon from '@/assets/icons/doi.png';
 import dateCreatedIcon from '@/assets/icons/dateCreated.png';
 import lastModifiedIcon from '@/assets/icons/dateModified.png';
-import unFormatedMetadataCards from '@/stories/js/metadata';
+import unFormatedMetadataCards from './js/metadata';
 
 Vue.use(Vue2Filters);
 Vue.mixin(globalMethods);
