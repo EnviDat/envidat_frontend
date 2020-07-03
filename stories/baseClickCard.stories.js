@@ -12,7 +12,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from '@storybook/vue';
 import { action } from '@storybook/addon-actions';
-import './js/vuetify-components';
 
 import BaseClickCard from '@/components/BaseElements/BaseClickCard.vue';
 import categoryCards from '@/modules/metadata/store/categoryCards';

@@ -12,12 +12,12 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from '@storybook/vue';
 import { withKnobs, text, boolean } from '@storybook/addon-knobs';
-import './js/vuetify-components';
+import { action } from '@storybook/addon-actions';
 
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton.vue';
 
 export const methods = {
-  // onClick: action('clicked'),
+  onClick: action('clicked'),
 };
 
 
@@ -33,37 +33,34 @@ const stories = storiesOf('2 Buttons | Rectangle', module)
       },
     },    
     template: `
-    <v-layout row wrap>
-      <v-flex>      
+    <v-row>
+      <v-col>
         <base-rectangle-button
           :buttonText="buttonText"
           toolTipText="Text for the tool tip"
           @click="onClick"/>
-      </v-flex>      
-
-      <v-flex>      
+      </v-col>
+      <v-col>
           <base-rectangle-button
           :buttonText="buttonText"
           :disabled="isDisabled"
           @click="onClick"/>
-      </v-flex>      
-      
-      <v-flex>      
+      </v-col>
+      <v-col>
           <base-rectangle-button
           materialIconName="settings"
           iconColor="white"
           buttonText="With Icon"
           tooltipText="Text for the tool tip"
           @click="onClick"/>
-      </v-flex>      
-      
-      <v-flex>      
+      </v-col>
+      <v-col>
           <base-rectangle-button
           buttonText="small"
           isSmall
           @click="onClick"/>
-      </v-flex>      
-    </v-layout>
+      </v-col>
+    </v-row>
     `,
     methods,
 }));
