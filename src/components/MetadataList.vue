@@ -1,6 +1,7 @@
 <template>
 
-  <metadata-list-layout ref="metadataListLayoutComponent"
+  <metadata-list-layout id="metadataListLayoutComponent"
+                        ref="metadataListLayoutComponent"
                         :topFilteringLayout="topFilteringLayout"
                         :useDynamicHeight="useDynamicHeight"
                         :showMapFilter="showMapFilter"
@@ -8,8 +9,7 @@
                         @onScroll="onScroll" >
 
     <template v-slot:filterKeywords>
-      <filter-keywords-view :height="keywordsHeigth"
-                            :compactLayout="$vuetify.breakpoint.smAndDown"
+      <filter-keywords-view :compactLayout="$vuetify.breakpoint.smAndDown"
                             :allTags="allTags"
                             :selectedTagNames="selectedTagNames"
                             :showPlaceholder="loading || updatingTags"
@@ -57,11 +57,13 @@
 
     <template v-slot:filterMap>
       <filter-map-view :content="listContent"
+                        :minMapHeight="minMapHeight" 
                         :pinnedIds="pinnedIds"
                         :topLayout="mapTopLayout"
                         :mode="mode"
                         @pointClicked="catchPointClicked"
                         @clearButtonClicked="catchClearButtonClick" />
+
     </template>
 
     <template v-slot:metadataListPlaceholder>
@@ -224,18 +226,14 @@ export default {
     placeHolderAmount: Number,
     selectedTagNames: Array,
     allTags: Array,
-    mapHeight: Number,
     mapTopLayout: {
       type: Boolean,
       default: false,
     },
-    keywordsHeigth: {
-      type: Number,
-      default: null,
-    },
     defaultListControls: Array,
     enabledControls: Array,
     useDynamicHeight: Boolean,
+    minMapHeight: Number,
     topFilteringLayout: {
       type: Boolean,
       default: false,

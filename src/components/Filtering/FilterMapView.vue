@@ -11,13 +11,20 @@
 
       <v-row class="fill-height"
             no-gutters
-            :class="{'direction-column': topLayout, 'direction-row': !topLayout }">
+            :class="{
+              'flex-column-reverse': topLayout,
+              'flex-row': !topLayout,
+            }">
 
-        <v-col class="grow pa-0 fill-height">
-          <div id="map" ref="map" style="width: 100%; height: 100%;" />
+        <v-col class="grow pa-0" >
+          <div id="map"
+                ref="map"
+                class="fill-height" />
         </v-col>
 
-        <v-col :class="{
+        <v-col id="mapWidget"
+                ref="mapWidget"
+                :class="{
                   shrink: topLayout,
                   'col-xs-2 col-sm-2 col-md-3': !topLayout,
                 }" >
@@ -92,6 +99,7 @@
     name: 'FilterMapView',
     props: {
       content: Array,
+      minMapHeight: Number,
       pinnedIds: Array,
       topLayout: Boolean,
       mode: String,
@@ -569,13 +577,6 @@
 
   .leaflet-popup-content-wrapper .leaflet-popup-content {
     font-family: 'Raleway', sans-serif !important;
-  }
-
-  .direction-column {
-    flex-direction: column-reverse;
-  }
-  .direction-row {
-    flex-direction: row;
   }
 
 
