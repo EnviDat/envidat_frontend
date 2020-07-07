@@ -31,6 +31,8 @@
         mapLayer: null,
         basemapLayer: null,
         featureInfo: [],
+        coords: null,
+        marker: null,
       }),
       props: {
         layer: Object,
@@ -122,6 +124,7 @@
 
           this.map.on('click', (e) => {
             const coord = e.latlng;
+            this.coords = coord;
             this.getFeatureInfo([coord.lat, coord.lng]);
           });
 
@@ -155,9 +158,17 @@
       },
       watch: {
           featureInfo() {
+            if (this.marker) {
+              this.map.removeLayer(this.marker);
+            }
             if (this.$store.state.geoservices.config.layers.length === this.featureInfo.length) {
-              console.log('emitting', this.$store.state.geoservices.config.layers.length === this.featureInfo.length);
               this.$emit('featureinfo', this.featureInfo);
+              this.marker = L.circle(this.coords, {
+                color: 'red',
+                fillColor: '#f03',
+                fillOpacity: 0.5,
+                radius: 500,
+              }).addTo(this.map);
             }
           },
           layer: {

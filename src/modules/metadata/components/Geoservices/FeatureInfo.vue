@@ -3,7 +3,7 @@
     <v-btn small icon style="position: absolute; right: 0; top: 0; z-index: 999999999999;" @click="close">
       <v-icon>close</v-icon>
     </v-btn>
-    <div id="chartdiv" style="height: 100%; width: 100%;">
+    <div :id="divId" style="height: 100%; width: 100%;">
     </div>
   </v-card>
 </template>
@@ -22,6 +22,7 @@
       };
     },
     props: {
+      divId: String,
       data: Array,
       layers: Array,
       selected: String,
@@ -121,7 +122,7 @@
         ],
       };
       // eslint-disable-next-line no-undef
-      AmCharts.makeChart('chartdiv', config);
+      AmCharts.makeChart(this.divId, config);
 
     },
     methods: {
