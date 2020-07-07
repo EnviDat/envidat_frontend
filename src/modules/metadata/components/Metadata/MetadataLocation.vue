@@ -1,5 +1,6 @@
 <template>
-  <v-card>
+  <v-card id="MetadataLocation" >
+
     <v-card-title class="title metadata_title">Location</v-card-title>
 
     <v-card-text v-if="!hasGeom" style="color: red;">{{ emptyText }}</v-card-text>

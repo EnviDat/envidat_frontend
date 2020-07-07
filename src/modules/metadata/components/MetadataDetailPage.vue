@@ -1,5 +1,6 @@
 <template>
-  <v-container class="pa-0" fluid
+  <v-container class="pa-0"
+                fluid
                 tag="article" >
     <v-row >
       <v-col class="elevation-5 pa-0"
@@ -23,7 +24,7 @@
       </v-col>
     </v-row>
 
-    <two-column-layout :style="`position: relative; top: ${headerHeight()}px`"
+    <two-column-layout :style="`position: relative; top: ${headerHeight()}px;`"
                         :first-column="firstColumn"
                         :second-column="secondColumn"
                         :show-placeholder="showPlaceholder" >
@@ -262,7 +263,7 @@ export default {
 
         this.header = createHeader(currentContent, this.$vuetify.breakpoint.smAndDown, this.authorDeadInfo);
 
-        this.body = createBody(currentContent);
+        this.body = createBody(currentContent, this.$vuetify.breakpoint.smAndDown);
 
         this.citation = createCitation(currentContent);
 
