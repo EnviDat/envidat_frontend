@@ -31,13 +31,16 @@ export default {
   props: {
     description: String,
     showPlaceholder: Boolean,
+    maxTextLength: {
+      type: Number,
+      default: 1500,
+    },
   },
   computed: {
   },
   methods: {
   },
   data: () => ({
-    maxTextLength: 1500,
     emptyText: 'No description found for this project.',
   }),
 };
