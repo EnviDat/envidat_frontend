@@ -25,7 +25,7 @@
         :layers="config.layers"
         :selected="selectedLayerName"
         @select="select"
-        @close="featureInfo = []"
+        @close="close"
         style="position: absolute; top: 5px; z-index: 1000000; height: 200px; right: 50px; left: 50px;"
       ></feature-info>
 
@@ -101,6 +101,10 @@
       },
     },
     methods: {
+      close() {
+        this.featureInfo = [];
+        this.$store.commit('setSelectedCoords', null);
+      },
       setFeatureInfo(value) {
         this.featureInfo = value;
       },

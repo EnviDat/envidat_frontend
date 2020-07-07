@@ -8,6 +8,7 @@ export const geoservices = {
     splitLayer: null,
     splitScreen: false,
     show3d: false,
+    selectedCoords: null,
   },
   getters: {
 
@@ -30,6 +31,9 @@ export const geoservices = {
     },
     setShow3d(state, payload) {
       state.show3d = payload;
+    },
+    setSelectedCoords(state, payload) {
+      state.selectedCoords = payload;
     },
   },
   actions: {

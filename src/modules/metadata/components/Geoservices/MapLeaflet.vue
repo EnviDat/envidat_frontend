@@ -31,7 +31,6 @@
         mapLayer: null,
         basemapLayer: null,
         featureInfo: [],
-        coords: null,
         marker: null,
       }),
       props: {
@@ -39,6 +38,9 @@
         mapDivId: String,
       },
       computed: {
+          selectedCoords() {
+            return this.$store.state.geoservices.selectedCoords;
+          },
         basemap: {
           get() {
             return this.$store.state.geoservices.basemap;
@@ -123,9 +125,7 @@
           this.replaceBasemap();
 
           this.map.on('click', (e) => {
-            const coord = e.latlng;
-            this.coords = coord;
-            this.getFeatureInfo([coord.lat, coord.lng]);
+            this.$store.commit('setSelectedCoords', e.latlng);
           });
 
         },
@@ -157,18 +157,23 @@
         },
       },
       watch: {
-          featureInfo() {
+          selectedCoords() {
             if (this.marker) {
               this.map.removeLayer(this.marker);
             }
-            if (this.$store.state.geoservices.config.layers.length === this.featureInfo.length) {
-              this.$emit('featureinfo', this.featureInfo);
-              this.marker = L.circle(this.coords, {
+            if (this.selectedCoords) {
+              this.getFeatureInfo([this.selectedCoords.lat, this.selectedCoords.lng]);
+              this.marker = L.circle(this.selectedCoords, {
                 color: 'red',
                 fillColor: '#f03',
                 fillOpacity: 0.5,
                 radius: 500,
               }).addTo(this.map);
+            }
+          },
+          featureInfo() {
+            if (this.$store.state.geoservices.config.layers.length === this.featureInfo.length) {
+              this.$emit('featureinfo', this.featureInfo);
             }
           },
           layer: {
