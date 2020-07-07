@@ -6,7 +6,7 @@
       <v-col class="elevation-5 pa-0"
               cols="12"
               ref="header"
-              style="z-index: 1; position: absolute; left: 0;" 
+              style="z-index: 1; left: 0; " 
               :style="headerStyle" >
 
         <metadata-header v-bind="header"
@@ -214,8 +214,10 @@ export default {
       if (this.$vuetify.breakpoint.lg) {
         width = 83.25;
       }
+                          
+      const pos = `position: ${this.appScrollPosition > 20 && this.$vuetify.breakpoint.smAndDown ? 'fixed' : 'relative'}`;
 
-      return `width: ${width}%; margin: ${margin};`;
+      return `${pos}; width: ${width}%; margin: ${margin}; `;
     },
     headerExpanded() {
       if (this.$vuetify.breakpoint.mdAndUp) {
@@ -234,11 +236,14 @@ export default {
       this.reRenderComponents();
     },
     headerHeight() {
-      if (!this.showPlaceholder && this.$refs && this.$refs.header) {
-        return this.$refs.header.clientHeight;
+      let height = -2;
+
+      if (this.$vuetify.breakpoint.smAndDown && !this.showPlaceholder 
+        && this.appScrollPosition > 20 && this.$refs && this.$refs.header) {
+        height = this.$refs.header.clientHeight;
       }
 
-      return 150;
+      return height;
     },
     /**
      * @description
