@@ -18,8 +18,17 @@
         style="position: absolute; z-index: 999; top: 95px; bottom: 150px; left: 35px;"
       ></map-layer-control>
 
+      <feature-info
+        v-if="featureInfo.length > 0"
+        :data="featureInfo"
+        :layers="config.layers"
+        :selected="selectedLayerName"
+        @select="select"
+        style="position: absolute; top: 5px; z-index: 1000000; height: 200px; right: 50px; left: 50px;"
+      ></feature-info>
+
       <div v-if="!hasGeom" style="color: red;">No data to show</div>
-      <map-leaflet v-if="!show3d" :layer="selectedLayer" :map-div-id="mapDivId">
+      <map-leaflet v-if="!show3d" :layer="selectedLayer" :map-div-id="mapDivId" @featureinfo="setFeatureInfo">
         <slot></slot><br>
         <v-btn fab small @click="show3d = true">3D</v-btn>
       </map-leaflet>
@@ -46,10 +55,12 @@
   import MapCesium from './MapCesium';
   import MapLayerControl from './MapLayerControl';
   import Timeslider from './Timeslider';
+  import FeatureInfo from './FeatureInfo';
 
   export default {
     name: 'Map',
     components: {
+      FeatureInfo,
       Timeslider,
       MapLayerControl,
       MapCesium,
@@ -62,6 +73,7 @@
     },
     data: () => ({
       layerControlOpen: false,
+      featureInfo: [],
     }),
     computed: {
       show3d: {
@@ -87,6 +99,9 @@
       },
     },
     methods: {
+      setFeatureInfo(value) {
+        this.featureInfo = value;
+      },
       select(layerName) {
         this.$emit('changeLayer', layerName);
       },

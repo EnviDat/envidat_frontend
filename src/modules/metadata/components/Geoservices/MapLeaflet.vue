@@ -7,7 +7,7 @@
       <img width="40" height="40" v-if="basemap==='streets'" src="./satellite-icon.png" @click="basemap='satellite'">
       <img width="40" height="40" v-if="basemap==='satellite'" src="./streets-icon.png" @click="basemap='streets'">
     </v-card>
-    <div style="position: absolute; bottom: 70px; right: 10px; z-index: 99999;">
+    <div style="position: absolute; bottom: 70px; right: 10px; z-index: 99999; cursor: auto;">
       <slot></slot>
     </div>
   </div>
@@ -18,6 +18,7 @@
   import L from 'leaflet';
   import 'leaflet/dist/leaflet.css';
   import 'leaflet-bing-layer';
+  import axios from 'axios';
   import { leafletLayer } from './layer-leaflet';
   import ZoomBtn from './ZoomBtn';
 
@@ -29,6 +30,7 @@
         map: null,
         mapLayer: null,
         basemapLayer: null,
+        featureInfo: [],
       }),
       props: {
         layer: Object,
@@ -61,6 +63,50 @@
         },
       },
       methods: {
+          getFeatureInfo(latlng) {
+            this.featureInfo = [];
+            this.$emit('featureinfo', []);
+            let start = 0;
+            while (start < this.$store.state.geoservices.config.layers.length) {
+              const url = this.getFeatureInfoUrl(latlng, start, start + 50);
+              axios.get(url)
+                .then((res) => {
+                  const parser = new DOMParser();
+                  const xmlDoc = parser.parseFromString(res.data, 'text/xml');
+                  const layers = xmlDoc.getElementsByTagName('Layer');
+                  layers.forEach((layer) => {
+                    this.featureInfo.push({
+                      name: layer.attributes.name.nodeValue,
+                      value: Number(layer.childNodes[1].attributes.value.nodeValue),
+                    });
+                  });
+                });
+              start += 50;
+            }
+          },
+        getFeatureInfoUrl(latlng, start, stop) {
+          // Construct a GetFeatureInfo request URL given a point
+          const point = this.map.latLngToContainerPoint(latlng, this.map.getZoom()); // coords to n pixels from upper left corner
+          const size = this.map.getSize(); // map container dimensions (in pixel)
+          let bbox = this.map.getBounds(); // bbox in WGS coordinates
+          // eslint-disable-next-line no-underscore-dangle
+          bbox = `${bbox._southWest.lat},${bbox._southWest.lng},${bbox._northEast.lat},${bbox._northEast.lng}`;
+          const layers = this.$store.state.geoservices.config.layers.map(layer => layer.name).slice(start, stop);
+          const params = {
+              request: 'GetFeatureInfo',
+              service: 'WMS',
+              srs: 'EPSG:4326',
+              version: '1.3.0',
+              bbox,
+              height: size.y,
+              width: size.x,
+              query_layers: layers,
+              info_format: 'text/xml',
+              i: point.x,
+              j: point.y,
+            };
+          return this.layer.baseURL + L.Util.getParamString(params, this.layer.baseURL, true);
+        },
         zoomIn() {
           this.map.zoomIn();
         },
@@ -73,6 +119,12 @@
             .addTo(this.map);
           this.replaceLayer();
           this.replaceBasemap();
+
+          this.map.on('click', (e) => {
+            const coord = e.latlng;
+            this.getFeatureInfo([coord.lat, coord.lng]);
+          });
+
         },
         zoomToExtent(bbox) {
           this.map.fitBounds([
@@ -102,6 +154,12 @@
         },
       },
       watch: {
+          featureInfo() {
+            if (this.$store.state.geoservices.config.layers.length === this.featureInfo.length) {
+              console.log('emitting', this.$store.state.geoservices.config.layers.length === this.featureInfo.length);
+              this.$emit('featureinfo', this.featureInfo);
+            }
+          },
           layer: {
             handler() {
               this.replaceLayer();
@@ -124,6 +182,9 @@
 </script>
 
 <style scoped>
+  .leaflet-container {
+    cursor: default;
+  }
   .basemap-toggle {
     position: absolute;
     bottom: 20px;
