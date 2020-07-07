@@ -20,7 +20,21 @@
     </template>
 
     <template v-slot:controlPanel>
-      <v-card style="height: 36px; " id="controlPanel" >
+      <control-panel :compactLayout="$vuetify.breakpoint.smAndDown"
+                      :searchTerm="searchTerm"
+                      :showSearch="showSearch"
+                      :showSearchCount="true"
+                      :searchCount="searchCount"
+                      :fixedHeight="36"
+                      :searchBarPlaceholder="searchBarPlaceholder"
+                      :loading="loading"
+                      :controlsActive="controlsActive"
+                      :enabledControls="enabledControls"
+                      @searchClick="catchSearchClicked"
+                      @searchCleared="catchSearchCleared"
+                      @controlsChanged="controlsChanged"
+                      />
+      <!-- <v-card style="height: 36px; " id="controlPanel" >
       <v-container class="px-2 py-0 fill-height"
                       fluid> 
         <v-row align="center"
@@ -50,7 +64,7 @@
           </v-col>
         </v-row>
       </v-container>
-      </v-card>
+      </v-card> -->
     </template>
 
     <template v-slot:filterMap>
@@ -198,7 +212,8 @@ import { mapGetters } from 'vuex';
 import { METADATA_MODULE_PATH, METADATA_MODULE_PAGENAME, METADATADETAIL_PAGENAME } from '@/router/routeConsts';
 import FilterKeywordsView from '@/components/Filtering/FilterKeywordsView';
 import FilterMapView from '@/components/Filtering/FilterMapView';
-import ListControlToggle from '@/components/Filtering/ListControlToggle';
+import ControlPanel from '@/components/Filtering/ControlPanel';
+
 import MetadataCard from '@/components/Cards/MetadataCard';
 import MetadataCardPlaceholder from '@/components/Cards/MetadataCardPlaceholder';
 import NoSearchResultsView from '@/components/Filtering/NoSearchResultsView';
@@ -213,7 +228,6 @@ import {
 
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 import MetadataListLayout from '@/components/MetadataListLayout';
-import SmallSearchBarView from '@/components/Filtering/SmallSearchBarView';
 // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
 export default {
@@ -461,7 +475,7 @@ export default {
       return height;
     },
     isActiveControl(number) {
-      return this.controlsActive.includes(number);
+      return this.controlsActive ? this.controlsActive.includes(number) : false;
     },
     controlsChanged(number) {
       // 0-entry: listView, 1-entry: mapActive, 2-entry compact metadata
@@ -471,6 +485,14 @@ export default {
         controlsActive = controlsActive.filter(n => n !== number);
       } else {
         controlsActive.push(number);
+      }
+
+      if (number === LISTCONTROL_LIST_ACTIVE) {
+        controlsActive = controlsActive.filter(n => n !== LISTCONTROL_COMPACT_LAYOUT_ACTIVE);
+      }
+
+      if (number === LISTCONTROL_COMPACT_LAYOUT_ACTIVE) {
+        controlsActive = controlsActive.filter(n => n !== LISTCONTROL_LIST_ACTIVE);
       }
 
       let listActive = false;
@@ -544,13 +566,12 @@ export default {
   components: {
     FilterKeywordsView,
     FilterMapView,
-    ListControlToggle,
+    ControlPanel,
     NoSearchResultsView,
     MetadataCard,
     MetadataCardPlaceholder,
     BaseRectangleButton,
     MetadataListLayout,
-    SmallSearchBarView,
   },
 };
 </script>

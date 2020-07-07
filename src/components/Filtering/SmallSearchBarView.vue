@@ -201,8 +201,6 @@ export default {
   }
 
   .envidatSmallSearch.small .v-text-field__slot > input {
-    /* margin-bottom: 2px !important; */
-    /* min-height: 32px !important; */
     font-size: 14px !important;
   }
 
