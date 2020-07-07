@@ -2,7 +2,8 @@
   <v-card ripple hover @click="buttonCallback" >
 
     <v-container class="pa-0" >
-      <v-row :class="{ 'flex-column' : $vuetify.breakpoint.xsOnly }" >
+      <v-row :class="{ 'flex-column' : $vuetify.breakpoint.xsOnly }"
+              no-gutters >
 
         <v-col class="py-0 pr-sm-0"        
                 cols="12"
@@ -29,7 +30,6 @@
           </div>
 
           <div class="py-5 mb-5"
-               :class="{'px-2 mb-2': $vuetify.breakpoint.smAndDown }"
                :style="$vuetify.breakpoint.mdAndUp ? 'font-size: 14px !important;' : '' " >
             {{ subSlogan }}
           </div>
