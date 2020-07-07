@@ -3,10 +3,11 @@
           hover
           @click.native="clicked" >
     <v-container class="pa-0" >
-      <v-row align="center" >
+      <v-row align="center"
+              no-gutters >
         <!-- Image -->
-        <v-col class="py-0" cols="5"
-                >
+        <v-col class="py-0"
+                cols="5" >
           <v-img class="imagezoom"
                   :contain="contain"
                   :height=" $vuetify.breakpoint.smAndDown ? '65px' : '100px' "
@@ -15,8 +16,8 @@
         </v-col>
 
         <!-- Text -->
-        <v-col class="px-0 mt-1" cols="7"
-          >
+        <v-col class="px-0"
+                cols="7" >
           <div class="px-2 headline"
                 :class="{ 'compactTitle' : this.$vuetify.breakpoint.smAndDown }" >
             {{ title }}
@@ -24,7 +25,7 @@
 
           <div v-if="color"
                 class="py-0 my-0 "
-                :style="`height: 5px; background-color: ${color}; margin-left: -12px; margin-right: 11.5px;`" >
+                :style="`height: 5px; background-color: ${color};`" >
           </div>
 
         </v-col>
