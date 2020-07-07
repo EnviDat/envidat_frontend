@@ -159,12 +159,13 @@
           if (this.mapLayer) {
             this.map.removeLayer(this.mapLayer);
             this.mapLayer = null;
+          } else {
+            this.zoomToExtent(this.layer.bbox);
           }
           if (this.layer) {
             this.mapLayer = leafletLayer(this.layer);
             this.map.addLayer(this.mapLayer);
             this.mapLayer.bringToFront();
-            this.zoomToExtent(this.layer.bbox);
           }
         },
         replaceBasemap() {
