@@ -8,6 +8,7 @@
     </div>
 
     <base-icon-button class="ma-2"
+                      :class="{ 'mx-1' : $vuetify.breakpoint.smAndDown }"
                       style="position: absolute; top: 0px; right: 0px; z-index: 2;"
                       material-icon-name="close"
                       icon-color="primary"
@@ -18,17 +19,14 @@
                       @clicked="catchBackClicked" />
 
     <v-container fluid
-                  :class="{
-                    'pa-4': $vuetify.breakpoint.lgAndUp,
-                    'pa-3': $vuetify.breakpoint.mdAndDown,
-                  }">
+                  class="pa-4">
     <v-row no-gutters
             style="position: relative; z-index: 1;">
 
       <v-col v-if="metadataTitle"
               cols="12" >
         <div class="headerTitle"
-              :style="$vuetify.breakpoint.xsOnly ? 'line-height: 1.2em;' : ''"
+              :style="$vuetify.breakpoint.xsOnly ? 'line-height: 1.2em;' : 'line-height: 1em;'"
               :class="{ 'py-2': $vuetify.breakpoint.mdAndUp,
                         'py-0': $vuetify.breakpoint.smAndDown,
                         'display-2': $vuetify.breakpoint.xlAndUp,
@@ -60,180 +58,187 @@
       </v-col>
     </v-row>
 
+    <v-expand-transition>
     <v-row v-show="expanded"
-            no-gutters
-            style="position: relative; z-index: 1;">
-
-      <v-col v-if="authors"
-              cols="12"
-              class="pa-0"
-              id="authors_divier"
-              key="authors_divier" >
-        <v-divider :dark="dark"
-                  :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
-                            'my-2': $vuetify.breakpoint.smAndUp }" />
-      </v-col>
-
-      <v-col v-if="authors"
-              cols="12"
-              class="py-0"
-              id="authors"
-              key="authors" >
+            no-gutters >
+      <v-col cols="12">
 
         <v-row no-gutters
-                style="max-height: 100px; overflow-y: scroll;" >
-          <v-col v-for="(author, index) in authors"
-                  :key="index"
-                  :class="{
-                    'pa-0': $vuetify.breakpoint.mdAndUp,
-                    'py-1 px-0': $vuetify.breakpoint.smAndDown,
-                  }"
-                  class="shrink" >
+                style="position: relative; z-index: 1;">
 
-            <tag-chip-author :name="authorName(author)"
-                              :tooltipText="authorToolTipText"
-                              :asciiDead="asciiDead"
-                              :authorPassedInfo="authorPassedInfo"
-                              @clicked="catchAuthorClicked($event, authorName(author))" />
-          </v-col>
-        </v-row>
-      </v-col>
-
-      <v-col v-if="!authors && showPlaceholder"
-              cols="12"
-              class="py-0"
-              id="authors_placeholder"
-              key="authors_placeholder" >
-        <v-row  >
-
-          <tag-chip-placeholder v-for="n in 5"
-                                :key="n"
-                                class="headerTag" />
-        </v-row>
-      </v-col>
-    </v-row>
-
-    <v-row v-show="expanded"
-            no-gutters
-            style="position: relative; z-index: 1;">
-
-      <v-col cols="12"
-              class="pa-0"
-              id="headerinfo_divier"
-              key="headerinfo_divier" >
-        <v-divider :dark="dark"
-                  :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
-                            'my-2': $vuetify.breakpoint.smAndUp }" />
-      </v-col>
-    </v-row>
-
-    <v-row v-show="expanded"
-            no-gutters
-            id="headerinfos"
-            key="headerinfos"
-            style="position: relative; z-index: 1;">
-
-      <v-col cols="12" sm="6" md="6" lg="3"
-            class="headerInfo py-0" >
-        <base-icon-label-view :text="contactName"
-                              :icon="contactIcon"
-                              icon-tooltip="Main contact"
-                              :compactLayout="$vuetify.breakpoint.xs"
-                              :align-left="true" />
-      </v-col>
-
-      <v-col cols="12" sm="6" md="6" lg="3"
-              class="headerInfo py-0" >
-        <base-icon-label-view :text="contactEmail"
-                              :icon="mailIcon"
-                              icon-tooltip="Email adress of the main contact"
-                              :align-left="true"
-                              :compactLayout="$vuetify.breakpoint.xs"
-                              :word-break="true" />
-      </v-col>
-
-      <v-col cols="12" sm="6" md="6" lg="3"
-              class="headerInfo py-0" >
-        <base-icon-label-view :text="doi"
-                              :url="doiUrl"
-                              :icon="doiIcon"
-                              icon-tooltip="Data Object Identifier"
-                              :align-left="true"
-                              :compactLayout="$vuetify.breakpoint.xs"
-                              :word-break="true" />
-      </v-col>
-
-      <v-col cols="12" sm="6" md="6" lg="3"
-              class="headerInfo py-0" >
-        <base-icon-label-view :text="license"
-                              :icon="licenseIcon"
-                              icon-tooltip="License for the data files"
-                              :compactLayout="$vuetify.breakpoint.xs"
-                              :align-left="true" />
-      </v-col>
-    </v-row>
-
-    <v-row v-show="expanded"
-            no-gutters
-            style="position: relative; z-index: 1;">
-
-      <v-col v-if="!showPlaceholder && tags"
-              cols="12"
-              class="pa-0"
-              id="tags_divier"
-              key="tags_divier" >
-        <v-divider :dark="dark"
-                  :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
-                            'my-2': $vuetify.breakpoint.smAndUp }" />
-      </v-col>
-
-      <v-col v-if="tags"
-              cols="12"
-              class="py-0"
-              id="tags"
-              key="tags" >
-        <v-row no-gutters >
-          <v-col v-for="tag in slicedTags"
-                  :key="tag.name"
-                  class="shrink" >
-
-            <tag-chip :name="tag.name"
-                      :selectable="true"
-                      class="headerTag"
-                      :color="tag.color"
-                      @clicked="catchTagClicked($event, tag.name)" />
+          <v-col v-if="authors"
+                  cols="12"
+                  class="pa-0"
+                  id="authors_divier"
+                  key="authors_divier" >
+            <v-divider :dark="dark"
+                      :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
+                                'my-2': $vuetify.breakpoint.smAndUp }" />
           </v-col>
 
-          <v-col v-if="maxTagsReached && !showTagsExpanded"
-                  class="shrink" >
-            <tag-chip class="headerTag shrink"
-                      :name="'...'"
-                      @click.native="showTagsExpanded = !showTagsExpanded" />
+          <v-col v-if="authors"
+                  cols="12"
+                  class="py-0"
+                  id="authors"
+                  key="authors" >
+
+            <v-row no-gutters
+                    style="max-height: 100px; overflow-y: scroll;" >
+              <v-col v-for="(author, index) in authors"
+                      :key="index"
+                      :class="{
+                        'pa-0': $vuetify.breakpoint.mdAndUp,
+                        'py-1 px-0': $vuetify.breakpoint.smAndDown,
+                      }"
+                      class="shrink" >
+
+                <tag-chip-author :name="authorName(author)"
+                                  :tooltipText="authorToolTipText"
+                                  :asciiDead="asciiDead"
+                                  :authorPassedInfo="authorPassedInfo"
+                                  @clicked="catchAuthorClicked($event, authorName(author))" />
+              </v-col>
+            </v-row>
+          </v-col>
+
+          <v-col v-if="!authors && showPlaceholder"
+                  cols="12"
+                  class="py-0"
+                  id="authors_placeholder"
+                  key="authors_placeholder" >
+            <v-row no-gutters >
+              <v-col>
+                <tag-chip-placeholder v-for="n in 5"
+                                      :key="n"
+                                      class="headerTag" />
+              </v-col>                                
+            </v-row>
           </v-col>
         </v-row>
-      </v-col>
 
-      <v-col v-if="!tags && showPlaceholder"
-              cols="12"
-              class="py-0"
-              id="tags_placeholder"
-              key="tags_placeholder" >
-        <v-row >
-          <v-col v-for="tag in slicedTags"
-                  :key="tag.name" >
-          <tag-chip-placeholder v-for="n in 5"
-                                :key="n"
-                                class="headerTag" />
+        <v-row no-gutters
+                style="position: relative; z-index: 1;">
+
+          <v-col cols="12"
+                  class="pa-0"
+                  id="headerinfo_divier"
+                  key="headerinfo_divier" >
+            <v-divider :dark="dark"
+                      :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
+                                'my-2': $vuetify.breakpoint.smAndUp }" />
           </v-col>
         </v-row>
-      </v-col>
 
+        <v-row no-gutters
+                id="headerinfos"
+                key="headerinfos"
+                style="position: relative; z-index: 1;">
+
+          <v-col cols="12" sm="6" md="6" lg="3"
+                class="headerInfo py-0" >
+            <base-icon-label-view :text="contactName"
+                                  :icon="contactIcon"
+                                  icon-tooltip="Main contact"
+                                  :compactLayout="$vuetify.breakpoint.xs"
+                                  :align-left="$vuetify.breakpoint.smAndUp" />
+          </v-col>
+
+          <v-col cols="12" sm="6" md="6" lg="3"
+                  class="headerInfo py-0" >
+            <base-icon-label-view :text="contactEmail"
+                                  :icon="mailIcon"
+                                  icon-tooltip="Email adress of the main contact"
+                                  :compactLayout="$vuetify.breakpoint.xs"
+                                  :word-break="true"
+                                  :align-left="$vuetify.breakpoint.smAndUp" />
+          </v-col>
+
+          <v-col cols="12" sm="6" md="6" lg="3"
+                  class="headerInfo py-0" >
+            <base-icon-label-view :text="doi"
+                                  :url="doiUrl"
+                                  :icon="doiIcon"
+                                  icon-tooltip="Data Object Identifier"
+                                  :compactLayout="$vuetify.breakpoint.xs"
+                                  :word-break="true"
+                                  :align-left="$vuetify.breakpoint.smAndUp" />
+          </v-col>
+
+          <v-col cols="12" sm="6" md="6" lg="3"
+                  class="headerInfo py-0" >
+            <base-icon-label-view :text="license"
+                                  :icon="licenseIcon"
+                                  icon-tooltip="License for the data files"
+                                  :compactLayout="$vuetify.breakpoint.xs"
+                                  :align-left="$vuetify.breakpoint.smAndUp" />
+          </v-col>
+        </v-row>
+
+        <v-row no-gutters
+                style="position: relative; z-index: 1;">
+
+          <v-col v-if="!showPlaceholder && tags"
+                  cols="12"
+                  class="pa-0"
+                  id="tags_divier"
+                  key="tags_divier" >
+            <v-divider :dark="dark"
+                      :class="{ 'my-1': $vuetify.breakpoint.xsOnly,
+                                'my-2': $vuetify.breakpoint.smAndUp }" />
+          </v-col>
+
+          <v-col v-if="tags"
+                  cols="12"
+                  class="py-0"
+                  id="tags"
+                  key="tags" >
+            <v-row no-gutters >
+              <v-col v-for="tag in slicedTags"
+                      :key="tag.name"
+                      class="shrink" >
+
+                <tag-chip :name="tag.name"
+                          :selectable="true"
+                          class="headerTag"
+                          :color="tag.color"
+                          @clicked="catchTagClicked($event, tag.name)" />
+              </v-col>
+
+              <v-col v-if="maxTagsReached && !showTagsExpanded"
+                      class="shrink" >
+                <tag-chip class="headerTag shrink"
+                          :name="'...'"
+                          @click.native="showTagsExpanded = !showTagsExpanded" />
+              </v-col>
+            </v-row>
+          </v-col>
+
+          <v-col v-if="!tags && showPlaceholder"
+                  cols="12"
+                  class="py-0"
+                  id="tags_placeholder"
+                  key="tags_placeholder" >
+            <v-row >
+              <v-col v-for="tag in slicedTags"
+                      :key="tag.name" >
+              <tag-chip-placeholder v-for="n in 5"
+                                    :key="n"
+                                    class="headerTag" />
+              </v-col>
+            </v-row>
+          </v-col>
+
+        </v-row>
+
+      </v-col>
     </v-row>
+    </v-expand-transition>
+    
     </v-container>
 
-    <v-card-actions v-if="maxTagsReached"
+    <v-card-actions v-show="expanded"
                     style="position: absolute; bottom: 0px; right: 0px; z-index: 2;">
-      <base-icon-button v-show="expanded"
+      <base-icon-button v-if="maxTagsReached"
                         materialIconName="expand_more"
                         color="primary"
                         :iconColor="showTagsExpanded ? 'accent' : 'primary'"
@@ -388,7 +393,6 @@ export default {
     font-family: 'Libre Baskerville', serif !important;
     font-weight: 400;
     opacity: 1;
-    line-height: 1 !important;
     text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
   }
 
