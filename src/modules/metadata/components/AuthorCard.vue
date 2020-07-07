@@ -64,7 +64,7 @@
                               :tooltipText="`Search for the datasets of ${author.firstName} ${author.lastName}`"
                               @clicked="catchSearchAuthor(author.fullName)" />
 
-            <v-badge  :color="dark ? 'white' : darkColor"                    
+            <v-badge :color="dark ? 'white' : darkColor"                    
                       overlap
                       style="top: -25px; right: -2px;">
               <span slot="badge"
