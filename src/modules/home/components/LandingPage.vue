@@ -1,7 +1,7 @@
 <template>
   <v-container fluid :class="$vuetify.breakpoint.smAndDown ? 'pa-1' : 'py-0'">
 
-      <v-row class="pb-5"
+      <v-row class="pb-5 offset-md-4 offset-lg-6"
               no-gutters>
         <the-title-screen-layout :title="envidatTitle"
                                   :slogan="envidatSlogan"
@@ -12,7 +12,7 @@
                                   :moreButtonCallback="catchMoreClicked" />
       </v-row>
 
-      <v-row class="hidden-xs-only px-0 py-5 offset-md-6"
+      <v-row class="hidden-xs-only px-0 py-5 offset-md-4 offset-lg-6"
               no-gutters>
         <search-bar-view :labelText="labelText"
                           :buttonText="buttonText"
@@ -28,7 +28,7 @@
                                 @clicked="catchSearchClicked" />
       </v-row>
 
-      <v-row class="pt-5 pb-3 offset-md-6"
+      <v-row class="pt-5 pb-3  offset-md-4 offset-lg-6"
               no-gutters>
         <v-col>
           <v-card>
@@ -39,7 +39,7 @@
         </v-col>
       </v-row>
 
-      <v-row class="offset-md-6"
+      <v-row class=" offset-md-4 offset-lg-6"
               no-gutters >
         <v-container class="py-0 px-1 pa-sm-0">
           <v-row>
