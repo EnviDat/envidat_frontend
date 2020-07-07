@@ -1,33 +1,39 @@
 <template>
   <v-container fluid :class="$vuetify.breakpoint.smAndDown ? 'pa-1' : 'py-0'">
-      <the-title-screen-layout :title="envidatTitle"
-                                :slogan="envidatSlogan"
-                                :subSlogan="envidatSubSlogan"
-                                :buttonText="sloganButtonText"
-                                :buttonCallback="catchBrowseClicked"
-                                :moreButtonText="sloganMoreButtonText"
-                                :moreButtonCallback="catchMoreClicked" />
 
-      <v-row class="hidden-xs-only px-0 mt-5 offset-md-6" no-gutters>
+      <v-row class="pb-5" no-gutters>
+        <the-title-screen-layout :title="envidatTitle"
+                                  :slogan="envidatSlogan"
+                                  :subSlogan="envidatSubSlogan"
+                                  :buttonText="sloganButtonText"
+                                  :buttonCallback="catchBrowseClicked"
+                                  :moreButtonText="sloganMoreButtonText"
+                                  :moreButtonCallback="catchMoreClicked" />
+      </v-row>
+
+      <v-row class="hidden-xs-only px-0 py-5 offset-md-6" no-gutters>
         <search-bar-view :labelText="labelText"
                           :buttonText="buttonText"
                           :hasButton="true"
                           @clicked="catchSearchClicked" />
       </v-row>
 
-      <v-row class="mt-5 pa-0 hidden-sm-and-up" no-gutters>
+      <v-row class="py-5 pa-0 hidden-sm-and-up" no-gutters>
             <small-search-bar-view :labelText="labelText"
                                    :buttonText="buttonText"
                                    :hasButton="$vuetify.breakpoint.smAndUp"
                                    @clicked="catchSearchClicked" />
       </v-row>
-        <v-row class="offset-md-6" no-gutters>
-        <v-container class="pa-0">
+
+      <v-row class="py-5 offset-md-6"
+              no-gutters >
+        <v-container class="py-0 px-1 pa-sm-0">
           <v-row>
 
             <v-col v-for="card in categoryCards"
                     :key="card.title"
-                    cols="6">
+                    cols="6"
+                    class="pa-2 pa-sm-3" >
 
               <base-click-card :title="card.title"
                                 :img="card.img"
@@ -37,7 +43,7 @@
             </v-col>
           </v-row>
         </v-container>
-        </v-row>
+      </v-row>
   </v-container>
 </template>
 
