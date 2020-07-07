@@ -14,7 +14,6 @@
           <v-btn @click="catchControlClick(LISTCONTROL_MAP_ACTIVE)"
                   class="controlButton"
                   :class="isActiveControl(LISTCONTROL_MAP_ACTIVE) ? 'secondary' : ''"
-                  :style="compactLayout ? 'height: 32px !important' : ''"
                   text >
             <v-icon>map</v-icon>
           </v-btn>
@@ -32,7 +31,6 @@
                   @click="catchControlClick(LISTCONTROL_LIST_ACTIVE)"
                   class="controlButton"
                   :class="isActiveControl(LISTCONTROL_LIST_ACTIVE) ? 'secondary' : ''"
-                  :style="compactLayout ? 'height: 32px !important' : ''"
                   text >
             <v-icon >view_headline</v-icon>
           </v-btn>
@@ -41,7 +39,6 @@
                   @click="catchControlClick(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)"
                   class="controlButton"
                   :class="isActiveControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE) ? 'secondary' : ''"
-                  :style="compactLayout ? 'height: 32px !important' : ''"
                   text >
             <v-icon >view_comfortable</v-icon>
           </v-btn>
@@ -50,7 +47,6 @@
                   @click="catchControlClick(3)"
                   class="controlButton"
                   :class="isActiveControl(3) ? 'highlight' : ''"
-                  :style="compactLayout ? 'height: 32px !important' : ''"
                   text >
             <v-icon >view_stream</v-icon>
           </v-btn>
@@ -82,7 +78,6 @@ import {
 export default {
   name: 'ListControlToggle',
   props: {
-    compactLayout: Boolean,
     controls: Array,
     enabledControls: Array,
     mapEnabled: Boolean,
@@ -114,10 +109,10 @@ export default {
   },
   methods: {
     isActiveControl(number) {
-      return this.controlsActive.includes(number);
+      return this.controlsActive ? this.controlsActive.includes(number) : false;
     },
     isEnabledControl(number) {
-      return this.enabledControls.includes(number);
+      return this.enabledControls ? this.enabledControls.includes(number) : false;
     },
     catchControlClick(number) {
       this.$emit('controlsChanged', number);
