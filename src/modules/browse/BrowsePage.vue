@@ -14,7 +14,7 @@
                     @clickedTagClose="catchTagCloseClicked"
                     @clickedClear="catchTagCleared"
                     :mode="mode"
-                    :defaultListControls="controls"
+                    :defaultListControls="defaultControls"
                     :enabledControls="enabledControls"
                     :useDynamicHeight="true"
                     :minMapHeight="310"
@@ -233,7 +233,7 @@ export default {
       updatingTags: `${METADATA_NAMESPACE}/updatingTags`,
       scrollPositionDelay: `${METADATA_NAMESPACE}/scrollPositionDelay`,
       browseScrollPosition: 'browseScrollPosition',
-      controls: 'controls',
+      defaultControls: 'defaultControls',
       searchPlaceholderText: `${METADATA_NAMESPACE}/searchPlaceholderText`,
       searchPlaceholderTextSmall: `${METADATA_NAMESPACE}/searchPlaceholderTextSmall`,
     }),
