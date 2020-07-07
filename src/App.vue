@@ -31,7 +31,7 @@
                             :modeCloseCallback="catchModeClose" />
 
     <v-main>
-      <v-container class="pa-3 fill-height"
+      <v-container class="pa-2 pa-sm-3 fill-height"
                     fluid
                     v-on:scroll="updateScroll()"
                     ref="appContainer"
