@@ -23,6 +23,7 @@
               class="pr-1"
               cols="2"
               style="max-width: 100%" >
+
         <div class="iconCentering">
           <img class="envidatIcon"
                 :class="compactLayout ? 'small' : ''"
@@ -92,10 +93,9 @@ export default {
     alignClass() {
       return {
         flex: !this.alignLeft,
-        'col-xs-3': !this.alignLeft,
-        'col-md-2': !this.alignLeft,
-        'pr-1': this.alignLeft,
-        'pl-1': this.alignLeft,
+        'col-2': !this.alignLeft,
+        'pl-1': !this.alignLeft,
+        'px-1': this.alignLeft,
       };
     },
     textStyle() {
