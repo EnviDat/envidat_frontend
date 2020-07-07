@@ -1,5 +1,7 @@
 <template>
-  <v-card :style="fixedHeight ? 'height: 304px;' : ''">
+  <v-card :style="fixedHeight ? 'height: 304px;' : ''"
+          id="MetadataCitation" >
+
     <v-card-title class="title metadata_title">
       Citation
     </v-card-title>
@@ -7,8 +9,8 @@
     <v-card-text v-if="citationText"
                   class="readableText"
                   :class="{
-                    'pb-3' : $vuetify.breakpoint.mdAndUp,
-                    'pb-2' : $vuetify.breakpoint.smAndDown,
+                    'pb-2' : $vuetify.breakpoint.mdAndUp,
+                    'pb-0' : $vuetify.breakpoint.smAndDown,
                    }"                  
                   style="font-style: italic; "
                   v-html="markdownText" >
@@ -16,10 +18,11 @@
     </v-card-text>
 
     <v-card-actions v-if="!showPlaceholder && citationText"
-                    class="pt-0 pb-2">
+                    class="pa-4 pt-0">
       <v-container class="pa-0"
                     fluid >
-        <v-row justify="space-around">
+        <v-row justify="end"
+                no-gutters>
 
           <v-col v-for="link in citationLinks"
                   :key="link.text"
