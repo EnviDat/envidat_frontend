@@ -62,6 +62,15 @@ describe('metaDataFactory - createBody', () => {
     expect(body.maxTextLength).toBeDefined();
     expect(body.emptyText).toBeDefined();
   });
+
+  it('with dataset, compare maxTextLength', () => {
+    const dataset = packagelist.result[3];
+
+    const body = createBody(dataset, true);
+    const body2 = createBody(dataset, false);
+
+    expect(body.maxTextLength).not.toBe(body2.maxTextLength);
+  });
 });
 
 describe('metaDataFactory - createFunding', () => {
