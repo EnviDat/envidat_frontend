@@ -34,11 +34,14 @@
         marker: null,
       }),
       props: {
-          selectedCoords: Array,
+          selectedCoords: Object,
         layer: Object,
         mapDivId: String,
       },
       computed: {
+          linkedScreens() {
+            return this.$store.state.geoservices.linkedScreens;
+          },
           extent() {
             return this.$store.state.geoservices.extent;
           },
@@ -174,9 +177,13 @@
         },
       },
       watch: {
+          linkedScreens() {
+            if (this.linkedScreens && !this.map.getBounds().equals(this.extent)) {
+              this.map.fitBounds(this.extent);
+            }
+          },
         extent() {
-          console.log(this.map.getBounds().equals(this.extent));
-          if (!this.map.getBounds().equals(this.extent)) {
+          if (this.linkedScreens && !this.map.getBounds().equals(this.extent)) {
             this.map.fitBounds(this.extent);
           }
         },
