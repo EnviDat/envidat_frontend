@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card style="resize: both; overflow: auto; position: absolute;">
     <v-btn small icon style="position: absolute; right: 0; top: 0; z-index: 999999999999;" @click="close">
       <v-icon>close</v-icon>
     </v-btn>
