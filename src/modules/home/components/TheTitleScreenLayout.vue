@@ -1,5 +1,5 @@
 <template>
-  <v-col cols="12" md="6" offset-md="6" class="pa-0" >
+  <v-col >
 
     <v-row align="center" >
 
