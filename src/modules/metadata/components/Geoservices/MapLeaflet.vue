@@ -32,14 +32,15 @@
         basemapLayer: null,
         featureInfo: [],
         marker: null,
+        selectedCoords: null,
       }),
       props: {
         layer: Object,
         mapDivId: String,
       },
       computed: {
-          selectedCoords() {
-            return this.$store.state.geoservices.selectedCoords;
+          extent() {
+            return this.$store.state.geoservices.extent;
           },
         basemap: {
           get() {
@@ -118,14 +119,30 @@
           this.map.zoomOut();
         },
         setupMap() {
-          this.map = new L.Map(this.mapDivId, { zoomControl: false });
+          this.map = new L.Map(this.mapDivId,
+            {
+              zoomControl: false,
+              maxBounds: [
+              [-90, -180],
+              [90, 180],
+            ],
+              maxBoundsViscosity: 0.5,
+            });
           L.control.scale()
             .addTo(this.map);
           this.replaceLayer();
           this.replaceBasemap();
 
           this.map.on('click', (e) => {
-            this.$store.commit('setSelectedCoords', e.latlng);
+            this.selectedCoords = e.latlng;
+          });
+
+          this.map.on('drag', () => {
+            this.$store.commit('setExtent', this.map.getBounds());
+          });
+
+          this.map.on('zoom', () => {
+            this.$store.commit('setExtent', this.map.getBounds());
           });
 
         },
@@ -157,6 +174,12 @@
         },
       },
       watch: {
+        extent() {
+          console.log(this.map.getBounds().equals(this.extent));
+          if (!this.map.getBounds().equals(this.extent)) {
+            this.map.fitBounds(this.extent);
+          }
+        },
           selectedCoords() {
             if (this.marker) {
               this.map.removeLayer(this.marker);

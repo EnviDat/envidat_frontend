@@ -8,12 +8,16 @@ export const geoservices = {
     splitLayer: null,
     splitScreen: false,
     show3d: false,
-    selectedCoords: null,
-  },
-  getters: {
-
+    linkedScreens: false,
+    extent: null,
   },
   mutations: {
+    setExtent(state, payload) {
+      state.extent = payload;
+    },
+    setLinkedScreens(state, payload) {
+      state.linkedScreens = payload;
+    },
     setConfig(state, payload) {
       state.config = payload;
     },
@@ -31,9 +35,6 @@ export const geoservices = {
     },
     setShow3d(state, payload) {
       state.show3d = payload;
-    },
-    setSelectedCoords(state, payload) {
-      state.selectedCoords = payload;
     },
   },
   actions: {

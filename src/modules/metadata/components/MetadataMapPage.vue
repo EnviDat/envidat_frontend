@@ -11,6 +11,18 @@
                         tool-tip-text="Close Metadata"
                         :tool-tip-bottom="true"
                         @clicked="close"/>
+      <base-icon-button
+        v-if="splitScreen"
+        class="ma-2"
+        material-icon-name="link"
+        icon-color="primary"
+        color="primary"
+        outlined
+        :is-toggled="linkScreens"
+        tool-tip-text="Close Metadata"
+        :tool-tip-bottom="true"
+        @clicked="linkScreens = !linkScreens"
+      ></base-icon-button>
     </v-card>
     <v-layout v-if="splitScreen" style="height: 100%;" pa-0 ma-0 :key="'split'">
       <div style="width: 50%; max-width: 50%; float: left; height: 100%; position: relative;">
@@ -90,6 +102,14 @@
       this.$store.commit(`${METADATA_NAMESPACE}/${CLEAN_CURRENT_METADATA}`);
     },
     computed: {
+      linkScreens: {
+        get() {
+          return this.$store.state.geoservices.linkedScreens;
+        },
+        set(value) {
+          this.$store.commit('setLinkedScreens', value);
+        },
+      },
       splitScreen() {
         return this.$store.state.geoservices.splitScreen;
       },
