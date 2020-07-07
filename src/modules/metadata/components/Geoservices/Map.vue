@@ -30,7 +30,8 @@
       ></feature-info>
 
       <div v-if="!hasGeom" style="color: red;">No data to show</div>
-      <map-leaflet v-if="!show3d" :layer="selectedLayer" :map-div-id="mapDivId" @featureinfo="setFeatureInfo">
+      <map-leaflet v-if="!show3d" :layer="selectedLayer" :map-div-id="mapDivId" @featureinfo="setFeatureInfo"
+                   @selectCoords="setCoords" :selected-coords="selectedCoords">
         <slot></slot><br>
         <v-btn fab small @click="show3d = true">3D</v-btn>
       </map-leaflet>
@@ -76,6 +77,7 @@
     data: () => ({
       layerControlOpen: false,
       featureInfo: [],
+      selectedCoords: null,
     }),
     computed: {
       show3d: {
@@ -101,9 +103,12 @@
       },
     },
     methods: {
+      setCoords(value) {
+        this.selectedCoords = value;
+      },
       close() {
         this.featureInfo = [];
-        this.$store.commit('setSelectedCoords', null);
+        this.selectedCoords = null;
       },
       setFeatureInfo(value) {
         this.featureInfo = value;

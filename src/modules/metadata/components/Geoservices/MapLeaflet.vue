@@ -32,9 +32,9 @@
         basemapLayer: null,
         featureInfo: [],
         marker: null,
-        selectedCoords: null,
       }),
       props: {
+          selectedCoords: Array,
         layer: Object,
         mapDivId: String,
       },
@@ -134,7 +134,7 @@
           this.replaceBasemap();
 
           this.map.on('click', (e) => {
-            this.selectedCoords = e.latlng;
+            this.$emit('selectCoords', e.latlng);
           });
 
           this.map.on('drag', () => {
