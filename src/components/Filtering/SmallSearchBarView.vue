@@ -200,10 +200,10 @@ export default {
     padding: 0;
   }
 
-  .envidatSmallSearch.small > .v-input__control {
-    margin-bottom: 2px !important;
+  .envidatSmallSearch.small .v-text-field__slot > input {
+    /* margin-bottom: 2px !important; */
     /* min-height: 32px !important; */
-    font-size: 12px !important;
+    font-size: 14px !important;
   }
 
   .envidatSmallSearch > .v-input__append-outer {
