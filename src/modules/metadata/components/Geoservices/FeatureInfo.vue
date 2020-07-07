@@ -1,5 +1,8 @@
 <template>
   <v-card>
+    <v-btn small icon style="position: absolute; right: 0; top: 0; z-index: 999999999999;" @click="close">
+      <v-icon>close</v-icon>
+    </v-btn>
     <div id="chartdiv" style="height: 100%; width: 100%;">
     </div>
   </v-card>
@@ -37,7 +40,6 @@
       },
     },
     mounted() {
-      console.log('mopunted');
       const chartData = this.layers.map(layer => ({
           ...layer,
           value: this.data.find(d => d.name === layer.name).value,
@@ -123,6 +125,9 @@
 
     },
     methods: {
+      close() {
+        this.$emit('close');
+      },
       updateSelection() {
         this.chart.chart.dataProvider.forEach((dataPoint) => {
           if (dataPoint.name !== this.selected) {

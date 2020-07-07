@@ -24,6 +24,7 @@
         :layers="config.layers"
         :selected="selectedLayerName"
         @select="select"
+        @close="featureInfo = []"
         style="position: absolute; top: 5px; z-index: 1000000; height: 200px; right: 50px; left: 50px;"
       ></feature-info>
 
