@@ -214,8 +214,16 @@ export default {
       if (this.$vuetify.breakpoint.lg) {
         width = 83.25;
       }
-                          
-      const pos = `position: ${this.appScrollPosition > 20 && this.$vuetify.breakpoint.smAndDown ? 'fixed' : 'relative'}`;
+
+      let pos = 'position: ';
+      if (this.$vuetify.breakpoint.mdAndUp) {
+        pos += 'absolute';
+      } else if (this.appScrollPosition > 20) {
+        pos += 'fixed';
+      } else {
+        pos += 'relative';
+      }
+      // const pos = `position: ${this.appScrollPosition > 20 ? 'fixed' : this.$vuetify.breakpoint.smAndDown ? 'relative' : 'absolute'}`;
 
       return `${pos}; width: ${width}%; margin: ${margin}; `;
     },
@@ -238,8 +246,10 @@ export default {
     headerHeight() {
       let height = -2;
 
-      if (this.$vuetify.breakpoint.smAndDown && !this.showPlaceholder 
-        && this.appScrollPosition > 20 && this.$refs && this.$refs.header) {
+      if (!this.showPlaceholder 
+        && ((this.$vuetify.breakpoint.smAndDown
+        && this.appScrollPosition > 20) || this.$vuetify.breakpoint.mdAndUp)
+        && this.$refs && this.$refs.header) {
         height = this.$refs.header.clientHeight;
       }
 
