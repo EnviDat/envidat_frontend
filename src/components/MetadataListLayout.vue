@@ -1,133 +1,120 @@
 <template>
-<v-container class="fill-height pa-0"
-              id="MetadataListLayout"
-              fluid >
+  <v-container class="fill-height pa-0"
+                id="MetadataListLayout"
+                fluid >
 
-  <v-row v-if="mapLayout"
-          class="fill-height" >
+    <v-row v-if="mapLayout"
+            class="fill-height">
 
-    <v-col class="py-0 pr-2 "
-            cols="4" >
-      <v-container class="fill-height pa-0"
-                    id="metadataListLayoutFiltering_map"
-                    fluid >
-        <v-row ref="metadataListLayoutFiltering"
-                no-gutters >
+      <v-col class="py-0 pr-2 flex-column"
+              cols="4" >
 
-          <v-col cols="12"
-                  key="filterKeywords" >
+        <v-row no-gutters >
+          <v-col id="metadataListLayoutFiltering_map"
+                ref="metadataListLayoutFiltering" >
             <slot name="filterKeywords" />
           </v-col>
         </v-row>
 
-        <v-row v-if="showMapFilter && mapFilteringPossible"
-                no-gutters  >
+        <v-row no-gutters >
+          <v-col class="pt-4 "
+              :style="useDynamicHeight ? `height: calc(100vh - ${keywordHeight}px);` : ''" >
 
-          <v-col cols="12"
-                  class="pt-3"
-                  :style="useDynamicHeight ? `height: calc(100vh - ${filterMapHeight }px);` : ''"
-                  key="filterMap" >
+            <slot name="filterMap"/>
+          </v-col>
+        </v-row>
+      </v-col>
 
-            <slot name="filterMap" />
+      <v-col class="py-0 pl-2"
+              cols="8"
+              id="metadataListScroll" >
 
+        <v-row ref="controlPanel">
+          <v-col class="hidden-xs-only py-0"
+                  key="controlPanel"
+                  cols="12">
+            <slot name="controlPanel" />
           </v-col>
         </v-row>
 
-      </v-container>
-    </v-col>
-
-    <v-col class="py-0 pl-2 "
-            cols="8" >
-      <v-container class="fill-height pa-0"
-                    id="metadataListScroll"
-                    fluid >
-
-        <v-row ref="controlPanel" >
-          <v-col class="hidden-xs-only py-0"
-                  key="controlPanel"
-                  cols="12" >
-            <slot name="controlPanel" />
-          </v-col>          
-        </v-row>
-
-        <v-row >
-          <v-col class="py-0"
+        <v-row>
+          <v-col class="mt-2 py-0"
                   cols="12"
                   ref="metadataListScroll"
                   v-on:scroll="onScroll()"
-                  :class="useDynamicHeight ? 'listScroll' : ''" 
-                  :style="useDynamicHeight ? `height: calc(100vh - ${filteringComponentsHeight }px);` : ''" >
-            
+                  :class="useDynamicHeight ? 'listScroll' : ''"
+                  :style="useDynamicHeight ? `height: calc(100vh - ${filteringComponentsHeight }px);` : ''">
+
             <slot name="metadataListPlaceholder" />
 
             <slot name="metadataListLayout" />
 
           </v-col>
         </v-row>
-      </v-container>
-    </v-col>
+      </v-col>
 
-  </v-row>
+    </v-row>
 
-  <v-row v-if="!mapLayout" >
+    <v-row v-if="!mapLayout" >
 
-    <v-col cols="12"
-            class="py-0">
-      <v-container class="pa-0"
-                    id="metadataListLayoutFiltering_without_map"
-                    fluid >
-        <v-row ref="metadataListLayoutFiltering"
-                class="fill-height" >
+      <v-col cols="12"
+              class="py-0">
+        <v-container class="pa-0"
+                      id="metadataListLayoutFiltering_without_map"
+                      fluid >
+          <v-row ref="metadataListLayoutFiltering"
+                  class="fill-height" >
 
-          <v-col class="hidden-sm-and-up py-0" 
-                  cols="12"
-                  key="controlPanel_smallscreen" >
-            <slot name="controlPanel" />
-          </v-col>
+            <v-col class="hidden-sm-and-up py-0" 
+                    cols="12"
+                    key="controlPanel_smallscreen" >
+              <slot name="controlPanel" />
+            </v-col>
 
-          <v-col class="pb-0"
-                  cols="12"
-                  key="filterKeywords" >
-            <slot name="filterKeywords" />
-          </v-col>
+            <v-col class="pb-0"
+                    cols="12"
+                    key="filterKeywords" >
+              <slot name="filterKeywords" />
+            </v-col>
 
-          <v-col class="hidden-xs-only pb-0" 
-                  cols="12"
-                  key="controlPanel" >
-            <slot name="controlPanel" />
-          </v-col>
+            <v-col class="hidden-xs-only pb-0" 
+                    cols="12"
+                    key="controlPanel" >
+              <slot name="controlPanel" />
+            </v-col>
 
 
-          <v-col v-if="showMapFilter && mapFilteringPossible"
-                  cols="12"
-                  key="filterMap" >
-            <slot name="filterMap" />
-          </v-col>
+            <v-col v-if="showMapFilter && mapFilteringPossible"
+                    cols="12"
+                    :style="minMapHeight ? `min-height: ${minMapHeight}px;` : 'height: 100%;'"
+                    key="filterMap" >
+              <slot name="filterMap" />
+            </v-col>
 
-        </v-row>
-      </v-container>
-    </v-col>
-  </v-row>
+          </v-row>
+        </v-container>
+      </v-col>
+    </v-row>
 
-  <v-row v-if="!mapLayout"
-          class="fill-height" >
-    <v-col ref="metadataListScroll"
-            v-on:scroll="onScroll()"
-            :class="useDynamicHeight ? 'listScroll' : ''"
-            :style="useDynamicHeight ? `height: calc(100vh - ${filteringComponentsHeight }px);` : ''" >
+    <v-row v-if="!mapLayout"
+            class="fill-height" >
+      <v-col ref="metadataListScroll"
+              v-on:scroll="onScroll()"
+              :class="useDynamicHeight ? 'listScroll' : ''"
+              :style="useDynamicHeight ? `height: calc(100vh - ${filteringComponentsHeight }px);` : ''" >
 
-      <v-container class="pa-0"
-                    fluid >
+        <v-container class="pa-0"
+                      fluid >
 
-        <slot name="metadataListPlaceholder" />
+          <slot name="metadataListPlaceholder" />
 
-        <slot name="metadataListLayout" />
+          <slot name="metadataListLayout" />
 
-      </v-container>
-    </v-col>
-  </v-row>
+        </v-container>
+      </v-col>
+    </v-row>
 
-</v-container>
+  </v-container>
 </template>
 
 <script>
@@ -150,19 +137,16 @@ export default {
   props: {
     showMapFilter: Boolean,
     mapFilteringPossible: Boolean,
+    minMapHeight: Number,
     useDynamicHeight: Boolean,
     topFilteringLayout: {
       type: Boolean,
       default: false,
     },
-    filterKeywordHeight: {
-      type: Number,
-      default: 150,
-    },
   },
   updated() {
     this.setFilteringComponentsHeight();
-    this.setFilterMapHeight();
+    this.setKeywordHeight();
   },
   computed: {
     mapLayout() {
@@ -171,28 +155,27 @@ export default {
   },
   methods: {
     setFilteringComponentsHeight() {
-      const searchViewHeight = 36;
+      let searchViewHeight = 36;
       const TheNavigationToolbar = 0; // when active: 36;
-      const padding = 16 + 8 + 8;
-      let height = searchViewHeight;
+      const padding = 8 + 8;
 
       if (this.showMapFilter && this.$refs && this.$refs.controlPanel) {
-        height = this.$refs.controlPanel.clientHeight;
+        searchViewHeight = this.$refs.controlPanel.clientHeight ? this.$refs.controlPanel.clientHeight : searchViewHeight;
       }
 
-      this.filteringComponentsHeight = height + TheNavigationToolbar + padding;
+      this.filteringComponentsHeight = searchViewHeight + TheNavigationToolbar + padding;
     },
-    setFilterMapHeight() {
+    setKeywordHeight() {
       const TheNavigationToolbar = 0; // when active: 36;
-      const padding = 16 + 8 + 8;
-      let height = this.filterKeywordHeight;
+      const padding = 16;
+      let keywordHeigth = 150;
 
       if (this.showMapFilter && this.$refs && this.$refs.metadataListLayoutFiltering) {
-        height = this.$refs.metadataListLayoutFiltering.clientHeight;
+        keywordHeigth = this.$refs.metadataListLayoutFiltering.clientHeight ? this.$refs.metadataListLayoutFiltering.clientHeight : keywordHeigth;
       }
 
-      this.filterMapHeight = height + TheNavigationToolbar + padding;
-    },
+      this.keywordHeight = keywordHeigth + TheNavigationToolbar + padding;
+    },    
     setScrollPos(toPos) {
       if (this.$refs && this.$refs.metadataListScroll) {
         this.$refs.metadataListScroll.scrollTop = toPos;
@@ -204,7 +187,7 @@ export default {
   },
   data: () => ({
     filteringComponentsHeight: 150,
-    filterMapHeight: 150,
+    keywordHeight: 150,
   }),
 };
 </script>

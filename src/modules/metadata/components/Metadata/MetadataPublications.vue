@@ -1,6 +1,7 @@
-<template>
+<template  id="MetadataPublications">
   <expandable-text-layout v-bind="publications"
-                            :showPlaceholder="showPlaceholder" />
+                            :showPlaceholder="showPlaceholder"
+                            :maxTextLength="publications.maxTextLength" />
 </template>
 
 <script>

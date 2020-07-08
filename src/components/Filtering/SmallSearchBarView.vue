@@ -62,12 +62,8 @@
                             :flat="isFlat"
                             :placeholder="labelText"
                             @keyup.enter="clicked"
-                            clear-icon="clear"
-                            @click:clear="clearClicked">
-                <template v-slot:append-outer>
-                  <slot name="append-outer"></slot>
-                </template>
-              </v-text-field>
+                            append-icon="clear"
+                            @click:append="clearClicked" />
             </template>
 
           <span>{{ searchToolTipText }}</span>
@@ -204,10 +200,8 @@ export default {
     padding: 0;
   }
 
-  .envidatSmallSearch.small > .v-input__control {
-    margin-bottom: 2px !important;
-    /* min-height: 32px !important; */
-    font-size: 12px !important;
+  .envidatSmallSearch.small .v-text-field__slot > input {
+    font-size: 14px !important;
   }
 
   .envidatSmallSearch > .v-input__append-outer {

@@ -26,7 +26,7 @@
           :style="`position: absolute; top: 0px; right: 0px;
                   height: ${height}px; width: 100%;
                   z-index: 1;`"
-          class="headerTitle pa-3"
+          class="headerTitle pa-4"
           :class="{ 'display-2': $vuetify.breakpoint.lgAndUp,
                     'display-1': $vuetify.breakpoint.mdAndDown,
                     'headline': $vuetify.breakpoint.smAndDown,

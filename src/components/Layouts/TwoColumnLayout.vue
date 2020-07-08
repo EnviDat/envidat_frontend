@@ -1,5 +1,6 @@
 <template>
-  <v-row style="z-index: 0;" >
+  <v-row style="z-index: 0;"
+          no-gutters >
 
     <v-col :class="firstColWidth"
             class="pt-0" >
@@ -41,20 +42,16 @@ export default {
   },
   computed: {
     firstColWidth() {
-      let bindings = {};
-      const colWidth = this.secondColumn && this.secondColumn.length > 0 ? { xs6: true } : { xs12: true };
+      let bindings = this.secondColumn && this.secondColumn.length > 0 ? { 'col-6': true } : { 'col-12': true };
 
       bindings = Object.assign(bindings, this.leftOrFullWidth);
-      bindings = Object.assign(bindings, colWidth);
 
       return bindings;
     },
     secondColWidth() {
-      let bindings = {};
-      const colWidth = this.secondColumn && this.secondColumn.length > 0 ? { xs6: true } : {};
+      let bindings = this.secondColumn && this.secondColumn.length > 0 ? { 'col-6': true } : {};
 
       bindings = Object.assign(bindings, this.rightOrFullWidth);
-      bindings = Object.assign(bindings, colWidth);
 
       return bindings;
     },
@@ -70,10 +67,8 @@ export default {
     fullwidthPadding() {
       const cssClasses = {};
 
-      if (this.$vuetify.breakpoint.xsOnly) {
-        cssClasses['px-1'] = true;
-      } else if (this.$vuetify.breakpoint.mdAndUp
-          && this.$vuetify.breakpoint.lgAndDown) {
+      if (this.$vuetify.breakpoint.mdAndUp
+        && this.$vuetify.breakpoint.lgAndDown) {
         cssClasses['px-2'] = true;
       } else if (this.$vuetify.breakpoint.lgAndUp) {
         cssClasses['px-3'] = true;
@@ -87,14 +82,10 @@ export default {
         'offset-lg-1': true,
       };
 
-      if (this.$vuetify.breakpoint.xsOnly) {
-        cssClasses['px-1'] = true;
-      } else if (this.$vuetify.breakpoint.mdAndUp
-          && this.$vuetify.breakpoint.lgAndDown) {
-        cssClasses['pl-2'] = true;
+      if (this.$vuetify.breakpoint.mdAndUp
+        && this.$vuetify.breakpoint.lgAndDown) {
         cssClasses['pr-1'] = true;
       } else if (this.$vuetify.breakpoint.lgAndUp) {
-        cssClasses['pl-3'] = true;
         cssClasses['pr-1'] = true;
       }
 
@@ -105,15 +96,11 @@ export default {
         'col-lg-5': true,
       };
 
-      if (this.$vuetify.breakpoint.xsOnly) {
-        cssClasses['px-1'] = true;
-      } else if (this.$vuetify.breakpoint.mdAndUp
-          && this.$vuetify.breakpoint.lgAndDown) {
+      if (this.$vuetify.breakpoint.mdAndUp
+        && this.$vuetify.breakpoint.lgAndDown) {
         cssClasses['pl-1'] = true;
-        cssClasses['pr-2'] = true;
       } else if (this.$vuetify.breakpoint.lgAndUp) {
         cssClasses['pl-1'] = true;
-        cssClasses['pr-3'] = true;
       }
 
       return cssClasses;

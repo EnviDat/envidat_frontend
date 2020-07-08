@@ -14,7 +14,8 @@
              no-gutters
              class="ma-0 fill-height pa-0 no-gutters">
         <v-col class="pa-0" cols="6">
-          <v-img style="border-radius: 2px 0px 0px 2px;"
+          <v-img class="imagezoom"
+                  style="border-radius: 2px 0px 0px 2px;"
                  :contain="headerImg ? headerImg.width > headerImg.height : false"
                  :cover="headerImg ? headerImg.width < headerImg.height : false"
                  :height="headerCardHeight"
@@ -38,7 +39,7 @@
     <!-- Bottom of Card -->
     <v-card ripple
             height="100%"
-            style="z-index: 0;"
+            style="z-index: 0; top: -2px;"
             :class="`elevation-${hovered ? 10 : 2}`"
             class="mx-2"
             @click.native="cardClick">
@@ -51,9 +52,17 @@
         <strong>Subprojects</strong>
       </v-card-text>
 
-      <v-card-text v-if="subProjects">
-        <v-row class="pr-2" v-for="sub in subProjects" :key="sub.id" align="center" no-gutters>
+      <v-card-text v-if="subProjects"
+                    class="heightScrollProjectCard" >
+
+        <v-row v-for="sub in subProjects"
+                :key="sub.id"
+                align="center"
+                class="pr-2" 
+                no-gutters>
+
           <v-col cols="11" class="py-0 text">{{ sub.title }}</v-col>
+
           <v-col class="py-0" cols="1">
             <base-icon-button materialIconName="find_in_page"
                               color="transparent"
@@ -173,6 +182,7 @@
     }),
   };
 </script>
+
 <style scoped>
   .text {
     line-height: 1.5;
@@ -181,4 +191,10 @@
     font-size: 12px;
     color: black;
   }
+
+  .heightScrollProjectCard {
+    max-height: 125px;
+    overflow-y: auto !important;
+    scrollbar-width: thin;
+  }  
 </style>

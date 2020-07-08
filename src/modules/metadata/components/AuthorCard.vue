@@ -64,7 +64,7 @@
                               :tooltipText="`Search for the datasets of ${author.firstName} ${author.lastName}`"
                               @clicked="catchSearchAuthor(author.fullName)" />
 
-            <v-badge  :color="dark ? 'white' : darkColor"                    
+            <v-badge :color="dark ? 'white' : darkColor"                    
                       overlap
                       style="top: -25px; right: -2px;">
               <span slot="badge"
@@ -78,6 +78,7 @@
 
         <data-credit-layout class="px-0 py-1 readableText"
                             :dataCredit="author.dataCredit"
+                            badgesLabel="Data Credit Contributions"
                             :iconColor="dark ? 'white' : 'black'"
                             :badgeColor="dark ? 'white' : darkColor"
                             :dark="!dark" />
@@ -204,7 +205,7 @@
 
       </v-container>
 
-      <div id="wrapper"
+      <!-- <div id="wrapper"
             style="position: absolute; top: 0; right: 0;"
             class="pa-4">
 
@@ -230,7 +231,7 @@
             {{ dataCreditLevel }}
           </text>
         </svg>
-      </div>
+      </div> -->
 
     </v-card>
 
@@ -261,9 +262,21 @@ export default {
     authorPassedInfo: String,
   },
   mounted() {
-    this.setLevelProgress();
+    // this.setLevelProgress();
   },
   computed: {
+    // getDataCreditLevel(currentScore) {
+    //   const entires = this.authorDataCreditLevels;
+
+    //   for (let i = 0; i < entires.length; i++) {
+    //     const scoreLvl = entires[i];
+    //     if (currentScore >= scoreLvl.score) {
+    //       return scoreLvl.lvl;
+    //     }
+    //   }
+
+    //   return 0;
+    // },
     dark() {
       return this.dataCreditLevel >= 6;
     },

@@ -11,14 +11,23 @@
 
       <v-row class="fill-height"
             no-gutters
-            :class="{'direction-column': topLayout, 'direction-row': !topLayout }">
+            :class="{
+              'flex-column-reverse': topLayout,
+              'flex-row': !topLayout,
+            }">
 
-        <v-col class="grow pa-0 fill-height">
-          <div id="map" ref="map" style="width: 100%; height: 100%;" />
+        <v-col class="grow pa-0" >
+          <div id="map"
+                ref="map"
+                class="fill-height" />
         </v-col>
 
-        <v-col :class="{'filter-row': !topLayout }"
-                class="shrink">
+        <v-col id="mapWidget"
+                ref="mapWidget"
+                :class="{
+                  shrink: topLayout,
+                  'col-2 col-sm-3 col-md-2': !topLayout,
+                }" >
 
           <filter-map-widget :title="modeTitle"
                              :pinnedIds="pinnedIds"
@@ -569,25 +578,5 @@
     font-family: 'Raleway', sans-serif !important;
   }
 
-  .direction-column {
-    flex-direction: column-reverse;
-  }
-  .direction-row {
-    flex-direction: row;
-  }
-
-  .height-column {
-    height: 500px;
-    max-height: 100%;
-  }
-
-  .height-row {
-    height: 310px;
-  }
-
-  .filter-row {
-    min-width: 150px;
-    max-width: 150px;
-  }
 
 </style>

@@ -4,10 +4,10 @@
     <v-row no-gutters>
       <v-col cols="12"
               :class="!dark ? 'white--text' : 'black--text'" >
-        {{ label }}
+        {{ badgesLabel }}
       </v-col>
     </v-row>
-
+    
     <v-row no-gutters>
       <v-col v-if="!hasDataCreditCounts"
               cols="12"
@@ -20,7 +20,7 @@
       <v-col v-show="showZero || (!showZero && dataCreditCounts[index] > 0)"
               v-for="(creditName, index) in dataCreditNames"
               :key="index"
-              class="shrink pt-4 px-3" >
+              class="shrink pt-3 pt-md-4 px-2 px-md-3" >
 
       <v-hover v-slot:default="{ hover }" >
         <v-badge class="dataCreditIcon"
@@ -66,7 +66,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    label: {
+    badgesLabel: {
       type: String,
       default: 'Data Credit Badges',
     },

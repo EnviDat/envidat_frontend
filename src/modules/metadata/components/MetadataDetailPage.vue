@@ -1,11 +1,12 @@
 <template>
-  <v-container class="pa-0" fluid
+  <v-container class="pa-0"
+                fluid
                 tag="article" >
     <v-row >
       <v-col class="elevation-5 pa-0"
               cols="12"
               ref="header"
-              style="z-index: 1; position: absolute; left: 0;" 
+              style="z-index: 1; left: 0; " 
               :style="headerStyle" >
 
         <metadata-header v-bind="header"
@@ -23,7 +24,7 @@
       </v-col>
     </v-row>
 
-    <two-column-layout :style="`position: relative; top: ${headerHeight()}px`"
+    <two-column-layout :style="`position: relative; top: ${headerHeight()}px;`"
                         :first-column="firstColumn"
                         :second-column="secondColumn"
                         :show-placeholder="showPlaceholder" >
@@ -114,6 +115,8 @@ import MetadataCitation from './Metadata/MetadataCitation';
 import MetadataPublications from './Metadata/MetadataPublications';
 import MetadataFunding from './Metadata/MetadataFunding';
 import MetadataAuthors from './Metadata/MetadataAuthors';
+import MetadataGeo from './Geoservices/MetadataGeo';
+
 
 // Might want to check https://css-tricks.com/use-cases-fixed-backgrounds-css/
 // for animations between the different parts of the Metadata
@@ -214,7 +217,17 @@ export default {
         width = 83.25;
       }
 
-      return `width: ${width}%; margin: ${margin};`;
+      let pos = 'position: ';
+      if (this.$vuetify.breakpoint.mdAndUp) {
+        pos += 'absolute';
+      } else if (this.appScrollPosition > 20) {
+        pos += 'fixed';
+      } else {
+        pos += 'relative';
+      }
+      // const pos = `position: ${this.appScrollPosition > 20 ? 'fixed' : this.$vuetify.breakpoint.smAndDown ? 'relative' : 'absolute'}`;
+
+      return `${pos}; width: ${width}%; margin: ${margin}; `;
     },
     headerExpanded() {
       if (this.$vuetify.breakpoint.mdAndUp) {
@@ -233,11 +246,17 @@ export default {
       this.reRenderComponents();
     },
     headerHeight() {
-      if (!this.showPlaceholder && this.$refs && this.$refs.header) {
-        return this.$refs.header.clientHeight;
+      let height = -2;
+
+      if ((this.$vuetify.breakpoint.smAndDown
+        && this.appScrollPosition > 20) || this.$vuetify.breakpoint.mdAndUp) {
+
+        if (!this.showPlaceholder && this.$refs && this.$refs.header) {
+          height = this.$refs.header.clientHeight;
+        }
       }
 
-      return 150;
+      return height;
     },
     /**
      * @description
@@ -262,7 +281,7 @@ export default {
 
         this.header = createHeader(currentContent, this.$vuetify.breakpoint.smAndDown, this.authorDeadInfo);
 
-        this.body = createBody(currentContent);
+        this.body = createBody(currentContent, this.$vuetify.breakpoint.smAndDown);
 
         this.citation = createCitation(currentContent);
 
@@ -281,12 +300,18 @@ export default {
 
         this.authors = getFullAuthorsFromDataset(this.authorsMap, currentContent);
       }
+      const res = this.currentMetadataContent && this.currentMetadataContent.resources ? this.currentMetadataContent.resources : null;
+      const geoConfig = res ? res.find(src => src.name === 'geoservices_config.json') : null;
 
       this.$set(components.MetadataHeader, 'genericProps', this.header);
       this.$set(components.MetadataBody, 'genericProps', { body: this.body });
       this.$set(components.MetadataCitation, 'genericProps', this.citation);
       this.$set(components.MetadataResources, 'genericProps', this.resources);
-      this.$set(components.MetadataLocation, 'genericProps', this.location);
+      if (geoConfig) {
+        this.$set(components.MetadataGeo, 'genericProps', { ...this.location, config: geoConfig });
+      } else {
+        this.$set(components.MetadataLocation, 'genericProps', this.location);
+      }
       this.$set(components.MetadataDetails, 'genericProps', { details: this.details });
       this.$set(components.MetadataAuthors, 'genericProps', { authors: this.authors });
 
@@ -303,7 +328,7 @@ export default {
 
       this.secondCol = [
         components.MetadataResources,
-        components.MetadataLocation,
+        geoConfig ? components.MetadataGeo : components.MetadataLocation,
         components.MetadataDetails,
       ];
 
@@ -313,7 +338,7 @@ export default {
         components.MetadataPublications,
         components.MetadataResources,
         components.MetadataFunding,
-        components.MetadataLocation,
+        geoConfig ? components.MetadataGeo : components.MetadataLocation,
         components.MetadataAuthors,
         components.MetadataDetails,
       ];
@@ -438,6 +463,7 @@ export default {
     MetadataFunding,
     TwoColumnLayout,
     MetadataAuthors,
+    MetadataGeo,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',

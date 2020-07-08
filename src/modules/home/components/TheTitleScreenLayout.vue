@@ -1,58 +1,56 @@
 <template>
-    <v-col cols="12" md="6" offset-md="6" class="pa-0" >
+  <v-col >
 
-        <v-col cols="12" class="px-0" >
-          <v-row align="center" >
+    <v-row align="center" >
 
-            <v-col class="hidden-sm-and-down"
-                    cols="3" >
-              <img :src="mdLogo" :alt="alternativeText">
-            </v-col>
+      <v-col class="hidden-sm-and-down"
+              cols="4"
+              lg="3" >
+        <img :src="mdLogo" :alt="alternativeText">
+      </v-col>
 
-            <v-col class="hidden-xs-only hidden-md-and-up"
-                    cols="1" >
-              <img :src="smLogo"
-                    :alt="alternativeText" >
-            </v-col>
+      <v-col class="hidden-xs-only hidden-md-and-up"
+              cols="2" >
+        <img :src="smLogo"
+              :alt="alternativeText" >
+      </v-col>
 
-            <v-col class="hidden-sm-and-up" cols="3" >
-              <img :src="smLogo"
-                    :alt="alternativeText" >
-            </v-col>
+      <v-col class="hidden-sm-and-up"
+              cols="3" >
+        <img :src="smLogo"
+              :alt="alternativeText" >
+      </v-col>
 
-            <v-col cols="8" lg="9"
-                    class="envidatTitle display-4 pl-5 hidden-md-and-down"
-                    style="font-size: 80px !important;" >
-              {{ title }}
-            </v-col>
+      <v-col class="envidatTitle display-4 pl-5 hidden-md-and-down"
+              style="font-size: 80px !important;" >
+        {{ title }}
+      </v-col>
 
-            <v-col cols="8"
-                    class="envidatTitle display-3 pl-2 hidden-sm-and-down hidden-lg-and-up" >
-              {{ title }}
-            </v-col>
+      <v-col class="envidatTitle display-3 pl-2 hidden-sm-and-down hidden-lg-and-up" >
+        {{ title }}
+      </v-col>
 
-            <v-col cols="8"
-                    class="envidatTitle display-2 pl-2 hidden-xs-only hidden-md-and-up" >
-              {{ title }}
-            </v-col>
+      <v-col class="envidatTitle display-2 pl-2 hidden-xs-only hidden-md-and-up" >
+        {{ title }}
+      </v-col>
 
-            <v-col cols="9"
-                    class="envidatTitle display-3 hidden-sm-and-up" >
-              {{ title }}
-            </v-col>
-          </v-row>
-        </v-col>
+      <v-col class="envidatTitle display-3 hidden-sm-and-up" >
+        {{ title }}
+      </v-col>
+    </v-row>
 
-        <v-col class="px-0 pt-5" >
-          <slogan-card :slogan="slogan"
-                        :subSlogan="subSlogan"
-                        :buttonText="buttonText"
-                        :buttonCallback="buttonCallback"
-                        :moreButtonText="moreButtonText"
-                        :moreButtonCallback="moreButtonCallback" />
-        </v-col>
+    <v-row no-gutters >
+      <v-col >
+        <slogan-card :slogan="slogan"
+                      :subSlogan="subSlogan"
+                      :buttonText="buttonText"
+                      :buttonCallback="buttonCallback"
+                      :moreButtonText="moreButtonText"
+                      :moreButtonCallback="moreButtonCallback" />
+      </v-col>
+    </v-row>
 
-    </v-col>
+  </v-col>
 </template>
 
 <script>

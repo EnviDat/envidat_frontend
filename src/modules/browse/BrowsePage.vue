@@ -1,5 +1,6 @@
 <template>
-  <article class="ma-0 pa-0 fill-height">
+  <article class="ma-0 pa-0 fill-height"
+            id="BrowsePage">
 
     <metadata-list ref="metadataList"
                     :listContent="filteredContent"
@@ -13,11 +14,10 @@
                     @clickedTagClose="catchTagCloseClicked"
                     @clickedClear="catchTagCleared"
                     :mode="mode"
-                    :defaultListControls="controls"
+                    :defaultListControls="defaultControls"
                     :enabledControls="enabledControls"
-                    :mapHeight="$vuetify.breakpoint.smAndDown ? 310 : undefined"
-                    :keywordsHeigth="150"
                     :useDynamicHeight="true"
+                    :minMapHeight="310"
                     :mapTopLayout="$vuetify.breakpoint.mdAndUp"
                     @onScroll="storeScroll"
                     :showSearch="true"
@@ -233,7 +233,7 @@ export default {
       updatingTags: `${METADATA_NAMESPACE}/updatingTags`,
       scrollPositionDelay: `${METADATA_NAMESPACE}/scrollPositionDelay`,
       browseScrollPosition: 'browseScrollPosition',
-      controls: 'controls',
+      defaultControls: 'defaultControls',
       searchPlaceholderText: `${METADATA_NAMESPACE}/searchPlaceholderText`,
       searchPlaceholderTextSmall: `${METADATA_NAMESPACE}/searchPlaceholderTextSmall`,
     }),

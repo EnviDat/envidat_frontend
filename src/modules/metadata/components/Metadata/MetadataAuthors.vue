@@ -1,5 +1,7 @@
 <template>
-  <v-card ref="MetadataAuthors">
+  <v-card id="MetadataAuthors"
+          ref="MetadataAuthors">
+
     <v-card-title class="title metadata_title">
       Author Details
     </v-card-title>

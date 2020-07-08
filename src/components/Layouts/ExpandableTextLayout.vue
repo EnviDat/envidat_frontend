@@ -1,5 +1,6 @@
 <template>
   <v-card :class="cardClass">
+
     <v-card-title v-if="title"
                   class="metadata_title title">
       {{ title }}
@@ -14,7 +15,8 @@
 
     <v-card-text v-if="fullText"
                   ref="text"
-                  class="heightAndScroll pb-4"
+                  :usedMaxTextLength="maxTextLength"
+                  class="pa-4 pt-0 heightAndScroll readableText"
                   v-html="markdownText" >
     </v-card-text>
 
@@ -25,17 +27,16 @@
     </v-card-text>
 
     <v-card-text v-if="!showPlaceholder && !fullText"
-                  class="pt-0"
-                  :style="`color: ${emptyTextColor};`" >
+                  class="pt-0 readableText"
+                  :style="`color: ${emptyTextColor}; opacity: 0.6;`" >
       {{ emptyText }}
     </v-card-text>
 
     <v-card-actions v-if="maxTextLengthReached"
                     class="ma-0 pa-2"
-                    :style="`position: absolute; bottom: 5px; right: ${rightPos()};`" >
+                    :style="`position: absolute; bottom: 0px; right: ${rightPos()};`" >
 
-     <base-icon-button class="mr-2"
-                        material-icon-name="expand_more"
+     <base-icon-button material-icon-name="expand_more"
                         :iconColor="showFullText ? 'primary' : 'accent'"
                         :fillColor="showFullText ? '' : $vuetify.theme.themes.light.primary"
                         :color="showFullText ? 'accent' : 'transparent'"
@@ -81,7 +82,6 @@ export default {
     showPlaceholder: Boolean,
     maxTextLength: {
       type: Number,
-      default: 1000,
     },
     emptyText: {
       type: String,
@@ -109,7 +109,7 @@ export default {
       return '';
     },
     maxTextLengthReached() {
-      return this.text && this.text.length > this.maxTextLength;
+      return this.text && this.maxTextLength && this.text.length > this.maxTextLength;
     },
   },
   methods: {

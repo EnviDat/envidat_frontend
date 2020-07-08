@@ -68,9 +68,9 @@
     </v-btn>
 
     <v-badge v-if="count > 0"
-            overlap
-            style="position: relative; left: -30px; top: 5px;"
-            :style="(hoverBadge && $vuetify.breakpoint.smAndUp) || $vuetify.breakpoint.xsOnly ? 'left: -40px;' : ''"
+            :overlap="!isSmall"
+            :left="isSmall"
+            :style="isSmall ? 'position: relative; bottom: 10px;' : ''"
             color="highlight"
             :class="{ envidatBadgeBigNumber : count > 9,
                       envidatBadge: count <= 9 }"
