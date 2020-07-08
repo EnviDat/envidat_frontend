@@ -92,7 +92,6 @@ export default {
   computed: {
     alignClass() {
       return {
-        flex: !this.alignLeft,
         'col-2': !this.alignLeft,
         'pl-1': !this.alignLeft,
         'px-1': this.alignLeft,
