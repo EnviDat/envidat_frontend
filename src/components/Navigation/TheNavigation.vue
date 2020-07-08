@@ -24,10 +24,10 @@
     <v-list dense >
 
       <v-list-item v-for="(item, index) in navItemsMenuExcluded"
-                  :key="index"
-                  link
-                  :class="`${item.icon === 'envidat' ? mini ? 'px-2' : 'px-3' : '' }`"
-                   @click.stop="itemClick(item)" >
+                    :key="index"
+                    link
+                    :class="`${item.icon === 'envidat' ? mini ? 'px-2' : 'px-3' : '' }`"
+                    @click.stop="itemClick(item)" >
 
         <v-list-item-action v-if="item.icon === 'envidat'"
                             @click.stop="itemClick(item)" >
@@ -59,7 +59,7 @@
         </v-list-item-content>
 
         <v-list-item-icon v-if="item.icon !== 'envidat'"
-                          @click="itemClick(item)" >
+                          @click.stop="itemClick(item)" >
                           <!-- @click="item.icon === 'menu' ? item.active = !item.active : itemClick(item)" > -->
           <v-icon :color="item.active ? 'accent' : 'secondary'">
             {{ item.icon }}
@@ -68,7 +68,7 @@
 
         <v-list-item-content v-if="item.icon !== 'envidat'"
                               class=""
-                              @click="itemClick(item)" >
+                              @click.stop="itemClick(item)" >
           {{ item.title }}
         </v-list-item-content>
       </v-list-item>
