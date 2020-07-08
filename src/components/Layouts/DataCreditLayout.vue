@@ -5,8 +5,9 @@
       <v-col cols="12"
               :class="!dark ? 'white--text' : 'black--text'" >
         {{ badgesLabel }}
-      </v-flex>
-
+      </v-col>
+    </v-row>
+    
     <v-row no-gutters>
       <v-col v-if="!hasDataCreditCounts"
               cols="12"

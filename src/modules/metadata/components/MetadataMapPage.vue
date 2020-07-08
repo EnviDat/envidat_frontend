@@ -12,7 +12,8 @@
                         :tool-tip-bottom="true"
                         @clicked="close"/>
     </v-card>
-    <v-layout v-if="splitScreen" style="height: 100%;" pa-0 ma-0 :key="'split'">
+    <v-row v-if="splitScreen" 
+            class="pa-0 ma-0" style="height: 100%;" :key="'split'">
       <div style="width: 50%; max-width: 50%; float: left; height: 100%; position: relative;">
         <Map :config="configFile" :default-layer="layer" :map-div-id="'map1'"
              @changeLayer="setLayer" :key="'map1'" :selected="layer">
@@ -34,10 +35,13 @@
           </template>
         </Map>
       </div>
-    </v-layout>
+    </v-row>
 
 
-    <v-layout v-else style="height: 100%;" pa-0 ma-0 :map-div-id="'single'" :key="'map0'">
+    <v-row v-else
+          class="pa-0 ma-0 map-div-id"
+          style="height: 100%;"
+          :key="'map0'">
       <div style="width: 100%;">
         <Map :config="configFile" @changeLayer="setLayer" :map-div-id="'map0'" :selected="layer">
           <v-btn color="primary" @click="splitScreen = true" fab small>
@@ -45,7 +49,7 @@
           </v-btn>
         </Map>
       </div>
-    </v-layout>
+    </v-row>
   </div>
 </template>
 
@@ -63,7 +67,7 @@
     METADATA_NAMESPACE,
   } from '@/store/metadataMutationsConsts';
   import axios from 'axios';
-  import BaseIconButton from '../../../components/BaseElements/BaseIconButton';
+  import BaseIconButton from '@/components/BaseElements/BaseIconButton';
   import Map from './Geoservices/Map';
 
   export default {
