@@ -83,7 +83,7 @@
                   key="authors" >
 
             <v-row no-gutters
-                    style="max-height: 100px; overflow-y: scroll;" >
+                    style="max-height: 100px; overflow-y: auto;" >
               <v-col v-for="(author, index) in authors"
                       :key="index"
                       :class="{
