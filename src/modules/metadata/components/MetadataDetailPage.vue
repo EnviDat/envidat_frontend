@@ -246,11 +246,12 @@ export default {
     headerHeight() {
       let height = -2;
 
-      if (!this.showPlaceholder 
-        && ((this.$vuetify.breakpoint.smAndDown
-        && this.appScrollPosition > 20) || this.$vuetify.breakpoint.mdAndUp)
-        && this.$refs && this.$refs.header) {
-        height = this.$refs.header.clientHeight;
+      if ((this.$vuetify.breakpoint.smAndDown
+        && this.appScrollPosition > 20) || this.$vuetify.breakpoint.mdAndUp) {
+
+        if (!this.showPlaceholder && this.$refs && this.$refs.header) {
+          height = this.$refs.header.clientHeight;
+        }
       }
 
       return height;
