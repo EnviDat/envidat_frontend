@@ -25,7 +25,9 @@ process.env.VUE_APP_VERSION = require('./package.json').version;
 
 const version = process.env.VUE_APP_VERSION;
 
-if (process.env.NODE_ENV === 'production') {
+const isProd = process.env.NODE_ENV === 'production';
+
+if (isProd) {
   const fileName = `version_${version}.txt`;
   const filePath = `${__dirname}/public/${fileName}`;
 
@@ -90,11 +92,13 @@ module.exports = {
           globOptions: {
             ignore: ['Images/**', 'Textures/**', 'IAU2006_XYS/**'],
           },
+        },
+        {
+          from: 'node_modules/amcharts3/amcharts/images', to: 'amcharts/images',
         }],
       }),
       // Define relative base path in cesium for loading assets
       new webpack.DefinePlugin({ CESIUM_BASE_URL: JSON.stringify('') }),
-      new CopywebpackPlugin([{ from: 'node_modules/amcharts3/amcharts/images', to: 'amcharts/images' }]),
     ],
   },
   // devServer: {
