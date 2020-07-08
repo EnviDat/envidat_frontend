@@ -14,7 +14,8 @@
              no-gutters
              class="ma-0 fill-height pa-0 no-gutters">
         <v-col class="pa-0" cols="6">
-          <v-img style="border-radius: 2px 0px 0px 2px;"
+          <v-img class="imagezoom"
+                  style="border-radius: 2px 0px 0px 2px;"
                  :contain="headerImg ? headerImg.width > headerImg.height : false"
                  :cover="headerImg ? headerImg.width < headerImg.height : false"
                  :height="headerCardHeight"
