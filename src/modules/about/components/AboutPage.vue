@@ -5,11 +5,16 @@
       <!-- Tabs -->
       <v-tabs v-model="activeTab"
               slider-color="accent"
+              color="white"
               grow
+              icons-and-text
               background-color="highlight">
+
         <v-tab v-for="tab in tabs"
               :key="tab.name"
               class="pa-0">
+            {{ $vuetify.breakpoint.smAndUp ? tab.name : ''}}
+
           <v-icon>{{tab.icon}}</v-icon>
         </v-tab>
       </v-tabs>
@@ -250,27 +255,29 @@ export default {
       name: 'about',
       icon: 'info',
     },
-      {
-      name: 'guidlines',
+    {
+      name: 'guidelines',
       icon: 'local_library',
     },
-      {
+    {
       name: 'policies',
       icon: 'policy',
     },
-      {
+    {
       name: 'dmp',
       icon: 'menu_book',
     }],
   }),
 };
 </script>
+
 <style>
   /* Overwrite tab style vuetify, needed for smallscreen */
   .v-slide-group__prev--disabled {
       display: none !important;
   }
 </style>
+
 <style scoped>
  /* Overwrite default vuetify background class */
   .theme--light.v-tabs-items {
