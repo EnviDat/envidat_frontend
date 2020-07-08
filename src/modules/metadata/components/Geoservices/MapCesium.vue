@@ -113,6 +113,7 @@
           }
           // Attention: new WebMapServiceImageryProvider can not be used as removable layer object
           this.mapLayer = this.viewer.imageryLayers.addImageryProvider(cesiumLayer(this.layer));
+          this.mapLayer.alpha = this.opacity / 100;
         },
         replaceBasemap() {
           if (this.basemapLayer) {
