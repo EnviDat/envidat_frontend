@@ -1,10 +1,15 @@
 <template>
   <span>
-    <v-btn fab left fixed style="z-index: 9999999;" bottom v-if="smallScreen && !show" @click="setShow(true)">
-      <v-icon>
-        menu
-      </v-icon>
+    <v-btn v-if="smallScreen && !show" 
+            fab
+            left
+            fixed
+            bottom
+            color="secondary"
+            @click="setShow(true)">
+      <v-icon>menu</v-icon>
     </v-btn>
+
   <v-navigation-drawer app
                        :permanent="!smallScreen"
                         clipped
@@ -12,6 +17,7 @@
                        :value="show"
                        @change="setShow"
                        @input="onInput"
+                       overlay-color="highlight"
                         mini-variant-width="60"
                         width="190" >
 
