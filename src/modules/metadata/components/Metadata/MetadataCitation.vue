@@ -7,11 +7,7 @@
     </v-card-title>
 
     <v-card-text v-if="citationText"
-                  class="readableText"
-                  :class="{
-                    'pb-2' : $vuetify.breakpoint.mdAndUp,
-                    'pb-0' : $vuetify.breakpoint.smAndDown,
-                   }"                  
+                  class="readableText pb-0 pb-md-2"
                   style="font-style: italic; "
                   v-html="markdownText" >
 
@@ -26,13 +22,9 @@
 
           <v-col v-for="link in citationLinks"
                   :key="link.text"
-                  class="shrink"
-                  :class="{
-                    'pa-1' : $vuetify.breakpoint.mdAndUp,
-                    'py-2 px-1' : $vuetify.breakpoint.smAndDown,
-                   }" >
+                  class="shrink py-2 px-2 py-sm-0 py-md-2 py-lg-0" >
 
-            <base-rectangle-button margin-class="mx-1 citationButton"
+            <base-rectangle-button margin-class="citationButton"
                                     :button-text="link.text"
                                     :tool-tip-text="link.tooltipText"
                                     material-icon-name="assignment"
