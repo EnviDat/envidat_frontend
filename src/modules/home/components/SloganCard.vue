@@ -8,7 +8,8 @@
         <v-col class="py-0 pr-sm-0"        
                 cols="12"
                 sm="5" >
-          <v-img :src="fingertipsImg"
+          <v-img class="imagezoom"
+                  :src="fingertipsImg"
                   style="max-height: 200px; min-height: 100%; border-top-left-radius: 4px;"
                   :style="`border-bottom-left-radius: ${$vuetify.breakpoint.smAndUp ? 4 : 0}px;
                     border-top-right-radius: ${$vuetify.breakpoint.xsOnly ? 4 : 0}px;`" />

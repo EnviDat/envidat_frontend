@@ -409,12 +409,12 @@ export default {
 }
 
 .imagezoom,
-.imagezoom img {
+.imagezoom .v-image__image {
   transition: all 0.2s;
 }
 
-.imagezoom img:hover,
-.imagezoom img:focus {
+.imagezoom:hover .v-image__image,
+.imagezoom:focus .v-image__image {
   transform: scale(1.2);
 }
 

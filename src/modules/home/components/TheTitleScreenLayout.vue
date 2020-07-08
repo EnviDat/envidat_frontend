@@ -39,7 +39,7 @@
       </v-col>
     </v-row>
 
-    <v-row >
+    <v-row no-gutters >
       <v-col >
         <slogan-card :slogan="slogan"
                       :subSlogan="subSlogan"
