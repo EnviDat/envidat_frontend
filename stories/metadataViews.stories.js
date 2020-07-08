@@ -13,7 +13,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from '@storybook/vue';
 import { action } from '@storybook/addon-actions';
-import './js/vuetify-components';
 
 import MetadataHeader from '@/modules/metadata/components/Metadata/MetadataHeader.vue';
 import MetadataBody from '@/modules/metadata/components/Metadata/MetadataBody.vue';
@@ -127,29 +126,29 @@ export const methods = {
   onTagClick: action('clicked on tag'),
 };
 
-storiesOf('6 Detail Views | Metadata', module)
+storiesOf('6 Detail Views / Metadata', module)
   .add('Metadata Header', () => ({
     components: { MetadataHeader },
     template: `
-    <v-layout row wrap>
+    <v-row >
 
-      <v-flex xs12 >
+      <v-col >
         Empty Metadata Header
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12 py-3 >
+      <v-col class="py-3" >
         <metadata-header metadataId="id-which-can-not-be-found" />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12 >
+      <v-col class="py-3" >
         Metadata Header with showPlaceholder
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12 py-3 >
+      <v-col class="py-3" >
         <metadata-header :showPlaceholder="true" />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12 py-3>
+      <v-col class="py-3">
         <metadata-header
           v-bind="smallHeader"
           :doiIcon="doiIcon"
@@ -157,9 +156,9 @@ storiesOf('6 Detail Views | Metadata', module)
           :mailIcon="mailIcon"
           :licenseIcon="licenseIcon"
         />
-      </v-flex>        
+      </v-col>        
 
-      <v-flex xs12 py-3>
+      <v-col class="py-3">
         <metadata-header
           v-bind="largeHeader"
           :doiIcon="doiIcon"
@@ -167,9 +166,9 @@ storiesOf('6 Detail Views | Metadata', module)
           :mailIcon="mailIcon"
           :licenseIcon="licenseIcon"
         />
-      </v-flex>        
+      </v-col>        
 
-    </v-layout>        
+    </v-row>        
     `,
     methods,
     data: () => ({
@@ -183,28 +182,28 @@ storiesOf('6 Detail Views | Metadata', module)
   })).add('Metadata Body', () => ({
     components: { MetadataBody },
     template: `
-    <v-layout row wrap>
+    <v-row>
 
-      <v-flex xs12 py-3>
+      <v-col cols="12" class="py-3">
         <metadata-body :genericProps="genericPropsPlaceholder" />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs6 py-3>
+      <v-col cols="6" class="py-3">
         <metadata-body :genericProps="genericPropsBody" />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs6 py-3>
+      <v-col cols="6" class="py-3">
         <metadata-body
           :genericProps="genericPropsPlaceholder"
           :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
         />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12 py-3>
+      <v-col cols="12" class="py-3">
         <metadata-body :genericProps="genericPropsBodyLongDesc" />
-      </v-flex>
+      </v-col>
 
-    </v-layout>        
+    </v-row>        
     `,
     methods,
     data: () => ({
@@ -224,47 +223,43 @@ storiesOf('6 Detail Views | Metadata', module)
   })).add('Metadata Citation', () => ({
     components: { MetadataCitation },
     template: `
-    <v-layout row wrap>
+    <v-row >
 
-      <v-flex xs6 py-3>
-        <metadata-citation
-          :genericProps="genericProps1"
-        />
-      </v-flex>
+      <v-col cols="6" class="py-3">
+        <metadata-citation :genericProps="genericProps1" />
+      </v-col>
 
-      <v-flex xs6 py-3>
-        <metadata-citation
-          :genericProps="genericPropsPlaceholder"
-          :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
-        />
-      </v-flex>
+      <v-col cols="6" class="py-3">
+        <metadata-citation :genericProps="genericPropsPlaceholder"
+                            :showPlaceholder="genericPropsPlaceholder.showPlaceholder" />
+      </v-col>
 
-      <v-flex xs12 py-3>
+      <v-col cols="12" class="py-3">
         <metadata-citation
           :genericProps="genericProps2"
         />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12 py-3>
+      <v-col cols="12" class="py-3">
         <metadata-citation
           :genericProps="genericPropsPlaceholder"
           :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
         />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12 py-3>
+      <v-col cols="12" class="py-3">
         <metadata-citation
           :genericProps="genericPropsPlaceholder"
         />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs6 py-3>
+      <v-col cols="6" class="py-3">
         <metadata-citation
           :genericProps="genericPropsPlaceholder"
         />
-      </v-flex>
+      </v-col>
 
-    </v-layout>        
+    </v-row>        
     `,
     updated() {
       this.$children.forEach((child) => {
@@ -285,20 +280,19 @@ storiesOf('6 Detail Views | Metadata', module)
 .add('Metadata Details', () => ({
     components: { MetadataDetails },
     template: `
-    <v-layout row wrap>
+    <v-row >
 
-      <v-flex xs6 py-3>
-        <metadata-details :genericProps="genericProps3"
-        />
-      </v-flex>
+      <v-col cols="6" class="py-3">
+        <metadata-details :genericProps="genericProps3" />
+      </v-col>
 
-      <v-flex xs6 py-3>
+      <v-col cols="6" class="py-3">
         <metadata-details :genericProps="genericPropsPlaceholder"
           :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
         />
-      </v-flex>
+      </v-col>
 
-    </v-layout>        
+    </v-row>        
     `,
     updated() {
       this.$children.forEach((child) => {
@@ -320,20 +314,20 @@ storiesOf('6 Detail Views | Metadata', module)
 .add('Metadata Location', () => ({
     components: { MetadataLocation },
     template: `
-    <v-layout row wrap>
+    <v-row >
 
-      <v-flex xs6 py-3>
+      <v-col cols="6" class="py-3">
         <metadata-location :genericProps="genericProps4"
         />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs6 py-3>
+      <v-col cols="6" class="py-3">
         <metadata-location :genericProps="genericPropsPlaceholder"
           :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
         />
-      </v-flex>
+      </v-col>
 
-    </v-layout>        
+    </v-row>        
     `,
     updated() {
       this.$children.forEach((child) => {
@@ -354,27 +348,27 @@ storiesOf('6 Detail Views | Metadata', module)
 .add('Metadata Publications', () => ({
     components: { MetadataPublications },
     template: `
-    <v-layout row wrap>
+    <v-row >
 
-      <v-flex xs6 py-3>
+      <v-col cols="6" class="py-3">
         <metadata-publications :genericProps="genericPropsEmpty"
                                 :showPlaceholder="genericPropsEmpty.showPlaceholder"/>
-      </v-flex>
+      </v-col>
 
-      <v-flex xs6 py-3>
+      <v-col cols="6" class="py-3">
         <metadata-publications :genericProps="genericPropsPublications" />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs6 py-3>
+      <v-col cols="6" class="py-3">
         <metadata-publications :genericProps="genericPropsPlaceholder"
                                 :showPlaceholder="genericPropsPlaceholder.showPlaceholder" />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs6 py-3>
+      <v-col cols="6" class="py-3">
         <metadata-publications />
-      </v-flex>
+      </v-col>
       
-    </v-layout>        
+    </v-row>        
     `,
     updated() {
     },
@@ -409,32 +403,32 @@ storiesOf('6 Detail Views | Metadata', module)
 .add('Metadata Funding', () => ({
     components: { MetadataFunding },
     template: `
-    <v-layout row wrap>
+    <v-row >
 
-      <v-flex xs12 py-3>
+      <v-col cols="12" class="py-3">
         <metadata-funding :genericProps="genericProps2"
                                 :showPlaceholder="genericProps2.showPlaceholder"/>
-      </v-flex>
+      </v-col>
 
-      <v-flex xs6 py-3>
+      <v-col cols="6" class="py-3">
         <metadata-funding :genericProps="genericProps2"
                                 :showPlaceholder="genericProps2.showPlaceholder"/>
-      </v-flex>
+      </v-col>
 
-      <v-flex xs6 py-3>
+      <v-col cols="6" class="py-3">
         <metadata-funding :genericProps="genericProp" />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs6 py-3>
+      <v-col cols="6" class="py-3">
         <metadata-funding :genericProps="genericPropsPlaceholder"
                                 :showPlaceholder="genericPropsPlaceholder.showPlaceholder" />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs6 py-3>
+      <v-col cols="6" class="py-3">
         <metadata-funding />
-      </v-flex>
+      </v-col>
       
-    </v-layout>        
+    </v-row>        
     `,
     updated() {
     },
@@ -458,22 +452,22 @@ storiesOf('6 Detail Views | Metadata', module)
 .add('Metadata Authors', () => ({
     components: { MetadataAuthors },
     template: `
-    <v-layout row wrap>
+    <v-row>
 
-      <v-flex xs12 md6 py-3>
+      <v-col cols="12" md="6" class="py-3">
         <metadata-authors :genericProps="genericProps5" />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12 md6 py-3>
+      <v-col cols="12" md="6" class="py-3">
         <metadata-authors :genericProps="genericPropsPlaceholder"
           :showPlaceholder="genericPropsPlaceholder.showPlaceholder" />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12 md6 py-3>
+      <v-col cols="12" md="6" class="py-3">
         <metadata-authors  />
-      </v-flex>
+      </v-col>
 
-    </v-layout>        
+    </v-row>        
     `,
     // updated() {
     //   this.$children.forEach((child) => {
