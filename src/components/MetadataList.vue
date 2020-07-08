@@ -32,39 +32,8 @@
                       :enabledControls="enabledControls"
                       @searchClick="catchSearchClicked"
                       @searchCleared="catchSearchCleared"
-                      @controlsChanged="controlsChanged"
-                      />
-      <!-- <v-card style="height: 36px; " id="controlPanel" >
-      <v-container class="px-2 py-0 fill-height"
-                      fluid> 
-        <v-row align="center"
-                justify="space-between"
-                no-gutters>
-          <v-col class="py-0" cols="10">
-            <small-search-bar-view class="elevation-0"
-                                    :compactLayout="$vuetify.breakpoint.smAndDown"
-                                    :searchTerm="searchTerm"
-                                    :showSearch="showSearch"
-                                    :showSearchCount="true"
-                                    :searchCount="searchCount"
-                                    :isFlat="true"
-                                    :fixedHeight="36"
-                                    :labelText="searchBarPlaceholder"
-                                    :loading="loading"
-                                    @clicked="catchSearchClicked"
-                                    @searchCleared="catchSearchCleared" />
-          </v-col>
-          <v-col class="hidden-xs-only ml-2 py-0 fill-height" >
-            <list-control-toggle style="height: 36px;"
-                                  :controls="controlsActive"
-                                  :enabledControls="enabledControls"
-                                  :compactLayout="$vuetify.breakpoint.smAndDown"
-                                  :flat="true"
-                                  @controlsChanged="controlsChanged" />
-          </v-col>
-        </v-row>
-      </v-container>
-      </v-card> -->
+                      @controlsChanged="controlsChanged" />
+
     </template>
 
     <template v-slot:filterMap>
@@ -325,12 +294,12 @@ export default {
     },
     cardGridClass() {
       const fullSize = {
-        'col-xs-12': true,
+        'col-12': true,
         'col-sm-6': true,
         'col-md-4': true,
         'col-lg-3': true,
         'col-xl-2': !this.isActiveControl(LISTCONTROL_MAP_ACTIVE)
-              && this.isActiveControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE),
+                    && this.isActiveControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE),
       };
 
       return fullSize;
