@@ -15,6 +15,8 @@
         :layers="config.layers"
         :selected="selectedLayerName"
         @select="select"
+        @setOpacity="setOpacity"
+        :opacity="opacity"
         style="position: absolute; z-index: 999; top: 95px; bottom: 150px; left: 35px;"
       ></map-layer-control>
 
@@ -31,7 +33,7 @@
 
       <div v-if="!hasGeom" style="color: red;">No data to show</div>
       <map-leaflet v-if="!show3d" :layer="selectedLayer" :map-div-id="mapDivId" @featureinfo="setFeatureInfo"
-                   @selectCoords="setCoords" :selected-coords="selectedCoords">
+                   @selectCoords="setCoords" :selected-coords="selectedCoords" :opacity="opacity">
         <slot></slot><br>
         <v-btn fab small @click="show3d = true">3D</v-btn>
       </map-leaflet>
@@ -78,6 +80,7 @@
       layerControlOpen: false,
       featureInfo: [],
       selectedCoords: null,
+      opacity: 100,
     }),
     computed: {
       show3d: {
@@ -103,6 +106,9 @@
       },
     },
     methods: {
+      setOpacity(value) {
+        this.opacity = value;
+      },
       setCoords(value) {
         this.selectedCoords = value;
       },

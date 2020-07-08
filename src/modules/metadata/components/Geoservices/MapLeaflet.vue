@@ -34,6 +34,7 @@
         marker: null,
       }),
       props: {
+          opacity: Number,
           selectedCoords: Object,
         layer: Object,
         mapDivId: String,
@@ -165,6 +166,7 @@
           if (this.layer) {
             this.mapLayer = leafletLayer(this.layer);
             this.map.addLayer(this.mapLayer);
+            this.mapLayer.setOpacity(this.opacity / 100);
             this.mapLayer.bringToFront();
           }
         },
@@ -178,6 +180,9 @@
         },
       },
       watch: {
+          opacity() {
+            this.mapLayer.setOpacity(this.opacity / 100);
+          },
           linkedScreens() {
             if (this.linkedScreens && !this.map.getBounds().equals(this.extent)) {
               this.map.fitBounds(this.extent);
