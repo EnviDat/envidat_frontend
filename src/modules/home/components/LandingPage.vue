@@ -28,7 +28,7 @@
                                 @clicked="catchSearchClicked" />
       </v-row>
 
-      <v-row class="pt-5 pb-3  offset-md-4 offset-lg-6"
+      <v-row class="pt-5 pb-2 offset-md-4 offset-lg-6"
               no-gutters>
         <v-col>
           <v-card>
@@ -58,6 +58,7 @@
           </v-row>
         </v-container>
       </v-row>
+
   </v-container>
 </template>
 

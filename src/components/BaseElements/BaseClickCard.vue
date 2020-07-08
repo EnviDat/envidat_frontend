@@ -1,6 +1,7 @@
 <template>
   <v-card ripple
           hover
+          raised
           @click.native="clicked" >
     <v-container class="pa-0" >
       <v-row align="center"
