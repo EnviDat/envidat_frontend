@@ -2,9 +2,9 @@
   <div style="height: 100%; width: 100%; z-index: 100; max-width: 100%; position: relative;">
 
     <div :class="config.timeseries ? 'map-container-timeslider' : 'map-container'">
-      <v-layout class="top-slot">
+      <v-row class="top-slot">
         <slot name="top"></slot>
-      </v-layout>
+      </v-row>
 
       <v-icon @click="layerControlOpen = !layerControlOpen" class="icon elevation-5" style="position: absolute; top: 95px; color: black; background-color: white; z-index: 999; margin-left: 10px; border-radius: 4px;">
         layers
