@@ -1,18 +1,25 @@
 <template>
-  <v-app-bar clipped-left app color="white"
-             :height="$vuetify.breakpoint.xsOnly ? 50 : 36"
-  >
-    <v-row no-gutters class="pa-0" align="center">
-      <v-spacer v-if="!compact"></v-spacer>
-      <v-col v-if="compact" class="item body-2">
-        {{ modeInfoPrefix }}:
-        <br />
-        {{ modeTitle }}
+  <v-app-bar clipped-left
+              app
+              color="white"
+              :height="$vuetify.breakpoint.xsOnly ? 50 : 36" >
+
+    <v-row class="pa-0" align="center" justify="center" >
+
+      <!-- <v-spacer v-if="!compact"></v-spacer> -->
+
+      <v-col v-if="compact"
+              class="shrink item body-2">
+        {{ modeInfoPrefix }}: {{ modeTitle }}
       </v-col>
-      <v-col v-else class="title text-no-wrap">
+
+      <v-col v-else
+              class="shrink title text-no-wrap">
         {{ modeInfo }}
       </v-col>
-      <v-col v-if="modeLogo" class="shrink">
+
+      <v-col v-if="modeLogo"
+              class="shrink">
         <a v-if="modeExternalUrl"
            :href="modeExternalUrl"
            target="_blank" >
@@ -21,7 +28,8 @@
         <v-img v-else :src="modeLogo" style="height: 34px; width: 34px;" />
 
       </v-col>
-      <v-spacer v-if="!compact"></v-spacer>
+
+      <!-- <v-spacer v-if="!compact"></v-spacer> -->
 
       <v-col class="shrink">
         <base-icon-button materialIconName="info_outline"

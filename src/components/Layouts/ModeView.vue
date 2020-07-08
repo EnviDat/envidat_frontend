@@ -2,7 +2,6 @@
   <span align="center">
     <v-col v-if="compact"
           class="item body-2">
-      {{'compact'}}
       {{ modeInfoPrefix }}:
       <br />
       {{ modeTitle }}
@@ -13,7 +12,7 @@
       {{ modeInfo }}
     </v-col>
 
-    <div v-if="modeLogo"
+    <v-col v-if="modeLogo"
           class="item"
           style="height: 34px; width: 34px;">
 
@@ -25,16 +24,16 @@
       <v-img v-else
               :src="modeLogo" />
 
-    </div>
+    </v-col>
 
-    <div class="item">
+    <v-col class="item">
       <base-icon-button materialIconName="info_outline"
                         :tooltipText="`${tooltipText} ${modeTitle}`"
                         tooltipBottom
                         color="transparent"
                         iconColor="secondary"
                         isSmall />
-    </div>
+    </v-col>
 
     <div v-if="closeCallback"
           class="item">
