@@ -33,6 +33,7 @@
       name: 'MapCesium',
       components: { ZoomBtn },
       props: {
+        opacity: Number,
         layer: Object,
         mapDivId: String,
       },
@@ -123,6 +124,9 @@
         },
       },
       watch: {
+        opacity() {
+          this.mapLayer.alpha = this.opacity / 100;
+        },
         layer: {
           handler() {
             this.replaceLayer();

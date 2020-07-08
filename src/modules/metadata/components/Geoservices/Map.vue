@@ -37,7 +37,7 @@
         <slot></slot><br>
         <v-btn fab small @click="show3d = true">3D</v-btn>
       </map-leaflet>
-      <map-cesium v-if="show3d" :layer="selectedLayer" :map-div-id="mapDivId">
+      <map-cesium v-if="show3d" :layer="selectedLayer" :map-div-id="mapDivId" :opacity="opacity">
         <slot></slot><br>
         <v-btn fab small @click="show3d = false">2D</v-btn>
       </map-cesium>
