@@ -19,6 +19,8 @@
   },
   "dependencies": {
     "@turf/turf": "^5.1.6",
+    "amcharts3": "^3.21.15",
+    "amstock3": "^3.21.15",
     "axios": "^0.19.2",
     "babel-loader": "^8.0.6",
     "babel-plugin-module-resolver": "^4.0.0",
@@ -41,7 +43,8 @@
     "vue2-filters": "^0.11.0",
     "vuetify": "^2.3.4",
     "vuex": "^3.4.0",
-    "vuex-localstorage": "^1.0.0"
+    "vuex-localstorage": "^1.0.0",
+    "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "@babel/core": "^7.10.2",

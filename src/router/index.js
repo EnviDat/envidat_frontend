@@ -4,7 +4,7 @@
  * @summary list of the routes
  * @author Dominik Haas-Artho
  *
- * Created at     : 2019-10-23 16:33:32 
+ * Created at     : 2019-10-23 16:33:32
  * Last modified  : 2019-10-25 15:40:50
  *
  * This file is subject to the terms and conditions defined in
@@ -100,11 +100,11 @@ export default new Router({
     if (b === START) {
       return a === b;
     }
-    
+
     if (!b) {
       return false;
     }
-    
+
     if (a.path && b.path) {
       return (
         a.path.replace(trailingSlashRE, '') === b.path.replace(trailingSlashRE, '')
@@ -112,7 +112,7 @@ export default new Router({
         && this.isObjectEqual(a.query, b.query)
       );
     }
-    
+
     if (a.name && b.name) {
       return (
         a.name === b.name

@@ -115,6 +115,8 @@ import MetadataCitation from './Metadata/MetadataCitation';
 import MetadataPublications from './Metadata/MetadataPublications';
 import MetadataFunding from './Metadata/MetadataFunding';
 import MetadataAuthors from './Metadata/MetadataAuthors';
+import MetadataGeo from './Geoservices/MetadataGeo';
+
 
 // Might want to check https://css-tricks.com/use-cases-fixed-backgrounds-css/
 // for animations between the different parts of the Metadata
@@ -298,12 +300,18 @@ export default {
 
         this.authors = getFullAuthorsFromDataset(this.authorsMap, currentContent);
       }
+      const res = this.currentMetadataContent && this.currentMetadataContent.resources ? this.currentMetadataContent.resources : null;
+      const geoConfig = res ? res.find(src => src.name === 'geoservices_config.json') : null;
 
       this.$set(components.MetadataHeader, 'genericProps', this.header);
       this.$set(components.MetadataBody, 'genericProps', { body: this.body });
       this.$set(components.MetadataCitation, 'genericProps', this.citation);
       this.$set(components.MetadataResources, 'genericProps', this.resources);
-      this.$set(components.MetadataLocation, 'genericProps', this.location);
+      if (geoConfig) {
+        this.$set(components.MetadataGeo, 'genericProps', { ...this.location, config: geoConfig });
+      } else {
+        this.$set(components.MetadataLocation, 'genericProps', this.location);
+      }
       this.$set(components.MetadataDetails, 'genericProps', { details: this.details });
       this.$set(components.MetadataAuthors, 'genericProps', { authors: this.authors });
 
@@ -320,7 +328,7 @@ export default {
 
       this.secondCol = [
         components.MetadataResources,
-        components.MetadataLocation,
+        geoConfig ? components.MetadataGeo : components.MetadataLocation,
         components.MetadataDetails,
       ];
 
@@ -330,7 +338,7 @@ export default {
         components.MetadataPublications,
         components.MetadataResources,
         components.MetadataFunding,
-        components.MetadataLocation,
+        geoConfig ? components.MetadataGeo : components.MetadataLocation,
         components.MetadataAuthors,
         components.MetadataDetails,
       ];
@@ -455,6 +463,7 @@ export default {
     MetadataFunding,
     TwoColumnLayout,
     MetadataAuthors,
+    MetadataGeo,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
