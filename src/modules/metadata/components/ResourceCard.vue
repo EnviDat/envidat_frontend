@@ -287,7 +287,8 @@ export default {
     transition: .3s;
   }
 
-  .fabMenu:hover {
+  .fabMenu:hover,
+  .fabMenu:active {
     background: #FFF;
     min-width: 160px;
     width: 100%;
@@ -303,7 +304,8 @@ export default {
     transition: 0.1s;
   }
 
-  .fabMenu:hover .lockedText {
+  .fabMenu:hover .lockedText,
+  .fabMenu:active .lockedText {
     visibility: visible;
     transition: 0.5s;
     opacity: 1;
