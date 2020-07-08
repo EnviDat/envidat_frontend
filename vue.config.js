@@ -94,6 +94,7 @@ module.exports = {
       }),
       // Define relative base path in cesium for loading assets
       new webpack.DefinePlugin({ CESIUM_BASE_URL: JSON.stringify('') }),
+      new CopywebpackPlugin([{ from: 'node_modules/amcharts3/amcharts/images', to: 'amcharts/images' }]),
     ],
   },
   // devServer: {

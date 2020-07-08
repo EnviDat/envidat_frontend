@@ -4,9 +4,8 @@
     <v-row no-gutters>
       <v-col cols="12"
               :class="!dark ? 'white--text' : 'black--text'" >
-        {{ label }}
-      </v-col>
-    </v-row>
+        {{ badgesLabel }}
+      </v-flex>
 
     <v-row no-gutters>
       <v-col v-if="!hasDataCreditCounts"
@@ -66,7 +65,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    label: {
+    badgesLabel: {
       type: String,
       default: 'Data Credit Badges',
     },
