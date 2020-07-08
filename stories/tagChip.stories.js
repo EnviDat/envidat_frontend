@@ -12,7 +12,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from '@storybook/vue';
 import { action } from '@storybook/addon-actions';
-import './js/vuetify-components';
 
 import TagChip from '@/components/Cards/TagChip.vue';
 import TagChipPlaceholder from '@/components/Cards/TagChipPlaceholder.vue';
@@ -21,40 +20,40 @@ export const methods = {
   onClick: action('clicked'),
 };
 
-storiesOf('4 Filtering | Keyword Tag', module)
+storiesOf('4 Filtering / Keyword Tag', module)
   .add('Tag states', () => ({
     components: { TagChip, TagChipPlaceholder },
     template: `
-    <v-layout row wrap>
+    <v-row >
 
-      <v-flex>
+      <v-col>
         <tag-chip-placeholder />
-      </v-flex>
+      </v-col>
 
-      <v-flex>
+      <v-col>
         <tag-chip name="Snow" />
-      </v-flex>
+      </v-col>
 
-      <v-flex>
+      <v-col>
         <tag-chip name="some very long tag name" />       
-      </v-flex>
+      </v-col>
 
-      <v-flex>
+      <v-col>
         <tag-chip name="closeable" closeable />       
-      </v-flex>
+      </v-col>
 
-      <v-flex>
+      <v-col>
         <tag-chip name="closeable & selectable" closeable selectable />       
-      </v-flex>
+      </v-col>
 
-      <v-flex>
+      <v-col>
         <tag-chip name="highlighted" closeable selectable highlighted />
-      </v-flex>
+      </v-col>
 
-      <v-flex>
+      <v-col>
         <tag-chip name="count='5'" selectable :count="5" />       
-      </v-flex>
+      </v-col>
 
-    </v-layout>`,
+    </v-row>`,
     methods,
   }));

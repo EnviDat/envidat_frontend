@@ -12,7 +12,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from '@storybook/vue';
 import { action } from '@storybook/addon-actions';
-import './js/vuetify-components';
 
 import globalMethods from '@/factories/globalMethods';
 import ProjectCard from '@/modules/projects/components/ProjectCard.vue';
@@ -62,24 +61,22 @@ export const methods = {
   },
 };
 
-storiesOf('3 Cards | Projects Cards', module)
+storiesOf('3 Cards / Projects Cards', module)
   .add('collection of Parents', () => ({
     components: { ProjectCard, ProjectCardPlaceholder },
     template: `
     <v-container grid-list-lg fluid pa-0>
-    <v-layout row wrap>    
+    <v-row>
 
-      <v-flex xs3
+      <v-col cols="3"
         v-for="(project, index) in 3"
-        :key="'ph_' + index"
-      >
+        :key="'ph_' + index" >
         <project-card-placeholder />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs3
+      <v-col cols="3"
         v-for="(project, index) in projectsCardsParents()"
-        :key="index"
-      >
+        :key="index" >
         <project-card
           :id="project.id"
           :title="project.title"
@@ -89,9 +86,9 @@ storiesOf('3 Cards | Projects Cards', module)
           :subProjects="project.subProjects"
           @cardClick="onCardClick"
         />
-      </v-flex>
+      </v-col>
 
-    </v-layout>
+    </v-row>
     </v-container>
     `,
     methods,
@@ -104,9 +101,9 @@ storiesOf('3 Cards | Projects Cards', module)
     components: { ProjectCard },
     template: `
     <v-container grid-list-lg fluid pa-0>
-    <v-layout row wrap>
+    <v-row>
 
-      <v-flex xs3
+      <v-col cols="3"
         v-for="(project, index) in projectsCardsChilds()"
         :key="index"
       >
@@ -119,9 +116,9 @@ storiesOf('3 Cards | Projects Cards', module)
           :subProjects="project.subProjects"
           @cardClick="onCardClick"
         />
-      </v-flex>
+      </v-col>
 
-    </v-layout>
+    </v-row>
     </v-container>
     `,
     methods,

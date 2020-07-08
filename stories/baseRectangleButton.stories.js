@@ -21,7 +21,7 @@ export const methods = {
 };
 
 
-const stories = storiesOf('2 Buttons | Rectangle', module)
+const stories = storiesOf('2 Buttons / Rectangle', module)
   .add('basic with tool tip', () => ({
     components: { BaseRectangleButton },
     props: {
@@ -38,13 +38,13 @@ const stories = storiesOf('2 Buttons | Rectangle', module)
         <base-rectangle-button
           :buttonText="buttonText"
           toolTipText="Text for the tool tip"
-          @click="onClick"/>
+          @click="onClick" />
       </v-col>
       <v-col>
           <base-rectangle-button
           :buttonText="buttonText"
           :disabled="isDisabled"
-          @click="onClick"/>
+          @click="onClick" />
       </v-col>
       <v-col>
           <base-rectangle-button
@@ -52,13 +52,13 @@ const stories = storiesOf('2 Buttons | Rectangle', module)
           iconColor="white"
           buttonText="With Icon"
           tooltipText="Text for the tool tip"
-          @click="onClick"/>
+          @click="onClick" />
       </v-col>
       <v-col>
           <base-rectangle-button
           buttonText="small"
           isSmall
-          @click="onClick"/>
+          @click="onClick" />
       </v-col>
     </v-row>
     `,
