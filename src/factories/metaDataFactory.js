@@ -178,7 +178,7 @@ export function createBody(dataset, smallScreen = false) {
     title: 'Description',
     // doi: dataset.doi,
     text: dataset.notes,
-    maxTextLength: smallScreen ? 950 : 1000,
+    maxTextLength: smallScreen ? 900 : 1000,
     emptyText: 'No description found for this dataset.',
   };
 }
