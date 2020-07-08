@@ -88,7 +88,7 @@
         </v-col>
 
         <v-col v-if="!mdScreen"
-                class="grow py-1" >
+                class="grow py-1 col-5" >
           <div :style="`color:${pinnedAmount > 0 ? $vuetify.theme.themes.light.primary : 'rgba(0,0,0,.47)'};`">
             {{ filterText + pinnedAmount }}
           </div>
@@ -96,7 +96,7 @@
 
         <v-col v-if="!mdScreen"
                 class="py-1"
-                :class="mdScreen ? 'shrink' : 'lg3'" >
+                :class="mdScreen ? 'shrink' : 'col-lg-3'" >
 
           <slot name="clearPins" />
 
