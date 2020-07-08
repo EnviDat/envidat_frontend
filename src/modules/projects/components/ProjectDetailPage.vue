@@ -1,9 +1,11 @@
 <template>
-  <v-container class="pa-0" tag="article" fluid>
+  <v-container class="pa-0"
+                tag="article"
+                fluid>
     <v-row no-gutters>
 
-      <v-col class="elevation-5 pa-0" cols="12"
-
+      <v-col class="elevation-5 pa-0"
+              cols="12"
               ref="header"
               style="z-index: 1; position: absolute; left: 0;"
               :style="headerStyle" >
@@ -16,30 +18,41 @@
       </v-col>
     </v-row>
 
-    <v-row :style="`z-index: 0; position: relative; top: ${headerHeight()}px`" no-gutters>
+    <v-row :style="`z-index: 0; position: relative; top: ${headerHeight()}px`"
+            no-gutters>
 
-      <v-col :class="{ 'px-3' : $vuetify.breakpoint.smAndUp }"
-              cols="12" lg="10" offset-lg="1">
+      <v-col class="pb-2 px-sm-3"
+              cols="12"
+              lg="10"
+              offset-lg="1">
 
-        <project-body v-bind="currentProject"
-                      :showPlaceholder="loading" />
+        <project-body :description="currentProject ? currentProject.description : null"
+                        :showPlaceholder="loading"
+                        :maxTextLength="$vuetify.breakpoint.xsOnly ? 950 : 1500" />
       </v-col>
 
-      <v-col class="py-2 px-3" v-if="loading || (!loading && currentProject && currentProject.subProjects)"
-              cols="12" lg="10" offset-lg="1" >
-        <project-subprojects v-bind="currentProject"
+      <v-col v-if="loading || (!loading && currentProject && currentProject.subProjects)"
+              class="pb-2"
+              cols="12"
+              lg="10"
+              offset-lg="1" >
+
+        <project-subprojects :subProjects="currentProject.subProjects"
                               :defaultImg="creatorImg"
                               :showPlaceholder="loading"
                               @projectClick="catchProjectClick"
                               @subprojectClick="catchSubprojectClick" />
       </v-col>
 
-      <v-col :class="{ 'px-3' : $vuetify.breakpoint.smAndUp }"
-              class="py-2"
-              cols="12" lg="10" offset-lg="1" >
+      <v-col class="pb-2 px-sm-3"
+              cols="12"
+              lg="10"
+              offset-lg="1" >
 
         <v-card>
-          <v-card-title class="metadataList_title title">{{ metadataListTitle }}</v-card-title>
+          <v-card-title class="metadataList_title title">
+            {{ metadataListTitle }}
+          </v-card-title>
 
           <div v-if="hasMetadatas" >
             <metadata-list ref="metadataList"
@@ -55,7 +68,7 @@
                             @clickedClear="catchTagCleared"
                             :defaultListControls="defaultControls"
                             :enabledControls="enabledControls"
-                            :mapHeight="mapFilterHeight"
+                            :minMapHeight="mapFilterHeight"
                             :topFilteringLayout="true"
                             :showSearch="false"
                             :searchCount="filteredListContent.length"

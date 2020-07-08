@@ -1,5 +1,6 @@
 <template>
-  <v-app class="application" :style="dynamicBackground">
+  <v-app class="application"
+          :style="dynamicBackground">
 
       <div v-for="(notification, index) in visibleNotifications()"
           :key="`notification_${index}`"
@@ -30,7 +31,7 @@
                             :modeCloseCallback="catchModeClose" />
 
     <v-main>
-      <v-container class="py-2 fill-height"
+      <v-container class="pa-2 pa-sm-3 fill-height"
                     fluid
                     v-on:scroll="updateScroll()"
                     ref="appContainer"
@@ -408,12 +409,12 @@ export default {
 }
 
 .imagezoom,
-.imagezoom img {
+.imagezoom .v-image__image {
   transition: all 0.2s;
 }
 
-.imagezoom img:hover,
-.imagezoom img:focus {
+.imagezoom:hover .v-image__image,
+.imagezoom:focus .v-image__image {
   transform: scale(1.2);
 }
 
@@ -456,7 +457,7 @@ export default {
 }
 
 .envidatBadgeBigNumber span {
-  font-size: 0.9rem !important;
+  font-size: 0.7rem !important;
 }
 
 .envidatChip {

@@ -1,5 +1,6 @@
 <template>
-  <v-card>
+  <v-card id="MetadataDetails">
+
     <v-card-title class="title metadata_title">
       Further Information
     </v-card-title>

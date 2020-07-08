@@ -7,9 +7,7 @@
       {{ name }}
     </v-card-title>
 
-    <v-card-text class="pt-0 white--text"
-                  :class="{ 'pb-3': $vuetify.breakpoint.mdAndUp,
-                            'pb-5': $vuetify.breakpoint.smAndDown, }" >
+    <v-card-text class="pt-0 white--text pb-5 pb-md-3" >
 
       <v-container class="pa-0"
                     fluid >
@@ -289,7 +287,8 @@ export default {
     transition: .3s;
   }
 
-  .fabMenu:hover {
+  .fabMenu:hover,
+  .fabMenu:active {
     background: #FFF;
     min-width: 160px;
     width: 100%;
@@ -305,7 +304,8 @@ export default {
     transition: 0.1s;
   }
 
-  .fabMenu:hover .lockedText {
+  .fabMenu:hover .lockedText,
+  .fabMenu:active .lockedText {
     visibility: visible;
     transition: 0.5s;
     opacity: 1;

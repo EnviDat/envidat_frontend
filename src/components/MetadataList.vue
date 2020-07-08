@@ -1,15 +1,16 @@
 <template>
 
-  <metadata-list-layout ref="metadataListLayoutComponent"
+  <metadata-list-layout id="metadataListLayoutComponent"
+                        ref="metadataListLayoutComponent"
                         :topFilteringLayout="topFilteringLayout"
+                        :minMapHeight="minMapHeight"
                         :useDynamicHeight="useDynamicHeight"
                         :showMapFilter="showMapFilter"
                         :mapFilteringPossible="mapFilteringPossible"
                         @onScroll="onScroll" >
 
     <template v-slot:filterKeywords>
-      <filter-keywords-view :height="keywordsHeigth"
-                            :compactLayout="$vuetify.breakpoint.smAndDown"
+      <filter-keywords-view :compactLayout="$vuetify.breakpoint.smAndDown"
                             :allTags="allTags"
                             :selectedTagNames="selectedTagNames"
                             :showPlaceholder="loading || updatingTags"
@@ -19,49 +20,31 @@
     </template>
 
     <template v-slot:controlPanel>
-      <v-card style="height: 36px; " id="controlPanel" >
-        <v-container class="px-2 py-0 fill-height"
-                      fluid>
-        <v-row align="center"
-                justify="space-between"
-                no-gutters>
-          <v-col >
-          <small-search-bar-view class="elevation-0"
-                                  :compactLayout="$vuetify.breakpoint.smAndDown"
-                                  :searchTerm="searchTerm"
-                                  :showSearch="showSearch"
-                                  :showSearchCount="true"
-                                  :searchCount="searchCount"
-                                  :isFlat="true"
-                                  :fixedHeight="36"
-                                  :labelText="searchBarPlaceholder"
-                                  :loading="loading"
-                                  @clicked="catchSearchClicked"
-                                  @searchCleared="catchSearchCleared">
+      <control-panel :compactLayout="$vuetify.breakpoint.smAndDown"
+                      :searchTerm="searchTerm"
+                      :showSearch="showSearch"
+                      :showSearchCount="true"
+                      :searchCount="searchCount"
+                      :fixedHeight="36"
+                      :searchBarPlaceholder="searchBarPlaceholder"
+                      :loading="loading"
+                      :controlsActive="controlsActive"
+                      :enabledControls="enabledControls"
+                      @searchClick="catchSearchClicked"
+                      @searchCleared="catchSearchCleared"
+                      @controlsChanged="controlsChanged" />
 
-            <template v-slot:append-outer>
-              <v-col class="hidden-xs-only pa-0 ml-2" style="white-space: nowrap">
-                <list-control-toggle :controls="controlsActive"
-                                     :enabledControls="enabledControls"
-                                     :compactLayout="$vuetify.breakpoint.smAndDown"
-                                     :flat="true"
-                                     @controlsChanged="controlsChanged" />
-              </v-col>
-            </template>
-          </small-search-bar-view>
-          </v-col>
-        </v-row>
-      </v-container>
-      </v-card>
     </template>
 
     <template v-slot:filterMap>
       <filter-map-view :content="listContent"
+                        :minMapHeight="minMapHeight" 
                         :pinnedIds="pinnedIds"
                         :topLayout="mapTopLayout"
                         :mode="mode"
                         @pointClicked="catchPointClicked"
                         @clearButtonClicked="catchClearButtonClick" />
+
     </template>
 
     <template v-slot:metadataListPlaceholder>
@@ -198,7 +181,8 @@ import { mapGetters } from 'vuex';
 import { METADATA_MODULE_PATH, METADATA_MODULE_PAGENAME, METADATADETAIL_PAGENAME } from '@/router/routeConsts';
 import FilterKeywordsView from '@/components/Filtering/FilterKeywordsView';
 import FilterMapView from '@/components/Filtering/FilterMapView';
-import ListControlToggle from '@/components/Filtering/ListControlToggle';
+import ControlPanel from '@/components/Filtering/ControlPanel';
+
 import MetadataCard from '@/components/Cards/MetadataCard';
 import MetadataCardPlaceholder from '@/components/Cards/MetadataCardPlaceholder';
 import NoSearchResultsView from '@/components/Filtering/NoSearchResultsView';
@@ -213,7 +197,6 @@ import {
 
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 import MetadataListLayout from '@/components/MetadataListLayout';
-import SmallSearchBarView from '@/components/Filtering/SmallSearchBarView';
 // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
 export default {
@@ -224,18 +207,14 @@ export default {
     placeHolderAmount: Number,
     selectedTagNames: Array,
     allTags: Array,
-    mapHeight: Number,
     mapTopLayout: {
       type: Boolean,
       default: false,
     },
-    keywordsHeigth: {
-      type: Number,
-      default: null,
-    },
     defaultListControls: Array,
     enabledControls: Array,
     useDynamicHeight: Boolean,
+    minMapHeight: Number,
     topFilteringLayout: {
       type: Boolean,
       default: false,
@@ -315,12 +294,12 @@ export default {
     },
     cardGridClass() {
       const fullSize = {
-        'col-xs-12': true,
+        'col-12': true,
         'col-sm-6': true,
         'col-md-4': true,
         'col-lg-3': true,
         'col-xl-2': !this.isActiveControl(LISTCONTROL_MAP_ACTIVE)
-              && this.isActiveControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE),
+                    && this.isActiveControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE),
       };
 
       return fullSize;
@@ -465,7 +444,7 @@ export default {
       return height;
     },
     isActiveControl(number) {
-      return this.controlsActive.includes(number);
+      return this.controlsActive ? this.controlsActive.includes(number) : false;
     },
     controlsChanged(number) {
       // 0-entry: listView, 1-entry: mapActive, 2-entry compact metadata
@@ -475,6 +454,14 @@ export default {
         controlsActive = controlsActive.filter(n => n !== number);
       } else {
         controlsActive.push(number);
+      }
+
+      if (number === LISTCONTROL_LIST_ACTIVE) {
+        controlsActive = controlsActive.filter(n => n !== LISTCONTROL_COMPACT_LAYOUT_ACTIVE);
+      }
+
+      if (number === LISTCONTROL_COMPACT_LAYOUT_ACTIVE) {
+        controlsActive = controlsActive.filter(n => n !== LISTCONTROL_LIST_ACTIVE);
       }
 
       let listActive = false;
@@ -548,13 +535,12 @@ export default {
   components: {
     FilterKeywordsView,
     FilterMapView,
-    ListControlToggle,
+    ControlPanel,
     NoSearchResultsView,
     MetadataCard,
     MetadataCardPlaceholder,
     BaseRectangleButton,
     MetadataListLayout,
-    SmallSearchBarView,
   },
 };
 </script>

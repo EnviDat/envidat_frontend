@@ -1,35 +1,30 @@
 <template>
-  <v-card :style="fixedHeight ? 'height: 304px;' : ''">
+  <v-card :style="fixedHeight ? 'height: 304px;' : ''"
+          id="MetadataCitation" >
+
     <v-card-title class="title metadata_title">
       Citation
     </v-card-title>
 
     <v-card-text v-if="citationText"
-                  class="readableText"
-                  :class="{
-                    'pb-3' : $vuetify.breakpoint.mdAndUp,
-                    'pb-2' : $vuetify.breakpoint.smAndDown,
-                   }"                  
+                  class="readableText pb-0 pb-md-2"
                   style="font-style: italic; "
                   v-html="markdownText" >
 
     </v-card-text>
 
     <v-card-actions v-if="!showPlaceholder && citationText"
-                    class="pt-0 pb-2">
+                    class="pa-4 pt-0">
       <v-container class="pa-0"
                     fluid >
-        <v-row justify="space-around">
+        <v-row justify="end"
+                no-gutters>
 
           <v-col v-for="link in citationLinks"
                   :key="link.text"
-                  class="shrink"
-                  :class="{
-                    'pa-1' : $vuetify.breakpoint.mdAndUp,
-                    'py-2 px-1' : $vuetify.breakpoint.smAndDown,
-                   }" >
+                  class="shrink py-2 px-2 py-sm-0 py-md-2 py-lg-0" >
 
-            <base-rectangle-button margin-class="mx-1 citationButton"
+            <base-rectangle-button margin-class="citationButton"
                                     :button-text="link.text"
                                     :tool-tip-text="link.tooltipText"
                                     material-icon-name="assignment"

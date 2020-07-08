@@ -1,5 +1,7 @@
 <template>
-  <v-card ripple hover :expanded="expanded">
+  <v-card ripple
+          hover
+          :expanded="expanded">
 
     <v-container class="pa-0"
                   @click="toggleExpand">
@@ -15,12 +17,14 @@
         </v-col>
 
         <v-col cols="7" class="headline px-2"
-               align-self="center"
-               :class="{ 'compactTitle' : this.$vuetify.breakpoint.xsOnly }" >
+               align-self="center" >
           {{ title }}
         </v-col>
       </v-row>
-      <v-card-actions class="ma-0 pa-2" style="position: absolute; bottom: 5px; right: 5px;">
+
+      <v-card-actions class="ma-0 pa-2"
+                      style="position: absolute; bottom: 5px; right: 5px;">
+
         <base-icon-button materialIconName="expand_more"
                           :outlined="true"
                           color="transparent"
@@ -33,7 +37,9 @@
     </v-container>
 
     <v-slide-y-transition>
-      <v-card-text v-if="expanded" class="py-4" v-html="markdownText">
+      <v-card-text v-if="expanded"
+                    class="py-4 readableText"
+                    v-html="markdownText">
       </v-card-text>
     </v-slide-y-transition>
   </v-card>

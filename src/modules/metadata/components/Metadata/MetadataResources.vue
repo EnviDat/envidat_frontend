@@ -1,5 +1,7 @@
 <template>
-  <v-card :class="{ ['pt-2']: this.isOnTop }">
+  <v-card id="MetadataResources"
+          :class="{ ['pt-2']: this.isOnTop }" >
+    
     <v-card-title >
       <v-container class="pa-0" >
       <v-row justify="end"

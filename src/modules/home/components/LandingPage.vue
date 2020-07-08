@@ -1,33 +1,53 @@
 <template>
   <v-container fluid :class="$vuetify.breakpoint.smAndDown ? 'pa-1' : 'py-0'">
-      <the-title-screen-layout :title="envidatTitle"
-                                :slogan="envidatSlogan"
-                                :subSlogan="envidatSubSlogan"
-                                :buttonText="sloganButtonText"
-                                :buttonCallback="catchBrowseClicked"
-                                :moreButtonText="sloganMoreButtonText"
-                                :moreButtonCallback="catchMoreClicked" />
 
-      <v-row class="hidden-xs-only px-0 mt-5 offset-md-6" no-gutters>
+      <v-row class="pb-5 offset-md-4 offset-lg-6"
+              no-gutters>
+        <the-title-screen-layout :title="envidatTitle"
+                                  :slogan="envidatSlogan"
+                                  :subSlogan="envidatSubSlogan"
+                                  :buttonText="sloganButtonText"
+                                  :buttonCallback="catchBrowseClicked"
+                                  :moreButtonText="sloganMoreButtonText"
+                                  :moreButtonCallback="catchMoreClicked" />
+      </v-row>
+
+      <v-row class="hidden-xs-only px-0 py-5 offset-md-4 offset-lg-6"
+              no-gutters>
         <search-bar-view :labelText="labelText"
                           :buttonText="buttonText"
                           :hasButton="true"
                           @clicked="catchSearchClicked" />
       </v-row>
 
-      <v-row class="mt-5 pa-0 hidden-sm-and-up" no-gutters>
-            <small-search-bar-view :labelText="labelText"
-                                   :buttonText="buttonText"
-                                   :hasButton="$vuetify.breakpoint.smAndUp"
-                                   @clicked="catchSearchClicked" />
+      <v-row class="py-5 pa-0 hidden-sm-and-up"
+              no-gutters>
+        <small-search-bar-view :labelText="smallScreenLabelText"
+                                :buttonText="buttonText"
+                                :compactLayout="true"
+                                @clicked="catchSearchClicked" />
       </v-row>
-        <v-row class="offset-md-6" no-gutters>
-        <v-container class="pa-0">
+
+      <v-row class="pt-5 pb-2 offset-md-4 offset-lg-6"
+              no-gutters>
+        <v-col>
+          <v-card>
+            <v-card-title primary style="word-break: break-word;">
+              {{ welcomeInfo.categoryText }}
+            </v-card-title>
+          </v-card>
+        </v-col>
+      </v-row>
+
+      <v-row class=" offset-md-4 offset-lg-6"
+              no-gutters >
+        <v-container class="py-0 px-1 pa-sm-0">
           <v-row>
 
             <v-col v-for="card in categoryCards"
                     :key="card.title"
-                    cols="6">
+                    cols="6"
+                    class="pa-2 pa-sm-3" >
 
               <base-click-card :title="card.title"
                                 :img="card.img"
@@ -37,7 +57,8 @@
             </v-col>
           </v-row>
         </v-container>
-        </v-row>
+      </v-row>
+
   </v-container>
 </template>
 
@@ -150,21 +171,19 @@ export default {
   data: () => ({
     PageBGImage: './app_b_landingpage.jpg',
     MobileBGImage: './app_b_browsepage.jpg',
-    labelText: 'Search for research terms and topics like forest, avalanche or rockfall',
+    labelText: 'Looking for something specific? Enter research term, topic or author here!',
+    smallScreenLabelText: 'Enter research term, topic or author',
     buttonText: 'SEARCH',
     envidatTitle: 'EnviDat',
-    // envidatSlogan: 'Browse a comprehensive collection of environmental data from Switzerland',
     envidatSlogan: 'Environmental Research Data at your Fingertips',
-    // envidatSlogan: 'Environmental Research Data at your Fingertips. Provided by the many research units of the Swiss Federal Institute for Forest, Snow and Landscape WSL.',
-    envidatSubSlogan: 'The data is being provided by the many research units of the Swiss Federal Institute for Forest, Snow and Landscape WSL.',
+    envidatSubSlogan: 'EnviDat provides research data from Switzerland and all over the world. The data is being being provided by researchers of the many research units of the Swiss Federal Institute for Forest, Snow and Landscape WSL.',
     sloganButtonText: 'EXPLORE DATA',
-    sloganMoreButtonText: 'READ MORE',
-    loginInfos: {
-      titleText: 'Do you create data?',
-      loginText: 'Creator Login',
-      signupText: 'SIGN UP',
-      loggedIn: false,
-      loggedinText: 'ENTER DASHBOARD',
+    sloganMoreButtonText: 'ABOUT ENVIDAT',
+    welcomeInfo: {
+      titleText: 'Welcome to EnviDat',
+      searchText: 'Looking for something specific?',
+      // categoryText: 'Have a look at a category of research data or sign in',
+      categoryText: 'Have a look at the data of one of theses categories or sign in to upload your data',
     },
   }),
 };

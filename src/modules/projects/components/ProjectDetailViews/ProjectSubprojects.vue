@@ -3,8 +3,7 @@
 
     <v-card-title class="bodyTitle title">Subprojects</v-card-title>
 
-    <v-card-text v-if="subProjects"
-                  pa-3 >
+    <v-card-text v-if="subProjects" >
 
       <v-container class="pa-0"
                         fluid >

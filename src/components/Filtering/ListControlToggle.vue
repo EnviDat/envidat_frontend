@@ -1,15 +1,20 @@
 <template>
 
-    <v-row align="center" justify="end" no-gutters
-           :class="{'width-large': enabledControls.length === 3,
-                    'width-small': enabledControls.length === 2}">
+    <v-row align="center"
+            justify="end"
+            no-gutters
+            class="fill-height" >
+
         <v-btn-toggle v-if="isEnabledControl(LISTCONTROL_MAP_ACTIVE)"
                       v-model="controlsActive"
+                      class="fill-height"
+                      borderless
+                      tile
                       dense >
           <v-btn @click="catchControlClick(LISTCONTROL_MAP_ACTIVE)"
+                  class="controlButton"
                   :class="isActiveControl(LISTCONTROL_MAP_ACTIVE) ? 'secondary' : ''"
-                  :style="compactLayout ? 'height: 32px !important' : ''"
-                  small >
+                  text >
             <v-icon>map</v-icon>
           </v-btn>
         </v-btn-toggle>
@@ -17,29 +22,32 @@
         <v-btn-toggle v-if="isEnabledControl(LISTCONTROL_LIST_ACTIVE)
                         || isEnabledControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)"
                       v-model="controlsActive"
+                      class="fill-height ml-2"
+                      tile
+                      borderless
                       dense >
 
           <v-btn v-if="isEnabledControl(LISTCONTROL_LIST_ACTIVE)"
                   @click="catchControlClick(LISTCONTROL_LIST_ACTIVE)"
+                  class="controlButton"
                   :class="isActiveControl(LISTCONTROL_LIST_ACTIVE) ? 'secondary' : ''"
-                  :style="compactLayout ? 'height: 32px !important' : ''"
-                  small >
+                  text >
             <v-icon >view_headline</v-icon>
           </v-btn>
 
           <v-btn v-if="isEnabledControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)"
                   @click="catchControlClick(LISTCONTROL_COMPACT_LAYOUT_ACTIVE)"
+                  class="controlButton"
                   :class="isActiveControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE) ? 'secondary' : ''"
-                  :style="compactLayout ? 'height: 32px !important' : ''"
-                  small >
+                  text >
             <v-icon >view_comfortable</v-icon>
           </v-btn>
 
           <v-btn v-if="isEnabledControl(3)"
                   @click="catchControlClick(3)"
+                  class="controlButton"
                   :class="isActiveControl(3) ? 'highlight' : ''"
-                  :style="compactLayout ? 'height: 32px !important' : ''"
-                  small >
+                  text >
             <v-icon >view_stream</v-icon>
           </v-btn>
 
@@ -70,7 +78,6 @@ import {
 export default {
   name: 'ListControlToggle',
   props: {
-    compactLayout: Boolean,
     controls: Array,
     enabledControls: Array,
     mapEnabled: Boolean,
@@ -102,10 +109,10 @@ export default {
   },
   methods: {
     isActiveControl(number) {
-      return this.controlsActive.includes(number);
+      return this.controlsActive ? this.controlsActive.includes(number) : false;
     },
     isEnabledControl(number) {
-      return this.enabledControls.includes(number);
+      return this.enabledControls ? this.enabledControls.includes(number) : false;
     },
     catchControlClick(number) {
       this.$emit('controlsChanged', number);
@@ -131,11 +138,9 @@ export default {
   margin: auto !important;
 }
 
-  .width-small {
-    width: 100px;
-  }
-  .width-large {
-    width: 150px;
-  }
+.controlButton {
+  min-width: 36px !important;
+  height: 100% !important;
+}
 
 </style>
