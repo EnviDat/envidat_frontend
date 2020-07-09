@@ -38,11 +38,11 @@ function getIcons() {
 const iconFiles = getIcons();
 
 // let str = '';
-// for (let [key, value] of iconFiles) {
-//   str += 'got key ' + key + ' value ' + value + ' \n';
+// for (const [key, value] of iconFiles) {
+//   str += `got key ${key} value ${value} \n`;
 // }
 
-// alert('icons ' + str);
+// console.log(`icons ${str}`);
 
 const metadataCards = [];
 
@@ -63,140 +63,48 @@ export const methods = {
 };
 
 storiesOf('3 Cards / Resource Cards', module)
-  .add('Resource card collection twoColumnLayout', () => ({
-    components: { ResourceCard },
-    template: `
-    <v-row >
-      <v-col>
-        <v-row>
-
-          <v-col cols="3" class="pa-2"
-            v-for="(res, index) in metadataCards[0].resources"
-            :key="index" >
-            <resource-card
-              v-bind="res"
-              :doiIcon="doiIcon"
-              :fileSizeIcon="fileSizeIcon"
-              :dateCreatedIcon="dateCreatedIcon"
-              :lastModifiedIcon="lastModifiedIcon"
-              :fileExtensionIcon="iconFiles"
-              twoColumnLayout
-              @clicked="onCardClick"
-            />
-          </v-col>
-
-        </v-row>
-      </v-col>
-      <v-col>
-        <v-row >
-
-          <v-col cols="4" class="pa-2"
-                  v-for="(res, index) in metadataCards[1].resources"
-                  :key="index" >
-            <resource-card
-            v-bind="res"
-            :doiIcon="doiIcon"
-            :linkIcon="linkIcon"
-            :dateCreatedIcon="dateCreatedIcon"
-            :lastModifiedIcon="lastModifiedIcon"
-            :fileExtensionIcon="iconFiles"
-            twoColumnLayout
-            @clicked="onCardClick" />
-          </v-col>
-
-        </v-row>
-      </v-col>
-      <v-col>
-        <v-row >
-
-          <v-col cols="6" class="pa-2"
-                  v-for="(res, index) in metadataCards[2].resources"
-                  :key="index" >
-            <resource-card
-              v-bind="res"
-              :doiIcon="doiIcon"
-              :linkIcon="linkIcon"
-              :dateCreatedIcon="dateCreatedIcon"
-              :lastModifiedIcon="lastModifiedIcon"
-              twoColumnLayout
-              :fileExtensionIcon="iconFiles"
-              @clicked="onCardClick" />
-          </v-col>
-
-        </v-row>
-      </v-col>
-    </v-row>
-    `,
-    methods,
-    data: () => ({
-      metadataCards,
-      doiIcon,
-      fileSizeIcon,
-      dateCreatedIcon,
-      lastModifiedIcon,
-      iconFiles,
-    }),
-  }))
-
   .add('Resource card collection', () => ({
     components: { ResourceCard },
     template: `
     <v-row >
-      <v-col>
-        <v-row >
 
-          <v-col cols="3" class="pa-2"
-                  v-for="(res, index) in metadataCards[0].resources"
-                  :key="index" >
-                  <resource-card
-                      v-bind="res"
-                      :doiIcon="doiIcon"
-                      :linkIcon="linkIcon"
-                      :dateCreatedIcon="dateCreatedIcon"
-                      :lastModifiedIcon="lastModifiedIcon"
-                      :fileExtensionIcon="iconFiles"
-                      @clicked="onCardClick"
-                    />
-          </v-col>
-
-        </v-row>
+      <v-col cols="3" class="pa-2"
+              v-for="(res, index) in metadataCards[2].resources"
+              :key="'cols-3_' + index" >
+              <resource-card
+                  v-bind="res"
+                  :doiIcon="doiIcon"
+                  :dateCreatedIcon="dateCreatedIcon"
+                  :lastModifiedIcon="lastModifiedIcon"
+                  :fileExtensionIcon="iconFiles"
+                  @clicked="onCardClick"
+                />
       </v-col>
-      <v-col>
-        <v-row >
 
-          <v-col cols="4" class="pa-2"
-                  v-for="(res, index) in metadataCards[1].resources"
-                  :key="index" >
-            <resource-card
-              v-bind="res"
-              :doiIcon="doiIcon"
-              :linkIcon="linkIcon"
-              :dateCreatedIcon="dateCreatedIcon"
-              :lastModifiedIcon="lastModifiedIcon"
-              :fileExtensionIcon="iconFiles"
-              @clicked="onCardClick" />
-          </v-col>
-
-        </v-row>
+      <v-col cols="4" class="pa-2"
+              v-for="(res, index) in metadataCards[2].resources"
+              :key="'cols-4_' + index" >
+        <resource-card
+          v-bind="res"
+          :doiIcon="doiIcon"
+          :dateCreatedIcon="dateCreatedIcon"
+          :lastModifiedIcon="lastModifiedIcon"
+          :fileExtensionIcon="iconFiles"
+          @clicked="onCardClick" />
       </v-col>
-      <v-col>
-        <v-row>
 
-          <v-col cols="6" class="pa-2"
-                v-for="(res, index) in metadataCards[2].resources"
-                :key="index" >
-            <resource-card
-              v-bind="res"
-              :doiIcon="doiIcon"
-              :linkIcon="linkIcon"
-              :dateCreatedIcon="dateCreatedIcon"
-              :lastModifiedIcon="lastModifiedIcon"
-              :fileExtensionIcon="iconFiles"
-              @clicked="onCardClick" />
-          </v-col>
-
-        </v-row>
+      <v-col cols="6" class="pa-2"
+            v-for="(res, index) in metadataCards[2].resources"
+            :key="'cols-6_' + index" >
+        <resource-card
+          v-bind="res"
+          :doiIcon="doiIcon"
+          :dateCreatedIcon="dateCreatedIcon"
+          :lastModifiedIcon="lastModifiedIcon"
+          :fileExtensionIcon="iconFiles"
+          @clicked="onCardClick" />
       </v-col>
+
     </v-row>
     `,
     methods,
@@ -214,39 +122,25 @@ storiesOf('3 Cards / Resource Cards', module)
     components: { ResourceCardPlaceholder },
     template: `
     <v-row >
-      <v-col>
-        <v-row >
 
-          <v-col cols="3" class="pa-2"
-                  v-for="index in 3"
-                  :key="index" >
-            <resource-card-placeholder />
-          </v-col>
-
-        </v-row>
+      <v-col cols="3" class="pa-2"
+              v-for="index in 3"
+              :key="index" >
+        <resource-card-placeholder />
       </v-col>
-      <v-col>
-        <v-row >
 
-          <v-col cols="4" class="pa-2"
-                  v-for="index in 3"
-                  :key="index" >
-            <resource-card-placeholder twoColumnLayout />
-          </v-col>
-
-        </v-row>
+      <v-col cols="4" class="pa-2"
+              v-for="index in 3"
+              :key="index" >
+        <resource-card-placeholder twoColumnLayout />
       </v-col>
-      <v-col>
-        <v-row >
 
-          <v-col cols="6" class="pa-2"
-                  v-for="index in 3"
-                  :key="index" >
-            <resource-card-placeholder twoColumnLayout />
-          </v-col>
-
-        </v-row>
+      <v-col cols="6" class="pa-2"
+              v-for="index in 3"
+              :key="index" >
+        <resource-card-placeholder twoColumnLayout />
       </v-col>
+
     </v-row>
     `,
     methods,

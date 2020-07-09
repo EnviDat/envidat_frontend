@@ -78,7 +78,7 @@ storiesOf('3 Cards / Metadata Cards', module)
 
     </v-row>
 
-    <v-row >
+    <!-- v-row >
 
       <v-col cols="3" class="pa-2"
               v-for="(metadata, index) in metadataCards"
@@ -102,7 +102,7 @@ storiesOf('3 Cards / Metadata Cards', module)
         />
       </v-col>
 
-    </v-row>
+    </row -->
 
     <v-row>
 
@@ -173,8 +173,8 @@ storiesOf('3 Cards / Metadata Cards', module)
     <v-row >
 
       <v-col cols="12" class="pa-2"
-        v-for="(metadata, index) in metadataCards"
-        :key="index" >
+              v-for="(metadata, index) in metadataCards"
+              :key="index" >
         <metadata-card
           :id="metadata.id"
           :ref="metadata.id"
@@ -208,41 +208,37 @@ storiesOf('3 Cards / Metadata Cards', module)
   .add('Placeholder / Loading collection', () => ({
     components: { MetadataCardPlaceholder },
     template: `
-    <v-row >
-      <v-col>
-        <v-row>
+    <v-container fluid >
+      <v-row>
 
-          <v-col cols="3" class="pa-2"
-            v-for="index in 3"
-            :key="index" >
-            <metadata-card-placeholder />
-          </v-col>
+        <v-col cols="3" class="pa-2"
+          v-for="index in 3"
+          :key="index" >
+          <metadata-card-placeholder />
+        </v-col>
 
-        </v-row>
-      </v-col>
-      <v-col>
-        <v-row>
+      </v-row>
 
-          <v-col cols="4" class="pa-2"
-            v-for="index in 3"
-            :key="index" >
-            <metadata-card-placeholder />
-          </v-col>
+      <v-row>
 
-        </v-row>
-      </v-col>
-      <v-col>
-        <v-row>
+        <v-col cols="4" class="pa-2"
+          v-for="index in 3"
+          :key="index" >
+          <metadata-card-placeholder />
+        </v-col>
 
-          <v-col cols="6" class="pa-2"
-            v-for="index in 3"
-            :key="index" >
-            <metadata-card-placeholder />
-          </v-col>
+      </v-row>
 
-        </v-row>
-      </v-col>
-    </v-row>
+      <v-row>
+
+        <v-col cols="6" class="pa-2"
+          v-for="index in 3"
+          :key="index" >
+          <metadata-card-placeholder />
+        </v-col>
+
+      </v-row>
+    </v-container>
     `,
     methods,
     data: () => ({}),
