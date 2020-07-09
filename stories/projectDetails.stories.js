@@ -102,20 +102,27 @@ storiesOf('6 Detail Views / Projects', module)
     components: { ProjectBody },
     template: `
     <v-row >
-      <v-col cols="12" class="py-3">
+      <v-col cols="6" class="py-3">
         <project-body />
       </v-col>
 
-      <v-col cols="12" class="py-3">
+      <v-col cols="6" class="py-3">
         <project-body
           :showPlaceholder="true"
         />
       </v-col>
 
-      <v-col cols="12" class="py-3">
+      <v-col cols="4" class="py-3">
         <project-body
           :description="body1.description"
           :subProjects="body1.subProjects"
+        />
+      </v-col>
+
+      <v-col cols="8" class="py-3">
+        <project-body
+          :description="body3.description"
+          :subProjects="body3.subProjects"
         />
       </v-col>
 
@@ -126,12 +133,6 @@ storiesOf('6 Detail Views / Projects', module)
         />
       </v-col>
 
-      <v-col cols="12" class="py-3">
-        <project-body
-          :description="body3.description"
-          :subProjects="body3.subProjects"
-        />
-      </v-col>
 
     </v-row>
     `,
