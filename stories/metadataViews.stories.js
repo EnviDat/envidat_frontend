@@ -130,25 +130,31 @@ storiesOf('6 Detail Views / Metadata', module)
   .add('Metadata Header', () => ({
     components: { MetadataHeader },
     template: `
-    <v-row >
-
-      <v-col >
+    <v-col>
+      <v-row>
         Empty Metadata Header
-      </v-col>
+      </v-row>
 
-      <v-col class="py-3" >
+      <v-row class="py-3" >
+      <v-col >
         <metadata-header metadataId="id-which-can-not-be-found" />
       </v-col>
+      </v-row>
 
-      <v-col class="py-3" >
+      <v-row class="py-3" >
+      <v-col >
         Metadata Header with showPlaceholder
       </v-col>
+      </v-row>
 
-      <v-col class="py-3" >
+      <v-row class="py-3" >
+      <v-col >
         <metadata-header :showPlaceholder="true" />
       </v-col>
+      </v-row>
 
-      <v-col class="py-3">
+      <v-row class="py-3">
+      <v-col >
         <metadata-header
           v-bind="smallHeader"
           :doiIcon="doiIcon"
@@ -156,9 +162,11 @@ storiesOf('6 Detail Views / Metadata', module)
           :mailIcon="mailIcon"
           :licenseIcon="licenseIcon"
         />
-      </v-col>        
+      </v-col>
+      </v-row>        
 
-      <v-col class="py-3">
+      <v-row class="py-3">
+      <v-col >
         <metadata-header
           v-bind="largeHeader"
           :doiIcon="doiIcon"
@@ -166,9 +174,10 @@ storiesOf('6 Detail Views / Metadata', module)
           :mailIcon="mailIcon"
           :licenseIcon="licenseIcon"
         />
-      </v-col>        
+      </v-col>
+      </v-row>        
 
-    </v-row>        
+    </v-col>
     `,
     methods,
     data: () => ({
