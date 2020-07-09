@@ -84,7 +84,7 @@ storiesOf('2 Buttons / Icon buttons', module)
     template: `
     <v-row style="border: solid 1px;">
 
-      <v-col >
+      <v-col cols="2" >
         <!-- div style="position: absolute;" -->
           <base-icon-count-view class="mr-2"
                                 :iconString="fileIcon"
@@ -94,7 +94,7 @@ storiesOf('2 Buttons / Icon buttons', module)
         <!-- /div -->
       </v-col>
 
-      <v-col >
+      <v-col cols="2" >
         <!-- div style="position: absolute;" -->
           <base-icon-count-view class="mr-2"
                                 :iconString="contact2Icon"
