@@ -37,12 +37,13 @@ const stories = storiesOf('2 Buttons / Rectangle', module)
       <v-col>
         <base-rectangle-button
           :buttonText="buttonText"
-          toolTipText="Text for the tool tip"
+          tooltipText="Text for the tool tip"
           @click="onClick" />
       </v-col>
       <v-col>
           <base-rectangle-button
           :buttonText="buttonText"
+          tooltipText="Text for the tool tip"
           :disabled="isDisabled"
           @click="onClick" />
       </v-col>
@@ -58,6 +59,7 @@ const stories = storiesOf('2 Buttons / Rectangle', module)
           <base-rectangle-button
           buttonText="small"
           isSmall
+          tooltipText="Text for the tool tip"
           @click="onClick" />
       </v-col>
     </v-row>
