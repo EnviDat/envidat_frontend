@@ -45,6 +45,8 @@ import { createAuthors } from '@/factories/authorFactory';
 // metadata gets enhance in the storybook config
 import metadata from './js/metadata';
 
+import lightColorblind from '../src/plugins/vuetifyConfig';
+
 const smallHeader = createHeader(metadata[0], true);
 const largeHeader = createHeader(metadata[1], false);
 
@@ -218,7 +220,10 @@ storiesOf('6 Detail Views / Metadata', module)
     data: () => ({
       genericPropsPlaceholder: {
         showPlaceholder: true,
-        body: null,
+        body: {
+          title: 'Description',
+          emptyTextColor: lightColorblind.error,
+        },
       },
       genericPropsBody: {
         showPlaceholder: false,
@@ -283,6 +288,7 @@ storiesOf('6 Detail Views / Metadata', module)
       genericPropsPlaceholder: {
         showPlaceholder: true,
         fixedHeight: false,
+        emptyTextColor: lightColorblind.error,
       },
     }),
   }))
@@ -395,6 +401,7 @@ storiesOf('6 Detail Views / Metadata', module)
       genericPropsEmpty: {
         publications: publications2,
         showPlaceholder: false,
+        emptyTextColor: lightColorblind.error,
       },
       genericPropsPublications: {
         showPlaceholder: false,
