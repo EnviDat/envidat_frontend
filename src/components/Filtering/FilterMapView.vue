@@ -9,47 +9,45 @@
 
     <v-container v-else class="fill-height pa-0" fluid>
 
-      <v-row class="fill-height"
-            no-gutters
-            :class="{
-              'flex-column-reverse': topLayout,
-              'flex-row': !topLayout,
-            }">
+      <div :class="{
+              'grid-rows': topLayout,
+              'grid-colmuns': !topLayout,
+            }"
+            style="width: 100%; height: 100%" >
 
-        <v-col class="grow pa-0" >
-          <div id="map"
-                ref="map"
-                class="fill-height" />
-        </v-col>
+        <div v-if="!topLayout"
+              id="map"
+              ref="map"
+              class="fill-height" />
 
-        <v-col id="mapWidget"
-                ref="mapWidget"
-                :class="{
-                  shrink: topLayout,
-                  'col-2 col-sm-3 col-md-2': !topLayout,
-                }" >
+        <div id="mapWidget"
+              ref="mapWidget" >
 
           <filter-map-widget :title="modeTitle"
-                             :pinnedIds="pinnedIds"
-                             :hasPins="hasPins"
-                             :pinEnabled="pinEnabled"
-                             :pinNumber="hasPins ? pinLayerGroup.length : 0"
-                             :hasMultiPins="hasMultiPins"
-                             :multiPinEnabled="multiPinEnabled"
-                             :multiPinNumber="hasMultiPins ? multiPins.length : 0"
-                             :hasPolygons="hasPolygons"
-                             :polygonEnabled="polygonEnabled"
-                             :polygonNumber="hasPolygons ? polygonLayerGroup.length : 0"
-                             :topLayout="topLayout"
-                             @clickedFocus="focusOnLayers"
-                             @clickedPin="catchPinClicked"
-                             @clickedMultipin="catchMultipinClicked"
-                             @clickedPolygon="catchPolygonClicked"
-                             @clickedClear="catchClearClicked" />
-        </v-col>
+                              :pinnedIds="pinnedIds"
+                              :hasPins="hasPins"
+                              :pinEnabled="pinEnabled"
+                              :pinNumber="hasPins ? pinLayerGroup.length : 0"
+                              :hasMultiPins="hasMultiPins"
+                              :multiPinEnabled="multiPinEnabled"
+                              :multiPinNumber="hasMultiPins ? multiPins.length : 0"
+                              :hasPolygons="hasPolygons"
+                              :polygonEnabled="polygonEnabled"
+                              :polygonNumber="hasPolygons ? polygonLayerGroup.length : 0"
+                              :topLayout="topLayout"
+                              @clickedFocus="focusOnLayers"
+                              @clickedPin="catchPinClicked"
+                              @clickedMultipin="catchMultipinClicked"
+                              @clickedPolygon="catchPolygonClicked"
+                              @clickedClear="catchClearClicked" />
+        </div>
 
-      </v-row>
+        <div v-if="topLayout"
+              id="map"
+              ref="map"
+              class="fill-height" />
 
+      </div>
     </v-container>
 
   </v-card>
@@ -578,5 +576,14 @@
     font-family: 'Raleway', sans-serif !important;
   }
 
+  .grid-rows {
+    display: grid;
+    grid-template-rows: 1fr 4fr;
+  }
+
+  .grid-colmuns {
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+  }
 
 </style>
