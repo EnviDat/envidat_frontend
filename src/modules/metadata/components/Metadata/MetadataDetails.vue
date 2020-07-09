@@ -14,7 +14,7 @@
                         :id="val.label"
                         :label="val.label"
                         :name="val.label"
-                        :value="val.text.replace(`(${authorDeadInfo ? authorDeadInfo.asciiDead : ''})`, '').trim()"
+                        :value="replaceAuthorDeadInfo(val.text)"
                         hide-details
                         readonly />
 
@@ -22,7 +22,7 @@
                       :id="val.label"
                       :label="val.label"
                       :name="val.label"
-                      :value="val.text.replace(`(${authorDeadInfo ? authorDeadInfo.asciiDead : ''})`, '').trim()"
+                      :value="replaceAuthorDeadInfo(val.text)"
                       hide-details
                       readonly />
         </div>
@@ -30,15 +30,17 @@
     </v-card-text>
 
     <v-card-text v-if="!showPlaceholder && (!details || details.length <= 0)"
-                  style="color: red;" >
+                  :style="`color: ${emptyTextColor};`"
+                  class="pa-4 pt-0 readableText">
       {{ emptyText }}
     </v-card-text>
 
 
-    <v-card-text v-if="showPlaceholder" >
-      <v-row 
-                v-for="n in 5"
-                :key="n + 'label'" >
+    <v-card-text v-if="showPlaceholder"
+                  class="pa-4 pt-0">
+      <v-row v-for="n in 5"
+            :key="n + 'label'"
+            no-gutters >
 
           <div class="flex xs2 pr-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
             <div class="bone bone-type-text " />
@@ -89,6 +91,13 @@ export default {
     },
   },
   methods: {
+    replaceAuthorDeadInfo(text) {
+      if (!text) {
+        return '';
+      }
+
+      return text.replace(`(${this.authorDeadInfo ? this.authorDeadInfo.asciiDead : ''})`, '').trim();
+    },
     isSingleText: function isSingleText(text) {
       if (!text || text.length <= 0) {
         return true;

@@ -285,7 +285,7 @@ storiesOf('6 Detail Views / Metadata', module)
     <v-row >
 
       <v-col cols="6" class="py-3">
-        <metadata-details :genericProps="genericProps3" />
+        <metadata-details />
       </v-col>
 
       <v-col cols="6" class="py-3">
@@ -293,6 +293,10 @@ storiesOf('6 Detail Views / Metadata', module)
                           :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
                           :authorDeadInfo="genericPropsPlaceholder.authorDeadInfo"
         />
+      </v-col>
+
+      <v-col cols="6" class="py-3">
+        <metadata-details :genericProps="genericProps3" />
       </v-col>
 
     </v-row>        
