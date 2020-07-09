@@ -96,10 +96,16 @@ const funding2 = [
 
 const body1 = createBody(metadata[0]);
 const body2 = createBody(metadata[1]);
+const authorDeadInfo = {
+  asciiDead: '&#8224;',
+  authorPassedInfo: 'Sadly this author has passed away.',
+};
+
 
 const genericProps3 = {
   showPlaceholder: false,
   details: details1,
+  authorDeadInfo,
 };
 
 const location1 = createLocation(metadata[2]);
@@ -195,22 +201,20 @@ storiesOf('6 Detail Views / Metadata', module)
     template: `
     <v-row>
 
-      <v-col cols="12" class="py-3">
+      <v-col cols="6" class="py-3">
         <metadata-body :genericProps="genericPropsPlaceholder" />
       </v-col>
 
       <v-col cols="6" class="py-3">
+        <metadata-body :genericProps="genericPropsPlaceholder"
+                        :showPlaceholder="genericPropsPlaceholder.showPlaceholder" />
+      </v-col>
+
+      <v-col cols="4" class="py-3">
         <metadata-body :genericProps="genericPropsBody" />
       </v-col>
 
-      <v-col cols="6" class="py-3">
-        <metadata-body
-          :genericProps="genericPropsPlaceholder"
-          :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
-        />
-      </v-col>
-
-      <v-col cols="12" class="py-3">
+      <v-col cols="8" class="py-3">
         <metadata-body :genericProps="genericPropsBodyLongDesc" />
       </v-col>
 
@@ -240,7 +244,7 @@ storiesOf('6 Detail Views / Metadata', module)
     <v-row >
 
       <v-col cols="6" class="py-3">
-        <metadata-citation :genericProps="genericProps1" />
+        <metadata-citation :genericProps="genericPropsPlaceholder" />
       </v-col>
 
       <v-col cols="6" class="py-3">
@@ -248,29 +252,12 @@ storiesOf('6 Detail Views / Metadata', module)
                             :showPlaceholder="genericPropsPlaceholder.showPlaceholder" />
       </v-col>
 
-      <v-col cols="12" class="py-3">
-        <metadata-citation
-          :genericProps="genericProps2"
-        />
+      <v-col cols="4" class="py-3">
+        <metadata-citation :genericProps="genericProps1" />
       </v-col>
 
-      <v-col cols="12" class="py-3">
-        <metadata-citation
-          :genericProps="genericPropsPlaceholder"
-          :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
-        />
-      </v-col>
-
-      <v-col cols="12" class="py-3">
-        <metadata-citation
-          :genericProps="genericPropsPlaceholder"
-        />
-      </v-col>
-
-      <v-col cols="6" class="py-3">
-        <metadata-citation
-          :genericProps="genericPropsPlaceholder"
-        />
+      <v-col cols="8" class="py-3">
+        <metadata-citation :genericProps="genericProps2" />
       </v-col>
 
     </v-row>        
@@ -303,7 +290,8 @@ storiesOf('6 Detail Views / Metadata', module)
 
       <v-col cols="6" class="py-3">
         <metadata-details :genericProps="genericPropsPlaceholder"
-          :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
+                          :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
+                          :authorDeadInfo="genericPropsPlaceholder.authorDeadInfo"
         />
       </v-col>
 
@@ -323,6 +311,7 @@ storiesOf('6 Detail Views / Metadata', module)
         details: [],
         showPlaceholder: true,
         fixedHeight: false,
+        authorDeadInfo,
       },
     }),
   }))
@@ -332,14 +321,12 @@ storiesOf('6 Detail Views / Metadata', module)
     <v-row >
 
       <v-col cols="6" class="py-3">
-        <metadata-location :genericProps="genericProps4"
-        />
+        <metadata-location :genericProps="genericProps4" />
       </v-col>
 
       <v-col cols="6" class="py-3">
         <metadata-location :genericProps="genericPropsPlaceholder"
-          :showPlaceholder="genericPropsPlaceholder.showPlaceholder"
-        />
+                            :showPlaceholder="genericPropsPlaceholder.showPlaceholder" />
       </v-col>
 
     </v-row>        
@@ -371,19 +358,19 @@ storiesOf('6 Detail Views / Metadata', module)
       </v-col>
 
       <v-col cols="6" class="py-3">
-        <metadata-publications :genericProps="genericPropsPublications" />
-      </v-col>
-
-      <v-col cols="6" class="py-3">
         <metadata-publications :genericProps="genericPropsPlaceholder"
                                 :showPlaceholder="genericPropsPlaceholder.showPlaceholder" />
       </v-col>
 
-      <v-col cols="6" class="py-3">
-        <metadata-publications />
+      <v-col cols="4" class="py-3">
+        <metadata-publications :genericProps="genericPropsPublications" />
+      </v-col>
+
+      <v-col cols="8" class="py-3">
+        <metadata-publications :genericProps="genericPropsPublications" />
       </v-col>
       
-    </v-row>        
+    </v-row>
     `,
     updated() {
     },
@@ -421,29 +408,25 @@ storiesOf('6 Detail Views / Metadata', module)
     template: `
     <v-row >
 
-      <v-col cols="12" class="py-3">
-        <metadata-funding :genericProps="genericProps2"
-                                :showPlaceholder="genericProps2.showPlaceholder"/>
-      </v-col>
-
-      <v-col cols="6" class="py-3">
-        <metadata-funding :genericProps="genericProps2"
-                                :showPlaceholder="genericProps2.showPlaceholder"/>
-      </v-col>
-
       <v-col cols="6" class="py-3">
         <metadata-funding :genericProps="genericProp" />
       </v-col>
 
       <v-col cols="6" class="py-3">
         <metadata-funding :genericProps="genericPropsPlaceholder"
-                                :showPlaceholder="genericPropsPlaceholder.showPlaceholder" />
+                          :showPlaceholder="genericPropsPlaceholder.showPlaceholder" />
+      </v-col>
+    
+      <v-col cols="4" class="py-3">
+        <metadata-funding :genericProps="genericProps2"
+                            :showPlaceholder="genericProps2.showPlaceholder"/>
       </v-col>
 
-      <v-col cols="6" class="py-3">
-        <metadata-funding />
+      <v-col cols="8" class="py-3">
+        <metadata-funding :genericProps="genericProps2"
+                          :showPlaceholder="genericProps2.showPlaceholder"/>
       </v-col>
-      
+
     </v-row>        
     `,
     updated() {
@@ -471,25 +454,20 @@ storiesOf('6 Detail Views / Metadata', module)
     <v-row>
 
       <v-col cols="12" md="6" class="py-3">
-        <metadata-authors :genericProps="genericProps5" />
+        <metadata-authors  />
       </v-col>
 
       <v-col cols="12" md="6" class="py-3">
         <metadata-authors :genericProps="genericPropsPlaceholder"
-          :showPlaceholder="genericPropsPlaceholder.showPlaceholder" />
+                          :showPlaceholder="genericPropsPlaceholder.showPlaceholder" />
       </v-col>
 
       <v-col cols="12" md="6" class="py-3">
-        <metadata-authors  />
+        <metadata-authors :genericProps="genericProps5" />
       </v-col>
 
     </v-row>        
     `,
-    // updated() {
-    //   this.$children.forEach((child) => {
-    //     child.$forceUpdate();
-    //   });
-    // },
     methods: {
     },
     data: () => ({

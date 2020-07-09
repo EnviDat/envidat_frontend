@@ -14,7 +14,7 @@
                         :id="val.label"
                         :label="val.label"
                         :name="val.label"
-                        :value="val.text.replace(`(${asciiDead})`, '').trim()"
+                        :value="val.text.replace(`(${authorDeadInfo ? authorDeadInfo.asciiDead : ''})`, '').trim()"
                         hide-details
                         readonly />
 
@@ -22,7 +22,7 @@
                       :id="val.label"
                       :label="val.label"
                       :name="val.label"
-                      :value="val.text.replace(`(${asciiDead})`, '').trim()"
+                      :value="val.text.replace(`(${authorDeadInfo ? authorDeadInfo.asciiDead : ''})`, '').trim()"
                       hide-details
                       readonly />
         </div>
@@ -67,9 +67,6 @@
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
-import { mapGetters } from 'vuex';
-import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
-
 
 export default {
   name: 'MetadataDetails',
@@ -78,6 +75,7 @@ export default {
   props: {
     genericProps: Object,
     showPlaceholder: Boolean,
+    authorDeadInfo: Object,
   },
   data: () => ({
     maxSingleTextLengthLg: 80,
@@ -86,10 +84,6 @@ export default {
     emptyText: 'No details found for this dataset',
   }),
   computed: {
-    ...mapGetters({
-      asciiDead: `${METADATA_NAMESPACE}/asciiDead`,
-      authorPassedInfo: `${METADATA_NAMESPACE}/authorPassedInfo`,
-    }),
     details() {
       return this.mixinMethods_getGenericProp('details');
     },

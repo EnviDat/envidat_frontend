@@ -192,8 +192,6 @@ export function createPublications(dataset) {
     text: dataset.related_publications,
     title: 'Related Publications',
     maxTextLength: 500,
-    emptyTextColor: 'black',
-    emptyText: 'No related publications available for this dataset.',
   };
 }
 
