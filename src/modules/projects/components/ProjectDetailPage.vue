@@ -32,7 +32,7 @@
       </v-col>
 
       <v-col v-if="loading || (!loading && currentProject && currentProject.subProjects)"
-              class="pb-2"
+              class="pb-2 px-sm-3"
               cols="12"
               lg="10"
               offset-lg="1" >
