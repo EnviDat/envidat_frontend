@@ -235,7 +235,7 @@ export default {
           icon = this.fileExtensionIcon.get('file');
         }
 
-        // alert('icon ' + icon);
+        console.log('icon ' + icon);
         return icon;
       }
 
