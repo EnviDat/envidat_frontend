@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:33:32
- * Last modified  : 2019-10-25 15:40:50
+ * Last modified  : 2020-07-14 14:22:53
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -26,6 +26,8 @@ import { browseRoutes } from '@/modules/browse/routes';
 import { metadataRoutes } from '@/modules/metadata/routes';
 import { projectsRoutes } from '@/modules/projects/routes';
 import { aboutRoutes } from '@/modules/about/routes';
+
+import { userRoutes } from '@/modules/user/routes';
 
 Vue.use(Router);
 
@@ -53,8 +55,8 @@ export default new Router({
     ...metadataRoutes,
     ...projectsRoutes,
     ...aboutRoutes,
+    ...userRoutes,
   ],
-  // routes: [...routes, ...aboutRoutes],
   scrollBehavior(to, from, savedPosition) {
     return new Promise((resolve) => {
       setTimeout(() => {
