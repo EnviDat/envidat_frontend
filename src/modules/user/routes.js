@@ -12,14 +12,14 @@
  */
 
 import {
-  USER_LOGIN_PATH,
-  USER_LOGIN_PAGENAME,
+  USER_SIGNIN_PATH,
+  USER_SIGNIN_PAGENAME,
 } from '@/router/routeConsts';
 
 export const userRoutes = [
   {
-    path: USER_LOGIN_PATH,
-    name: USER_LOGIN_PAGENAME,
+    path: USER_SIGNIN_PATH,
+    name: USER_SIGNIN_PAGENAME,
     component: () => import(/* webpackPrefetch: true, webpackChunkName: "loginPage" */ '@/modules/user/components/LoginPage'),
   },  
 ];

@@ -5,26 +5,38 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 14:13:14
- * Last modified  : 2020-07-14 14:14:31
+ * Last modified  : 2020-07-14 17:59:51
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
-// import actions from './projectsActions';
-// import mutations from './projectsMutations';
+import actions from './userActions';
+import mutations from './userMutations';
 
 const userState = {
-  loading: false,
+  userLoading: false,
+  signInLoading: false,
+  signInSuccess: false,
+  requestLoading: false,
+  requestSuccess: false,
+  user: null,
+  error: null,
 };
 
 
-export const projects = {
+export const user = {
   namespaced: true,
   state: userState,
   getters: {
-    loading: state => state.loading,
+    userLoading: state => state.userLoading,
+    signInLoading: state => state.signInLoading,
+    signInSuccess: state => state.signInSuccess,
+    requestLoading: state => state.requestLoading,
+    requestSuccess: state => state.requestSuccess,
+    user: state => state.user,
+    error: state => state.error,
   },
-  // mutations,
-  // actions,
+  mutations,
+  actions,
 };

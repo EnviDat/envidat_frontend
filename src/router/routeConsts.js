@@ -36,5 +36,5 @@ export const PROJECT_DETAIL_PAGENAME = 'ProjectDetailPage';
 export const REPORT_PATH = '/report';
 export const REPORT_PAGENAME = 'ReportPage';
 
-export const USER_LOGIN_PATH = '/login';
-export const USER_LOGIN_PAGENAME = 'LoginPage';
+export const USER_SIGNIN_PATH = '/login';
+export const USER_SIGNIN_PAGENAME = 'LoginPage';

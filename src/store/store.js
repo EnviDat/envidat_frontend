@@ -19,6 +19,8 @@ import createPersist from 'vuex-localstorage';
 import { about } from '@/modules/about/store/aboutStore';
 import { projects } from '@/modules/projects/store/projectsStore';
 import { metadata } from '@/modules/metadata/store/metadataStore';
+import { user } from '@/modules/user/store/userStore';
+
 
 import mutations from '@/store/mainMutations';
 import actions from '@/store/mainActions';
@@ -94,6 +96,7 @@ const store = new Vuex.Store({
     metadata,
     about,
     projects,
+    user,
   },
 });
 
