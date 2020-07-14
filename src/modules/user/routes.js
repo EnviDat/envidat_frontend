@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 14:20:05 
- * Last modified  : 2020-07-14 14:22:40
+ * Last modified  : 2020-07-14 18:19:27
  * 
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -20,6 +20,6 @@ export const userRoutes = [
   {
     path: USER_SIGNIN_PATH,
     name: USER_SIGNIN_PAGENAME,
-    component: () => import(/* webpackPrefetch: true, webpackChunkName: "loginPage" */ '@/modules/user/components/LoginPage'),
+    component: () => import(/* webpackPrefetch: true, webpackChunkName: "signinPage" */ '@/modules/user/components/SigninPage'),
   },  
 ];

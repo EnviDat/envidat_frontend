@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-01 09:50:25
+ * Last modified  : 2020-07-14 14:44:47
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -25,6 +25,7 @@ import {
   handleGenericAPIError,
 } from '@/factories/notificationFactory';
 
+// import Vuelidate from 'vuelidate';
 import vuetify from './plugins/vuetify';
 import router from './router';
 import globalMethods from './factories/globalMethods';
@@ -36,6 +37,7 @@ Vue.use(InfiniteLoading /* , { options } */);
 Vue.use(Vue2Filters);
 Vue.config.productionTip = false;
 Vue.mixin(globalMethods);
+// Vue.use(Vuelidate);
 
 /* eslint-disable prefer-template */
 Vue.config.errorHandler = function (err, vm, info) {
