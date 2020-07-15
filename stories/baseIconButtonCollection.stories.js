@@ -12,7 +12,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from '@storybook/vue';
 import { action } from '@storybook/addon-actions';
-import './js/vuetify-components';
 
 import BaseIconButton from '@/components/BaseElements/BaseIconButton.vue';
 import BaseIconCountView from '@/components/BaseElements/BaseIconCountView.vue';
@@ -23,65 +22,57 @@ export const methods = {
   onClick: action('clicked'),
 };
 
-storiesOf('2 Buttons | Icon buttons', module)
+storiesOf('2 Buttons / Icon buttons', module)
   .add('icon buttons with envidat icons', () => ({
     components: { BaseIconButton },
     template: `
-    <v-layout row wrap style="border: solid 1px;">
-      <v-flex xs1>
-        <base-icon-button
-          class="mr-2"
-          :customIcon="contact2Icon"
-          iconColor="accent"
-          color="transparent"
-          :outlined="showFullDescription"
-          :rotateOnClick="true"
-          :rotateToggle="showFullDescription"
-          @clicked="showFullDescription = !showFullDescription"
-        />
-      </v-flex>
+    <v-row style="border: solid 1px;">
+      <v-col cols="1">
+        <base-icon-button class="mr-2"
+                          :customIcon="contact2Icon"
+                          iconColor="accent"
+                          color="transparent"
+                          :outlined="showFullDescription"
+                          :rotateOnClick="true"
+                          :rotateToggle="showFullDescription"
+                          @clicked="showFullDescription = !showFullDescription" />
+      </v-col>
 
-      <v-flex xs1>
-        <base-icon-button
-          tooltipText="Example Text"
-          class="mr-2"
-          materialIconName="expand_less"
-          color="transparent"
-          :outlined="showFullDescription"
-          :rotateOnClick="true"
-          :rotateToggle="showFullDescription"
-          @clicked="showFullDescription = !showFullDescription"
-        />
-      </v-flex>
+      <v-col cols="1">
+        <base-icon-button tooltipText="Example Text"
+                          class="mr-2"
+                          materialIconName="expand_less"
+                          color="transparent"
+                          :outlined="showFullDescription"
+                          :rotateOnClick="true"
+                          :rotateToggle="showFullDescription"
+                          @clicked="showFullDescription = !showFullDescription" />
+      </v-col>
 
-      <v-flex xs1>
-        <base-icon-button
-          class="mr-2"
-          materialIconName="close"
-          iconColor="accent"
-          color="transparent"
-          :outlined="showFullDescription"
-          :rotateOnClick="true"
-          :rotateToggle="showFullDescription"
-          @clicked="showFullDescription = !showFullDescription"
-        />
-      </v-flex>
+      <v-col cols="1">
+        <base-icon-button class="mr-2"
+                          materialIconName="close"
+                          iconColor="accent"
+                          color="transparent"
+                          :outlined="showFullDescription"
+                          :rotateOnClick="true"
+                          :rotateToggle="showFullDescription"
+                          @clicked="showFullDescription = !showFullDescription" />
+      </v-col>
 
-      <v-flex xs1>
-      <base-icon-button
-        class="mr-2"
-        materialIconName="close"
-        iconColor="accent"
-        color="primary"
-        :outlined="showFullDescription"
-        :rotateOnClick="true"
-        :rotateToggle="showFullDescription"
-        @clicked="showFullDescription = !showFullDescription"
-      />
+      <v-col cols="1">
+        <base-icon-button class="mr-2"
+                          materialIconName="close"
+                          iconColor="accent"
+                          color="primary"
+                          :outlined="showFullDescription"
+                          :rotateOnClick="true"
+                          :rotateToggle="showFullDescription"
+                          @clicked="showFullDescription = !showFullDescription" />
 
-    </v-flex>
+      </v-col>
 
-    </v-layout>`,
+    </v-row>`,
     methods,
     data: () => ({
       showFullDescription: false,
@@ -91,33 +82,29 @@ storiesOf('2 Buttons | Icon buttons', module)
   .add('envidat icons with count badge', () => ({
     components: { BaseIconCountView },
     template: `
-    <v-layout row wrap style="border: solid 1px;">
+    <v-row style="border: solid 1px;">
 
-      <v-flex xs1>
-        <div style="position: absolute;" >
-          <base-icon-count-view
-            class="mr-2"
-            :iconString="fileIcon"
-            :count="counter"
-            :tooltipText="tooltip"
-            @clicked="onClick"
-            />
-        </div>
-      </v-flex>
+      <v-col cols="2" >
+        <!-- div style="position: absolute;" -->
+          <base-icon-count-view class="mr-2"
+                                :iconString="fileIcon"
+                                :count="counter"
+                                :tooltipText="tooltip"
+                                @clicked="onClick" />
+        <!-- /div -->
+      </v-col>
 
-      <v-flex xs1>
-        <div style="position: absolute;" >
-          <base-icon-count-view
-            class="mr-2"
-            :iconString="contact2Icon"
-            :count="counter"
-            :tooltipText="tooltip"
-            @clicked="onClick"
-          />
-        </div>
-      </v-flex>
+      <v-col cols="2" >
+        <!-- div style="position: absolute;" -->
+          <base-icon-count-view class="mr-2"
+                                :iconString="contact2Icon"
+                                :count="counter"
+                                :tooltipText="tooltip"
+                                @clicked="onClick" />
+        <!-- /div -->
+      </v-col>
 
-    </v-layout>`,
+    </v-row>`,
     methods,
     data: () => ({
       showFullDescription: false,

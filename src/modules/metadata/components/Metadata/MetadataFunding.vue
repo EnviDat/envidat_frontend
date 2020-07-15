@@ -61,7 +61,7 @@
     </v-card-text>
 
     <v-card-text v-if="!showPlaceholder && !funding"
-                  class="pt-0"
+                  class="pt-0 readableText"
                   :style="`color: ${emptyTextColor};`" >
       {{ emptyText }}
     </v-card-text>

@@ -12,7 +12,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from '@storybook/vue';
 import { action } from '@storybook/addon-actions';
-import './js/vuetify-components';
 
 import WindowVerticalView from '@/modules/projects/components/ProjectDetailViews/WindowVerticalView.vue';
 import WindowView from '@/modules/projects/components/ProjectDetailViews/WindowView.vue';
@@ -33,29 +32,29 @@ export const methods = {
   onCardClick: action('clicked on card'),
 };
 
-storiesOf('6 Detail Views | Window Slider', module)
+storiesOf('6 Detail Views / Window Slider', module)
   .add('Window Vertical View', () => ({
     components: { WindowVerticalView },
     template: `
-    <v-layout row wrap>
+    <v-row >
 
-      <v-flex xs12 py-2 >
+      <v-col cols="12" class="py-2" >
         <window-vertical-view :showPlaceholder="false" />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12 py-2 >
+      <v-col cols="12" class="py-2" >
         <window-vertical-view :showPlaceholder="true" />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12 py-2 >
+      <v-col cols="12" class="py-2" >
         <window-vertical-view :subProjects="projectDetail1.subProjects" :metadatas="projectDetail1.packages" />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12 py-2 >
+      <v-col cols="12" class="py-2" >
         <window-vertical-view :subProjects="projectDetail2.subProjects" :metadatas="projectDetail2.packages" />
-      </v-flex>
+      </v-col>
       
-    </v-layout>
+    </v-row>
     `,
     methods,
     data: () => ({
@@ -66,25 +65,25 @@ storiesOf('6 Detail Views | Window Slider', module)
   .add('Window View', () => ({
     components: { WindowView },
     template: `
-    <v-layout row wrap>
+    <v-row >
 
-      <v-flex xs12 py-2 >
+      <v-col cols="12" class="py-2" >
         <window-view :showPlaceholder="false" />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12 py-2 >
+      <v-col cols="12" class="py-2" >
         <window-view :showPlaceholder="true" />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12 py-2 >
+      <v-col cols="12" class="py-2" >
         <window-view :subProjects="projectDetail1.subProjects" :metadatas="projectDetail1.packages" />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12 py-2 >
+      <v-col cols="12" class="py-2" >
         <window-view :subProjects="projectDetail2.subProjects" :metadatas="projectDetail2.packages" />
-      </v-flex>
+      </v-col>
       
-    </v-layout>
+    </v-row>
     `,
     methods,
     data: () => ({

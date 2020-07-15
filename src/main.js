@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-01 09:50:25
+ * Last modified  : 2020-07-15 09:18:26
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -38,7 +38,7 @@ Vue.config.productionTip = false;
 Vue.mixin(globalMethods);
 
 /* eslint-disable prefer-template */
-Vue.config.errorHandler = function (err, vm, info) {
+Vue.config.errorHandler = (err, vm, info) => {
   // `info` is a Vue-specific error info, e.g. which lifecycle hook
   // the error was found in. Only available in 2.2.0+
   console.log('Vue errorHandler ' + err.message + ' \n ' + info + ' \n ' + err.stack);

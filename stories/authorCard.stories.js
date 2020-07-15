@@ -3,10 +3,8 @@ import { storiesOf } from '@storybook/vue';
 import {
  withKnobs, text, number, 
 } from '@storybook/addon-knobs';
-import './js/vuetify-components';
 
 import AuthorCard from '@/modules/metadata/components/AuthorCard.vue';
-
 import authorCollection from '../public/testdata/authorCollection.json';
 
 export const methods = {
@@ -17,7 +15,7 @@ export const methods = {
 };
 
 
-const stories = storiesOf('3 Cards | Author Cards', module)
+const stories = storiesOf('3 Cards / Author Cards', module)
   .add('Author Cards', () => ({
     components: { AuthorCard },
     props: {
@@ -45,25 +43,25 @@ const stories = storiesOf('3 Cards | Author Cards', module)
     },    
     template: `
     <v-container grid-list-lg fluid pa-0>
-      <v-layout row wrap>
+      <v-row>
 
-        <v-flex xs4 pt-5 >
+        <v-col cols="12" md="4" pt-5 >
           <author-card :author="author" />
-        </v-flex>
+        </v-col>
 
-        <v-flex xs4 pt-5 >
+        <v-col cols="12" md="4" pt-5 >
           <author-card :author="author" />
-        </v-flex>
+        </v-col>
 
-        <v-flex xs6 pt-5 >
+        <v-col cols="12" md="4" pt-5 >
           <author-card :author="author" />
-        </v-flex>
+        </v-col>
 
-        <v-flex xs12 pt-5 >
+        <v-col cols="12" md="4" pt-5 >
           <author-card :author="author" />
-        </v-flex>
+        </v-col>
 
-      </v-layout>
+      </v-row>
     </v-container>
     `,
     methods,

@@ -2,12 +2,12 @@
   <v-card :style="fixedHeight ? 'height: 304px;' : ''"
           id="MetadataCitation" >
 
-    <v-card-title class="title metadata_title">
+    <v-card-title class="title metadata_title pa-4">
       Citation
     </v-card-title>
 
     <v-card-text v-if="citationText"
-                  class="readableText pb-0 pb-md-2"
+                  class="readableText pa-4 pb-0 pb-md-2"
                   style="font-style: italic; "
                   v-html="markdownText" >
 
@@ -36,18 +36,21 @@
       </v-container>
     </v-card-actions>
 
-    <v-card-text v-if="showPlaceholder && !citationText">
+    <v-card-text v-if="showPlaceholder && !citationText"
+                  class="pa-4 pt-0">
       <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer">
         <div class="bone bone-type-multiline bone-style-paragraph" />
       </div>
     </v-card-text>
 
     <v-card-text v-if="!showPlaceholder && !citationText"
-                  style="color: red;" >
+                  :style="`color: ${emptyTextColor};`"
+                  class="pa-4 pt-0 readableText">
       {{ emptyText }}
     </v-card-text>
 
-    <v-card-actions v-if="showPlaceholder && !citationText">
+    <v-card-actions v-if="showPlaceholder && !citationText"
+                    class="pa-4" >
       <v-spacer />
       <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer">
         <div style="width: 128px; height: 32px;"
@@ -90,7 +93,7 @@ export default {
     showPlaceholder: Boolean,
   },
   data: () => ({
-    emptyText: 'No citation found for this dataset',
+    emptyText: 'No citation found for this dataset.',
   }),
   computed: {
     markdownText() {
@@ -144,6 +147,9 @@ export default {
     },
     fixedHeight() {
       return this.mixinMethods_getGenericProp('fixedHeight');
+    },
+    emptyTextColor() {
+      return this.mixinMethods_getGenericProp('emptyTextColor');
     },
   },
 };

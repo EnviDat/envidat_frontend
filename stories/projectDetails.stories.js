@@ -12,7 +12,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from '@storybook/vue';
 import { action } from '@storybook/addon-actions';
-import './js/vuetify-components';
+
 import globalMethods from '@/factories/globalMethods';
 
 import ProjectHeader from '@/modules/projects/components/ProjectDetailViews/ProjectHeader.vue';
@@ -51,44 +51,44 @@ export const methods = {
   onTagClick: action('clicked on tag'),
 };
 
-storiesOf('6 Detail Views | Projects', module)
+storiesOf('6 Detail Views / Projects', module)
   .add('Project Header', () => ({
     components: { ProjectHeader },
     template: `
-    <v-layout row wrap>
-      <v-flex xs12 py-3>
+    <v-row >
+      <v-col cols="12" class="py-3">
         <project-header />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12 py-3>
+      <v-col cols="12" class="py-3">
         <project-header :showPlaceholder="true" />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12 py-3>
+      <v-col cols="12" class="py-3">
         <project-header
           :title="header1.title"
           :titleImg="header1.image_url"
           :defaultImg="defaultImg"
         />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12 py-3>
+      <v-col cols="12" class="py-3">
         <project-header
         :title="header2.title"
         :titleImg="header2.image_url"
         :defaultImg="defaultImg"
         />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12 py-3>
+      <v-col cols="12" class="py-3">
         <project-header
         :title="header3.title"
         :titleImg="header3.image_url"
         :defaultImg="defaultImg"
         />
-      </v-flex>
+      </v-col>
 
-    </v-layout>
+    </v-row>
     `,
     methods,
     data: () => ({
@@ -101,39 +101,40 @@ storiesOf('6 Detail Views | Projects', module)
   .add('Project Body', () => ({
     components: { ProjectBody },
     template: `
-    <v-layout row wrap>
-      <v-flex xs12 py-3>
+    <v-row >
+      <v-col cols="6" class="py-3">
         <project-body />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12 py-3>
+      <v-col cols="6" class="py-3">
         <project-body
           :showPlaceholder="true"
         />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12 py-3>
+      <v-col cols="4" class="py-3">
         <project-body
           :description="body1.description"
           :subProjects="body1.subProjects"
         />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12 py-3>
-        <project-body
-          :description="body2.description"
-          :subProjects="body2.subProjects"
-        />
-      </v-flex>
-
-      <v-flex xs12 py-3>
+      <v-col cols="8" class="py-3">
         <project-body
           :description="body3.description"
           :subProjects="body3.subProjects"
         />
-      </v-flex>
+      </v-col>
 
-    </v-layout>
+      <v-col cols="12" class="py-3">
+        <project-body
+          :description="body2.description"
+          :subProjects="body2.subProjects"
+        />
+      </v-col>
+
+
+    </v-row>
     `,
     methods,
     data: () => ({
