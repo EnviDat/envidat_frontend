@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container fluid class="pa-0">
 
     <v-row>
       <v-col class="display-2">
@@ -9,7 +9,8 @@
 
     <v-row v-if="signedIn">
       <v-col cols="12"
-              class="title">
+              class="title"
+              :style="`background-color: ${signedInColor};`" >
         {{ alreadSignInText }}
       </v-col>
     </v-row>
@@ -28,41 +29,30 @@
           <v-text-field v-model="email"
                         :error-messages="emailErrors"
                         label="E-mail"
-                        solo
                         required
                         @input="$v.email.$touch()"
                         @blur="$v.email.$touch()" />
         </v-col>
       </v-row>
 
-      <v-row v-if="email && emailErrors.length <= 0 && (!key || !keyErrors)" >
-        <v-col>
-          <v-text-field :label="requestTokenText"
-                        readonly
-                        hide-details
-                        solo
-                        flat />
-        </v-col>
-      </v-row>
+      <v-row v-if="email && emailErrors.length <= 0"
+              id="tokenRow"
+              align="center"
+              no-gutters >
 
-      <v-row v-if="email && emailErrors.length <= 0" >
-
-        <v-col v-if="!key || !keyErrors"
-              cols="6"
-              lg="2">
-          <v-btn color="primary"
-                  :loading="requestLoading && !requestSucess"
-                  @click="catchRequstToken">
-            {{ tokenButtonText }}
-          </v-btn>
+        <v-col cols="12"
+                md="4"
+                class="body-1 pt-0" >
+          {{ requestTokenText }}
         </v-col>
 
-        <v-col >
+        <v-col cols="12"
+                md="8"
+                class="pt-0">
           <v-text-field v-model="key"
                         :error-messages="keyErrors"
                         :counter="keyLength"
                         label="Token"
-                        solo
                         required
                         clearable
                         clear-icon="clear"
@@ -71,26 +61,57 @@
         </v-col>
       </v-row>
 
-      <v-row v-if="formInvalid" >
-        <v-col>
-          <v-text-field :label="formErrorText"
-                        readonly
-                        hide-details
-                        solo
-                        flat />
+      <v-row v-if="formInvalid || showError"
+              id="errorTextRow"
+              :style="`background-color: ${errorColor};`" >
+        <v-col cols="12"
+                class="body-1">
+          {{ formErrorText }}
         </v-col>
       </v-row>
 
-      <v-row>
-        <v-col>
-          <v-btn v-if="!$v.$invalid"
-                  class="mr-4"
-                  color="primary"
-                  :loading="signInLoading && !signInSuccess"
-                  @click="catchSignIn">
-            {{ submitButtonText}}
+      <v-row v-if="!key || !keyErrors"
+              id="tokenButtonRow" >
+
+        <v-col cols="6"
+                md="4">
+
+          <v-row no-gutters >
+            <v-col cols="6" >
+              <v-btn color="primary"
+                      :loading="requestLoading"
+                      @click="catchRequestToken">
+                {{ tokenButtonText }}
+              </v-btn>
+            </v-col>
+
+            <v-col v-if="requestSuccess"
+                    cols="6"
+                    class="caption" >
+              {{ `${requestSentText} ${email}. ${requestSentText2}` }}
+            </v-col>
+          </v-row>
+        </v-col>
+
+      </v-row>
+
+      <v-row id="signingButtonRow" >
+
+        <v-col v-if="signedIn">
+          <v-btn color="secondary"
+                  @click="catchSignOut">
+            {{ signoutButtonText }}
           </v-btn>
         </v-col>
+
+        <v-col v-if="!signedIn && !$v.$invalid">
+          <v-btn color="primary"
+                  :loading="signInLoading && !signInSuccess"
+                  @click="catchSignIn">
+            {{ signinButtonText}}
+          </v-btn>
+        </v-col>
+
       </v-row>
     </form>
 
@@ -107,7 +128,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 14:13:35
- * Last modified  : 2020-07-14 18:11:26
+ * Last modified  : 2020-07-15 17:09:48
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -131,9 +152,20 @@ export default {
     signInLoading: Boolean,
     signInSuccess: Boolean,
     signedIn: Boolean,
+    signedInColor: {
+      type: String,
+      default: 'green',
+    },
     requestLoading: Boolean,
-    requestSucess: Boolean,
+    requestSuccess: Boolean,
     formErrorText: String,
+    showError: Boolean,
+    errorField: String,
+    errorFieldText: String,
+    errorColor: {
+      type: String,
+      default: 'red',
+    },
   },
   beforeMount() {
     this.email = this.prefilledEmail;
@@ -141,20 +173,23 @@ export default {
   },
   computed: {
     emailErrors() {
-      const errors = [];
+      const backendErr = this.backendErrors.email;
+      const errors = backendErr ? [backendErr] : [];
+
       if (!this.$v.email.$dirty) return errors;
 
       if (!this.$v.email.email) {
         errors.push('Must be valid e-mail');
       }
       if (!this.$v.email.required) {
-         errors.push('E-mail is required');
+        errors.push('E-mail is required');
       }
 
       return errors;
     },
     keyErrors() {
-      const errors = [];
+      const backendErr = this.backendErrors.key;
+      const errors = backendErr ? [backendErr] : [];
 
       if (!this.$v.key.$dirty) return errors;
 
@@ -163,16 +198,19 @@ export default {
       }
       
       if (!this.$v.key.required) {
-       errors.push('Key is required.');
+        errors.push('Key is required.');
       }
       
       return errors;
     },
+    tokenButtonText() {
+      return this.requestSuccess ? 'Request another token' : 'Request a token';
+    },
   },
   methods: {
-    catchRequstToken() {
-      this.$v.$touch();
-      this.formInvalid = this.$v.$invalid;
+    catchRequestToken() {
+      this.$v.email.$touch();
+      this.formInvalid = this.$v.email.$invalid;
 
       if (!this.formInvalid) {
         this.$emit('requestToken', this.email);
@@ -186,18 +224,34 @@ export default {
         this.$emit('signIn', this.email, this.key);
       }      
     },
+    catchSignOut() {
+      this.$emit('signOut');
+    },
+  },
+  watch: {
+    errorField() {
+      if (this.showError && this.errorField) {
+        this.backendErrors[this.errorField] = this.errorFieldText;
+      }
+    },
   },
   data: () => ({
-    submitButtonText: 'Sign In',
+    signinButtonText: 'Sign In',
+    signoutButtonText: 'Sign Out',
     email: '',
+    backendErrors: {
+      email: '',
+      key: '',      
+    },
     key: '',
     formInvalid: false,
     keyLength,
     requestTokenText: 'How do have get a token to sign in?',
-    tokenButtonText: 'Request a token',
+    requestSentText: 'The token was sent to ',
+    requestSentText2: 'Please check your e-email address.',
     title: 'Sign in',
     alreadSignInText: 'You are already signed in.',
-    instructionsText: 'Sign in with your e-mail adress and the token which was sent by e-mail.',
+    instructionsText: 'Sign in with your e-mail address and the token which was sent by e-mail.',
   }),
   validations: {
     email: {

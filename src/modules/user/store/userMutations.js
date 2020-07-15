@@ -1,15 +1,16 @@
+/* eslint-disable no-underscore-dangle */
 /**
- * user store mutations
- *
- * @summary user store mutations
- * @author Dominik Haas-Artho
- *
- * Created at     : 2020-07-14 16:51:52
- * Last modified  : 2020-07-14 18:05:19
- *
- * This file is subject to the terms and conditions defined in
- * file 'LICENSE.txt', which is part of this source code package.
- */
+* user store mutations
+*
+* @summary user store mutations
+* @author Dominik Haas-Artho
+*
+* Created at     : 2020-07-14 16:51:52
+ * Last modified  : 2020-07-15 17:03:55
+*
+* This file is subject to the terms and conditions defined in
+* file 'LICENSE.txt', which is part of this source code package.
+*/
 // import { ADD_USER_NOTIFICATION } from '@/store/mainMutationsConsts';
 
 // import { getSpecificApiError } from '@/factories/notificationFactory';
@@ -24,27 +25,68 @@ import {
   REQUEST_TOKEN,
   REQUEST_TOKEN_SUCCESS,
   REQUEST_TOKEN_ERROR,
+  USER_SIGNOUT,
+  USER_SIGNOUT_SUCCESS,
+  USER_SIGNOUT_ERROR,
+  VALIDATION_ERROR,
 } from './userMutationsConsts';
+
+function extractErrorObject(error) {
+  let type = '';
+  let field = '';
+  let msg = 'There was an error on the server, please try again. If it consists please contact envidat@wsl.ch.';
+  
+  if (error) {
+    type = error.__type;
+    
+    switch (type) {
+      case VALIDATION_ERROR: {
+        const errKey = Object.keys(error)[1];
+        
+        field = errKey;
+        msg = error[errKey];
+        break;
+      }
+      default: {
+        msg = error;
+        break;
+      }
+    }
+  }
+  
+  return { type, field, msg };
+}
+
+function resetErrorObject(state) {
+  state.error = null;
+  state.errorType = '';
+  state.errorField = '';
+}
 
 export default {
   [GET_USER_CONTEXT](state) {
     state.userLoading = true;
+
+    resetErrorObject(state);
   },
   [GET_USER_CONTEXT_SUCCESS](state, payload) {
     state.userLoading = false;
     state.user = payload && payload.length > 0 ? payload : null;
   },
   [GET_USER_CONTEXT_ERROR](state, reason) {
-    state.error = reason;
     state.userLoading = false;
 
-    // const details = 'An error occured while loading the policies§!';
-    // const errObj = getSpecificApiError(details, reason);
+    const error = reason.response.data.error;
+    const errObj = extractErrorObject(error);
 
-    // this.commit(ADD_USER_NOTIFICATION, errObj);
+    state.errorField = errObj.field;
+    state.errorType = errObj.type;
+    state.error = errObj.msg;
   },
   [USER_SIGNIN](state) {
     state.signInLoading = true;
+
+    resetErrorObject(state);
   },
   [USER_SIGNIN_SUCCESS](state, payload) {
     state.signInLoading = false;
@@ -52,20 +94,65 @@ export default {
     state.user = payload;    
   },
   [USER_SIGNIN_ERROR](state, reason) {
-    state.error = reason;
     state.signInLoading = false;
     state.signInSuccess = false;
+    
+    const error = reason.response.data.error;
+    const errObj = extractErrorObject(error);
+
+    state.errorField = errObj.field;
+    state.errorType = errObj.type;
+    state.error = errObj.msg;
   },
   [REQUEST_TOKEN](state) {
-    state.signInLoading = true;
+    state.requestLoading = true;
+    state.requestSuccess = false;
+    state.signInLoading = false;
+    state.signInSuccess = false;
+
+    resetErrorObject(state);
   },
   [REQUEST_TOKEN_SUCCESS](state, payload) {
     state.requestLoading = false;
     state.requestSuccess = payload && payload.includes('successful');
   },
   [REQUEST_TOKEN_ERROR](state, reason) {
-    state.error = reason;
     state.requestLoading = false;
     state.requestSuccess = false;
+    
+    const error = reason.response.data.error;
+    const errObj = extractErrorObject(error);
+    
+    state.errorField = errObj.field;
+    state.errorType = errObj.type;
+    state.error = errObj.msg;
+  },
+  [USER_SIGNOUT](state) {
+    state.signInLoading = false;
+    state.signInSuccess = false;
+    state.requestLoading = false;
+    state.requestSuccess = false;
+    state.userLoading = false;    
+    state.user = null;    
+
+    resetErrorObject(state);
+  },
+  [USER_SIGNOUT_SUCCESS](state) {
+    state.signInLoading = false;
+    state.signInSuccess = false;
+    state.requestLoading = false;
+    state.requestSuccess = false;
+    state.userLoading = false;
+    state.user = null;
+
+    resetErrorObject(state);
+  },
+  [USER_SIGNOUT_ERROR](state, reason) {
+    const error = reason.response.data.error;
+    const errObj = extractErrorObject(error);
+
+    state.errorField = errObj.field;
+    state.errorType = errObj.type;
+    state.error = errObj.msg;
   },
 };
