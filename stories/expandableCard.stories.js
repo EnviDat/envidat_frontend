@@ -11,7 +11,6 @@
 
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from '@storybook/vue';
-import './js/vuetify-components';
 
 import ExpandableCard from '@/modules/about/components/ExpandableCard';
 import teamSmall from '@/modules/about/assets/team_small.jpg';
@@ -63,31 +62,30 @@ export const computed = {
   },
 };
 
-storiesOf('3 Cards | Expandable Cards', module)
+storiesOf('3 Cards / Expandable Cards', module)
   .add('Expandable card Collection', () => ({
     components: { ExpandableCard },
     template: `
-<v-layout column>
-  <v-flex>
-    <v-layout row wrap>
+    <v-row >
+      <v-col>
+        <v-row>
 
-      <v-flex xs3 pa-2
-        v-for="(card, index) in aboutCardInfo"
-        :key="index"
-      >
-        <expandable-card
-          :title="card.title"
-          :text="card.text"
-          :img="card.img"
-          :min-height="100"
-          :max-height="150"
-          :contain="card.title === 'WSL'"
-          />
-      </v-flex>
+          <v-col cols="3"
+                class="pa-2"
+            v-for="(card, index) in aboutCardInfo"
+            :key="index"
+          >
+            <expandable-card :title="card.title"
+                              :text="card.text"
+                              :img="card.img"
+                              :min-height="100"
+                              :max-height="150"
+                              :contain="card.title === 'WSL'" />
+          </v-col>
 
-    </v-layout>
-  </v-flex>
-</v-layout>
+        </v-row>
+      </v-col>
+    </v-row>
     `,
     computed,
     data: () => ({

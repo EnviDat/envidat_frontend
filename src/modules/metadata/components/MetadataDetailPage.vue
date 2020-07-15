@@ -39,7 +39,7 @@
           <component :is="entry"
                       :generic-props="entry.genericProps"
                       :show-placeholder="showPlaceholder"
-                      :authorDeadInfo="entry.name === 'MetadataAuthors' ? authorDeadInfo : null" />
+                      :authorDeadInfo="authorDeadInfo" />
           </v-col>
         </v-row>
       </template>
@@ -53,7 +53,7 @@
           <component :is="entry"
                       :generic-props="entry.genericProps"
                       :show-placeholder="showPlaceholder"
-                      :authorDeadInfo="entry.name === 'MetadataAuthors' ? authorDeadInfo : null" />
+                      :authorDeadInfo="authorDeadInfo" />
           </v-col>
         </v-row>
       </template>

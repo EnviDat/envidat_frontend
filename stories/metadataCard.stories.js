@@ -12,7 +12,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from '@storybook/vue';
 import { action } from '@storybook/addon-actions';
-import './js/vuetify-components';
 
 import MetadataCard from '@/components/Cards/MetadataCard.vue';
 import MetadataCardPlaceholder from '@/components/Cards/MetadataCardPlaceholder.vue';
@@ -47,18 +46,16 @@ export const methods = {
   onTagClick: action('clicked on tag'),
 };
 
-storiesOf('3 Cards | Metadata Cards', module)
+storiesOf('3 Cards / Metadata Cards', module)
   .add('collection', () => ({
     components: { MetadataCard },
     template: `
-<v-layout column>
-  <v-flex>
-    <v-layout row wrap>
+    <v-container fluid>
+    <v-row>
 
-      <v-flex xs3 pa-2
-        v-for="(metadata, index) in metadataCards"
-        :key="index"
-      >
+      <v-col cols="3" class="pa-2"
+              v-for="(metadata, index) in metadataCards"
+              :key="index" >
         <metadata-card
           :id="metadata.id"
           :ref="metadata.id"
@@ -77,16 +74,15 @@ storiesOf('3 Cards | Metadata Cards', module)
           @clickedEvent="onCardClick"
           @clickedTag="onTagClick"
         />
-      </v-flex>
+      </v-col>
 
-    </v-layout>
+    </v-row>
 
-    <v-layout row wrap>
+    <!-- v-row >
 
-      <v-flex xs3 pa-2
-        v-for="(metadata, index) in metadataCards"
-        :key="index"
-      >
+      <v-col cols="3" class="pa-2"
+              v-for="(metadata, index) in metadataCards"
+              :key="index" >
         <metadata-card
           :id="metadata.id"
           :ref="metadata.id"
@@ -104,47 +100,15 @@ storiesOf('3 Cards | Metadata Cards', module)
           @clickedEvent="onCardClick"
           @clickedTag="onTagClick"
         />
-      </v-flex>
+      </v-col>
 
-    </v-layout>
+    </row -->
 
-  </v-flex>
-  <v-flex>
-    <v-layout row wrap>
+    <v-row>
 
-      <v-flex xs4 pa-2
-        v-for="(metadata, index) in metadataCards"
-        :key="index"
-      >
-        <metadata-card
-          :id="metadata.id"
-          :ref="metadata.id"
-          :title="metadata.title"
-          :name="metadata.name"
-          :subtitle="metadata.notes"
-          :tags="metadata.tags"
-          :titleImg="metadata.titleImg"
-          :restricted="hasRestrictedResources(metadata)"
-          :resourceCount="metadata.num_resources || metadata.res_name.length"
-          :resources="metadata.resources"
-          :fileIconString="fileIcon"
-          :lockedIconString="lockedIcon"
-          :unlockedIconString="lockedIcon"
-          :categoryColor="metadata.categoryColor"
-          @clickedEvent="onCardClick"
-          @clickedTag="onTagClick"
-        />
-      </v-flex>
-
-    </v-layout>
-  </v-flex>
-  <v-flex>
-    <v-layout row wrap>
-
-      <v-flex xs6 pa-2
-        v-for="(metadata, index) in metadataCards"
-        :key="index"
-      >
+      <v-col cols="4" class="pa-2"
+              v-for="(metadata, index) in metadataCards"
+              :key="index" >
         <metadata-card
           :id="metadata.id"
           :ref="metadata.id"
@@ -163,11 +127,37 @@ storiesOf('3 Cards | Metadata Cards', module)
           @clickedEvent="onCardClick"
           @clickedTag="onTagClick"
         />
-      </v-flex>
+      </v-col>
 
-    </v-layout>
-  </v-flex>
-</v-layout>
+    </v-row>
+
+    <v-row >
+
+      <v-col cols="6" class="pa-2"
+              v-for="(metadata, index) in metadataCards"
+              :key="index" >
+        <metadata-card
+          :id="metadata.id"
+          :ref="metadata.id"
+          :title="metadata.title"
+          :name="metadata.name"
+          :subtitle="metadata.notes"
+          :tags="metadata.tags"
+          :titleImg="metadata.titleImg"
+          :restricted="hasRestrictedResources(metadata)"
+          :resourceCount="metadata.num_resources || metadata.res_name.length"
+          :resources="metadata.resources"
+          :fileIconString="fileIcon"
+          :lockedIconString="lockedIcon"
+          :unlockedIconString="lockedIcon"
+          :categoryColor="metadata.categoryColor"
+          @clickedEvent="onCardClick"
+          @clickedTag="onTagClick"
+        />
+      </v-col>
+
+    </v-row>
+    </v-container>
     `,
     methods,
     data: () => ({
@@ -180,12 +170,11 @@ storiesOf('3 Cards | Metadata Cards', module)
   .add('Flat collection', () => ({
     components: { MetadataCard },
     template: `
-    <v-layout row wrap>
+    <v-row >
 
-      <v-flex xs12 pa-2
-        v-for="(metadata, index) in metadataCards"
-        :key="index"
-      >
+      <v-col cols="12" class="pa-2"
+              v-for="(metadata, index) in metadataCards"
+              :key="index" >
         <metadata-card
           :id="metadata.id"
           :ref="metadata.id"
@@ -205,9 +194,9 @@ storiesOf('3 Cards | Metadata Cards', module)
           @clickedEvent="onCardClick"
           @clickedTag="onTagClick"
         />
-      </v-flex>
+      </v-col>
 
-    </v-layout>`,
+    </v-row>`,
     methods,
     data: () => ({
       metadataCards,
@@ -219,44 +208,37 @@ storiesOf('3 Cards | Metadata Cards', module)
   .add('Placeholder / Loading collection', () => ({
     components: { MetadataCardPlaceholder },
     template: `
-    <v-layout column>
-      <v-flex>
-        <v-layout row wrap>
+    <v-container fluid >
+      <v-row>
 
-          <v-flex xs3 pa-2
-            v-for="index in 3"
-            :key="index"
-          >
-            <metadata-card-placeholder />
-          </v-flex>
+        <v-col cols="3" class="pa-2"
+          v-for="index in 3"
+          :key="index" >
+          <metadata-card-placeholder />
+        </v-col>
 
-        </v-layout>
-      </v-flex>
-      <v-flex>
-        <v-layout row wrap>
+      </v-row>
 
-          <v-flex xs4 pa-2
-            v-for="index in 3"
-            :key="index"
-          >
-            <metadata-card-placeholder />
-          </v-flex>
+      <v-row>
 
-        </v-layout>
-      </v-flex>
-      <v-flex>
-        <v-layout row wrap>
+        <v-col cols="4" class="pa-2"
+          v-for="index in 3"
+          :key="index" >
+          <metadata-card-placeholder />
+        </v-col>
 
-          <v-flex xs6 pa-2
-            v-for="index in 3"
-            :key="index"
-          >
-            <metadata-card-placeholder />
-          </v-flex>
+      </v-row>
 
-        </v-layout>
-      </v-flex>
-    </v-layout>
+      <v-row>
+
+        <v-col cols="6" class="pa-2"
+          v-for="index in 3"
+          :key="index" >
+          <metadata-card-placeholder />
+        </v-col>
+
+      </v-row>
+    </v-container>
     `,
     methods,
     data: () => ({}),
