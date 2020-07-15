@@ -53,9 +53,9 @@ export default {
   async [USER_SIGNIN]({ commit }, signInData) {
     commit(USER_SIGNIN);
 
-    const url = urlRewrite(`passwordless_user_login?email=${signInData.email}&key=${signInData.key}`, API_BASE, ENVIDAT_PROXY);
+    const url = urlRewrite('passwordless_user_login', API_BASE, ENVIDAT_PROXY);
 
-    await axios.get(url)
+    await axios.post(url, { email: signInData.email, key: signInData.key })
       .then((response) => {
         commit(USER_SIGNIN_SUCCESS, response.data.result);
 
@@ -68,14 +68,12 @@ export default {
   async [REQUEST_TOKEN]({ commit }, requestData) {
     commit(REQUEST_TOKEN);
 
-    const url = urlRewrite(`passwordless_perform_reset?email=${requestData.email}`, API_BASE, ENVIDAT_PROXY);
+    const url = urlRewrite('passwordless_perform_reset', API_BASE, ENVIDAT_PROXY);
 
     // await axios.get(url, { withCredentials: true })
-    await axios.get(url)
+    await axios.post(url, { email: requestData.email })
       .then((response) => {
         commit(REQUEST_TOKEN_SUCCESS, response.data.result);
-
-        console.log(`set cookie? ${response.headers['Set-cookie']} cookie ${response.cookie} ckan ${response.headers.cookie}`);
       })
       .catch((reason) => {
         commit(REQUEST_TOKEN_ERROR, reason);
@@ -86,7 +84,7 @@ export default {
 
     const url = urlRewrite('passwordless_user_logout', API_BASE, ENVIDAT_PROXY);
 
-    await axios.get(url)
+    await axios.post(url)
       .then((response) => {
         commit(USER_SIGNOUT_SUCCESS, response.data.result);
       })

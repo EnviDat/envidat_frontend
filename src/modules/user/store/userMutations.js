@@ -91,7 +91,7 @@ export default {
   [USER_SIGNIN_SUCCESS](state, payload) {
     state.signInLoading = false;
     state.signInSuccess = true;
-    state.user = payload;    
+    state.user = payload.user;    
   },
   [USER_SIGNIN_ERROR](state, reason) {
     state.signInLoading = false;
