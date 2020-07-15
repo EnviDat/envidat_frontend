@@ -4,6 +4,7 @@
     <template v-slot:activator="{ on }">
       <v-btn v-on="on"
               :small="isSmall"
+              :x-small="isXsSmall"
               :class="marginClass"
               :outlined="isOutlined"
               :text="isFlat"
@@ -55,7 +56,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-24 11:23:02
+ * Last modified  : 2020-07-15 09:32:12
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -73,6 +74,7 @@ export default {
     color: { type: String, default: 'primary' },
     iconColor: { type: String, default: 'primary' },
     isSmall: Boolean,
+    isXsSmall: Boolean,
     url: String,
     marginClass: String,
     disabled: Boolean,

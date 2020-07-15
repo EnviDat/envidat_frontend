@@ -2,23 +2,23 @@
   <v-row >
     <v-col cols="12"
             class="error py-4">
-      <h2>{{ noResultText }}</h2>
+      <div class="title">{{ noResultText }}</div>
     </v-col>
 
     <v-col cols="12">
-      <h3>{{ suggestionText }}</h3>
+      <div class="body-1">{{ suggestionText }}</div>
     </v-col>
 
-    <v-col class="pt-2"
-            cols="12" >
+    <v-col cols="12" >
       <v-container class="pa-0"
                   fluid>
-        <v-row >
+        <v-row no-gutters>
 
           <v-col v-for="card in categoryCards"
                   :key="card.title"
                   cols="6" md="4"
-                  class="my-2 px-1" >
+                  class="pa-2" >
+
               <base-click-card :title="card.title"
                                 :img="card.img"
                                 :color="card.darkColor"
@@ -41,7 +41,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-11-28 15:16:55
+ * Last modified  : 2020-07-15 09:25:10
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
