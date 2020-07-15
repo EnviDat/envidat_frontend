@@ -7,6 +7,7 @@ module.exports = {
     '@storybook/addon-links',
     '@storybook/addon-knobs',
     '@storybook/addon-viewport',
+    // 'storybook-mobile',
   ],
 
   webpackFinal: async (config, { configType }) => {
