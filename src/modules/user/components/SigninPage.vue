@@ -4,7 +4,7 @@
   <v-card class="pa-4">
 
     <signinView :prefilledEmail="prefilledEmail"
-                :prefilledToken="prefilledToken"
+                :prefilledKey="prefilledKey"
                 :signInLoading="signInLoading"
                 :signInSuccess="signInSuccess"
                 :signedIn="user !== null"
@@ -32,7 +32,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 14:18:32 
- * Last modified  : 2020-07-15 17:15:04
+ * Last modified  : 2020-07-15 23:35:41
  */
 
 import { mapGetters } from 'vuex';
@@ -73,7 +73,7 @@ export default {
     prefilledEmail() {
       return this.$route.query.email;
     },
-    prefilledToken() {
+    prefilledKey() {
       return this.$route.query.key;
     },
   },

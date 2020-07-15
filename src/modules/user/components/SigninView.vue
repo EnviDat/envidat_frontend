@@ -148,7 +148,7 @@ export default {
   },
   props: {
     prefilledEmail: String,
-    prefilledToken: String,
+    prefilledKey: String,
     signInLoading: Boolean,
     signInSuccess: Boolean,
     signedIn: Boolean,
@@ -169,7 +169,7 @@ export default {
   },
   beforeMount() {
     this.email = this.prefilledEmail;
-    this.key = this.prefilledToken;
+    this.key = this.prefilledKey;
   },
   computed: {
     emailErrors() {
