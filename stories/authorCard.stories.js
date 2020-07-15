@@ -45,19 +45,19 @@ const stories = storiesOf('3 Cards / Author Cards', module)
     <v-container grid-list-lg fluid pa-0>
       <v-row>
 
-        <v-col cols="4" pt-5 >
+        <v-col cols="12" md="4" pt-5 >
           <author-card :author="author" />
         </v-col>
 
-        <v-col cols="4" pt-5 >
+        <v-col cols="12" md="4" pt-5 >
           <author-card :author="author" />
         </v-col>
 
-        <v-col cols="4" pt-5 >
+        <v-col cols="12" md="4" pt-5 >
           <author-card :author="author" />
         </v-col>
 
-        <v-col cols="4" pt-5 >
+        <v-col cols="12" md="4" pt-5 >
           <author-card :author="author" />
         </v-col>
 
