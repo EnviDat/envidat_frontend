@@ -12,13 +12,12 @@
 // /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from '@storybook/vue';
 import { action } from '@storybook/addon-actions';
-import './js/vuetify-components';
 
 import SearchBarView from '@/modules/home/components/SearchBarView.vue';
 import SmallSearchBarView from '../src/components/Filtering/SmallSearchBarView.vue';
 
 
-storiesOf('4 Filtering | SearchBarView', module)
+storiesOf('4 Filtering / SearchBarView', module)
   .add('basic', () => ({
     components: { SearchBarView },
     template: `
@@ -42,8 +41,8 @@ storiesOf('4 Filtering | SearchBarView', module)
   .add('small', () => ({
     components: { SmallSearchBarView },
     template: `
-    <v-layout column>
-        <v-flex py-1>
+    <v-row >
+        <v-col class="py-1">
             <small-search-bar-view
                         labelText="Search for something"
                         :searchTerm="searchTerm"
@@ -54,8 +53,8 @@ storiesOf('4 Filtering | SearchBarView', module)
                         @clicked="onClick"
                         @searchCleared="onClear"
                           />
-        </v-flex>
-        <v-flex py-1>
+        </v-col>
+        <v-col class="py-1">
             <small-search-bar-view
                         labelText="Search for something"
                         :searchTerm="searchTerm"
@@ -65,11 +64,11 @@ storiesOf('4 Filtering | SearchBarView', module)
                         @clicked="onClick"
                         @searchCleared="onClear"
                           />
-        </v-flex>
+        </v-col>
 
-        <v-flex py-1>
-            <v-layout row>
-            <v-flex xs6>
+        <v-col class="py-1">
+          <v-row>
+            <v-col cols="6">
                 <small-search-bar-view
                             labelText="xs6 optimal for button search"
                             :searchTerm="searchTerm"
@@ -81,13 +80,13 @@ storiesOf('4 Filtering | SearchBarView', module)
                             @clicked="onClick"
                             @searchCleared="onClear"
                               />
-            </v-flex>
-            </v-layout>
-        </v-flex>
+            </v-col>
+          </v-row>
+        </v-col>
 
-        <v-flex>
-            <v-layout row wrap>
-            <v-flex xs6 px-1>
+        <v-col>
+          <v-row >
+            <v-col cols="6" class="px-1">
                 <small-search-bar-view
                             labelText="xs6 no button"
                             :searchTerm="searchTerm"
@@ -97,9 +96,9 @@ storiesOf('4 Filtering | SearchBarView', module)
                             @clicked="onClick"
                             @searchCleared="onClear"
                               />
-            </v-flex>
+            </v-col>
 
-            <v-flex xs6 px-1>
+            <v-col cols="6" class="px-1">
                 <small-search-bar-view
                             labelText="xs6 with compactLayout"
                             :searchTerm="searchTerm"
@@ -109,9 +108,9 @@ storiesOf('4 Filtering | SearchBarView', module)
                             @clicked="onClick"
                             @searchCleared="onClear"
                             />
-            </v-flex>
+            </v-col>
 
-            <v-flex xs6 px-1>
+            <v-col cols="6" class="px-1">
                 <small-search-bar-view
                             labelText="xs6 no compactLayout"
                             :searchTerm="searchTerm"
@@ -120,12 +119,12 @@ storiesOf('4 Filtering | SearchBarView', module)
                             @clicked="onClick"
                             @searchCleared="onClear"
                               />
-            </v-flex>
+            </v-col>
             
-            </v-layout>
-        </v-flex>
+          </v-row>
+        </v-col>
 
-      </v-layout>`,
+      </v-row>`,
     methods: {
       onClick(search) {
         action(`clicked search for "${search}"`);

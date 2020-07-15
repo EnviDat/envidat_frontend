@@ -12,7 +12,6 @@
 // /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from '@storybook/vue';
 import { action } from '@storybook/addon-actions';
-import './js/vuetify-components';
 
 import TheNavigation from '@/components/Navigation/TheNavigation.vue';
 import TheNavigationToolbar from '@/components/Navigation/TheNavigationToolbar.vue';
@@ -58,7 +57,7 @@ const navItems = [
   { title: 'Menu', icon: 'menu', active: true },
 ];
 
-storiesOf('5 Navigation | Redesigned Navigation', module)
+storiesOf('5 Navigation / Redesigned Navigation', module)
   .add('Menu', () => ({
     components: { TheNavigation },
     template: `

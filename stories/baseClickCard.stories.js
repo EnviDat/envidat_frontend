@@ -12,7 +12,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from '@storybook/vue';
 import { action } from '@storybook/addon-actions';
-import './js/vuetify-components';
 
 import BaseClickCard from '@/components/BaseElements/BaseClickCard.vue';
 import categoryCards from '@/modules/metadata/store/categoryCards';
@@ -21,42 +20,39 @@ export const methods = {
   onClick: action('clicked'),
 };
 
-storiesOf('3 Cards | Click Cards ', module).add('CategoryCcard Collection', () => ({
+storiesOf('3 Cards / Click Cards ', module).add('CategoryCcard Collection', () => ({
   components: { BaseClickCard },
   template: `
-    <v-layout row wrap>
+    <v-row>
 
-      <v-flex xs6 py-1
-        v-for="card in categoryCards" :key="card.title">
-            <base-click-card
-              :title='card.title'
-              :img='card.img'
-              :color='card.color'
-              @click='onClick'
-            />
-      </v-flex>
+      <v-col cols="6"
+              v-for="card in categoryCards"
+              :key="card.title">
+        <base-click-card :title='card.title'
+                          :img='card.img'
+                          :color='card.color'
+                          @click='onClick' />
+      </v-col>
 
-      <v-flex xs4 py-1
-        v-for="card in categoryCards" :key="card.title">
-            <base-click-card
-              :title='card.title'
-              :img='card.img'
-              :color='card.color'
-              @click='onClick'
-            />
-      </v-flex>
+      <v-col col="4"
+              v-for="card in categoryCards"
+              :key="card.title">
+        <base-click-card :title='card.title'
+                          :img='card.img'
+                          :color='card.color'
+                          @click='onClick' />
+      </v-col>
 
-      <v-flex xs3 py-1
-        v-for="card in categoryCards" :key="card.title">
-            <base-click-card
-              :title='card.title'
-              :img='card.img'
-              :color='card.color'
-              @click='onClick'
-            />
-      </v-flex>
+      <v-col cols="3"
+              v-for="card in categoryCards"
+              :key="card.title">
+        <base-click-card :title='card.title'
+                          :img='card.img'
+                          :color='card.color'
+                          @click='onClick' />
+      </v-col>
 
-    </v-layout>`,
+    </v-row>`,
   methods,
   data: () => ({
     categoryCards,

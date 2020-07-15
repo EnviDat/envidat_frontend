@@ -101,15 +101,18 @@ export function createAuthors(dataset) {
 
   for (let i = 0; i < authors.length; i++) {
     const author = authors[i];
-    const firstName = author.given_name.trim();
-    const lastName = author.name.trim();
+
+    const fullName = getAuthorName(author);
+    const nameSplits = fullName.split(' ');
+    const firstName = nameSplits[0] ? nameSplits[0].trim() : '';
+    const lastName = nameSplits[1] ? nameSplits[1].trim() : '';
 
     const dataCredit = getDataCredit(author);
 
     authorObjs.push({
       firstName,
       lastName,
-      fullName: `${firstName} ${lastName}`,
+      fullName,
       datasetCount: 1,
       affiliation: author.affiliation,
       id: {
