@@ -3,7 +3,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-10-23 16:46:09
+ * Last modified  : 2020-07-15 09:43:06
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -145,45 +145,87 @@ storiesOf('2 Buttons / Rectangle Collection', module)
           @click="onClick"/>       
       </v-col>
 
-    </v-row>`,
-    methods,
-  }))
-  .add('buttons with icons', () => ({
-    components: { BaseRectangleButton },
-    template: `
-    <v-row>
       <v-col cols="4">
         <base-rectangle-button
-          buttonText="normal button"
+          buttonText="Xs small button"
+          isXsSmall
+          tooltipText="Text for the tool tip"
+          @click="onClick"/>       
+      </v-col>
+      <v-col cols="4">
+        <base-rectangle-button
+          buttonText="Xs small button"
+          isXsSmall
+          isOutlined
+          tooltipText="Text for the tool tip"
+          @click="onClick"/>       
+      </v-col>
+      <v-col cols="4">
+        <base-rectangle-button
+          buttonText="Xs small button"
+          isXsSmall
+          isFlat
+          tooltipText="Text for the tool tip"
+          @click="onClick"/>       
+      </v-col>
+
+      <v-col cols="4">
+        <base-rectangle-button
+          buttonText="button with icon"
           materialIconName="edit"
           iconColor="white"
           @click="onClick"/>       
       </v-col>
       <v-col cols="4">
         <base-rectangle-button
-          buttonText="normal button"
+          buttonText="button with icon"
           materialIconName="add"
           iconColor="secondary"
           isOutlined
           @click="onClick"/>       
       </v-col>
-      <v-col cols="4">
-        <base-rectangle-button
-          buttonText="normal button"
-          iconColor="accent"
-          materialIconName="settings"
-          isFlat
-          @click="onClick"/>       
-      </v-col>
+
 
       <v-col cols="4">
         <base-rectangle-button
-          buttonText="normal button"
+          buttonText="button with icon"
           materialIconName="search"
           disabled
           @click="onClick"/>       
       </v-col>
 
+      <v-col cols="4">
+        <base-rectangle-button
+          buttonText="Hover for Tooltip"
+          tooltipText="Text for the tool tip"
+          @click="onClick" />
+      </v-col>
+
+      <v-col cols="4">
+          <base-rectangle-button
+          buttonText="Hover for Tooltip"
+          isSmall
+          isOutlined
+          tooltipText="Text for the tool tip"
+          @click="onClick" />
+      </v-col>
+
+      <v-col cols="4">
+          <base-rectangle-button
+          buttonText="Hover for Tooltip"
+          tooltipText="Text for the tool tip"
+          disabled="true"
+          @click="onClick" />
+      </v-col>
+
+      <v-col cols="4">
+          <base-rectangle-button
+          buttonText="Hover for Tooltip"
+          isXsSmall
+          tooltipText="Text for the tool tip"
+          @click="onClick" />
+      </v-col>
+      
     </v-row>`,
     methods,
   }));
