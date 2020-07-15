@@ -7,7 +7,7 @@ import App from '../src/App.vue';
 addDecorator(() => ({
   vuetify,
   template: `
-    <v-app>
+    <v-app style="font-family: 'Raleway, sans-serif' !important;">
       <v-main>
         <v-container fluid >
           <story/>
