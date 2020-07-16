@@ -119,7 +119,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-29 14:39:55
+ * Last modified  : 2020-07-16 08:55:51
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -235,7 +235,6 @@ export default {
           icon = this.fileExtensionIcon.get('file');
         }
 
-        console.log('icon ' + icon);
         return icon;
       }
 
