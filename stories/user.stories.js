@@ -3,7 +3,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2020-07-16 16:22:56
+ * Last modified  : 2020-08-11 15:24:30
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -53,7 +53,7 @@ storiesOf('7 User / SignIn', module)
       </v-col>
 
       <v-col cols="12">
-        <Signin-view prefilledEmail="dominik.haas@wsl.ch" prefilledKey="01234567890123456789012345678901" signedIn />
+        <Signin-view signedInEmail="dominik.haas@wsl.ch" signedIn  />
       </v-col>
 
     </v-row>

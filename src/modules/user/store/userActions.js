@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 16:51:52
- * Last modified  : 2020-07-15 17:40:13
+ * Last modified  : 2020-08-11 17:41:03
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -32,8 +32,7 @@ import {
 
 
 const API_BASE = '/api/action/';
-// const ENVIDAT_PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
-const ENVIDAT_PROXY = 'http://envidat02.wsl.ch:5000';
+const ENVIDAT_PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
 
 
 export default {
@@ -44,7 +43,7 @@ export default {
 
     await axios.get(url)
       .then((response) => {
-        commit(GET_USER_CONTEXT_SUCCESS, response.data.result);
+        commit(GET_USER_CONTEXT_SUCCESS, response.data.result ? response.data.result.user : null);
       })
       .catch((reason) => {
         commit(GET_USER_CONTEXT_ERROR, reason);
@@ -58,8 +57,6 @@ export default {
     await axios.post(url, { email: signInData.email, key: signInData.key })
       .then((response) => {
         commit(USER_SIGNIN_SUCCESS, response.data.result);
-
-        // dispatch(GET_USER_CONTEXT);
       })
       .catch((reason) => {
         commit(USER_SIGNIN_ERROR, reason);
@@ -70,7 +67,6 @@ export default {
 
     const url = urlRewrite('passwordless_perform_reset', API_BASE, ENVIDAT_PROXY);
 
-    // await axios.get(url, { withCredentials: true })
     await axios.post(url, { email: requestData.email })
       .then((response) => {
         commit(REQUEST_TOKEN_SUCCESS, response.data.result);

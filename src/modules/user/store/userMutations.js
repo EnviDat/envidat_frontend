@@ -6,7 +6,7 @@
 * @author Dominik Haas-Artho
 *
 * Created at     : 2020-07-14 16:51:52
- * Last modified  : 2020-07-15 17:03:55
+ * Last modified  : 2020-08-11 17:37:40
 *
 * This file is subject to the terms and conditions defined in
 * file 'LICENSE.txt', which is part of this source code package.
@@ -71,7 +71,7 @@ export default {
   },
   [GET_USER_CONTEXT_SUCCESS](state, payload) {
     state.userLoading = false;
-    state.user = payload && payload.length > 0 ? payload : null;
+    state.user = payload || null;
   },
   [GET_USER_CONTEXT_ERROR](state, reason) {
     state.userLoading = false;

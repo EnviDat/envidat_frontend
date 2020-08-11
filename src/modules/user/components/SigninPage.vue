@@ -1,14 +1,13 @@
 
 <template >
 
-  <v-card class="pa-4">
-
     <signinView :prefilledEmail="prefilledEmail"
                 :prefilledKey="prefilledKey"
                 :signInLoading="signInLoading"
                 :signInSuccess="signInSuccess"
                 :signedIn="user !== null"
                 :signedInColor="$vuetify.theme.themes.light.highlight"
+                :signedInEmail="user ? user.email : null"
                 :requestLoading="requestLoading"
                 :requestSuccess="requestSuccess"
                 :formErrorText="errorText()"
@@ -20,8 +19,6 @@
                 @signIn="catchSignIn"
                 @signOut="catchSignOut" />
 
-  </v-card>
-
 </template>
 
 <script>
@@ -32,7 +29,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 14:18:32 
- * Last modified  : 2020-07-15 23:35:41
+ * Last modified  : 2020-08-11 17:31:30
  */
 
 import { mapGetters } from 'vuex';
