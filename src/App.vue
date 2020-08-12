@@ -22,13 +22,16 @@
                     @menuClick="catchMenuClicked"
                     @itemClick="catchItemClicked" />
 
-    <the-navigation-toolbar v-if="showToolbar"
-                            ref="TheNavigationToolbar"
+    <the-navigation-toolbar ref="TheNavigationToolbar"
                             class="envidatToolbar"
                             :style="`z-index: ${NavToolbarZIndex}`"
                             :loading="loading"
                             :mode="mode"
-                            :modeCloseCallback="catchModeClose" />
+                            :modeCloseCallback="catchModeClose"
+                            :userNavigationItems="userMenuItems"
+                            @userMenuItemClick="catchItemClicked"
+                            @signinClick="catchSigninClicked"
+                            @homeClick="catchHomeClicked" />
 
     <v-main>
       <v-container class="pa-2 pa-sm-3 fill-height"
@@ -73,7 +76,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-08-12 09:30:23
+ * Last modified  : 2020-08-12 21:20:30
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -81,9 +84,11 @@
 
 import { mapGetters } from 'vuex';
 import {
+  LANDING_PATH,
   BROWSE_PATH,
   BROWSE_PAGENAME,
   REPORT_PATH,
+  USER_SIGNIN_PATH,
 } from '@/router/routeConsts';
 import {
   METADATA_NAMESPACE,
@@ -96,13 +101,10 @@ import {
   HIDE_NOTIFICATIONS,
 } from '@/store/mainMutationsConsts';
 
-import { POLICIES_NAMESPACE } from '@/modules/about/store/policiesMutationsConsts';
-import { GUIDELINES_NAMESPACE } from '@/modules/about/store/guidelinesMutationsConsts';
-import { PROJECTS_NAMESPACE } from '@/modules/projects/store/projectsMutationsConsts';
 
 import {
   navigationItems,
-  // userMenuItems,
+  userMenuItems,
 } from '@/store/navigationState';
 
 import TheNavigation from '@/components/Navigation/TheNavigation';
@@ -181,6 +183,8 @@ export default {
 
       this.$router.push({ path: item.path, query: '' });
     },
+    // catchUserMenuItemClicked(item) {
+    // },
     catchSearchClicked(search) {
       this.mixinMethods_additiveChangeRoute(BROWSE_PATH, search);
     },
@@ -216,6 +220,18 @@ export default {
         return;
       }
       this.$router.push({ path: REPORT_PATH, query: index });
+    },
+    catchSigninClicked() {
+      if (this.$route.path === USER_SIGNIN_PATH) {
+        return;
+      }
+      this.$router.push({ path: USER_SIGNIN_PATH, query: '' });
+    },
+    catchHomeClicked() {
+      if (this.$route.path === LANDING_PATH) {
+        return;
+      }
+      this.$router.push({ path: LANDING_PATH, query: '' });
     },
     reloadApp() {
       window.location.reload();
@@ -257,9 +273,6 @@ export default {
       // currentMetadataContent: `${METADATA_NAMESPACE}/currentMetadataContent`,
       // filteredContent: `${METADATA_NAMESPACE}/filteredContent`,
       // isFilteringContent: `${METADATA_NAMESPACE}/isFilteringContent`,
-      policiesLoading: `${POLICIES_NAMESPACE}/loading`,
-      guidelinesLoading: `${GUIDELINES_NAMESPACE}/loading`,
-      projectsLoading: `${PROJECTS_NAMESPACE}/loading`,
       currentPage: 'currentPage',
       appBGImage: 'appBGImage',
       outdatedVersion: 'outdatedVersion',
@@ -353,7 +366,8 @@ export default {
     NavToolbarZIndex: 1150,
     NavigationZIndex: 1100,
     NotificationZIndex: 1500,
-    navigationItems,    
+    navigationItems,
+    userMenuItems,
   }),
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <v-avatar color="secondary"
+  <v-avatar :color="color"
             :size="size" >
 
     <img v-if="emailHash"
@@ -26,7 +26,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-08-12 14:03:02
+ * Last modified  : 2020-08-12 15:57:51
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -45,6 +45,10 @@ export default {
     size: {
       type: Number,
       default: 48,
+    },
+    color: {
+      type: String,
+      default: 'secondary',
     },
   },
   data: () => ({
