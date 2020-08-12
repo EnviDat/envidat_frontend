@@ -26,7 +26,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-07-16 16:54:10
+ * Last modified  : 2020-08-12 14:03:02
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -36,7 +36,6 @@ export default {
   components: {
   },
   props: {
-    clickCallback: Function,
     nameInitials: String,
     emailHash: String,
     defaultGavatar: {

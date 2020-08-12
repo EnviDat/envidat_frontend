@@ -4,55 +4,79 @@
               color="white"
               :height="$vuetify.breakpoint.xsOnly ? 50 : 36" >
 
-    <v-row class="pa-0" align="center" justify="center" >
+    <v-row class="pa-0"
+            align="center"
+            justify="center" >
 
       <!-- <v-spacer v-if="!compact"></v-spacer> -->
 
-      <v-col v-if="compact"
-              class="shrink item body-2">
-        {{ modeInfoPrefix }}: {{ modeTitle }}
+      <v-col v-if="modeData" >
+        <v-row align="center"
+                justify="center" >
+
+          <v-col v-if="compact" class="shrink item body-2">
+            {{ modeInfoPrefix }}: {{ modeTitle }}
+          </v-col>
+
+          <v-col v-else
+                  class="shrink title text-no-wrap">
+            {{ modeInfo }}
+          </v-col>
+
+          <v-col v-if="modeLogo"
+                  class="shrink">
+            <a v-if="modeExternalUrl"
+              :href="modeExternalUrl"
+              target="_blank" >
+              <v-img :src="modeLogo" style="height: 34px; width: 34px;" />
+            </a>
+            <v-img v-else :src="modeLogo" style="height: 34px; width: 34px;" />
+
+          </v-col>
+
+          <v-col class="shrink">
+            <base-icon-button materialIconName="info_outline"
+                              :tooltipText="`${tooltipText} ${modeTitle}`"
+                              tooltipBottom
+                              color="transparent"
+                              iconColor="secondary"
+                              isSmall />
+          </v-col>
+
+          <v-col v-if="modeCloseCallback"
+                  class="shrink">
+            <base-icon-button materialIconName="close"
+                              :tooltipText="`Exit ${modeTitle} ${modeInfoPrefix}`"
+                              tooltipBottom
+                              color="transparent"
+                              iconColor="red"
+                              isSmall
+                              @clicked="modeCloseCallback" />
+          </v-col>
+        </v-row>
       </v-col>
 
-      <v-col v-else
-              class="shrink title text-no-wrap">
-        {{ modeInfo }}
-      </v-col>
+      <v-col v-if="signedInUser" >
 
-      <v-col v-if="modeLogo"
-              class="shrink">
-        <a v-if="modeExternalUrl"
-           :href="modeExternalUrl"
-           target="_blank" >
-          <v-img :src="modeLogo" style="height: 34px; width: 34px;" />
-        </a>
-        <v-img v-else :src="modeLogo" style="height: 34px; width: 34px;" />
+        <v-row align="center"
+                justify="end" >
 
-      </v-col>
+          <!-- <v-col class="shrink" >
+            <v-icon :style="`background-color: ${$vuetify.theme.themes.light.accent}; border-radius: 50%;`">
+              add
+            </v-icon>
+          </v-col> -->
 
-      <!-- <v-spacer v-if="!compact"></v-spacer> -->
+          <v-col class="shrink" >
+            {{ signedInUser.fullname }}
+          </v-col>
 
-      <v-col class="shrink">
-        <base-icon-button materialIconName="info_outline"
-                          :tooltipText="`${tooltipText} ${modeTitle}`"
-                          tooltipBottom
-                          color="transparent"
-                          iconColor="secondary"
-                          isSmall />
-      </v-col>
-
-      <v-col v-if="modeCloseCallback" class="shrink">
-        <base-icon-button materialIconName="close"
-                          :tooltipText="`Exit ${modeTitle} ${modeInfoPrefix}`"
-                          tooltipBottom
-                          color="transparent"
-                          iconColor="red"
-                          isSmall
-                          @clicked="modeCloseCallback" />
-      </v-col>
-
-      <v-col v-if="userIsSignedIn">
-        <user-avatar v-if="$vuetify.breakpoint.smAndUp"
-                    :clickCallback="avatarClickCallback" />
+          <v-col class="shrink" >
+            <user-menu :userObject="signedInUser"
+                        :navItems="userNavigationItems"
+                        @userMenuItemClick="catchUserMenuItemClicked" />
+          </v-col>
+        </v-row>
       </v-col>
 
       <v-progress-linear v-show="loading"
@@ -68,8 +92,8 @@
 
 <script>
 import Logo from '@/assets/logo/EnviDat_logo_32.png';
-import UserAvatar from '@/components/Layouts/UserAvatar';
 import { getModeData } from '@/factories/modeFactory';
+import UserMenu from '@/modules/user/components/UserMenu';
 import BaseIconButton from '../BaseElements/BaseIconButton';
 
 
@@ -77,14 +101,15 @@ export default {
   name: 'TheNavigationToolbar',
   components: {
     BaseIconButton,
-    UserAvatar,
+    UserMenu,
   },
   props: {
     loading: Boolean,
     mode: String,
     modeCloseCallback: Function,
-    userIsSignedIn: Boolean,
+    signedInUser: Object,
     avatarClickCallback: Function,
+    userNavigationItems: Array,
   },
   computed: {
     compact() {
@@ -111,6 +136,11 @@ export default {
     },
     modeTitle() {
       return this.modeData ? this.modeData.title : null;
+    },
+  },
+  methods: {
+    catchUserMenuItemClicked(item) {
+      this.$emit('userMenuItemClick', item);
     },
   },
   data: () => ({

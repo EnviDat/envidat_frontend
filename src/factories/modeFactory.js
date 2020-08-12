@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-11-22 14:10:55
+ * Last modified  : 2020-08-12 12:54:44
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -61,7 +61,7 @@ export function getModeData(mode) {
     return swissflMode;
   }
 
-  throw new Error(`Not Mode Objection for mode: "${mode}" implemented`);
+  throw new Error(`No Mode Objection for mode: "${mode}" implemented`);
 }
 
 
