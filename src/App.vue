@@ -73,7 +73,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-20 16:06:15
+ * Last modified  : 2020-08-12 08:56:05
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -356,11 +356,9 @@ export default {
 
 
 <style >
- @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville|Raleway&display=swap');
 
 /* overwrite the applications background https://css-tricks.com/use-cases-fixed-backgrounds-css/ */
 .application {
-  font-family: "Raleway", sans-serif !important;
   font-size: 12px;
 }
 
