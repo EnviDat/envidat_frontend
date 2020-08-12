@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-11-28 11:06:48
+ * Last modified  : 2020-08-12 08:46:54
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -33,7 +33,7 @@ import { SWISSFL_MODE } from '@/store/metadataMutationsConsts';
 
 export default [
   {
-    title: 'Login', type: 'login', img: dataCreatorImg, color: '#E0F2F1', darkColor: '#B2DFDB',
+    title: 'Sign in', type: 'login', img: dataCreatorImg, color: '#E0F2F1', darkColor: '#B2DFDB',
   },
   {
     title: 'Forest', type: FOREST, img: woodImg, color: '#e8f5e9', darkColor: '#C8E6C9',
