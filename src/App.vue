@@ -17,7 +17,7 @@
       </div>
 
     <the-navigation :style="`z-index: ${NavigationZIndex}`"
-                    :navItems="navItems"
+                    :navigationItems="navigationItems"
                     :version="appVersion"
                     @menuClick="catchMenuClicked"
                     @itemClick="catchItemClicked" />
@@ -73,7 +73,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-08-12 08:56:05
+ * Last modified  : 2020-08-12 09:30:23
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -81,15 +81,8 @@
 
 import { mapGetters } from 'vuex';
 import {
-  LANDING_PATH,
-  LANDING_PAGENAME,
   BROWSE_PATH,
   BROWSE_PAGENAME,
-  PROJECTS_PATH,
-  PROJECTS_PAGENAME,
-  PROJECT_DETAIL_PAGENAME,
-  ABOUT_PATH,
-  ABOUT_PAGENAME,
   REPORT_PATH,
 } from '@/router/routeConsts';
 import {
@@ -106,6 +99,11 @@ import {
 import { POLICIES_NAMESPACE } from '@/modules/about/store/policiesMutationsConsts';
 import { GUIDELINES_NAMESPACE } from '@/modules/about/store/guidelinesMutationsConsts';
 import { PROJECTS_NAMESPACE } from '@/modules/projects/store/projectsMutationsConsts';
+
+import {
+  navigationItems,
+  // userMenuItems,
+} from '@/store/navigationState';
 
 import TheNavigation from '@/components/Navigation/TheNavigation';
 import TheNavigationToolbar from '@/components/Navigation/TheNavigationToolbar';
@@ -137,24 +135,26 @@ export default {
       this.$store.commit(SET_APP_SCROLL_POSITION, scrollY);
     },
     updateActiveStateOnNavItems() {
-      for (let i = 0; i < this.navItems.length; i++) {
-        const item = this.navItems[i];
+      if (this.navigationItems) {
+        for (let i = 0; i < this.navigationItems.length; i++) {
+          const item = this.navigationItems[i];
 
-        if (item.icon !== 'menu') {
-          const isActive = this.currentPage === item.pageName;
+          if (item.icon !== 'menu') {
+            const isActive = this.currentPage === item.pageName;
 
-          if (item.subpages && item.subpages instanceof Array) {
-            let subIsActive = false;
+            if (item.subpages && item.subpages instanceof Array) {
+              let subIsActive = false;
 
-            item.subpages.forEach((sub) => {
-              if (!subIsActive) {
-                subIsActive = this.currentPage === sub;
-              }
-            });
+              item.subpages.forEach((sub) => {
+                if (!subIsActive) {
+                  subIsActive = this.currentPage === sub;
+                }
+              });
 
-            item.active = isActive || subIsActive;
-          } else {
-            item.active = isActive;
+              item.active = isActive || subIsActive;
+            } else {
+              item.active = isActive;
+            }
           }
         }
       }
@@ -230,17 +230,33 @@ export default {
     },
   },
   computed: {
+    ...mapGetters(
+      METADATA_NAMESPACE,
+      [
+        'metadataIds',
+        'metadatasContent',
+        'metadatasContentSize',
+        'loadingMetadataIds',
+        'loadingMetadatasContent',
+        'loadingCurrentMetadataContent',
+        'searchingMetadatasContent',
+        'currentMetadataContent',
+        'filteredContent',
+        'isFilteringContent',
+        'loading',
+      ],
+    ),
     ...mapGetters({
-      metadataIds: `${METADATA_NAMESPACE}/metadataIds`,
-      metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
-      metadatasContentSize: `${METADATA_NAMESPACE}/metadatasContentSize`,
-      loadingMetadataIds: `${METADATA_NAMESPACE}/loadingMetadataIds`,
-      loadingMetadatasContent: `${METADATA_NAMESPACE}/loadingMetadatasContent`,
-      loadingCurrentMetadataContent: `${METADATA_NAMESPACE}/loadingCurrentMetadataContent`,
-      searchingMetadatasContent: `${METADATA_NAMESPACE}/searchingMetadatasContent`,
-      currentMetadataContent: `${METADATA_NAMESPACE}/currentMetadataContent`,
-      filteredContent: `${METADATA_NAMESPACE}/filteredContent`,
-      isFilteringContent: `${METADATA_NAMESPACE}/isFilteringContent`,
+      // metadataIds: `${METADATA_NAMESPACE}/metadataIds`,
+      // metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
+      // metadatasContentSize: `${METADATA_NAMESPACE}/metadatasContentSize`,
+      // loadingMetadataIds: `${METADATA_NAMESPACE}/loadingMetadataIds`,
+      // loadingMetadatasContent: `${METADATA_NAMESPACE}/loadingMetadatasContent`,
+      // loadingCurrentMetadataContent: `${METADATA_NAMESPACE}/loadingCurrentMetadataContent`,
+      // searchingMetadatasContent: `${METADATA_NAMESPACE}/searchingMetadatasContent`,
+      // currentMetadataContent: `${METADATA_NAMESPACE}/currentMetadataContent`,
+      // filteredContent: `${METADATA_NAMESPACE}/filteredContent`,
+      // isFilteringContent: `${METADATA_NAMESPACE}/isFilteringContent`,
       policiesLoading: `${POLICIES_NAMESPACE}/loading`,
       guidelinesLoading: `${GUIDELINES_NAMESPACE}/loading`,
       projectsLoading: `${PROJECTS_NAMESPACE}/loading`,
@@ -301,7 +317,7 @@ export default {
     },
     menuItem() {
       let menuItem = { active: true };
-      this.navItems.forEach((el) => {
+      this.navigationItems.forEach((el) => {
         if (el.icon === 'menu') {
           menuItem = el;
         }
@@ -337,19 +353,7 @@ export default {
     NavToolbarZIndex: 1150,
     NavigationZIndex: 1100,
     NotificationZIndex: 1500,
-    navItems: [
-      { title: 'Home', icon: 'envidat', toolTip: 'Back to the start page', active: false, path: LANDING_PATH, pageName: LANDING_PAGENAME },
-      { title: 'Explore', icon: 'search', toolTip: 'Explore research data', active: false, path: BROWSE_PATH, pageName: BROWSE_PAGENAME },
-      { title: 'Projects', icon: 'library_books', toolTip: 'Overview of the research projects on envidat', active: false, path: PROJECTS_PATH, pageName: PROJECTS_PAGENAME, subpages: [PROJECT_DETAIL_PAGENAME] },
-      { title: 'Organizations', icon: 'account_tree', toolTip: 'Overview of the different organizations', active: false, path: 'https://www.envidat.ch/organization', pageName: 'external' },
-      // { title: 'Guidelines', icon: 'local_library', toolTip: 'Guidlines about the creation of metadata', active: false, path: GUIDELINES_PATH, pageName: GUIDELINES_PAGENAME },
-      // { title: 'Policies', icon: 'policy', toolTip: 'The rules of EnviDat', active: false, path: POLICIES_PATH, pageName: POLICIES_PAGENAME },
-      // { title: 'DMP', icon: 'menu_book', toolTip: 'Template for a Data Management Plan', active: false, path: DMP_PATH, pageName: DMP_PAGENAME },
-      { title: 'Sign In', icon: 'person', toolTip: 'Sign in to management research data', active: false, path: 'https://www.envidat.ch/user/reset', pageName: 'external' },
-      { title: 'About', icon: 'info', toolTip: 'What is EnviDat? Who is behind EnviDat?', active: false, path: ABOUT_PATH, pageName: ABOUT_PAGENAME },
-      // { title: 'Contact', icon: 'contact_support', toolTip: 'Do you need support?', active: false },
-      { title: 'Menu', icon: 'menu', active: false },
-    ],
+    navigationItems,    
   }),
 };
 </script>
