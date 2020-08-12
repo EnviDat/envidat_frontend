@@ -1,9 +1,10 @@
+/* eslint-disable object-curly-newline */
 /**
  * @summary story of SigninPage sandbox testing
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2020-08-11 15:24:30
+ * Last modified  : 2020-08-11 21:05:17
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -16,6 +17,7 @@ import { action } from '@storybook/addon-actions';
 import SigninView from '@/modules/user/components/SigninView.vue';
 import UserAvatar from '@/components/Layouts/UserAvatar.vue';
 import UserCard from '@/components/Layouts/UserCard.vue';
+import UserMenu from '@/modules/user/components/UserMenu.vue';
 
 import authorCollection from '../public/testdata/authorCollection.json';
 
@@ -27,7 +29,28 @@ export const methods = {
   onClick: action('clicked'),
 };
 
+const userMenuItems = [
+  { title: 'dashboard', icon: 'dashboard', toolTip: 'My Dashboard', active: false, path: 'dashboard', pageName: 'UserDashboard' },
+  { title: 'profile', icon: 'edit', toolTip: 'Edit profile', active: false, path: 'profile', pageName: 'EditProfile' },
+];
+
 storiesOf('7 User / SignIn', module)
+  .add('User Menu', () => ({
+    components: { UserMenu },
+    template: `
+    <v-row >
+
+      <v-col >
+        <UserMenu :navItems="userMenuItems" />
+      </v-col>
+
+    </v-row>
+    `,
+    data: () => ({
+      userMenuItems,
+    }),
+    methods,
+  }))
   .add('Signin View', () => ({
     components: { SigninView },
     template: `
