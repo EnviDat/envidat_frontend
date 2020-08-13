@@ -29,6 +29,9 @@ import {
   USER_SIGNOUT_SUCCESS,
   USER_SIGNOUT_ERROR,
   VALIDATION_ERROR,
+  USER_GET_DATASETS,
+  USER_GET_DATASETS_SUCCESS,
+  USER_GET_DATASETS_ERROR,
 } from './userMutationsConsts';
 
 function extractErrorObject(error) {
@@ -148,6 +151,27 @@ export default {
     resetErrorObject(state);
   },
   [USER_SIGNOUT_ERROR](state, reason) {
+    const error = reason.response.data.error;
+    const errObj = extractErrorObject(error);
+
+    state.errorField = errObj.field;
+    state.errorType = errObj.type;
+    state.error = errObj.msg;
+  },
+  [USER_GET_DATASETS](state) {
+    state.userLoading = true;
+
+    resetErrorObject(state);
+  },
+  [USER_GET_DATASETS_SUCCESS](state, payload) {
+    state.userLoading = false;
+    state.user.datasets = payload.datasets;
+
+    resetErrorObject(state);
+  },
+  [USER_GET_DATASETS_ERROR](state, reason) {
+    state.userLoading = false;
+
     const error = reason.response.data.error;
     const errObj = extractErrorObject(error);
 

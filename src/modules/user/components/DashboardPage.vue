@@ -1,23 +1,34 @@
-
 <template >
+  <article class="ma-0 pa-0 fill-height"
+            id="DashboardPage">
 
-    <signinView :prefilledEmail="prefilledEmail"
-                :prefilledKey="prefilledKey"
-                :signInLoading="signInLoading"
-                :signInSuccess="signInSuccess"
-                :signedIn="user !== null"
-                :signedInColor="$vuetify.theme.themes.light.highlight"
-                :signedInEmail="user ? user.email : null"
-                :requestLoading="requestLoading"
-                :requestSuccess="requestSuccess"
-                :formErrorText="errorText()"
-                :errorFieldText="error"
-                :showError="error !== null"
-                :errorField="errorField"
-                :errorColor="$vuetify.theme.themes.light.errorHighlight"
-                @requestToken="catchRequestToken"
-                @signIn="catchSignIn"
-                @signOut="catchSignOut" />
+
+    <metadata-list v-if="hasUserDatasets"
+                    ref="metadataList"
+                    :listContent="filteredContent"
+                    :mapFilteringPossible="mapFilteringPossible"
+                    :placeHolderAmount="placeHolderAmount"
+                    @clickedTag="catchTagClicked"
+                    :selectedTagNames="selectedTagNames"
+                    :allTags="allTags"
+                    :showPlaceholder="keywordsPlaceholder"
+                    @clickedExpand="catchFilterExpandClicked"
+                    @clickedTagClose="catchTagCloseClicked"
+                    @clickedClear="catchTagCleared"
+                    :mode="mode"
+                    :defaultListControls="defaultControls"
+                    :enabledControls="enabledControls"
+                    :useDynamicHeight="true"
+                    :minMapHeight="310"
+                    :mapTopLayout="$vuetify.breakpoint.lgAndUp"
+                    :topFilteringLayout="$vuetify.breakpoint.mdAndDown"
+                    :showSearch="false" />
+
+    <div v-if="!hasUserDatasets">
+      Not datasets {{ user ? user.datasets ? user.datasets.length : '' : '' }}
+    </div>
+
+  </article>
 
 </template>
 
@@ -36,70 +47,63 @@ import { mapGetters } from 'vuex';
 
 import {
   USER_NAMESPACE,
-  GET_USER_CONTEXT,
-  USER_SIGNIN,
-  REQUEST_TOKEN,
-  VALIDATION_ERROR,
-  USER_SIGNOUT,
+  FETCH_USER_DATA,
+  ACTION_USER_SHOW,
+  USER_GET_DATASETS,
 } from '@/modules/user/store/userMutationsConsts';
 
-import SigninView from './SigninView';
+import {
+  LISTCONTROL_MAP_ACTIVE,
+  LISTCONTROL_LIST_ACTIVE,
+} from '@/store/metadataMutationsConsts';
 
 export default {
   components: {
-    SigninView,
   },
   beforeMount() {
-    this.checkUserSignedIn();
+    if (this.user) {
+      this.fetchUserDatasets();
+    }
   },
   computed: {
-    ...mapGetters(
-      USER_NAMESPACE,
-      [
-        'userLoading',
-        'signInLoading',
-        'signInSuccess',
-        'requestLoading',
-        'requestSuccess',
-        'user',
-        'error',
-        'errorType',
-        'errorField',
-      ],
-    ),
+    ...mapGetters(USER_NAMESPACE, ['user']),
     prefilledEmail() {
       return this.$route.query.email;
     },
     prefilledKey() {
       return this.$route.query.key;
     },
-  },
-  methods: {
-    errorText() {
-      let errMsg = 'Please make sure everything is filled correctly';
-
-      if (this.error) {
-        if (this.errorType === VALIDATION_ERROR) {
-          errMsg = `A field was filled incorrectly: ${this.error}`;
-        }
+    hasUserDatasets() {
+      return this.userDataset && this.userDataset.length > 0;
+    },
+    userDataset() {
+      if (this.user?.datasets?.length > 0) {
+        return this.user.datasets;
       }
 
-      return errMsg;
+      return null;
     },
-    checkUserSignedIn() {
-      this.$store.dispatch(`${USER_NAMESPACE}/${GET_USER_CONTEXT}`);
-    },
-    catchSignIn(email, key) {
-      this.$store.dispatch(`${USER_NAMESPACE}/${USER_SIGNIN}`, { email, key });
-    },
-    catchRequestToken(email) {
-      this.$store.dispatch(`${USER_NAMESPACE}/${REQUEST_TOKEN}`, { email });
-    },
-    catchSignOut() {
-      this.$store.dispatch(`${USER_NAMESPACE}/${USER_SIGNOUT}`);
+  },
+  methods: {
+    fetchUserDatasets() {
+      this.$store.dispatch(`${USER_NAMESPACE}/${FETCH_USER_DATA}`,
+        {
+          action: ACTION_USER_SHOW,
+          body: {
+            id: this.user.id,
+            include_datasets: true,
+          },
+          commit: true,
+          mutation: USER_GET_DATASETS,
+        });
     },
   },
   data: () => ({
+    placeHolderAmount: 4,
+    userListDefaultControls: [
+      LISTCONTROL_MAP_ACTIVE,
+      LISTCONTROL_LIST_ACTIVE,
+    ],
   }),
 };
 </script>

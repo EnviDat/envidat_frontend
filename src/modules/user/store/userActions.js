@@ -16,6 +16,7 @@ import axios from 'axios';
 import { urlRewrite } from '@/factories/apiFactory';
 
 import {
+  FETCH_USER_DATA,
   GET_USER_CONTEXT,
   GET_USER_CONTEXT_SUCCESS,
   GET_USER_CONTEXT_ERROR,
@@ -88,4 +89,41 @@ export default {
         commit(USER_SIGNOUT_ERROR, reason);
       });
   },  
+  async [FETCH_USER_DATA]({ commit }, payload) {
+    // async fetchUserData({ rootState, commit }, payload) {
+    commit(payload.mutation);
+
+    // let body = { language: rootState.authStore.currentLocale.locale };
+    let body = { };
+
+    if (payload) {
+      // body = Object.assign({}, payload.body, body);
+      body = payload.body;
+    }
+
+    const url = urlRewrite(payload.action, API_BASE, ENVIDAT_PROXY);
+    // let response = await axios.post(url, body, rootState.config.serviceHeaders );
+
+    await axios.post(url, body)
+    .then((response) => {
+        if (payload.commit) {
+          commit(`${payload.mutation}_SUCCESS`, response.data.result);
+        }
+      })
+    .catch((error) => {
+      commit(`${payload.mutation}_ERROR`, error);
+    });
+
+  // try {
+    //   const response = await axios.post(url, body);
+
+    //   if (payload.commit) {
+    //     commit(`${payload.mutation}_SUCCESS`, response.data);
+    //   }
+
+    //    return response.data;
+    // } catch (error) {
+    //   commit(`${payload.mutation}_ERROR`, error);
+    // }
+ },
 };

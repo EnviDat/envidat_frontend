@@ -28,5 +28,12 @@ export const USER_SIGNOUT_SUCCESS = 'USER_SIGNOUT_SUCCESS';
 export const VALIDATION_ERROR = 'Validation Error';
 export const NOT_AUTHORIZED_ERROR = 'NotAuthorized';
 
+export const FETCH_USER_DATA = 'FETCH_USER_DATA';
+export const ACTION_USER_SHOW = 'user_show';
+
+export const USER_GET_DATASETS = 'USER_GET_DATASETS';
+export const USER_GET_DATASETS_ERROR = 'USER_GET_DATASETS_ERROR';
+export const USER_GET_DATASETS_SUCCESS = 'USER_GET_DATASETS_SUCCESS';
+
 
 export const USER_NAMESPACE = 'user';
