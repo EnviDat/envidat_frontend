@@ -7,7 +7,7 @@
       
       <div v-bind="attrs"
             v-on="on" >
-        <user-avatar :size="32"
+        <user-avatar :size="28"
                       :nameInitials="nameInitials"
                       :emailHash="userObject ? userObject.email_hash : null" />
       </div>                    

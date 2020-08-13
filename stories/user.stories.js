@@ -19,6 +19,8 @@ import UserAvatar from '@/components/Layouts/UserAvatar.vue';
 import UserCard from '@/components/Layouts/UserCard.vue';
 import UserMenu from '@/modules/user/components/UserMenu.vue';
 
+import NoUserDatasetsView from '@/modules/user/components/NoUserDatasetsView.vue';
+
 import authorCollection from '../public/testdata/authorCollection.json';
 
 export const methods = {
@@ -35,6 +37,25 @@ const userMenuItems = [
 ];
 
 storiesOf('7 User / SignIn', module)
+  .add('No user datasets found', () => ({
+    components: { NoUserDatasetsView },
+    template: `
+    <v-row >
+
+      <v-col cols="12">
+        <NoUserDatasetsView one />
+      </v-col>
+
+      <v-col cols="12">
+        <NoUserDatasetsView />
+      </v-col>
+
+    </v-row>
+    `,
+    data: () => ({
+    }),
+    methods,
+  }))
   .add('User Menu', () => ({
     components: { UserMenu },
     template: `

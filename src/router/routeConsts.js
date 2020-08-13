@@ -38,5 +38,5 @@ export const REPORT_PAGENAME = 'ReportPage';
 
 export const USER_SIGNIN_PATH = '/signin';
 export const USER_SIGNIN_PAGENAME = 'SigninPage';
-export const USER_DASHBOARD_PATH = '/user/dashboard';
+export const USER_DASHBOARD_PATH = '/dashboard';
 export const USER_DASHBOARD_PAGENAME = 'DashboardPage';

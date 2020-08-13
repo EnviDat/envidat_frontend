@@ -25,8 +25,15 @@ export const userRoutes = [
     component: () => import(/* webpackPrefetch: true, webpackChunkName: "signinPage" */ '@/modules/user/components/SigninPage'),
   },
   {
-    path: USER_DASHBOARD_PATH,
-    name: USER_DASHBOARD_PAGENAME,
-    component: () => import(/* webpackPrefetch: true, webpackChunkName: "dashboardPage" */ '@/modules/user/components/DashboardPage'),
+    path: '/user/:id',
+    name: 'user',
+    component: () => import(/* webpackPrefetch: true, webpackChunkName: "signinPage" */ '@/modules/user/UserModule'),
+    children: [
+      {
+        path: USER_DASHBOARD_PATH,
+        name: USER_DASHBOARD_PAGENAME,
+        component: () => import(/* webpackPrefetch: true, webpackChunkName: "dashboardPage" */ '@/modules/user/components/DashboardPage'),
+      },
+    ],
   },
 ];
