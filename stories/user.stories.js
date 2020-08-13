@@ -4,7 +4,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2020-08-11 21:05:17
+ * Last modified  : 2020-08-13 07:13:47
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -40,7 +40,7 @@ storiesOf('7 User / SignIn', module)
     template: `
     <v-row >
 
-      <v-col >
+      <v-col class="shrink">
         <UserMenu :navItems="userMenuItems" />
       </v-col>
 

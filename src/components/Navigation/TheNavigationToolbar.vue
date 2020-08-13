@@ -6,11 +6,10 @@
 
     <v-row class="pa-0"
             align="center"
-            justify="center" >
+            justify="space-between" >
 
       <v-col class="shrink pl-5">
-        <v-row align="center"
-                justify="start" >
+        <v-row no-gutters>
 
           <v-col cols="6" >
             <v-btn icon
@@ -28,18 +27,18 @@
               <v-col class="headline envidatNavbarTitleSmall py-0">
                 {{ logoText }}
               </v-col>
-              <v-col v-if="version"
+              <!-- <v-col v-if="version"
                       class="py-0"
                       style="font-size: 8px; position: relative; left: 2px;">
                 Version {{ version }}
-              </v-col>
+              </v-col> -->
             </v-row>
           </v-col>
         </v-row>
 
       </v-col>
 
-      <v-spacer></v-spacer>
+      <!-- <v-spacer></v-spacer> -->
 
       <v-col v-if="modeData" >
         <v-row align="center"
@@ -87,16 +86,18 @@
         </v-row>
       </v-col>
 
-      <v-col v-if="signedInUser" >
+      <v-col v-if="signedInUser"
+              class="shrink pr-5"
+              cols="2" >
 
         <v-row align="center"
                 justify="end" >
 
-          <v-col class="shrink" >
+          <v-col class="shrink">
             {{ signedInUser.fullname }}
           </v-col>
 
-          <v-col class="shrink" >
+          <v-col cols="3">
             <user-menu :userObject="signedInUser"
                         :navItems="userNavigationItems"
                         @userMenuItemClick="catchUserMenuItemClicked" />
@@ -104,7 +105,8 @@
         </v-row>
       </v-col>
 
-      <v-col v-else >
+      <v-col v-else
+              class="shrink" >
 
         <v-row align="center"
                 justify="end" >
@@ -197,6 +199,11 @@ export default {
     },
     catchHomeClicked() {
       this.$emit('homeClick');
+    },
+  },
+  watch: {
+    signedInUser() {
+      console.log(`signedInUser changed: ${this.signedInUser}`);
     },
   },
   data: () => ({

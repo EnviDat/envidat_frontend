@@ -3,7 +3,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2020-08-12 14:41:19
+ * Last modified  : 2020-08-12 15:40:12
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -88,14 +88,18 @@ storiesOf('5 Navigation / Redesigned Navigation', module)
 .add('Menu & Toolbar', () => ({
   components: { TheNavigation, TheNavigationToolbar },
   template: `
-      <the-navigation :navigationItems="navigationItems" />
+    <the-navigation :navigationItems="navigationItems" />
 
-      <the-navigation-toolbar labelText="Search for something"
-                              @menuClick="onMenuClick"
-                              @searchClick="onSearchClick"
-                              @loginClick="onLoginClick"
-                              />
+    <the-navigation-toolbar :signedInUser="dominikHaas"
+                            :userNavigationItems="userMenuItems"
+                            v-on:menuClick="onMenuClick"
+                            v-on:searchClick="onSearchClick"
+                            v-on:loginClick="onLoginClick" />
   `,
-  data: () => ({ navigationItems }),
+  data: () => ({
+    dominikHaas,
+    navigationItems,
+    userMenuItems,
+  }),  
   methods,
 }));
