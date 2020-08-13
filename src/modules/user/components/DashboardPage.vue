@@ -2,6 +2,22 @@
   <article class="ma-0 pa-0 fill-height"
             id="DashboardPage">
 
+    <v-row>
+      <v-col class="text-h1">
+        {{ title }}
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col >
+        <v-card>
+          <v-card-title primary style="word-break: break-word;">
+            {{ 'My Datasets' }}
+          </v-card-title>
+        </v-card>
+      </v-col>
+    </v-row>
+
 
     <metadata-list v-if="hasUserDatasets"
                     ref="metadataList"
@@ -24,9 +40,7 @@
                     :topFilteringLayout="$vuetify.breakpoint.mdAndDown"
                     :showSearch="false" />
 
-    <div v-if="!hasUserDatasets">
-      Not datasets {{ user ? user.datasets ? user.datasets.length : '' : '' }}
-    </div>
+    <NoUserDatasetsView v-if="!hasUserDatasets" />
 
   </article>
 
@@ -57,8 +71,11 @@ import {
   LISTCONTROL_LIST_ACTIVE,
 } from '@/store/metadataMutationsConsts';
 
+import NoUserDatasetsView from '@/modules/user/components/NoUserDatasetsView';
+
 export default {
   components: {
+    NoUserDatasetsView,
   },
   beforeMount() {
     if (this.user) {
@@ -99,6 +116,7 @@ export default {
     },
   },
   data: () => ({
+    title: 'Dashboard',
     placeHolderAmount: 4,
     userListDefaultControls: [
       LISTCONTROL_MAP_ACTIVE,
