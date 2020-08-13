@@ -87,7 +87,7 @@
       </v-col>
 
       <v-col v-if="signedInUser"
-              class="shrink pr-5"
+              class="shrink"
               cols="2" >
 
         <v-row align="center"
@@ -199,11 +199,6 @@ export default {
     },
     catchHomeClicked() {
       this.$emit('homeClick');
-    },
-  },
-  watch: {
-    signedInUser() {
-      console.log(`signedInUser changed: ${this.signedInUser}`);
     },
   },
   data: () => ({
