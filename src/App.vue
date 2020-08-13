@@ -28,6 +28,7 @@
                             :loading="loading"
                             :mode="mode"
                             :modeCloseCallback="catchModeClose"
+                            :signedInUser="user"
                             :userNavigationItems="userMenuItems"
                             @userMenuItemClick="catchItemClicked"
                             @signinClick="catchSigninClicked"
@@ -101,6 +102,11 @@ import {
   HIDE_NOTIFICATIONS,
 } from '@/store/mainMutationsConsts';
 
+import {
+  USER_NAMESPACE,
+  GET_USER_CONTEXT,
+} from '@/modules/user/store/userMutationsConsts';
+
 
 import {
   navigationItems,
@@ -119,10 +125,12 @@ export default {
     this.$store.dispatch(SET_CONFIG);
   },
   created() {
+    this.checkUserSignedIn();
     this.loadAllMetadata();
 
     const bgImgs = require.context('./assets/', false, /\.jpg$/);
     this.appBGImages = this.mixinMethods_importImages(bgImgs, 'app_b');
+
   },
   updated() {
     this.updateActiveStateOnNavItems();
@@ -244,6 +252,9 @@ export default {
     dialogVersionText() {
       return `You are using the version ${this.appVersion}, but there is are newer version available (${this.newVersion}). Please reload to get the latest verison of EnviDat.`;
     },
+    checkUserSignedIn() {
+      this.$store.dispatch(`${USER_NAMESPACE}/${GET_USER_CONTEXT}`);
+    },
   },
   computed: {
     ...mapGetters(
@@ -280,6 +291,7 @@ export default {
       config: 'config',
       notifications: 'notifications',
       maxNotifications: 'maxNotifications',
+      user: `${USER_NAMESPACE}/user`,
     }),
     loading() {
       return this.loadingMetadatasContent || this.searchingMetadatasContent || this.isFilteringContent
