@@ -73,6 +73,7 @@
       },
       methods: {
           getFeatureInfo(latlng) {
+            if (Math.abs(latlng[0]) > 90 || Math.abs(latlng[1]) > 180) { return; }
             this.featureInfo = [];
             this.$emit('featureinfo', []);
             let start = 0;
