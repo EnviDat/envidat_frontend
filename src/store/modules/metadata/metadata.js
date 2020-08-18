@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-11-01 08:45:09
+ * Last modified  : 2020-08-18 15:54:14
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -54,6 +54,7 @@ const initialState = {
   searchedMetadatasContent: {},
   searchingMetadatasContent: false,
   searchingMetadatasContentOK: false,
+  currentSearchTerm: '',
   /**
    * filteredContent is the Metadata which is actually shown on the BrowsePage
    */
@@ -119,6 +120,7 @@ export const metadata = {
     searchedMetadatasContent: state => state.searchedMetadatasContent,
     searchingMetadatasContent: state => state.searchingMetadatasContent,
     searchingMetadatasContentOK: state => state.searchingMetadatasContentOK,
+    currentSearchTerm: state => state.currentSearchTerm,
     loadingCurrentMetadataContent: state => state.loadingCurrentMetadataContent,
     currentMetadataContent: state => state.currentMetadataContent,
     isFilteringContent: state => state.isFilteringContent,
