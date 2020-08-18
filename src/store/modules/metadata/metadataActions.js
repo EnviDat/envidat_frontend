@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-11-28 13:53:56
+ * Last modified  : 2020-08-18 15:29:32
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -101,9 +101,9 @@ function createSolrQuery(searchTerm) {
 
 export default {
   async [SEARCH_METADATA]({ commit }, searchTerm) {
-    commit(SEARCH_METADATA);
-
     const originalTerm = searchTerm.trim();
+
+    commit(SEARCH_METADATA, searchTerm);
 
     const solrQuery = createSolrQuery(originalTerm);
 
