@@ -1,6 +1,9 @@
 <template>
   <v-card style="width: 100%; max-width: 100%;">
-    <v-layout fill-height align-center>
+    <v-layout class="pb-0 justify-center align-center" style="height: 20%;">
+      {{ currentName }}
+    </v-layout>
+    <v-layout align-center style="height: 80%;">
       <v-flex>
         <v-btn icon small @click="previous()" :disabled="this.currentIndex <= 0">
           <v-icon>arrow_left</v-icon>
@@ -62,6 +65,9 @@
       currentIndex() {
         return this.chart ? this.chart.chart.dataProvider.findIndex(dataPoint => dataPoint.name === this.selected) : null;
       },
+      currentName() {
+        return this.chart ? this.chart.chart.dataProvider[this.currentIndex].name : null;
+      },
       nDataPoints() {
         return this.chart ? this.chart.chart.dataProvider.length : null;
       },
@@ -77,6 +83,7 @@
         zoomOutText: '', // Hack, to hide show all button
         categoryAxis: {
           parseDates: true,
+          labelsEnabled: true,
         },
         chartCursor: {
           enabled: true,
@@ -113,6 +120,8 @@
             title: '',
           },
         ],
+        marginTop: 0,
+        paddingTop: 0,
         zoomOutOnDataUpdate: false,
         listeners: [{
           event: 'init',
