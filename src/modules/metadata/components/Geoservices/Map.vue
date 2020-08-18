@@ -21,6 +21,7 @@
       ></map-layer-control>
 
       <feature-info
+        :coords="selectedCoords"
         :div-id="`${mapDivId}_graph`"
         v-if="featureInfo.length > 0"
         :data="featureInfo"

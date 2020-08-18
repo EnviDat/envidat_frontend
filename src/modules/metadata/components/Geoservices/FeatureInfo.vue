@@ -1,7 +1,10 @@
 <template>
   <v-card style="resize: both; overflow: auto; position: absolute; max-width: 100%;">
-    <v-btn small icon style="position: absolute; right: 0; top: 0; z-index: 999999999999;" @click="close">
+    <v-btn small icon @click="close" style="position: absolute; right: 0; top: 0; z-index: 999999999999;">
       <v-icon>close</v-icon>
+    </v-btn>
+    <v-btn small icon style="position: absolute; right: 0; top: 40px; z-index: 999999999999;" @click="download">
+      <v-icon>save</v-icon>
     </v-btn>
     <div :id="divId" style="height: 100%; width: 100%;">
     </div>
@@ -19,6 +22,7 @@
     data() {
       return {
         chart: null,
+        chartData: null,
       };
     },
     props: {
@@ -26,6 +30,7 @@
       data: Array,
       layers: Array,
       selected: String,
+      coords: Object,
     },
     watch: {
       selected() {
@@ -33,6 +38,11 @@
       },
     },
     computed: {
+      csvData() {
+        const rows = this.chartData.map(d => [d.name, d.value]);
+        rows.splice(0, 0, ['layer', `${this.coords.lat} ${this.coords.lng}`]);
+        return rows;
+      },
       currentIndex() {
         return this.chart ? this.chart.chart.dataProvider.findIndex(dataPoint => dataPoint.name === this.selected) : null;
       },
@@ -41,7 +51,7 @@
       },
     },
     mounted() {
-      const chartData = this.layers.map(layer => ({
+      this.chartData = this.layers.map(layer => ({
           ...layer,
           value: this.data.find(d => d.name === layer.name).value,
         }));
@@ -54,7 +64,7 @@
         marginRight: 80,
         autoMarginOffset: 20,
         marginTop: 7,
-        dataProvider: chartData,
+        dataProvider: this.chartData,
         valueAxes: [{
           axisAlpha: 0.2,
           dashLength: 1,
@@ -126,6 +136,16 @@
 
     },
     methods: {
+      download() {
+        console.log(this.csvData);
+        const csvContent = `data:text/csv;charset=utf-8,${this.csvData.map(e => e.join(',')).join('\n')}`;
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement('a');
+        link.setAttribute('href', encodedUri);
+        link.setAttribute('download', 'my_data.csv');
+        document.body.appendChild(link); // Required for FF
+        link.click();
+      },
       close() {
         this.$emit('close');
       },
