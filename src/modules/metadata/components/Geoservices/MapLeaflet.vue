@@ -10,8 +10,10 @@
     <div style="position: absolute; bottom: 70px; right: 10px; z-index: 99999; cursor: auto;">
       <slot></slot>
     </div>
+    <div  v-if="map">
     <map-leaflet-point v-for="(point, key) in points" :key="key" :data="point" @add="addPoint"
                        @remove="removePoint"></map-leaflet-point>
+    </div>
   </div>
 </template>
 
@@ -203,6 +205,10 @@ export default {
         radius: 1000,
       })
         .addTo(this.map);
+      marker.on('mouseover', (val) => {
+        console.log(val);
+      });
+      marker.bindPopup(`${data.id} Coords: ${data.coords.lat} / ${data.coords.lng}`);
       this.markers.push(marker);
     },
     removePoint(id) {
