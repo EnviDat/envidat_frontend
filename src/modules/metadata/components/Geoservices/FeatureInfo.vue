@@ -38,10 +38,10 @@
       },
     },
     computed: {
-      csvData() {
+      csvContent() {
         const rows = this.chartData.map(d => [d.name, d.value]);
         rows.splice(0, 0, ['layer', `${this.coords.lat} ${this.coords.lng}`]);
-        return rows;
+        return `data:text/csv;charset=utf-8,${rows.map(e => e.join(',')).join('\n')}`;
       },
       currentIndex() {
         return this.chart ? this.chart.chart.dataProvider.findIndex(dataPoint => dataPoint.name === this.selected) : null;
@@ -137,9 +137,7 @@
     },
     methods: {
       download() {
-        console.log(this.csvData);
-        const csvContent = `data:text/csv;charset=utf-8,${this.csvData.map(e => e.join(',')).join('\n')}`;
-        const encodedUri = encodeURI(csvContent);
+        const encodedUri = encodeURI(this.csvContent);
         const link = document.createElement('a');
         link.setAttribute('href', encodedUri);
         link.setAttribute('download', 'my_data.csv');
