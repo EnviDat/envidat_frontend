@@ -99,12 +99,23 @@ import {
   LISTCONTROL_COMPACT_LAYOUT_ACTIVE,
 } from '@/store/metadataMutationsConsts';
 
+import {
+  SET_APP_BACKGROUND,
+  SET_CURRENT_PAGE,
+} from '@/store/mainMutationsConsts';
+
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 import NoUserDatasetsView from '@/modules/user/components/NoUserDatasetsView';
 import MetadataList from '@/components/MetadataList';
 
 export default {
   name: 'DashboardPage',
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.$store.commit(SET_CURRENT_PAGE, USER_DASHBOARD_PAGENAME);
+      vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
+    });
+  },
   components: {
     MetadataList,
     NoUserDatasetsView,
@@ -174,6 +185,7 @@ export default {
   },
   data: () => ({
     title: 'Dashboard',
+    PageBGImage: './app_b_browsepage.jpg',
     refreshButtonText: 'Reload Datasets',
     placeHolderAmount: 4,
     userListDefaultControls: [

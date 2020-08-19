@@ -29,7 +29,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 14:18:32 
- * Last modified  : 2020-08-19 16:53:47
+ * Last modified  : 2020-08-19 17:58:07
  */
 
 import { mapState } from 'vuex';
@@ -48,9 +48,23 @@ import {
   ACTION_USER_SIGNOUT,
 } from '@/modules/user/store/userMutationsConsts';
 
+import { USER_SIGNIN_PAGENAME } from '@/router/routeConsts';
+
+import {
+  SET_APP_BACKGROUND,
+  SET_CURRENT_PAGE,
+} from '@/store/mainMutationsConsts';
+
 import SigninView from './SigninView';
 
 export default {
+  name: 'SigninPage',
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.$store.commit(SET_CURRENT_PAGE, USER_SIGNIN_PAGENAME);
+      vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
+    });
+  },
   components: {
     SigninView,
   },
@@ -127,6 +141,7 @@ export default {
     },
   },
   data: () => ({
+    PageBGImage: './app_b_browsepage.jpg',
   }),
 };
 </script>
