@@ -105,6 +105,8 @@ import {
 import {
   USER_NAMESPACE,
   GET_USER_CONTEXT,
+  ACTION_GET_USER_CONTEXT,
+  FETCH_USER_DATA,
 } from '@/modules/user/store/userMutationsConsts';
 
 
@@ -253,7 +255,12 @@ export default {
       return `You are using the version ${this.appVersion}, but there is are newer version available (${this.newVersion}). Please reload to get the latest verison of EnviDat.`;
     },
     checkUserSignedIn() {
-      this.$store.dispatch(`${USER_NAMESPACE}/${GET_USER_CONTEXT}`);
+      this.$store.dispatch(`${USER_NAMESPACE}/${FETCH_USER_DATA}`,
+        {
+          action: ACTION_GET_USER_CONTEXT,
+          commit: true,
+          mutation: GET_USER_CONTEXT,
+        });      
     },
   },
   computed: {

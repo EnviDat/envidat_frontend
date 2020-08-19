@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 16:51:52
- * Last modified  : 2020-08-11 17:41:03
+ * Last modified  : 2020-08-19 16:43:12
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -17,94 +17,31 @@ import { urlRewrite } from '@/factories/apiFactory';
 
 import {
   FETCH_USER_DATA,
-  GET_USER_CONTEXT,
-  GET_USER_CONTEXT_SUCCESS,
-  GET_USER_CONTEXT_ERROR,
-  USER_SIGNIN,
-  USER_SIGNIN_SUCCESS,
-  USER_SIGNIN_ERROR,
-  REQUEST_TOKEN,
-  REQUEST_TOKEN_SUCCESS,
-  REQUEST_TOKEN_ERROR,
-  USER_SIGNOUT,
-  USER_SIGNOUT_SUCCESS,
-  USER_SIGNOUT_ERROR,
 } from './userMutationsConsts';
 
-
-const API_BASE = '/api/action/';
-const ENVIDAT_PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
+// don't have an api base url or proxy to be able to load local testdata
+const API_BASE = process.env.NODE_ENV === 'development' ? '' : '/api/action/';
+const ENVIDAT_PROXY = process.env.NODE_ENV === 'development' ? '' : process.env.VUE_APP_ENVIDAT_PROXY;
 
 
 export default {
-  async [GET_USER_CONTEXT]({ commit }) {
-    commit(GET_USER_CONTEXT);
-
-    const url = urlRewrite('envidat_context_user_show', API_BASE, ENVIDAT_PROXY);
-
-    await axios.get(url)
-      .then((response) => {
-        commit(GET_USER_CONTEXT_SUCCESS, response.data.result ? response.data.result.user : null);
-      })
-      .catch((reason) => {
-        commit(GET_USER_CONTEXT_ERROR, reason);
-      });
-  },
-  async [USER_SIGNIN]({ commit }, signInData) {
-    commit(USER_SIGNIN);
-
-    const url = urlRewrite('passwordless_user_login', API_BASE, ENVIDAT_PROXY);
-
-    await axios.post(url, { email: signInData.email, key: signInData.key })
-      .then((response) => {
-        commit(USER_SIGNIN_SUCCESS, response.data.result);
-      })
-      .catch((reason) => {
-        commit(USER_SIGNIN_ERROR, reason);
-      });    
-  },
-  async [REQUEST_TOKEN]({ commit }, requestData) {
-    commit(REQUEST_TOKEN);
-
-    const url = urlRewrite('passwordless_perform_reset', API_BASE, ENVIDAT_PROXY);
-
-    await axios.post(url, { email: requestData.email })
-      .then((response) => {
-        commit(REQUEST_TOKEN_SUCCESS, response.data.result);
-      })
-      .catch((reason) => {
-        commit(REQUEST_TOKEN_ERROR, reason);
-      });
-  },
-  async [USER_SIGNOUT]({ commit }) {
-    commit(USER_SIGNOUT);
-
-    const url = urlRewrite('passwordless_user_logout', API_BASE, ENVIDAT_PROXY);
-
-    await axios.post(url)
-      .then((response) => {
-        commit(USER_SIGNOUT_SUCCESS, response.data.result);
-      })
-      .catch((reason) => {
-        commit(USER_SIGNOUT_ERROR, reason);
-      });
-  },  
   async [FETCH_USER_DATA]({ commit }, payload) {
-    // async fetchUserData({ rootState, commit }, payload) {
     commit(payload.mutation);
 
-    // let body = { language: rootState.authStore.currentLocale.locale };
     let body = { };
 
     if (payload) {
-      // body = Object.assign({}, payload.body, body);
       body = payload.body;
     }
 
-    const url = urlRewrite(payload.action, API_BASE, ENVIDAT_PROXY);
-    // let response = await axios.post(url, body, rootState.config.serviceHeaders );
+    // unpack the action because it might be wrapped to provide a test url
+    const actionUrl = typeof (payload.action) === 'function' ? payload.action() : payload.action;
+    const url = urlRewrite(actionUrl, API_BASE, ENVIDAT_PROXY);
 
-    await axios.post(url, body)
+    // if the url is directly to a file it has to be a get call
+    const method = url.includes('.json') ? 'get' : 'post';
+
+    await axios({ method, url, body })
     .then((response) => {
         if (payload.commit) {
           commit(`${payload.mutation}_SUCCESS`, response.data.result);
@@ -113,17 +50,5 @@ export default {
     .catch((error) => {
       commit(`${payload.mutation}_ERROR`, error);
     });
-
-  // try {
-    //   const response = await axios.post(url, body);
-
-    //   if (payload.commit) {
-    //     commit(`${payload.mutation}_SUCCESS`, response.data);
-    //   }
-
-    //    return response.data;
-    // } catch (error) {
-    //   commit(`${payload.mutation}_ERROR`, error);
-    // }
  },
 };

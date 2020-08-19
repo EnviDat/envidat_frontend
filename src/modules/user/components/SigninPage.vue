@@ -29,18 +29,23 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 14:18:32 
- * Last modified  : 2020-08-11 17:31:30
+ * Last modified  : 2020-08-19 16:42:18
  */
 
-import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 
 import {
   USER_NAMESPACE,
   GET_USER_CONTEXT,
+  ACTION_GET_USER_CONTEXT,
+  FETCH_USER_DATA,
   USER_SIGNIN,
+  ACTION_USER_SIGNIN,
   REQUEST_TOKEN,
+  ACTION_REQUEST_TOKEN,
   VALIDATION_ERROR,
   USER_SIGNOUT,
+  ACTION_USER_SIGNOUT,
 } from '@/modules/user/store/userMutationsConsts';
 
 import SigninView from './SigninView';
@@ -53,7 +58,7 @@ export default {
     this.checkUserSignedIn();
   },
   computed: {
-    ...mapGetters(
+    ...mapState(
       USER_NAMESPACE,
       [
         'userLoading',
@@ -87,16 +92,38 @@ export default {
       return errMsg;
     },
     checkUserSignedIn() {
-      this.$store.dispatch(`${USER_NAMESPACE}/${GET_USER_CONTEXT}`);
+      this.$store.dispatch(`${USER_NAMESPACE}/${FETCH_USER_DATA}`,
+        {
+          action: ACTION_GET_USER_CONTEXT,
+          commit: true,
+          mutation: GET_USER_CONTEXT,
+        });      
     },
     catchSignIn(email, key) {
-      this.$store.dispatch(`${USER_NAMESPACE}/${USER_SIGNIN}`, { email, key });
+      this.$store.dispatch(`${USER_NAMESPACE}/${FETCH_USER_DATA}`,
+        {
+          action: ACTION_USER_SIGNIN,
+          body: { email, key },
+          commit: true,
+          mutation: USER_SIGNIN,
+        });      
     },
     catchRequestToken(email) {
-      this.$store.dispatch(`${USER_NAMESPACE}/${REQUEST_TOKEN}`, { email });
+      this.$store.dispatch(`${USER_NAMESPACE}/${FETCH_USER_DATA}`,
+        {
+          action: ACTION_REQUEST_TOKEN,
+          body: { email },
+          commit: true,
+          mutation: REQUEST_TOKEN,
+        });  
     },
     catchSignOut() {
-      this.$store.dispatch(`${USER_NAMESPACE}/${USER_SIGNOUT}`);
+      this.$store.dispatch(`${USER_NAMESPACE}/${FETCH_USER_DATA}`,
+        {
+          action: ACTION_USER_SIGNOUT,
+          commit: true,
+          mutation: USER_SIGNOUT,
+        });
     },
   },
   data: () => ({
