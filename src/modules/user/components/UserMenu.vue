@@ -35,7 +35,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 14:18:32 
- * Last modified  : 2020-08-12 15:15:41
+ * Last modified  : 2020-08-19 15:49:19
  */
 import UserAvatar from '@/components/Layouts/UserAvatar';
 
@@ -49,7 +49,7 @@ export default {
   },
   computed: {
     nameInitials() {
-      if (!this.userObject) {
+      if (!this.userObject || !this.userObject.name || !this.userObject.fullname) {
         return '';
       }
 
