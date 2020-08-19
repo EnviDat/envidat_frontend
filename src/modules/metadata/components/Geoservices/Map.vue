@@ -21,20 +21,15 @@
       ></map-layer-control>
 
       <feature-info
-        :coords="selectedCoords"
         :div-id="`${mapDivId}_graph`"
-        v-if="featureInfo.length > 0"
-        :data="featureInfo"
+        v-if="featureinfo.length > 0"
         :layers="config.layers"
         :selected="selectedLayerName"
-        @select="select"
-        @close="close"
         style="position: absolute; top: 5px; z-index: 1000000; height: 200px; right: 50px; left: 50px;"
       ></feature-info>
 
       <div v-if="!hasGeom" style="color: red;">No data to show</div>
-      <map-leaflet v-if="!show3d" :layer="selectedLayer" :map-div-id="mapDivId" @featureinfo="setFeatureInfo"
-                   @selectCoords="setCoords" :selected-coords="selectedCoords" :opacity="opacity">
+      <map-leaflet v-if="!show3d" :layer="selectedLayer" :map-div-id="mapDivId" :points="featureinfo" :opacity="opacity">
         <slot></slot><br>
         <v-btn fab small @click="show3d = true">3D</v-btn>
       </map-leaflet>
@@ -79,11 +74,12 @@
     },
     data: () => ({
       layerControlOpen: false,
-      featureInfo: [],
-      selectedCoords: null,
       opacity: 100,
     }),
     computed: {
+      featureinfo() {
+        return this.$store.state.geoservices.timeseries;
+      },
       show3d: {
         get() {
           return this.$store.state.geoservices.show3d;
@@ -109,16 +105,6 @@
     methods: {
       setOpacity(value) {
         this.opacity = value;
-      },
-      setCoords(value) {
-        this.selectedCoords = value;
-      },
-      close() {
-        this.featureInfo = [];
-        this.selectedCoords = null;
-      },
-      setFeatureInfo(value) {
-        this.featureInfo = value;
       },
       select(layerName) {
         this.$emit('changeLayer', layerName);

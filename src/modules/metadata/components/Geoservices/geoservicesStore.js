@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+const COLORS = ['#B266E3', '#ED2D5D', '#142832', '#CB1FB2', '#85D257', '#9C6804', '#F26A70', '#2D698D', '#FE5460', '#04292C', '#2A98D1', '#7BE6BA', '#6955CA', '#036875', '#48D76E', '#112CC8', '#8774CF', '#3F36FB', '#18F88F', '#F17AA4'];
+
 export const geoservices = {
   state: {
     basemap: 'streets',
@@ -10,8 +12,20 @@ export const geoservices = {
     show3d: false,
     linkedScreens: false,
     extent: null,
+    timeseries: [],
+  },
+  getters: {
+    coords(state) {
+      return state.timeseries.length > 0 ? state.timeseries.map(t => t.coords) : [];
+    },
   },
   mutations: {
+    addTimeSeries(state, payload) {
+      state.timeseries.push({ ...payload, id: state.timeseries.length, color: COLORS[state.timeseries.length] });
+    },
+    removeTimeseries(state, id) {
+      state.timeseries = state.timeseries.filter(t => t.id === id);
+    },
     setExtent(state, payload) {
       state.extent = payload;
     },

@@ -25,6 +25,7 @@
     import BingMapsStyle from 'cesium/Scene/BingMapsStyle';
     import Rectangle from 'cesium/Core/Rectangle';
     import SceneMode from 'cesium/Scene/SceneMode';
+    import Cartesian2 from 'cesium/Core/Cartesian2';
     import 'cesium/Widgets/widgets.css';
     import ZoomBtn from './ZoomBtn';
     import { cesiumLayer } from './layer-cesium';
@@ -45,6 +46,9 @@
         };
       },
       computed: {
+        extent() {
+          return this.viewer.camera;
+        },
         basemap: {
           get() {
             return this.$store.state.geoservices.basemap;
@@ -93,6 +97,16 @@
         this.replaceLayer();
         this.replaceBasemap();
         this.zoomToExtent(this.layer.bbox);
+
+        this.viewer.scene.canvas.addEventListener('contextmenu', (event) => {
+          event.preventDefault();
+          const mousePosition = new Cartesian2(event.clientX, event.clientY);
+          const selectedLocation = this.viewer.scene.pickPosition(mousePosition);
+          console.log(selectedLocation);
+          // setMarkerInPos(Cesium.Cartographic.fromCartesian(selectedLocation));
+        }, false);
+
+
       },
       methods: {
         zoomIn() {
@@ -113,7 +127,6 @@
           }
           // Attention: new WebMapServiceImageryProvider can not be used as removable layer object
           this.mapLayer = this.viewer.imageryLayers.addImageryProvider(cesiumLayer(this.layer));
-          this.mapLayer.alpha = this.opacity / 100;
         },
         replaceBasemap() {
           if (this.basemapLayer) {
