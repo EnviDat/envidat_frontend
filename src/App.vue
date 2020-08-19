@@ -77,13 +77,17 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-08-12 21:20:30
+ * Last modified  : 2020-08-19 16:42:33
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
-import { mapGetters } from 'vuex';
+import {
+  mapState,
+  mapGetters,
+} from 'vuex';
+
 import {
   LANDING_PATH,
   BROWSE_PATH,
@@ -298,8 +302,8 @@ export default {
       config: 'config',
       notifications: 'notifications',
       maxNotifications: 'maxNotifications',
-      user: `${USER_NAMESPACE}/user`,
     }),
+    ...mapState(USER_NAMESPACE, ['user']),
     loading() {
       return this.loadingMetadatasContent || this.searchingMetadatasContent || this.isFilteringContent
           || this.projectsLoading || this.policiesLoading || this.guidelinesLoading;

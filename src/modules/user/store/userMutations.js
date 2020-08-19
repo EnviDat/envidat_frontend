@@ -6,7 +6,7 @@
 * @author Dominik Haas-Artho
 *
 * Created at     : 2020-07-14 16:51:52
- * Last modified  : 2020-08-11 17:37:40
+ * Last modified  : 2020-08-19 16:32:06
 *
 * This file is subject to the terms and conditions defined in
 * file 'LICENSE.txt', which is part of this source code package.
@@ -34,11 +34,14 @@ import {
   USER_GET_DATASETS_ERROR,
 } from './userMutationsConsts';
 
-function extractErrorObject(error) {
+function extractErrorObject(state, reason) {
+
   let type = '';
   let field = '';
   let msg = 'There was an error on the server, please try again. If it consists please contact envidat@wsl.ch.';
-  
+
+  const error = reason?.response?.data?.error || reason?.response?.error || reason?.error || reason;
+
   if (error) {
     type = error.__type;
     
@@ -56,8 +59,10 @@ function extractErrorObject(error) {
       }
     }
   }
-  
-  return { type, field, msg };
+
+  state.errorField = field;
+  state.errorType = type;
+  state.error = msg;  
 }
 
 function resetErrorObject(state) {
@@ -74,7 +79,7 @@ export default {
   },
   [GET_USER_CONTEXT_SUCCESS](state, payload) {
     state.userLoading = false;
-    state.user = payload || null;
+    state.user = payload?.user || null;
   },
   [GET_USER_CONTEXT_ERROR](state, reason) {
     state.userLoading = false;
@@ -135,22 +140,19 @@ export default {
     state.signInSuccess = false;
     state.requestLoading = false;
     state.requestSuccess = false;
-    state.userLoading = false;    
+    state.userLoading = true;    
     state.user = null;    
 
     resetErrorObject(state);
   },
   [USER_SIGNOUT_SUCCESS](state) {
-    state.signInLoading = false;
-    state.signInSuccess = false;
-    state.requestLoading = false;
-    state.requestSuccess = false;
-    state.userLoading = false;
     state.user = null;
 
     resetErrorObject(state);
   },
   [USER_SIGNOUT_ERROR](state, reason) {
+    state.user = null;
+
     const error = reason.response.data.error;
     const errObj = extractErrorObject(error);
 
@@ -165,7 +167,9 @@ export default {
   },
   [USER_GET_DATASETS_SUCCESS](state, payload) {
     state.userLoading = false;
-    state.user.datasets = payload.datasets;
+
+    // use this._vm.$set() to make sure computed properties are recalulated
+    this._vm.$set(state.user, 'datasets', payload.datasets);
 
     resetErrorObject(state);
   },

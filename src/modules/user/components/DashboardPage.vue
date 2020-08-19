@@ -54,10 +54,13 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 14:18:32 
- * Last modified  : 2020-08-12 15:53:55
+ * Last modified  : 2020-08-19 11:17:04
  */
 
-import { mapGetters } from 'vuex';
+import {
+  mapState,
+  mapGetters,
+} from 'vuex';
 
 import {
   USER_NAMESPACE,
@@ -67,6 +70,7 @@ import {
 } from '@/modules/user/store/userMutationsConsts';
 
 import {
+  METADATA_NAMESPACE,
   LISTCONTROL_MAP_ACTIVE,
   LISTCONTROL_LIST_ACTIVE,
 } from '@/store/metadataMutationsConsts';
@@ -83,22 +87,15 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(USER_NAMESPACE, ['user']),
-    prefilledEmail() {
-      return this.$route.query.email;
-    },
-    prefilledKey() {
-      return this.$route.query.key;
-    },
+    ...mapState(USER_NAMESPACE, ['user', 'userLoading']),
+    ...mapGetters(USER_NAMESPACE, ['userDatasets']),
+    ...mapGetters(METADATA_NAMESPACE, [
+      'allTags',
+      'updatingTags',
+      'selectedTagNames',
+      ]),
     hasUserDatasets() {
-      return this.userDataset && this.userDataset.length > 0;
-    },
-    userDataset() {
-      if (this.user?.datasets?.length > 0) {
-        return this.user.datasets;
-      }
-
-      return null;
+      return this.userDatasets && this.userDatasets.length > 0;
     },
   },
   methods: {
