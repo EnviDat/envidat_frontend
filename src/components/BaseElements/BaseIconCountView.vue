@@ -70,7 +70,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-11-27 14:54:23
+ * Last modified  : 2020-08-19 21:17:05
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -94,6 +94,5 @@ export default {
     /* line-height has to be based on the root (1rem) because of the
     use in ex. v-card-title */
     line-height: 1rem;
-    position: absolute;
   }
 </style>
