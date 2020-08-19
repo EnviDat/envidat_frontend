@@ -2,23 +2,34 @@
   <article class="ma-0 pa-0 fill-height"
             id="DashboardPage">
 
-    <v-row>
-      <v-col class="text-h2">
-        {{ title }}
+    <v-row v-if="!user" >
+      <v-col>
+        <NotFoundCard
+          title="Not Signed in"
+          description="Sign in with your e-mail to see your datasets."
+          actionButtonText="Sign in"
+          :actionButtonCallback="catchSigninClick"
+          :image="UserNotFound1" />
       </v-col>
     </v-row>
 
-    <v-row>
-      <v-col >
-        <v-card>
+    <v-row v-if="user" >
+      <v-col cols="12"
+              class="text-display-1">
+        {{ title }}
+      </v-col>
+
+      <v-col cols="12" >
+        <v-card class="pa-4">
           <v-row justify="end"
-                  align="center">
-            <v-col class="text-h4" >
+                  align="center"
+                  no-gutters>
+            <v-col class="text-h6" >
               My Datasets
             </v-col>
             <v-col>
               <BaseRectangleButton materialIconName="refresh"
-                                    :buttonText="refreshButtonText"
+                                    :tooltipText="refreshButtonText"
                                     isFlat
                                     @clicked="catchRefreshClick" />
             </v-col>
@@ -51,17 +62,47 @@
       </v-col>
     </v-row>
 
-    <v-row v-if="!hasUserDatasets" >
+    <v-row v-if="user && !hasUserDatasets" >
       <v-col>
-        <NoUserDatasetsView />
+        <NotFoundCard
+          title="No Datasets"
+          description="It seems you don't have any datasets."
+          actionDescription="Get started and create a dataset"
+          actionButtonText="Create Dataset"
+          :actionButtonCallback="catchCreateClick"
+          :image="UserNotFound2" />
       </v-col>
     </v-row>
 
-    <v-row v-if="!user" >
+    <v-row>
       <v-col>
-        <div >
-          Not signed in
-        </div>
+        <v-dialog
+          v-model="showModal"
+          attach="#DashboardPage"
+        >
+        <template v-slot:activator="{on, attrs}">
+          <v-btn v-bind="attrs"
+                v-on="on" >
+                showModal
+            </v-btn>
+
+        </template>
+          <v-card>
+            dialog thingy
+          </v-card>
+
+          <!-- hide-overlay
+          lazy
+          max-width="none"
+          origin="center center"
+          persistent
+          return-value="returnValue"
+          scrollable
+          transition="dialog-transition"
+          value="value"
+          width="auto" -->
+          
+        </v-dialog>
       </v-col>
     </v-row>
 
@@ -77,7 +118,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 14:18:32 
- * Last modified  : 2020-08-19 11:17:04
+ * Last modified  : 2020-08-19 22:19:38
  */
 
 import {
@@ -100,13 +141,22 @@ import {
 } from '@/store/metadataMutationsConsts';
 
 import {
+  USER_DASHBOARD_PAGENAME,
+  USER_DASHBOARD_PATH,
+  USER_SIGNIN_PATH,
+} from '@/router/routeConsts';
+
+import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
 } from '@/store/mainMutationsConsts';
 
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
-import NoUserDatasetsView from '@/modules/user/components/NoUserDatasetsView';
+import NotFoundCard from '@/modules/user/components/NotFoundCard';
 import MetadataList from '@/components/MetadataList';
+
+import UserNotFound1 from '@/modules/user/assets/UserNotFound1.jpg';
+import UserNotFound2 from '@/modules/user/assets/UserNotFound2.jpg';
 
 export default {
   name: 'DashboardPage',
@@ -118,7 +168,7 @@ export default {
   },
   components: {
     MetadataList,
-    NoUserDatasetsView,
+    NotFoundCard,
     BaseRectangleButton,
   },
   beforeMount() {
@@ -132,13 +182,27 @@ export default {
     ...mapGetters(METADATA_NAMESPACE, [
       'allTags',
       'updatingTags',
-      'selectedTagNames',
       ]),
     hasUserDatasets() {
       return this.userDatasets && this.userDatasets.length > 0;
     },
   },
   methods: {
+    loadRouteTags() {
+      const tagsEncoded = this.$route.query.tags ? this.$route.query.tags : '';
+      let decodedTags = [];
+
+      if (tagsEncoded.length > 0) {
+        decodedTags = this.mixinMethods_decodeTagsFromUrl(tagsEncoded);
+      }
+
+      if (!this.mixinMethods_areArraysIdentical(this.selectedTagNames, decodedTags)) {
+        this.selectedTagNames = decodedTags;
+        return true;
+      }
+
+      return false;
+    },
     fetchUserDatasets() {
       this.$store.dispatch(`${USER_NAMESPACE}/${FETCH_USER_DATA}`,
         {
@@ -157,14 +221,21 @@ export default {
         this.fetchUserDatasets();
       }
     },
+    catchSigninClick() {
+      this.$router.push({ path: USER_SIGNIN_PATH, query: '' });
+    },
+    catchCreateClick() {
+      console.log('clicked create dataset');
+      // this.$router.push({ path: USER_SIGNIN_PATH, query: '' });
+    },
     catchTagClicked(tagName) {
       console.log(`Click on tag ${tagName}`);
-    //   if (!this.mixinMethods_isTagSelected(tagName)) {
-    //     const newTags = [...this.selectedTagNames, tagName];
+      if (!this.mixinMethods_isTagSelected(tagName)) {
+        const newTags = [...this.selectedTagNames, tagName];
 
-    //     const tagsEncoded = this.mixinMethods_encodeTagForUrl(newTags);
-    //     this.mixinMethods_additiveChangeRoute(BROWSE_PATH, undefined, tagsEncoded);
-    //   }
+        const tagsEncoded = this.mixinMethods_encodeTagForUrl(newTags);
+        this.mixinMethods_additiveChangeRoute(USER_DASHBOARD_PATH, undefined, tagsEncoded);
+      }
     },
     catchTagCloseClicked(tagId) {
       console.log(`Click close on tag ${tagId}`);
@@ -188,6 +259,10 @@ export default {
     PageBGImage: './app_b_browsepage.jpg',
     refreshButtonText: 'Reload Datasets',
     placeHolderAmount: 4,
+    showModal: false,
+    selectedTagNames: [],
+    UserNotFound1,
+    UserNotFound2,
     userListDefaultControls: [
       LISTCONTROL_COMPACT_LAYOUT_ACTIVE,
     ],
