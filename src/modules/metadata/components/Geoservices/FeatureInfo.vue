@@ -35,9 +35,27 @@
       coords() {
         return this.$store.getters.coords;
       },
+      data() {
+        return this.$store.state.geoservices.timeseries;
+      },
       csvContent() {
-        const rows = this.chartData.map(d => [d.name, d.value]);
-        rows.splice(0, 0, ['layer', `${this.coords.lat} ${this.coords.lng}`]);
+        // Somewhat hacky way to create csv from JS objects
+        const header = ['layer'];
+        this.data.forEach(d => header.push(`${d.coords.lat} ${d.coords.lng}`));
+
+        const rows = [];
+        const rowNames = this.data[0].values.map(d => d.name);
+
+        rowNames.forEach((rowName) => {
+          const row = [rowName];
+          this.data.forEach((point) => {
+            const value = point.values.find(l => l.name === rowName);
+            row.push(value.value);
+          });
+          rows.push(row);
+        });
+        // const rows = this.data.map(d => [d.name, d.value]);
+        rows.splice(0, 0, header);
         return `data:text/csv;charset=utf-8,${rows.map(e => e.join(',')).join('\n')}`;
       },
     },
