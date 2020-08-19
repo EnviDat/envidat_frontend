@@ -33,7 +33,7 @@
         </v-col>
       </v-row>
 
-      <v-row >
+      <v-row v-if="showFollows" >
         <v-col cols="6"
                 class="text-body-1" >
           {{ descriptionFollow }}
@@ -62,7 +62,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2020-07-15 09:25:10
+ * Last modified  : 2020-08-19 09:24:41
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -76,12 +76,16 @@ export default {
   name: 'NoUserDatasetsView',
   props: {
     one: Boolean,
+    showFollows: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
       title: 'No Datasets',
       description: "It seems you don't have any datasets.",
-      descriptionCreate: 'You can create a datasets',
+      descriptionCreate: 'You can create a dataset',
       createButtonText: 'Create Dataset',
       descriptionFollow: 'Or you can follow existing datasets to get updates',
       followButtonText: 'Follow Datasets',
