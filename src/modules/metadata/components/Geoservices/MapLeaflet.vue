@@ -214,6 +214,7 @@ export default {
     removePoint(id) {
       const marker = this.markers.find(m => m.options.id === id);
       this.map.removeLayer(marker);
+      this.markers = this.markers.filter(m => m.options.id !== id);
     },
   },
   watch: {
