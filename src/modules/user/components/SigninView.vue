@@ -84,7 +84,14 @@
                   md="4">
 
             <v-row no-gutters >
-              <v-col cols="12" >
+              <v-col v-if="requestSuccess"
+                      cols="12"
+                      class="caption" >
+                {{ `${requestSentText} ${email}. ${requestSentText2}` }}
+              </v-col>
+
+              <v-col cols="12"
+                      :class="requestSuccess ? 'pt-3' : ''" >
                 <v-btn color="primary"
                         :loading="requestLoading"
                         @click="catchRequestToken">
@@ -92,17 +99,12 @@
                 </v-btn>
               </v-col>
 
-              <v-col v-if="requestSuccess"
-                      cols="12"
-                      class="caption pt-3" >
-                {{ `${requestSentText} ${email}. ${requestSentText2}` }}
-              </v-col>
             </v-row>
           </v-col>
 
         </v-row>
 
-        <v-row id="signingButtonRow" >
+        <v-row id="signinButtonRow" >
 
           <v-col v-if="signedIn">
             <v-btn color="secondary"
@@ -137,7 +139,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 14:13:35
- * Last modified  : 2020-08-11 17:27:54
+ * Last modified  : 2020-08-19 09:29:12
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
