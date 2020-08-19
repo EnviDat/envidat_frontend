@@ -40,3 +40,4 @@ export const USER_SIGNIN_PATH = '/signin';
 export const USER_SIGNIN_PAGENAME = 'SigninPage';
 export const USER_DASHBOARD_PATH = '/dashboard';
 export const USER_DASHBOARD_PAGENAME = 'DashboardPage';
+export const USER_SIGNOUT_PATH = '/signout';

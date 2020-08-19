@@ -29,7 +29,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 14:18:32 
- * Last modified  : 2020-08-19 16:42:18
+ * Last modified  : 2020-08-19 16:53:47
  */
 
 import { mapState } from 'vuex';
@@ -97,7 +97,7 @@ export default {
           action: ACTION_GET_USER_CONTEXT,
           commit: true,
           mutation: GET_USER_CONTEXT,
-        });      
+        });
     },
     catchSignIn(email, key) {
       this.$store.dispatch(`${USER_NAMESPACE}/${FETCH_USER_DATA}`,
@@ -106,7 +106,7 @@ export default {
           body: { email, key },
           commit: true,
           mutation: USER_SIGNIN,
-        });      
+        });
     },
     catchRequestToken(email) {
       this.$store.dispatch(`${USER_NAMESPACE}/${FETCH_USER_DATA}`,
@@ -115,7 +115,7 @@ export default {
           body: { email },
           commit: true,
           mutation: REQUEST_TOKEN,
-        });  
+        });
     },
     catchSignOut() {
       this.$store.dispatch(`${USER_NAMESPACE}/${FETCH_USER_DATA}`,

@@ -12,6 +12,7 @@ import {
   ABOUT_PAGENAME,
   USER_SIGNIN_PATH,
   USER_SIGNIN_PAGENAME,
+  USER_SIGNOUT_PATH,
 } from '@/router/routeConsts';
 
 export const navigationItems = [
@@ -32,5 +33,5 @@ export const userMenuItems = [
   { title: 'Dashboard', icon: 'dashboard', toolTip: 'My Dashboard', active: false, path: 'dashboard', pageName: 'UserDashboard' },
   // { title: 'Create Dataset', icon: 'add_cricle_outline', toolTip: 'Create a new dataset', active: false, path: 'createDataset', pageName: 'CreateDataset' },
   // { title: 'Edit Profile', icon: 'edit', toolTip: 'Edit profile', active: false, path: 'profile', pageName: 'EditProfile' },
-  { title: 'Sign out', icon: 'logout', toolTip: 'Sign out', active: false, path: 'signout', pageName: '' },
+  { title: 'Sign out', icon: 'logout', toolTip: 'Sign out', active: false, path: USER_SIGNOUT_PATH, pageName: '' },
 ];

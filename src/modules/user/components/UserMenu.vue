@@ -35,9 +35,17 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 14:18:32 
- * Last modified  : 2020-08-19 15:49:19
+ * Last modified  : 2020-08-19 16:57:49
  */
 import UserAvatar from '@/components/Layouts/UserAvatar';
+
+import { USER_SIGNOUT_PATH } from '@/router/routeConsts'; 
+import {
+  USER_NAMESPACE,
+  FETCH_USER_DATA,
+  USER_SIGNOUT,
+  ACTION_USER_SIGNOUT,
+} from '@/modules/user/store/userMutationsConsts';
 
 export default {
   props: {
@@ -58,6 +66,16 @@ export default {
   },
   methods: {
     menuClick(item) {
+      if (item?.path === USER_SIGNOUT_PATH) {
+        this.$store.dispatch(`${USER_NAMESPACE}/${FETCH_USER_DATA}`,
+          {
+            action: ACTION_USER_SIGNOUT,
+            commit: true,
+            mutation: USER_SIGNOUT,
+          });
+        return;
+      }
+
       this.$emit('userMenuItemClick', item);
     },
   },
