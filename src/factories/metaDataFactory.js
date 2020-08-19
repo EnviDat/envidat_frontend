@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03
- * Last modified  : 2019-11-29 15:52:06
+ * Last modified  : 2020-08-19 08:09:46
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -596,4 +596,23 @@ export function getCardBackgrounds() {
   bgs[METEO] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/meteo/', false, /\.jpg$/));
 
   return bgs;
+}
+
+export function hasRestrictedResources(metadata) {
+  if (!metadata || !metadata.resources || metadata.resources.length <= 0) {
+    return false;
+  }
+
+  for (let i = 0; i < metadata.resources.length; i++) {
+    const res = metadata.resources[i];
+
+    if (res.restricted !== undefined
+      && (res.restricted.allowed_users !== undefined
+        || (res.restricted.level !== undefined
+          && res.restricted.level !== 'public'))) {
+      return true;
+    }
+  }
+
+  return false;
 }

@@ -171,7 +171,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-29 14:15:50
+ * Last modified  : 2020-08-19 09:33:11
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -194,6 +194,8 @@ import {
   LISTCONTROL_MAP_ACTIVE,
   LISTCONTROL_COMPACT_LAYOUT_ACTIVE,
 } from '@/store/metadataMutationsConsts';
+
+import { hasRestrictedResources } from '@/factories/metaDataFactory';
 
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 import MetadataListLayout from '@/components/MetadataListLayout';
@@ -411,24 +413,7 @@ export default {
       this.pinnedIds = [];
       // this.$store.commit(`${METADATA_NAMESPACE}/${CLEAR_PINNED_METADATA}`);
     },
-    hasRestrictedResources(metadata) {
-      if (!metadata || !metadata.resources || metadata.resources.length <= 0) {
-        return false;
-      }
-
-      for (let i = 0; i < metadata.resources.length; i++) {
-        const res = metadata.resources[i];
-
-        if (res.restricted !== undefined
-        && (res.restricted.allowed_users !== undefined
-            || (res.restricted.level !== undefined
-                && res.restricted.level !== 'public'))) {
-          return true;
-        }
-      }
-
-      return false;
-    },
+    hasRestrictedResources,
     isPinned(id) {
       return this.pinnedIds.includes(id);
     },
