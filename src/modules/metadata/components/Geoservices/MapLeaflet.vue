@@ -212,7 +212,7 @@ export default {
       this.markers.push(marker);
     },
     removePoint(id) {
-      const marker = this.markers.find(m => m.id === id);
+      const marker = this.markers.find(m => m.options.id === id);
       this.map.removeLayer(marker);
     },
   },

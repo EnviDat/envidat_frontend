@@ -20,6 +20,9 @@ export const geoservices = {
     },
   },
   mutations: {
+    setTimeseries(state, payload) {
+      state.timeseries = payload;
+    },
     addTimeSeries(state, payload) {
       state.timeseries.push({ ...payload, id: state.timeseries.length, color: COLORS[state.timeseries.length] });
     },
@@ -64,6 +67,9 @@ export const geoservices = {
     startSplitScreen({ state, commit }) {
       commit('setSplitLayer', state.selectedLayer);
       commit('setSplitScreen', true);
+    },
+    closeFeatureInfo({ commit }) {
+      commit('setTimeseries', []);
     },
   },
 };

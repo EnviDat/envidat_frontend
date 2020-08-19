@@ -130,6 +130,19 @@ export default {
       const graph = this.graphs.find(g => g.id === `g${id}`);
       this.chart.chart.removeGraph(graph);
     },
+    updateSelection() {
+      this.chart.chart.dataProvider.forEach((dataPoint) => {
+        if (dataPoint.name !== this.selected) {
+          dataPoint.selectedColor = undefined;
+          dataPoint.selectedSize = undefined;
+        } else {
+          dataPoint.selectedColor = '#8198b4';
+          dataPoint.selectedSize = '20';
+          dataPoint.balloon = true;
+        }
+      });
+      this.chart.chart.validateData(); // update chart
+    },
   },
   mounted() {
     this.setupChart();
