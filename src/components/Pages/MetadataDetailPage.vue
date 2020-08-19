@@ -64,7 +64,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-28 16:03:23
+ * Last modified  : 2020-08-18 16:32:10
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -73,6 +73,7 @@
 import { mapGetters } from 'vuex';
 import {
   BROWSE_PATH,
+  BROWSE_PAGENAME,
   METADATADETAIL_PAGENAME,
 } from '@/router/routeConsts';
 import {
@@ -84,6 +85,7 @@ import {
   LOAD_METADATA_CONTENT_BY_ID,
   CLEAN_CURRENT_METADATA,
   CLEAR_SEARCH_METADATA,
+  SET_DETAIL_PAGE_BACK_URL,
 } from '@/store/metadataMutationsConsts';
 import MetadataHeader from '@/components/Metadata/MetadataHeader';
 import MetadataBody from '@/components/Metadata/MetadataBody';
@@ -122,9 +124,15 @@ export default {
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
     });
   },
+  beforeRouteLeave(to, from, next) {
+    if (to.name !== BROWSE_PAGENAME) {
+      this.$store.commit(`${METADATA_NAMESPACE}/${SET_DETAIL_PAGE_BACK_URL}`, '');
+    }
+    next();
+  },
   /**
-     * @description load all the icons once before the first component's rendering.
-     */
+   * @description load all the icons once before the first component's rendering.
+   */
   beforeMount() {
     this.downloadIcon = this.mixinMethods_getIcon('download');
     this.linkIcon = this.mixinMethods_getIcon('link');
@@ -137,8 +145,8 @@ export default {
     this.licenseIcon = this.mixinMethods_getIcon('license');
   },
   /**
-     * @description reset the scrolling to the top.
-     */
+   * @description reset the scrolling to the top.
+   */
   mounted() {
     this.loadMetaDataContent();
     window.scrollTo(0, 0);
