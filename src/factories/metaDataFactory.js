@@ -168,7 +168,7 @@ export function createHeader(dataset, smallScreen, authorDeadInfo = null) {
   };
 }
 
-export function createBody(dataset) {
+export function createBody(dataset, smallScreen = false) {
   if (!dataset) {
     return null;
   }
@@ -178,7 +178,7 @@ export function createBody(dataset) {
     title: 'Description',
     // doi: dataset.doi,
     text: dataset.notes,
-    maxTextLength: 1000,
+    maxTextLength: smallScreen ? 900 : 1000,
     emptyText: 'No description found for this dataset.',
   };
 }
@@ -192,8 +192,6 @@ export function createPublications(dataset) {
     text: dataset.related_publications,
     title: 'Related Publications',
     maxTextLength: 500,
-    emptyTextColor: 'black',
-    emptyText: 'No related publications available for this dataset.',
   };
 }
 

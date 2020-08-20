@@ -1,5 +1,6 @@
 <template>
-  <article class="ma-0 pa-0 fill-height">
+  <article class="ma-0 pa-0 fill-height"
+            id="BrowsePage">
 
     <metadata-list ref="metadataList"
                     :listContent="filteredContent"
@@ -13,11 +14,12 @@
                     @clickedTagClose="catchTagCloseClicked"
                     @clickedClear="catchTagCleared"
                     :mode="mode"
-                    :defaultListControls="controls"
+                    :defaultListControls="defaultControls"
                     :enabledControls="enabledControls"
-                    :mapHeight="$vuetify.breakpoint.smAndDown ? 310 : undefined"
                     :useDynamicHeight="true"
-                    :mapTopLayout="$vuetify.breakpoint.mdAndUp"
+                    :minMapHeight="310"
+                    :mapTopLayout="$vuetify.breakpoint.lgAndUp"
+                    :topFilteringLayout="$vuetify.breakpoint.mdAndDown"
                     @onScroll="storeScroll"
                     :showSearch="true"
                     :searchTerm="searchTerm"
@@ -38,7 +40,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-14 18:11:43
+ * Last modified  : 2020-08-18 16:34:20
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -152,8 +154,8 @@ export default {
       if (!fromRoute) {
         if (this.detailPageBackRoute) {
           fromRoute = this.detailPageBackRoute;
-        } else if (this.aboutPageBackRoute) {
-          fromRoute = this.aboutPageBackRoute;
+        } else if (this.currentSearchTerm) {
+          this.$store.commit(`${METADATA_NAMESPACE}/${CLEAR_SEARCH_METADATA}`);
         }
       }
 
@@ -177,7 +179,7 @@ export default {
       } else {
         if (checkSearchTriggering) {
           if (this.searchTerm && this.searchTerm.length > 0) {
-            this.$store.dispatch(`metadata/${SEARCH_METADATA}`, this.searchTerm, this.selectedTagNames);
+            this.$store.dispatch(`${METADATA_NAMESPACE}/${SEARCH_METADATA}`, this.searchTerm, this.selectedTagNames);
             this.resetScrollPos();
 
             // prevent immediately filtering, the search results
@@ -186,7 +188,7 @@ export default {
           }
 
           // the searchTerm was changed to empty -> clear the search results
-          this.$store.commit(`metadata/${CLEAR_SEARCH_METADATA}`);
+          this.$store.commit(`${METADATA_NAMESPACE}/${CLEAR_SEARCH_METADATA}`);
           // and manually reset the scrolling
           this.resetScrollPos();
         }
@@ -228,13 +230,13 @@ export default {
       // tag Object structure: { tag: tagName, count: tagCount }
       allTags: `${METADATA_NAMESPACE}/allTags`,
       detailPageBackRoute: `${METADATA_NAMESPACE}/detailPageBackRoute`,
-      aboutPageBackRoute: `${METADATA_NAMESPACE}/aboutPageBackRoute`,
       updatingTags: `${METADATA_NAMESPACE}/updatingTags`,
       scrollPositionDelay: `${METADATA_NAMESPACE}/scrollPositionDelay`,
       browseScrollPosition: 'browseScrollPosition',
-      controls: 'controls',
+      defaultControls: 'defaultControls',
       searchPlaceholderText: `${METADATA_NAMESPACE}/searchPlaceholderText`,
       searchPlaceholderTextSmall: `${METADATA_NAMESPACE}/searchPlaceholderTextSmall`,
+      currentSearchTerm: `${METADATA_NAMESPACE}/currentSearchTerm`,
     }),
     enabledControls() {
       let enableds = this.preenabledControls;

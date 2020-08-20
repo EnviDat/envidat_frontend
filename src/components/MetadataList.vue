@@ -1,8 +1,9 @@
-/* eslint-disable vue/no-use-v-if-with-v-for */
 <template>
 
-  <metadata-list-layout ref="metadataListLayoutComponent"
+  <metadata-list-layout id="metadataListLayoutComponent"
+                        ref="metadataListLayoutComponent"
                         :topFilteringLayout="topFilteringLayout"
+                        :minMapHeight="minMapHeight"
                         :useDynamicHeight="useDynamicHeight"
                         :showMapFilter="showMapFilter"
                         :mapFilteringPossible="mapFilteringPossible"
@@ -19,78 +20,64 @@
     </template>
 
     <template v-slot:controlPanel>
-      <v-card style="min-height: 36px; ">
-        <v-container pa-2 fluid>
-        <v-layout row align-center justify-space-between>
-          <v-flex grow>
-          <small-search-bar-view :compactLayout="$vuetify.breakpoint.smAndDown"
-                                  class="elevation-0"
-                                  :searchTerm="searchTerm"
-                                  :showSearch="showSearch"
-                                  :showSearchCount="true"
-                                  :searchCount="searchCount"
-                                  :isFlat="true"
-                                  :fixedHeight="36"
-                                  :labelText="searchBarPlaceholder"
-                                  :loading="loading"
-                                  @clicked="catchSearchClicked"
-                                  @searchCleared="catchSearchCleared" />
-          </v-flex>
+      <control-panel :compactLayout="$vuetify.breakpoint.smAndDown"
+                      :searchTerm="searchTerm"
+                      :showSearch="showSearch"
+                      :showSearchCount="true"
+                      :searchCount="searchCount"
+                      :fixedHeight="36"
+                      :searchBarPlaceholder="searchBarPlaceholder"
+                      :loading="loading"
+                      :controlsActive="controlsActive"
+                      :enabledControls="enabledControls"
+                      @searchClick="catchSearchClicked"
+                      @searchCleared="catchSearchCleared"
+                      @controlsChanged="controlsChanged" />
 
-          <v-flex hidden-xs-only
-                  shrink py-0>
-          <list-control-toggle :controls="controlsActive"
-                                :enabledControls="enabledControls"
-                                :compactLayout="$vuetify.breakpoint.smAndDown"
-                                :flat="true"
-                                @controlsChanged="controlsChanged" />
-          </v-flex>
-        </v-layout>
-      </v-container>        
-      </v-card>
     </template>
 
     <template v-slot:filterMap>
-      <filter-map-view :class="!mapHeight ? 'fill-height' : ''"
-                        :style="mapHeight ? `height: ${mapHeight}px;` : 'height: 100%;'"
-                        :content="listContent"
+      <filter-map-view :content="listContent"
+                        :minMapHeight="minMapHeight" 
                         :pinnedIds="pinnedIds"
                         :topLayout="mapTopLayout"
                         :mode="mode"
                         @pointClicked="catchPointClicked"
                         @clearButtonClicked="catchClearButtonClick" />
+
     </template>
 
     <template v-slot:metadataListPlaceholder>
-      <v-layout v-if="loading"
-                ref="metadataListPlaceholder"
-                :class="{ ['column'] : listView,
-                          ['row'] : !listView,
-                          ['wrap'] : !listView }" >
+      <v-container v-show="loading"
+                    fluid
+                    class="py-0 px-1">
+      <v-row ref="metadataListPlaceholder" >
 
-        <v-flex v-for="(n, index) in placeHolderAmount"
+        <v-col v-for="(n, index) in placeHolderAmount"
                 :key="'placeHolder_' + index"
-                v-bind="cardGridClass" >
+                :class="cardGridClass"
+                class="pa-2" >
 
           <metadata-card-placeholder :dark="false" />
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
+      </v-container>
     </template>
 
     <template v-slot:metadataListLayout >
-      <v-layout v-if="!loading"
-                        ref="metadataListLayout"
-                        :class="{ ['column'] : listView,
-                                  ['row'] : !listView,
-                                  ['wrap'] : !listView }" >
+      <v-container v-if="!loading"
+                  fluid
+                  class="py-0 px-1">
+      <v-row ref="metadataListLayout" >
 
-        <v-flex v-for="(pinnedId, index) in pinnedList"
+        <v-col v-for="(pinnedId, index) in pinnedList"
                 :key="'pinned_' + index"
-                v-bind="cardGridClass" >
+                :class="cardGridClass"
+                class="pa-2" >
 
-          <metadata-card :id="pinnedId"
+          <metadata-card class="highlighted"
+                          :id="pinnedId"
                           :ref="pinnedId"
-                          class="highlighted"
                           :title="metadatasContent[pinnedId].title"
                           :name="metadatasContent[pinnedId].name"
                           :subtitle="metadatasContent[pinnedId].notes"
@@ -105,14 +92,14 @@
                           :lockedIconString="lockedIconString"
                           :unlockedIconString="unlockedIconString"
                           :categoryColor="metadatasContent[pinnedId].categoryColor"
-                          :categoryCards="categoryCards"
                           @clickedEvent="metaDataClicked"
                           @clickedTag="catchTagClicked" />
-        </v-flex>
+        </v-col>
 
-        <v-flex v-for="(metadata, index) in unpinnedFilteredList"
+        <v-col v-for="(metadata, index) in unpinnedFilteredList"
                 :key="'filtered_' + index"
-                v-bind="cardGridClass" >
+                :class="cardGridClass"
+                class="pa-2" >
 
           <metadata-card :id="metadata.id"
                         :ref="metadata.id"
@@ -132,10 +119,11 @@
                         :categoryColor="metadata.categoryColor"
                         @clickedEvent="metaDataClicked"
                         @clickedTag="catchTagClicked" />
-        </v-flex>
+        </v-col>
 
-        <v-flex key="infiniteLoader"
-                xs12 mx-2>
+        <v-col class="mx-2"
+                key="infiniteLoader"
+                cols="12" >
           <infinite-loading spinner="waveDots"
                             :identifier="infiniteId"
                             :distance="preloadingDistance"
@@ -154,16 +142,18 @@
                                   @clicked="setScrollPos(0)" />
             </div>
           </infinite-loading>
-        </v-flex>
+        </v-col>
 
-        <v-flex v-if="!loading && contentSize <= 0"
+        <v-col v-if="!loading && contentSize <= 0"
+                class="mx-2"
                 key="noSearchResultsView"
-                xs12 mx-2 >
+                cols="12" >
           <no-search-results-view :categoryCards="categoryCards"
                                   @clicked="catchCategoryClicked" />
-        </v-flex>
+        </v-col>
 
-      </v-layout>
+      </v-row>
+      </v-container>
 
     </template>
 
@@ -191,7 +181,8 @@ import { mapGetters } from 'vuex';
 import { METADATA_MODULE_PATH, METADATA_MODULE_PAGENAME, METADATADETAIL_PAGENAME } from '@/router/routeConsts';
 import FilterKeywordsView from '@/components/Filtering/FilterKeywordsView';
 import FilterMapView from '@/components/Filtering/FilterMapView';
-import ListControlToggle from '@/components/Filtering/ListControlToggle';
+import ControlPanel from '@/components/Filtering/ControlPanel';
+
 import MetadataCard from '@/components/Cards/MetadataCard';
 import MetadataCardPlaceholder from '@/components/Cards/MetadataCardPlaceholder';
 import NoSearchResultsView from '@/components/Filtering/NoSearchResultsView';
@@ -205,8 +196,7 @@ import {
 } from '@/store/metadataMutationsConsts';
 
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
-import MetadataListLayout from '@/components/Layouts/MetadataListLayout';
-import SmallSearchBarView from '@/components/Filtering/SmallSearchBarView';
+import MetadataListLayout from '@/components/MetadataListLayout';
 // check filtering in detail https://www.npmjs.com/package/vue2-filters
 
 export default {
@@ -217,7 +207,6 @@ export default {
     placeHolderAmount: Number,
     selectedTagNames: Array,
     allTags: Array,
-    mapHeight: Number,
     mapTopLayout: {
       type: Boolean,
       default: false,
@@ -225,11 +214,12 @@ export default {
     defaultListControls: Array,
     enabledControls: Array,
     useDynamicHeight: Boolean,
+    minMapHeight: Number,
     topFilteringLayout: {
       type: Boolean,
       default: false,
     },
-    mode: String,    
+    mode: String,
     showSearch: Boolean,
     searchTerm: String,
     searchCount: Number,
@@ -304,12 +294,12 @@ export default {
     },
     cardGridClass() {
       const fullSize = {
-        xs12: true,
-        sm6: true,
-        md4: true,
-        lg3: true,
-        xl2: !this.isActiveControl(LISTCONTROL_MAP_ACTIVE)
-              && this.isActiveControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE),
+        'col-12': true,
+        'col-sm-6': true,
+        'col-md-4': true,
+        'col-lg-3': true,
+        'col-xl-2': !this.isActiveControl(LISTCONTROL_MAP_ACTIVE)
+                    && this.isActiveControl(LISTCONTROL_COMPACT_LAYOUT_ACTIVE),
       };
 
       return fullSize;
@@ -428,7 +418,7 @@ export default {
 
       for (let i = 0; i < metadata.resources.length; i++) {
         const res = metadata.resources[i];
-        
+
         if (res.restricted !== undefined
         && (res.restricted.allowed_users !== undefined
             || (res.restricted.level !== undefined
@@ -454,7 +444,7 @@ export default {
       return height;
     },
     isActiveControl(number) {
-      return this.controlsActive.includes(number);
+      return this.controlsActive ? this.controlsActive.includes(number) : false;
     },
     controlsChanged(number) {
       // 0-entry: listView, 1-entry: mapActive, 2-entry compact metadata
@@ -464,6 +454,14 @@ export default {
         controlsActive = controlsActive.filter(n => n !== number);
       } else {
         controlsActive.push(number);
+      }
+
+      if (number === LISTCONTROL_LIST_ACTIVE) {
+        controlsActive = controlsActive.filter(n => n !== LISTCONTROL_COMPACT_LAYOUT_ACTIVE);
+      }
+
+      if (number === LISTCONTROL_COMPACT_LAYOUT_ACTIVE) {
+        controlsActive = controlsActive.filter(n => n !== LISTCONTROL_LIST_ACTIVE);
       }
 
       let listActive = false;
@@ -537,13 +535,12 @@ export default {
   components: {
     FilterKeywordsView,
     FilterMapView,
-    ListControlToggle,
+    ControlPanel,
     NoSearchResultsView,
     MetadataCard,
     MetadataCardPlaceholder,
     BaseRectangleButton,
     MetadataListLayout,
-    SmallSearchBarView,
   },
 };
 </script>
@@ -561,7 +558,7 @@ export default {
   }
 
   .highlighted {
-    box-shadow: #4db6ac 0px 0px 5px 5px;
+    box-shadow: #4db6ac 0px 0px 5px 5px !important;
   }
 
 </style>

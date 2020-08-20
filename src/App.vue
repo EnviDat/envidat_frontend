@@ -1,5 +1,6 @@
 <template>
-  <v-app class="application" :style="dynamicBackground">
+  <v-app class="application"
+          :style="dynamicBackground">
 
       <div v-for="(notification, index) in visibleNotifications()"
           :key="`notification_${index}`"
@@ -15,18 +16,11 @@
                             @clickedReport="catchReportClicked(notification.key)" />
       </div>
 
-    <the-navigation v-if="!showSmallNavigation"
-                    :style="`z-index: ${NavigationZIndex}`"
+    <the-navigation :style="`z-index: ${NavigationZIndex}`"
                     :navItems="navItems"
                     :version="appVersion"
                     @menuClick="catchMenuClicked"
                     @itemClick="catchItemClicked" />
-
-    <the-navigation-small v-if="showSmallNavigation"
-                          :navItems="navItems"
-                          :style="`z-index: ${NavigationZIndex}`"
-                          class="envidatSmallNavigation elevation-3"
-                          @itemClick="catchItemClicked" />
 
     <the-navigation-toolbar v-if="showToolbar"
                             ref="TheNavigationToolbar"
@@ -36,23 +30,23 @@
                             :mode="mode"
                             :modeCloseCallback="catchModeClose" />
 
-    <v-content>
-      <v-container fluid
-                    pa-2 
-                    fill-height
+    <v-main>
+      <v-container class="pa-2 pa-sm-3 fill-height"
+                    fluid
                     v-on:scroll="updateScroll()"
                     ref="appContainer"
                     :style="pageStyle" >
-        <v-layout column >
-          <v-flex xs12 mx-0 >
+
+        <v-row class="fill-height" >
+          <v-col class="mx-0 py-0"
+                  cols="12" >
 
             <transition name="fade" mode="out-in">
               <router-view />
             </transition>
 
-          </v-flex>
-
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
 
       <v-dialog v-model="showReloadDialog" persistent max-width="290">
@@ -66,7 +60,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </v-content>
+    </v-main>
 
   </v-app>
 </template>
@@ -114,7 +108,6 @@ import { GUIDELINES_NAMESPACE } from '@/modules/about/store/guidelinesMutationsC
 import { PROJECTS_NAMESPACE } from '@/modules/projects/store/projectsMutationsConsts';
 
 import TheNavigation from '@/components/Navigation/TheNavigation';
-import TheNavigationSmall from '@/components/Navigation/TheNavigationSmall';
 import TheNavigationToolbar from '@/components/Navigation/TheNavigationToolbar';
 import NotificationCard from '@/components/Cards/NotificationCard';
 import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
@@ -144,8 +137,6 @@ export default {
       this.$store.commit(SET_APP_SCROLL_POSITION, scrollY);
     },
     updateActiveStateOnNavItems() {
-      // console.log(this.currentPage);
-
       for (let i = 0; i < this.navItems.length; i++) {
         const item = this.navItems[i];
 
@@ -271,9 +262,6 @@ export default {
     currentPageIsBrowsePage() {
       return this.currentPage === BROWSE_PAGENAME;
     },
-    currentPageIsLandingPage() {
-      return this.currentPage === LANDING_PAGENAME;
-    },
     showToolbar() {
       return this.currentPageIsBrowsePage && this.mode;
     },
@@ -327,7 +315,6 @@ export default {
   },
   components: {
     TheNavigation,
-    TheNavigationSmall,
     TheNavigationToolbar,
     NotificationCard,
   },
@@ -358,7 +345,7 @@ export default {
       // { title: 'Guidelines', icon: 'local_library', toolTip: 'Guidlines about the creation of metadata', active: false, path: GUIDELINES_PATH, pageName: GUIDELINES_PAGENAME },
       // { title: 'Policies', icon: 'policy', toolTip: 'The rules of EnviDat', active: false, path: POLICIES_PATH, pageName: POLICIES_PAGENAME },
       // { title: 'DMP', icon: 'menu_book', toolTip: 'Template for a Data Management Plan', active: false, path: DMP_PATH, pageName: DMP_PAGENAME },
-      { title: 'Login', icon: 'person', toolTip: 'Login to management research data', active: false, path: 'https://www.envidat.ch/user/reset', pageName: 'external' },
+      { title: 'Sign In', icon: 'person', toolTip: 'Sign in to management research data', active: false, path: 'https://www.envidat.ch/user/reset', pageName: 'external' },
       { title: 'About', icon: 'info', toolTip: 'What is EnviDat? Who is behind EnviDat?', active: false, path: ABOUT_PATH, pageName: ABOUT_PAGENAME },
       // { title: 'Contact', icon: 'contact_support', toolTip: 'Do you need support?', active: false },
       { title: 'Menu', icon: 'menu', active: false },
@@ -366,13 +353,6 @@ export default {
   }),
 };
 </script>
-
-<style lang="scss">
-  /* Icons list: https://jossef.github.io/material-design-icons-iconfont/ */
-  $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
-
-  @import '~material-design-icons-iconfont/src/material-design-icons.scss';
-</style>
 
 
 <style >
@@ -409,50 +389,6 @@ export default {
   line-height: 1.1em !important;
 }
 
-.block-with-text {
-  font-family: "Libre Baskerville", serif !important;
-
-  /* styles for '...' */
-  /* hide text if it more than N lines  */
-  overflow: hidden;
-  /* for set '...' in absolute position */
-  position: relative;
-  /* use this value to count block height */
-  line-height: 1.2em !important;
-  /* max-height = line-height (1.2) * lines max number (3) */
-  max-height: 6.7em;
-  /* fix problem when last visible word doesn't adjoin right side  */
-  text-align: justify;
-  /* place for '...' */
-  margin-right: -1em;
-  padding-right: 1em;
-}
-/* create the ... */
-.block-with-text:before {
-  /* points in the end */
-  content: "...";
-  /* absolute position */
-  position: absolute;
-  /* set position to right bottom corner of block */
-  right: 0;
-  bottom: 0;
-}
-/* hide ... if we have text, which is less than or equal to max lines */
-.block-with-text:after {
-  /* points in the end */
-  content: "";
-  /* absolute position */
-  position: absolute;
-  /* set position to right bottom corner of text */
-  right: 0;
-  /* set width and height */
-  width: 1em;
-  height: 1em;
-  margin-top: 0.2em;
-  /* bg color = bg color under block */
-  background: white;
-}
-
 .card .subheading {
   /* font-family: 'Libre Baskerville', serif; */
   font-weight: 400;
@@ -461,13 +397,17 @@ export default {
   line-height: 1.25em;
 }
 
+.readableText {
+  line-height: 1.2rem;
+}
+
 .imagezoom,
-.imagezoom img {
+.imagezoom .v-image__image {
   transition: all 0.2s;
 }
 
-.imagezoom img:hover,
-.imagezoom img:focus {
+.imagezoom:hover .v-image__image,
+.imagezoom:focus .v-image__image {
   transform: scale(1.2);
 }
 
@@ -506,15 +446,15 @@ export default {
 }
 
 .envidatBadge span {
-  font-size: 0.95em !important;
+  font-size: 0.8rem !important;
 }
 
 .envidatBadgeBigNumber span {
-  font-size: 0.9em !important;
+  font-size: 0.7rem !important;
 }
 
 .envidatChip {
-  height: 1.3rem !important;
+  height: 1.1rem !important;
   font-size: 0.65rem !important;
   margin: 1px 2px !important;
   /* opacity: 0.85 !important; */
@@ -526,7 +466,7 @@ export default {
 }
 
 .smallChip {
-  height: 1.2rem !important;
+  height: 1.25rem !important;
   font-size: 0.55rem !important;
 }
 .smallChip > .v-chip__content > .v-chip__close > .v-icon {

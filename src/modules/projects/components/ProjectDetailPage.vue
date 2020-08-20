@@ -1,14 +1,13 @@
 <template>
-  <v-container tag="article"
-                fluid
-                pa-0 >
+  <v-container class="pa-0"
+                tag="article"
+                fluid>
+    <v-row no-gutters>
 
-    <v-layout row wrap>
-
-      <v-flex xs12
-              elevation-5
+      <v-col class="elevation-5 pa-0"
+              cols="12"
               ref="header"
-              style="z-index: 1; position: absolute; left: 0;" 
+              style="z-index: 1; position: absolute; left: 0;"
               :style="headerStyle" >
 
         <project-header :title="currentProject ? currentProject.title : null"
@@ -16,34 +15,44 @@
                         :defaultImg="missionImg"
                         :showPlaceholder="loading"
                         @clickedBack="catchBackClicked" />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
 
-    <v-layout row wrap
-              :style="`z-index: 0; position: relative; top: ${headerHeight()}px`" >
+    <v-row :style="`z-index: 0; position: relative; top: ${headerHeight()}px`"
+            no-gutters>
 
-      <v-flex xs12 lg10 offset-lg1
-              px-3 >
+      <v-col class="pb-2 px-sm-3"
+              cols="12"
+              lg="10"
+              offset-lg="1">
 
-        <project-body v-bind="currentProject"
-                      :showPlaceholder="loading" />
-      </v-flex>
+        <project-body :description="currentProject ? currentProject.description : null"
+                        :showPlaceholder="loading"
+                        :maxTextLength="$vuetify.breakpoint.xsOnly ? 950 : 1500" />
+      </v-col>
 
-      <v-flex v-if="loading || (!loading && currentProject && currentProject.subProjects)"
-              xs12 lg10 offset-lg1
-              py-2 px-3 >
-        <project-subprojects v-bind="currentProject"
+      <v-col v-if="loading || (!loading && currentProject && currentProject.subProjects)"
+              class="pb-2 px-sm-3"
+              cols="12"
+              lg="10"
+              offset-lg="1" >
+
+        <project-subprojects :subProjects="currentProject.subProjects"
                               :defaultImg="creatorImg"
                               :showPlaceholder="loading"
                               @projectClick="catchProjectClick"
                               @subprojectClick="catchSubprojectClick" />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12 lg10 offset-lg1
-              py-2 px-3 >
+      <v-col class="pb-2 px-sm-3"
+              cols="12"
+              lg="10"
+              offset-lg="1" >
 
         <v-card>
-          <v-card-title class="metadataList_title title">{{ metadataListTitle }}</v-card-title>
+          <v-card-title class="metadataList_title title">
+            {{ metadataListTitle }}
+          </v-card-title>
 
           <div v-if="hasMetadatas" >
             <metadata-list ref="metadataList"
@@ -59,7 +68,7 @@
                             @clickedClear="catchTagCleared"
                             :defaultListControls="defaultControls"
                             :enabledControls="enabledControls"
-                            :mapHeight="mapFilterHeight"
+                            :minMapHeight="mapFilterHeight"
                             :topFilteringLayout="true"
                             :showSearch="false"
                             :searchCount="filteredListContent.length"
@@ -73,9 +82,9 @@
           </div>
 
         </v-card>
-      </v-flex>
+      </v-col>
 
-    </v-layout>
+    </v-row>
   </v-container>
 </template>
 
@@ -355,7 +364,7 @@ export default {
       this.selectedTagNames = [];
     },
     setScrollPos(toPos) {
-      
+
       if (this.$root.$children && this.$root.$children[0].$refs.appContainer) {
         this.$root.$children[0].$refs.appContainer.scrollTop = toPos;
       }

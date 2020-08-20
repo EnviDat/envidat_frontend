@@ -1,100 +1,71 @@
 <template>
   <v-card color="primary"
-          class="metadataResourceCard white--text"
+          class="metadataResourceCard"
           style="height: 100%;" >
 
-    <v-card-title>
-      <div class="headline">
-        {{ name }}
-      </div>
+    <v-card-title class="headline white--text">
+      {{ name }}
     </v-card-title>
 
-    <v-card-text class="pt-0"
-                :class="{ 'pb-3': $vuetify.breakpoint.mdAndUp,
-                          'pb-5': $vuetify.breakpoint.smAndDown, }" >
-      <v-container grid-list-xs
-                    pa-0 >
-        <v-layout v-bind="{ 'row': $vuetify.breakpoint.smAndUp,
-                            'wrap': $vuetify.breakpoint.smAndUp,
-                            'column': $vuetify.breakpoint.xsOnly,
-                            'pb-5': $vuetify.breakpoint.mdAndUp }" >
+    <v-card-text class="pt-0 white--text pb-5 pb-md-3" >
 
-          <v-flex v-bind="{ 'xs6': !this.twoColumnLayout && !showFullDescription,
-                            'xs12': this.twoColumnLayout || showFullDescription }"
-                  order-xs1
-                  order-sm3 >
-            <v-layout column>
-              <v-flex v-if="showFullDescription"
-                      xs11
-                      class="resourceCardText heightAndScroll"
-                      v-html="markdownText" >
-              </v-flex>
+      <v-container class="pa-0"
+                    fluid >
+        <v-row no-gutters >
+          <v-col v-if="showFullDescription"
+                  class="readableText resourceCardText heightAndScroll"
+                  v-html="markdownText" >
+          </v-col>
 
-              <v-flex v-if="!showFullDescription"
-                      xs11
-                      class="resourceCardText" >
-                {{ markdownTextTruncated }}
-              </v-flex>
-            </v-layout>
-          </v-flex>
+          <v-col v-if="!showFullDescription"
+                  class="readableText resourceCardText" >
+            {{ markdownTextTruncated }}
+          </v-col>
+        </v-row>
 
-          <v-flex v-if="!showFullDescription"
-                  order-xs2
-                  hidden-sm-and-up >
+        <v-row v-if="!showFullDescription"
+                no-gutters >
+          <v-col >
             <v-divider :dark="dark"
-                        class="my-1" />
-          </v-flex>
+                        class="my-2" />
+          </v-col>
+        </v-row>
 
-          <v-flex v-if="!showFullDescription"
-                  v-bind="{ [`xs6`]: !this.twoColumnLayout ,
-                            [`xs12`]: this.twoColumnLayout,
-                            [`pt-3`]: this.twoColumnLayout }"
-                  order-xs3
-                  order-sm1
-                  class="resourceInfo" >
-            <v-layout column>
-              <v-flex v-if="doi"
-                      px-0 py-1 >
-                <base-icon-label-view :text="doi"
-                                      :icon="doiIcon"
-                                      icon-tooltip="Data Object Identifier"
-                                      :align-left="twoColumnLayout" />
-              </v-flex>
+        <v-row v-if="!showFullDescription"
+                no-gutters >
+          <v-col class="resourceInfo" >
+            <base-icon-label-view v-if="doi"
+                                  :text="doi"
+                                  :icon="doiIcon"
+                                  icon-tooltip="Data Object Identifier"
+                                  :align-left="twoColumnLayout" />
 
-              <v-flex v-if="format"
-                      px-0 py-1 >
-                <base-icon-label-view :text="format"
-                                      :icon="extensionIcon()"
-                                      icon-tooltip="Format of the file"
-                                      :align-left="twoColumnLayout" />
-              </v-flex>
+            <base-icon-label-view v-if="format"
+                                  :text="format"
+                                  :icon="extensionIcon()"
+                                  icon-tooltip="Format of the file"
+                                  :align-left="twoColumnLayout" />
 
-              <v-flex v-if="size"
-                      px-0 py-1 >
-                <base-icon-label-view :text="formatedBytes"
-                                      :icon="fileSizeIcon"
-                                      icon-tooltip="Filesize"
-                                      :align-left="twoColumnLayout" />
-              </v-flex>
+            <base-icon-label-view v-if="size"
+                                  :text="formatedBytes"
+                                  :icon="fileSizeIcon"
+                                  icon-tooltip="Filesize"
+                                  :align-left="twoColumnLayout" />
 
-              <v-flex v-if="created"
-                      px-0 py-1 >
-                <base-icon-label-view :text="created"
-                                      :icon="dateCreatedIcon"
-                                      icon-tooltip="Date of file creation"
-                                      :align-left="twoColumnLayout" />
-              </v-flex>
+            <base-icon-label-view v-if="created"
+                                  :text="created"
+                                  :icon="dateCreatedIcon"
+                                  icon-tooltip="Date of file creation"
+                                  :align-left="twoColumnLayout" />
 
-              <v-flex v-if="lastModified"
-                      px-0 py-1 >
-                <base-icon-label-view :text="lastModified"
-                                      :icon="lastModifiedIcon"
-                                      icon-tooltip="Date of last modification"
-                                      :align-left="twoColumnLayout" />
-              </v-flex>
-            </v-layout>
-          </v-flex>
-        </v-layout>
+            <base-icon-label-view v-if="lastModified"
+                                  :text="lastModified"
+                                  :icon="lastModifiedIcon"
+                                  icon-tooltip="Date of last modification"
+                                  :align-left="twoColumnLayout" />
+          </v-col>
+        </v-row>
+
       </v-container>
     </v-card-text>
 
@@ -102,12 +73,12 @@
                     style="position: absolute; bottom: 0px; right: 50px;" >
 
       <base-icon-button v-if="maxDescriptionLengthReached"
-                        class="mr-2"
+                        :class="isProtected ? 'mr-2' : ''"
                         material-icon-name="expand_more"
                         :iconColor="showFullDescription ? 'primary' : 'accent'"
                         color="accent"
-                        :outlined="true"
-                        :isToggled="showFullDescription"
+                        :fillColor="showFullDescription ? $vuetify.theme.themes.light.accent : ''"
+                        outlined
                         :rotateOnClick="true"
                         :rotateToggle="showFullDescription"
                         :tooltipText="showFullDescription ? 'Hide full description' : 'Show full description'"
@@ -129,7 +100,8 @@
       <base-icon-button v-if="!isProtected"
                         class="fabPosition ma-2"
                         style="height: 40px; width: 40px;"
-                        :customIcon="isFile ? downloadIcon : linkIcon"
+                        :materialIconName="isFile ? 'file_download' : 'link'"
+                        iconColor="black"
                         color="accent"
                         :isElevated="true"
                         :tooltipText="isFile ? 'Download file' : 'Open link'"
@@ -177,8 +149,6 @@ export default {
     twoColumnLayout: Boolean,
     height: String,
     dark: Boolean,
-    downloadIcon: String,
-    linkIcon: String,
     doiIcon: String,
     fileSizeIcon: String,
     dateCreatedIcon: String,
@@ -208,7 +178,7 @@ export default {
         return '';
       }
 
-      return this.description.trim();      
+      return this.description.trim();
     },
     formatedBytes() {
       if (!this.size) return '';
@@ -265,7 +235,7 @@ export default {
           icon = this.fileExtensionIcon.get('file');
         }
 
-        // alert('icon ' + icon);
+        console.log(`icon ${icon}`);
         return icon;
       }
 
@@ -291,11 +261,11 @@ export default {
 
 <style scoped>
 
-  .black_title{
+  .black_title {
     color: rgba(0,0,0,.87) !important;
   }
 
-  .white_title{
+  .white_title {
     color: rgba(255,255,255,.9) !important;
   }
 
@@ -317,7 +287,8 @@ export default {
     transition: .3s;
   }
 
-  .fabMenu:hover {
+  .fabMenu:hover,
+  .fabMenu:active {
     background: #FFF;
     min-width: 160px;
     width: 100%;
@@ -333,14 +304,16 @@ export default {
     transition: 0.1s;
   }
 
-  .fabMenu:hover .lockedText {
+  .fabMenu:hover .lockedText,
+  .fabMenu:active .lockedText {
     visibility: visible;
     transition: 0.5s;
     opacity: 1;
   }
 
   .resourceInfo {
-    font-size: 10px !important;
+    font-size: 12px !important;
+    line-height: 0.8rem !important;
     opacity: 0.9;
   }
 </style>

@@ -1,41 +1,55 @@
 <template>
-  <v-card ref="MetadataAuthors">
+  <v-card id="MetadataAuthors"
+          ref="MetadataAuthors">
+
     <v-card-title class="title metadata_title">
       Author Details
     </v-card-title>
 
-    <v-container v-if="showAuthors"
-                fluid
-                grid-list-md
-                class="heightAndScroll"
-                pa-3 >
+    <v-card-text v-if="showPlaceholder && !hasAuthors"
+                  class="pa-2 pt-0" >
+      <v-container fluid
+                    class="pa-0" >
+        <v-row no-gutters >
+          <v-col v-for="n in 2"
+                    :key="n"
+                    cols="12" sm="6"
+                    class="pa-2" >
 
-      <v-layout v-if="showPlaceholder"
-                  row wrap >
-        <v-flex v-for="n in 2"
-                  :key="n"
-                  xs12 sm6 >
-          <author-card-placeholder />
-        </v-flex>
-      </v-layout>
+            <author-card-placeholder />
 
-      <v-layout v-if="!showPlaceholder && authors && authors.length > 0"
-                row wrap >
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-card-text>
 
-        <v-flex v-for="author in authors"
-                :key="author.fullName"
-                xs12 sm6 >
-          <author-card :author="author"
-                      :asciiDead="authorDeadInfo ? authorDeadInfo.asciiDead : ''"
-                      :authorPassedInfo="authorDeadInfo ? authorDeadInfo.authorPassedInfo : ''" />
-        </v-flex>
-      </v-layout>
-    </v-container>
+    <v-card-text v-if="showAuthors && !showPlaceholder && hasAuthors"
+                  class="pa-2 pt-0" >
+      <v-container fluid
+                    class="pa-0 heightAndScroll" >
 
-    <v-card-text v-if="!showPlaceholder && (!authors || authors.length <= 0)"
-                  style="color: red;" >
+        <v-row no-gutters >
+
+          <v-col v-for="author in authors"
+                  :key="author.fullName"
+                  cols="12" sm="6"
+                  class="pa-2" >
+
+            <author-card :author="author"
+                        :asciiDead="authorDeadInfo ? authorDeadInfo.asciiDead : ''"
+                        :authorPassedInfo="authorDeadInfo ? authorDeadInfo.authorPassedInfo : ''" />
+
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-card-text>
+
+    <v-card-text v-if="!showPlaceholder && !hasAuthors"
+                  :style="`color: ${emptyTextColor};`"
+                  class="pa-4 pt-0 readableText" >
       {{ emptyText }}
     </v-card-text>
+
 
   </v-card>
 </template>
@@ -92,6 +106,14 @@ export default {
   computed: {
     authors() {
       return this.mixinMethods_getGenericProp('authors');
+    },
+    hasAuthors() {
+      return this.authors && this.authors.length > 0;
+    },
+    emptyTextColor() {
+      const emptyTextColor = this.mixinMethods_getGenericProp('emptyTextColor');
+
+      return emptyTextColor || 'red';
     },
   },
   methods: {

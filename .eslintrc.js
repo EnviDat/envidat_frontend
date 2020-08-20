@@ -15,9 +15,10 @@ module.exports = {
   extends: ['@vue/airbnb', 'plugin:vue/essential'],
 
   // // required to lint *.vue files
-  // plugins: [
-  //   'html'
-  // ],
+  plugins: [
+    // 'html',
+    'vuetify',
+  ],
   // // check if imports actually resolve
   settings: {
     'import/resolver': {
@@ -48,22 +49,25 @@ module.exports = {
     'no-param-reassign': 'off',
     'linebreak-style': 0,
     'padded-blocks': 'off',
-    'indent': 'off',
-    'no-trailing-spaces' : 'off',
+    indent: 'off',
+    'no-trailing-spaces': 'off',
     // enforce CLRF linebreaks = 'linebreak-style' : ["error", "unix"]
     // windows linebreaks when not in production environment
     // "linebreak-style": ["error", process.env.NODE_ENV === 'prod' ? "unix" : "windows"]
+    'vuetify/no-deprecated-classes': 'error',
+    'vuetify/grid-unknown-attributes': 'error',
+    'vuetify/no-legacy-grid': 'error',
   },
 
   overrides: [
     {
       files: [
         '**/__tests__/*.{j,t}s?(x)',
-        '**/tests/unit/**/*.spec.{j,t}s?(x)'
+        '**/tests/unit/**/*.spec.{j,t}s?(x)',
       ],
       env: {
-        jest: true
-      }
-    }
-  ]
+        jest: true,
+      },
+    },
+  ],
 };

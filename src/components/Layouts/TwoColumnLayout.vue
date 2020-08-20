@@ -1,26 +1,18 @@
 <template>
-  <v-layout row
-            wrap
-            style="z-index: 0;" >
+  <v-row style="z-index: 0;"
+          no-gutters >
 
-    <v-flex v-bind="firstColWidth" >
+    <v-col :class="firstColWidth"
+            class="pt-0" >
+      <slot name="leftColumn" />
+    </v-col>
 
-      <v-layout column>
-        <slot name="leftColumn" />
-      </v-layout>
-
-    </v-flex>
-
-
-    <v-flex v-if="secondColumn"
-            v-bind="secondColWidth" >
-
-      <v-layout column>
-        <slot name="rightColumn" />
-      </v-layout>
-
-    </v-flex>
-  </v-layout>
+    <v-col v-if="secondColumn"
+            class="pt-0"
+            :class="secondColWidth" >
+      <slot name="rightColumn" />
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -50,82 +42,68 @@ export default {
   },
   computed: {
     firstColWidth() {
-      let bindings = {};
-      const colWidth = this.secondColumn && this.secondColumn.length > 0 ? { xs6: true } : { xs12: true };
+      let bindings = this.secondColumn && this.secondColumn.length > 0 ? { 'col-6': true } : { 'col-12': true };
 
       bindings = Object.assign(bindings, this.leftOrFullWidth);
-      bindings = Object.assign(bindings, colWidth);
 
       return bindings;
     },
     secondColWidth() {
-      let bindings = {};
-      const colWidth = this.secondColumn && this.secondColumn.length > 0 ? { xs6: true } : {};
+      let bindings = this.secondColumn && this.secondColumn.length > 0 ? { 'col-6': true } : {};
 
       bindings = Object.assign(bindings, this.rightOrFullWidth);
-      bindings = Object.assign(bindings, colWidth);
 
       return bindings;
     },
-    textFontSizeStyle: function textFontSizeStyle() {
+    textFontSizeStyle() {
       return this.textFontSize ? `font-size: ${this.textFontSize}px !important;` : '';
     },
-    leftOrFullWidth: function leftOrFullWidth() {
+    leftOrFullWidth() {
       return this.firstColumn && this.firstColumn.length > 0 ? this.halfWidthLeft : this.fullWidthPadding;
     },
     rightOrFullWidth() {
       return this.secondColumn && this.secondColumn.length > 0 ? this.halfWidthRight : this.fullWidthPadding;
     },
     fullwidthPadding() {
-      const json = {};
+      const cssClasses = {};
 
-      if (this.$vuetify.breakpoint.xsOnly) {
-        json['px-1'] = true;
-      } else if (this.$vuetify.breakpoint.mdAndUp
-          && this.$vuetify.breakpoint.lgAndDown) {
-        json['px-2'] = true;
+      if (this.$vuetify.breakpoint.mdAndUp
+        && this.$vuetify.breakpoint.lgAndDown) {
+        cssClasses['px-2'] = true;
       } else if (this.$vuetify.breakpoint.lgAndUp) {
-        json['px-3'] = true;
+        cssClasses['px-3'] = true;
       }
 
-      return json;
+      return cssClasses;
     },
     halfWidthLeft() {
-      const json = {
-        lg5: true,
-        'offset-lg1': true,
+      const cssClasses = {
+        'col-lg-5': true,
+        'offset-lg-1': true,
       };
 
-      if (this.$vuetify.breakpoint.xsOnly) {
-        json['px-1'] = true;
-      } else if (this.$vuetify.breakpoint.mdAndUp
-          && this.$vuetify.breakpoint.lgAndDown) {
-        json['pl-2'] = true;
-        json['pr-1'] = true;
+      if (this.$vuetify.breakpoint.mdAndUp
+        && this.$vuetify.breakpoint.lgAndDown) {
+        cssClasses['pr-1'] = true;
       } else if (this.$vuetify.breakpoint.lgAndUp) {
-        json['pl-3'] = true;
-        json['pr-1'] = true;
+        cssClasses['pr-1'] = true;
       }
 
-      return json;
+      return cssClasses;
     },
     halfWidthRight() {
-      const json = {
-        lg5: true,
+      const cssClasses = {
+        'col-lg-5': true,
       };
 
-      if (this.$vuetify.breakpoint.xsOnly) {
-        json['px-1'] = true;
-      } else if (this.$vuetify.breakpoint.mdAndUp
-          && this.$vuetify.breakpoint.lgAndDown) {
-        json['pl-1'] = true;
-        json['pr-2'] = true;
+      if (this.$vuetify.breakpoint.mdAndUp
+        && this.$vuetify.breakpoint.lgAndDown) {
+        cssClasses['pl-1'] = true;
       } else if (this.$vuetify.breakpoint.lgAndUp) {
-        json['pl-1'] = true;
-        json['pr-3'] = true;
+        cssClasses['pl-1'] = true;
       }
 
-      return json;
+      return cssClasses;
     },
   },
   updated() {

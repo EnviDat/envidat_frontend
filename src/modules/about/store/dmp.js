@@ -17,7 +17,7 @@ import {
   GET_DMP,
   GET_DMP_SUCCESS,
   GET_DMP_ERROR,
-} from '@/store/dmpMutationsConsts';
+} from '@/modules/about/store/dmpMutationsConsts';
 
 
 const actions = {

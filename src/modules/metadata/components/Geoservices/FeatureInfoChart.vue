@@ -3,8 +3,6 @@
     <div v-if="chart">
     <feature-info-chart-graph v-for="(graph, key) in data" :data="graph" :key="key" @add="addGraph" @remove="removeGraph"></feature-info-chart-graph>
     </div>
-<!--    <v-btn @click="addGraphData">Add</v-btn>-->
-<!--    <v-btn @click="removeGraph(1)">Remove</v-btn>-->
   <div :id="divId" style="height: 100%; width: 100%;"></div>
   </div>
 </template>

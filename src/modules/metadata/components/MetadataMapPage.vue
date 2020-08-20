@@ -2,7 +2,7 @@
   <div style="height: 100%; width: 100%;" v-if="configFile">
     <v-card
       style="position: absolute; top: 0; right: 0; z-index: 200; background-color: rgba(255, 255, 255, 0.6);"
-      class="ma-2">
+      class="ma-3">
       <base-icon-button class="ma-2"
                         material-icon-name="close"
                         icon-color="primary"
@@ -24,21 +24,20 @@
         @clicked="linkScreens = !linkScreens"
       ></base-icon-button>
     </v-card>
-    <v-layout v-if="splitScreen" style="height: 100%;" pa-0 ma-0 :key="'split'">
-      <div style="width: 50%; max-width: 50%; float: left; height: 100%; position: relative;">
+    <v-row v-if="splitScreen" class="pa-0 ma-0" style="height: 100%; width: 100%;" :key="'split'" no-gutters>
+      <div style="width: 50%; max-width: 50%; float: left; height: 100%; position: relative; border-right: 1px solid gray;">
         <Map :config="configFile" :map-div-id="'map1'"
              @changeLayer="setLayer" :key="'map1'" :selected-layer-name="selectedLayer" @setShow3d="setShow3d"
         :show3d="show3d"
         >
           <template v-slot:top>
-            <v-btn icon color="red" style="display: inline-block" @click="quitSplitFrom(1)">
+            <v-btn elevation="2" icon color="black" style="background-color: #f44336; display: inline-block" @click="quitSplitFrom(1)">
               <v-icon>close</v-icon>
             </v-btn>
           </template>
         </Map>
       </div>
-      <div style=" border: 1px solid gray;"></div>
-      <div style="width: 50%; float: left; position:relative;">
+      <div style="width: 50%; float: left; position:relative; border-left: 1px solid gray;">
         <Map
           :show3d="show3dSplit"
           :config="configFile" :map-div-id="'map2'"
@@ -47,16 +46,19 @@
           @setShow3d="setShow3dSplit"
         >
           <template v-slot:top>
-            <v-btn icon color="red" @click="quitSplitFrom(2)">
+            <v-btn elevation="2" icon color="black" style="background-color: #f44336;" @click="quitSplitFrom(2)">
               <v-icon>close</v-icon>
             </v-btn>
           </template>
         </Map>
       </div>
-    </v-layout>
+    </v-row>
 
 
-    <v-layout v-else style="height: 100%;" pa-0 ma-0 :map-div-id="'single'" :key="'map0'">
+    <v-row v-else
+          class="pa-0 ma-0 map-div-id"
+          style="height: 100%;"
+          :key="'map0'" no-gutters>
       <div style="width: 100%;">
         <Map @setShow3d="setShow3d" :show3d="show3d" :config="configFile" @changeLayer="setLayer" :map-div-id="'map0'" :selected-layer-name="selectedLayer">
           <v-btn color="primary" @click="startSplitScreen" fab small>
@@ -64,7 +66,7 @@
           </v-btn>
         </Map>
       </div>
-    </v-layout>
+    </v-row>
   </div>
 </template>
 
@@ -81,7 +83,7 @@
     LOAD_METADATA_CONTENT_BY_ID,
     METADATA_NAMESPACE,
   } from '@/store/metadataMutationsConsts';
-  import BaseIconButton from '../../../components/BaseElements/BaseIconButton';
+  import BaseIconButton from '@/components/BaseElements/BaseIconButton';
   import Map from './Geoservices/Map';
 
   export default {

@@ -2,9 +2,9 @@
   <div style="height: 100%; width: 100%; z-index: 100; max-width: 100%; position: relative;">
 
     <div :class="config.timeseries ? 'map-container-timeslider' : 'map-container'">
-      <v-layout class="top-slot">
+      <v-row class="top-slot" no-gutters>
         <slot name="top"></slot>
-      </v-layout>
+      </v-row>
 
       <v-icon @click="layerControlOpen = !layerControlOpen" class="icon elevation-5" style="position: absolute; top: 95px; color: black; background-color: white; z-index: 999; margin-left: 10px; border-radius: 4px;">
         layers
@@ -31,11 +31,11 @@
       <div v-if="!hasGeom" style="color: red;">No data to show</div>
       <map-leaflet v-if="!show3d" :layer="selectedLayer" :map-div-id="mapDivId" :points="featureinfo" :opacity="opacity">
         <slot></slot><br>
-        <v-btn fab small @click="setShow3d(true)">3D</v-btn>
+        <v-btn fab small @click="setShow3d(true)" class="my-1">3D</v-btn>
       </map-leaflet>
       <map-cesium v-if="show3d" :layer="selectedLayer" :map-div-id="mapDivId" :opacity="opacity">
         <slot></slot><br>
-        <v-btn fab small @click="setShow3d(false)">2D</v-btn>
+        <v-btn fab small @click="setShow3d(false)" class="my-1">2D</v-btn>
       </map-cesium>
     </div>
     <div class="timeslider-container" v-if="config.timeseries" style="position: relative;">

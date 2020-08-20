@@ -2,36 +2,43 @@
   <div>
     <v-tooltip v-if="$vuetify.breakpoint.mdAndUp && tooltipText"
                 bottom >
-      <div slot="activator"
-            class="metadataInfoIcon" >
-        <v-layout row
-                    @mouseover="hoverBadge = true"
-                    @mouseleave="hoverBadge = false" >
-          <v-flex pa-0>
-            <v-badge :left="!hoverBadge"
-                      overlap
-                      color="secondary"
-                      :class="{ envidatBadgeBigNumber : count > 9,
-                                envidatBadge: count <= 9 }" >
-                                                    
-              <span slot="badge" >{{ count }}</span>
-            </v-badge>
-          </v-flex>
+      <template v-slot:activator="{ on }">
+        <div v-on="on"
+              class="iconCountView" >
+          <v-container fluid
+                    class="py-0">
+          <v-row @mouseover="hoverBadge = true"
+                  @mouseleave="hoverBadge = false" >
+            <v-col class="pa-0" >
+              <v-badge :left="!hoverBadge"
+                        overlap
+                        color="secondary"
+                        :class="{ envidatBadgeBigNumber : count > 9,
+                                  envidatBadge: count <= 9 }" >
+                                                      
+                <span slot="badge" >{{ count }}</span>
+              </v-badge>
+            </v-col>
 
-          <v-flex pa-0>
-            <img class="envidatIcon" :src="iconString" :alt="`${iconString} icon`">
-          </v-flex>
-        </v-layout>
-      </div>
+            <v-col class="pa-0" >
+              <img class="envidatIcon" :src="iconString" :alt="`${iconString} icon`">
+            </v-col>
+          </v-row>
+          </v-container>
+        </div>
+      </template>
+
       <span>{{ tooltipText }}</span>
     </v-tooltip>
 
     <div v-else
-          class="metadataInfoIcon" >
-      <v-layout row
-                  @mouseover="hoverBadge = true"
-                  @mouseleave="hoverBadge = false" >
-        <v-flex pa-0>
+          class="iconCountView" >
+      <v-container fluid
+                    class="py-0">
+      <v-row @mouseover="hoverBadge = true"
+              @mouseleave="hoverBadge = false" >
+
+        <v-col class="pa-0" >
           <v-badge :left="!hoverBadge"
                     overlap
                     color="secondary"
@@ -41,12 +48,14 @@
                                                   
             <span slot="badge">{{ count }}</span>
           </v-badge>
-        </v-flex>
+        </v-col>
 
-        <v-flex pa-0 style="z-index: 1;" >
+        <v-col class="pa-0" style="z-index: 1;" >
           <img class="envidatIcon" :src="iconString" :alt="`${iconString} icon`">
-        </v-flex>
-      </v-layout>
+        </v-col>
+
+      </v-row>
+      </v-container>
     </div>
 
   </div>
@@ -78,3 +87,13 @@ export default {
   }),
 };
 </script>
+
+<style >
+  .iconCountView {
+    opacity: 0.5;
+    /* line-height has to be based on the root (1rem) because of the
+    use in ex. v-card-title */
+    line-height: 1rem;
+    position: absolute;
+  }
+</style>

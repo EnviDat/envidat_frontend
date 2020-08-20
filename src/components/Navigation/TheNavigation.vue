@@ -1,110 +1,94 @@
 <template>
+  <span>
+    <v-btn v-if="smallScreen && !show" 
+            fab
+            left
+            fixed
+            bottom
+            color="secondary"
+            @click="setShow(true)">
+      <v-icon>menu</v-icon>
+    </v-btn>
+
   <v-navigation-drawer app
-                        permanent
+                       :permanent="!smallScreen"
                         clipped
-                        :mini-variant.sync="mini"
+                       :mini-variant="mini"
+                       :value="show"
+                       @change="setShow"
+                       @input="onInput"
+                       overlay-color="highlight"
                         mini-variant-width="60"
                         width="190" >
 
-    <v-list class="pt-1"
-            :class="{ 'narrowNavigation': mini }"
-            @click.native.stop=""
-            dense >
+    <v-list dense >
 
-      <v-list-tile v-for="(item, index) in navItemsMenuExcluded"
-                  :key="index"
-                  @click.native.stop="mini = !mini" >
+      <v-list-item v-for="(item, index) in navItemsMenuExcluded"
+                    :key="index"
+                    link
+                    :class="`${item.icon === 'envidat' ? mini ? 'px-2' : 'px-3' : '' }`"
+                    @click.stop="itemClick(item)" >
 
-        <div v-if="mini" style="width: 100%; height: 100%;">
-
-          <v-list-tile-action v-if="item.icon === 'envidat'" >
-            <v-btn icon class="ma-0"
-                  :color="item.active ? 'accent' : 'transparent'"
-                  @click.stop="itemClick(item)" >
-              <img :src="Logo" alt="envidat_logo" />
-            </v-btn>
-          </v-list-tile-action>
-
-          <v-list-tile-action v-if="item.icon !== 'envidat'"
-                              class="v-list__group__header__prepend-icon px-2" >
-
-            <base-icon-button marginClass="ma-0 pa-0"
-                              :tooltipText="item.toolTip"
-                              :materialIconName="item.icon"
-                              :iconColor="item.active ? 'accent' : 'secondary'"
-                              color="transparent"
-                              @clicked="item.icon === 'menu' ? item.active = !item.active : itemClick(item)" />
-          </v-list-tile-action>
-        </div>
-
-        <div v-if="!mini" style="width: 100%; height: 100%;">
-
-          <v-list-tile-action v-if="item.icon === 'envidat'">
-            <v-layout row wrap>
-
-              <v-flex xs3>
-                <v-btn icon class="ma-0"
-                      :color="item.active ? 'accent' : 'transparent'"
-                      @click.stop="itemClick(item)" >
-                  <img :src="Logo" alt="envidat_logo" />
-                </v-btn>
-              </v-flex>
-
-              <v-flex xs9>
-                <v-layout column fill-height align-start justify-end >
-                  <v-flex xs4></v-flex>
-                  <v-flex xs4
-                          class="headline envidatNavbarTitleSmall">
-                    {{ logoText }}
-                  </v-flex>
-                  <v-flex v-if="version"
-                          xs4
-                          style="font-size: 8px; position: relative; left: 2px;">
-                    Version {{ version }}
-                  </v-flex>
-                </v-layout>
-              </v-flex>
-            </v-layout>
-          </v-list-tile-action>
-
-          <v-list-tile-content v-if="item.icon !== 'envidat'" >
-
-            <base-rectangle-button marginClass="ma-0 px-2 py-0"
-                                    isSmall
-                                    isFlat
-                                    :buttonText="item.title"
-                                    :tooltipText="item.tooltip"
-                                    :materialIconName="item.icon"
-                                    :iconColor="item.active ? 'accent' : 'grey'"
-                                    color="secondary"
-                                    @clicked="item.icon === 'menu' ? item.active = !item.active : itemClick(item)" />
-          </v-list-tile-content>
-        </div>
-
-      </v-list-tile>
-      <v-list-tile>
-        <div style="width: 100%; height: 100%;">
-        <v-list-tile-action>
+        <v-list-item-action v-if="item.icon === 'envidat'"
+                            @click.stop="itemClick(item)" >
           <v-btn icon
                   class="ma-0"
-                  @click.stop="mini = !mini" >
-              <v-icon color="primary">
-                {{ mini ? 'chevron_right' : 'chevron_left' }}
-              </v-icon>
-          </v-btn>            
-        </v-list-tile-action>
-        </div>
-      </v-list-tile>
+                  :style="`background-color: ${ item.active ? $vuetify.theme.themes.light.accent : 'transparent' }`"
+                  @click.stop="itemClick(item)" >
+            <img :src="Logo"
+                  alt="envidat_logo" />
+          </v-btn>
+        </v-list-item-action>
+
+        <v-list-item-content v-if="item.icon === 'envidat'"
+                              @click.stop="itemClick(item)">
+          <v-row class="fill-height"
+                  align="start"
+                  justify="end" >
+            <v-col cols="12"
+                    class="headline envidatNavbarTitleSmall py-0">
+              {{ logoText }}
+            </v-col>
+            <v-col v-if="version"
+                    cols="12"
+                    class="py-0"
+                    style="font-size: 8px; position: relative; left: 2px;">
+              Version {{ version }}
+            </v-col>
+          </v-row>
+        </v-list-item-content>
+
+        <v-list-item-icon v-if="item.icon !== 'envidat'"
+                          @click.stop="itemClick(item)" >
+                          <!-- @click="item.icon === 'menu' ? item.active = !item.active : itemClick(item)" > -->
+          <v-icon :color="item.active ? 'accent' : 'secondary'">
+            {{ item.icon }}
+          </v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content v-if="item.icon !== 'envidat'"
+                              class=""
+                              @click.stop="itemClick(item)" >
+          {{ item.title }}
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-list-item link @click.stop="setShow(!show)">
+        <v-list-item-icon >
+          <v-icon color="primary">
+            {{ mini ? 'chevron_right' : 'chevron_left' }}
+          </v-icon>
+        </v-list-item-icon>
+      </v-list-item>
 
     </v-list>
 
   </v-navigation-drawer>
+  </span>
 </template>
 
 <script>
 import Logo from '@/assets/logo/EnviDat_logo_32.png';
-import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
-import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 export default {
   props: {
@@ -114,9 +98,15 @@ export default {
   data: () => ({
     Logo,
     logoText: 'EnviDat',
-    mini: true,
+    show: false,
   }),
   computed: {
+    mini() {
+      return !this.smallScreen && !this.show;
+    },
+    smallScreen() {
+      return this.$vuetify.breakpoint.smAndDown;
+    },
     navItemsMenuExcluded() {
       const actives = [];
 
@@ -142,13 +132,18 @@ export default {
     },
   },
   methods: {
+    setShow(value) {
+      this.show = value;
+    },
+    // Hack: NavigationDrawer Input events should only take effect on smallScreen
+    onInput(value) {
+      if (this.smallScreen) {
+        this.setShow(value);
+      }
+    },
     itemClick(item) {
       this.$emit('itemClick', item);
     },
-  },
-  components: {
-    BaseRectangleButton,
-    BaseIconButton,
   },
 };
 </script>

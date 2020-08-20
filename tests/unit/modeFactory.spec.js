@@ -7,9 +7,9 @@ import {
 import { SWISSFL_MODE } from '@/store/metadataMutationsConsts';
 import {
   swissFLExtraTags,
-} from '@/modules/browse/store/swissForestLabTags';
+} from '@/modules/metadata/store/swissForestLabTags';
 
-import metadataTags from '@/modules/browse/store/metadataTags';
+import metadataTags from '@/modules/metadata/store/metadataTags';
 
 describe('modeFactory - getModeData', () => {
   it('empty', () => {

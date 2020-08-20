@@ -1,21 +1,23 @@
 <template>
   <v-card style="width: 100%; max-width: 100%;">
-    <v-layout class="pb-0 justify-center align-center" style="height: 20%;">
+    <v-row class="pb-0" justify="center" align="center" style="height: 20%;" no-gutters>
       {{ currentName }}
-    </v-layout>
-    <v-layout align-center style="height: 80%;">
-      <v-flex>
+    </v-row>
+    <v-row align="center" style="height: 80%;" no-gutters>
+      <v-col style="max-width: 50px;">
         <v-btn icon small @click="previous()" :disabled="this.currentIndex <= 0">
           <v-icon>arrow_left</v-icon>
         </v-btn>
-      </v-flex>
-      <div :id="divId" style="width: 100%; height: 100%;"></div>
-      <v-flex>
+      </v-col>
+      <v-col style="height: 100%; width: 100%;" class="grow">
+        <div :id="divId" style="width: 100%; height: 100%;"></div>
+      </v-col>
+      <v-col style="max-width: 50px;">
         <v-btn icon small @click="next()" :disabled="this.currentIndex >= this.nDataPoints - 1">
           <v-icon>arrow_right</v-icon>
         </v-btn>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 

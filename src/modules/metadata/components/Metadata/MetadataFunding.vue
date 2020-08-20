@@ -1,5 +1,6 @@
 <template>
-  <v-card >
+  <v-card id="MetadataFunding" >
+
     <v-card-title v-if="title"
                   class="metadata_title title">
       {{ title }}
@@ -15,32 +16,41 @@
     <v-card-text v-if="fundingItems"
                   ref="funding"
                   style="overflow-x: hidden;"
-                  class="heightAndScroll pb-4" >
+                  class="pa-4 pt-0 readableText heightAndScroll" >
 
-      <v-layout row wrap>
-        <v-flex xs12 py-1>
+      <v-row >
+        <v-col class="py-0" cols="12" >
           {{ preText }}
-        </v-flex>
-        <v-flex xs6 md4
-                py-1
-                v-for="(item, index) in fundingItems"
-                :key="index" >
+        </v-col>
+      </v-row>
+      
+      <v-row >
+        <v-col v-for="(item, index) in fundingItems"
+                :key="index"
+                cols="6" md="4">
 
-          <div v-if="showFundingItem(item)">
+          <v-row v-if="showFundingItem(item)"
+                  no-gutters >
+            <v-col v-if="item.institution_url" >
+              <a :href="item.institution_url"
+                  target="_blank">
+                <strong>{{ item.institution }}</strong>
+              </a>
+            </v-col>
 
-            <a v-if="item.institution_url"
-                :href="item.institution_url"
-                target="_blank">
-              <div>{{ item.institution }}</div>
-            </a>
+            <v-col v-else >
+              <strong>{{ item.institution }}</strong>
+            </v-col>
+          </v-row>
 
-            <div v-else>{{ item.institution }}</div>
+          <v-row v-if="showFundingItem(item) && item.grant_number"
+                  no-gutters
+                  class="pt-2">
+            <v-col>(Grant/Award:{{ item.grant_number }})</v-col>
+          </v-row>
 
-            <div v-if="item.grant_number">(Grant/Award:{{ item.grant_number }})</div>
-          </div>
-
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
 
     </v-card-text>
 
@@ -51,7 +61,7 @@
     </v-card-text>
 
     <v-card-text v-if="!showPlaceholder && !funding"
-                  class="pt-0"
+                  class="pt-0 readableText"
                   :style="`color: ${emptyTextColor};`" >
       {{ emptyText }}
     </v-card-text>

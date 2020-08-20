@@ -1,7 +1,7 @@
 <template>
   <v-card tile min-height="200">
 
-    <v-layout align-center>
+    <v-row align="center">
       <v-item-group v-model="window"
                     mandatory
                     class="shrink mr-2"
@@ -38,7 +38,7 @@
         </v-item>
       </v-item-group>
 
-      <v-flex>
+      <v-col>
         <v-window v-model="window"
                   vertical >
 
@@ -68,37 +68,37 @@
               </v-card-title>
 
               <v-card-text>
-                <v-layout row wrap
-                          align-center
-                          justify-center
-                          fill-height >
+                <v-row class="fill-height" 
+                          align="center"
+                          justify="center"
+                          >
 
-                  <v-flex xs11>
+                  <v-col cols="11">
                     {{ sub.description }}
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex xs1>
+                  <v-col cols="1">
                     <v-btn icon>
                       <v-icon>find_in_page</v-icon>
                     </v-btn>
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex xs12>Metadata</v-flex>
+                  <v-col cols="12">Metadata</v-col>
 
-                  <v-flex xs12
+                  <v-col cols="12"
                           v-for="(meta, index) in metadatas"
                           :key="index">
                     {{ meta.id }}
-                  </v-flex>
+                  </v-col>
 
-                </v-layout>
+                </v-row>
               </v-card-text>
             </v-card>
 
           </v-window-item>
         </v-window>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
 
   </v-card>
 </template>

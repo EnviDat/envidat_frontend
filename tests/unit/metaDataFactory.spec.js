@@ -14,7 +14,7 @@ import {
 
 
 import packagelist from '@/../public/testdata/packagelist';
-import categoryCards from '@/modules/browse/store/categoryCards';
+import categoryCards from '@/modules/metadata/store/categoryCards';
 
 // const metadatasContent = {};
 // packagelist.result.forEach((entry) => {
@@ -61,6 +61,15 @@ describe('metaDataFactory - createBody', () => {
     expect(body.text).toBeDefined();
     expect(body.maxTextLength).toBeDefined();
     expect(body.emptyText).toBeDefined();
+  });
+
+  it('with dataset, compare maxTextLength', () => {
+    const dataset = packagelist.result[3];
+
+    const body = createBody(dataset, true);
+    const body2 = createBody(dataset, false);
+
+    expect(body.maxTextLength).not.toBe(body2.maxTextLength);
   });
 });
 

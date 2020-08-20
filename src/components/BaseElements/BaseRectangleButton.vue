@@ -1,28 +1,32 @@
 <template>
-  <v-tooltip bottom :disabled="$vuetify.breakpoint.smAndDown || !tooltipText">
-    <v-btn slot="activator"
-            :small="isSmall"
-            :class="marginClass"
-            :outline="isOutlined"
-            :flat="isFlat"
-            :color="color ? color : 'primary'"
-            :disabled="disabled"
-            :href="url"
-            target="_blank"
-            @click.stop="onClick" >
+  <v-tooltip bottom
+              :disabled="$vuetify.breakpoint.smAndDown || !tooltipText">
+    <template v-slot:activator="{ on }">
+      <v-btn v-on="on"
+              :small="isSmall"
+              :x-small="isXsSmall"
+              :class="marginClass"
+              :outlined="isOutlined"
+              :text="isFlat"
+              :color="color ? color : 'primary'"
+              :disabled="disabled"
+              :href="url"
+              target="_blank"
+              @click.stop="onClick" >
 
-      <div v-if="customIcon" class="iconCentering">
-        <img class="envidatIcon" :src="customIcon" :alt="`${iconString} icon`" />
-      </div>
+        <div v-if="customIcon" class="iconCentering">
+          <img class="envidatIcon" :src="customIcon" :alt="`${iconString} icon`" />
+        </div>
 
-      <v-icon v-if="materialIconName"
-              left
-              :color="iconColor ? iconColor : 'primary'" >
-        {{ materialIconName }}
-      </v-icon>
+        <v-icon v-if="materialIconName"
+                left
+                :color="iconColor ? iconColor : 'primary'" >
+          {{ materialIconName }}
+        </v-icon>
 
-      {{ buttonText }}
-    </v-btn>
+        {{ buttonText }}
+      </v-btn>
+    </template >
 
     <span>{{ tooltipText }}</span>
   </v-tooltip>
@@ -43,7 +47,6 @@
  * The @prop iconColor only works for material icons.
  *
  * Set the @prop rotateOnClick to true for the icon to rotate 180° once clicked
- * works together with the @prop isToggled
  *
  * Use @prop marginClass to apply any css-class to the button, because it's wrapped in the tooltip element.
  *
@@ -53,7 +56,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-24 11:23:02
+ * Last modified  : 2020-07-15 09:32:12
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -71,6 +74,7 @@ export default {
     color: { type: String, default: 'primary' },
     iconColor: { type: String, default: 'primary' },
     isSmall: Boolean,
+    isXsSmall: Boolean,
     url: String,
     marginClass: String,
     disabled: Boolean,

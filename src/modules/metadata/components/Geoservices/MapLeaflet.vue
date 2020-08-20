@@ -7,7 +7,7 @@
       <img width="40" height="40" v-if="basemap==='streets'" src="./satellite-icon.png" @click="basemap='satellite'">
       <img width="40" height="40" v-if="basemap==='satellite'" src="./streets-icon.png" @click="basemap='streets'">
     </v-card>
-    <div style="position: absolute; bottom: 70px; right: 10px; z-index: 99999; cursor: auto;">
+    <div style="position: absolute; bottom: 70px; right: 16px; z-index: 99999; cursor: auto;">
       <slot></slot>
     </div>
     <div  v-if="map">

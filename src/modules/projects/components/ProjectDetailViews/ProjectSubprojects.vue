@@ -3,29 +3,28 @@
 
     <v-card-title class="bodyTitle title">Subprojects</v-card-title>
 
-    <v-card-text v-if="subProjects"
-                  pa-3 >
+    <v-card-text v-if="subProjects" >
 
-          <v-container grid-list-lg fluid
-                        pa-0 >
-          <v-layout row wrap>
+      <v-container class="pa-0"
+                        fluid >
+        <v-row >
 
-            <v-flex v-for="(project, index) in subProjects"
-                    :key="'sub_' + index"
-                    xs12 sm6 md4 xl3 >
+          <v-col v-for="(project, index) in subProjects"
+                  :key="'sub_' + index"
+                  cols="12" sm="6" md="4" xl="3" >
 
-              <project-card :id="project.id"
-                            :title="project.title"
-                            :img="project.image_display_url"
-                            :defaultImg="defaultImg"
-                            :description="project.description"
-                            :subProjects="project.subProjects"
-                            @cardClick="onCardClick"
-                            @subprojectClick="onSubprojectClick" />
-            </v-flex>
+            <project-card :id="project.id"
+                          :title="project.title"
+                          :img="project.image_display_url"
+                          :defaultImg="defaultImg"
+                          :description="project.description"
+                          :subProjects="project.subProjects"
+                          @cardClick="onCardClick"
+                          @subprojectClick="onSubprojectClick" />
+          </v-col>
 
-          </v-layout>
-          </v-container>
+        </v-row>
+      </v-container>
     </v-card-text>
 
     <v-card-text v-if="showPlaceholder && !subProjects" >

@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-11-20 17:16:15
+ * Last modified  : 2020-08-18 15:29:06
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -81,10 +81,11 @@ function enhanceMetadatas(store, datasets) {
 
 
 export default {
-  [SEARCH_METADATA](state) {
+  [SEARCH_METADATA](state, searchTerm) {
     state.searchingMetadatasContent = true;
     state.searchingMetadatasContentOK = false;
     state.searchedMetadatasContent = {};
+    state.currentSearchTerm = searchTerm;
   },
   [SEARCH_METADATA_SUCCESS](state, payload) {
 
@@ -111,6 +112,7 @@ export default {
     state.searchingMetadatasContent = false;
     state.searchingMetadatasContentOK = false;
     state.searchedMetadatasContent = {};
+    state.currentSearchTerm = '';
   },
   [LOAD_METADATA_CONTENT_BY_ID](state) {
     state.loadingCurrentMetadataContent = true;

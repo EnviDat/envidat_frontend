@@ -3,101 +3,103 @@
           hover
           style="height: 100%;"
           @click.native="cardClick" >
+          
+    <!-- <v-card-title primary-title class="pa-0"> -->
 
-    <v-img :style="!flatLayout ? dynamicCardBackground : `background-color: ${this.categoryColor}`"
-            :height="flatLayout ? '55px' : $vuetify.breakpoint.smAndDown ? '90px' : '115px'" >
+    <v-container fluid class="pa-0">
+      <v-row no-gutters>
+        <v-col >
 
-      <v-container fluid
-                    fill-height
-                    px-3 pt-3 pb-0 >
-        <v-layout column>
+          <v-img :style="headerImageStyle"
+                  :height="flatLayout ? '55px' : $vuetify.breakpoint.smAndDown ? '90px' : '115px'" >
 
-          <v-flex xs12
-                  py-0 >
-            <v-layout row>
+            <div v-if="!maxTitleLengthReached || $vuetify.breakpoint.xsOnly"
+                class="pa-4 headline mb-0"
+                :class="titleClass" >
+              {{ truncatedTitle }}
+            </div>
 
-              <v-flex v-if="!maxTitleLengthReached || $vuetify.breakpoint.xsOnly"
-                      xs12 >
-                <div class="headline mb-0"
-                    :class="titleClass" >
+            <v-tooltip v-if="maxTitleLengthReached && !$vuetify.breakpoint.xsOnly"
+                        bottom >
+              <template v-slot:activator="{ on }">
+                <div v-on="on"
+                      class="pa-4 headline mb-0"
+                      :class="titleClass" >
                   {{ truncatedTitle }}
                 </div>
-              </v-flex>
+              </template>
 
-              <v-flex v-if="maxTitleLengthReached && !$vuetify.breakpoint.xsOnly"
-                      xs12 >
-                <v-tooltip bottom >
-                  <div slot="activator"
-                        class="headline mb-0"
-                        :class="titleClass" >
-                    {{ truncatedTitle }}
-                  </div>
-
-                  <span>{{ title }}</span>
-                </v-tooltip>
-              </v-flex>
-
-            </v-layout>
-          </v-flex>
-
-        </v-layout>
-      </v-container>
-    </v-img>
+              <span>{{ title }}</span>
+            </v-tooltip>
+          </v-img>
+        </v-col>
+      </v-row>
+    </v-container>
+    <!-- </v-card-title> -->
 
     <v-card-text py-2 
                   :class="{['cardText'] : $vuetify.breakpoint.mdAndUp,
                         ['compactText'] : flatLayout || $vuetify.breakpoint.smAndDown,
                         ['pr-5'] : flatLayout,
-                        ['pr-4'] : !flatLayout,
                   }" >
 
-      <v-layout row wrap>
-        <v-flex v-if="!compactLayout"
-                  xs12 >
+      <v-container fluid class="pa-0 fill-height" >
+      <v-row v-if="!compactLayout"
+              no-gutters >
+        <v-col cols="12" >
           {{ truncatedSubtitle }}
-        </v-flex>
-        <v-flex v-if="tags"
-                xs12
-                px-1
-                style="overflow: hidden;">
+        </v-col>
+      </v-row>
 
-            <tag-chip py-0
-                      v-for="(tag, index) in tags.slice (0, maxTagNumber)"
-                      :key="index"
+      <v-row >
+        <v-col cols="12">
+          <v-spacer></v-spacer>
+        </v-col>
+      </v-row>
+
+      <v-row v-if="tags"
+              no-gutters >
+        <v-col v-for="(tag, index) in tags.slice (0, maxTagNumber)"
+                :key="index"
+                class="shrink" >
+
+            <tag-chip class="py-0"
                       :name="tag.name"
                       :selectable="true"
                       :color="tag.color"
                       @clicked="catchTagClicked($event, tag.name)" />
 
-            <tag-chip v-if="maxTagsReached"
-                      py-0
-                      name="..."
-            />
+        </v-col>
+        <v-col v-if="maxTagsReached"
+                class="shrink" >
+            <tag-chip class="py-0"
+                      name="..." />
 
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
+      </v-container>
     </v-card-text>
 
+    <v-card-actions class="ma-0 py-0 px-2"
+                    style="position: absolute; bottom: 0px; right: 5px;" >
 
-    <v-card-actions class="ma-0 pa-2"
-                    style="position: absolute; bottom: 5px; right: 5px;" >
-
-      <v-layout column>
-        <v-flex v-if="modeData" 
-                pa-1>
+      <v-container fluid class="pa-0">        
+      <v-row >
+        <v-col v-if="modeData"
+                class="pa-1" >
           <base-icon-button isFlat
                               isSmall
                               color="transparent"
                               :disabled="true"
                               :customIcon="modeEntryIcon" />
-        </v-flex>
+        </v-col>
 
-        <v-flex pa-1>
+        <v-col class="pa-1" >
           <base-icon-count-view :count="resourceAmount"
-                                :icon-string="fileIconString"
-                                style="opacity: 0.65;" />
-        </v-flex>
-      </v-layout>
+                                :icon-string="fileIconString" />
+        </v-col>
+      </v-row>
+      </v-container>
 
     </v-card-actions>
   </v-card>
@@ -173,6 +175,12 @@ export default {
     mode: String,
   },
   computed: {
+    headerImageStyle() {
+      const topBorderStyle = 'border-top-left-radius: 4px; border-top-right-radius: 4px; ';
+      const imgStyle = !this.flatLayout ? this.dynamicCardBackground : `background-color: ${this.categoryColor}; `;
+
+      return `${topBorderStyle} ${imgStyle}`;
+    },
     dynamicCardBackground() {
       const gradient = this.dark ? this.blackTopToBottom : this.whiteTopToBottom;
 

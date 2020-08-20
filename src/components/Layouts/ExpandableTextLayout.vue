@@ -1,11 +1,13 @@
 <template>
   <v-card :class="cardClass">
+
     <v-card-title v-if="title"
-                  class="metadata_title title">
+                  class="metadata_title title pa-4">
       {{ title }}
     </v-card-title>
     
-    <v-card-title v-if="showPlaceholder && !title" >
+    <v-card-title v-if="showPlaceholder && !title"
+                  class="pa-4 pt-0">
       <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer"
             style="width: 100%;">
         <div class="bone bone-type-heading" />
@@ -14,35 +16,38 @@
 
     <v-card-text v-if="fullText"
                   ref="text"
-                  class="heightAndScroll pb-4"
+                  :usedMaxTextLength="maxTextLength"
+                  class="pa-4 pt-0 heightAndScroll readableText"
                   v-html="markdownText" >
     </v-card-text>
 
-    <v-card-text v-if="showPlaceholder && !fullText" >
+    <v-card-text v-if="showPlaceholder && !fullText"
+                  class="pa-4 pt-0" >
       <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer">
         <div class="bone bone-type-multiline bone-style-paragraph" />
       </div>
     </v-card-text>
 
     <v-card-text v-if="!showPlaceholder && !fullText"
-                  class="pt-0"
+                  class="pa-4 pt-0 readableText"
                   :style="`color: ${emptyTextColor};`" >
       {{ emptyText }}
     </v-card-text>
 
     <v-card-actions v-if="maxTextLengthReached"
                     class="ma-0 pa-2"
-                    :style="`position: absolute; bottom: 5px; right: ${rightPos()};`" >
+                    :style="`position: absolute; bottom: 0px; right: ${rightPos()};`" >
 
-      <base-icon-button class="mr-2"
-                        material-icon-name="expand_more"
+     <base-icon-button material-icon-name="expand_more"
                         :iconColor="showFullText ? 'primary' : 'accent'"
-                        :color="showFullText ? 'accent' : 'primary'"
+                        :fillColor="showFullText ? '' : $vuetify.theme.themes.light.primary"
+                        :color="showFullText ? 'accent' : 'transparent'"
                         :outlined="showFullText"
                         :rotateOnClick="true"
                         :rotateToggle="showFullText"
                         :tooltipText="showFullText ? 'Collaspe text' : 'Show full text'"
                         @clicked="readMore" />
+
 
     </v-card-actions>
 
@@ -79,7 +84,7 @@ export default {
     showPlaceholder: Boolean,
     maxTextLength: {
       type: Number,
-      default: 1000,
+      default: 800,
     },
     emptyText: {
       type: String,
@@ -107,7 +112,7 @@ export default {
       return '';
     },
     maxTextLengthReached() {
-      return this.text && this.text.length > this.maxTextLength;
+      return this.text && this.maxTextLength && this.text.length > this.maxTextLength;
     },
   },
   methods: {
@@ -132,4 +137,5 @@ export default {
     overflow-x: hidden;
     scrollbar-width: thin;
   }
+
 </style>

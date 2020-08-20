@@ -1,20 +1,24 @@
 <template>
-  <v-card ripple hover
-            @click="buttonCallback" >
+  <v-card ripple hover @click="buttonCallback" >
 
-    <v-container grid-list-md
-                    pa-0 >
-      <v-layout v-bind="{ 'row' : $vuetify.breakpoint.xsOnly ? false : true,
-                          'column' : $vuetify.breakpoint.xsOnly ? true : false, }" >
-        <v-flex xs5
-                py-0 >
-          <v-img
-            :src="fingertipsImg"
-            :style="{ 'max-height': '200px', 'min-height': '100%' }"
-          />
-        </v-flex>
+    <v-container class="pa-0" >
+      <v-row :class="{ 'flex-column' : $vuetify.breakpoint.xsOnly }"
+              no-gutters >
 
-        <v-flex xs7 pa-2>
+        <v-col class="py-0 pr-sm-0"        
+                cols="12"
+                sm="5" >
+          <v-img class="imagezoom"
+                  :src="fingertipsImg"
+                  style="max-height: 200px; min-height: 100%; border-top-left-radius: 4px;"
+                  :style="`border-bottom-left-radius: ${$vuetify.breakpoint.smAndUp ? 4 : 0}px;
+                    border-top-right-radius: ${$vuetify.breakpoint.xsOnly ? 4 : 0}px;`" />
+        </v-col>
+
+        <v-col class="pa-4"
+                cols="12"
+                sm="7" >
+
           <div class="hidden-sm-and-down envidatSlogan display-1"
                 v-html="slogan">
           </div>
@@ -25,21 +29,21 @@
                 style="text-align: center;"
                 v-html="slogan" >
           </div>
-          <div class="pt-3 pb-5"
-                :class="{'px-2': $vuetify.breakpoint.smAndDown }"
-                :style="$vuetify.breakpoint.mdAndUp ? 'font-size: 14px !important;' : '' " >
+
+          <div class="py-5 mb-5"
+               :style="$vuetify.breakpoint.mdAndUp ? 'font-size: 14px !important;' : '' " >
             {{ subSlogan }}
           </div>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-container>
 
 
-    <v-card-actions class="ma-0 pa-2"
+    <v-card-actions class="ma-0 pa-4"
                     style="position: absolute; bottom: 0; right: 0;" >
 
       <base-rectangle-button v-if="moreButtonText && moreButtonCallback"
-                                class="mr-3"
+                                marginClass="mr-3"
                                 :buttonText="moreButtonText"
                                 :isSmall="true"
                                 :isFlat="true"

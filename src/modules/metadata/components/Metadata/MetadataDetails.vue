@@ -1,5 +1,6 @@
 <template>
-  <v-card>
+  <v-card id="MetadataDetails">
+
     <v-card-title class="title metadata_title">
       Further Information
     </v-card-title>
@@ -13,7 +14,7 @@
                         :id="val.label"
                         :label="val.label"
                         :name="val.label"
-                        :value="val.text.replace(`(${asciiDead})`, '').trim()"
+                        :value="replaceAuthorDeadInfo(val.text)"
                         hide-details
                         readonly />
 
@@ -21,7 +22,7 @@
                       :id="val.label"
                       :label="val.label"
                       :name="val.label"
-                      :value="val.text.replace(`(${asciiDead})`, '').trim()"
+                      :value="replaceAuthorDeadInfo(val.text)"
                       hide-details
                       readonly />
         </div>
@@ -29,15 +30,17 @@
     </v-card-text>
 
     <v-card-text v-if="!showPlaceholder && (!details || details.length <= 0)"
-                  style="color: red;" >
+                  :style="`color: ${emptyTextColor};`"
+                  class="pa-4 pt-0 readableText">
       {{ emptyText }}
     </v-card-text>
 
 
-    <v-card-text v-if="showPlaceholder" >
-      <v-layout row wrap
-                v-for="n in 5"
-                :key="n + 'label'" >
+    <v-card-text v-if="showPlaceholder"
+                  class="pa-4 pt-0">
+      <v-row v-for="n in 5"
+            :key="n + 'label'"
+            no-gutters >
 
           <div class="flex xs2 pr-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
             <div class="bone bone-type-text " />
@@ -46,7 +49,7 @@
           <div class="flex xs10 pl-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
             <div class="bone bone-type-text " />
           </div>
-      </v-layout>
+      </v-row>
     </v-card-text>
 
   </v-card>
@@ -66,9 +69,6 @@
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
-import { mapGetters } from 'vuex';
-import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
-
 
 export default {
   name: 'MetadataDetails',
@@ -77,6 +77,7 @@ export default {
   props: {
     genericProps: Object,
     showPlaceholder: Boolean,
+    authorDeadInfo: Object,
   },
   data: () => ({
     maxSingleTextLengthLg: 80,
@@ -85,15 +86,18 @@ export default {
     emptyText: 'No details found for this dataset',
   }),
   computed: {
-    ...mapGetters({
-      asciiDead: `${METADATA_NAMESPACE}/asciiDead`,
-      authorPassedInfo: `${METADATA_NAMESPACE}/authorPassedInfo`,
-    }),
     details() {
       return this.mixinMethods_getGenericProp('details');
     },
   },
   methods: {
+    replaceAuthorDeadInfo(text) {
+      if (!text) {
+        return '';
+      }
+
+      return text.replace(`(${this.authorDeadInfo ? this.authorDeadInfo.asciiDead : ''})`, '').trim();
+    },
     isSingleText: function isSingleText(text) {
       if (!text || text.length <= 0) {
         return true;

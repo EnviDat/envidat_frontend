@@ -1,9 +1,9 @@
 <template>
-  <v-container tag="article"
-                fluid fill-height
-                pa-0 >
-    <v-layout row wrap >
-      <v-flex xs12  >
+  <v-container class="fill-height pa-0" tag="article"
+                fluid 
+                >
+    <v-row  >
+      <v-col cols="12"  >
         <v-card>
           <v-card-title :style="`background-color: ${color}`">
             <div v-if="error"
@@ -50,9 +50,9 @@
             </form>
           </v-card-text>
         </v-card>
-      </v-flex>
+      </v-col>
 
-    </v-layout>
+    </v-row>
   </v-container>
 </template>
 
@@ -105,7 +105,7 @@ export default {
       error: 'error',
     }),
     color() {
-      return this.error ? this.$vuetify.theme.error : this.$vuetify.theme.highlight;
+      return this.error ? this.$vuetify.theme.themes.light.error : this.$vuetify.theme.themes.light.highlight;
     },
   },
   methods: {

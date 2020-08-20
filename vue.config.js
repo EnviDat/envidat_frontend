@@ -25,7 +25,9 @@ process.env.VUE_APP_VERSION = require('./package.json').version;
 
 const version = process.env.VUE_APP_VERSION;
 
-if (process.env.NODE_ENV === 'production') {
+const isProd = process.env.NODE_ENV === 'production';
+
+if (isProd) {
   const fileName = `version_${version}.txt`;
   const filePath = `${__dirname}/public/${fileName}`;
 
@@ -42,26 +44,12 @@ if (process.env.NODE_ENV === 'production') {
 console.log(`starting ${version} with use of testdata '${process.env.VUE_APP_USE_TESTDATA}' on ${process.env.NODE_ENV}`);
 
 module.exports = {
+  transpileDependencies: ['vuetify'],
   publicPath: './',
   assetsDir: './static',
   runtimeCompiler: true,
   css: {
-    // extract: { filename: 'styles.css' },
-    modules: false,
     sourceMap: true,
-    // loaderOptions: {
-    //   css: {
-    //     url: true,
-    //     // import: true,
-    //     // localIdentName: '[local]_[hash:base64:8]',
-    //   },
-    //   // postcss: {
-    //   //   // "postcss-import": {},
-    //   //   // "postcss-url": {},
-    //   //   // to edit target browsers: use "browserslist" field in package.json
-    //   //   "autoprefixer": {}
-    //   // }
-    // }
   },
   pluginOptions: {
     storybook: {
@@ -93,11 +81,24 @@ module.exports = {
     },
     plugins: [
       // Copy Cesium Assets, and Workers to a static directory
-      new CopywebpackPlugin([{ from: path.join(cesiumSource, cesiumWorkers), to: 'Workers' }]),
-      new CopywebpackPlugin([{ from: path.join(cesiumSource, 'Assets'), to: 'Assets', ignore: ['Images/**', 'Textures/**', 'IAU2006_XYS/**'] }]),
+      new CopywebpackPlugin({
+        patterns: [{
+          from: path.join(cesiumSource, cesiumWorkers),
+          to: 'Workers',
+        },
+        {
+          from: path.join(cesiumSource, 'Assets'),
+          to: 'Assets',
+          globOptions: {
+            ignore: ['Images/**', 'Textures/**', 'IAU2006_XYS/**'],
+          },
+        },
+        {
+          from: 'node_modules/amcharts3/amcharts/images', to: 'amcharts/images',
+        }],
+      }),
       // Define relative base path in cesium for loading assets
       new webpack.DefinePlugin({ CESIUM_BASE_URL: JSON.stringify('') }),
-      new CopywebpackPlugin([{ from: 'node_modules/amcharts3/amcharts/images', to: 'amcharts/images' }]),
     ],
   },
   // devServer: {

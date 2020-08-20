@@ -1,7 +1,8 @@
-<template>
+<template id="MetadataBody">
   <expandable-text-layout v-bind="body"
-                            :showPlaceholder="showPlaceholder"
-                            :maxTextLength="1005" />
+                          :showPlaceholder="showPlaceholder"
+                          :maxTextLength="body.maxTextLength"
+                          :emptyTextColor="body.emptyTextColor" />
 
 </template>
 

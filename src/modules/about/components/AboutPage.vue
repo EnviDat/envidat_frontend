@@ -1,135 +1,90 @@
 <template>
-  <v-container tag="article" fluid fill-height pa-0 >
-    <v-layout row wrap >
+  <v-container class="pa-0 ma-0"
+                tag="article"
+                id="AboutPage" >
+      <!-- Tabs -->
+      <v-tabs v-model="activeTab"
+              slider-color="accent"
+              color="white"
+              grow
+              icons-and-text
+              background-color="highlight">
 
-      <v-flex xs12 lg10 offset-lg1 >
-        <v-tabs v-model="activeTab"
-                color="transparent"
-                slider-color="accent" 
-                grow
-                fixed-tabs >
+        <v-tab v-for="tab in tabs"
+              :key="tab.name"
+              class="pa-0">
+            {{ $vuetify.breakpoint.smAndUp ? tab.name : ''}}
 
-          <v-tab ripple :style="`background-color: ${$vuetify.theme.highlight}`">
-            <!-- About -->
-            <v-icon>info</v-icon>
-          </v-tab>
+          <v-icon>{{tab.icon}}</v-icon>
+        </v-tab>
+      </v-tabs>
 
-          <v-tab-item >
-            <v-flex xs12 mt-3 >
-              <img-and-text-layout :img="missionImg"
-                                    :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
-                                    title="About EnviDat" />
-            </v-flex>
+      <!-- Tab contents -->
+      <v-tabs-items v-model="activeTab">
 
-            <v-flex xs12 px-3 mt-5 >
+        <!-- About -->
+        <v-tab-item :key="tabs[0].name">
 
-              <v-container grid-list-lg pa-0 >
-                <v-layout row wrap >
+          <about-tab-layout title="About EnviDat"
+                            :titleImage="missionImg" >
 
-                  <v-flex v-for="(card, index) in aboutCardInfo"
-                          :key="index"
-                          my-2
-                          :class="card.widthClass" >
+            <v-container class="pa-0 pt-5">
+              <v-row >
 
-                    <expandable-card :title="card.title"
-                                      :text="card.text"
-                                      :img="card.img"
-                                      :min-height="100"
-                                      :max-height="150"
-                                      :contain="card.title === 'WSL'" />
-                  </v-flex>
-                </v-layout>
+                <v-col v-for="(card, index) in aboutCardInfo"
+                        :key="index"
+                        :class="card.widthClass" >
 
-              </v-container>
-            </v-flex>
-          </v-tab-item>
+                  <expandable-card :title="card.title"
+                                    :text="card.text"
+                                    :img="card.img"
+                                    :min-height="100"
+                                    :max-height="150"
+                                    :contain="card.title === 'WSL'" />
+                </v-col>
+              </v-row>
 
-          <v-tab ripple :style="`background-color: ${$vuetify.theme.highlight}`">
-            <!-- Guidelines -->
-            <v-icon>local_library</v-icon>
-          </v-tab>
+            </v-container>
 
-          <v-tab-item>
-            <v-flex xs12 mt-3 >
-              <img-and-text-layout :img="guidelineImg"
-                                    :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
-                                    title="Guidelines" />
-            </v-flex>
+          </about-tab-layout>
 
-            <v-flex v-if="guidelinesLoading"
-                    xs12
-                    pt-5 >
-              Loading Guidelines...
-            </v-flex>
+        </v-tab-item>
 
-            <v-flex v-if="!guidelinesLoading"
-                    xs12
-                    pt-5
-                    v-html="guidelinesMarkdownText" >
-            </v-flex>
+        <!-- Guidelines -->
+        <v-tab-item :key="tabs[1].name">
 
-          </v-tab-item>
+          <about-tab-layout title="Guidelines"
+                            :titleImage="guidelineImg"
+                            :loading="guidelinesLoading"
+                            loadingText="Loading Guidelines..."
+                            :markdownContent="guidelinesMarkdownText" />
 
-          <v-tab ripple :style="`background-color: ${$vuetify.theme.highlight}`">
-            <!-- Policies -->
-            <v-icon>policy</v-icon>
-          </v-tab>
+        </v-tab-item>
 
-          <v-tab-item >
-            <v-flex xs12 mt-3 >
-              <img-and-text-layout :img="policiesImg"
-                                    :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
-                                    title="Policies" />
-            </v-flex>
+        <!-- Policies -->
+        <v-tab-item :key="tabs[2].name">
 
-            <v-flex v-if="policiesLoading"
-                    xs12
-                    pt-5 >
-              Loading Policies...
-            </v-flex>
+          <about-tab-layout title="Policies"
+                            :titleImage="policiesImg"
+                            :loading="policiesLoading"
+                            loadingText="Loading Policies..."
+                            :markdownContent="policiesMarkdownText" />
 
-            <v-flex v-if="!policiesLoading"
-                    xs12
-                    pt-5
-                    v-html="policiesMarkdownText" >
-            </v-flex>
-          </v-tab-item>
+        </v-tab-item>
 
-          <v-tab ripple :style="`background-color: ${$vuetify.theme.highlight}`">
-            <!-- DMP -->
-            <v-icon>menu_book</v-icon>
-          </v-tab>
+        <!-- DMP -->
+        <v-tab-item :key="tabs[3].name">
 
-          <v-tab-item>
-            <v-flex xs12 mt-3>
-              <img-and-text-layout :img="dmpImg"
-                                    :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
-                                    title="Data Management Plan" />
-            </v-flex>
+          <about-tab-layout title="Data Management Plan"
+                            :titleImage="dmpImg"
+                            :loading="dmpLoading"
+                            loadingText="Loading Data Management Plan infos..."
+                            :markdownContent="dmpMarkdownText" />
 
-            <v-flex v-if="dmpLoading"
-                    offset-md1
-                    offset-lg1
-                    shrink
-                    pt-5 >
-              Loading DMP Infos...
-            </v-flex>
+        </v-tab-item>
+      </v-tabs-items>
 
-
-            <v-flex v-if="!dmpLoading"
-                    xs12
-                    pt-5
-                    v-html="dmpMarkdownText" >
-            </v-flex>
-          </v-tab-item>
-
-
-        </v-tabs>
-      </v-flex>
-
-    </v-layout>
   </v-container>
-
 </template>
 
 <script>
@@ -167,8 +122,6 @@ import {
 } from '@/modules/about/store/dmpMutationsConsts';
 
 
-import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
-
 import teamSmall from '@/modules/about/assets/team_small.jpg';
 import mission from '@/modules/about/assets/mission.jpg';
 import missionSmall from '@/modules/about/assets/mission_small.jpg';
@@ -186,6 +139,7 @@ import guidelines from '@/modules/about/assets/guidelines.jpg';
 import guidelinesSmall from '@/modules/about/assets/guidelines_small.jpg';
 
 import ExpandableCard from '@/modules/about/components/ExpandableCard';
+import AboutTabLayout from './AboutTabLayout';
 import dmp from '../assets/dmp.jpg';
 import dmpSmall from '../assets/dmp_small.jpg';
 
@@ -233,43 +187,43 @@ export default {
           title: 'Our Mission',
           text: 'EnviDat is the environmental data portal and repository developed by the Swiss Federal Research Institute WSL. We have the capability to integrate, host and publish data sets. We make environmental monitoring and research data accessible. <p><a href="https://www.wsl.ch/en/about-wsl/programmes-and-initiatives/envidat.html" target="_blank" onclick="event.stopPropagation();" >More about EnviDat as Program of WSL</a></p>',
           img: this.handsSmall,
-          widthClass: 'xs12 sm6 md4',
+          widthClass: 'col-12 col-sm-6 col-md-4',
         },
         {
           title: 'Concept',
           text: 'EnviDat supports the user-friendly registration, documentation, storage, publication, search and retrieval of data sets from the environmental domain. We provide various services to our users and we follow a set of principles as summarized in our concept image below. Additional detailed information can be found in our <a href="https://www.dora.lib4ri.ch/wsl/islandora/object/wsl:18703" target="_blank" onclick="event.stopPropagation();" >concept paper on DORA</a>.',
           img: this.conceptSmall,
-          widthClass: 'xs12 sm6 md4',
+          widthClass: 'col-12 col-sm-6 col-md-4',
         },
         {
           title: 'Community',
           text: 'With EnviDat, WSL aims to disseminate its data sets as broadly as possible in order to foster international research cooperation in the field of environmental science and contribute to the ongoing cultural evolution in research towards openness, shared data and opportunities for collaboration. Consequently, we are registered in <a href="https://fairsharing.org/biodbcore-001178/" target="_blank" onclick="event.stopPropagation();" >FAIRsharing.org</a> and <a href="https://www.re3data.org/repository/r3d100012587" target="_blank" onclick="event.stopPropagation();" >re3data.org</a> and a contributor community to <a href="http://geoportal.org/community/envidat-community" target="_blank" onclick="event.stopPropagation();" >ESA Geoportal </a>, <a href="https://gcmd.nasa.gov/search/Titles.do?AutoDisplayTitles=true&subset=envidat#titles" target="_blank" onclick="event.stopPropagation();" >NASA GCMD</a> and <a href="http://b2find.eudat.eu/dataset?groups=envidat" target="_blank" onclick="event.stopPropagation();" >EOSC-Hub via B2FIND</a>. ',
           img: this.communitySmall,
-          widthClass: 'xs12 sm6 md4',
+          widthClass: 'col-12 col-sm-6 col-md-4',
         },
         {
           title: 'WSL',
           text: 'The Swiss Federal Institute for Forest, Snow and Landscape Research is concerned with the use, development and protection of natural and urban spaces. The focus of our research is on solving problems to do with the responsible use of landscapes and forests and a prudent approach to natural hazards, especially those common in mountainous countries. WSL occupies a leading position internationally in these research areas. We also provide groundwork for sustainable environmental policies in Switzerland. <p><a href="https://www.wsl.ch" target="_blank" onclick="event.stopPropagation();" >For more information have a look at the Website of WSL</a></p>',
           img: this.wslLogoSmall,
-          widthClass: 'xs12 sm6 md4',
+          widthClass: 'col-12 col-sm-6 col-md-4',
         },
         {
           title: 'Team',
           /* eslint-disable prefer-template */
           text: '<img src="' + this.orga + '" style="width: 100%; height: 100%;" />',
           img: this.teamSmall,
-          widthClass: 'xs12 sm12 md8',
+          widthClass: 'col-12 col-sm-12 col-md-8',
         },
       ];
     },
     policiesMarkdownText() {
-      return remark().use(html).processSync(this.policiesMarkdown);
+      return remark().use(html).processSync(this.policiesMarkdown).toString();
     },
     policiesImg() {
       return this.$vuetify.breakpoint.mdAndUp ? policies : policiesSmall;
     },
     guidelinesMarkdownText() {
-      return remark().use(html).processSync(this.guidelinesMarkdown);
+      return remark().use(html).processSync(this.guidelinesMarkdown).toString();
     },
     guidelineImg() {
       return this.$vuetify.breakpoint.mdAndUp ? guidelines : guidelinesSmall;
@@ -278,12 +232,12 @@ export default {
       return this.$vuetify.breakpoint.mdAndUp ? dmp : dmpSmall;
     },
     dmpMarkdownText() {
-      return remark().use(html).processSync(this.dmpMarkdown);
+      return remark().use(html).processSync(this.dmpMarkdown).toString();
     },
   },
   components: {
-    ImgAndTextLayout,
     ExpandableCard,
+    AboutTabLayout,
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
@@ -297,6 +251,36 @@ export default {
     wslLogoSmall,
     orga,
     activeTab: null,
+    tabs: [{
+      name: 'about',
+      icon: 'info',
+    },
+    {
+      name: 'guidelines',
+      icon: 'local_library',
+    },
+    {
+      name: 'policies',
+      icon: 'policy',
+    },
+    {
+      name: 'dmp',
+      icon: 'menu_book',
+    }],
   }),
 };
 </script>
+
+<style>
+  /* Overwrite tab style vuetify, needed for smallscreen */
+  .v-slide-group__prev--disabled {
+      display: none !important;
+  }
+</style>
+
+<style scoped>
+ /* Overwrite default vuetify background class */
+  .theme--light.v-tabs-items {
+    background-color: transparent;
+  }
+</style>

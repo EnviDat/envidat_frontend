@@ -1,6 +1,4 @@
 <template>
-  <v-card class="elevation-0" >
-
     <filter-map-widget-layout :title="title"
                               :highlightedText="highlightedText"
                               :pinnedAmount="pinnedIds.length"
@@ -15,7 +13,7 @@
       <template v-slot:clearPins>
         <base-icon-button materialIconName="close"
                           iconColor="red"
-                          :color="topLayout ? 'transparent' : ''"
+                          :color="topLayout ? 'transparent' : 'primary'"
                           :outlined="!topLayout && pinnedIds.length > 0 "
                           :isSmall="mdScreen || topLayout"
                           :disabled="pinnedIds.length <= 0"
@@ -28,7 +26,7 @@
                           iconColor="black"
                           color="highlight"
                           :isSmall="mdScreen"
-                          :outlined="true"
+                          outlined
                           :tooltipText="focusText"
                           @clicked="catchFocusClicked()" />
       </template>
@@ -37,9 +35,9 @@
         <base-icon-button :count="pinNumber"
                           :customIcon="pinIcon"
                           color="secondary"
-                          :outlined="true"
+                          :fillColor="pinEnabled ? $vuetify.theme.themes.light.primary : 'transparent'"
                           :isSmall="mdScreen"
-                          :isToggled="pinEnabled"
+                          outlined
                           :tooltipText="pinText"
                           @clicked="catchPinClicked()" />
       </template>
@@ -48,9 +46,9 @@
         <base-icon-button :count="multiPinNumber"
                           :customIcon="multiPinIcon"
                           color="secondary"
-                          :outlined="true"
+                          :fillColor="multiPinEnabled ? $vuetify.theme.themes.light.primary : 'transparent'"
+                          outlined
                           :isSmall="mdScreen"
-                          :isToggled="multiPinEnabled"
                           :tooltipText="multiPinText"
                           @clicked="catchMultipinClicked()" />
       </template>
@@ -60,16 +58,14 @@
                           materialIconName="layers"
                           iconColor="black"
                           color="secondary"
+                          :fillColor="polygonEnabled ? $vuetify.theme.themes.light.primary : 'transparent'"
                           :isSmall="mdScreen"
-                          :isToggled="polygonEnabled"
-                          :outlined="true"
+                          outlined
                           :tooltipText="polygonText"
                           @clicked="catchPolygonClicked()" />
       </template>
 
     </filter-map-widget-layout>
-
-  </v-card>
 </template>
 
 <script>
@@ -87,9 +83,10 @@
  */
 
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
-import FilterMapWidgetLayout from '@/components/Layouts/FilterMapWidgetLayout';
+import FilterMapWidgetLayout from '@/components/Filtering/FilterMapWidgetLayout';
 
 export default {
+  name: 'FilterMapWidget',
   props: {
     title: {
       type: String,

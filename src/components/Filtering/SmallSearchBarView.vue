@@ -1,72 +1,84 @@
 <template>
-  <v-card >
-    <v-container fluid pa-0 >
-    <v-layout row align-center justify-space-between>
+  <v-card style="width: 100%;">
+    <v-container class="pa-0 fill-height"
+                  fluid >
+    <v-row align="center"
+            justify="space-between"
+            no-gutters
+            class="fill-height" >
 
-      <v-flex v-if="loading"
-              style="min-width: 60px; text-align: center;"
-              shrink >
+      <v-col v-if="loading"
+              class="shrink py-0"
+              style="min-width: 60px; text-align: center;" >
         <v-progress-circular indeterminate
                               size="20"
                               width="2"
                               color="primary" />
-      </v-flex>
+      </v-col>
 
-      <v-flex v-if="showSearchCount && !loading"
-              shrink
+      <v-col v-if="showSearchCount && !loading"
+              class="shrink py-0"
               style="min-width: 60px; text-align: center;" >
 
-        <v-tooltip bottom :disabled="$vuetify.breakpoint.xsOnly">
-          <tag-chip slot="activator"
-                    :style="$vuetify.breakpoint.xsOnly ? 'font-size: 0.65rem !important;' : 'font-size: 0.8rem !important;'"
-                    :name="searchCount ? searchCount.toString() : '0'"
-                    :selectable="false"
-                    :highlighted="searchCount > 0"
-                    :closeable="false" />
+        <v-tooltip bottom
+                    :disabled="$vuetify.breakpoint.xsOnly">
+          <template v-slot:activator="{ on }">
+            <tag-chip v-on="on"
+                      :style="$vuetify.breakpoint.xsOnly ? 'font-size: 0.65rem !important;' : 'font-size: 0.8rem !important;'"
+                      :name="searchCount ? searchCount.toString() : '0'"
+                      :selectable="false"
+                      :highlighted="searchCount > 0"
+                      :closeable="false" />
+          </template>
 
           <span>{{ searchCount }} metadata entries found</span>
         </v-tooltip>
-      </v-flex>
+      </v-col>
 
-      <v-flex v-if="showSearch && !hasButton"
-                shrink
-                pa-0 >
+      <v-col v-if="showSearch && !hasButton"
+              class="shrink pa-0" >
         <base-icon-button materialIconName="search"
                           marginClass="ma-0"
                           color="transparent"
-                          :isToggled="!searchTerm"
-                          @clicked="clicked"
-        />
-      </v-flex>
+                          :outlined="!searchTerm"
+                          @clicked="clicked" />
+      </v-col>
 
-      <v-flex v-if="showSearch"
-              grow
-              py-0 >
-        <v-tooltip bottom :disabled="$vuetify.breakpoint.xsOnly || !searchToolTipText">
-          <v-text-field slot="activator"
-                        class="envidatSmallSearch"
-                        style="align-items: center;"
-                        :class="{'small': compactLayout}"
-                        v-model="searchText"
-                        single-line
-                        hide-details
-                        primary
-                        :flat="isFlat"
-                        :placeholder="labelText"
-                        @keyup.enter="clicked"
-                        append-icon="clear"
-                        @click:append="clearClicked" />
+        <v-col v-if="showSearch" class="grow py-0 mr-2" >
+
+          <v-tooltip bottom
+                     :disabled="$vuetify.breakpoint.xsOnly || !searchToolTipText">
+            <template v-slot:activator="{ on }">
+
+              <v-text-field v-on="on"
+                            class="envidatSmallSearch"
+                            style="align-items: center;"
+                            :class="{'small': compactLayout}"
+                            v-model="searchText"
+                            single-line
+                            hide-details
+                            primary
+                            :clearable="searchText && searchText.length > 0"
+                            :flat="isFlat"
+                            :placeholder="labelText"
+                            @keyup.enter="clicked"
+                            append-icon="clear"
+                            @click:append="clearClicked" />
+            </template>
 
           <span>{{ searchToolTipText }}</span>
         </v-tooltip>
-      </v-flex>
+      </v-col>
 
-      <v-flex v-if="showSearch && hasButton"
-              shrink >
-        <base-rectangle-button :button-text="buttonText" :is-small="true" @clicked="clicked" />
-      </v-flex>
+      <v-col v-if="showSearch && hasButton"
+              class="shrink" >
+        <base-rectangle-button :button-text="buttonText"
+                                :is-small="!compactLayout"
+                                :isXsSmall="compactLayout"
+                                @clicked="clicked" />
+      </v-col>
 
-    </v-layout>
+    </v-row>
     </v-container>
   </v-card>
 </template>
@@ -79,7 +91,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-25 10:37:45
+ * Last modified  : 2020-07-15 09:32:19
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -189,10 +201,8 @@ export default {
     padding: 0;
   }
 
-  .envidatSmallSearch.small > .v-input__control {
-    margin-bottom: 2px !important;
-    /* min-height: 32px !important; */
-    font-size: 12px !important;
+  .envidatSmallSearch.small .v-text-field__slot > input {
+    font-size: 14px !important;
   }
 
   .envidatSmallSearch > .v-input__append-outer {

@@ -1,30 +1,24 @@
 <template>
   <v-card ripple
           hover
-          style="height: 100%; max-height: 375px !important;"
-  >
+          style="height: 100%; max-height: 375px !important;" >
     <v-img background-color="primary"
-            :height="flatLayout ? '65px' : $vuetify.breakpoint.smAndDown ? '100px' : '125px'"
-    >
+            :height="flatLayout ? '65px' : $vuetify.breakpoint.smAndDown ? '100px' : '125px'" >
 
-      <v-container style="position: absolute;"
-                  fill-height
-                  grid-list-xs
-                  pb-0 >
-        <v-layout column>
-          <v-flex xs12
-                  py-0 >
-            <v-layout row
-                      align-start >
-              <v-flex xs12>
+      <v-container class="fill-height py-0"
+                    style="position: absolute;" >
+        <v-row >
+          <v-col class="py-0" cols="12" >
+            <v-row align="start" >
+              <v-col cols="12">
                 <div class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-shimmer">
                   <div class="bone bone-type-multiline bone-style-steps" />
                 </div>
-              </v-flex>
-            </v-layout>
-          </v-flex>
+              </v-col>
+            </v-row>
+          </v-col>
 
-        </v-layout>
+        </v-row>
       </v-container>
     </v-img>
 
@@ -35,15 +29,16 @@
         <div class="bone bone-type-multiline bone-style-paragraph" />
       </div>
 
-      <v-layout row wrap
-                fill-height
-                align-end >
-        <v-flex v-for="n in 3"
-                :key="n">
+      <v-row class="fill-height" 
+              align="end"
+              no-gutters >
+        <v-col v-for="n in 3"
+                :key="n"
+                class="shrink">
           <tag-chip-placeholder py-0
                                 class="envidatChip" />
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
 
     </v-card-text>
   </v-card>

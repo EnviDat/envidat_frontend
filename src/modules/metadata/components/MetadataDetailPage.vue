@@ -1,12 +1,12 @@
 <template>
-  <v-container fluid
-                tag="article"
-                pa-0 >
-    <v-layout row wrap  >
-      <v-flex xs12
-              elevation-5
+  <v-container class="pa-0"
+                fluid
+                tag="article" >
+    <v-row >
+      <v-col class="elevation-5 pa-0"
+              cols="12"
               ref="header"
-              style="z-index: 1; position: absolute; left: 0;"
+              style="z-index: 1; left: 0; " 
               :style="headerStyle" >
 
         <metadata-header v-bind="header"
@@ -21,35 +21,41 @@
                           @clickedAuthor="catchAuthorClicked"
                           @checkSize="resize"
                           :expanded="headerExpanded" />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
 
-    <two-column-layout :style="`position: relative; top: ${headerHeight()}px`"
+    <two-column-layout :style="`position: relative; top: ${headerHeight()}px;`"
                         :first-column="firstColumn"
                         :second-column="secondColumn"
                         :show-placeholder="showPlaceholder" >
 
       <template v-slot:leftColumn>
 
-        <v-flex v-for="(entry, index) in firstColumn"
+        <v-row v-for="(entry, index) in firstColumn"
                 :key="`left_${index}_${keyHash}`"
-                mb-2 >
+                no-gutters >
+          <v-col class="mb-2 px-0">
+
           <component :is="entry"
                       :generic-props="entry.genericProps"
                       :show-placeholder="showPlaceholder"
-                      :authorDeadInfo="entry.name === 'MetadataAuthors' ? authorDeadInfo : null" />
-        </v-flex>
+                      :authorDeadInfo="authorDeadInfo" />
+          </v-col>
+        </v-row>
       </template>
 
       <template v-slot:rightColumn>
-        <v-flex v-for="(entry, index) in secondColumn"
+        <v-row v-for="(entry, index) in secondColumn"
                 :key="`right_${index}_${keyHash}`"
-                mb-2 >
+                no-gutters >
+          <v-col class="mb-2 px-0">
+
           <component :is="entry"
                       :generic-props="entry.genericProps"
                       :show-placeholder="showPlaceholder"
-                      :authorDeadInfo="entry.name === 'MetadataAuthors' ? authorDeadInfo : null" />
-        </v-flex>
+                      :authorDeadInfo="authorDeadInfo" />
+          </v-col>
+        </v-row>
       </template>
     </two-column-layout>
   </v-container>
@@ -130,8 +136,6 @@ export default {
      * @description load all the icons once before the first component's rendering.
      */
   beforeMount() {
-    this.downloadIcon = this.mixinMethods_getIcon('download');
-    this.linkIcon = this.mixinMethods_getIcon('link');
     this.doiIcon = this.mixinMethods_getIcon('doi');
     this.fileSizeIcon = this.mixinMethods_getIcon('fileSize');
     this.dateCreatedIcon = this.mixinMethods_getIcon('dateCreated');
@@ -213,7 +217,17 @@ export default {
         width = 83.25;
       }
 
-      return `width: ${width}%; margin: ${margin};`;
+      let pos = 'position: ';
+      if (this.$vuetify.breakpoint.mdAndUp) {
+        pos += 'absolute';
+      } else if (this.appScrollPosition > 20) {
+        pos += 'fixed';
+      } else {
+        pos += 'relative';
+      }
+      // const pos = `position: ${this.appScrollPosition > 20 ? 'fixed' : this.$vuetify.breakpoint.smAndDown ? 'relative' : 'absolute'}`;
+
+      return `${pos}; width: ${width}%; margin: ${margin}; `;
     },
     headerExpanded() {
       if (this.$vuetify.breakpoint.mdAndUp) {
@@ -232,11 +246,17 @@ export default {
       this.reRenderComponents();
     },
     headerHeight() {
-      if (!this.showPlaceholder && this.$refs && this.$refs.header) {
-        return this.$refs.header.clientHeight;
+      let height = -2;
+
+      if ((this.$vuetify.breakpoint.smAndDown
+        && this.appScrollPosition > 20) || this.$vuetify.breakpoint.mdAndUp) {
+
+        if (!this.showPlaceholder && this.$refs && this.$refs.header) {
+          height = this.$refs.header.clientHeight;
+        }
       }
 
-      return 150;
+      return height;
     },
     /**
      * @description
@@ -261,14 +281,12 @@ export default {
 
         this.header = createHeader(currentContent, this.$vuetify.breakpoint.smAndDown, this.authorDeadInfo);
 
-        this.body = createBody(currentContent);
+        this.body = createBody(currentContent, this.$vuetify.breakpoint.smAndDown);
 
         this.citation = createCitation(currentContent);
 
         this.resources = createResources(currentContent);
         this.resources.doiIcon = this.doiIcon;
-        this.resources.downloadIcon = this.downloadIcon;
-        this.resources.linkIcon = this.linkIcon;
         this.resources.fileSizeIcon = this.fileSizeIcon;
         this.resources.dateCreatedIcon = this.dateCreatedIcon;
         this.resources.lastModifiedIcon = this.lastModifiedIcon;
@@ -460,8 +478,6 @@ export default {
     authors: null,
     amountOfResourcesToShowDetailsLeft: 4,
     notFoundBackPath: 'browse',
-    downloadIcon: null,
-    linkIcon: null,
     doiIcon: null,
     fileSizeIcon: null,
     dateCreatedIcon: null,

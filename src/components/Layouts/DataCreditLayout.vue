@@ -1,60 +1,60 @@
 <template>
-  <v-container grid-list-xs
-                fluid>
-    <v-layout row
-              wrap >
+  <v-container fluid style="min-height: 67px;">
 
-      <v-flex xs12
+    <v-row no-gutters>
+      <v-col cols="12"
               :class="!dark ? 'white--text' : 'black--text'" >
         {{ badgesLabel }}
-      </v-flex>
-
-      <v-flex v-if="!hasDataCreditCounts"
-              xs12
+      </v-col>
+    </v-row>
+    
+    <v-row no-gutters>
+      <v-col v-if="!hasDataCreditCounts"
+              cols="12"
+              class="pt-4"
               :class="!dark ? 'white--text' : 'black--text'"       
               style="opacity: 0.65">
         {{ noCreditslabel }}
-      </v-flex>
+      </v-col>
 
-      <v-flex v-for="(creditName, index) in dataCreditNames"
+      <v-col v-show="showZero || (!showZero && dataCreditCounts[index] > 0)"
+              v-for="(creditName, index) in dataCreditNames"
               :key="index"
-              shrink px-1
-              v-show="showZero || (!showZero && dataCreditCounts[index] > 0)">
+              class="shrink pt-3 pt-md-4 px-2 px-md-3" >
 
-        <v-layout column >
+      <v-hover v-slot:default="{ hover }" >
+        <v-badge class="dataCreditIcon"
+                  bordered
+                  :overlap="!hover"
+                  :color="badgeColor">
 
-          <v-flex py-0 >
-            <v-tooltip bottom >
-              <v-icon slot="activator"
-                      :color="iconColor"
-                      class="dataCreditIcon">
+          <span slot="badge"
+                :class="dark ? 'white--text' : 'black--text'" >
+                {{ dataCreditCounts[index] }}
+          </span>
+
+          <v-tooltip bottom >
+            <template v-slot:activator="{ on }">
+              <v-icon v-on="on"
+                      :color="iconColor" >
                 {{ iconLookup(creditName) }}
               </v-icon>
+            </template >
 
-              {{ creditName }}
-            </v-tooltip>
-          </v-flex>
-
-          <v-flex pt-0 >
-              <v-badge class="dataCreditIcon"
-                        :color="badgeColor">
-                <span slot="badge"
-                      :class="dark ? 'white--text' : 'black--text'" >
-                      {{ dataCreditCounts[index] }}
-                </span>
-              </v-badge>
-          </v-flex>
-
-        </v-layout>
-
-      </v-flex>
-    </v-layout>
+            {{ `Author made ${dataCreditCounts[index]} ${creditName} contributions for data` }}
+          </v-tooltip>
+        </v-badge>
+        </v-hover>
+        
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
 
 export default {
+  name: 'DataCreditLayout',
   components: {
   },
   props: {
