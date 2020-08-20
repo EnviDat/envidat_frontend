@@ -16,7 +16,7 @@
 
       <v-row >
         <v-col cols="12"
-                class="text-md-h5 text-xs-body-1" >
+                class="text-md-h6 text-xs-body-1" >
           {{ description }}
         </v-col>
       </v-row>
@@ -28,7 +28,8 @@
           {{ actionDescription }}
         </v-col>
 
-        <v-col cols="6"  >
+        <v-col v-if="actionButtonText"
+                cols="6"  >
           <base-rectangle-button :button-text="actionButtonText"
                                   @clicked="actionButtonCallback" />
         </v-col>
@@ -50,7 +51,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2020-08-19 22:17:41
+ * Last modified  : 2020-08-20 07:50:36
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -62,8 +63,14 @@ import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 export default {
   name: 'NotFoundCard',
   props: {
-    title: String,
-    description: String,
+    title: {
+      type: String,
+      default: 'Content Not Found',
+    },
+    description: {
+      type: String,
+      default: 'Ups we have trouble showing you want you were looking for. Try reloading the page.',
+    },
     actionDescription: String,
     actionButtonText: String,
     actionButtonCallback: Function,

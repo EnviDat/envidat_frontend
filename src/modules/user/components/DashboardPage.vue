@@ -4,12 +4,8 @@
 
     <v-row v-if="!user" >
       <v-col>
-        <NotFoundCard
-          title="Not Signed in"
-          description="Sign in with your e-mail to see your datasets."
-          actionButtonText="Sign in"
-          :actionButtonCallback="catchSigninClick"
-          :image="UserNotFound1" />
+        <NotFoundCard v-bind="notSignedInInfos" 
+                      :actionButtonCallback="catchSigninClick" />
       </v-col>
     </v-row>
 
@@ -64,13 +60,8 @@
 
     <v-row v-if="user && !hasUserDatasets" >
       <v-col>
-        <NotFoundCard
-          title="No Datasets"
-          description="It seems you don't have any datasets."
-          actionDescription="Get started and create a dataset"
-          actionButtonText="Create Dataset"
-          :actionButtonCallback="catchCreateClick"
-          :image="UserNotFound2" />
+        <NotFoundCard v-bind="noDatasetsInfos"
+                      :actionButtonCallback="catchCreateClick" />
       </v-col>
     </v-row>
 
@@ -118,7 +109,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 14:18:32 
- * Last modified  : 2020-08-19 22:19:38
+ * Last modified  : 2020-08-20 07:58:47
  */
 
 import {
@@ -152,7 +143,7 @@ import {
 } from '@/store/mainMutationsConsts';
 
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
-import NotFoundCard from '@/modules/user/components/NotFoundCard';
+import NotFoundCard from '@/components/Cards/NotFoundCard';
 import MetadataList from '@/components/MetadataList';
 
 import UserNotFound1 from '@/modules/user/assets/UserNotFound1.jpg';
@@ -261,8 +252,19 @@ export default {
     placeHolderAmount: 4,
     showModal: false,
     selectedTagNames: [],
-    UserNotFound1,
-    UserNotFound2,
+    notSignedInInfos: {
+      title: 'Not Signed in',
+      description: 'Sign in with your e-mail to see your datasets.',
+      actionButtonText: 'Sign in',
+      image: UserNotFound1,
+    },
+    noDatasetsInfos: {
+      title: 'No Datasets',
+      description: "It seems you don't have any datasets.",
+      actionDescription: 'Get started and create a new dataset',
+      actionButtonText: 'New Dataset',
+      image: UserNotFound2,
+    },
     userListDefaultControls: [
       LISTCONTROL_COMPACT_LAYOUT_ACTIVE,
     ],
