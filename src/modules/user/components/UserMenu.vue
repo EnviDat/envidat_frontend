@@ -2,7 +2,8 @@
 
   <v-menu transition="slide-y-transition"
           bottom
-          offset-y >
+          offset-y
+          id="UserMenu" >
     <template v-slot:activator="{ on, attrs }">
       
       <div v-bind="attrs"
@@ -35,7 +36,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 14:18:32 
- * Last modified  : 2020-08-19 16:57:49
+ * Last modified  : 2020-08-20 10:54:44
  */
 import UserAvatar from '@/components/Layouts/UserAvatar';
 
@@ -48,6 +49,7 @@ import {
 } from '@/modules/user/store/userMutationsConsts';
 
 export default {
+  name: 'UserMenu',
   props: {
     userObject: Object,
     navItems: Array,
