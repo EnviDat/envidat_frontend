@@ -4,7 +4,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2020-08-20 07:57:28
+ * Last modified  : 2020-08-20 08:41:54
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -18,6 +18,7 @@ import SigninView from '@/modules/user/components/SigninView.vue';
 import UserAvatar from '@/components/Layouts/UserAvatar.vue';
 import UserCard from '@/components/Layouts/UserCard.vue';
 import UserMenu from '@/modules/user/components/UserMenu.vue';
+import DashboardHeader from '@/modules/user/components/DashboardHeader.vue';
 
 import NotFoundCard from '@/components/Cards/NotFoundCard.vue';
 import UserNotFound1 from '@/modules/user/assets/UserNotFound1.jpg';
@@ -39,6 +40,30 @@ const userMenuItems = [
 ];
 
 storiesOf('7 User / SignIn', module)
+  .add('Dashboard Header', () => ({
+    components: { DashboardHeader },
+    template: `
+    <v-row >
+
+      <v-col cols="12">
+        <DashboardHeader  />
+      </v-col>
+
+      <v-col cols="12">
+        <DashboardHeader :userName="userName"
+                          :nameInitials="nameInitials"
+                          :emailHash="emailHash" />
+      </v-col>
+
+    </v-row>
+    `,
+    data: () => ({
+      nameInitials: 'DH',
+      emailHash: null,
+      userName: 'Dominik Haas',
+    }),
+    methods,
+  }))
   .add('No user datasets found', () => ({
     components: { NotFoundCard },
     template: `
