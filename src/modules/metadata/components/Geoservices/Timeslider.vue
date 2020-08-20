@@ -87,6 +87,7 @@
         },
         chartCursor: {
           enabled: true,
+          bulletsEnabled: true,
         },
         chartScrollbar: {
           enabled: true,
@@ -105,7 +106,8 @@
             id: 'AmGraph-1',
             title: 'graph 1',
             valueField: 'value',
-            showBalloon: false,
+            showBalloon: true,
+            balloonText: '[[name]]',
             showHandOnHover: true,
           },
         ],
@@ -120,6 +122,10 @@
             title: '',
           },
         ],
+        balloon: {
+          maxWidth: 500,
+          fillAlpha: 1,
+        },
         marginTop: 0,
         paddingTop: 0,
         zoomOutOnDataUpdate: false,
