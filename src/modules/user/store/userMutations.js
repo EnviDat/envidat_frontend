@@ -6,7 +6,7 @@
 * @author Dominik Haas-Artho
 *
 * Created at     : 2020-07-14 16:51:52
- * Last modified  : 2020-08-19 16:32:06
+ * Last modified  : 2020-08-20 08:58:22
 *
 * This file is subject to the terms and conditions defined in
 * file 'LICENSE.txt', which is part of this source code package.
@@ -34,7 +34,7 @@ import {
   USER_GET_DATASETS_ERROR,
 } from './userMutationsConsts';
 
-function extractErrorObject(state, reason) {
+function extractError(state, reason) {
 
   let type = '';
   let field = '';
@@ -84,12 +84,7 @@ export default {
   [GET_USER_CONTEXT_ERROR](state, reason) {
     state.userLoading = false;
 
-    const error = reason.response.data.error;
-    const errObj = extractErrorObject(error);
-
-    state.errorField = errObj.field;
-    state.errorType = errObj.type;
-    state.error = errObj.msg;
+    extractError(state, reason);
   },
   [USER_SIGNIN](state) {
     state.signInLoading = true;
@@ -105,12 +100,7 @@ export default {
     state.signInLoading = false;
     state.signInSuccess = false;
     
-    const error = reason.response.data.error;
-    const errObj = extractErrorObject(error);
-
-    state.errorField = errObj.field;
-    state.errorType = errObj.type;
-    state.error = errObj.msg;
+    extractError(state, reason);
   },
   [REQUEST_TOKEN](state) {
     state.requestLoading = true;
@@ -128,12 +118,7 @@ export default {
     state.requestLoading = false;
     state.requestSuccess = false;
     
-    const error = reason.response.data.error;
-    const errObj = extractErrorObject(error);
-    
-    state.errorField = errObj.field;
-    state.errorType = errObj.type;
-    state.error = errObj.msg;
+    extractError(state, reason);
   },
   [USER_SIGNOUT](state) {
     state.signInLoading = false;
@@ -153,12 +138,7 @@ export default {
   [USER_SIGNOUT_ERROR](state, reason) {
     state.user = null;
 
-    const error = reason.response.data.error;
-    const errObj = extractErrorObject(error);
-
-    state.errorField = errObj.field;
-    state.errorType = errObj.type;
-    state.error = errObj.msg;
+    extractError(state, reason);
   },
   [USER_GET_DATASETS](state) {
     state.userLoading = true;
@@ -176,11 +156,6 @@ export default {
   [USER_GET_DATASETS_ERROR](state, reason) {
     state.userLoading = false;
 
-    const error = reason.response.data.error;
-    const errObj = extractErrorObject(error);
-
-    state.errorField = errObj.field;
-    state.errorType = errObj.type;
-    state.error = errObj.msg;
+    extractError(state, reason);
   },
 };
