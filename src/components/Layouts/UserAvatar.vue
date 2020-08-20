@@ -2,14 +2,15 @@
   <v-avatar :color="color"
             :size="size" >
 
-    <img v-if="emailHash"
-          :src="`https://gravatar.com/avatar/${emailHash}?s=${size}&d=${defaultGavatar}&r=g`" />
+    <v-img v-if="showGravatar"
+          :src="`https://gravatar.com/avatar/${emailHash}?s=${size}&d=${defaultGavatar}&r=g`"
+          @error="imageError" />
 
-    <span v-if="!emailHash && nameInitials"
+    <span v-if="!showGravatar && nameInitials"
           class="white--text"
           :class="initialsTextClass" >{{ nameInitials }}</span>
 
-    <v-icon v-if="!emailHash && !nameInitials"
+    <v-icon v-if="!showGravatar && !nameInitials"
             color="black"
             :small="size <= 20"
             :large="size > 40 && size < 128"
@@ -26,7 +27,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-08-12 15:57:51
+ * Last modified  : 2020-08-20 08:24:02
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -52,8 +53,12 @@ export default {
     },
   },
   data: () => ({
+    gravatarNotLoaded: false,
   }),
   computed: {
+    showGravatar() {
+      return !this.gravatarNotLoaded && this.emailHash;
+    },
     initialsTextClass() {
       if (this.size >= 128) {
         return 'display-2';
@@ -68,6 +73,11 @@ export default {
       }
 
       return 'headline';
+    },
+  },
+  methods: {
+    imageError() {
+      this.gravatarNotLoaded = true;
     },
   },
 };
