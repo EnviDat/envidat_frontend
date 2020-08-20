@@ -9,7 +9,7 @@ export function cesiumLayer(config) {
       },
       url: config.baseURL,
       layers: config.name,
-      enablePickFeatures: true,
+      enablePickFeatures: false,
     });
   }
   return null;

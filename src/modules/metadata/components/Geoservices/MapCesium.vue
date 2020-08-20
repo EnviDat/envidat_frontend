@@ -26,6 +26,8 @@
     import Rectangle from 'cesium/Core/Rectangle';
     import SceneMode from 'cesium/Scene/SceneMode';
     import Cartesian2 from 'cesium/Core/Cartesian2';
+    import Ellipsoid from 'cesium/Core/Ellipsoid';
+    import CesiumMath from 'cesium/Core/Math';
     import 'cesium/Widgets/widgets.css';
     import ZoomBtn from './ZoomBtn';
     import { cesiumLayer } from './layer-cesium';
@@ -75,6 +77,7 @@
           animation: false,
           imageryProvider: false,
           baseLayerPicker: false,
+          enablePickFeatures: true,
           fullscreenButton: false,
           vrButton: false,
           geocoder: false,
@@ -98,12 +101,31 @@
         this.replaceBasemap();
         this.zoomToExtent(this.layer.bbox);
 
-        this.viewer.scene.canvas.addEventListener('contextmenu', (event) => {
+        this.viewer.scene.canvas.addEventListener('click', (event) => {
           event.preventDefault();
           const mousePosition = new Cartesian2(event.clientX, event.clientY);
           const selectedLocation = this.viewer.scene.pickPosition(mousePosition);
-          console.log(selectedLocation);
-          // setMarkerInPos(Cesium.Cartographic.fromCartesian(selectedLocation));
+          const wgs = Ellipsoid.WGS84.cartesianToCartographic(selectedLocation);
+          console.log(CesiumMath.toDegrees(wgs.latitude), CesiumMath.toDegrees(wgs.longitude));
+          console.log(this.viewer.scene);
+
+
+          const posUL = this.viewer.camera.pickEllipsoid(new Cartesian2(0, 0), Ellipsoid.WGS84);
+          const posLR = this.viewer.camera.pickEllipsoid(new Cartesian2(this.viewer.canvas.width, this.viewer.canvas.height), Ellipsoid.WGS84);
+          const posLL = this.viewer.camera.pickEllipsoid(new Cartesian2(0, this.viewer.canvas.height), Ellipsoid.WGS84);
+          const posUR = this.viewer.camera.pickEllipsoid(new Cartesian2(this.viewer.canvas.width, 0), Ellipsoid.WGS84);
+          const cartUl = Ellipsoid.WGS84.cartesianToCartographic(posUL);
+          const maxLat = CesiumMath.toDegrees(cartUl.latitude).toFixed(2);
+
+          const cartUr = Ellipsoid.WGS84.cartesianToCartographic(posUR);
+          const maxLon = CesiumMath.toDegrees(cartUr.longitude).toFixed(2);
+          const cartLr = Ellipsoid.WGS84.cartesianToCartographic(posLR);
+          const minLat = CesiumMath.toDegrees(cartLr.latitude).toFixed(2);
+          const cartLl = Ellipsoid.WGS84.cartesianToCartographic(posLL);
+          const minLon = CesiumMath.toDegrees(cartLl.longitude).toFixed(2);
+
+          console.log(maxLat, maxLon, minLat, minLon);
+
         }, false);
 
 

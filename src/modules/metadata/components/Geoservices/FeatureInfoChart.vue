@@ -38,6 +38,7 @@ export default {
       const that = this;
 
       const config = {
+        creditsPosition: 'bottom-right',
         type: 'serial',
         theme: 'none',
         zoomOutText: '', // Hack, to hide show all button
