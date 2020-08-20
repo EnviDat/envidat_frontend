@@ -53,9 +53,15 @@ export const geoservices = {
     },
     setShow3d(state, payload) {
       state.show3d = payload;
+      if (state.linkedScreens || !state.splitScreen) {
+        state.show3dSplit = payload;
+      }
     },
     setShow3dSplit(state, payload) {
       state.show3dSplit = payload;
+      if (state.linkedScreens) {
+        state.show3d = payload;
+      }
     },
   },
   actions: {
