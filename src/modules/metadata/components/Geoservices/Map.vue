@@ -31,11 +31,11 @@
       <div v-if="!hasGeom" style="color: red;">No data to show</div>
       <map-leaflet v-if="!show3d" :layer="selectedLayer" :map-div-id="mapDivId" :points="featureinfo" :opacity="opacity">
         <slot></slot><br>
-        <v-btn fab small @click="show3d = true">3D</v-btn>
+        <v-btn fab small @click="setShow3d(true)">3D</v-btn>
       </map-leaflet>
       <map-cesium v-if="show3d" :layer="selectedLayer" :map-div-id="mapDivId" :opacity="opacity">
         <slot></slot><br>
-        <v-btn fab small @click="show3d = false">2D</v-btn>
+        <v-btn fab small @click="setShow3d(false)">2D</v-btn>
       </map-cesium>
     </div>
     <div class="timeslider-container" v-if="config.timeseries" style="position: relative;">
@@ -71,6 +71,7 @@
       config: { type: Object, required: true },
       mapDivId: { type: String, required: true },
       selectedLayerName: { type: String },
+      show3d: { type: Boolean },
     },
     data: () => ({
       layerControlOpen: false,
@@ -79,14 +80,6 @@
     computed: {
       featureinfo() {
         return this.$store.state.geoservices.timeseries;
-      },
-      show3d: {
-        get() {
-          return this.$store.state.geoservices.show3d;
-        },
-        set(value) {
-          this.$store.commit('setShow3d', value);
-        },
       },
       selectedLayer() {
         if (!this.selectedLayerName) {
@@ -103,6 +96,9 @@
       },
     },
     methods: {
+      setShow3d(value) {
+        this.$emit('setShow3d', value);
+      },
       setOpacity(value) {
         this.opacity = value;
       },

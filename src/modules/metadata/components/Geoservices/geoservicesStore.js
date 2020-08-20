@@ -10,6 +10,7 @@ export const geoservices = {
     splitLayer: null,
     splitScreen: false,
     show3d: false,
+    show3dSplit: false,
     linkedScreens: false,
     extent: null,
     timeseries: [],
@@ -52,6 +53,9 @@ export const geoservices = {
     },
     setShow3d(state, payload) {
       state.show3d = payload;
+    },
+    setShow3dSplit(state, payload) {
+      state.show3dSplit = payload;
     },
   },
   actions: {
