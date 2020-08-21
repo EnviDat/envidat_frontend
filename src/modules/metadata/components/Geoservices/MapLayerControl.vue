@@ -1,18 +1,18 @@
 <template>
     <v-card style="overflow-y: auto; max-height: 100%;">
       <v-list dense>
-        <v-list-tile>
+        <v-list-item>
           <v-slider min="0" max="100" :value="opacity" @change="setOpacity"></v-slider>
-        </v-list-tile>
+        </v-list-item>
         <v-divider></v-divider>
-        <v-list-tile
+        <v-list-item
           v-for="(layer, key) in layers"
           :key="key"
           :class="{'primary lighten-2': layer.name === selected }"
           @click="select(layer.name)"
         >
           {{ layer.title }}
-        </v-list-tile>
+        </v-list-item>
       </v-list>
     </v-card>
 </template>
