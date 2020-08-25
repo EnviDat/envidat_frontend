@@ -71,7 +71,7 @@
               <slot name="controlPanel" />
             </v-col>
 
-            <v-col class="pb-0"
+            <v-col class="py-0"
                     cols="12"
                     key="filterKeywords" >
               <slot name="filterKeywords" />
@@ -126,7 +126,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-22 13:05:03
+ * Last modified  : 2020-08-25 16:00:01
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
