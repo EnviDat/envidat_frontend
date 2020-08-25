@@ -36,9 +36,11 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 14:18:32 
- * Last modified  : 2020-08-20 10:54:44
+ * Last modified  : 2020-08-25 14:31:13
  */
 import UserAvatar from '@/components/Layouts/UserAvatar';
+
+import { getNameInitials } from '@/factories/authorFactory';
 
 import { USER_SIGNOUT_PATH } from '@/router/routeConsts'; 
 import {
@@ -59,11 +61,7 @@ export default {
   },
   computed: {
     nameInitials() {
-      if (!this.userObject || !this.userObject.name || !this.userObject.fullname) {
-        return '';
-      }
-
-      return `${this.userObject.name.substring(0, 1)}${this.userObject.fullname.substring(0, 1)}`.toUpperCase();
+      return getNameInitials(this.userObject);
     },
   },
   methods: {

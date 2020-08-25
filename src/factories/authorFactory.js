@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-06-05 14:07:03
- * Last modified  : 2020-06-05 14:07:03
+ * Last modified  : 2020-08-25 14:29:25
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -256,4 +256,12 @@ export function getLevelProgress(dataCreditScore) {
   }
 
   return progress;
+}
+
+export function getNameInitials(userObject) {
+  if (!userObject || !userObject.name || !userObject.fullname) {
+    return '';
+  }
+
+  return `${userObject.name.substring(0, 1)}${userObject.fullname.substring(0, 1)}`.toUpperCase();
 }
