@@ -50,9 +50,10 @@
     <template v-slot:metadataListPlaceholder>
       <v-container v-show="loading"
                     fluid
-                    class="py-0 px-1">
-      <v-row ref="metadataListPlaceholder" >
-
+                    class="pa-0">
+      <v-row id="metadataListPlaceholder"
+              ref="metadataListPlaceholder"
+              no-gutters >
         <v-col v-for="(n, index) in placeHolderAmount"
                 :key="'placeHolder_' + index"
                 :class="cardGridClass"
@@ -67,8 +68,10 @@
     <template v-slot:metadataListLayout >
       <v-container v-if="!loading"
                   fluid
-                  class="py-0 px-1">
-      <v-row ref="metadataListLayout" >
+                  class="pa-0">
+      <v-row id="metadataListLayout"
+              ref="metadataListLayout"
+              no-gutters >
 
         <v-col v-for="(pinnedId, index) in pinnedList"
                 :key="'pinned_' + index"
@@ -171,7 +174,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-08-19 09:33:11
+ * Last modified  : 2020-08-26 20:15:08
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

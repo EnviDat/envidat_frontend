@@ -4,6 +4,8 @@
                 fluid >
 
     <v-row v-if="mapLayout"
+            id="MapLayout"
+            no-gutters
             class="fill-height">
 
       <v-col class="py-0 pr-2 flex-column"
@@ -29,7 +31,9 @@
               cols="8"
               id="metadataListScroll" >
 
-        <v-row ref="controlPanel">
+        <v-row id="controlPanel"
+                ref="controlPanel"
+                no-gutters >
           <v-col class="hidden-xs-only py-0"
                   key="controlPanel"
                   cols="12">
@@ -37,8 +41,8 @@
           </v-col>
         </v-row>
 
-        <v-row>
-          <v-col class="mt-2 py-0"
+        <v-row no-gutters>
+          <v-col class="mt-2 pa-0"
                   cols="12"
                   ref="metadataListScroll"
                   v-on:scroll="onScroll()"
@@ -55,7 +59,9 @@
 
     </v-row>
 
-    <v-row v-if="!mapLayout" >
+    <v-row v-if="!mapLayout"
+            no-gutters
+            id="nonMapLayout" >
 
       <v-col cols="12"
               class="py-0">
@@ -63,6 +69,7 @@
                       id="metadataListLayoutFiltering_without_map"
                       fluid >
           <v-row ref="metadataListLayoutFiltering"
+                  no-gutters
                   class="fill-height" >
 
             <v-col class="hidden-sm-and-up py-0" 
@@ -73,19 +80,21 @@
 
             <v-col class="py-0"
                     cols="12"
+                    id="filterKeywords"
                     key="filterKeywords" >
               <slot name="filterKeywords" />
             </v-col>
 
-            <v-col class="hidden-xs-only pb-0" 
+            <v-col class="hidden-xs-only pb-0 pt-3"
                     cols="12"
+                    id="controlPanel"
                     key="controlPanel" >
               <slot name="controlPanel" />
             </v-col>
 
-
             <v-col v-if="showMapFilter && mapFilteringPossible"
                     cols="12"
+                    class="pt-3"
                     :style="minMapHeight ? `min-height: ${minMapHeight}px;` : 'height: 100%;'"
                     key="filterMap" >
               <slot name="filterMap" />
@@ -97,11 +106,15 @@
     </v-row>
 
     <v-row v-if="!mapLayout"
+            no-gutters
             class="fill-height" >
-      <v-col ref="metadataListScroll"
+
+      <v-col id="metadataListScroll"
+              ref="metadataListScroll"
+              class="mt-2"
               v-on:scroll="onScroll()"
               :class="useDynamicHeight ? 'listScroll' : ''"
-              :style="useDynamicHeight ? `height: calc(100vh - ${filteringComponentsHeight }px);` : ''" >
+              :style="useDynamicHeight ? `height: calc(100vh - ${filteringComponentsHeight}px);` : ''" >
 
         <v-container class="pa-0"
                       fluid >
@@ -126,7 +139,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-08-25 16:00:01
+ * Last modified  : 2020-08-26 20:14:46
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
