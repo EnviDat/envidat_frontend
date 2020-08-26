@@ -342,8 +342,8 @@ export default {
                       background-repeat: no-repeat !important;
                       background-size: cover !important; `;
 
-        if (bgImg.includes('browsepage')) {
-          bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
+        if (bgImg.includes('page')) {
+          bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.25) 100%), url(${bgImg}) !important;`;
 
           bgStyle += `background-position: center top !important;
                         background-repeat: repeat !important; `;

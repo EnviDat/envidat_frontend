@@ -333,7 +333,7 @@ export default {
   },
   data: () => ({
     title: 'Dashboard',
-    PageBGImage: './app_b_browsepage.jpg',
+    PageBGImage: './app_b_dashboardpage.jpg',
     refreshButtonText: 'Reload Datasets',
     refreshOrgaButtonText: 'Reload Organisation Datasets',
     placeHolderAmount: 5,
