@@ -68,10 +68,9 @@
 
 <script>
 /**
- * NotFoundCard is used to communicate that the users has no
- * datasets.
+ * WelcomeCard is used to say hello in the users dashboard.
  *
- * @summary card with img, title, description and button to add datasets
+ * @summary welcome with intro text
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
