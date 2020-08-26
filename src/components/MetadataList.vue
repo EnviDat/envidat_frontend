@@ -209,6 +209,7 @@ export default {
   props: {
     listContent: Array,
     mapFilteringPossible: Boolean,
+    loading: Boolean,
     placeHolderAmount: Number,
     selectedTagNames: Array,
     allTags: Array,
@@ -248,10 +249,6 @@ export default {
     ...mapGetters({
       metadataIds: `${METADATA_NAMESPACE}/metadataIds`,
       metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
-      searchedMetadatasContent: `${METADATA_NAMESPACE}/searchedMetadatasContent`,
-      searchingMetadatasContent: `${METADATA_NAMESPACE}/searchingMetadatasContent`,
-      searchingMetadatasContentOK: `${METADATA_NAMESPACE}/searchingMetadatasContentOK`,
-      loadingMetadatasContent: `${METADATA_NAMESPACE}/loadingMetadatasContent`,
       updatingTags: `${METADATA_NAMESPACE}/updatingTags`,
       vIndex: `${METADATA_NAMESPACE}/vIndex`,
       vReloadAmount: `${METADATA_NAMESPACE}/vReloadAmount`,
@@ -290,12 +287,6 @@ export default {
       });
 
       return [...pinnedContent, ...this.listContent];
-    },
-    loading() {
-      return (this.loadingMetadatasContent
-            || this.isFilteringContent
-            || this.searchingMetadatasContent
-      );
     },
     cardGridClass() {
       const fullSize = {

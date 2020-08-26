@@ -5,6 +5,7 @@
     <metadata-list ref="metadataList"
                     :listContent="filteredContent"
                     :mapFilteringPossible="mapFilteringPossible"
+                    :loading="loading"
                     :placeHolderAmount="placeHolderAmount"
                     @clickedTag="catchTagClicked"
                     :selectedTagNames="selectedTagNames"
@@ -216,7 +217,6 @@ export default {
       searchedMetadatasContent: `${METADATA_NAMESPACE}/searchedMetadatasContent`,
       searchingMetadatasContent: `${METADATA_NAMESPACE}/searchingMetadatasContent`,
       searchingMetadatasContentOK: `${METADATA_NAMESPACE}/searchingMetadatasContentOK`,
-      loadingMetadataIds: `${METADATA_NAMESPACE}/loadingMetadataIds`,
       loadingMetadatasContent: `${METADATA_NAMESPACE}/loadingMetadatasContent`,
       filteredContent: `${METADATA_NAMESPACE}/filteredContent`,
       isFilteringContent: `${METADATA_NAMESPACE}/isFilteringContent`,
@@ -231,6 +231,12 @@ export default {
       searchPlaceholderText: `${METADATA_NAMESPACE}/searchPlaceholderText`,
       searchPlaceholderTextSmall: `${METADATA_NAMESPACE}/searchPlaceholderTextSmall`,
     }),
+    loading() {
+      return (this.loadingMetadatasContent
+            || this.isFilteringContent
+            || this.searchingMetadatasContent
+      );
+    },
     enabledControls() {
       let enableds = this.preenabledControls;
 

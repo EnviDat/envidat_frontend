@@ -68,6 +68,7 @@
                       ref="metadataList"
                       :listContent="userDatasets"
                       :mapFilteringPossible="$vuetify.breakpoint.smAndUp"
+                      :loading="loading"
                       :placeHolderAmount="placeHolderAmount"
                       @clickedTag="catchTagClicked"
                       :selectedTagNames="selectedTagNames"
@@ -220,6 +221,9 @@ export default {
       'allTags',
       'updatingTags',
       ]),
+    loading() {
+      return this.userLoading;
+    },
     hasUserDatasets() {
       return this.userDatasets && this.userDatasets.length > 0;
     },
