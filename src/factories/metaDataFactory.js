@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03
- * Last modified  : 2020-08-19 08:09:46
+ * Last modified  : 2020-08-26 14:51:33
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -19,6 +19,10 @@ import {
   getAuthorName,
   getAuthorsString,
 } from '@/factories/authorFactory';
+
+import { SWISSFL_MODE } from '@/store/metadataMutationsConsts';
+
+import { enhanceMetadataFromExtras } from '@/factories/modeFactory';
 
 import globalMethods from '@/factories/globalMethods';
 
@@ -573,11 +577,12 @@ export function enhanceMetadatas(metadatas, cardBGImages, categoryCards) {
 
   if (Array.isArray(metadatas)) {
     for (let i = 0; i < metadatas.length; i++) {
-      const el = metadatas[i];
+      let dataset = metadatas[i];
 
-      if (!el.titleImg) {
-        metadatas[i] = enhanceTitleImg(el, cardBGImages, categoryCards);
-      }
+      dataset = enhanceMetadataEntry(dataset, cardBGImages, categoryCards);
+      dataset = enhanceMetadataFromExtras(SWISSFL_MODE, dataset);
+      dataset = enhanceTags(dataset, categoryCards);
+      dataset.location = createLocation(dataset);
     }
   }
 

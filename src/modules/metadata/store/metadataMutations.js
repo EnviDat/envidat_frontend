@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-11-20 17:16:15
+ * Last modified  : 2020-08-26 14:58:32
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -56,9 +56,9 @@ import { solrResultToCKANJSON } from '@/factories/apiFactory';
 import { enhanceMetadataFromExtras } from '@/factories/modeFactory';
 
 
-function enhanceMetadatas(store, datasets) {
+function enhanceMetadataContent(store, datasets) {
   if (!(datasets instanceof Array)) {
-    throw new Error(`enhanceMetadatas() expects an array of datasets got ${typeof datasets}`);
+    throw new Error(`enhanceMetadataContent() expects an array of datasets got ${typeof datasets}`);
   }
   const { cardBGImages } = store.getters;
   const categoryCards = store.getters[`${METADATA_NAMESPACE}/categoryCards`];
@@ -66,11 +66,10 @@ function enhanceMetadatas(store, datasets) {
 
   for (let i = 0; i < datasets.length; i++) {
     let dataset = datasets[i];
+
     dataset = enhanceMetadataEntry(dataset, cardBGImages, categoryCards);
     dataset = enhanceMetadataFromExtras(SWISSFL_MODE, dataset);
-
     dataset = enhanceTags(dataset, categoryCards);
-
     dataset.location = createLocation(dataset);
 
     enhancedContent[dataset.id] = dataset;
@@ -94,7 +93,7 @@ export default {
       convertedPayload.push(convertedEntry);
     }
 
-    state.searchedMetadatasContent = enhanceMetadatas(this, convertedPayload);
+    state.searchedMetadatasContent = enhanceMetadataContent(this, convertedPayload);
 
     state.searchingMetadatasContentOK = true;
     state.searchingMetadatasContent = false;
@@ -119,7 +118,7 @@ export default {
   },
   [LOAD_METADATA_CONTENT_BY_ID_SUCCESS](state, payload) {
     state.loadingCurrentMetadataContent = false;
-    const enhancedPayload = enhanceMetadatas(this, [payload]);
+    const enhancedPayload = enhanceMetadataContent(this, [payload]);
     state.currentMetadataContent = Object.values(enhancedPayload)[0];
   },
   [LOAD_METADATA_CONTENT_BY_ID_ERROR](state, reason) {
@@ -138,7 +137,7 @@ export default {
     state.metadatasContent = {};
   },
   [BULK_LOAD_METADATAS_CONTENT_SUCCESS](state, payload) {
-    state.metadatasContent = enhanceMetadatas(this, payload);
+    state.metadatasContent = enhanceMetadataContent(this, payload);
     state.authorsMap = extractAuthorsMap(payload);
 
     state.metadatasContentOK = true;

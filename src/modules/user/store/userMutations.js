@@ -6,7 +6,7 @@
 * @author Dominik Haas-Artho
 *
 * Created at     : 2020-07-14 16:51:52
- * Last modified  : 2020-08-20 08:58:22
+ * Last modified  : 2020-08-26 14:56:37
 *
 * This file is subject to the terms and conditions defined in
 * file 'LICENSE.txt', which is part of this source code package.
@@ -14,6 +14,9 @@
 // import { ADD_USER_NOTIFICATION } from '@/store/mainMutationsConsts';
 
 // import { getSpecificApiError } from '@/factories/notificationFactory';
+
+import { enhanceMetadatas } from '@/factories/metaDataFactory';
+import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
 
 import {
   GET_USER_CONTEXT,
@@ -33,6 +36,7 @@ import {
   USER_GET_DATASETS_SUCCESS,
   USER_GET_DATASETS_ERROR,
 } from './userMutationsConsts';
+
 
 function extractError(state, reason) {
 
@@ -148,8 +152,14 @@ export default {
   [USER_GET_DATASETS_SUCCESS](state, payload) {
     state.userLoading = false;
 
+    const store = this;
+    const { cardBGImages } = store.getters;
+    const categoryCards = store.getters[`${METADATA_NAMESPACE}/categoryCards`];
+
+    const enhancedDatasets = enhanceMetadatas(payload.datasets, cardBGImages, categoryCards);
+
     // use this._vm.$set() to make sure computed properties are recalulated
-    this._vm.$set(state.user, 'datasets', payload.datasets);
+    this._vm.$set(state.user, 'datasets', enhancedDatasets);
 
     resetErrorObject(state);
   },
