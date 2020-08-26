@@ -2,69 +2,118 @@
   <article class="ma-0 pa-0 fill-height"
             id="DashboardPage">
 
-    <v-row v-if="!user" >
-      <v-col>
-        <NotFoundCard v-bind="notSignedInInfos" 
-                      :actionButtonCallback="catchSigninClick" />
-      </v-col>
-    </v-row>
+    <div v-if="!user"
+          class="notSignedinGrid">
 
-    <v-row v-if="user" >
-      <v-col cols="12"
-              class="text-display-1">
-        {{ title }}
-      </v-col>
+    <NotFoundCard v-bind="notSignedInInfos" 
+                  :actionButtonCallback="catchSigninClick" />
+   </div>
 
-      <v-col cols="12" >
-        <v-card class="pa-4">
-          <v-row justify="end"
-                  align="center"
-                  no-gutters>
-            <v-col class="text-h6" >
-              My Datasets
-            </v-col>
-            <v-col>
-              <BaseRectangleButton materialIconName="refresh"
-                                    :tooltipText="refreshButtonText"
-                                    isFlat
-                                    @clicked="catchRefreshClick" />
-            </v-col>
-          </v-row>
-        </v-card>
-      </v-col>
-    </v-row>
+   <div v-if="user"
+        class="dashboardGrid"
+        :style="`grid-template-rows: 30px ${userCardHeight}px auto auto`">
 
-    <v-row v-if="hasUserDatasets" >
-      <v-col class="pt-0">
+    <div class="header" >
 
-        <metadata-list ref="metadataList"
-                        :listContent="userDatasets"
-                        :mapFilteringPossible="$vuetify.breakpoint.smAndUp"
-                        :placeHolderAmount="placeHolderAmount"
-                        @clickedTag="catchTagClicked"
-                        :selectedTagNames="selectedTagNames"
-                        :allTags="allTags"
-                        :showPlaceholder="updatingTags"
-                        @clickedTagClose="catchTagCloseClicked"
-                        @clickedClear="catchTagCleared"
-                        :defaultListControls="userListDefaultControls"
-                        :enabledControls="userListEnabledControls"
-                        :useDynamicHeight="true"
-                        :minMapHeight="310"
-                        :mapTopLayout="$vuetify.breakpoint.lgAndUp"
-                        :topFilteringLayout="$vuetify.breakpoint.mdAndDown"
-                        :showSearch="false" />
+      <div class="headerTitle title" >
+        {{ headerTitle }}
+      </div>
 
-      </v-col>
-    </v-row>
+      <!-- <div class="headerButtons" >
 
-    <v-row v-if="user && !hasUserDatasets" >
-      <v-col>
-        <NotFoundCard v-bind="noDatasetsInfos"
-                      :actionButtonCallback="catchCreateClick" />
-      </v-col>
-    </v-row>
+        <div class="skeleton skeleton-size-big skeleton-color-yellow skeleton-animation-shimmer" >
+          <div style="width: 28px; height: 28px;"
+                class="bone bone-type-image bone-style-round" />
+        </div>
 
+        <div class="skeleton skeleton-size-big skeleton-color-yellow skeleton-animation-shimmer" >
+          <div style="width: 28px; height: 28px;"
+                class="bone bone-type-image bone-style-round" />
+        </div>
+
+      </div> -->
+
+    </div>
+
+    <div class="topBoard" >
+
+      <WelcomeCard :userName="user.fullname"
+                    :publishedDatasetCount="publishedDatasets.length"
+                    :unpublishedDatasetCount="unpublishedDatasets.length" 
+                    :editingDatasetCount="editingDatasets.length"
+                    :createClickCallback="catchCreateClick"
+                    :unpublishedClickCallback="catchShowUnpublishedClick"
+                    :editingClickCallback="catchEditingClick" />
+
+      <UserCard :height="userCardHeight"
+                :userName="user.fullname"
+                :email="user.email"
+                :emailHash="user.email_hash"
+                :nameInitials="nameInitials"
+                :datasetCount="publishedDatasets.length"  />
+
+
+    </div>
+
+    <div class="midBoard pt-4" >
+
+      <TitleCard title="My Datasets"
+                  icon="refresh"
+                  :tooltipText="refreshButtonText"
+                  :clickCallback="catchRefreshClick" />
+
+      <MetadataList v-if="hasUserDatasets"
+                      ref="metadataList"
+                      :listContent="userDatasets"
+                      :mapFilteringPossible="$vuetify.breakpoint.smAndUp"
+                      :placeHolderAmount="placeHolderAmount"
+                      @clickedTag="catchTagClicked"
+                      :selectedTagNames="selectedTagNames"
+                      :allTags="allTags"
+                      :showPlaceholder="updatingTags"
+                      @clickedTagClose="catchTagCloseClicked"
+                      @clickedClear="catchTagCleared"
+                      :defaultListControls="userListDefaultControls"
+                      :enabledControls="userListEnabledControls"
+                      :useDynamicHeight="false"
+                      :minMapHeight="250"
+                      :mapTopLayout="$vuetify.breakpoint.mdAndUp"
+                      :topFilteringLayout="$vuetify.breakpoint.mdAndDown"
+                      :showSearch="false" />
+
+
+      <NotFoundCard v-if="!hasUserDatasets"
+                    v-bind="noDatasetsInfos"
+                    :actionButtonCallback="catchCreateClick" />
+
+    </div>
+
+    <div class="bottomBoard" >
+
+      <TitleCard :title="`Recent Datasets of ${usersOrganisation}`"
+                  icon="refresh"
+                  :tooltipText="refreshOrgaButtonText"
+                  :clickCallback="catchRefreshOrgaClick" />
+      
+      <!-- <div class="orgaDatasets" >
+
+        <div class="datasetContainer"
+              :style="`width: ${placeHolderWidth * placeHolderAmount - (10 * placeHolderAmount)}px;`"  >
+
+          <MetadataCardPlaceholder id="cardPreview"
+                                    class="ma-2"
+                                    v-for="n in placeHolderAmount"
+                                    :key="n"
+                                    :style="`height: 300px; min-width: ${placeHolderWidth}px;`" />
+
+        </div>
+      </div> -->
+
+    </div>
+
+   </div>
+   
+<!--
     <v-row>
       <v-col>
         <v-dialog
@@ -81,21 +130,10 @@
           <v-card>
             dialog thingy
           </v-card>
-
-          <!-- hide-overlay
-          lazy
-          max-width="none"
-          origin="center center"
-          persistent
-          return-value="returnValue"
-          scrollable
-          transition="dialog-transition"
-          value="value"
-          width="auto" -->
           
         </v-dialog>
       </v-col>
-    </v-row>
+    </v-row> -->
 
   </article>
 
@@ -109,7 +147,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 14:18:32 
- * Last modified  : 2020-08-20 07:58:47
+ * Last modified  : 2020-08-25 23:31:41
  */
 
 import {
@@ -142,9 +180,16 @@ import {
   SET_CURRENT_PAGE,
 } from '@/store/mainMutationsConsts';
 
-import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
+import { getNameInitials } from '@/factories/authorFactory';
+
+// import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
+import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import NotFoundCard from '@/components/Cards/NotFoundCard';
 import MetadataList from '@/components/MetadataList';
+import MetadataCardPlaceholder from '@/components/Cards/MetadataCardPlaceholder';
+import WelcomeCard from '@/components/Cards/WelcomeCard';
+import TitleCard from '@/components/Cards/TitleCard';
+import UserCard from '@/components/Cards/UserCard';
 
 import UserNotFound1 from '@/modules/user/assets/UserNotFound1.jpg';
 import UserNotFound2 from '@/modules/user/assets/UserNotFound2.jpg';
@@ -160,7 +205,11 @@ export default {
   components: {
     MetadataList,
     NotFoundCard,
-    BaseRectangleButton,
+    WelcomeCard,
+    TitleCard,
+    UserCard,
+    BaseIconButton,
+    MetadataCardPlaceholder,
   },
   beforeMount() {
     if (this.user) {
@@ -176,6 +225,29 @@ export default {
       ]),
     hasUserDatasets() {
       return this.userDatasets && this.userDatasets.length > 0;
+    },
+    publishedDatasets() {
+      if (this.user.datasets) {
+        return this.user.datasets.filter(dataset => !dataset.private);
+      }
+
+      return [];
+    },
+    unpublishedDatasets() {
+      if (this.user.datasets) {
+        return this.user.datasets.filter(dataset => dataset.private);
+      }
+
+      return [];
+    },
+    editingDatasets() {
+      return [];
+    },
+    nameInitials() {
+      return getNameInitials(this.user);
+    },
+    usersOrganisation() {
+      return this.user.organisation ? this.user.organisation.name : 'your organisation';
     },
   },
   methods: {
@@ -212,11 +284,24 @@ export default {
         this.fetchUserDatasets();
       }
     },
+    catchRefreshOrgaClick() {
+      if (this.user) {
+        this.fetchUserDatasets();
+      }
+    },
     catchSigninClick() {
       this.$router.push({ path: USER_SIGNIN_PATH, query: '' });
     },
     catchCreateClick() {
       console.log('clicked create dataset');
+      // this.$router.push({ path: USER_SIGNIN_PATH, query: '' });
+    },
+    catchShowUnpublishedClick() {
+      console.log('clicked show unpublished dataset');
+      // this.$router.push({ path: USER_SIGNIN_PATH, query: '' });
+    },
+    catchEditingClick() {
+      console.log('clicked editing dataset');
       // this.$router.push({ path: USER_SIGNIN_PATH, query: '' });
     },
     catchTagClicked(tagName) {
@@ -249,8 +334,14 @@ export default {
     title: 'Dashboard',
     PageBGImage: './app_b_browsepage.jpg',
     refreshButtonText: 'Reload Datasets',
-    placeHolderAmount: 4,
+    refreshOrgaButtonText: 'Reload Organisation Datasets',
+    placeHolderAmount: 5,
+    placeHolderWidth: 370,
+    userCardHeight: 350,
     showModal: false,
+    left: false,
+    right: false,
+    headerTitle: 'Dashboard',
     selectedTagNames: [],
     notSignedInInfos: {
       title: 'Not Signed in',
@@ -277,7 +368,85 @@ export default {
 };
 </script>
 
+<style lang="sass" scoped>
+  @import "~vuetify/src/styles/settings/_variables.scss"
+  $gridGap: $spacer * 4
 
-<style lang="scss" scoped>
+  .notSignedinGrid
+    display: grid
+    grid-template-rows: auto 1fr
+    gap: $gridGap
 
+  .dashboardGrid
+    display: grid
+    gap: $gridGap
+    grid-template-columns: 1fr
+
+    .header
+      display: grid
+      grid-template-columns: 3fr 1fr
+      align-items: center
+
+      .headerButtons
+        display: grid
+        grid-template-columns: repeat(2, auto)
+        justify-content: end
+        gap: $gridGap
+
+    .topBoard
+      display: grid
+      grid-template-columns: 5fr 1fr
+      gap: $gridGap
+
+    .midBoard
+      display: grid
+      grid-template-rows: 36px auto
+      gap: $gridGap
+      transition: 1s all
+
+      .datasetTitleCard
+        display: grid
+        grid-template-columns: 11fr 1fr
+
+    .bottomBoard
+      overflow: auto
+      display: grid
+      grid-template-rows: 36px auto
+
+      .orgaDatasets
+        overflow: auto
+        width: 100%
+        max-width: 100%
+
+        .datasetContainer
+          overflow: auto
+          display: flex
+          background-color: whitesmoke
+          // display: grid
+          // gap: $gridGap
+          // grid-template-columns: repeat(5, 1fr)
+
+          #cardPreview
+            // padding: $gridGap
+
+
+</style>
+
+<style scoped>
+  /* html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background-color: #222;
+  } */
+
+  /* #placeHolderContainer {
+    width: 100%;
+    height: 100%;
+    background: center url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='rgb(40,40,40)' viewBox='0 0 100 169.5'%3E%3Cpolygon points='50,34.75 93.5,59.75 93.5,109.75 50,134.75 6.5,109.75 6.5,59.75'%3E%3C/polygon%3E%3Cpolygon points='0,-50 43.5,-25 43.5,25 0,50 -43.5,25 -43.5,-25'%3E%3C/polygon%3E%3Cpolygon points='100,-50 143.5,-25 143.5,25 100,50 56.5,25 56.5,-25'%3E%3C/polygon%3E%3Cpolygon points='0,119.5 43.5,144.5 43.5,194.5 0,219.5 -43.5,194.5 -43.5,144.5'%3E%3C/polygon%3E%3Cpolygon points='100,119.5 143.5,144.5 143.5,194.5 100,219.5 56.5,194.5 56.5,144.5'%3E%3C/polygon%3E%3C/svg%3E");
+    background-size: 8px;
+  } */
 </style>
