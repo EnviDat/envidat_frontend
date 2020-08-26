@@ -145,7 +145,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 14:18:32 
- * Last modified  : 2020-08-26 20:34:07
+ * Last modified  : 2020-08-26 21:02:08
  */
 
 import {
@@ -158,6 +158,7 @@ import {
   FETCH_USER_DATA,
   ACTION_USER_SHOW,
   USER_GET_DATASETS,
+  USER_GET_ORGANIZATION_IDS,
 } from '@/modules/user/store/userMutationsConsts';
 
 import {
@@ -212,6 +213,7 @@ export default {
   beforeMount() {
     if (this.user) {
       this.fetchUserDatasets();
+      this.fetchUserOrganisationData();
     }
   },
   computed: {
@@ -280,6 +282,9 @@ export default {
           mutation: USER_GET_DATASETS,
         });
     },
+    fetchUserOrganisationData() {
+      this.$store.dispatch(`${USER_NAMESPACE}/${USER_GET_ORGANIZATION_IDS}`, { userId: this.user.id });
+    },
     catchRefreshClick() {
       if (this.user) {
         this.fetchUserDatasets();
@@ -287,7 +292,7 @@ export default {
     },
     catchRefreshOrgaClick() {
       if (this.user) {
-        this.fetchUserDatasets();
+        this.fetchUserOrganisationData();
       }
     },
     catchSigninClick() {

@@ -6,7 +6,7 @@
 * @author Dominik Haas-Artho
 *
 * Created at     : 2020-07-14 16:51:52
- * Last modified  : 2020-08-26 14:56:37
+ * Last modified  : 2020-08-26 17:39:21
 *
 * This file is subject to the terms and conditions defined in
 * file 'LICENSE.txt', which is part of this source code package.
@@ -35,6 +35,12 @@ import {
   USER_GET_DATASETS,
   USER_GET_DATASETS_SUCCESS,
   USER_GET_DATASETS_ERROR,
+  USER_GET_ORGANIZATIONS,
+  USER_GET_ORGANIZATIONS_SUCCESS,
+  USER_GET_ORGANIZATIONS_ERROR,
+  USER_GET_ORGANIZATION_IDS,
+  USER_GET_ORGANIZATION_IDS_SUCCESS,
+  USER_GET_ORGANIZATION_IDS_ERROR,
 } from './userMutationsConsts';
 
 
@@ -165,6 +171,53 @@ export default {
   },
   [USER_GET_DATASETS_ERROR](state, reason) {
     state.userLoading = false;
+
+    extractError(state, reason);
+  },
+  [USER_GET_ORGANIZATION_IDS](state) {
+    state.userOrganizationLoading = true;
+    state.userOrganizationIds = [];
+
+    resetErrorObject(state);
+  },
+  [USER_GET_ORGANIZATION_IDS_SUCCESS](state, payload) {
+    state.userOrganizationLoading = false;
+
+    const orgaIds = [];
+
+    if (payload?.length > 0 && payload instanceof Array) {
+      for (let i = 0; i < payload.length; i++) {
+        const id = payload[i].id;
+        orgaIds.push(id);
+      }
+    }
+
+    // use this._vm.$set() to make sure computed properties are recalulated
+    this._vm.$set(state, 'userOrganizationIds', orgaIds);
+
+    resetErrorObject(state);
+  },
+  [USER_GET_ORGANIZATION_IDS_ERROR](state, reason) {
+    state.userOrganizationLoading = false;
+
+    extractError(state, reason);
+  },
+  [USER_GET_ORGANIZATIONS](state) {
+    state.userOrganizationLoading = true;
+
+    resetErrorObject(state);
+  },
+  [USER_GET_ORGANIZATIONS_SUCCESS](state, payload) {
+    state.userOrganizationLoading = false;
+
+    const orgaId = payload.id;
+
+    this._vm.$set(state.userOrganizations, orgaId, payload);
+
+    resetErrorObject(state);
+  },
+  [USER_GET_ORGANIZATIONS_ERROR](state, reason) {
+    state.userOrganizationLoading = false;
 
     extractError(state, reason);
   },

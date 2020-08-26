@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 16:51:52
- * Last modified  : 2020-08-20 11:02:11
+ * Last modified  : 2020-08-26 21:17:29
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -17,6 +17,14 @@ import { urlRewrite } from '@/factories/apiFactory';
 
 import {
   FETCH_USER_DATA,
+  USER_GET_ORGANIZATION_IDS,
+  USER_GET_ORGANIZATION_IDS_SUCCESS,
+  USER_GET_ORGANIZATION_IDS_ERROR,
+  ACTION_USER_ORGANIZATION_IDS,
+  USER_GET_ORGANIZATIONS,
+  USER_GET_ORGANIZATIONS_SUCCESS,
+  USER_GET_ORGANIZATIONS_ERROR,
+  ACTION_USER_ORGANIZATIONS,
 } from './userMutationsConsts';
 
 // don't use an api base url or proxy when using testdata
@@ -73,5 +81,57 @@ export default {
     .catch((error) => {
       commit(`${payload.mutation}_ERROR`, error);
     });
- },
+  },
+  async [USER_GET_ORGANIZATION_IDS]({ dispatch, commit }, userId) {
+    commit(USER_GET_ORGANIZATION_IDS);
+
+    const actionUrl = ACTION_USER_ORGANIZATION_IDS();
+
+    let url = actionUrl;
+
+    if (!useTestdata) {
+      url = urlRewrite(`${actionUrl}id=${userId}`, API_BASE, ENVIDAT_PROXY);
+    }
+
+    await axios.get(url)
+      .then((response) => {
+        commit(USER_GET_ORGANIZATION_IDS_SUCCESS, response.data.result);
+
+        const ids = this.state.user.userOrganizationIds;
+        return dispatch(USER_GET_ORGANIZATIONS, ids);
+      })
+      .catch((error) => {
+        commit(USER_GET_ORGANIZATION_IDS_ERROR, error);
+      });
+  },
+  async [USER_GET_ORGANIZATIONS]({ commit }, ids) {
+    commit(USER_GET_ORGANIZATIONS);
+
+    const actionUrl = ACTION_USER_ORGANIZATIONS();
+
+    const requests = [];
+    for (let i = 0; i < ids.length; i++) {
+      const id = ids[i];
+
+      let url = actionUrl;
+
+      if (!useTestdata) {
+        url = urlRewrite(`${actionUrl}id=${id}`, API_BASE, ENVIDAT_PROXY);
+      }
+
+      requests.push(axios.get(url));
+    }
+
+    await Promise.all(requests)
+      .then((responses) => {
+        for (let i = 0; i < responses.length; i++) {
+          const response = responses[i];
+          commit(USER_GET_ORGANIZATIONS_SUCCESS, response.data.result);
+        }
+      })
+      .catch((error) => {
+        commit(USER_GET_ORGANIZATIONS_ERROR, error);
+      });
+
+  },
 };

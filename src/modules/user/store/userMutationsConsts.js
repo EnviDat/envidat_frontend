@@ -3,7 +3,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 16:38:28
- * Last modified  : 2020-08-20 10:57:24
+ * Last modified  : 2020-08-26 16:30:56
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -73,5 +73,28 @@ export const USER_GET_DATASETS = 'USER_GET_DATASETS';
 export const USER_GET_DATASETS_ERROR = 'USER_GET_DATASETS_ERROR';
 export const USER_GET_DATASETS_SUCCESS = 'USER_GET_DATASETS_SUCCESS';
 
+export const ACTION_USER_ORGANIZATION_IDS = () => {
+  if (process.env.NODE_ENV === 'development' && useTestdata) {
+    return './testdata/organization_list_for_user.json';
+  }
+
+  return 'organization_list_for_user';
+};
+
+export const USER_GET_ORGANIZATION_IDS = 'USER_GET_ORGANIZATION_IDS';
+export const USER_GET_ORGANIZATION_IDS_ERROR = 'USER_GET_ORGANIZATION_ERROR';
+export const USER_GET_ORGANIZATION_IDS_SUCCESS = 'USER_GET_ORGANIZATION_SUCCESS';
+
+export const ACTION_USER_ORGANIZATIONS = () => {
+  if (process.env.NODE_ENV === 'development' && useTestdata) {
+    return './testdata/organization_show.json';
+  }
+
+  return 'organization_show';
+};
+
+export const USER_GET_ORGANIZATIONS = 'USER_GET_ORGANIZATIONS';
+export const USER_GET_ORGANIZATIONS_ERROR = 'USER_GET_ORGANIZATIONS_ERROR';
+export const USER_GET_ORGANIZATIONS_SUCCESS = 'USER_GET_ORGANIZATIONS_SUCCESS';
 
 export const USER_NAMESPACE = 'user';
