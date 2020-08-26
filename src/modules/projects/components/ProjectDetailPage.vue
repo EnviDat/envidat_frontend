@@ -96,7 +96,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-20 15:51:22
+ * Last modified  : 2020-08-25 20:46:01
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -167,7 +167,7 @@ export default {
     const toProject = this.projects.find(project => project.id === to.params.id);
     let backRoute = { path: PROJECTS_PATH };
 
-    if (toProject.parent) {
+    if (toProject?.parent) {
       backRoute = {
         name: PROJECT_DETAIL_PAGENAME,
         params: { id: toProject.parent.id },
