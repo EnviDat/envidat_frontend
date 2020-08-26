@@ -13,7 +13,7 @@
 
    <div v-if="user"
         class="dashboardGrid"
-        :style="`grid-template-rows: 30px ${userCardHeight}px auto 380px`">
+        :style="`grid-template-rows: 30px ${userCardHeight}px auto 400px`">
 
     <div class="header" >
 
@@ -91,7 +91,7 @@
 
     </div>
 
-    <div class="bottomBoard" >
+    <div class="bottomBoard pb-4" >
 
       <TitleCard :title="`Recent Datasets of ${usersOrganisation}`"
                   icon="refresh"
@@ -145,7 +145,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 14:18:32 
- * Last modified  : 2020-08-25 23:31:41
+ * Last modified  : 2020-08-26 20:34:07
  */
 
 import {
