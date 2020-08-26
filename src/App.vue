@@ -39,6 +39,7 @@
                     fluid
                     v-on:scroll="updateScroll()"
                     ref="appContainer"
+                    id="appContainer"
                     :style="pageStyle" >
 
         <v-row class="fill-height" >
@@ -77,7 +78,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-08-19 16:42:33
+ * Last modified  : 2020-08-26 20:45:43
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -315,7 +316,8 @@ export default {
       return this.currentPage === BROWSE_PAGENAME;
     },
     showToolbar() {
-      return this.currentPageIsBrowsePage && this.mode;
+      // return this.currentPageIsBrowsePage && this.mode;
+      return true;
     },
     pageStyle() {
       const heightStyle = this.showToolbar ? 'height: calc(100vh - 36px);' : 'height: 100vh;';
