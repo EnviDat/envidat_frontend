@@ -62,7 +62,7 @@
    * @author Dominik Haas-Artho
    *
    * Created at     : 2019-10-02 11:24:00
-   * Last modified  : 2019-11-28 14:30:32
+ * Last modified  : 2020-08-26 20:22:29
    *
    * This file is subject to the terms and conditions defined in
    * file 'LICENSE.txt', which is part of this source code package.
@@ -92,6 +92,7 @@
   import markerShadow from '@/assets/map/marker-shadow.png';
   // HACK end
 
+  import { METADATA_NAMESPACE } from '@/store/metadataMutationsConsts';
 
   export default {
     name: 'FilterMapView',
@@ -117,15 +118,14 @@
     },
     computed: {
       ...mapGetters({
-        metadataIds: 'metadata/metadataIds',
-        metadatasContent: 'metadata/metadatasContent',
-        searchedMetadatasContent: 'metadata/searchedMetadatasContent',
-        searchingMetadatasContent: 'metadata/searchingMetadatasContent',
-        loadingMetadataIds: 'metadata/loadingMetadataIds',
-        loadingMetadatasContent: 'metadata/loadingMetadatasContent',
+        metadataIds: `${METADATA_NAMESPACE}/metadataIds`,
+        metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
+        searchedMetadatasContent: `${METADATA_NAMESPACE}/searchedMetadatasContent`,
+        searchingMetadatasContent: `${METADATA_NAMESPACE}/searchingMetadatasContent`,
+        loadingMetadatasContent: `${METADATA_NAMESPACE}/loadingMetadatasContent`,
       }),
       loading() {
-        return this.loadingMetadataIds || this.loadingMetadatasContent;
+        return this.loadingMetadatasContent;
       },
       widgetWidth() {
         return this.$vuetify.breakpoint.smAndDown ? 100 : 350;
