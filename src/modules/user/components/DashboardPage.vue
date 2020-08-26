@@ -1,6 +1,8 @@
 <template >
-  <article class="ma-0 pa-0 fill-height"
-            id="DashboardPage">
+  <v-container class="pa-0"
+                tag="article"
+                fluid
+                id="DashboardPage">
 
     <div v-if="!user"
           class="notSignedinGrid">
@@ -11,7 +13,7 @@
 
    <div v-if="user"
         class="dashboardGrid"
-        :style="`grid-template-rows: 30px ${userCardHeight}px auto auto`">
+        :style="`grid-template-rows: 30px ${userCardHeight}px auto 380px`">
 
     <div class="header" >
 
@@ -95,19 +97,14 @@
                   :tooltipText="refreshOrgaButtonText"
                   :clickCallback="catchRefreshOrgaClick" />
       
-      <!-- <div class="orgaDatasets" >
+      <div class="orgaDatasets" >
 
-        <div class="datasetContainer"
-              :style="`width: ${placeHolderWidth * placeHolderAmount - (10 * placeHolderAmount)}px;`"  >
-
-          <MetadataCardPlaceholder id="cardPreview"
-                                    class="ma-2"
-                                    v-for="n in placeHolderAmount"
-                                    :key="n"
-                                    :style="`height: 300px; min-width: ${placeHolderWidth}px;`" />
-
-        </div>
-      </div> -->
+        <MetadataCardPlaceholder id="orgaDataset"
+                                  class="mx-2"
+                                  v-for="n in placeHolderAmount"
+                                  :key="n"
+                                  :style="`height: 300px; min-width: ${placeHolderWidth}px;`" />
+      </div>
 
     </div>
 
@@ -135,7 +132,7 @@
       </v-col>
     </v-row> -->
 
-  </article>
+  </v-container>
 
 </template>
 
@@ -412,23 +409,18 @@ export default {
       overflow: auto
       display: grid
       grid-template-rows: 36px auto
+      gap: $gridGap
 
       .orgaDatasets
         overflow: auto
-        width: 100%
-        max-width: 100%
+        display: grid
+        grid-auto-flow: column
 
-        .datasetContainer
-          overflow: auto
-          display: flex
-          background-color: whitesmoke
-          // display: grid
-          // gap: $gridGap
-          // grid-template-columns: repeat(5, 1fr)
+      .orgaDatasets:first-child
+        margin-left: 0
 
-          #cardPreview
-            // padding: $gridGap
-
+      .orgaDatasets:last-child
+        margin-right: 0
 
 </style>
 
