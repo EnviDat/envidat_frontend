@@ -48,6 +48,7 @@
                     :editingClickCallback="catchEditingClick" />
 
       <UserCard :height="userCardHeight"
+                :width="userCardWidth"
                 :userName="user.fullname"
                 :email="user.email"
                 :emailHash="user.email_hash"
@@ -429,6 +430,7 @@ export default {
     orgaDatasetsPreview: 5,
     previewWidth: 370,
     userCardHeight: 350,
+    userCardWidth: 300,
     showModal: false,
     left: false,
     right: false,

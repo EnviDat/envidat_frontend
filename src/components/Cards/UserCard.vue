@@ -7,7 +7,9 @@
           :style="`grid-template-rows: ${headerHeight}px 70px auto`">
 
       <div :style="`height: ${headerHeight}px; overflow: hidden;`">
-        <v-img :height="headerHeight" :src="`https://gravatar.com/avatar/${email}?s=${headerHeight}&d=identicon&r=g`" />
+        <v-img :height="headerHeight"
+                :width="width"
+                :src="`https://gravatar.com/avatar/${email}?s=${gravatarImageSize}&d=identicon&r=g`" />
       </div>
       
       <div class="title black--text mx-auto pt-8">
@@ -57,6 +59,10 @@ export default {
     UserAvatar,
   },
   props: {
+    width: {
+      type: Number,
+      default: 250,
+    },
     height: {
       type: Number,
       default: 350,
@@ -68,7 +74,6 @@ export default {
     datasetCount: Number,
   },
   data: () => ({
-    width: 250,
     avatarHeight: 64,
   }),
   computed: {
@@ -77,6 +82,9 @@ export default {
     },
     avatarTopPosition() {
       return this.headerHeight - this.avatarHeight * 0.5;
+    },
+    gravatarImageSize() {
+      return this.headerHeight > this.width ? this.headerHeight : this.width;
     },
   },
 };
@@ -90,6 +98,7 @@ export default {
   .cardGrid
     display: grid
     justify-content: center
+    grid-template-columns: 100%
 
   .subGrid 
     align-content: end
