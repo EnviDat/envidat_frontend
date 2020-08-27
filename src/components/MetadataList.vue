@@ -105,7 +105,6 @@
                 class="pa-2" >
 
           <metadata-card :id="metadata.id"
-                        :ref="metadata.id"
                         :title="metadata.title"
                         :name="metadata.name"
                         :subtitle="metadata.notes"
