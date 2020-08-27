@@ -64,7 +64,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-23 15:54:13
+ * Last modified  : 2020-08-27 08:31:13
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -88,6 +88,9 @@ export default {
   computed: {
     details() {
       return this.mixinMethods_getGenericProp('details');
+    },
+    emptyTextColor() {
+      return this.mixinMethods_getGenericProp('emptyTextColor');
     },
   },
   methods: {
