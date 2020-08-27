@@ -93,18 +93,38 @@
 
     <div class="bottomBoard pb-4" >
 
-      <TitleCard :title="`Recent Datasets of ${usersOrganisation}`"
+      <TitleCard :title="`Recent Datasets of ${usersOrganisationTitle}`"
                   icon="refresh"
                   :tooltipText="refreshOrgaButtonText"
                   :clickCallback="catchRefreshOrgaClick" />
       
-      <div class="orgaDatasets" >
+      <div v-if="!userOrganizationLoading && usersOrganisationRecentDatasets"
+            class="orgaDatasets" >
+
+          <MetadataCard v-for="(metadata, index) in usersOrganisationRecentDatasets"
+                        :key="index"
+                        :id="metadata.id"
+                        :title="metadata.title"
+                        :name="metadata.name"
+                        :subtitle="metadata.notes"
+                        :tags="metadata.tags"
+                        :titleImg="metadata.titleImg"
+                        :resourceCount="metadata.num_resources"
+                        :compactLayout="true"
+                        :fileIconString="fileIconString"
+                        :categoryColor="metadata.categoryColor"
+                        @clickedEvent="metaDataClicked"
+                        @clickedTag="catchTagClicked" />
+      </div>
+
+      <div v-if="userOrganizationLoading && usersOrganisationRecentDatasets"
+            class="orgaDatasets" >
 
         <MetadataCardPlaceholder id="orgaDataset"
                                   class="mx-2"
-                                  v-for="n in placeHolderAmount"
+                                  v-for="n in orgaDatasetsPreview"
                                   :key="n"
-                                  :style="`height: 300px; min-width: ${placeHolderWidth}px;`" />
+                                  :style="`height: 300px; min-width: ${previewWidth}px;`" />
       </div>
 
     </div>
@@ -145,7 +165,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 14:18:32 
- * Last modified  : 2020-08-26 21:02:08
+ * Last modified  : 2020-08-27 08:36:06
  */
 
 import {
@@ -162,6 +182,7 @@ import {
 } from '@/modules/user/store/userMutationsConsts';
 
 import {
+  SET_DETAIL_PAGE_BACK_URL,
   METADATA_NAMESPACE,
   LISTCONTROL_MAP_ACTIVE,
   LISTCONTROL_LIST_ACTIVE,
@@ -172,6 +193,7 @@ import {
   USER_DASHBOARD_PAGENAME,
   USER_DASHBOARD_PATH,
   USER_SIGNIN_PATH,
+  METADATADETAIL_PAGENAME,
 } from '@/router/routeConsts';
 
 import {
@@ -179,12 +201,14 @@ import {
   SET_CURRENT_PAGE,
 } from '@/store/mainMutationsConsts';
 
+
 import { getNameInitials } from '@/factories/authorFactory';
 
 // import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import NotFoundCard from '@/components/Cards/NotFoundCard';
 import MetadataList from '@/components/MetadataList';
+import MetadataCard from '@/components/Cards/MetadataCard';
 import MetadataCardPlaceholder from '@/components/Cards/MetadataCardPlaceholder';
 import WelcomeCard from '@/components/Cards/WelcomeCard';
 import TitleCard from '@/components/Cards/TitleCard';
@@ -208,21 +232,29 @@ export default {
     TitleCard,
     UserCard,
     BaseIconButton,
+    MetadataCard,
     MetadataCardPlaceholder,
   },
   beforeMount() {
+    this.fileIconString = this.mixinMethods_getIcon('file');
+
     if (this.user) {
       this.fetchUserDatasets();
       this.fetchUserOrganisationData();
     }
   },
   computed: {
-    ...mapState(USER_NAMESPACE, ['user', 'userLoading']),
+    ...mapState(USER_NAMESPACE, [
+      'user',
+      'userLoading',
+      'userOrganizationLoading',
+      'userOrganizations',
+    ]),
     ...mapGetters(USER_NAMESPACE, ['userDatasets']),
     ...mapGetters(METADATA_NAMESPACE, [
       'allTags',
       'updatingTags',
-      ]),
+    ]),
     loading() {
       return this.userLoading;
     },
@@ -249,8 +281,49 @@ export default {
     nameInitials() {
       return getNameInitials(this.user);
     },
-    usersOrganisation() {
-      return this.user.organisation ? this.user.organisation.name : 'your organisation';
+    userOrganizationsList() {
+      const keys = this.userOrganizations ? Object.keys(this.userOrganizations) : null;
+
+      if (keys?.length > 0) {
+        return Object.values(this.userOrganizations);
+      }
+      
+      return null;
+    },
+    usersOrganisationTitle() {
+      if (this.userOrganizationsList?.length > 0) {
+        return this.userOrganizationsList[0].display_name;
+      }
+
+      return 'your Organizations';
+    },
+    usersOrganisationRecentDatasets() {
+      const list = this.userOrganizationsList;
+
+      if (list?.length > 0) {
+        
+        const datasets = [];
+
+        for (let i = 0; i < list.length; i++) {
+          const orga = list[i];
+          const subList = orga.packages;
+
+          if (subList?.length > 0) {
+            for (let j = 0; j < subList.length; j++) {
+              const dataset = subList[j];
+              datasets.push(dataset);
+
+              if (datasets.length >= this.orgaDatasetsPreview) {
+                break;
+              }
+            }
+          }
+        }
+
+        return datasets;
+      }
+
+      return null;
     },
   },
   methods: {
@@ -335,14 +408,26 @@ export default {
     //   this.selectedTagNames = [];
     //   this.filterContent();
     },
+    metaDataClicked(datasetname) {
+      this.$store.commit(`${METADATA_NAMESPACE}/${SET_DETAIL_PAGE_BACK_URL}`, this.$route);
+
+      this.$router.push({
+        name: METADATADETAIL_PAGENAME,
+        params: {
+          metadataid: datasetname,
+        },
+      });
+    },
   },
   data: () => ({
+    fileIconString: '',
     title: 'Dashboard',
     PageBGImage: './app_b_dashboardpage.jpg',
     refreshButtonText: 'Reload Datasets',
     refreshOrgaButtonText: 'Reload Organisation Datasets',
     placeHolderAmount: 5,
-    placeHolderWidth: 370,
+    orgaDatasetsPreview: 5,
+    previewWidth: 370,
     userCardHeight: 350,
     showModal: false,
     left: false,

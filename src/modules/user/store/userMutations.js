@@ -6,7 +6,7 @@
 * @author Dominik Haas-Artho
 *
 * Created at     : 2020-07-14 16:51:52
- * Last modified  : 2020-08-26 17:39:21
+ * Last modified  : 2020-08-27 08:16:04
 *
 * This file is subject to the terms and conditions defined in
 * file 'LICENSE.txt', which is part of this source code package.
@@ -211,6 +211,14 @@ export default {
     state.userOrganizationLoading = false;
 
     const orgaId = payload.id;
+    if (payload.packages?.length > 0) {
+
+      const store = this;
+      const { cardBGImages } = store.getters;
+      const categoryCards = store.getters[`${METADATA_NAMESPACE}/categoryCards`];
+
+      payload.packages = enhanceMetadatas(payload.packages, cardBGImages, categoryCards);      
+    }
 
     this._vm.$set(state.userOrganizations, orgaId, payload);
 
