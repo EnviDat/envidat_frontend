@@ -41,10 +41,13 @@ import {
   USER_GET_ORGANIZATION_IDS,
   USER_GET_ORGANIZATION_IDS_SUCCESS,
   USER_GET_ORGANIZATION_IDS_ERROR,
+  USER_GET_ORGANIZATIONS_DATASETS,
+  USER_GET_ORGANIZATIONS_DATASETS_SUCCESS,
+  USER_GET_ORGANIZATIONS_DATASETS_ERROR,
 } from './userMutationsConsts';
 
 
-function extractError(state, reason) {
+function extractError(store, reason, errorProperty = 'error') {
 
   let type = '';
   let field = '';
@@ -70,9 +73,10 @@ function extractError(state, reason) {
     }
   }
 
-  state.errorField = field;
-  state.errorType = type;
-  state.error = msg;  
+  store.state.user.errorField = field;
+  store.state.user.errorType = type;
+
+  store._vm.$set(store.state.user, errorProperty, msg);
 }
 
 function resetErrorObject(state) {
@@ -94,7 +98,7 @@ export default {
   [GET_USER_CONTEXT_ERROR](state, reason) {
     state.userLoading = false;
 
-    extractError(state, reason);
+    extractError(this, reason);
   },
   [USER_SIGNIN](state) {
     state.signInLoading = true;
@@ -110,7 +114,7 @@ export default {
     state.signInLoading = false;
     state.signInSuccess = false;
     
-    extractError(state, reason);
+    extractError(this, reason);
   },
   [REQUEST_TOKEN](state) {
     state.requestLoading = true;
@@ -128,7 +132,7 @@ export default {
     state.requestLoading = false;
     state.requestSuccess = false;
     
-    extractError(state, reason);
+    extractError(this, reason);
   },
   [USER_SIGNOUT](state) {
     state.signInLoading = false;
@@ -148,10 +152,11 @@ export default {
   [USER_SIGNOUT_ERROR](state, reason) {
     state.user = null;
 
-    extractError(state, reason);
+    extractError(this, reason);
   },
   [USER_GET_DATASETS](state) {
     state.userLoading = true;
+    state.userDatasetsError = null;
 
     resetErrorObject(state);
   },
@@ -172,11 +177,12 @@ export default {
   [USER_GET_DATASETS_ERROR](state, reason) {
     state.userLoading = false;
 
-    extractError(state, reason);
+    extractError(this, reason, 'userDatasetsError');
   },
   [USER_GET_ORGANIZATION_IDS](state) {
     state.userOrganizationLoading = true;
     state.userOrganizationIds = [];
+    state.userOrganizationNames = [];
 
     resetErrorObject(state);
   },
@@ -184,23 +190,26 @@ export default {
     state.userOrganizationLoading = false;
 
     const orgaIds = [];
+    const orgaNames = [];
 
     if (payload?.length > 0 && payload instanceof Array) {
       for (let i = 0; i < payload.length; i++) {
-        const id = payload[i].id;
-        orgaIds.push(id);
+        const orga = payload[i];
+        orgaIds.push(orga.id);
+        orgaNames.push(orga.name);
       }
     }
 
     // use this._vm.$set() to make sure computed properties are recalulated
     this._vm.$set(state, 'userOrganizationIds', orgaIds);
+    this._vm.$set(state, 'userOrganizationNames', orgaNames);
 
     resetErrorObject(state);
   },
   [USER_GET_ORGANIZATION_IDS_ERROR](state, reason) {
     state.userOrganizationLoading = false;
 
-    extractError(state, reason);
+    extractError(this, reason);
   },
   [USER_GET_ORGANIZATIONS](state) {
     state.userOrganizationLoading = true;
@@ -227,6 +236,35 @@ export default {
   [USER_GET_ORGANIZATIONS_ERROR](state, reason) {
     state.userOrganizationLoading = false;
 
-    extractError(state, reason);
+    extractError(this, reason);
+  },
+  [USER_GET_ORGANIZATIONS_DATASETS](state) {
+    state.userOrganizationLoading = true;
+    state.userRecentOrgaDatasetsError = null;
+
+    resetErrorObject(state);
+  },
+  [USER_GET_ORGANIZATIONS_DATASETS_SUCCESS](state, payload) {
+    state.userOrganizationLoading = false;
+
+    let recentDatasets = [];
+
+    if (payload.results?.length > 0) {
+
+      const store = this;
+      const { cardBGImages } = store.getters;
+      const categoryCards = store.getters[`${METADATA_NAMESPACE}/categoryCards`];
+
+      recentDatasets = enhanceMetadatas(payload.results, cardBGImages, categoryCards);
+    }
+
+    this._vm.$set(state, 'userRecentOrgaDatasets', recentDatasets);
+
+    resetErrorObject(state);
+  },
+  [USER_GET_ORGANIZATIONS_DATASETS_ERROR](state, reason) {
+    state.userOrganizationLoading = false;
+
+    extractError(this, reason, 'userRecentOrgaDatasetsError');
   },
 };

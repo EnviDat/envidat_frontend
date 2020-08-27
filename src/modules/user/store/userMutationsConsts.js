@@ -64,6 +64,7 @@ export const FETCH_USER_DATA = 'FETCH_USER_DATA';
 export const ACTION_USER_SHOW = () => {
   if (process.env.NODE_ENV === 'development' && useTestdata) {
     return './testdata/user_show.json';
+    // return './testdata/unknow_file.json'; // to test error handling
   }
 
   return 'user_show';
@@ -96,5 +97,17 @@ export const ACTION_USER_ORGANIZATIONS = () => {
 export const USER_GET_ORGANIZATIONS = 'USER_GET_ORGANIZATIONS';
 export const USER_GET_ORGANIZATIONS_ERROR = 'USER_GET_ORGANIZATIONS_ERROR';
 export const USER_GET_ORGANIZATIONS_SUCCESS = 'USER_GET_ORGANIZATIONS_SUCCESS';
+
+export const ACTION_USER_ORGANIZATIONS_DATASETS = () => {
+  if (process.env.NODE_ENV === 'development' && useTestdata) {
+    return './testdata/organization_search.json';
+  }
+
+  return 'package_search';
+};
+
+export const USER_GET_ORGANIZATIONS_DATASETS = 'USER_GET_ORGANIZATIONS_DATASETS';
+export const USER_GET_ORGANIZATIONS_DATASETS_ERROR = 'USER_GET_ORGANIZATIONS_DATASETS_ERROR';
+export const USER_GET_ORGANIZATIONS_DATASETS_SUCCESS = 'USER_GET_ORGANIZATIONS_DATASETS_SUCCESS';
 
 export const USER_NAMESPACE = 'user';

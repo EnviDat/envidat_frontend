@@ -86,39 +86,46 @@
                       :showSearch="false" />
 
 
-      <NotFoundCard v-if="!hasUserDatasets"
-                    v-bind="noDatasetsInfos"
-                    :actionButtonCallback="catchCreateClick" />
+      <div v-if="!hasUserDatasets"
+            class="noUserDatasetsGrid">
+        <NotFoundCard v-bind="noDatasetsInfos"
+                      :actionButtonCallback="catchCreateClick" />
+
+        <NotificationCard v-if="noUserDatasetsError"
+                          :notification="noUserDatasetsError"
+                          :showCloseButton="false" />
+
+      </div>
 
     </div>
 
-    <div class="bottomBoard pb-4" >
+    <div class="bottomBoard pt-2 pb-4" >
 
       <TitleCard :title="`Recent Datasets of ${usersOrganisationTitle}`"
                   icon="refresh"
                   :tooltipText="refreshOrgaButtonText"
                   :clickCallback="catchRefreshOrgaClick" />
       
-      <div v-if="!userOrganizationLoading && usersOrganisationRecentDatasets"
+      <div v-if="hasRecentOrgaDatasets && !userOrganizationLoading"
             class="orgaDatasets" >
 
-          <MetadataCard v-for="(metadata, index) in usersOrganisationRecentDatasets"
+          <MetadataCard v-for="(metadata, index) in userRecentOrgaDatasets"
+                        class="mx-2"
+                        :style="`height: 300px; width: ${previewWidth}px;`"          
                         :key="index"
                         :id="metadata.id"
                         :title="metadata.title"
                         :name="metadata.name"
                         :subtitle="metadata.notes"
-                        :tags="metadata.tags"
                         :titleImg="metadata.titleImg"
                         :resourceCount="metadata.num_resources"
-                        :compactLayout="true"
                         :fileIconString="fileIconString"
                         :categoryColor="metadata.categoryColor"
                         @clickedEvent="metaDataClicked"
                         @clickedTag="catchTagClicked" />
       </div>
 
-      <div v-if="userOrganizationLoading && usersOrganisationRecentDatasets"
+      <div v-if="hasRecentOrgaDatasets && userOrganizationLoading"
             class="orgaDatasets" >
 
         <MetadataCardPlaceholder id="orgaDataset"
@@ -126,6 +133,18 @@
                                   v-for="n in orgaDatasetsPreview"
                                   :key="n"
                                   :style="`height: 300px; min-width: ${previewWidth}px;`" />
+      </div>
+
+      <div v-if="!userOrganizationLoading && !hasRecentOrgaDatasets"
+            class="noOrgaDatasetsGrid">
+
+        <NotificationCard v-if="noOrgaDatasetsError"
+                          :notification="noOrgaDatasetsError"
+                          :showCloseButton="false" />
+
+        <NotFoundCard v-if="!userOrganizationsList"
+                      :style="`height: 300px;`"
+                      v-bind="noOrganizationsInfos"  />
       </div>
 
     </div>
@@ -204,14 +223,14 @@ import {
 
 
 import { getNameInitials } from '@/factories/authorFactory';
+import { errorMessage } from '@/factories/notificationFactory';
 
-// import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
-import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import NotFoundCard from '@/components/Cards/NotFoundCard';
 import MetadataList from '@/components/MetadataList';
 import MetadataCard from '@/components/Cards/MetadataCard';
 import MetadataCardPlaceholder from '@/components/Cards/MetadataCardPlaceholder';
 import WelcomeCard from '@/components/Cards/WelcomeCard';
+import NotificationCard from '@/components/Cards/NotificationCard';
 import TitleCard from '@/components/Cards/TitleCard';
 import UserCard from '@/components/Cards/UserCard';
 
@@ -230,9 +249,9 @@ export default {
     MetadataList,
     NotFoundCard,
     WelcomeCard,
+    NotificationCard,
     TitleCard,
     UserCard,
-    BaseIconButton,
     MetadataCard,
     MetadataCardPlaceholder,
   },
@@ -250,6 +269,9 @@ export default {
       'userLoading',
       'userOrganizationLoading',
       'userOrganizations',
+      'userRecentOrgaDatasets',
+      'userRecentOrgaDatasetsError',
+      'userDatasetsError',
     ]),
     ...mapGetters(USER_NAMESPACE, ['userDatasets']),
     ...mapGetters(METADATA_NAMESPACE, [
@@ -258,6 +280,30 @@ export default {
     ]),
     loading() {
       return this.userLoading;
+    },
+    noOrgaDatasetsError() {
+      if (!this.userRecentOrgaDatasetsError) {
+        return null;
+      }
+
+      const errorDetail = `${this.userRecentOrgaDatasetsError}<br /> <strong>Try reloading the datasets. If the problem persists please let use know via envidat@wsl.ch!</strong>`;
+
+      const notification = errorMessage('Error Loading Datasets From Organization', errorDetail);
+      notification.timeout = 0;
+
+      return notification;
+    },
+    noUserDatasetsError() {
+      if (!this.userDatasetsError) {
+        return null;
+      }
+
+      const errorDetail = `${this.userDatasetsError}<br /> <strong>Try reloading the datasets. If the problem persists please let use know via envidat@wsl.ch!</strong>`;
+
+      const notification = errorMessage('Error Loading Your Datasets', errorDetail);
+      notification.timeout = 0;
+
+      return notification;
     },
     hasUserDatasets() {
       return this.userDatasets && this.userDatasets.length > 0;
@@ -297,6 +343,9 @@ export default {
       }
 
       return 'your Organizations';
+    },
+    hasRecentOrgaDatasets() {
+      return this.userRecentOrgaDatasets && this.userRecentOrgaDatasets.length > 0;
     },
     usersOrganisationRecentDatasets() {
       const list = this.userOrganizationsList;
@@ -357,7 +406,7 @@ export default {
         });
     },
     fetchUserOrganisationData() {
-      this.$store.dispatch(`${USER_NAMESPACE}/${USER_GET_ORGANIZATION_IDS}`, { userId: this.user.id });
+      this.$store.dispatch(`${USER_NAMESPACE}/${USER_GET_ORGANIZATION_IDS}`, this.user.id);
     },
     catchRefreshClick() {
       if (this.user) {
@@ -449,6 +498,11 @@ export default {
       actionButtonText: 'New Dataset',
       image: UserNotFound2,
     },
+    noOrganizationsInfos: {
+      title: 'No Organizations Found',
+      description: "It seems that your aren't assigend to an Organisation. Ask your project or organization lead to add you as a member or even better as an editor so you can create datasets.",
+      image: UserNotFound1,
+    },
     userListDefaultControls: [
       LISTCONTROL_COMPACT_LAYOUT_ACTIVE,
     ],
@@ -488,7 +542,7 @@ export default {
 
     .topBoard
       display: grid
-      grid-template-columns: 5fr 1fr
+      grid-template-columns: 5fr auto
       gap: $gridGap
 
     .midBoard
@@ -501,6 +555,11 @@ export default {
         display: grid
         grid-template-columns: 11fr 1fr
 
+      .noUserDatasetsGrid
+        display: grid
+        grid-template-columns: 1fr 1fr
+        gap: $gridGap
+
     .bottomBoard
       overflow: auto
       display: grid
@@ -511,12 +570,18 @@ export default {
         overflow: auto
         display: grid
         grid-auto-flow: column
+        justify-content: start
 
       .orgaDatasets:first-child
         margin-left: 0
 
       .orgaDatasets:last-child
         margin-right: 0
+
+      .noOrgaDatasetsGrid
+        display: grid
+        grid-template-columns: 1fr 1fr
+        gap: $gridGap
 
 </style>
 

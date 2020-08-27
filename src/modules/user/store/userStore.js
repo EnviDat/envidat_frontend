@@ -17,19 +17,24 @@ import actions from './userActions';
 import mutations from './userMutations';
 
 const userState = {
-  userLoading: false,
   signInLoading: false,
   signInSuccess: false,
   requestLoading: false,
   requestSuccess: false,
-  filteringTagNames: [],
-  user: null,
-  userOrganizationLoading: false, 
-  userOrganizationIds: [],
-  userOrganizations: {},
   error: null,
   errorType: '',
   errorField: '',
+  filteringTagNames: [],
+  user: null,
+  userLoading: false,
+  userDatasetsError: null,
+  userOrganizationLoading: false, 
+  userOrganizationIds: [],
+  userOrganizationNames: [],
+  userOrganizations: {},
+  userRecentOrgaDatasets: [],
+  userRecentOrgaDatasetsError: null,
+  userRecentOrgaDatasetsLimit: 10,
 };
 
 
