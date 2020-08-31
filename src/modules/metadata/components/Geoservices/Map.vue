@@ -40,7 +40,7 @@
     </div>
     <div class="timeslider-container" v-if="config.timeseries" style="position: relative;">
       <timeslider
-        style="height: 120px; z-index: 10000; position: relative;"
+        style="height: 100px; z-index: 10000; position: relative;"
         @select="select"
         :chart-data="config.layers"
         :div-id="`timeslider_${mapDivId}`"
@@ -124,12 +124,11 @@
   }
 
   .map-container-timeslider {
-    height: calc(100% - 120px);
+    height: calc(100% - 100px);
   }
 
   .timeslider-container {
-    height: 120px;
+    height: 100px;
   }
-
 
 </style>

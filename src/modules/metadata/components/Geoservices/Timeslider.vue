@@ -84,12 +84,16 @@
         addClassNames: true,
         zoomOutText: '', // Hack, to hide show all button
         categoryAxis: {
-          parseDates: true,
-          labelsEnabled: true,
+          minorGridEnabled: false,
+          gridThickness: 0,
+          parseDates: false,
+          labelsEnabled: false,
         },
         chartCursor: {
           enabled: true,
           bulletsEnabled: true,
+          valueLineBalloonEnabled: false,
+          valueLineEnabled: false,
         },
         chartScrollbar: {
           enabled: true,
@@ -119,8 +123,9 @@
             autoGridCount: false,
             axisThickness: 0,
             gridThickness: 0,
+            zeroGridAlpha: 0,
             labelsEnabled: false,
-            minorGridEnabled: true,
+            minorGridEnabled: false,
             title: '',
           },
         ],
