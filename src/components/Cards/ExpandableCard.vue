@@ -36,9 +36,10 @@
     </v-card-actions>
 
     <v-slide-y-transition>
-      <v-card-text v-if="expanded" class="py-4">
-        {{ markdownText }}
-      </v-card-text>
+      <v-card-text v-if="expanded"
+                    class="py-4"
+                    v-html="markdownText" />
+
     </v-slide-y-transition>
   </v-card>
 </template>
@@ -53,7 +54,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-23 14:37:17
+ * Last modified  : 2020-09-02 17:16:43
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
