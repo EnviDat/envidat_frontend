@@ -268,6 +268,6 @@ describe('metaDataFactory - formatDate', () => {
 
     const date = formatDate(ckanDate);
     expect(date).toBeDefined();
-    expect(date).toBe('15. Jan 2017 15:25');
+    expect(date).toBe('15. Aug 2017 15:25');
   });
 });

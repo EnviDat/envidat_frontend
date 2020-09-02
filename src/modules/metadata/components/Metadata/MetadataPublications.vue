@@ -32,17 +32,7 @@ export default {
   },
   computed: {
     publications() {
-      let pub = this.mixinMethods_getGenericProp('publications');
-
-      if (!pub) {
-        pub = {
-          title: 'Related Publications', 
-          emptyTextColor: 'black',
-          emptyText: 'No related publications available for this dataset.',
-        };
-      }
-
-      return pub;
+      return this.mixinMethods_getGenericProp('publications');
     },
   },
   methods: {

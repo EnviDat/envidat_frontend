@@ -179,6 +179,7 @@ export function createBody(dataset, smallScreen = false) {
     // doi: dataset.doi,
     text: dataset.notes,
     maxTextLength: smallScreen ? 900 : 1000,
+    emptyTextColor: 'red',
     emptyText: 'No description found for this dataset.',
   };
 }
@@ -192,6 +193,8 @@ export function createPublications(dataset) {
     text: dataset.related_publications,
     title: 'Related Publications',
     maxTextLength: 500,
+    emptyTextColor: 'black',
+    emptyText: 'No related publications available for this dataset.',
   };
 }
 
