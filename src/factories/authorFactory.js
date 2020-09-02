@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-06-05 14:07:03
- * Last modified  : 2020-06-05 14:07:03
+ * Last modified  : 2020-09-02 20:57:17
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -75,7 +75,7 @@ export function getDataCredit(author) {
   } else if (typeof author.data_credit === 'string') {
     dataCredits[author.data_credit] = 1;
   } else {
-    console.log(`Unexpected type for author.data_credit ${typeof author.data_credit}`);
+    // console.log(`Unexpected type for author.data_credit ${typeof author.data_credit}`);
     throw new Error(`Unexpected type for author.data_credit ${typeof author.data_credit}`);
   }
 

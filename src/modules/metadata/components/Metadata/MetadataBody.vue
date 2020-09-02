@@ -14,7 +14,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-20 13:07:27
+ * Last modified  : 2020-09-02 20:56:13
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -33,13 +33,7 @@ export default {
   },
   computed: {
     body() {
-      let body = this.mixinMethods_getGenericProp('body');
-
-      if (!body) {
-        body = { title: 'Description' };
-      }
-
-      return body;
+      return this.mixinMethods_getGenericProp('body');
     },
   },
   methods: {

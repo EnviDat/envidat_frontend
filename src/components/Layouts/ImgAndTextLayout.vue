@@ -28,7 +28,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-20 14:05:26
+ * Last modified  : 2020-09-02 20:57:32
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -43,7 +43,7 @@ export default {
   },
   watch: {
     img() {
-      console.log(this.img);
+      // console.log(this.img);
     },
   },
 };
