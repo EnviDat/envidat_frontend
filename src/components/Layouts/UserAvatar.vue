@@ -3,8 +3,12 @@
             :size="size"
             style="box-shadow: 0 3px 3px -2px rgba(0,0,0,.2),0 3px 4px 0 rgba(0,0,0,.14),0 1px 8px 0 rgba(0,0,0,.12) !important" >
 
-    <v-img v-if="showGravatar"
+    <!-- <v-img v-if="showGravatar"
           :src="`https://gravatar.com/avatar/${emailHash}?s=${size}&d=${defaultGavatar}&r=g`"
+          @error="imageError" /> -->
+
+    <v-img v-if="showGravatar"
+          :src="avataaarUrl"
           @error="imageError" />
 
     <span v-if="!showGravatar && nameInitials"
@@ -28,11 +32,12 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-08-25 15:50:34
+ * Last modified  : 2020-09-02 23:08:14
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
+import { getAvataaarUrl } from '@/store/avataaars';
 
 export default {
   components: {
@@ -53,9 +58,10 @@ export default {
       default: 'secondary',
     },
   },
-  data: () => ({
-    gravatarNotLoaded: false,
-  }),
+  mounted() {
+    this.avataaarUrl = getAvataaarUrl(this.emailHash);
+    // console.log(`emailHash: ${this.emailHash} url: ${this.avataaarUrl}`);
+  },
   computed: {
     showGravatar() {
       return !this.gravatarNotLoaded && this.emailHash;
@@ -81,5 +87,9 @@ export default {
       this.gravatarNotLoaded = true;
     },
   },
+  data: () => ({
+    gravatarNotLoaded: false,
+    avataaarUrl: '',
+  }),
 };
 </script>
