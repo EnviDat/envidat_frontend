@@ -12,11 +12,11 @@
           <v-img class="imagezoom"
                   :contain="contain"
                   :height=" $vuetify.breakpoint.xsOnly ? minHeight + 'px' : maxHeight + 'px' "
-                  style="border-bottom-left-radius: 4px; border-top-left-radius: 4px;"
+                  :style="`border-bottom-left-radius: ${expanded ? 0 : 4}px; border-top-left-radius: 4px;`"
                   :src="img" />
         </v-col>
 
-        <v-col cols="7" class="headline px-2"
+        <v-col cols="7" class="headline cardTitle px-4"
                align-self="center" >
           {{ title }}
         </v-col>
@@ -95,13 +95,8 @@ export default {
 
 <style scoped>
 
-  .headline {
-    font-family: "Libre Baskerville", serif !important;
-    font-size: 1.75em !important;
-    overflow: inherit !important;
-    text-overflow: inherit !important;
-    max-height: inherit !important;
-    line-height: inherit !important;
+  .cardTitle {
+    font-family: "Baskervville", serif !important;
   }
 
   .compactTitle {

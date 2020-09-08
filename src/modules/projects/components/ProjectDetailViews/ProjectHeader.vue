@@ -125,7 +125,7 @@ export default {
 <style scoped>
 
   .headerTitle {
-    font-family: 'Libre Baskerville', serif !important;
+    font-family: 'Baskervville', serif !important;
     font-weight: 400;
     opacity: 1;
   }

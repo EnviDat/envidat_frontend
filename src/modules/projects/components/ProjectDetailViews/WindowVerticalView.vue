@@ -145,7 +145,7 @@ export default {
 <style scoped>
 
   .bodyTitle {
-    font-family: 'Libre Baskerville', serif !important;
+    font-family: 'Baskervville', serif !important;
     font-weight: 700 !important;
   }
 

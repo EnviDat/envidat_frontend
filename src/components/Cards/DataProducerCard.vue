@@ -98,7 +98,7 @@ export default {
 <style scoped>
 
   .dataproducer_title {
-    font-family: 'Libre Baskerville', serif !important;
+    font-family: 'Baskervville', serif !important;
   }
 
 </style>
