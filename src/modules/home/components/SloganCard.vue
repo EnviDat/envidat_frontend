@@ -92,3 +92,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+
+.envidatSlogan {
+  line-height: 2.25rem;
+}
+
+</style>

@@ -496,8 +496,10 @@ export default {
 <style>
 
   .metadata_title {
-    font-family: 'Libre Baskerville', serif !important;
-    font-weight: 700 !important;
+    font-family: 'Baskervville', serif !important;
+    /* font-weight: 700 !important; */
+    font-weight: 500 !important;
+    line-height: 1rem !important;
   }
 
   .metadataResourceCard {

@@ -397,7 +397,7 @@ export default {
 
 <style >
   .metadataList_title {
-    font-family: 'Libre Baskerville', serif !important;
+    font-family: 'Baskervville', serif !important;
     font-weight: 700 !important;
   }
 </style>

@@ -26,9 +26,7 @@
       <v-col v-if="metadataTitle"
               cols="12" >
         <div class="headerTitle"
-              :style="$vuetify.breakpoint.xsOnly ? 'line-height: 1.2em;' : 'line-height: 1em;'"
-              :class="{ 'py-2': $vuetify.breakpoint.mdAndUp,
-                        'py-0': $vuetify.breakpoint.smAndDown,
+              :class="{ 'py-0': $vuetify.breakpoint.smAndDown,
                         'display-2': $vuetify.breakpoint.xlAndUp,
                         'display-1': $vuetify.breakpoint.mdAndUp,
                         'headline': $vuetify.breakpoint.smOnly,
@@ -390,14 +388,14 @@ export default {
 <style scoped>
 
   .headerTitle {
-    font-family: 'Libre Baskerville', serif !important;
+    font-family: 'Baskervville', serif !important;
     font-weight: 400;
     opacity: 1;
     text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
   }
 
   .headerInfo {
-    font-family: 'Libre Baskerville', serif !important;
+    font-family: 'Baskervville', serif !important;
     font-weight: 400;
     opacity: 0.85;
   }

@@ -189,7 +189,7 @@
     font-family: Raleway, sans-serif !important;
     letter-spacing: .02em !important;
     font-size: 12px;
-    color: black;
+    color: rgba(0,0,0,.87) !important;
   }
 
   .heightScrollProjectCard {

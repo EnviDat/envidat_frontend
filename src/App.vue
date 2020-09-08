@@ -356,14 +356,7 @@ export default {
 
 
 <style >
- @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville|Raleway&display=swap');
-
-/* overwrite the applications background https://css-tricks.com/use-cases-fixed-backgrounds-css/ */
-.application {
-  font-family: "Raleway", sans-serif !important;
-  font-size: 12px;
-}
-
+ 
 .envidatNavbar {
   position: -webkit-sticky;
   position: sticky;
@@ -377,20 +370,8 @@ export default {
 
 /*** General Card styles ***/
 
-.headline {
-  font-family: "Libre Baskerville", serif !important;
-  /* font-weight: 700; */
-
-  /*
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-height: 2.15em;
-    */
-  line-height: 1.1em !important;
-}
-
 .card .subheading {
-  /* font-family: 'Libre Baskerville', serif; */
+  /* font-family: 'Baskervville', serif; */
   font-weight: 400;
   /* color: #555; */
   opacity: 0.75;
@@ -433,12 +414,8 @@ export default {
 }
 
 .envidatTitle {
-  font-family: "Libre Baskerville", serif !important;
+  font-family: "Baskervville", serif !important;
   letter-spacing: 0em !important;
-}
-
-.envidatSlogan {
-  font-family: "Libre Baskerville", serif !important;
 }
 
 .metadataInfoIcon {

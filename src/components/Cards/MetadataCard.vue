@@ -364,7 +364,9 @@ export default {
   }
 
   .headline {
-    font-size: 18px !important;
+    /* font-family: "Baskervville", serif !important; */
+    font-size: 1.2rem !important;
+    line-height: 1.2rem !important;
   }
 
   .compactTitle {
