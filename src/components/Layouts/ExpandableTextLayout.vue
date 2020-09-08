@@ -7,7 +7,7 @@
     </v-card-title>
     
     <v-card-title v-if="showPlaceholder && !title"
-                  class="pa-4 pt-0">
+                  class="pa-4">
       <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer"
             style="width: 100%;">
         <div class="bone bone-type-heading" />
@@ -17,12 +17,12 @@
     <v-card-text v-if="fullText"
                   ref="text"
                   :usedMaxTextLength="maxTextLength"
-                  class="pa-4 pt-0 heightAndScroll readableText"
+                  class="pa-4 heightAndScroll readableText"
                   v-html="markdownText" >
     </v-card-text>
 
     <v-card-text v-if="showPlaceholder && !fullText"
-                  class="pa-4 pt-0" >
+                  class="pa-4" >
       <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer">
         <div class="bone bone-type-multiline bone-style-paragraph" />
       </div>
