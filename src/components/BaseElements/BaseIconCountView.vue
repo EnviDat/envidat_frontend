@@ -94,6 +94,5 @@ export default {
     /* line-height has to be based on the root (1rem) because of the
     use in ex. v-card-title */
     line-height: 1rem;
-    position: absolute;
   }
 </style>
