@@ -4,7 +4,9 @@
 
 # EnviDat Frontend
 Frontend for the Envidat platform which provides environmental research data from researchers of the Swiss Federal Institute for Forest, Snow and Landscape.
-The backend API is base on CKAN. So the respective actions are used to consume the metadata about the research data.
+The backend API is based on CKAN so the respective actions are used to consume the metadata about the research data.
+
+The frontend replaces some of the Features of the ckan ui, but as of version 0.x.x doesn't provide all the features of the ckan ui yet.
 
 # Installtion
 After cloning the project, use <code>npm install</code> to install all the dependencies.
@@ -59,5 +61,11 @@ config.json content on server side:
 
 # Missing Features
 
+- Organization list
+- Any sign in / logged in functionalities like uploading and editing any data (with the version 0.6.9x the sign in is being developed)
+- Advanced Search filters
 
 # Known issues
+
+- When using the text search on the BrowsePage (route /#/browse), the 'query' action which is being called, isn't a standard ckan action it's custom built. That has to be replace manually to the 'package_search' action from ckan, with the respective parameters for a solr query and the repsonse maybe have to be handled differently.
+- So links are still hard coded, e.g. when linking in the navigation on the organizations the link is still hard coded to www.envidat.ch
