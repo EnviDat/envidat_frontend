@@ -1,3 +1,5 @@
+import { randomInt } from '@/factories/metaDataFactory';
+
 export const urlParameters = [
   'accessoriesType',
   'avatarStyle',
@@ -232,6 +234,11 @@ export const parameterCollection = {
 };
 
 function getNextHashNumber(hash, index) {
+  if (!hash) {
+    const number = randomInt(0, 9);
+
+    return { index: index + 1, number };
+  }
 
   let number = 0;
 

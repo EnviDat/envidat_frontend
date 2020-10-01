@@ -64,7 +64,7 @@ export default {
   },
   computed: {
     showGravatar() {
-      return !this.gravatarNotLoaded && this.emailHash;
+      return !this.gravatarNotLoaded;
     },
     initialsTextClass() {
       if (this.size >= 128) {
