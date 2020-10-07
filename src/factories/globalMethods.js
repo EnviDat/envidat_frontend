@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-11-22 15:03:58
+ * Last modified  : 2020-10-07 21:47:32
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -24,8 +24,30 @@ export default {
 
       return this.selectedTagNames.indexOf(tagName) >= 0;
     },
+    mixinMethods_loadRouteTags(tags, selectedTagNames) {
+
+      if (tags && !(tags instanceof Array)) {
+        if (tags.includes(',')) {
+          tags = tags.split(',');
+        } else {
+          tags = [tags];
+        }
+      }
+
+      if (tags) {
+        for (let i = 0; i < tags.length; i++) {
+          tags[i] = tags[i].toUpperCase();
+        }
+
+        if (!this.mixinMethods_areArraysIdentical(selectedTagNames, tags)) {
+          return tags;
+        }
+      }
+
+      return false;
+    },    
     mixinMethods_areArraysIdentical(arr1, arr2) {
-      if (arr1.length !== arr2.length) return false;
+      if (arr1.length !== arr2.length) { return false; }
 
       for (let i = arr1.length; i >= 0; i--) {
         if (arr1[i] !== arr2[i]) return false;

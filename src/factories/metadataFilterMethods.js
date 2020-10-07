@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-11-20 16:03:04
+ * Last modified  : 2020-10-07 16:14:44
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -129,4 +129,12 @@ export function getPopularTags(datasets, excludeTag = '', minCount = 5, maxCount
   }
 
   return cleandAndCounted;
+}
+
+export function contentFilteredByTags(entry, selectedTagNames) {
+  if (entry.tags && tagsIncludedInSelectedTags(entry.tags, selectedTagNames)) {
+    return true;
+  }
+
+  return false;
 }
