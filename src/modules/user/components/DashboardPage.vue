@@ -67,16 +67,16 @@
 
       <MetadataList v-if="hasUserDatasets"
                       ref="metadataList"
-                      :listContent="userDatasets"
+                      :listContent="filteredUserDatasets"
+                      :searchCount="filteredUserDatasets.length"
                       :mapFilteringPossible="$vuetify.breakpoint.smAndUp"
                       :loading="loading"
                       :placeHolderAmount="placeHolderAmount"
                       @clickedTag="catchTagClicked"
                       :selectedTagNames="selectedTagNames"
-                      :allTags="allTags"
+                      :allTags="allUserdataTags"
                       :showPlaceholder="updatingTags"
                       @clickedTagClose="catchTagCloseClicked"
-                      @clickedClear="catchTagCleared"
                       :defaultListControls="userListDefaultControls"
                       :enabledControls="userListEnabledControls"
                       :useDynamicHeight="false"
@@ -84,7 +84,6 @@
                       :mapTopLayout="$vuetify.breakpoint.mdAndUp"
                       :topFilteringLayout="$vuetify.breakpoint.mdAndDown"
                       :showSearch="false" />
-
 
       <div v-if="!hasUserDatasets"
             class="noUserDatasetsGrid">
@@ -109,20 +108,20 @@
       <div v-if="hasRecentOrgaDatasets && !userOrganizationLoading"
             class="orgaDatasets" >
 
-          <MetadataCard v-for="(metadata, index) in userRecentOrgaDatasets"
-                        class="mx-2"
-                        :style="`height: 300px; width: ${previewWidth}px;`"          
-                        :key="index"
-                        :id="metadata.id"
-                        :title="metadata.title"
-                        :name="metadata.name"
-                        :subtitle="metadata.notes"
-                        :titleImg="metadata.titleImg"
-                        :resourceCount="metadata.num_resources"
-                        :fileIconString="fileIconString"
-                        :categoryColor="metadata.categoryColor"
-                        @clickedEvent="metaDataClicked"
-                        @clickedTag="catchTagClicked" />
+        <MetadataCard v-for="(metadata, index) in userRecentOrgaDatasets"
+                      class="mx-2"
+                      :style="`height: 300px; width: ${previewWidth}px;`"          
+                      :key="index"
+                      :id="metadata.id"
+                      :title="metadata.title"
+                      :name="metadata.name"
+                      :subtitle="metadata.notes"
+                      :titleImg="metadata.titleImg"
+                      :resourceCount="metadata.num_resources"
+                      :fileIconString="fileIconString"
+                      :categoryColor="metadata.categoryColor"
+                      @clickedEvent="metaDataClicked"
+                      @clickedTag="catchTagClicked" />
       </div>
 
       <div v-if="hasRecentOrgaDatasets && userOrganizationLoading"
@@ -185,7 +184,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 14:18:32 
- * Last modified  : 2020-08-27 08:36:06
+ * Last modified  : 2020-10-07 22:23:47
  */
 
 import {
@@ -221,6 +220,7 @@ import {
   SET_CURRENT_PAGE,
 } from '@/store/mainMutationsConsts';
 
+import { contentFilteredByTags } from '@/factories/metadataFilterMethods';
 
 import { getNameInitials } from '@/factories/authorFactory';
 import { errorMessage } from '@/factories/notificationFactory';
@@ -257,6 +257,8 @@ export default {
   },
   beforeMount() {
     this.fileIconString = this.mixinMethods_getIcon('file');
+    
+    this.loadRouteTags();
 
     if (this.user) {
       this.fetchUserDatasets();
@@ -307,6 +309,23 @@ export default {
     },
     hasUserDatasets() {
       return this.userDatasets && this.userDatasets.length > 0;
+    },
+    filteredUserDatasets() {
+      const filteredContent = [];
+
+      if (!this.hasUserDatasets) {
+        return filteredContent;
+      }
+
+      for (let i = 0; i < this.userDatasets.length; i++) {
+        const entry = this.userDatasets[i];
+
+        if (contentFilteredByTags(entry, this.selectedTagNames)) {
+          filteredContent.push(entry);
+        }
+      }
+      
+      return filteredContent;
     },
     publishedDatasets() {
       if (this.user.datasets) {
@@ -375,22 +394,32 @@ export default {
 
       return null;
     },
+    allUserdataTags() {
+      let allTags = [];
+
+      for (let i = 0; i < this.filteredUserDatasets.length; i++) {
+        const dataset = this.filteredUserDatasets[i];
+
+        const merged = [...allTags, ...dataset.tags];
+        const mergedWithoutDublicates = merged.filter((item, pos, self) => self.findIndex(v => v.name === item.name) === pos);
+
+        allTags = mergedWithoutDublicates;
+      }
+
+      allTags.forEach((tag) => {
+        tag.enabled = true;
+      });
+
+      return allTags;
+    },
   },
   methods: {
     loadRouteTags() {
-      const tagsEncoded = this.$route.query.tags ? this.$route.query.tags : '';
-      let decodedTags = [];
+      const routeTags = this.mixinMethods_loadRouteTags(this.$route.query.tags, this.selectedTagNames);
 
-      if (tagsEncoded.length > 0) {
-        decodedTags = this.mixinMethods_decodeTagsFromUrl(tagsEncoded);
+      if (routeTags) {
+        this.selectedTagNames = routeTags;
       }
-
-      if (!this.mixinMethods_areArraysIdentical(this.selectedTagNames, decodedTags)) {
-        this.selectedTagNames = decodedTags;
-        return true;
-      }
-
-      return false;
     },
     fetchUserDatasets() {
       this.$store.dispatch(`${USER_NAMESPACE}/${FETCH_USER_DATA}`,
@@ -434,29 +463,28 @@ export default {
       // this.$router.push({ path: USER_SIGNIN_PATH, query: '' });
     },
     catchTagClicked(tagName) {
-      console.log(`Click on tag ${tagName}`);
       if (!this.mixinMethods_isTagSelected(tagName)) {
-        const newTags = [...this.selectedTagNames, tagName];
+        this.selectedTagNames.push(tagName);
 
-        const tagsEncoded = this.mixinMethods_encodeTagForUrl(newTags);
-        this.mixinMethods_additiveChangeRoute(USER_DASHBOARD_PATH, undefined, tagsEncoded);
+        const newTags = [];
+
+        for (let i = 0; i < this.selectedTagNames.length; i++) {
+          newTags.push(this.selectedTagNames[i].toLowerCase());
+        }
+
+        this.mixinMethods_additiveChangeRoute(USER_DASHBOARD_PATH, undefined, newTags.toString());
       }
     },
-    catchTagCloseClicked(tagId) {
-      console.log(`Click close on tag ${tagId}`);
-    //   if (this.selectedTagNames === undefined) {
-    //     return;
-    //   }
+    catchTagCloseClicked(tagName) {
+      this.selectedTagNames = this.selectedTagNames.filter(tag => tag !== tagName);
 
-    //   const newTags = this.selectedTagNames.filter(tag => tag !== tagId);
+      const newTags = [];
 
-    //   const tagsEncoded = this.mixinMethods_encodeTagForUrl(newTags);
-    //   this.mixinMethods_additiveChangeRoute(BROWSE_PATH, undefined, tagsEncoded);
-    },
-    catchTagCleared() {
-      console.log('Tags cleared');
-    //   this.selectedTagNames = [];
-    //   this.filterContent();
+      for (let i = 0; i < this.selectedTagNames.length; i++) {
+        newTags.push(this.selectedTagNames[i].toLowerCase());
+      }
+
+      this.mixinMethods_additiveChangeRoute(USER_DASHBOARD_PATH, undefined, newTags.toString());
     },
     metaDataClicked(datasetname) {
       this.$store.commit(`${METADATA_NAMESPACE}/${SET_DETAIL_PAGE_BACK_URL}`, this.$route);
@@ -475,7 +503,7 @@ export default {
     PageBGImage: './app_b_dashboardpage.jpg',
     refreshButtonText: 'Reload Datasets',
     refreshOrgaButtonText: 'Reload Organisation Datasets',
-    placeHolderAmount: 5,
+    placeHolderAmount: 4,
     orgaDatasetsPreview: 5,
     previewWidth: 370,
     userCardHeight: 350,

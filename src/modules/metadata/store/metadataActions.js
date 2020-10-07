@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2020-08-19 11:08:09
+ * Last modified  : 2020-10-07 21:14:20
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -33,10 +33,11 @@ import {
 } from '@/store/metadataMutationsConsts';
 
 import {
-  tagsIncludedInSelectedTags,
   getEnabledTags,
   getPopularTags,
+  contentFilteredByTags,
 } from '@/factories/metadataFilterMethods';
+
 import {
   getTagsMergedWithExtras,
   getSelectedTagsMergedWithHidden,
@@ -67,14 +68,6 @@ function contentFilterAccessibility(value) {
   // return true;
 }
 
-
-function contentFilteredByTags(entry, selectedTagNames) {
-  if (entry.tags && tagsIncludedInSelectedTags(entry.tags, selectedTagNames)) {
-    return true;
-  }
-
-  return false;
-}
 
 function createSolrQuery(searchTerm) {
 

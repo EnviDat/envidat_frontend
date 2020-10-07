@@ -40,7 +40,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-08-19 08:49:44
+ * Last modified  : 2020-10-07 22:40:18
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -81,19 +81,11 @@ export default {
   },
   methods: {
     loadRouteTags() {
-      const tagsEncoded = this.$route.query.tags ? this.$route.query.tags : '';
-      let decodedTags = [];
+      const routeTags = this.mixinMethods_loadRouteTags(this.$route.query.tags, this.selectedTagNames);
 
-      if (tagsEncoded.length > 0) {
-        decodedTags = this.mixinMethods_decodeTagsFromUrl(tagsEncoded);
+      if (routeTags) {
+        this.selectedTagNames = routeTags;
       }
-
-      if (!this.mixinMethods_areArraysIdentical(this.selectedTagNames, decodedTags)) {
-        this.selectedTagNames = decodedTags;
-        return true;
-      }
-
-      return false;
     },
     storeScroll(scrollY) {
       this.$store.commit(SET_BROWSE_SCROLL_POSITION, scrollY);
@@ -104,21 +96,27 @@ export default {
     },
     catchTagClicked(tagName) {
       if (!this.mixinMethods_isTagSelected(tagName)) {
-        const newTags = [...this.selectedTagNames, tagName];
+        this.selectedTagNames.push(tagName);
 
-        const tagsEncoded = this.mixinMethods_encodeTagForUrl(newTags);
-        this.mixinMethods_additiveChangeRoute(BROWSE_PATH, undefined, tagsEncoded);
+        const newTags = [];
+
+        for (let i = 0; i < this.selectedTagNames.length; i++) {
+          newTags.push(this.selectedTagNames[i].toLowerCase());
+        }
+
+        this.mixinMethods_additiveChangeRoute(BROWSE_PATH, undefined, newTags.toString());
       }
     },
-    catchTagCloseClicked(tagId) {
-      if (this.selectedTagNames === undefined) {
-        return;
+    catchTagCloseClicked(tagName) {
+      this.selectedTagNames = this.selectedTagNames.filter(tag => tag !== tagName);
+
+      const newTags = [];
+
+      for (let i = 0; i < this.selectedTagNames.length; i++) {
+        newTags.push(this.selectedTagNames[i].toLowerCase());
       }
 
-      const newTags = this.selectedTagNames.filter(tag => tag !== tagId);
-
-      const tagsEncoded = this.mixinMethods_encodeTagForUrl(newTags);
-      this.mixinMethods_additiveChangeRoute(BROWSE_PATH, undefined, tagsEncoded);
+      this.mixinMethods_additiveChangeRoute(BROWSE_PATH, undefined, newTags.toString());
     },
     catchTagCleared() {
       this.selectedTagNames = [];
