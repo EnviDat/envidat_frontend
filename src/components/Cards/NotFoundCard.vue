@@ -1,9 +1,10 @@
 <template>
   <v-card id="NotFoundCard"
+          :height="height"
           class="pa-0 notFoundGrid" >
 
     <v-img :src="notFoundImage"
-            max-height="500"
+            :max-height="height"
             style="border-bottom-left-radius: 4px; border-top-left-radius: 4px; border-top-right-radius: 0px;" />
 
     <v-container fluid class="pa-4">
@@ -66,6 +67,10 @@ export default {
     title: {
       type: String,
       default: 'Content Not Found',
+    },
+    height: {
+      type: Number,
+      default: 300,
     },
     description: {
       type: String,
