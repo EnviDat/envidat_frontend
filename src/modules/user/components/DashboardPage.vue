@@ -533,7 +533,7 @@ export default {
     ],
     userListEnabledControls: [
       LISTCONTROL_LIST_ACTIVE,
-      LISTCONTROL_MAP_ACTIVE,
+      // LISTCONTROL_MAP_ACTIVE,
       LISTCONTROL_COMPACT_LAYOUT_ACTIVE,
     ],
   }),
