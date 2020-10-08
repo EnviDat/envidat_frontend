@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 16:51:52
- * Last modified  : 2020-08-26 21:17:29
+ * Last modified  : 2020-10-08 16:09:15
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -66,11 +66,10 @@ export default {
     const body = payload.body || {};
 
     // unpack the action because it might be wrapped to provide a test url
-    let actionUrl = typeof (payload.action) === 'function' ? payload.action() : payload.action;
+    const actionUrl = typeof (payload.action) === 'function' ? payload.action() : payload.action;
 
-    actionUrl = extractBodyIntoUrl(actionUrl, body);
-
-    const url = urlRewrite(actionUrl, API_BASE, ENVIDAT_PROXY);
+    let url = extractBodyIntoUrl(actionUrl, body);
+    url = urlRewrite(url, API_BASE, ENVIDAT_PROXY);
 
     // if the url is directly to a file it has to be a get call
     // const method = url.includes('.json') ? 'get' : 'post';
@@ -91,7 +90,7 @@ export default {
 
     const actionUrl = ACTION_USER_ORGANIZATION_IDS();
     let url = extractBodyIntoUrl(actionUrl, { id: userId });
-    url = urlRewrite(actionUrl, API_BASE, ENVIDAT_PROXY);
+    url = urlRewrite(url, API_BASE, ENVIDAT_PROXY);
 
     if (useTestdata) {
       // ignore the parameters for testdata, because it's directly a file
@@ -125,7 +124,9 @@ export default {
         include_datasets: true,
         include_tags: true,
        });
-        
+
+      url = urlRewrite(url, API_BASE, ENVIDAT_PROXY);
+      
       if (useTestdata) {
         // ignore the parameters for testdata, because it's directly a file
         url = urlRewrite(actionUrl, API_BASE, ENVIDAT_PROXY);
@@ -162,7 +163,9 @@ export default {
         include_drafts: true,
         rows: limit,
        });
-        
+
+      url = urlRewrite(url, API_BASE, ENVIDAT_PROXY);
+      
       if (useTestdata) {
         // ignore the parameters for testdata, because it's directly a file
         url = urlRewrite(actionUrl, API_BASE, ENVIDAT_PROXY);

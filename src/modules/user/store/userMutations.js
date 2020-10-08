@@ -6,7 +6,7 @@
 * @author Dominik Haas-Artho
 *
 * Created at     : 2020-07-14 16:51:52
- * Last modified  : 2020-08-27 08:16:04
+ * Last modified  : 2020-10-08 17:26:21
 *
 * This file is subject to the terms and conditions defined in
 * file 'LICENSE.txt', which is part of this source code package.
@@ -256,6 +256,12 @@ export default {
       const categoryCards = store.getters[`${METADATA_NAMESPACE}/categoryCards`];
 
       recentDatasets = enhanceMetadatas(payload.results, cardBGImages, categoryCards);
+    }
+
+    if (state.userRecentOrgaDatasets?.length > 0) {
+      const mergedDatasets = [...state.userRecentOrgaDatasets, ...recentDatasets];
+      const uniqueArrayOfDatasets = mergedDatasets.filter((item, pos, self) => self.findIndex(v => v.id === item.id) === pos);
+      recentDatasets = uniqueArrayOfDatasets;
     }
 
     this._vm.$set(state, 'userRecentOrgaDatasets', recentDatasets);
