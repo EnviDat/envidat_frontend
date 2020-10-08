@@ -9,6 +9,7 @@
       <div :style="`height: ${headerHeight}px; overflow: hidden;`">
         <v-img :height="headerHeight"
                 :width="width"
+                style="border-top-left-radius: 4px; border-top-right-radius: 4px;"
                 :src="`https://gravatar.com/avatar/${email}?s=${gravatarImageSize}&d=identicon&r=g`" />
       </div>
       
@@ -47,7 +48,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-08-25 15:51:20
+ * Last modified  : 2020-10-08 17:44:00
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
