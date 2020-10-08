@@ -8,6 +8,7 @@
           class="notSignedinGrid">
 
     <NotFoundCard v-bind="notSignedInInfos" 
+                  :height="notFoundCardHeight"
                   :actionButtonCallback="catchSigninClick" />
    </div>
 
@@ -42,10 +43,7 @@
       <WelcomeCard :userName="user.fullname"
                     :publishedDatasetCount="publishedDatasets.length"
                     :unpublishedDatasetCount="unpublishedDatasets.length" 
-                    :editingDatasetCount="editingDatasets.length"
-                    :createClickCallback="catchCreateClick"
-                    :unpublishedClickCallback="catchShowUnpublishedClick"
-                    :editingClickCallback="catchEditingClick" />
+                    :editingDatasetCount="editingDatasets.length" />
 
       <UserCard :height="userCardHeight"
                 :width="userCardWidth"
@@ -54,7 +52,6 @@
                 :emailHash="user.email_hash"
                 :nameInitials="nameInitials"
                 :datasetCount="publishedDatasets.length"  />
-
 
     </div>
 
@@ -88,6 +85,7 @@
       <div v-if="!hasUserDatasets"
             class="noUserDatasetsGrid">
         <NotFoundCard v-bind="noDatasetsInfos"
+                      :height="notFoundCardHeight"
                       :actionButtonCallback="catchCreateClick" />
 
         <NotificationCard v-if="noUserDatasetsError"
@@ -105,7 +103,17 @@
                   :tooltipText="refreshOrgaButtonText"
                   :clickCallback="catchRefreshOrgaClick" />
       
-      <div v-if="hasRecentOrgaDatasets && !userOrganizationLoading"
+      <div v-if="userOrganizationLoading"
+            class="orgaDatasets" >
+
+        <MetadataCardPlaceholder id="orgaDataset"
+                                  class="mx-2"
+                                  v-for="n in orgaDatasetsPreview"
+                                  :key="n"
+                                  :style="`height: 300px; min-width: ${previewWidth}px;`" />
+      </div>
+
+      <div v-if="!userOrganizationLoading && hasRecentOrgaDatasets"
             class="orgaDatasets" >
 
         <MetadataCard v-for="(metadata, index) in userRecentOrgaDatasets"
@@ -124,16 +132,6 @@
                       @clickedTag="catchTagClicked" />
       </div>
 
-      <div v-if="hasRecentOrgaDatasets && userOrganizationLoading"
-            class="orgaDatasets" >
-
-        <MetadataCardPlaceholder id="orgaDataset"
-                                  class="mx-2"
-                                  v-for="n in orgaDatasetsPreview"
-                                  :key="n"
-                                  :style="`height: 300px; min-width: ${previewWidth}px;`" />
-      </div>
-
       <div v-if="!userOrganizationLoading && !hasRecentOrgaDatasets"
             class="noOrgaDatasetsGrid">
 
@@ -142,7 +140,7 @@
                           :showCloseButton="false" />
 
         <NotFoundCard v-if="!userOrganizationsList"
-                      :style="`height: 300px;`"
+                      :height="notFoundCardHeight"
                       v-bind="noOrganizationsInfos"  />
       </div>
 
@@ -184,7 +182,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 14:18:32 
- * Last modified  : 2020-10-07 22:23:47
+ * Last modified  : 2020-10-08 21:17:17
  */
 
 import {
@@ -203,7 +201,7 @@ import {
 import {
   SET_DETAIL_PAGE_BACK_URL,
   METADATA_NAMESPACE,
-  LISTCONTROL_MAP_ACTIVE,
+  // LISTCONTROL_MAP_ACTIVE,
   LISTCONTROL_LIST_ACTIVE,
   LISTCONTROL_COMPACT_LAYOUT_ACTIVE,
 } from '@/store/metadataMutationsConsts';
@@ -403,7 +401,11 @@ export default {
         const merged = [...allTags, ...dataset.tags];
         const mergedWithoutDublicates = merged.filter((item, pos, self) => self.findIndex(v => v.name === item.name) === pos);
 
-        allTags = mergedWithoutDublicates;
+        allTags.push(mergedWithoutDublicates);
+      }
+
+      if (allTags.length > this.maxFilterTags) {
+        allTags = allTags.splice(this.maxFilterTags, allTags.length - this.maxFilterTags);
       }
 
       allTags.forEach((tag) => {
@@ -502,8 +504,10 @@ export default {
     refreshOrgaButtonText: 'Reload Organisation Datasets',
     placeHolderAmount: 4,
     orgaDatasetsPreview: 5,
+    maxFilterTags: 20,
     previewWidth: 370,
     userCardHeight: 350,
+    notFoundCardHeight: 300,
     userCardWidth: 300,
     showModal: false,
     left: false,

@@ -28,7 +28,8 @@
           <base-rectangle-button color="accent"
                                   marginClass="black--text"
                                   :button-text="editingButtonText"
-                                  @clicked="editingClickCallback" />
+                                  :disabled="editingClickCallback === null"
+                                  @clicked="editingClickCallback ? editingClickCallback : ''" />
         </v-col>
       </v-row>
 
@@ -42,7 +43,8 @@
                                   marginClass="black--text"
                                   :isOutlined="hasEditing"
                                   :button-text="createButtonText"
-                                  @clicked="createClickCallback" />
+                                  :disabled="createClickCallback === null"
+                                  @clicked="createClickCallback ? createClickCallback : ''" />
         </v-col>
       </v-row>
 
@@ -55,7 +57,22 @@
           <base-rectangle-button color="accent"
                                   isOutlined
                                   :button-text="unpublishedButtonText"
-                                  @clicked="unpublishedClickCallback" />
+                                  :disabled="unpublishedClickCallback === null"
+                                  @clicked="unpublishedClickCallback ? unpublishedClickCallback : ''" />
+        </v-col>
+      </v-row>
+
+      <v-row no-gutters align="center">
+        <v-col cols="1">
+          <v-icon style="animation: progress-circular-rotate 3s linear infinite" x-large>settings</v-icon>
+        </v-col>
+
+        <v-col class="text-h5" cols="11">
+          Coming Soon!
+        </v-col>
+
+        <v-col class="pt-2 text-body-1">
+          This section is still under construction.
         </v-col>
       </v-row>
 
@@ -74,7 +91,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2020-08-25 12:22:58
+ * Last modified  : 2020-10-08 16:42:22
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -101,9 +118,18 @@ export default {
       type: Number,
       default: 0,
     },
-    createClickCallback: Function,
-    unpublishedClickCallback: Function,
-    editingClickCallback: Function,
+    createClickCallback: {
+      type: Function,
+      default: null,
+    },
+    unpublishedClickCallback: {
+      type: Function,
+      default: null,
+    },
+    editingClickCallback: {
+      type: Function,
+      default: null,
+    },
   },
   computed: {
     welcomeTitle() {
