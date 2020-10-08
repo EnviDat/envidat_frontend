@@ -100,7 +100,9 @@ export default {
 
         const newTags = [];
 
-        this.selectedTagNames.forEach(t => newTags.push(t.toLowerCase()));
+        for (let i = 0; i < this.selectedTagNames.length; i++) {
+          newTags.push(this.selectedTagNames[i].toLowerCase());
+        }
 
         this.mixinMethods_additiveChangeRoute(BROWSE_PATH, undefined, newTags.toString());
       }
