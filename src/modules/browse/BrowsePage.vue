@@ -99,10 +99,7 @@ export default {
         this.selectedTagNames.push(tagName);
 
         const newTags = [];
-
-        for (let i = 0; i < this.selectedTagNames.length; i++) {
-          newTags.push(this.selectedTagNames[i].toLowerCase());
-        }
+        this.selectedTagNames.forEach(t => newTags.push(t.toLowerCase()));
 
         this.mixinMethods_additiveChangeRoute(BROWSE_PATH, undefined, newTags.toString());
       }
