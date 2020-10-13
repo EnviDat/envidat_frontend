@@ -379,7 +379,7 @@ export default {
     MetadataList,
   },
   data: () => ({
-    PageBGImage: './app_b_browsepage.jpg',
+    PageBGImage: 'app_b_browsepage',
     placeHolderAmount: 3,
     selectedTagNames: [],
     defaultControls: [LISTCONTROL_MAP_ACTIVE],

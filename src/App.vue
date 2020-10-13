@@ -73,13 +73,16 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-20 16:06:15
+ * Last modified  : 2020-10-13 23:14:17
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
-import { mapGetters } from 'vuex';
+import { 
+  mapState,
+  mapGetters,
+} from 'vuex';
 import {
   LANDING_PATH,
   LANDING_PAGENAME,
@@ -118,12 +121,19 @@ export default {
     // check for the backend version
     this.$store.dispatch(SET_CONFIG);
   },
-  created() {
-    this.loadAllMetadata();
+  // created() {
+  //   this.loadAllMetadata();
 
-    const bgImgs = require.context('./assets/', false, /\.jpg$/);
-    this.appBGImages = this.mixinMethods_importImages(bgImgs, 'app_b');
-  },
+  //   let bgImgs = null;
+
+  //   if (this.webpIsSupported) {
+  //     bgImgs = require.context('./assets/', false, /\.webp$/);
+  //   } else {
+  //     bgImgs = require.context('./assets/', false, /\.jpg$/);
+  //   }
+    
+  //   this.appBGImages = this.mixinMethods_importImages(bgImgs, 'app_b');
+  // },
   updated() {
     this.updateActiveStateOnNavItems();
   },
@@ -230,6 +240,9 @@ export default {
     },
   },
   computed: {
+    ...mapState([
+      'webpIsSupported',
+      ]),
     ...mapGetters({
       metadataIds: `${METADATA_NAMESPACE}/metadataIds`,
       metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
@@ -280,23 +293,26 @@ export default {
     },
     dynamicBackground() {
       const imageKey = this.appBGImage;
-      const bgImg = this.appBGImages[imageKey];
-      let bgStyle = '';
+      if (!imageKey) {
+        return '';
+      }
 
-      if (bgImg) {
-        bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.25) 100%), url(${bgImg}) !important;`;
+      // const bgImg = this.appBGImages[imageKey];
+      const bgImg = this.mixinMethods_getWebpImage(imageKey, this.$store.state);
+
+      let bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.25) 100%), url(${bgImg}) !important;`;
+
+      bgStyle += `background-position: center top !important;
+                    background-repeat: no-repeat !important;
+                    background-size: cover !important; `;
+
+      if (bgImg.includes('browsepage')) {
+        bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
 
         bgStyle += `background-position: center top !important;
-                      background-repeat: no-repeat !important;
-                      background-size: cover !important; `;
-
-        if (bgImg.includes('browsepage')) {
-          bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
-
-          bgStyle += `background-position: center top !important;
-                        background-repeat: repeat !important; `;
-        }
+                      background-repeat: repeat !important; `;
       }
+      
       return bgStyle;
     },
     menuItem() {

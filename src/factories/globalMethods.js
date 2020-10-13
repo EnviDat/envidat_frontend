@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2020-10-13 21:38:50
+ * Last modified  : 2020-10-13 23:35:11
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -154,6 +154,10 @@ export default {
      * @return {Map<string, string>} Image cache
      */
     mixinMethods_importImages(imgs, checkForString) {
+      if (!imgs) {
+        // console.log(`Got empty imgs for ${checkForString}`);
+        return null;
+      }
       const imgCache = {};
 
       imgs.keys().forEach((key) => {

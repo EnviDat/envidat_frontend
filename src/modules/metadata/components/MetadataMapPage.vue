@@ -81,7 +81,7 @@
       layerSplit: null,
       splitScreen: false,
       geoConfig: null,
-      PageBGImage: './app_b_browsepage.jpg',
+      PageBGImage: 'app_b_browsepage',
       configFile: null,
       map: null,
     }),

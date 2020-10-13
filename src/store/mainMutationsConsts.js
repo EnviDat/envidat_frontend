@@ -3,13 +3,17 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51 
- * Last modified  : 2019-10-23 16:46:40
+ * Last modified  : 2020-10-13 22:47:19
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
 export const SET_APP_BACKGROUND = 'SET_APP_BACKGROUND';
+export const SET_WEBP_ASSETS = 'SET_WEBP_ASSETS';
+export const SET_WEBP_SUPPORT = 'SET_WEBP_SUPPORT';
+export const SET_CARD_IMAGES = 'SET_CARD_IMAGES';
+export const UPDATE_CATEGORYCARD_IMAGES = 'UPDATE_CATEGORYCARD_IMAGES';
 export const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 export const ADD_CARD_IMAGES = 'ADD_CARD_IMAGES';
 export const ADD_ICON_IMAGE = 'ADD_ICON_IMAGE';

@@ -1,9 +1,10 @@
+/* eslint-disable no-underscore-dangle */
 /**
  * @summary main store mutations
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51 
- * Last modified  : 2019-10-23 16:42:57
+ * Last modified  : 2020-10-13 23:32:48
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -11,8 +12,14 @@
 
 import { Object } from 'core-js';
 import { getSpecificApiError } from '@/factories/notificationFactory';
+import globalMethods from '@/factories/globalMethods';
+
 import {
   SET_APP_BACKGROUND,
+  SET_WEBP_SUPPORT,
+  SET_WEBP_ASSETS,
+  SET_CARD_IMAGES,
+  UPDATE_CATEGORYCARD_IMAGES,
   SET_CURRENT_PAGE,
   ADD_CARD_IMAGES,
   ADD_ICON_IMAGE,
@@ -32,16 +39,36 @@ export default {
   [SET_APP_BACKGROUND](state, bgImg) {
     state.appBGImage = bgImg;
   },
+  [SET_WEBP_SUPPORT](state, isSupported) {
+    state.webpIsSupported = isSupported;
+  },
+  [SET_WEBP_ASSETS](state, assets) {
+    state.webpAssets = assets;
+  },
+  [SET_CARD_IMAGES](state, assets) {
+    state.cardBGImages = assets;
+  },
+  [UPDATE_CATEGORYCARD_IMAGES](state) {
+    // enhance the category cards dynamically with either webp or jpg images based
+    // on what the browser supports
+    const updatedCards = [];
+
+    for (let i = 0; i < state.categoryCards.length; i++) {
+      const cardInfo = state.categoryCards[i];
+      cardInfo.img = globalMethods.methods.mixinMethods_getWebpImage(cardInfo.imgPath, state);
+      updatedCards.push(cardInfo);
+    }
+
+    this._vm.$set(state, 'categoryCards', updatedCards);
+  },
   [SET_CURRENT_PAGE](state, page) {
     state.currentPage = page;
   },
   [ADD_CARD_IMAGES](state, payload) {
-    /* eslint-disable no-underscore-dangle */
     // state.cardBGImages[payload.key] = payload.value;
     this._vm.$set(state.cardBGImages, payload.key, payload.value);
   },
   [ADD_ICON_IMAGE](state, payload) {
-    /* eslint-disable no-underscore-dangle */
     // state.cardBGImages[payload.key] = payload.value;
     this._vm.$set(state.iconImages, payload.key, payload.value);
   },
