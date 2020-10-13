@@ -14,7 +14,7 @@
 
    <div v-if="user"
         class="dashboardGrid"
-        :style="`grid-template-rows: 30px ${userCardHeight}px auto 400px`">
+        :style="`grid-template-rows: 30px ${userCardHeight}px min-content 410px`">
 
     <div class="header" >
 
@@ -182,7 +182,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-07-14 14:18:32 
- * Last modified  : 2020-10-08 21:17:17
+ * Last modified  : 2020-10-13 12:49:34
  */
 
 import {
@@ -218,7 +218,10 @@ import {
   SET_CURRENT_PAGE,
 } from '@/store/mainMutationsConsts';
 
-import { contentFilteredByTags } from '@/factories/metadataFilterMethods';
+import {
+  contentFilteredByTags,
+  getPopularTags,
+} from '@/factories/metadataFilterMethods';
 
 import { getNameInitials } from '@/factories/authorFactory';
 import { errorMessage } from '@/factories/notificationFactory';
@@ -393,24 +396,11 @@ export default {
       return null;
     },
     allUserdataTags() {
-      let allTags = [];
-
-      for (let i = 0; i < this.filteredUserDatasets.length; i++) {
-        const dataset = this.filteredUserDatasets[i];
-
-        const merged = [...allTags, ...dataset.tags];
-        const mergedWithoutDublicates = merged.filter((item, pos, self) => self.findIndex(v => v.name === item.name) === pos);
-
-        allTags.push(mergedWithoutDublicates);
-      }
+      let allTags = getPopularTags(this.filteredUserDatasets);
 
       if (allTags.length > this.maxFilterTags) {
         allTags = allTags.splice(this.maxFilterTags, allTags.length - this.maxFilterTags);
       }
-
-      allTags.forEach((tag) => {
-        tag.enabled = true;
-      });
 
       return allTags;
     },
