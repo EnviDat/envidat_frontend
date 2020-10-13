@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-11-22 13:28:12
+ * Last modified  : 2020-10-13 21:38:19
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -23,8 +23,11 @@ import { metadata } from '@/modules/metadata/store/metadataStore';
 import mutations from '@/store/mainMutations';
 import actions from '@/store/mainActions';
 
+import {
+  checkWebpFeature,
+  getCardBackgrounds,
+} from '@/factories/metaDataFactory';
 
-import { getCardBackgrounds } from '@/factories/metaDataFactory';
 import { LISTCONTROL_MAP_ACTIVE } from '@/store/metadataMutationsConsts';
 import globalMethods from '@/factories/globalMethods';
 
@@ -36,31 +39,29 @@ if (typeof errReport === 'string') {
   errorReportingEnabled = errReport.toLowerCase() === 'true';
 }
 
-function importIcons() {
-  const iconImages = {};
-  const imgPaths = require.context('../assets/icons/', false, /\.png$/);
-  const images = globalMethods.methods.mixinMethods_importImages(imgPaths);
+const webpIsSupported = checkWebpFeature();
+const cardBGImages = getCardBackgrounds(webpIsSupported);
 
-  const keys = Object.keys(images);
-  keys.forEach((key) => {
-    // console.log('icon ' + key + ' value ' + images[key]);
-    iconImages[key] = images[key];
-  });
+const webpAssetPaths = webpIsSupported ? require.context('../assets/', true, /\.webp$/) : null;
+const webpAssets = globalMethods.methods.mixinMethods_importImages(webpAssetPaths);
 
-  return iconImages;
-}
+const jpgAssetPaths = require.context('../assets/', true, /\.jpg$/);
+const jpgAssets = globalMethods.methods.mixinMethods_importImages(jpgAssetPaths);
 
-const cardBGImages = getCardBackgrounds();
-const iconImages = importIcons();
+const iconImgPath = require.context('../assets/icons/', false, /\.png$/);
+const iconImages = globalMethods.methods.mixinMethods_importImages(iconImgPath);
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
   strict: true,
   state: {
+    webpIsSupported,
     currentPage: '',
     // use a './' before the img for the img name for the local path
     appBGImage: '',
+    webpAssets,
+    jpgAssets,
     cardBGImages,
     iconImages,
     defaultControls: [LISTCONTROL_MAP_ACTIVE],
