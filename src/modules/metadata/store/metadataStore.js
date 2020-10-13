@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2020-08-18 15:54:14
+ * Last modified  : 2020-10-13 22:03:18
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -15,10 +15,12 @@
 
 import { getTagColor } from '@/factories/metaDataFactory';
 
+import categoryCards from '@/store/categoryCards';
+
 import mutations from './metadataMutations';
 import actions from './metadataActions';
-import categoryCards from './categoryCards';
 import tags from './metadataTags';
+
 
 for (let i = 0; i < tags.length; i++) {
   const tag = tags[i];
