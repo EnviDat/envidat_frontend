@@ -311,7 +311,7 @@ export default {
     MetadataList,
   },
   data: () => ({
-    PageBGImage: './app_b_browsepage.jpg',
+    PageBGImage: 'app_b_browsepage',
     searchTerm: '',
     placeHolderAmount: 4,
     suggestionText: 'Try one of these categories',

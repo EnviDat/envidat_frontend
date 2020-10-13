@@ -434,7 +434,7 @@ export default {
     // MetadataAuthors,
   },
   data: () => ({
-    PageBGImage: './app_b_browsepage.jpg',
+    PageBGImage: 'app_b_browsepage',
     header: null,
     body: null,
     citation: null,

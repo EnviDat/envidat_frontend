@@ -59,7 +59,7 @@ export default {
   components: {
   },
   data: () => ({
-    PageBGImage: './app_b_browsepage.jpg',
+    PageBGImage: 'app_b_browsepage',
   }),
 };
 </script>

@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2020-10-13 21:38:19
+ * Last modified  : 2020-10-13 22:53:09
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -24,9 +24,14 @@ import mutations from '@/store/mainMutations';
 import actions from '@/store/mainActions';
 
 import {
-  checkWebpFeature,
-  getCardBackgrounds,
-} from '@/factories/metaDataFactory';
+  SET_WEBP_SUPPORT,
+  SET_WEBP_ASSETS,
+  SET_CARD_IMAGES,
+  UPDATE_CATEGORYCARD_IMAGES,
+} from '@/store/mainMutationsConsts';
+
+import { checkWebpFeatureAsync } from '@/factories/enhancementsFactory';
+import { getCardBackgrounds } from '@/factories/metaDataFactory';
 
 import { LISTCONTROL_MAP_ACTIVE } from '@/store/metadataMutationsConsts';
 import globalMethods from '@/factories/globalMethods';
@@ -40,11 +45,11 @@ if (typeof errReport === 'string') {
   errorReportingEnabled = errReport.toLowerCase() === 'true';
 }
 
-const webpIsSupported = checkWebpFeature();
-const cardBGImages = getCardBackgrounds(webpIsSupported);
+// const webpIsSupported = checkWebpFeature();
+// const cardBGImages = getCardBackgrounds(webpIsSupported);  
 
-const webpAssetPaths = webpIsSupported ? require.context('../assets/', true, /\.webp$/) : null;
-const webpAssets = globalMethods.methods.mixinMethods_importImages(webpAssetPaths);
+// const webpAssetPaths = webpIsSupported ? require.context('../assets/', true, /\.webp$/) : null;
+// const webpAssets = webpAssetPaths ? globalMethods.methods.mixinMethods_importImages(webpAssetPaths) : null;
 
 const jpgAssetPaths = require.context('../assets/', true, /\.jpg$/);
 const jpgAssets = globalMethods.methods.mixinMethods_importImages(jpgAssetPaths);
@@ -54,28 +59,30 @@ const iconImages = globalMethods.methods.mixinMethods_importImages(iconImgPath);
 
 Vue.use(Vuex);
 
+const initialState = {
+  webpIsSupported: false,
+  currentPage: '',
+  // use a './' before the img for the img name for the local path
+  appBGImage: '',
+  webpAssets: null,
+  jpgAssets,
+  cardBGImages: null,
+  iconImages,
+  categoryCards,
+  defaultControls: [LISTCONTROL_MAP_ACTIVE],
+  appScrollPosition: 0,
+  browseScrollPosition: 0,
+  outdatedVersion: false,
+  newVersion: process.env.VUE_APP_VERSION,
+  // config can be overloaded from the backend
+  config: { errorReportingEnabled },
+  notifications: {},
+  maxNotifications: 6,
+};
+
 const store = new Vuex.Store({
   strict: true,
-  state: {
-    webpIsSupported,
-    currentPage: '',
-    // use a './' before the img for the img name for the local path
-    appBGImage: '',
-    webpAssets,
-    jpgAssets,
-    cardBGImages,
-    iconImages,
-    categoryCards,
-    defaultControls: [LISTCONTROL_MAP_ACTIVE],
-    appScrollPosition: 0,
-    browseScrollPosition: 0,
-    outdatedVersion: false,
-    newVersion: process.env.VUE_APP_VERSION,
-    // config can be overloaded from the backend
-    config: { errorReportingEnabled },
-    notifications: {},
-    maxNotifications: 6,
-  },
+  state: initialState,
   getters: {
     currentPage: state => state.currentPage,
     appBGImage: state => state.appBGImage,
@@ -100,12 +107,24 @@ const store = new Vuex.Store({
   },
 });
 
-// enhance the category cards dynamically with either webp or jpg images based
-// on what the browser supports
-for (let i = 0; i < store.state.categoryCards.length; i++) {
-  const cardInfo = store.state.categoryCards[i];
-  cardInfo.img = globalMethods.methods.mixinMethods_getWebpImage(cardInfo.imgPath, store.state);
-}
+checkWebpFeatureAsync('lossy', (feature, isSupported) => {
+  store.commit(SET_WEBP_SUPPORT, isSupported);
+
+  const cardBGImages = getCardBackgrounds(isSupported);
+
+  if (cardBGImages) {
+    store.commit(SET_CARD_IMAGES, cardBGImages);
+  }
+
+  const webpAssetPaths = isSupported ? require.context('../assets/', true, /\.webp$/) : null;
+  const webpAssets = webpAssetPaths ? globalMethods.methods.mixinMethods_importImages(webpAssetPaths) : null;
+  if (webpAssets) {
+    store.commit(SET_WEBP_ASSETS, webpAssets);
+  }
+
+  store.commit(UPDATE_CATEGORYCARD_IMAGES);
+
+});
 
 
 const persistPlugin = createPersist({
