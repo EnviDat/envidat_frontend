@@ -62,7 +62,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-20 13:05:04
+ * Last modified  : 2020-10-13 22:06:29
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -73,11 +73,6 @@ import { PROJECTS_PAGENAME, PROJECT_DETAIL_PAGENAME } from '@/router/routeConsts
 import { SET_APP_BACKGROUND, SET_CURRENT_PAGE } from '@/store/mainMutationsConsts';
 
 import ImgAndTextLayout from '@/components/Layouts/ImgAndTextLayout';
-
-import mission from '@/assets/projects/mission.jpg';
-import missionSmall from '@/assets/projects/mission_small.jpg';
-import creatorSmall from '@/assets/cards/data_creator_small.jpg';
-import creator from '../assets/data_creator.jpg';
 
 import ProjectCardPlaceholder from './ProjectCardPlaceholder';
 import ProjectCard from './ProjectCard';
@@ -117,10 +112,12 @@ export default {
       projectsCardsParents: `${PROJECTS_NAMESPACE}/projectsCardsParents`,
     }),
     missionImg() {
-      return this.$vuetify.breakpoint.mdAndUp ? mission : missionSmall;
+      const imgPath = this.$vuetify.breakpoint.mdAndUp ? 'projects/mission' : 'about/mission_small';
+      return this.mixinMethods_getWebpImage(imgPath, this.$store.state);
     },
     creatorImg() {
-      return this.$vuetify.breakpoint.mdAndUp ? creator : creatorSmall;
+      const imgPath = this.$vuetify.breakpoint.mdAndUp ? 'projects/data_creator' : 'about/data_creator_small';
+      return this.mixinMethods_getWebpImage(imgPath, this.$store.state);
     },
   },
   methods: {
@@ -148,10 +145,6 @@ export default {
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
-    mission,
-    missionSmall,
-    creator,
-    creatorSmall,
   }),
 };
 </script>

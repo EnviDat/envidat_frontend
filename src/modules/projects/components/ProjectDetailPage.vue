@@ -96,7 +96,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-20 15:51:22
+ * Last modified  : 2020-10-13 22:07:45
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -117,15 +117,12 @@ import {
 
 import MetadataList from '@/components/MetadataList';
 
-import missionImg from '@/assets/projects/mission.jpg';
-import creatorSmall from '@/assets/cards/data_creator_small.jpg';
 
 import {
   tagsIncludedInSelectedTags,
   createTag,
 } from '@/factories/metadataFilterMethods';
 
-import creator from '../assets/data_creator.jpg';
 
 import ProjectSubprojects from './ProjectDetailViews/ProjectSubprojects';
 import ProjectBody from './ProjectDetailViews/ProjectBody';
@@ -215,7 +212,12 @@ export default {
       return this.currentProject && this.currentProject.packages && this.currentProject.packages.length > 0;
     },
     creatorImg() {
-      return this.$vuetify.breakpoint.mdAndUp ? creator : creatorSmall;
+      const imgPath = this.$vuetify.breakpoint.mdAndUp ? 'projects/data_creator' : 'about/data_creator_small';
+      return this.mixinMethods_getWebpImage(imgPath, this.$store.state);
+    },
+    missionImg() {
+      const imgPath = this.$vuetify.breakpoint.mdAndUp ? 'projects/mission' : 'about/mission_small';
+      return this.mixinMethods_getWebpImage(imgPath, this.$store.state);
     },
     allMetadataTags() {
       const projectDatasetsTags = [];
@@ -378,9 +380,6 @@ export default {
   },
   data: () => ({
     PageBGImage: './app_b_browsepage.jpg',
-    missionImg,
-    creator,
-    creatorSmall,
     placeHolderAmount: 3,
     selectedTagNames: [],
     defaultControls: [LISTCONTROL_MAP_ACTIVE],
