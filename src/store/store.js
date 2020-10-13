@@ -30,6 +30,7 @@ import {
 
 import { LISTCONTROL_MAP_ACTIVE } from '@/store/metadataMutationsConsts';
 import globalMethods from '@/factories/globalMethods';
+import categoryCards from './categoryCards';
 
 const errReport = process.env.VUE_APP_ERROR_REPORTING_ENABLED;
 // the check for 'NULL' is needed because simply nothing will not work
@@ -64,6 +65,7 @@ const store = new Vuex.Store({
     jpgAssets,
     cardBGImages,
     iconImages,
+    categoryCards,
     defaultControls: [LISTCONTROL_MAP_ACTIVE],
     appScrollPosition: 0,
     browseScrollPosition: 0,
@@ -97,6 +99,14 @@ const store = new Vuex.Store({
     projects,
   },
 });
+
+// enhance the category cards dynamically with either webp or jpg images based
+// on what the browser supports
+for (let i = 0; i < store.state.categoryCards.length; i++) {
+  const cardInfo = store.state.categoryCards[i];
+  cardInfo.img = globalMethods.methods.mixinMethods_getWebpImage(cardInfo.imgPath, store.state);
+}
+
 
 const persistPlugin = createPersist({
   namespace: 'metadata',
