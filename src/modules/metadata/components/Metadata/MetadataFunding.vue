@@ -117,6 +117,12 @@ export default {
 
       return Object.values(this.funding);
     },
+    emptyTextColor() {
+      return this.mixinMethods_getGenericProp('emptyTextColor', 'grey');
+    },
+    emptyText() {
+      return this.mixinMethods_getGenericProp('emptyText', 'No information about funding available for this dataset.');
+    },
   },
   methods: {
     showFundingItem(item) {
@@ -127,8 +133,6 @@ export default {
   data: () => ({
     title: 'Funding Information',
     preText: 'This work was supported by:',
-    emptyText: 'No information about funding available for this dataset.',
-    emptyTextColor: 'black',
   }),
 };
 </script>

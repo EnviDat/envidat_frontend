@@ -149,7 +149,7 @@ export default {
       return this.mixinMethods_getGenericProp('fixedHeight');
     },
     emptyTextColor() {
-      return this.mixinMethods_getGenericProp('emptyTextColor');
+      return this.mixinMethods_getGenericProp('emptyTextColor', 'red');
     },
   },
 };

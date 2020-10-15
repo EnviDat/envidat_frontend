@@ -89,6 +89,9 @@ export default {
     details() {
       return this.mixinMethods_getGenericProp('details');
     },
+    emptyTextColor() {
+      return this.mixinMethods_getGenericProp('emptyTextColor', 'red');
+    },
   },
   methods: {
     replaceAuthorDeadInfo(text) {

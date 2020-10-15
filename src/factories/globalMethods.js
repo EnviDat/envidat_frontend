@@ -168,12 +168,12 @@ export default {
 
       return imgCache;
     },
-    mixinMethods_getGenericProp(propName) {
+    mixinMethods_getGenericProp(propName, defaultValue = null) {
       if (!this.genericProps) {
-        return null;
+        return defaultValue;
       }
 
-      return this.genericProps[propName] ? this.genericProps[propName] : null;
+      return this.genericProps[propName] ? this.genericProps[propName] : defaultValue;
     },
     /**
      *
