@@ -434,10 +434,10 @@ export default {
   .authorTitle {
     margin: 0;
     padding: 0;
-    line-height: 2.75rem;
+    line-height: 2.5rem;
     word-break: break-word;
     font-size: 34px !important;
-    font-weight: 700 !important;
+    font-weight: 400 !important;
     font-family: 'Raleway', serif !important;
   }
 
