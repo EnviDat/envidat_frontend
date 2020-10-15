@@ -121,19 +121,9 @@ export default {
     // check for the backend version
     this.$store.dispatch(SET_CONFIG);
   },
-  // created() {
-  //   this.loadAllMetadata();
-
-  //   let bgImgs = null;
-
-  //   if (this.webpIsSupported) {
-  //     bgImgs = require.context('./assets/', false, /\.webp$/);
-  //   } else {
-  //     bgImgs = require.context('./assets/', false, /\.jpg$/);
-  //   }
-    
-  //   this.appBGImages = this.mixinMethods_importImages(bgImgs, 'app_b');
-  // },
+  created() {
+    this.loadAllMetadata();
+  },
   updated() {
     this.updateActiveStateOnNavItems();
   },
