@@ -3,6 +3,7 @@
                 tag="article"
                 fluid
                 id="AboutPage" >
+
       <!-- Tabs -->
       <v-tabs v-model="activeTab"
               slider-color="accent"
@@ -30,7 +31,6 @@
                             :titleImage="missionImg" >
 
             <v-row >
-
               <v-col v-for="(card, index) in aboutCardInfo"
                       :key="index"
                       :class="card.widthClass" >
@@ -95,14 +95,17 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-10-13 22:18:24
+ * Last modified  : 2020-10-15 09:56:03
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
 import remark from 'remark';
 import html from 'remark-html';
-import { mapGetters } from 'vuex';
+import {
+  mapState,
+  mapGetters,
+} from 'vuex';
 
 import { ABOUT_PAGENAME } from '@/router/routeConsts';
 import {
@@ -152,6 +155,9 @@ export default {
     window.scrollTo(0, 0);
   },
   computed: {
+    ...mapState([
+      'config',
+    ]),
     ...mapGetters({
       guidelinesMarkdown: 'about/guidelinesMarkdown',
       guidelinesLoading: 'about/guidelinesLoading',
@@ -161,6 +167,9 @@ export default {
       dmpLoading: 'about/dmpLoading',
     }),
     aboutCardInfo() {
+      const backendAboutInfos = this.config?.aboutInfo || null;
+      
+      const contact = this.mixinMethods_getWebpImage('about/contact', this.$store.state);
       const handsSmall = this.mixinMethods_getWebpImage('about/hands_small', this.$store.state);
       const conceptImg = this.mixinMethods_getWebpImage('about/concept_small', this.$store.state);
 
@@ -168,30 +177,38 @@ export default {
       const wslLogoImg = this.mixinMethods_getWebpImage('about/wslLogo', this.$store.state);
       const teamImg = this.mixinMethods_getWebpImage('about/team_small', this.$store.state);
 
-      return [
+      const widthClass = 'col-12 col-sm-6 col-md-4';
+
+      const defaultAboutInfo = [
+        {
+          title: 'Contact',
+          text: 'Contact the EnviDat team by <a href="mailto:envidat@wsl.ch">envidat@wsl.ch</a> for support, quesitons or feedback.',
+          img: contact,
+          widthClass,
+        },
         {
           title: 'Our Mission',
           text: 'EnviDat is the environmental data portal and repository developed by the Swiss Federal Research Institute WSL. We have the capability to integrate, host and publish data sets. We make environmental monitoring and research data accessible. <p><a href="https://www.wsl.ch/en/about-wsl/programmes-and-initiatives/envidat.html" target="_blank" onclick="event.stopPropagation();" >More about EnviDat as Program of WSL</a></p>',
           img: handsSmall,
-          widthClass: 'col-12 col-sm-6 col-md-4',
+          widthClass,
         },
         {
           title: 'Concept',
           text: 'EnviDat supports the user-friendly registration, documentation, storage, publication, search and retrieval of data sets from the environmental domain. We provide various services to our users and we follow a set of principles as summarized in our concept image below. Additional detailed information can be found in our <a href="https://www.dora.lib4ri.ch/wsl/islandora/object/wsl:18703" target="_blank" onclick="event.stopPropagation();" >concept paper on DORA</a>.',
           img: conceptImg,
-          widthClass: 'col-12 col-sm-6 col-md-4',
+          widthClass,
         },
         {
           title: 'Community',
           text: 'With EnviDat, WSL aims to disseminate its data sets as broadly as possible in order to foster international research cooperation in the field of environmental science and contribute to the ongoing cultural evolution in research towards openness, shared data and opportunities for collaboration. Consequently, we are registered in <a href="https://fairsharing.org/biodbcore-001178/" target="_blank" onclick="event.stopPropagation();" >FAIRsharing.org</a> and <a href="https://www.re3data.org/repository/r3d100012587" target="_blank" onclick="event.stopPropagation();" >re3data.org</a> and a contributor community to <a href="http://geoportal.org/community/envidat-community" target="_blank" onclick="event.stopPropagation();" >ESA Geoportal </a>, <a href="https://gcmd.nasa.gov/search/Titles.do?AutoDisplayTitles=true&subset=envidat#titles" target="_blank" onclick="event.stopPropagation();" >NASA GCMD</a> and <a href="http://b2find.eudat.eu/dataset?groups=envidat" target="_blank" onclick="event.stopPropagation();" >EOSC-Hub via B2FIND</a>. ',
           img: communityImg,
-          widthClass: 'col-12 col-sm-6 col-md-4',
+          widthClass,
         },
         {
           title: 'WSL',
           text: 'The Swiss Federal Institute for Forest, Snow and Landscape Research is concerned with the use, development and protection of natural and urban spaces. The focus of our research is on solving problems to do with the responsible use of landscapes and forests and a prudent approach to natural hazards, especially those common in mountainous countries. WSL occupies a leading position internationally in these research areas. We also provide groundwork for sustainable environmental policies in Switzerland. <p><a href="https://www.wsl.ch" target="_blank" onclick="event.stopPropagation();" >For more information have a look at the Website of WSL</a></p>',
           img: wslLogoImg,
-          widthClass: 'col-12 col-sm-6 col-md-4',
+          widthClass,
         },
         {
           title: 'Team',
@@ -201,6 +218,51 @@ export default {
           widthClass: 'col-12 col-sm-12 col-md-8',
         },
       ];
+
+
+      if (!backendAboutInfos) {
+        return defaultAboutInfo;
+      }
+
+
+      const mergedAboutInfo = [];
+
+      for (let j = 0; j < backendAboutInfos.length; j++) {
+        const bInfo = backendAboutInfos[j];
+        let defaultMatch = false;
+
+        for (let i = 0; i < defaultAboutInfo.length; i++) {
+          const dInfo = defaultAboutInfo[i];
+
+          if (bInfo.title === dInfo.title) {
+
+            const mergedInfo = {
+                title: bInfo.title,
+                text: bInfo.text || dInfo.text,
+                img: bInfo.img || dInfo.img,
+                widthClass: bInfo.widthClass || dInfo.widthClass || widthClass,
+              };
+          
+            mergedAboutInfo.push(mergedInfo);
+
+            defaultMatch = true;
+            break;
+
+          } 
+        }
+
+        if (!defaultMatch) {
+          mergedAboutInfo.push({
+              title: bInfo.title,
+              text: bInfo.text,
+              img: bInfo.img,
+              widthClass: bInfo.widthClass || widthClass,
+            });
+        }
+        
+      }
+
+      return mergedAboutInfo;
     },
     missionImg() {
       const imgPath = this.$vuetify.breakpoint.mdAndUp ? 'about/mission' : 'about/mission_small';
