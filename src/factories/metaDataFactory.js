@@ -78,10 +78,9 @@ export function guessTagCategory(tags) {
         return SNOW;
       case name.includes('METEO') || name.includes('CLIMATE'):
         return METEO;
-      case name.includes('LAND') || name.includes('LANDSCAPE'):
+      case name.includes('LAND'):
         return LAND;
       default:
-        return LAND;
     }
   }
 

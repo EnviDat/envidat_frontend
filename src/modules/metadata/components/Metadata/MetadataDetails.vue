@@ -83,7 +83,6 @@ export default {
     maxSingleTextLengthLg: 80,
     maxSingleTextLengthMd: 80,
     maxSingleTextLengthXs: 70,
-    emptyText: 'No details found for this dataset',
   }),
   computed: {
     details() {
@@ -91,6 +90,9 @@ export default {
     },
     emptyTextColor() {
       return this.mixinMethods_getGenericProp('emptyTextColor', 'red');
+    },
+    emptyText() {
+      return this.mixinMethods_getGenericProp('emptyText', 'No details found for this dataset');
     },
   },
   methods: {
