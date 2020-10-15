@@ -1,8 +1,9 @@
 <template id="MetadataBody">
   <expandable-text-layout v-bind="body"
                           :showPlaceholder="showPlaceholder"
-                          :maxTextLength="body.maxTextLength"
-                          :emptyTextColor="body.emptyTextColor" />
+                          :maxTextLength="body ? body.maxTextLength : undefined"
+                          :emptyTextColor="emptyTextColor"
+                          :emptyText="emptyText" />
 
 </template>
 
@@ -33,7 +34,15 @@ export default {
   },
   computed: {
     body() {
-      return this.mixinMethods_getGenericProp('body');
+      return this.mixinMethods_getGenericProp('body', {
+        title: 'Description',
+      });
+    },
+    emptyTextColor() {
+      return this.mixinMethods_getGenericProp('emptyTextColor', 'red');
+    },
+    emptyText() {
+      return this.mixinMethods_getGenericProp('emptyText', 'No description found for this dataset.');
     },
   },
   methods: {
