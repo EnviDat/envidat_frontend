@@ -68,8 +68,8 @@
  * file 'LICENSE.txt', which is part of this source code package.
 */
 
-import AuthorCard from '../AuthorCard';
-import AuthorCardPlaceholder from '../AuthorCardPlaceholder';
+import AuthorCard from '@/modules/metadata/components/AuthorCard';
+import AuthorCardPlaceholder from '@/modules/metadata/components/AuthorCardPlaceholder';
 
 export default {
   name: 'MetadataAuthors',
@@ -111,9 +111,7 @@ export default {
       return this.authors && this.authors.length > 0;
     },
     emptyTextColor() {
-      const emptyTextColor = this.mixinMethods_getGenericProp('emptyTextColor');
-
-      return emptyTextColor || 'red';
+      return this.mixinMethods_getGenericProp('emptyTextColor', 'red');
     },
   },
   methods: {
