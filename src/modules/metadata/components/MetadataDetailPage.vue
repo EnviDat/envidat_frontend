@@ -76,7 +76,7 @@
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import {
   BROWSE_PATH,
   METADATADETAIL_PAGENAME,
@@ -159,6 +159,9 @@ export default {
     this.$store.commit(`${METADATA_NAMESPACE}/${CLEAN_CURRENT_METADATA}`);
   },
   computed: {
+    ...mapState([
+      'config',
+    ]),
     ...mapGetters({
       metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
       metadatasContentSize: `${METADATA_NAMESPACE}/metadatasContentSize`,
@@ -174,6 +177,9 @@ export default {
       asciiDead: `${METADATA_NAMESPACE}/asciiDead`,
       authorPassedInfo: `${METADATA_NAMESPACE}/authorPassedInfo`,
     }),
+    metadataConfig() {
+      return this.config?.metadataConfig || {};
+    },
     authorDeadInfo() {
       return {
         asciiDead: this.asciiDead,
@@ -307,15 +313,21 @@ export default {
       this.$set(components.MetadataBody, 'genericProps', { body: this.body });
       this.$set(components.MetadataCitation, 'genericProps', this.citation);
       this.$set(components.MetadataResources, 'genericProps', this.resources);
+
       if (geoConfig) {
         this.$set(components.MetadataGeo, 'genericProps', { ...this.location, config: geoConfig });
       } else {
         this.$set(components.MetadataLocation, 'genericProps', this.location);
       }
+
       this.$set(components.MetadataDetails, 'genericProps', { details: this.details });
       this.$set(components.MetadataAuthors, 'genericProps', { authors: this.authors });
 
-      this.$set(components.MetadataPublications, 'genericProps', { publications: this.publications });
+      this.$set(components.MetadataPublications, 'genericProps', {
+        publications: this.publications,
+        metadataConfig: this.metadataConfig,
+      });
+
       this.$set(components.MetadataFunding, 'genericProps', { funding: this.funding });
 
       this.firstCol = [
