@@ -7,7 +7,7 @@
     </v-card-title>
 
     <v-card-text v-if="citationText"
-                  class="readableText pa-4 pb-0 pb-md-2"
+                  class="readableText pa-4 pb-0"
                   style="font-style: italic; "
                   v-html="markdownText" >
 
@@ -22,7 +22,7 @@
 
           <v-col v-for="link in citationLinks"
                   :key="link.text"
-                  class="shrink py-2 px-2 py-sm-0 py-md-2 py-lg-0" >
+                  class="shrink py-1 px-2" >
 
             <base-rectangle-button margin-class="citationButton"
                                     :button-text="link.text"
