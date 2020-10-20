@@ -66,7 +66,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-10-13 21:41:55
+ * Last modified  : 2020-10-20 15:35:04
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -78,6 +78,7 @@ export default {
   name: 'SloganCard',
   props: {
     slogan: String,
+    sloganImg: String,
     subSlogan: String,
     buttonText: String,
     buttonCallback: Function,
@@ -86,7 +87,7 @@ export default {
   },
   components: { BaseRectangleButton },
   beforeMount() {
-    this.fingertipsImg = this.mixinMethods_getWebpImage('cards/slogan/fingertips_small', this.$store.state);
+    this.fingertipsImg = this.sloganImg ? this.sloganImg : this.mixinMethods_getWebpImage('cards/slogan/fingertips_small', this.$store.state);
   },
   data: () => ({
     fingertipsImg: null,

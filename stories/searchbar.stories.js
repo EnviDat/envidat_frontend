@@ -3,7 +3,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-10-24 10:46:15
+ * Last modified  : 2020-10-20 16:00:30
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -66,7 +66,7 @@ storiesOf('4 Filtering / SearchBarView', module)
                           />
         </v-col>
 
-        <v-col class="py-1">
+        <v-col cols="12" class="py-1">
           <v-row>
             <v-col cols="6">
                 <small-search-bar-view
@@ -84,7 +84,7 @@ storiesOf('4 Filtering / SearchBarView', module)
           </v-row>
         </v-col>
 
-        <v-col>
+        <v-col cols="12" class="py-1">
           <v-row >
             <v-col cols="6" class="px-1">
                 <small-search-bar-view
