@@ -7,7 +7,14 @@
       {{ name }}
     </v-card-title>
 
-    <v-card-text class="pt-0 white--text pb-5 pb-md-3" >
+    <v-card-text class="pt-0 white--text"
+                  :class="{
+                    'pb-5': !showFullDescription,
+                    'pb-10': showFullDescription,
+                    'pr-2': showFullDescription,
+                    'pb-md-3': !showFullDescription,
+                    'pb-md-10': showFullDescription,
+                    }" >
 
       <v-container class="pa-0"
                     fluid >
@@ -131,7 +138,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-10-20 11:16:46
+ * Last modified  : 2020-10-20 11:56:07
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
