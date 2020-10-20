@@ -37,7 +37,8 @@
 
         <v-col v-for="res in resources"
                 :key="res.id"
-                cols="12" sm="6"
+                cols="12"
+                :sm="resources.length > 1 ? 6 : 12"
                 class="pa-2" >
 
           <resource-card v-bind="res"
@@ -67,7 +68,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-10-15 19:20:37
+ * Last modified  : 2020-10-20 12:02:25
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
