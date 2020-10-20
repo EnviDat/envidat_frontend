@@ -33,14 +33,15 @@
   ],
   "metadataConfig": {
     "publicationsConfig": {
-      "resolveIds" : true,
+      "resolveIds": true,
       "idPrefix": "*",
       "idDelimiter": ":",
       "resolveBaseUrl": "https://www.envidat.ch/dora/"
+    },
+    "authorDetailsConfig": {
+      "showAuthorInfos": true,
+      "showDataCredits": true,
+      "showDataCreditScore": false
     }
-  },
-  "authorDetailsConfig": {
-    "showDataCredits": true,
-    "showDataCreditScore": false
   }
 }
