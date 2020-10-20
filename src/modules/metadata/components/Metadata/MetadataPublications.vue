@@ -167,7 +167,8 @@ export default {
 };
 </script>
 
-<style lang="sass">
-  .relatedPubList .readableText ul > * + *
-    padding: 5px 0px
+<style scoped>
+  .relatedPubList .readableText ul > * + * {
+    padding: 5px 0px;
+  }
 </style>
