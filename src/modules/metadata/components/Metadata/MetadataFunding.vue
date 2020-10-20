@@ -1,12 +1,11 @@
 <template>
   <v-card id="MetadataFunding" >
 
-    <v-card-title v-if="title"
-                  class="metadata_title title">
-      {{ title }}
+    <v-card-title class="metadata_title title">
+      {{ METADATA_FUNDING_TITLE }}
     </v-card-title>
     
-    <v-card-title v-if="showPlaceholder && !title" >
+    <v-card-title v-if="showPlaceholder" >
       <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer"
             style="width: 100%;">
         <div class="bone bone-type-heading" />
@@ -77,11 +76,12 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-29 16:34:29
+ * Last modified  : 2020-10-15 19:34:01
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
+import { METADATA_FUNDING_TITLE } from '@/factories/metadataConsts';
 
 export default {
   name: 'MetadataFunding',
@@ -131,7 +131,7 @@ export default {
     },
   },
   data: () => ({
-    title: 'Funding Information',
+    METADATA_FUNDING_TITLE,
     preText: 'This work was supported by:',
   }),
 };

@@ -2,7 +2,7 @@
   <v-card id="MetadataDetails">
 
     <v-card-title class="title metadata_title">
-      Further Information
+      {{ METADATA_DETAILS_TITLE }}
     </v-card-title>
 
     <v-card-text v-if="details && details.length > 0">
@@ -64,11 +64,13 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-23 15:54:13
+ * Last modified  : 2020-10-15 19:15:13
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
+import { METADATA_DETAILS_TITLE } from '@/factories/metadataConsts';
+
 
 export default {
   name: 'MetadataDetails',
@@ -83,6 +85,7 @@ export default {
     maxSingleTextLengthLg: 80,
     maxSingleTextLengthMd: 80,
     maxSingleTextLengthXs: 70,
+    METADATA_DETAILS_TITLE,
   }),
   computed: {
     details() {
@@ -92,7 +95,7 @@ export default {
       return this.mixinMethods_getGenericProp('emptyTextColor', 'red');
     },
     emptyText() {
-      return this.mixinMethods_getGenericProp('emptyText', 'No details found for this dataset');
+      return this.mixinMethods_getGenericProp('emptyText', 'No details found for this dataset.');
     },
   },
   methods: {

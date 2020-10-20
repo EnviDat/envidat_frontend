@@ -3,7 +3,7 @@
           id="MetadataCitation" >
 
     <v-card-title class="title metadata_title pa-4">
-      Citation
+      {{ METADATA_CITATION_TITLE }}
     </v-card-title>
 
     <v-card-text v-if="citationText"
@@ -73,7 +73,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-23 15:54:13
+ * Last modified  : 2020-10-15 18:56:49
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -82,6 +82,7 @@
 import remark from 'remark';
 import html from 'remark-html';
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
+import { METADATA_CITATION_TITLE } from '@/factories/metadataConsts';
 
 export default {
   name: 'MetadataCitation',
@@ -93,7 +94,7 @@ export default {
     showPlaceholder: Boolean,
   },
   data: () => ({
-    emptyText: 'No citation found for this dataset.',
+    METADATA_CITATION_TITLE,
   }),
   computed: {
     markdownText() {
@@ -150,6 +151,9 @@ export default {
     },
     emptyTextColor() {
       return this.mixinMethods_getGenericProp('emptyTextColor', 'red');
+    },
+    emptyText() {
+      return this.mixinMethods_getGenericProp('emptyText', 'No citation found for this dataset.');
     },
   },
 };

@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03
- * Last modified  : 2020-10-13 22:45:13
+ * Last modified  : 2020-10-15 18:52:56
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -174,12 +174,9 @@ export function createBody(dataset, smallScreen = false) {
 
   return {
     // id: dataset.id,
-    title: 'Description',
     // doi: dataset.doi,
     text: dataset.notes,
     maxTextLength: smallScreen ? 900 : 1000,
-    emptyTextColor: 'red',
-    emptyText: 'No description found for this dataset.',
   };
 }
 
@@ -190,10 +187,7 @@ export function createPublications(dataset) {
 
   return {
     text: dataset.related_publications,
-    title: 'Related Publications',
     maxTextLength: 500,
-    emptyTextColor: 'black',
-    emptyText: 'No related publications available for this dataset.',
   };
 }
 
