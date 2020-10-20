@@ -16,7 +16,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-10-15 19:17:23
+ * Last modified  : 2020-10-20 11:33:05
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -46,25 +46,26 @@ export default {
       return this.mixinMethods_getGenericProp('emptyText', 'No related publications available for this dataset.');
     },
     publicationsConfig() {
-      const metaConfig = this.mixinMethods_getGenericProp('metadataConfig');
+      const metaConfig = this.mixinMethods_getGenericProp('metadataConfig', {});
       return metaConfig?.publicationsConfig || {};
     },
     publicationsText() {
+      let publicationsText = this.publications?.text;
+
       if (this.resolveDone && this.resolvedPublications) {
-        let publicationsText = this.publications.text;
 
-        this.idsToResolve.forEach((id) => {
-          const resolvedObject = this.resolvedPublications[id];
-          const text = resolvedObject?.citation?.ACS;
-          if (text) {
-            publicationsText = publicationsText.replace(id, text);
-          }
-        });
-
-        return publicationsText;
+        if (publicationsText && this.idsToResolve) {
+          this.idsToResolve.forEach((id) => {
+            const resolvedObject = this.resolvedPublications[id];
+            const text = resolvedObject?.citation?.ACS;
+            if (text) {
+              publicationsText = publicationsText.replace(id, text);
+            }
+          });
+        }
       }
 
-      return this.publications?.text;
+      return publicationsText;
     },
     resolveIdsActive() {
       return this.resolveIds && this.resolveBaseUrl;
@@ -93,7 +94,7 @@ export default {
 
         const regExStr = `\\${prefix}\\s?[a-zA-Z]+${delimiter}\\d+`;
         const regEx = new RegExp(regExStr, 'gm');
-        const hasValidIds = idString.match(regEx);
+        const hasValidIds = idString.match(regEx) || [];
         // console.log(`hasValidIds ${hasValidIds?.length}`);
 
         const ids = [];
@@ -145,7 +146,7 @@ export default {
 // * psi:24720`);
     if (this.resolveIdsActive && !this.isResolving && !this.resolveDone) {
 
-      this.idsToResolve = this.extractTextIds(this.publications.text);
+      this.idsToResolve = this.extractTextIds(this.publications?.text);
 
       if (this.textContainsIds) {
         this.resolvePublications();
