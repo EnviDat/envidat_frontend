@@ -70,7 +70,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-10-15 19:47:32
+ * Last modified  : 2020-10-20 11:44:01
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -181,7 +181,7 @@ export default {
       return this.config?.metadataConfig || {};
     },
     authorDetailsConfig() {
-      return this.config?.authorDetailsConfig || {};
+      return this.metadataConfig.authorDetailsConfig || {};
     },
     authorDeadInfo() {
       return {

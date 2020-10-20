@@ -76,7 +76,7 @@
           </v-col>
         </v-row>
 
-        <data-credit-layout v-if="authorDetailsConfig ? authorDetailsConfig.showDataCredits : false"
+        <data-credit-layout v-if="authorDetailsConfig.showDataCredits"
                             class="px-0 py-1 readableText"
                             :dataCredit="author.dataCredit"
                             :badgesLabel="dataCreditBadgeLabel"
@@ -84,7 +84,7 @@
                             :badgeColor="dark ? 'white' : darkColor"
                             :dark="!dark" />
 
-        <v-row v-if="authorDetailsConfig ? authorDetailsConfig.showDataCreditScore : false"
+        <v-row v-if="authorDetailsConfig.showDataCreditScore"
                 no-gutters
                 class="py-1 readableText"
                 justify="space-between"
@@ -122,7 +122,8 @@
           </v-col>
         </v-row>
 
-        <v-row no-gutters
+        <v-row v-if="authorDetailsConfig.showAuthorInfos"
+                no-gutters
                 class="pt-1 readableText"
                 align="center" >
 
@@ -141,7 +142,7 @@
           </v-col>
         </v-row>
 
-        <v-row  v-if="infosExpanded"
+        <v-row  v-if="authorDetailsConfig.showAuthorInfos && infosExpanded"
                 class="pa-0 readableText"
                 no-gutters
                 align="start">
@@ -275,7 +276,7 @@ export default {
     authorPassedInfo: String,
     authorDetailsConfig: {
       type: Object,
-      default: null,
+      default: () => {},
     },
   },
   mounted() {
