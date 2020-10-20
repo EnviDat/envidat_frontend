@@ -63,7 +63,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-10-15 19:54:26
+ * Last modified  : 2020-10-20 15:21:51
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -112,7 +112,7 @@ export default {
       return this.mixinMethods_getGenericProp('authors');
     },
     authorDetailsConfig() {
-      return this.mixinMethods_getGenericProp('authorDetailsConfig');
+      return this.mixinMethods_getGenericProp('authorDetailsConfig', {});
     },
     hasAuthors() {
       return this.authors && this.authors.length > 0;

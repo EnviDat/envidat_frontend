@@ -3,7 +3,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-10-24 11:41:37
+ * Last modified  : 2020-10-20 14:49:55
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -32,7 +32,7 @@ const enhancedProjects = enhanceSubprojectsFromExtras(projectJSON.result);
 const projects = enhancedProjects;
 
 
-const imgPaths = require.context('../src/modules/projects/assets/', false, /\.jpg$/);
+const imgPaths = require.context('../src/assets/projects/', false, /\.jpg$/);
 const imgName = 'mission';
 const images = globalMethods.methods.mixinMethods_importImages(imgPaths, imgName);
 const defaultImg = images[`./${imgName}.jpg`];
