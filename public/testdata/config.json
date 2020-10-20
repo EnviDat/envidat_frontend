@@ -38,5 +38,9 @@
       "idDelimiter": ":",
       "resolveBaseUrl": "https://www.envidat.ch/dora/"
     }
+  },
+  "authorDetailsConfig": {
+    "showDataCredits": true,
+    "showDataCreditScore": false
   }
 }
