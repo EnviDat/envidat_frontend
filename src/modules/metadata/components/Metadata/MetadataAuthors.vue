@@ -3,7 +3,7 @@
           ref="MetadataAuthors">
 
     <v-card-title class="title metadata_title">
-      Author Details
+      {{ METADATA_AUTHORS_TITLE }}
     </v-card-title>
 
     <v-card-text v-if="showPlaceholder && !hasAuthors"
@@ -62,11 +62,14 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-23 16:01:41
+ * Last modified  : 2020-10-15 19:54:26
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
+import {
+  METADATA_AUTHORS_TITLE,
+} from '@/factories/metadataConsts';
 
 import AuthorCard from '@/modules/metadata/components/AuthorCard';
 import AuthorCardPlaceholder from '@/modules/metadata/components/AuthorCardPlaceholder';
@@ -100,8 +103,8 @@ export default {
   data: () => ({
     showAuthors: false,
     checkedGenericProps: false,
-    emptyText: 'No authors found for this dataset',
     observer: null,
+    METADATA_AUTHORS_TITLE,
   }),
   computed: {
     authors() {
@@ -112,6 +115,9 @@ export default {
     },
     emptyTextColor() {
       return this.mixinMethods_getGenericProp('emptyTextColor', 'red');
+    },
+    emptyText() {
+      return this.mixinMethods_getGenericProp('emptyText', 'No authors found for this dataset.');
     },
   },
   methods: {

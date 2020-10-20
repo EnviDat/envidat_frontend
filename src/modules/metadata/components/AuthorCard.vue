@@ -78,7 +78,7 @@
 
         <data-credit-layout class="px-0 py-1 readableText"
                             :dataCredit="author.dataCredit"
-                            badgesLabel="Data Credit Contributions"
+                            :badgesLabel="dataCreditBadgeLabel"
                             :iconColor="dark ? 'white' : 'black'"
                             :badgeColor="dark ? 'white' : darkColor"
                             :dark="!dark" />
@@ -239,6 +239,12 @@
 
 
 <script>
+import {
+  AUTHORS_PUBLISHED_DATACOUNT,
+  AUTHORS_DATACREDIT_CONTRIBUTION,
+  AUTHORS_DATACREDIT_SCORE,
+} from '@/factories/metadataConsts';
+
 import DataCreditLayout from '@/components/Layouts/DataCreditLayout';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import { BROWSE_PATH } from '@/router/routeConsts';
@@ -390,9 +396,10 @@ export default {
     },
   },
   data: () => ({
-    dataScoreLabel: 'Data Credit Score',
-    dataCountLabel: 'Published datasets',
+    dataScoreLabel: AUTHORS_DATACREDIT_SCORE,
+    dataCountLabel: AUTHORS_PUBLISHED_DATACOUNT,
     dataCreditScoreInfo: 'Data Credit Score: represents the dedication of an author to publish data and declare how on their involvement was in a dataset.',
+    dataCreditBadgeLabel: AUTHORS_DATACREDIT_CONTRIBUTION,
     emailLabel: 'Email',
     affiliationLabel: 'Affiliation',
     idLabel: 'Identifier',
