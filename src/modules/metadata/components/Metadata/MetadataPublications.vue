@@ -1,9 +1,10 @@
 <template  id="MetadataPublications">
-  <expandable-text-layout :title="publications.title"
+  <expandable-text-layout :title="METADATA_PUBLICATIONS_TITLE"
                           :text="publicationsText"
                           :showPlaceholder="showPlaceholder || isResolving"
                           :maxTextLength="publications ? publications.maxTextLength : undefined"
-                          :emptyTextColor="publications ? publications.emptyTextColor : undefined"
+                          :emptyTextColor="emptyTextColor"
+                          :emptyText="emptyText"
                           class="relatedPubList"/>
 </template>
 
@@ -15,7 +16,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-28 16:02:25
+ * Last modified  : 2020-10-15 19:17:23
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -23,6 +24,7 @@
 
 import axios from 'axios';
 import ExpandableTextLayout from '@/components/Layouts/ExpandableTextLayout';
+import { METADATA_PUBLICATIONS_TITLE } from '@/factories/metadataConsts';
 
 export default {
   name: 'MetadataPublications',
@@ -35,10 +37,13 @@ export default {
   },
   computed: {    
     publications() {
-      return this.mixinMethods_getGenericProp('publications', {
-        title: 'Related Publications',
-        text: '',
-      });
+      return this.mixinMethods_getGenericProp('publications');
+    },
+    emptyTextColor() {
+      return this.mixinMethods_getGenericProp('emptyTextColor', 'black');
+    },
+    emptyText() {
+      return this.mixinMethods_getGenericProp('emptyText', 'No related publications available for this dataset.');
     },
     publicationsConfig() {
       const metaConfig = this.mixinMethods_getGenericProp('metadataConfig');
@@ -156,6 +161,7 @@ export default {
     isResolving: false,
     idsToResolve: [],
     resolvedPublications: null,
+    METADATA_PUBLICATIONS_TITLE,
   }),
 };
 </script>
