@@ -45,12 +45,6 @@ if (typeof errReport === 'string') {
   errorReportingEnabled = errReport.toLowerCase() === 'true';
 }
 
-// const webpIsSupported = checkWebpFeature();
-// const cardBGImages = getCardBackgrounds(webpIsSupported);  
-
-// const webpAssetPaths = webpIsSupported ? require.context('../assets/', true, /\.webp$/) : null;
-// const webpAssets = webpAssetPaths ? globalMethods.methods.mixinMethods_importImages(webpAssetPaths) : null;
-
 const jpgAssetPaths = require.context('../assets/', true, /\.jpg$/);
 const jpgAssets = globalMethods.methods.mixinMethods_importImages(jpgAssetPaths);
 
@@ -68,7 +62,13 @@ const initialState = {
   jpgAssets,
   cardBGImages: null,
   iconImages,
+  /**
+   * static category cards for the suggestions of search categories
+   */
   categoryCards,
+  /**
+   * default "list controls" for the metdata list
+   */
   defaultControls: [LISTCONTROL_MAP_ACTIVE],
   appScrollPosition: 0,
   browseScrollPosition: 0,
