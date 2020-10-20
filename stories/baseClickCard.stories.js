@@ -3,7 +3,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-11-28 16:53:51
+ * Last modified  : 2020-10-20 14:50:56
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -14,7 +14,7 @@ import { storiesOf } from '@storybook/vue';
 import { action } from '@storybook/addon-actions';
 
 import BaseClickCard from '@/components/BaseElements/BaseClickCard.vue';
-import categoryCards from '@/modules/metadata/store/categoryCards';
+import categoryCards from '@/store/categoryCards';
 
 export const methods = {
   onClick: action('clicked'),

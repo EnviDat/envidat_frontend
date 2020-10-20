@@ -4,7 +4,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-10-24 10:59:28
+ * Last modified  : 2020-10-20 15:20:59
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -13,6 +13,8 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from '@storybook/vue';
 import { action } from '@storybook/addon-actions';
+
+import globalMethods from '@/factories/globalMethods';
 
 import MetadataHeader from '@/modules/metadata/components/Metadata/MetadataHeader.vue';
 import MetadataBody from '@/modules/metadata/components/Metadata/MetadataBody.vue';
@@ -45,7 +47,7 @@ import { createAuthors } from '@/factories/authorFactory';
 // metadata gets enhance in the storybook config
 import metadata from './js/metadata';
 
-import lightColorblind from '../src/plugins/vuetifyConfig';
+import { lightColorblind } from '../src/plugins/vuetifyConfig';
 
 const smallHeader = createHeader(metadata[0], true);
 const largeHeader = createHeader(metadata[1], false);
@@ -226,7 +228,6 @@ storiesOf('6 Detail Views / Metadata', module)
         showPlaceholder: true,
         body: {
           title: 'Description',
-          emptyTextColor: lightColorblind.error,
         },
       },
       genericPropsBody: {
@@ -275,7 +276,6 @@ storiesOf('6 Detail Views / Metadata', module)
       genericPropsPlaceholder: {
         showPlaceholder: true,
         fixedHeight: false,
-        emptyTextColor: lightColorblind.error,
       },
     }),
   }))
@@ -392,7 +392,6 @@ storiesOf('6 Detail Views / Metadata', module)
       genericPropsEmpty: {
         publications: publications2,
         showPlaceholder: false,
-        emptyTextColor: lightColorblind.error,
       },
       genericPropsPublications: {
         showPlaceholder: false,

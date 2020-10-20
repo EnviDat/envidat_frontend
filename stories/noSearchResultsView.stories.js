@@ -2,7 +2,7 @@ import { storiesOf } from '@storybook/vue';
 import { action } from '@storybook/addon-actions';
 
 import NoSearchResultsView from '@/components/Filtering/NoSearchResultsView';
-import categoryCards from '@/modules/metadata/store/categoryCards';
+import categoryCards from '@/store/categoryCards';
 
 export const methods = {
   onClick: action('clicked on card'),
