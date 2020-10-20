@@ -70,7 +70,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-10-20 11:44:01
+ * Last modified  : 2020-10-20 14:42:05
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -149,6 +149,7 @@ export default {
      */
   mounted() {
     this.loadMetaDataContent();
+
     window.scrollTo(0, 0);
   },
   /**
@@ -169,7 +170,6 @@ export default {
       loadingCurrentMetadataContent: `${METADATA_NAMESPACE}/loadingCurrentMetadataContent`,
       currentMetadataContent: `${METADATA_NAMESPACE}/currentMetadataContent`,
       detailPageBackRoute: `${METADATA_NAMESPACE}/detailPageBackRoute`,
-      idRemapping: `${METADATA_NAMESPACE}/idRemapping`,
       authorsMap: `${METADATA_NAMESPACE}/authorsMap`,
       iconImages: 'iconImages',
       cardBGImages: 'cardBGImages',
@@ -193,13 +193,7 @@ export default {
      * @returns {String} the metadataId from the route
      */
     metadataId() {
-      let id = this.$route.params.metadataid;
-
-      if (this.idRemapping.has(id)) {
-        id = this.idRemapping.get(id);
-      }
-
-      return id;
+      return this.$route.params.metadataid;
     },
     /**
      * @returns {Boolean} if the placeHolders should be shown be somethings are still loading
@@ -272,7 +266,6 @@ export default {
      */
     createMetadataContent() {
       const currentContent = this.currentMetadataContent;
-      const { components } = this.$options;
 
       // always initialize because when changing the url directly the reloading
       // would not work and the old content would be loaded
@@ -309,6 +302,10 @@ export default {
 
         this.authors = getFullAuthorsFromDataset(this.authorsMap, currentContent);
       }
+    },
+    setMetadataContent() {
+      const { components } = this.$options;
+
       const res = this.currentMetadataContent && this.currentMetadataContent.resources ? this.currentMetadataContent.resources : null;
       const geoConfig = res ? res.find(src => src.name === 'geoservices_config.json') : null;
 
@@ -437,6 +434,7 @@ export default {
         this.$store.dispatch(`metadata/${LOAD_METADATA_CONTENT_BY_ID}`, this.metadataId);
       } else {
         this.createMetadataContent();
+        this.setMetadataContent();
       }
     },
   },
@@ -457,6 +455,7 @@ export default {
        */
     currentMetadataContent() {
       this.createMetadataContent();
+      this.setMetadataContent();
     },
     /**
        * @description
