@@ -36,8 +36,9 @@
                   class="pa-2" >
 
             <author-card :author="author"
-                        :asciiDead="authorDeadInfo ? authorDeadInfo.asciiDead : ''"
-                        :authorPassedInfo="authorDeadInfo ? authorDeadInfo.authorPassedInfo : ''" />
+                          :authorDetailsConfig="authorDetailsConfig"
+                          :asciiDead="authorDeadInfo ? authorDeadInfo.asciiDead : ''"
+                          :authorPassedInfo="authorDeadInfo ? authorDeadInfo.authorPassedInfo : ''" />
 
           </v-col>
         </v-row>
@@ -109,6 +110,9 @@ export default {
   computed: {
     authors() {
       return this.mixinMethods_getGenericProp('authors');
+    },
+    authorDetailsConfig() {
+      return this.mixinMethods_getGenericProp('authorDetailsConfig');
     },
     hasAuthors() {
       return this.authors && this.authors.length > 0;

@@ -76,14 +76,16 @@
           </v-col>
         </v-row>
 
-        <data-credit-layout class="px-0 py-1 readableText"
+        <data-credit-layout v-if="authorDetailsConfig ? authorDetailsConfig.showDataCredits : false"
+                            class="px-0 py-1 readableText"
                             :dataCredit="author.dataCredit"
                             :badgesLabel="dataCreditBadgeLabel"
                             :iconColor="dark ? 'white' : 'black'"
                             :badgeColor="dark ? 'white' : darkColor"
                             :dark="!dark" />
 
-        <v-row no-gutters
+        <v-row v-if="authorDetailsConfig ? authorDetailsConfig.showDataCreditScore : false"
+                no-gutters
                 class="py-1 readableText"
                 justify="space-between"
                 align="center" >
@@ -121,7 +123,7 @@
         </v-row>
 
         <v-row no-gutters
-                class="py-1 readableText"
+                class="pt-1 readableText"
                 align="center" >
 
           <v-col class="grow pr-5" @click="infosExpanded = !infosExpanded">
@@ -140,11 +142,12 @@
         </v-row>
 
         <v-row  v-if="infosExpanded"
-                class="py-1 readableText"
+                class="pa-0 readableText"
                 no-gutters
                 align="start">
 
           <v-col v-if="author.email && !authorIsDead"
+                  class="pa-1"
                   cols="6" >
             <v-row no-gutters>
               <v-col cols="12" 
@@ -156,12 +159,15 @@
               <v-col cols="12" 
                       class="authorInfo py-0"
                       :class="dark ? 'white--text' : 'black--text'" >
-                {{ author.email }}
+                <a :href="`mailto:${author.email}`" >
+                  {{ author.email }}
+                </a>
               </v-col>
             </v-row>
           </v-col>
 
           <v-col v-if="author.id && author.id.identifier"
+                  class="pa-1"
                   cols="6" >
             <v-row no-gutters>
               <v-col cols="12" 
@@ -177,7 +183,7 @@
                 <a v-if="(author.id.type && author.id.type === 'orcid') || isOrcId(formatIdentifier(author.id.identifier))"
                     :href="`https://orcid.org/${formatIdentifier(author.id.identifier)}`"
                     target="_blank" >
-                    {{ formatIdentifier(author.id.identifier) }}
+                  {{ formatIdentifier(author.id.identifier) }}
                 </a>
                 <div v-else>{{ formatIdentifier(author.id.identifier) }}</div>
 
@@ -186,6 +192,7 @@
           </v-col>
 
           <v-col v-if="author.affiliation"
+                  class="pa-1"
                   cols="6">
             <v-row no-gutters>
               <v-col cols="12" 
@@ -266,6 +273,10 @@ export default {
     author: Object,
     asciiDead: String,
     authorPassedInfo: String,
+    authorDetailsConfig: {
+      type: Object,
+      default: null,
+    },
   },
   mounted() {
     // this.setLevelProgress();
