@@ -91,18 +91,6 @@ const initialState = {
    */
   detailPageBackRoute: null,
   aboutPageBackRoute: null,
-  /**
-   * static category cards for the suggestions of search categories
-   */
-  categoryCards,
-  /**
-   * The idRemapping Map is a key value pair which is used for the metadatadetail page
-   * to remap an metadataid (it's the name of the ckan json object) to another one
-   * because a User might have given the direct url to a paper and later on changed it
-   */
-  idRemapping: new Map([
-    ['als‐based‐snow‐depth‐and‐canopy‐height‐maps‐from‐flights‐in‐2017‐grisons‐ch‐and‐grand‐mesa‐co', 'grand-mesa-co'],
-  ]),
   asciiDead: '&#8224;',
   authorPassedInfo: 'Sadly this author has passed away.',
 };
@@ -138,8 +126,6 @@ export const metadata = {
     updatingTags: state => state.updatingTags,
     detailPageBackRoute: state => state.detailPageBackRoute,
     aboutPageBackRoute: state => state.aboutPageBackRoute,
-    categoryCards: state => state.categoryCards,
-    idRemapping: state => state.idRemapping,
     asciiDead: state => state.asciiDead,
     authorPassedInfo: state => state.authorPassedInfo,
   },
