@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2020-10-13 22:03:18
+ * Last modified  : 2020-10-22 11:22:27
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -93,6 +93,10 @@ const initialState = {
   aboutPageBackRoute: null,
   asciiDead: '&#8224;',
   authorPassedInfo: 'Sadly this author has passed away.',
+  publicationsResolvingIds: false,
+  publicationsResolvedIds: {},
+  extractingIds: false,
+  idsToResolve: [],
 };
 
 export const metadata = {
@@ -128,6 +132,7 @@ export const metadata = {
     aboutPageBackRoute: state => state.aboutPageBackRoute,
     asciiDead: state => state.asciiDead,
     authorPassedInfo: state => state.authorPassedInfo,
+    publicationsResolvedIdsSize: state => (state.publicationsResolvedIds !== null ? Object.keys(state.publicationsResolvedIds).length : 0),
   },
   mutations,
   actions,

@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-10-13 17:06:03 
- * Last modified  : 2020-10-13 22:28:39
+ * Last modified  : 2020-10-20 23:49:26
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -86,7 +86,7 @@ let webpOk = null;
 // accoring to https://stackoverflow.com/questions/5573096/detecting-webp-support
 export function checkWebpFeature() {
 
-  if (webpOk === null) {
+  if (webpOk === null && document) {
     // simplified version in the comments, doesn't work for Firefox version 65
     // webpOk = document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') === 0;
 
