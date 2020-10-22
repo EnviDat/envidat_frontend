@@ -53,7 +53,7 @@ import metadataTags from '@/modules/metadata/store/metadataTags';
 
 /* eslint-disable no-unused-vars  */
 const PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
-const API_BASE = '/api/action/';
+const API_BASE = process.env.VUE_APP_API_BASE_URL || '/api/action/';
 
 function contentSize(content) {
   return content !== undefined ? Object.keys(content).length : 0;
