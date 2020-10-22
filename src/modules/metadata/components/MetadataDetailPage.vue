@@ -532,4 +532,8 @@ export default {
     overflow: hidden;
   }
 
+  .resourceCardText a {
+    color: #FFD740;
+  }
+
 </style>
