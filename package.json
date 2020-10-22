@@ -13,7 +13,6 @@
     "extract-authors": "node src/node/extractAuthors.js",
     "full-build": "vue-cli-service build && vue-cli-service storybook:build -c config/storybook",
     "storybook": "start-storybook -p 6006",
-    "storybook:build": "vue-cli-service storybook:build -c config/storybook",
     "test:debug": "node --inspect-brk=9229 ./node_modules/jest/bin/jest.js --no-cache --runInBand",
     "test:unit": "vue-cli-service test:unit",
     "build-storybook": "build-storybook"

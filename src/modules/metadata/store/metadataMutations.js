@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2020-08-18 15:29:06
+ * Last modified  : 2020-10-22 11:30:49
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -34,8 +34,13 @@ import {
   SET_DETAIL_PAGE_BACK_URL,
   SET_ABOUT_PAGE_BACK_URL,
   SET_VIRTUAL_LIST_INDEX,
-  METADATA_NAMESPACE,
   SWISSFL_MODE,
+  PUBLICATIONS_RESOLVE_IDS,
+  PUBLICATIONS_RESOLVE_IDS_SUCCESS,
+  PUBLICATIONS_RESOLVE_IDS_ERROR,
+  EXTRACT_IDS_FROM_TEXT,
+  EXTRACT_IDS_FROM_TEXT_SUCCESS,
+  EXTRACT_IDS_FROM_TEXT_ERROR,
 } from '@/store/metadataMutationsConsts';
 
 import {
@@ -49,10 +54,17 @@ import {
   enhanceMetadataEntry,
   enhanceTags,
   createLocation,
+  getCardBackgrounds,
 } from '@/factories/metaDataFactory';
+
+import {
+  METADATA_PUBLICATIONS_TITLE,
+} from '@/factories/metadataConsts';
+
+import { checkWebpFeature } from '@/factories/enhancementsFactory';
+import categoryCards from '@/store/categoryCards';
 import { extractAuthorsMap } from '@/factories/authorFactory';
 import { solrResultToCKANJSON } from '@/factories/apiFactory';
-
 import { enhanceMetadataFromExtras } from '@/factories/modeFactory';
 
 
@@ -60,13 +72,15 @@ function enhanceMetadatas(store, datasets) {
   if (!(datasets instanceof Array)) {
     throw new Error(`enhanceMetadatas() expects an array of datasets got ${typeof datasets}`);
   }
-  const { cardBGImages } = store.getters;
-  const categoryCards = store.getters[`${METADATA_NAMESPACE}/categoryCards`];
+
+  // const rootBGImgs = store.rootState?.getters?.cardBGImages;
+  let cardBGImgs = store.state.cardBGImages; // || rootBGImgs;
+  cardBGImgs = cardBGImgs || getCardBackgrounds(checkWebpFeature());
   const enhancedContent = {};
 
   for (let i = 0; i < datasets.length; i++) {
     let dataset = datasets[i];
-    dataset = enhanceMetadataEntry(dataset, cardBGImages, categoryCards);
+    dataset = enhanceMetadataEntry(dataset, cardBGImgs, categoryCards);
     dataset = enhanceMetadataFromExtras(SWISSFL_MODE, dataset);
 
     dataset = enhanceTags(dataset, categoryCards);
@@ -198,4 +212,47 @@ export default {
   [SET_VIRTUAL_LIST_INDEX](state, payload) {
     state.vIndex = payload;
   },
+  [PUBLICATIONS_RESOLVE_IDS](state) {
+    state.publicationsResolvingIds = true;
+    state.publicationsResolvedIds = {};
+  },
+  [PUBLICATIONS_RESOLVE_IDS_SUCCESS](state, { idsToResolve, resolvedPublications }) {
+    state.publicationsResolvingIds = false;
+    let publicationsResolvedIds = null;
+
+    if (idsToResolve) {
+      publicationsResolvedIds = {};
+
+      idsToResolve.forEach((id) => {
+        const resolvedObject = resolvedPublications[id];
+        const text = resolvedObject?.citation?.ACS; // jshint ignore:line
+        if (text) {
+          publicationsResolvedIds[id] = text;
+        }
+      });
+    }  
+
+    state.publicationsResolvedIds = publicationsResolvedIds;
+  },
+  [PUBLICATIONS_RESOLVE_IDS_ERROR](state, reason) {
+    state.publicationsResolvingIds = false;
+
+    const errObj = warningMessage(`${METADATA_PUBLICATIONS_TITLE} Error`, `Error while resolving the ids: ${reason.message}.`, reason.stack);
+    this.commit(ADD_USER_NOTIFICATION, errObj);
+  },
+  [EXTRACT_IDS_FROM_TEXT](state) {
+    state.extractingIds = true;
+    state.idsToResolve = [];
+  },
+  [EXTRACT_IDS_FROM_TEXT_SUCCESS](state, payload) {
+    state.extractingIds = false;
+    state.idsToResolve = payload;
+  },
+  [EXTRACT_IDS_FROM_TEXT_ERROR](state, reason) {
+    state.extractingIds = false;
+
+    const errObj = warningMessage(`${METADATA_PUBLICATIONS_TITLE} Error`, `Error while extracting ids from text: ${reason.message}.`, reason.stack);
+    this.commit(ADD_USER_NOTIFICATION, errObj);
+  },
+  
 };

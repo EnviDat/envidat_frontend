@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2020-10-13 22:53:09
+ * Last modified  : 2020-10-22 09:32:48
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -107,7 +107,8 @@ const store = new Vuex.Store({
   },
 });
 
-checkWebpFeatureAsync('lossy', (feature, isSupported) => {
+function loadImages(isSupported = false) {
+
   store.commit(SET_WEBP_SUPPORT, isSupported);
 
   const cardBGImages = getCardBackgrounds(isSupported);
@@ -124,21 +125,28 @@ checkWebpFeatureAsync('lossy', (feature, isSupported) => {
 
   store.commit(UPDATE_CATEGORYCARD_IMAGES);
 
-});
+}
 
+if (process.env.NODE_ENV === 'test') {
+  loadImages();
+} else {
+  checkWebpFeatureAsync('lossy', (feature, isSupported) => {
+    loadImages(isSupported);
+  });
 
-const persistPlugin = createPersist({
-  namespace: 'metadata',
-  // using this.state seems to prevent a double allocation of the metadata.state
-  // but the whole state is part of the localStorage (sessionStorage)
-  initialState: store.state.metadata,
-  // use sessionStorage which expires once the browser is closed
-  provider: sessionStorage,
-  // ONE_WEEK
-  // expires: 7 * 24 * 60 * 60 * 1e3,
-});
+  const persistPlugin = createPersist({
+    namespace: 'metadata',
+    // using this.state seems to prevent a double allocation of the metadata.state
+    // but the whole state is part of the localStorage (sessionStorage)
+    initialState: store.state.metadata,
+    // use sessionStorage which expires once the browser is closed
+    provider: sessionStorage,
+    // ONE_WEEK
+    // expires: 7 * 24 * 60 * 60 * 1e3,
+  });
 
-store.plugins = [persistPlugin];
+  store.plugins = [persistPlugin];
+}
 
 
 export default store;

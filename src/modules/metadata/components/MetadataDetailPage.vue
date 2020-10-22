@@ -70,7 +70,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-10-20 14:42:05
+ * Last modified  : 2020-10-22 14:58:48
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -90,6 +90,8 @@ import {
   LOAD_METADATA_CONTENT_BY_ID,
   CLEAN_CURRENT_METADATA,
   CLEAR_SEARCH_METADATA,
+  EXTRACT_IDS_FROM_TEXT,
+  PUBLICATIONS_RESOLVE_IDS,
 } from '@/store/metadataMutationsConsts';
 import {
   createHeader,
@@ -163,6 +165,12 @@ export default {
     ...mapState([
       'config',
     ]),
+    ...mapState(METADATA_NAMESPACE, [
+      'extractingIds',
+      'idsToResolve',
+      'publicationsResolvingIds',
+      'publicationsResolvedIds',
+    ]),
     ...mapGetters({
       metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
       metadatasContentSize: `${METADATA_NAMESPACE}/metadatasContentSize`,
@@ -176,12 +184,16 @@ export default {
       appScrollPosition: 'appScrollPosition',
       asciiDead: `${METADATA_NAMESPACE}/asciiDead`,
       authorPassedInfo: `${METADATA_NAMESPACE}/authorPassedInfo`,
+      publicationsResolvedIdsSize: `${METADATA_NAMESPACE}/publicationsResolvedIdsSize`,
     }),
     metadataConfig() {
       return this.config?.metadataConfig || {};
     },
     authorDetailsConfig() {
       return this.metadataConfig.authorDetailsConfig || {};
+    },
+    publicationsConfig() {
+      return this.metadataConfig?.publicationsConfig || {};
     },
     authorDeadInfo() {
       return {
@@ -298,6 +310,8 @@ export default {
         this.details = createDetails(currentContent);
 
         this.publications = createPublications(currentContent);
+        this.startExtractingIds();
+
         this.funding = createFunding(currentContent);
 
         this.authors = getFullAuthorsFromDataset(this.authorsMap, currentContent);
@@ -329,6 +343,8 @@ export default {
       this.$set(components.MetadataPublications, 'genericProps', {
         publications: this.publications,
         metadataConfig: this.metadataConfig,
+        extractingIds: this.extractingIds,
+        publicationsResolvingIds: this.publicationsResolvingIds,
       });
 
       this.$set(components.MetadataFunding, 'genericProps', { funding: this.funding });
@@ -360,18 +376,27 @@ export default {
 
       this.reRenderComponents();
     },
+    startExtractingIds() {
+      if (this.publicationsConfig?.resolveIds && !this.extractingIds) {
+        this.$store.dispatch(`${METADATA_NAMESPACE}/${EXTRACT_IDS_FROM_TEXT}`, {
+          text: this.publications?.text,
+          idDelimiter: this.publicationsConfig?.idDelimiter,
+          idPrefix: this.publicationsConfig?.idPrefix,
+        });
+      }
+    },
     /**
-       * @description
-       * @param {any} idOrName
-       * @returns {any}
-       */
+     * @description
+     * @param {any} idOrName
+     * @returns {any}
+     */
     isCurrentIdOrName(idOrName) {
       return this.currentMetadataContent.id === idOrName || this.currentMetadataContent.name === idOrName;
     },
     /**
-       * @description
-       * @param {any} tagName
-       */
+     * @description
+     * @param {any} tagName
+     */
     catchTagClicked(tagName) {
       const tagNames = [];
       tagNames.push(tagName);
@@ -423,49 +448,82 @@ export default {
       });
     },
     /**
-       * @description loads the content of this metadata entry (metadataid) from the URL.
-       * Either loads it from the backend via action or creates it from the localStorage.
-       */
+     * @description loads the content of this metadata entry (metadataid) from the URL.
+     * Either loads it from the backend via action or creates it from the localStorage.
+     */
     loadMetaDataContent() {
-      if (!this.loadingMetadatasContent
-        && (this.currentMetadataContent.title === undefined
-            || !this.isCurrentIdOrName(this.metadataId))) {
-        // in case of directly entring the page load the content directly via Id
-        this.$store.dispatch(`metadata/${LOAD_METADATA_CONTENT_BY_ID}`, this.metadataId);
+      if (!this.loadingMetadatasContent && !this.isCurrentIdOrName(this.metadataId)) {
+        // in case of navigating into the page load the content directly via Id
+        this.$store.dispatch(`${METADATA_NAMESPACE}/${LOAD_METADATA_CONTENT_BY_ID}`, this.metadataId);
       } else {
+        // in case of entring the page directly via Url without having loaded the rest of the app.
+        // this call is to initiailze the components in the their loading state
         this.createMetadataContent();
         this.setMetadataContent();
       }
     },
   },
   watch: {
-    /* eslint-disable no-unused-vars */
     /**
-       * @description
-       * @param {any} to
-       * @param {any} from
-       */
-    $route: function watchRouteChanges(to, from) {
-      // react on changes of the route (browser back / forward click)
+     * @description watcher on idsToResolve start resolving them, if not already in the works
+     */
+    idsToResolve() {
+      if (!this.extractingIds && this.idsToResolve?.length > 0 && !this.publicationsResolvingIds) {
+        this.$store.dispatch(`${METADATA_NAMESPACE}/${PUBLICATIONS_RESOLVE_IDS}`, {
+          idsToResolve: this.idsToResolve,
+          resolveBaseUrl: this.publicationsConfig?.resolveBaseUrl,
+        });
+      }
+    },
+    /**
+     * @description watcher on publicationsResolvedIds start replacing the text with the resolved texts based on the ids
+     */
+    publicationsResolvedIds() {
+      if (!this.publicationsResolvingIds
+          && this.publicationsResolvedIdsSize > 0
+          && this.idsToResolve?.length > 0) {
 
+        let publicationsText = this.publications?.text;
+
+        if (publicationsText) {
+
+          const keys = Object.keys(this.publicationsResolvedIds);
+
+          keys.forEach((id) => {
+            const text = this.publicationsResolvedIds[id];
+            if (text) {
+              publicationsText = publicationsText.replace(id, text);
+            }
+          });
+
+          this.publications.text = publicationsText;
+        }
+      }
+    },
+    /**
+     * @description react on changes of the route (browser back / forward click)
+     */
+    $route: function watchRouteChanges() {
       this.loadMetaDataContent();
     },
     /**
-       * @description
-       */
+     * @description watch the currentMetadataContent when it is the same as the url
+     * the components will be filled with the metdata contents
+     */
     currentMetadataContent() {
-      this.createMetadataContent();
-      this.setMetadataContent();
+      if (this.isCurrentIdOrName(this.metadataId)) {
+        this.createMetadataContent();
+        this.setMetadataContent();
+      }
     },
     /**
-       * @description
-       */
+     * in case all the metadataContents are already loaded take it from there
+     * if EnviDat is called via MetadataDetailPage URL directly
+     */
     metadatasContent() {
-      // in case all the metadataContents are already loaded take it from there
-      // if EnviDat is called via MetadataDetailPage URL directly
-
-      if (!this.loadingCurrentMetadataContent) {
-        this.$store.dispatch(`metadata/${LOAD_METADATA_CONTENT_BY_ID}`, this.metadataId);
+      if (!this.loadingMetadatasContent && !this.loadingCurrentMetadataContent
+          && !this.isCurrentIdOrName(this.metadataId)) {
+        this.$store.dispatch(`${METADATA_NAMESPACE}/${LOAD_METADATA_CONTENT_BY_ID}`, this.metadataId);
       }
     },
   },
