@@ -7,7 +7,7 @@
     </v-card-title>
     
     <v-card-title v-if="showPlaceholder && !title"
-                  class="pa-4">
+                  class="pa-4 pt-0">
       <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer"
             style="width: 100%;">
         <div class="bone bone-type-heading" />
@@ -17,12 +17,12 @@
     <v-card-text v-if="fullText"
                   ref="text"
                   :usedMaxTextLength="maxTextLength"
-                  class="pa-4 heightAndScroll readableText"
+                  class="pa-4 pt-0 heightAndScroll readableText"
                   v-html="markdownText" >
     </v-card-text>
 
     <v-card-text v-if="showPlaceholder && !fullText"
-                  class="pa-4" >
+                  class="pa-4 pt-0" >
       <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer">
         <div class="bone bone-type-multiline bone-style-paragraph" />
       </div>
@@ -63,7 +63,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-28 16:19:15
+ * Last modified  : 2020-10-22 15:19:37
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

@@ -6,11 +6,13 @@
     </v-card-title>
 
     <v-card-text v-if="!hasGeom"
+                  class="pa-4 pt-0"
                   :style="`color: ${emptyTextColor};`" >
       {{ emptyText }}
     </v-card-text>
 
-    <v-card-text v-else-if="hasGeom">
+    <v-card-text v-else-if="hasGeom"
+                  class="pa-4 pt-0" >
 
       <metadata-location-cesium
         v-show="show3d"
