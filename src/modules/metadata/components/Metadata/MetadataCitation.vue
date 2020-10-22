@@ -25,6 +25,7 @@
                   class="shrink py-1 px-2" >
 
             <base-rectangle-button margin-class="citationButton"
+                                    color="secondary"
                                     :button-text="link.text"
                                     :tool-tip-text="link.tooltipText"
                                     material-icon-name="assignment"
@@ -73,7 +74,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-10-15 18:56:49
+ * Last modified  : 2020-10-22 09:06:44
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
