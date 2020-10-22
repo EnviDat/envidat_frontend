@@ -7,7 +7,7 @@
     </v-card-title>
 
     <v-card-text v-if="citationText"
-                  class="readableText pa-4 pb-0"
+                  class="readableText px-4 py-0"
                   style="font-style: italic; "
                   v-html="markdownText" >
 
@@ -74,7 +74,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-10-22 09:06:44
+ * Last modified  : 2020-10-22 15:21:46
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

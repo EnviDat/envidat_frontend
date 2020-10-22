@@ -5,7 +5,8 @@
       {{ METADATA_DETAILS_TITLE }}
     </v-card-title>
 
-    <v-card-text v-if="details && details.length > 0">
+    <v-card-text v-if="details && details.length > 0"
+                  class="pa-4 pt-0 readableText">
       <v-form>
         <div v-for="val in details"
               :key="val.label"
@@ -35,7 +36,6 @@
       {{ emptyText }}
     </v-card-text>
 
-
     <v-card-text v-if="showPlaceholder"
                   class="pa-4 pt-0">
       <v-row v-for="n in 5"
@@ -64,7 +64,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-10-15 19:15:13
+ * Last modified  : 2020-10-22 15:24:52
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

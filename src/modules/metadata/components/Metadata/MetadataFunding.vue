@@ -53,14 +53,15 @@
 
     </v-card-text>
 
-    <v-card-text v-if="showPlaceholder && !funding" >
+    <v-card-text v-if="showPlaceholder && !funding"
+                  class="pa-4 pt-0" >
       <div class="skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer">
         <div class="bone bone-type-multiline bone-style-paragraph" />
       </div>
     </v-card-text>
 
     <v-card-text v-if="!showPlaceholder && !funding"
-                  class="pt-0 readableText"
+                  class="pa-4 pt-0 readableText"
                   :style="`color: ${emptyTextColor};`" >
       {{ emptyText }}
     </v-card-text>
@@ -76,7 +77,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-10-15 19:34:01
+ * Last modified  : 2020-10-22 15:23:51
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
