@@ -276,7 +276,11 @@ export default {
     authorPassedInfo: String,
     authorDetailsConfig: {
       type: Object,
-      default: () => {},
+      default: () => ({
+        showAuthorInfos: true,
+        showDatatCredits: true,
+        showDataCreditScore: true,
+      }),
     },
   },
   mounted() {
