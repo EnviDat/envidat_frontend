@@ -73,7 +73,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-10-27 13:42:13
+ * Last modified  : 2020-10-27 15:27:13
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -106,8 +106,7 @@ import {
   HIDE_NOTIFICATIONS,
 } from '@/store/mainMutationsConsts';
 
-import { POLICIES_NAMESPACE } from '@/modules/about/store/policiesMutationsConsts';
-import { GUIDELINES_NAMESPACE } from '@/modules/about/store/guidelinesMutationsConsts';
+import { ABOUT_NAMESPACE } from '@/modules/about/store/aboutMutationsConsts';
 import { PROJECTS_NAMESPACE } from '@/modules/projects/store/projectsMutationsConsts';
 
 import TheNavigation from '@/components/Navigation/TheNavigation';
@@ -244,8 +243,8 @@ export default {
       currentMetadataContent: `${METADATA_NAMESPACE}/currentMetadataContent`,
       filteredContent: `${METADATA_NAMESPACE}/filteredContent`,
       isFilteringContent: `${METADATA_NAMESPACE}/isFilteringContent`,
-      policiesLoading: `${POLICIES_NAMESPACE}/loading`,
-      guidelinesLoading: `${GUIDELINES_NAMESPACE}/loading`,
+      policiesLoading: `${ABOUT_NAMESPACE}/policiesLoading`,
+      guidelinesLoading: `${ABOUT_NAMESPACE}/guidelinesLoading`,
       projectsLoading: `${PROJECTS_NAMESPACE}/loading`,
       currentPage: 'currentPage',
       appBGImage: 'appBGImage',
