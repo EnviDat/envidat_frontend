@@ -9,7 +9,6 @@
                     @clickedTag="catchTagClicked"
                     :selectedTagNames="selectedTagNames"
                     :allTags="allTags"
-                    :showPlaceholder="keywordsPlaceholder"
                     @clickedExpand="catchFilterExpandClicked"
                     @clickedTagClose="catchTagCloseClicked"
                     @clickedClear="catchTagCleared"
@@ -40,7 +39,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-10-27 09:04:07
+ * Last modified  : 2020-10-27 13:22:26
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -163,12 +162,17 @@ export default {
       const isBackNavigation = this.$router.options.isSameRoute(this.$route, fromRoute);
       const tagsChanged = this.loadRouteTags();
       const searchParameter = this.$route.query.search ? this.$route.query.search : '';
-      const checkSearchTriggering = searchParameter !== this.searchTerm;
+      let checkSearchTriggering = searchParameter !== this.searchTerm;
 
       if (checkSearchTriggering) {
         // use the search parameter from the url in any case
         // if it's a back navigation it has to be set that is will appear in the searchBar component
         this.searchTerm = searchParameter;
+      } else if (isBackNavigation) {
+        // when having a back navigation with no changes, make sure
+        // no possible prefiltered state is shown. So retrigger a search check
+        // when the filtered size is equal not to the total available content size
+        checkSearchTriggering = this.filteredContentSize !== this.metadatasContentSize;
       }
 
       if (isBackNavigation && !checkSearchTriggering) {
@@ -220,6 +224,7 @@ export default {
     ...mapGetters({
       metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
       metadatasContentSize: `${METADATA_NAMESPACE}/metadatasContentSize`,
+      filteredContentSize: `${METADATA_NAMESPACE}/filteredContentSize`,
       searchedMetadatasContent: `${METADATA_NAMESPACE}/searchedMetadatasContent`,
       searchingMetadatasContent: `${METADATA_NAMESPACE}/searchingMetadatasContent`,
       searchingMetadatasContentOK: `${METADATA_NAMESPACE}/searchingMetadatasContentOK`,
@@ -250,9 +255,9 @@ export default {
     searchBarPlaceholder() {
       return this.$vuetify.breakpoint.mdAndUp ? this.searchPlaceholderText : this.searchPlaceholderTextSmall;
     },
-    keywordsPlaceholder() {
-      return this.searchingMetadatasContent || this.updatingTags;
-    },
+    // keywordsPlaceholder() {
+    //   return this.searchingMetadatasContent || this.updatingTags;
+    // },
     searchMetadatasContentSize() {
       return this.searchedMetadatasContent !== undefined ? Object.keys(this.searchedMetadatasContent).length : 0;
     },

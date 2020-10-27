@@ -119,6 +119,7 @@ export const metadata = {
     currentMetadataContent: state => state.currentMetadataContent,
     isFilteringContent: state => state.isFilteringContent,
     filteredContent: state => state.filteredContent,
+    filteredContentSize: state => (state.filteredContent !== undefined ? Object.keys(state.filteredContent).length : 0),
     vIndex: state => state.vIndex,
     vReloadAmount: state => state.vReloadAmount,
     vReloadAmountMobile: state => state.vReloadAmountMobile,
