@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03
- * Last modified  : 2020-10-15 18:52:56
+ * Last modified  : 2020-10-22 14:37:53
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -257,9 +257,8 @@ export function createResource(dataset) {
   let restrictedUsers;
   let restrictedObj = false;
 
-  if (dataset.restricted
-    && typeof dataset.restricted === 'string'
-    && dataset.restricted.length > 0) {
+  if (dataset.restricted && typeof dataset.restricted === 'string'
+      && dataset.restricted.length > 0) {
 
     try {
       restrictedObj = JSON.parse(dataset.restricted);
