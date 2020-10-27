@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-11-20 16:08:39
+ * Last modified  : 2020-10-22 16:03:29
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -58,9 +58,7 @@ export function enhanceSubprojectsFromExtras(projects) {
       
       if (extra.key === 'subprojects') {
         assignSubprojects(project, extra, projects);
-      }
-
-      if (extra.key === 'parent') {
+      } else if (extra.key === 'parent') {
         assignParent(project, extra, projects);
       }
     }
