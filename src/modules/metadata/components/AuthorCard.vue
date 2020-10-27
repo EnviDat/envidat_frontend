@@ -1,5 +1,6 @@
 <template>
     <v-card class="authorCard pa-4"
+            :class="dataCreditLevel > 2 ? 'accentLink' : ''"
             :style="dynamicCardBackground"
             @click.native="cardClick" >
 
@@ -452,6 +453,10 @@ export default {
   .authorCard {
     border-radius: 20px;
     line-height: 1rem;
+  }
+
+  .accentLink a {
+    color: #FFD740;
   }
 
   .authorTitle {
