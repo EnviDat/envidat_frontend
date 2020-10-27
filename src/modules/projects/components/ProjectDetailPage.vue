@@ -31,13 +31,13 @@
                         :maxTextLength="$vuetify.breakpoint.xsOnly ? 950 : 1500" />
       </v-col>
 
-      <v-col v-if="loading || (!loading && currentProject && currentProject.subProjects)"
+      <v-col v-if="loading || (!loading && subProjects)"
               class="pb-2 px-sm-3"
               cols="12"
               lg="10"
               offset-lg="1" >
 
-        <project-subprojects :subProjects="currentProject.subProjects"
+        <project-subprojects :subProjects="subProjects"
                               :defaultImg="creatorImg"
                               :showPlaceholder="loading"
                               @projectClick="catchProjectClick"
@@ -77,7 +77,7 @@
 
           <div v-if="!hasMetadatas" >
             <v-card-text style="color: red;" >
-              {{ metadataEmptyText }} '{{ currentProject ? currentProject.title : '' }}'
+              {{ metadataEmptyText }} '{{ currentProject ? ' connected with the project ' + currentProject.title : '' }}'
             </v-card-text>
           </div>
 
@@ -96,7 +96,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-10-13 22:07:45
+ * Last modified  : 2020-10-27 14:37:04
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -204,6 +204,9 @@ export default {
     },
     currentProject() {
       return this.getProject(this.projectId);
+    },
+    subProjects() {
+      return this.currentProject?.subProjects || null;
     },
     mapFilteringPossible() {
       return this.$vuetify.breakpoint.smAndUp;
@@ -389,7 +392,7 @@ export default {
     ],
     mapFilterHeight: 400,
     metadataListTitle: 'Related Datasets',
-    metadataEmptyText: 'There are no datasets connected with the project',
+    metadataEmptyText: 'There are no datasets',
   }),
 };
 </script>
