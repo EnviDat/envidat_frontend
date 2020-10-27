@@ -115,7 +115,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-11-20 14:31:57
+ * Last modified  : 2020-10-27 13:37:25
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -385,6 +385,7 @@ export default {
     font-size: 14px !important;
     opacity: 0.75;
     line-height: 1.2em !important;
+    color: rgba(0, 0, 0, 0.87) !important;
     overflow: hidden;
   }
 
