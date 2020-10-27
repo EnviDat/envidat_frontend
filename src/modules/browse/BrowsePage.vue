@@ -40,7 +40,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-08-18 16:34:20
+ * Last modified  : 2020-10-27 09:04:07
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -171,7 +171,7 @@ export default {
         this.searchTerm = searchParameter;
       }
 
-      if (isBackNavigation) {
+      if (isBackNavigation && !checkSearchTriggering) {
         // use a delayed scroll position setup because the list as to be loaded first
         setTimeout(() => {
           this.setScrollPos(this.browseScrollPosition);
