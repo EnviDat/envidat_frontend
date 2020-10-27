@@ -49,8 +49,18 @@
         </v-row>
       </v-container>
 
-      <v-dialog v-model="showReloadDialog" persistent max-width="290">
-        <v-card>
+      <v-dialog v-model="showReloadDialog"
+                persistent
+                max-width="300">
+        <ConfirmTextCard title="New Version Available!"
+                          :text="dialogVersionText()"
+                          confirmText="Reload"
+                          :confirmClick="reloadApp"
+                          cancelText="Cancel"
+                          :cancelClick="() => { reloadDialogCanceled = true }"
+                          />
+
+        <!-- <v-card>
           <v-card-title class="headline">New Version Available!</v-card-title>
           <v-card-text>{{ dialogVersionText() }}</v-card-text>
           <v-card-actions>
@@ -58,7 +68,8 @@
             <v-btn color="green darken-1" flat @click="reloadApp()">Reload</v-btn>
             <v-btn color="green darken-1" flat @click="reloadDialogCanceled = true">Cancel</v-btn>
           </v-card-actions>
-        </v-card>
+        </v-card> -->
+
       </v-dialog>
     </v-main>
 
@@ -73,7 +84,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-10-27 15:27:13
+ * Last modified  : 2020-10-27 22:42:30
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -112,6 +123,7 @@ import { PROJECTS_NAMESPACE } from '@/modules/projects/store/projectsMutationsCo
 import TheNavigation from '@/components/Navigation/TheNavigation';
 import TheNavigationToolbar from '@/components/Navigation/TheNavigationToolbar';
 import NotificationCard from '@/components/Cards/NotificationCard';
+import ConfirmTextCard from '@/components/Cards/ConfirmTextCard';
 import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
 
 export default {
@@ -322,6 +334,7 @@ export default {
     TheNavigation,
     TheNavigationToolbar,
     NotificationCard,
+    ConfirmTextCard,
   },
   watch: {
     notifications() {
