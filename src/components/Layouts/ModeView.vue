@@ -1,32 +1,37 @@
 <template>
-  <span align="center">
+  <v-row align="center"
+          justify="center"
+          no-gutters >
+
     <v-col v-if="compact"
-          class="item body-2">
-      {{ modeInfoPrefix }}:
-      <br />
-      {{ modeTitle }}
-    </v-col>
+          class="shrink body-2 mx-1 text-no-wrap" >
+      {{ modeInfoPrefix }}: {{ modeTitle }}
+     </v-col>
 
     <v-col v-else
-          class="item title">
+          class="shrink title mx-1 text-no-wrap">
       {{ modeInfo }}
     </v-col>
 
     <v-col v-if="modeLogo"
-          class="item"
-          style="height: 34px; width: 34px;">
+            class="shrink mx-1"
+            style="height: 34px; width: 34px;">
 
       <a v-if="modeExternalUrl"
           :href="modeExternalUrl"
           target="_blank" >
-        <v-img :src="modeLogo" />
+        <v-img :src="modeLogo"
+                height="34" width="34" />
       </a>
+
       <v-img v-else
-              :src="modeLogo" />
+              :src="modeLogo"
+              height="34" width="34" />
 
     </v-col>
 
-    <v-col class="item">
+    <v-col class="shrink mx-1" >
+
       <base-icon-button materialIconName="info_outline"
                         :tooltipText="`${tooltipText} ${modeTitle}`"
                         tooltipBottom
@@ -36,7 +41,7 @@
     </v-col>
 
     <div v-if="closeCallback"
-          class="item">
+          class="shrink mx-1" >
       <base-icon-button materialIconName="close"
                         :tooltipText="`Exit ${modeTitle} ${modeInfoPrefix}`"
                         tooltipBottom
@@ -46,7 +51,7 @@
                         @clicked="closeCallback" />
     </div>
 
-  </span>
+  </v-row>
 </template>
 
 <script>
@@ -57,7 +62,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-31 15:29:14
+ * Last modified  : 2020-10-27 16:04:50
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -66,6 +71,7 @@ import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import { getModeData } from '@/factories/modeFactory';
 
 export default {
+  name: 'ModeView',
   // TODO: Component is not in use. Moved content to TheNavigationToolbar while upgrading to vuetify2
   components: {
     BaseIconButton,
@@ -106,9 +112,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-  .item {
-    margin: 0px 5px;
-  }
-</style>
