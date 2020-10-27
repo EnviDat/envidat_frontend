@@ -37,6 +37,17 @@ storiesOf('3 Cards / Slogan Cards', module)
         />
       </v-col>
 
+      <v-col cols="6" md="4" lg="6" >
+        <slogan-card
+            @click="onClick"
+            :slogan="'Random Slogan'"
+            :sloganImg="fingertips"
+            :subSlogan="'Subslogan normally longer than the slogan'"
+            :buttonText="'Fun button'"
+            :buttonCallback="onClick"
+        />
+      </v-col>
+
      </v-row>
     </v-container>
     `,

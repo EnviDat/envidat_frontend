@@ -3,7 +3,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-10-24 10:50:03
+ * Last modified  : 2020-10-27 14:55:40
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -68,9 +68,7 @@ storiesOf('3 Cards / Projects Cards', module)
     <v-container grid-list-lg fluid pa-0>
     <v-row>
 
-      <v-col cols="3"
-        v-for="(project, index) in 3"
-        :key="'ph_' + index" >
+      <v-col cols="3" >
         <project-card-placeholder />
       </v-col>
 
