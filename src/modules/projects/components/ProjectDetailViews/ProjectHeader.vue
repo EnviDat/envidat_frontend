@@ -35,7 +35,21 @@
     </div>
 
 
+    <div v-if="!title && !showPlaceholder"
+          :style="`position: absolute; top: 0px; right: 0px;
+                  height: ${height}px; width: 100%;
+                  z-index: 1; color: ${$vuetify.theme.themes.light.error};`"
+          class="headerTitle pa-4"
+          :class="{ 'display-2': $vuetify.breakpoint.lgAndUp,
+                    'display-1': $vuetify.breakpoint.mdAndDown,
+                    'headline': $vuetify.breakpoint.smAndDown,
+          }" >
+      {{ NotFoundTitle }}
+    </div>
+
+
     <div v-if="!title && showPlaceholder"
+          style="z-index: 1;"
           class="skeleton skeleton-size-big skeleton-color-concrete skeleton-animation-shimmer" >
       <div class="bone bone-type-multiline bone-style-steps" />
     </div>
@@ -52,7 +66,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-23 16:04:40
+ * Last modified  : 2020-10-27 16:25:26
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -118,6 +132,7 @@ export default {
     blackTopToBottom: 'rgba(80,80,80, 0.1) 0%, rgba(80,80,80, 0.9) 70%',
     // whiteTopToBottom: 'rgba(255,255,255, 0.3) 0%, rgba(255,255,255, 1) 60%',
     whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
+    NotFoundTitle: 'No Project found',
   }),
 };
 </script>
