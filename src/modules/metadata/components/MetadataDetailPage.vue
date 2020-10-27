@@ -70,7 +70,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-10-22 14:58:48
+ * Last modified  : 2020-10-27 19:55:03
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -587,6 +587,7 @@ export default {
 
   .resourceCardText {
     font-size: 12px;
+    color: rgba(255, 255, 255, 0.87) !important;
     overflow: hidden;
   }
 
