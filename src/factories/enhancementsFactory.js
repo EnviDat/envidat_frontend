@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-10-13 17:06:03 
- * Last modified  : 2020-10-20 23:49:26
+ * Last modified  : 2020-10-27 20:49:21
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -19,7 +19,7 @@
  * @param {boolean} [webpIsSupported=false]
  * @param {string} [fallbackExtension='jpg']
  */
-export function getWebpImagePathWithFallback(imagePath, webpIsSupported = false, fallbackExtension = 'jpg') {
+function getWebpImagePathWithFallback(imagePath, webpIsSupported = false, fallbackExtension = 'jpg') {
   if (!imagePath) {
     return null;
   }
@@ -63,7 +63,7 @@ export function getWebpImagePathWithFallback(imagePath, webpIsSupported = false,
 //   'feature' can be one of 'lossy', 'lossless', 'alpha' or 'animation'.
 //   'callback(feature, result)' will be passed back the detection result (in an asynchronous way!)
 // according to: https://developers.google.com/speed/webp/faq#how_can_i_detect_browser_support_for_webp
-export function checkWebpFeatureAsync(feature, callback) {
+function checkWebpFeatureAsync(feature, callback) {
   const kTestImages = {
     lossy: 'UklGRiIAAABXRUJQVlA4IBYAAAAwAQCdASoBAAEADsD+JaQAA3AAAAAA',
     lossless: 'UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==',
@@ -84,7 +84,7 @@ export function checkWebpFeatureAsync(feature, callback) {
 let webpOk = null;
 
 // accoring to https://stackoverflow.com/questions/5573096/detecting-webp-support
-export function checkWebpFeature() {
+function checkWebpFeature() {
 
   if (webpOk === null && document) {
     // simplified version in the comments, doesn't work for Firefox version 65
@@ -100,3 +100,47 @@ export function checkWebpFeature() {
 
   return webpOk || false;
 }
+
+/**
+ * Get all files in a folder with a specific prefix. This function only works in the
+ * node.js environment!
+ *
+ * @export
+ * @param {string} path
+ * @param {string} [prefix='']
+ * @returns {Array} founfFiles
+ */
+function getFilesWithPrefix(path, prefix = '') {
+  // eslint-disable-next-line global-require
+  const fs = require('fs');
+
+  const foundFiles = [];
+
+  try {
+    const files = fs.readdirSync(path);
+
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        const f = files[i];
+        if (prefix) {
+          if (f.includes(prefix)) {
+            foundFiles.push(f);
+          }
+        } else {
+          foundFiles.push(f);
+        }
+      }
+    }  
+  } catch (err) {
+    console.log(`Couldn't read path: ${path}. Error: ${err}`);
+  }
+
+  return foundFiles;
+}
+
+module.exports = {
+  getWebpImagePathWithFallback,
+  checkWebpFeature,
+  checkWebpFeatureAsync,
+  getFilesWithPrefix,
+};
