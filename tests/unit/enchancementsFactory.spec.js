@@ -38,7 +38,7 @@ describe('enhancementsFactory - getWebpImagePathWithFallback', () => {
     const imageName = 'team_small';
     const imagePath = `../modules/user/assets/${imageName}`;
     const imagePathWithExt = `${imagePath}.jpg`;
-    const expectedImagePathWithExt = `../${imagePath}.${targetExt}`;
+    const expectedImagePathWithExt = `${imagePath}.${targetExt}`;
 
     const webpRelative = getWebpImagePathWithFallback(imagePathWithExt, true);
     expect(webpRelative).toBe(expectedImagePathWithExt);
