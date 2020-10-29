@@ -49,7 +49,24 @@
               lg="10"
               offset-lg="1" >
 
-        <v-card>
+        <ProjectsDatasets :hasMetadatas="hasMetadatas"
+                          :listContent="filteredListContent"
+                          :showMapFilter="false"
+                          :mapFilteringPossible="mapFilteringPossible"
+                          :placeHolderAmount="placeHolderAmount"
+                          @clickedTag="catchTagClicked"
+                          :allTags="allMetadataTags"
+                          :selectedTagNames="selectedTagNames"
+                          @clickedTagClose="catchTagCloseClicked"
+                          @clickedClear="catchTagCleared"
+                          :defaultListControls="defaultControls"
+                          :enabledControls="enabledControls"
+                          :topFilteringLayout="true"
+                          :showSearch="false"
+                          @setScroll="setScrollPos" />
+
+
+        <!-- <v-card>
           <v-card-title class="metadataList_title title">
             {{ metadataListTitle }}
           </v-card-title>
@@ -81,7 +98,7 @@
             </v-card-text>
           </div>
 
-        </v-card>
+        </v-card> -->
       </v-col>
 
     </v-row>
@@ -115,15 +132,13 @@ import {
   LISTCONTROL_MAP_ACTIVE,
 } from '@/store/metadataMutationsConsts';
 
-import MetadataList from '@/components/MetadataList';
-
-
 import {
   tagsIncludedInSelectedTags,
   createTag,
 } from '@/factories/metadataFilterMethods';
 
 
+import ProjectsDatasets from '@/modules/projects/components/ProjectDetailViews/ProjectDatasets';
 import ProjectSubprojects from './ProjectDetailViews/ProjectSubprojects';
 import ProjectBody from './ProjectDetailViews/ProjectBody';
 import ProjectHeader from './ProjectDetailViews/ProjectHeader';
@@ -379,7 +394,7 @@ export default {
     ProjectHeader,
     ProjectBody,
     ProjectSubprojects,
-    MetadataList,
+    ProjectsDatasets,
   },
   data: () => ({
     PageBGImage: 'app_b_browsepage',
@@ -390,16 +405,6 @@ export default {
       LISTCONTROL_LIST_ACTIVE,
       LISTCONTROL_MAP_ACTIVE,
     ],
-    mapFilterHeight: 400,
-    metadataListTitle: 'Related Datasets',
-    metadataEmptyText: 'There are no datasets',
   }),
 };
 </script>
-
-<style >
-  .metadataList_title {
-    font-family: 'Baskervville', serif !important;
-    font-weight: 700 !important;
-  }
-</style>
