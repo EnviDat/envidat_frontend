@@ -67,7 +67,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-28 16:03:23
+ * Last modified  : 2020-10-20 12:18:02
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -161,7 +161,6 @@ export default {
       loadingCurrentMetadataContent: `${METADATA_NAMESPACE}/loadingCurrentMetadataContent`,
       currentMetadataContent: `${METADATA_NAMESPACE}/currentMetadataContent`,
       detailPageBackRoute: `${METADATA_NAMESPACE}/detailPageBackRoute`,
-      idRemapping: `${METADATA_NAMESPACE}/idRemapping`,
       authorsMap: `${METADATA_NAMESPACE}/authorsMap`,
       iconImages: 'iconImages',
       cardBGImages: 'cardBGImages',
@@ -179,13 +178,7 @@ export default {
      * @returns {String} the metadataId from the route
      */
     metadataId() {
-      let id = this.$route.params.metadataid;
-
-      if (this.idRemapping.has(id)) {
-        id = this.idRemapping.get(id);
-      }
-
-      return id;
+      return this.$route.params.metadataid;
     },
     /**
      * @returns {Boolean} if the placeHolders should be shown be somethings are still loading
@@ -434,7 +427,7 @@ export default {
     // MetadataAuthors,
   },
   data: () => ({
-    PageBGImage: './app_b_browsepage.jpg',
+    PageBGImage: 'app_b_browsepage',
     header: null,
     body: null,
     citation: null,
@@ -464,7 +457,7 @@ export default {
 <style>
 
   .metadata_title {
-    font-family: 'Libre Baskerville', serif !important;
+    font-family: 'Baskervville', serif !important;
     font-weight: 700 !important;
   }
 

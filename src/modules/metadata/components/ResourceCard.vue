@@ -7,7 +7,14 @@
       {{ name }}
     </v-card-title>
 
-    <v-card-text class="pt-0 white--text pb-5 pb-md-3" >
+    <v-card-text class="pt-0 white--text"
+                  :class="{
+                    'pb-5': !showFullDescription,
+                    'pb-10': showFullDescription,
+                    'pr-2': showFullDescription,
+                    'pb-md-3': !showFullDescription,
+                    'pb-md-10': showFullDescription,
+                    }" >
 
       <v-container class="pa-0"
                     fluid >
@@ -20,6 +27,18 @@
           <v-col v-if="!showFullDescription"
                   class="readableText resourceCardText" >
             {{ markdownTextTruncated }}
+          </v-col>
+
+          <v-col v-if="maxDescriptionLengthReached && !showFullDescription"
+                  style="width: 30px;"
+                  class="shrink" align-self="end" >
+
+            <base-icon-button material-icon-name="expand_more"
+                              iconColor="accent"
+                              color="accent"
+                              outlined
+                              tooltipText="Show full description"
+                              @clicked="showFullDescription = !showFullDescription" />
           </v-col>
         </v-row>
 
@@ -72,16 +91,16 @@
     <v-card-actions class="ma-0 pa-2"
                     style="position: absolute; bottom: 0px; right: 50px;" >
 
-      <base-icon-button v-if="maxDescriptionLengthReached"
+      <base-icon-button v-if="maxDescriptionLengthReached && showFullDescription"
                         :class="isProtected ? 'mr-2' : ''"
                         material-icon-name="expand_more"
-                        :iconColor="showFullDescription ? 'primary' : 'accent'"
+                        iconColor="primary"
                         color="accent"
-                        :fillColor="showFullDescription ? $vuetify.theme.themes.light.accent : ''"
+                        :fillColor="$vuetify.theme.themes.light.accent"
                         outlined
                         :rotateOnClick="true"
                         :rotateToggle="showFullDescription"
-                        :tooltipText="showFullDescription ? 'Hide full description' : 'Show full description'"
+                        tooltipText="Hide full description"
                         @clicked="showFullDescription = !showFullDescription" />
     </v-card-actions>
 
@@ -119,7 +138,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-09-02 20:55:12
+ * Last modified  : 2020-10-20 11:56:07
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

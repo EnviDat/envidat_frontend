@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2020-08-18 15:54:14
+ * Last modified  : 2020-10-22 11:22:27
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -15,10 +15,12 @@
 
 import { getTagColor } from '@/factories/metaDataFactory';
 
+import categoryCards from '@/store/categoryCards';
+
 import mutations from './metadataMutations';
 import actions from './metadataActions';
-import categoryCards from './categoryCards';
 import tags from './metadataTags';
+
 
 for (let i = 0; i < tags.length; i++) {
   const tag = tags[i];
@@ -89,20 +91,12 @@ const initialState = {
    */
   detailPageBackRoute: null,
   aboutPageBackRoute: null,
-  /**
-   * static category cards for the suggestions of search categories
-   */
-  categoryCards,
-  /**
-   * The idRemapping Map is a key value pair which is used for the metadatadetail page
-   * to remap an metadataid (it's the name of the ckan json object) to another one
-   * because a User might have given the direct url to a paper and later on changed it
-   */
-  idRemapping: new Map([
-    ['als‐based‐snow‐depth‐and‐canopy‐height‐maps‐from‐flights‐in‐2017‐grisons‐ch‐and‐grand‐mesa‐co', 'grand-mesa-co'],
-  ]),
   asciiDead: '&#8224;',
   authorPassedInfo: 'Sadly this author has passed away.',
+  publicationsResolvingIds: false,
+  publicationsResolvedIds: {},
+  extractingIds: false,
+  idsToResolve: [],
 };
 
 export const metadata = {
@@ -125,6 +119,7 @@ export const metadata = {
     currentMetadataContent: state => state.currentMetadataContent,
     isFilteringContent: state => state.isFilteringContent,
     filteredContent: state => state.filteredContent,
+    filteredContentSize: state => (state.filteredContent !== undefined ? Object.keys(state.filteredContent).length : 0),
     vIndex: state => state.vIndex,
     vReloadAmount: state => state.vReloadAmount,
     vReloadAmountMobile: state => state.vReloadAmountMobile,
@@ -136,10 +131,9 @@ export const metadata = {
     updatingTags: state => state.updatingTags,
     detailPageBackRoute: state => state.detailPageBackRoute,
     aboutPageBackRoute: state => state.aboutPageBackRoute,
-    categoryCards: state => state.categoryCards,
-    idRemapping: state => state.idRemapping,
     asciiDead: state => state.asciiDead,
     authorPassedInfo: state => state.authorPassedInfo,
+    publicationsResolvedIdsSize: state => (state.publicationsResolvedIds !== null ? Object.keys(state.publicationsResolvedIds).length : 0),
   },
   mutations,
   actions,

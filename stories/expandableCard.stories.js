@@ -3,7 +3,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-10-24 11:17:32
+ * Last modified  : 2020-10-20 14:48:55
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -13,13 +13,13 @@
 import { storiesOf } from '@storybook/vue';
 
 import ExpandableCard from '@/modules/about/components/ExpandableCard';
-import teamSmall from '@/modules/about/assets/team_small.jpg';
+import teamSmall from '@/assets/about/team_small.jpg';
 import mission from '@/assets/projects/mission.jpg';
 import missionSmall from '@/assets/projects/mission_small.jpg';
-import handsSmall from '@/modules/about/assets/hands_small.jpg';
-import orga from '@/modules/about/assets/EnviDat_organigram.png';
-import conceptSmall from '@/modules/about/assets/concept_small.jpg';
-import communitySmall from '@/modules/about/assets/community_small.jpg';
+import handsSmall from '@/assets/about/hands_small.jpg';
+import orga from '@/assets/about/EnviDat_organigram.png';
+import conceptSmall from '@/assets/about/concept_small.jpg';
+import communitySmall from '@/assets/about/community_small.jpg';
 
 export const computed = {
   missionImg() {

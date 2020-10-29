@@ -1,5 +1,6 @@
 <template>
     <v-card class="authorCard pa-4"
+            :class="dataCreditLevel > 2 ? 'accentLink' : ''"
             :style="dynamicCardBackground"
             @click.native="cardClick" >
 
@@ -76,14 +77,16 @@
           </v-col>
         </v-row>
 
-        <data-credit-layout class="px-0 py-1 readableText"
+        <data-credit-layout v-if="authorDetailsConfig.showDataCredits"
+                            class="px-0 py-1 readableText"
                             :dataCredit="author.dataCredit"
-                            badgesLabel="Data Credit Contributions"
+                            :badgesLabel="dataCreditBadgeLabel"
                             :iconColor="dark ? 'white' : 'black'"
                             :badgeColor="dark ? 'white' : darkColor"
                             :dark="!dark" />
 
-        <v-row no-gutters
+        <v-row v-if="authorDetailsConfig.showDataCreditScore"
+                no-gutters
                 class="py-1 readableText"
                 justify="space-between"
                 align="center" >
@@ -120,8 +123,9 @@
           </v-col>
         </v-row>
 
-        <v-row no-gutters
-                class="py-1 readableText"
+        <v-row v-if="authorDetailsConfig.showAuthorInfos"
+                no-gutters
+                class="pt-1 readableText"
                 align="center" >
 
           <v-col class="grow pr-5" @click="infosExpanded = !infosExpanded">
@@ -139,12 +143,13 @@
           </v-col>
         </v-row>
 
-        <v-row  v-if="infosExpanded"
-                class="py-1 readableText"
+        <v-row  v-if="authorDetailsConfig.showAuthorInfos && infosExpanded"
+                class="pa-0 readableText"
                 no-gutters
                 align="start">
 
           <v-col v-if="author.email && !authorIsDead"
+                  class="pa-1"
                   cols="6" >
             <v-row no-gutters>
               <v-col cols="12" 
@@ -156,12 +161,15 @@
               <v-col cols="12" 
                       class="authorInfo py-0"
                       :class="dark ? 'white--text' : 'black--text'" >
-                {{ author.email }}
+                <a :href="`mailto:${author.email}`" >
+                  {{ author.email }}
+                </a>
               </v-col>
             </v-row>
           </v-col>
 
           <v-col v-if="author.id && author.id.identifier"
+                  class="pa-1"
                   cols="6" >
             <v-row no-gutters>
               <v-col cols="12" 
@@ -177,7 +185,7 @@
                 <a v-if="(author.id.type && author.id.type === 'orcid') || isOrcId(formatIdentifier(author.id.identifier))"
                     :href="`https://orcid.org/${formatIdentifier(author.id.identifier)}`"
                     target="_blank" >
-                    {{ formatIdentifier(author.id.identifier) }}
+                  {{ formatIdentifier(author.id.identifier) }}
                 </a>
                 <div v-else>{{ formatIdentifier(author.id.identifier) }}</div>
 
@@ -186,6 +194,7 @@
           </v-col>
 
           <v-col v-if="author.affiliation"
+                  class="pa-1"
                   cols="6">
             <v-row no-gutters>
               <v-col cols="12" 
@@ -239,6 +248,12 @@
 
 
 <script>
+import {
+  AUTHORS_PUBLISHED_DATACOUNT,
+  AUTHORS_DATACREDIT_CONTRIBUTION,
+  AUTHORS_DATACREDIT_SCORE,
+} from '@/factories/metadataConsts';
+
 import DataCreditLayout from '@/components/Layouts/DataCreditLayout';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import { BROWSE_PATH } from '@/router/routeConsts';
@@ -260,6 +275,14 @@ export default {
     author: Object,
     asciiDead: String,
     authorPassedInfo: String,
+    authorDetailsConfig: {
+      type: Object,
+      default: () => ({
+        showAuthorInfos: true,
+        showDatatCredits: true,
+        showDataCreditScore: true,
+      }),
+    },
   },
   mounted() {
     // this.setLevelProgress();
@@ -390,9 +413,10 @@ export default {
     },
   },
   data: () => ({
-    dataScoreLabel: 'Data Credit Score',
-    dataCountLabel: 'Published datasets',
+    dataScoreLabel: AUTHORS_DATACREDIT_SCORE,
+    dataCountLabel: AUTHORS_PUBLISHED_DATACOUNT,
     dataCreditScoreInfo: 'Data Credit Score: represents the dedication of an author to publish data and declare how on their involvement was in a dataset.',
+    dataCreditBadgeLabel: AUTHORS_DATACREDIT_CONTRIBUTION,
     emailLabel: 'Email',
     affiliationLabel: 'Affiliation',
     idLabel: 'Identifier',
@@ -431,13 +455,17 @@ export default {
     line-height: 1rem;
   }
 
+  .accentLink a {
+    color: #FFD740;
+  }
+
   .authorTitle {
     margin: 0;
     padding: 0;
-    line-height: 2.75rem;
+    line-height: 2.5rem;
     word-break: break-word;
     font-size: 34px !important;
-    font-weight: 700 !important;
+    font-weight: 400 !important;
     font-family: 'Raleway', serif !important;
   }
 

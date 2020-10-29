@@ -116,7 +116,7 @@ export default {
   components: {
   },
   data: () => ({
-    PageBGImage: './app_b_browsepage.jpg',
+    PageBGImage: 'app_b_browsepage',
     name: '',
     email: '',
     feedback: false,

@@ -3,11 +3,11 @@
           id="MetadataCitation" >
 
     <v-card-title class="title metadata_title pa-4">
-      Citation
+      {{ METADATA_CITATION_TITLE }}
     </v-card-title>
 
     <v-card-text v-if="citationText"
-                  class="readableText pa-4 pb-0 pb-md-2"
+                  class="readableText px-4 py-0"
                   style="font-style: italic; "
                   v-html="markdownText" >
 
@@ -22,9 +22,10 @@
 
           <v-col v-for="link in citationLinks"
                   :key="link.text"
-                  class="shrink py-2 px-2 py-sm-0 py-md-2 py-lg-0" >
+                  class="shrink py-1 px-2" >
 
             <base-rectangle-button margin-class="citationButton"
+                                    color="secondary"
                                     :button-text="link.text"
                                     :tool-tip-text="link.tooltipText"
                                     material-icon-name="assignment"
@@ -73,7 +74,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-23 15:54:13
+ * Last modified  : 2020-10-22 15:21:46
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -82,6 +83,7 @@
 import remark from 'remark';
 import html from 'remark-html';
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
+import { METADATA_CITATION_TITLE } from '@/factories/metadataConsts';
 
 export default {
   name: 'MetadataCitation',
@@ -93,7 +95,7 @@ export default {
     showPlaceholder: Boolean,
   },
   data: () => ({
-    emptyText: 'No citation found for this dataset.',
+    METADATA_CITATION_TITLE,
   }),
   computed: {
     markdownText() {
@@ -149,7 +151,10 @@ export default {
       return this.mixinMethods_getGenericProp('fixedHeight');
     },
     emptyTextColor() {
-      return this.mixinMethods_getGenericProp('emptyTextColor');
+      return this.mixinMethods_getGenericProp('emptyTextColor', 'red');
+    },
+    emptyText() {
+      return this.mixinMethods_getGenericProp('emptyText', 'No citation found for this dataset.');
     },
   },
 };

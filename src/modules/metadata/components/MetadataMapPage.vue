@@ -81,7 +81,7 @@
       layerSplit: null,
       splitScreen: false,
       geoConfig: null,
-      PageBGImage: './app_b_browsepage.jpg',
+      PageBGImage: 'app_b_browsepage',
       configFile: null,
       map: null,
     }),
@@ -106,19 +106,12 @@
         loadingCurrentMetadataContent: `${METADATA_NAMESPACE}/loadingCurrentMetadataContent`,
         currentMetadataContent: `${METADATA_NAMESPACE}/currentMetadataContent`,
         detailPageBackRoute: `${METADATA_NAMESPACE}/detailPageBackRoute`,
-        idRemapping: `${METADATA_NAMESPACE}/idRemapping`,
       }),
       /**
        * @returns {String} the metadataId from the route
        */
       metadataId() {
-        let id = this.$route.params.metadataid;
-
-        if (this.idRemapping.has(id)) {
-          id = this.idRemapping.get(id);
-        }
-
-        return id;
+        return this.$route.params.metadataid;
       },
       /**
        * @returns {Boolean} if the placeHolders should be shown be somethings are still loading

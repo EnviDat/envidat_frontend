@@ -4,6 +4,11 @@ import vuetify from './vuetify_storybook';
 // import App component for the css for the components
 import App from '../src/App.vue';
 
+import Vue from 'vue';
+import globalMethods from '../src/factories/globalMethods';
+
+Vue.mixin(globalMethods);
+
 addDecorator(() => ({
   vuetify,
   template: `

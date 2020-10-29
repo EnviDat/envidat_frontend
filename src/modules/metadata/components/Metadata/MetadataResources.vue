@@ -3,11 +3,10 @@
           :class="{ ['pt-2']: this.isOnTop }" >
     
     <v-card-title >
-      <v-container class="pa-0" >
       <v-row justify="end"
               no-gutters>
         <v-col class="title metadata_title grow">
-          Data and resources
+          {{ METADATA_RESOURCES_TITLE }}
         </v-col>
 
         <v-col class="shrink" >
@@ -16,7 +15,6 @@
                                 :icon-string="fileIcon" />
         </v-col>
       </v-row>
-      </v-container>
     </v-card-title>
 
     <v-container v-if="resources && resources.length > 0"
@@ -39,7 +37,8 @@
 
         <v-col v-for="res in resources"
                 :key="res.id"
-                cols="12" sm="6"
+                cols="12"
+                :sm="resources.length > 1 ? 6 : 12"
                 class="pa-2" >
 
           <resource-card v-bind="res"
@@ -69,15 +68,18 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-23 16:01:41
+ * Last modified  : 2020-10-20 12:02:25
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
 
 import BaseIconCountView from '@/components/BaseElements/BaseIconCountView';
+import { METADATA_RESOURCES_TITLE } from '@/factories/metadataConsts';
+
 import ResourceCard from '../ResourceCard';
 import ResourceCardPlaceholder from '../ResourceCardPlaceholder';
+
 
 export default {
   name: 'MetadataResources',
@@ -93,6 +95,7 @@ export default {
   data: () => ({
     showAllResources: false,
     emptyText: 'No resources found for this dataset',
+    METADATA_RESOURCES_TITLE,
   }),
   computed: {
     doi() {

@@ -2,10 +2,11 @@
   <v-card id="MetadataDetails">
 
     <v-card-title class="title metadata_title">
-      Further Information
+      {{ METADATA_DETAILS_TITLE }}
     </v-card-title>
 
-    <v-card-text v-if="details && details.length > 0">
+    <v-card-text v-if="details && details.length > 0"
+                  class="pa-4 pt-0 readableText">
       <v-form>
         <div v-for="val in details"
               :key="val.label"
@@ -35,7 +36,6 @@
       {{ emptyText }}
     </v-card-text>
 
-
     <v-card-text v-if="showPlaceholder"
                   class="pa-4 pt-0">
       <v-row v-for="n in 5"
@@ -64,11 +64,13 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-23 15:54:13
+ * Last modified  : 2020-10-22 15:24:52
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
+import { METADATA_DETAILS_TITLE } from '@/factories/metadataConsts';
+
 
 export default {
   name: 'MetadataDetails',
@@ -83,11 +85,17 @@ export default {
     maxSingleTextLengthLg: 80,
     maxSingleTextLengthMd: 80,
     maxSingleTextLengthXs: 70,
-    emptyText: 'No details found for this dataset',
+    METADATA_DETAILS_TITLE,
   }),
   computed: {
     details() {
       return this.mixinMethods_getGenericProp('details');
+    },
+    emptyTextColor() {
+      return this.mixinMethods_getGenericProp('emptyTextColor', 'red');
+    },
+    emptyText() {
+      return this.mixinMethods_getGenericProp('emptyText', 'No details found for this dataset.');
     },
   },
   methods: {
