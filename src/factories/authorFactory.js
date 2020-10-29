@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-06-05 14:07:03
- * Last modified  : 2020-09-02 20:57:17
+ * Last modified  : 2020-10-29 17:38:13
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -21,7 +21,8 @@ const authorDataCreditLevels = [
 ];
 
 export function getAuthorName(author) {
-  return `${author.given_name ? author.given_name : ''} ${author.name ? author.name : ''}`.trim();
+  const fullName = `${author.given_name ? author.given_name.trim() : ''} ${author.name ? author.name.trim() : ''}`;
+  return fullName ? fullName.trim() : '';
 }
 
 export function getAuthorsString(dataset) {
@@ -103,9 +104,21 @@ export function createAuthors(dataset) {
     const author = authors[i];
 
     const fullName = getAuthorName(author);
-    const nameSplits = fullName.split(' ');
-    const firstName = nameSplits[0] ? nameSplits[0].trim() : '';
-    const lastName = nameSplits[1] ? nameSplits[1].trim() : '';
+    // const nameSplits = fullName.split(' ');
+    const firstName = author.given_name;
+    const lastName = author.name;
+
+    // if (nameSplits.length > 0) {
+    //   if (nameSplits.length === 1) {
+    //     lastName = nameSplits[0].trim();
+    //   } else if (nameSplits.length === 2) {
+    //     firstName = nameSplits[0].trim();
+    //     lastName = nameSplits[1].trim();
+    //   } else if (nameSplits.length === 3) {
+    //     firstName = nameSplits[0].trim();
+    //     lastName = `${nameSplits[1].trim()} ${nameSplits[2].trim()}`;
+    //   }
+    // }
 
     const dataCredit = getDataCredit(author);
 
@@ -146,6 +159,10 @@ function overwriteDataCredit(author, existingAuthor) {
   }
 }
 
+function getAuthorKey(author) {
+  return author.email || author.fullName ? author.fullName.trim().toLowerCase() : null;
+}
+
 export function extractAuthorsMap(datasets) {
   if (!datasets) { return null; }
 
@@ -161,8 +178,8 @@ export function extractAuthorsMap(datasets) {
       for (let j = 0; j < authors.length; j++) {
         const author = authors[j];
 
-        const authorName = author.fullName;
-        const existingAuthor = authorMap[authorName];
+        const authorKey = getAuthorKey(author);
+        const existingAuthor = authorMap[authorKey];
 
         if (existingAuthor) {
           existingAuthor.datasetCount += author.datasetCount;
@@ -176,10 +193,10 @@ export function extractAuthorsMap(datasets) {
           }
 
           // console.log('for ' + author.name + ' updated ' + existingAuthor.count);
-          authorMap[authorName] = existingAuthor;
+          authorMap[authorKey] = existingAuthor;
         } else {
           // console.log('for ' + author.name + ' set ' + author.count);
-          authorMap[authorName] = author;
+          authorMap[authorKey] = author;
           // authorCount++;
         }
       }
@@ -206,8 +223,9 @@ export function getFullAuthorsFromDataset(authorMap, dataset) {
 
   for (let i = 0; i < authors.length; i++) {
     const author = authors[i];
+    const authorKey = getAuthorKey(author);
 
-    const fullAuthor = authorMap[author.fullName];
+    const fullAuthor = authorMap[authorKey];
     if (fullAuthor) {
       fullAuthors.push(fullAuthor);
     }
