@@ -67,7 +67,7 @@
                       :name="tag.name"
                       :selectable="true"
                       :color="tag.color"
-                      @clicked="catchTagClicked($event, tag.name)" />
+                      @clicked="catchTagClicked(tag.name)" />
 
         </v-col>
         <v-col v-if="maxTagsReached"

@@ -94,7 +94,7 @@
                                   :tooltipText="authorToolTipText"
                                   :asciiDead="asciiDead"
                                   :authorPassedInfo="authorPassedInfo"
-                                  @clicked="catchAuthorClicked($event, authorName(author))" />
+                                  @clicked="catchAuthorClicked(authorName(author))" />
               </v-col>
             </v-row>
           </v-col>
@@ -199,7 +199,7 @@
                           :selectable="true"
                           class="headerTag"
                           :color="tag.color"
-                          @clicked="catchTagClicked($event, tag.name)" />
+                          @clicked="catchTagClicked(tag.name)" />
               </v-col>
 
               <v-col v-if="maxTagsReached && !showTagsExpanded"
@@ -259,7 +259,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-28 16:17:23
+ * Last modified  : 2020-10-29 20:29:05
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

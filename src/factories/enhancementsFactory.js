@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-10-13 17:06:03 
- * Last modified  : 2020-10-27 20:49:21
+ * Last modified  : 2020-10-29 20:32:51
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -24,7 +24,6 @@ function getWebpImagePathWithFallback(imagePath, webpIsSupported = false, fallba
     return null;
   }
   
-  let changedImgPath = imagePath;
   const targetExtension = webpIsSupported ? 'webp' : fallbackExtension;
 
   const splits = imagePath.split('.');
@@ -53,10 +52,7 @@ function getWebpImagePathWithFallback(imagePath, webpIsSupported = false, fallba
     }
   }
 
-  changedImgPath = splits[imageNameIndex];
-  changedImgPath = `${prefix}${changedImgPath}.${targetExtension}`;
-  
-  return changedImgPath;
+  return `${prefix}${splits[imageNameIndex]}.${targetExtension}`;
 }
 
 // check_webp_feature:

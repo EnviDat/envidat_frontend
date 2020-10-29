@@ -39,7 +39,7 @@
                         :highlighted="false"
                         :closeable="false"
                         :color="tag.color"
-                        @clicked="catchTagClicked($event, tag.name)" />
+                        @clicked="catchTagClicked(tag.name)" />
             </v-col>
           </v-row>
         </v-col>
@@ -62,8 +62,8 @@
                         :selectable="true"
                         :highlighted="true"
                         :closeable="true"
-                        @clickedClose="catchTagCloseClicked($event, tag.name)"
-                        @clicked="catchTagCloseClicked($event, tag.name)" />
+                        @clickedClose="catchTagCloseClicked(tag.name)"
+                        @clicked="catchTagCloseClicked(tag.name)" />
             </v-col>
 
           </v-row>

@@ -4,7 +4,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2020-10-20 15:20:59
+ * Last modified  : 2020-10-29 20:26:06
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -13,8 +13,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from '@storybook/vue';
 import { action } from '@storybook/addon-actions';
-
-import globalMethods from '@/factories/globalMethods';
 
 import MetadataHeader from '@/modules/metadata/components/Metadata/MetadataHeader.vue';
 import MetadataBody from '@/modules/metadata/components/Metadata/MetadataBody.vue';
@@ -40,14 +38,8 @@ import {
 } from '@/factories/metaDataFactory';
 import { createAuthors } from '@/factories/authorFactory';
 
-/* import App needed for Css classes */
-// eslint-disable-next-line no-unused-vars
-// import App from '../App';
-
 // metadata gets enhance in the storybook config
 import metadata from './js/metadata';
-
-import { lightColorblind } from '../src/plugins/vuetifyConfig';
 
 const smallHeader = createHeader(metadata[0], true);
 const largeHeader = createHeader(metadata[1], false);
