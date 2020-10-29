@@ -84,7 +84,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-10-27 22:42:30
+ * Last modified  : 2020-10-29 15:16:01
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -364,7 +364,7 @@ export default {
       // { title: 'Policies', icon: 'policy', toolTip: 'The rules of EnviDat', active: false, path: POLICIES_PATH, pageName: POLICIES_PAGENAME },
       // { title: 'DMP', icon: 'menu_book', toolTip: 'Template for a Data Management Plan', active: false, path: DMP_PATH, pageName: DMP_PAGENAME },
       { title: 'Sign In', icon: 'person', toolTip: 'Sign in to management research data', active: false, path: 'https://www.envidat.ch/user/reset', pageName: 'external' },
-      { title: 'About', icon: 'info', toolTip: 'What is EnviDat? Who is behind EnviDat?', active: false, path: ABOUT_PATH, pageName: ABOUT_PAGENAME },
+      { title: 'About', icon: 'info', toolTip: 'What is EnviDat and who is behind it?', active: false, path: ABOUT_PATH, pageName: ABOUT_PAGENAME },
       // { title: 'Contact', icon: 'contact_support', toolTip: 'Do you need support?', active: false },
       { title: 'Menu', icon: 'menu', active: false },
     ],
