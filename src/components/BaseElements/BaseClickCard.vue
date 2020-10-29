@@ -1,34 +1,36 @@
 <template>
   <v-card ripple
           hover
+          raised
           @click.native="clicked" >
-    <v-container grid-list-md
-                  pa-0 >
-      <v-layout row align-center >
+    <v-container class="pa-0" >
+      <v-row align="center"
+              no-gutters >
         <!-- Image -->
-        <v-flex xs5
-                py-0 >
+        <v-col class="py-0"
+                cols="5" >
           <v-img class="imagezoom"
                   :contain="contain"
                   :height=" $vuetify.breakpoint.smAndDown ? '65px' : '100px' "
+                  style="border-bottom-left-radius: 4px; border-top-left-radius: 4px;"
                   :src="img" />
-        </v-flex>
+        </v-col>
 
         <!-- Text -->
-        <v-flex xs7
-          px-0 mt-1 >
+        <v-col class="px-0"
+                cols="7" >
           <div class="px-2 headline"
                 :class="{ 'compactTitle' : this.$vuetify.breakpoint.smAndDown }" >
             {{ title }}
           </div>
 
           <div v-if="color"
-                class="py-0 mr-1 my-0 "
-                :style="`height: 5px; background-color: ${color}; margin-left: -5px;`" >
+                class="py-0 my-0 "
+                :style="`height: 5px; background-color: ${color};`" >
           </div>
 
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-container>
 
   </v-card>

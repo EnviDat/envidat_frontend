@@ -1,32 +1,34 @@
 <template>
-  <v-container pa-0 style="position: relative;">
-    <v-layout column>
-        <v-sheet :height="height">
+      <v-col cols="12" class="pa-0" style="position: relative;">
+        <v-row
+          class="text-container"
+          align="center"
+          justify="center"
+        >
+          <v-col class="text-center text" cols="12"
+                 :class="{ 'display-3' : $vuetify.breakpoint.mdAndUp,
+                                'display-1' : $vuetify.breakpoint.smAndDown }">
+            {{ title }}
+          </v-col>
+        </v-row>
 
-          <v-parallax :height="height" :src="img" style="opacity: 0.8; filter: blur(2px);" />
-
-          <v-layout align-center justify-center fill-height
-                    :style="`position: relative; top: -${height }px; text-align: center;`" >
-            <v-flex class="text"
-                    :class="{ 'display-3' : $vuetify.breakpoint.mdAndUp,
-                              'display-1' : $vuetify.breakpoint.smAndDown, }">
-              {{ title }}
-            </v-flex>
-          </v-layout>
-        </v-sheet>
-    </v-layout>
-  </v-container>
+        <!-- Using img instead of parallax, because parallax has problems loading src dynamically -->
+        <v-img :height="height"
+               :src="img"
+               class="blurred">
+        </v-img>
+      </v-col>
 </template>
 
 <script>
 /**
- * TagChipPlaceholder.vue is a placeholder to show the placement any tag while the page is loading.
+ * ImgAndTextLayout.vue is a placeholder to show the placement any tag while the page is loading.
  *
- * @summary placeholder for tags
+ * @summary Title Layout
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-20 14:05:26
+ * Last modified  : 2020-09-02 20:57:32
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -39,13 +41,36 @@ export default {
     title: String,
     img: String,
   },
+  watch: {
+    img() {
+      // console.log(this.img);
+    },
+  },
 };
 </script>
 
 <style scoped>
   .text {
-    font-family: "Libre Baskerville", serif !important;
+    font-family: "Baskervville", serif !important;
     letter-spacing: 0em !important;
     text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.7);
   }
+  .text-container {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    z-index: 999;
+  }
+
+  .blurred {
+    opacity: 0.8;
+    filter: blur(2px);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
 </style>

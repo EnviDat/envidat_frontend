@@ -1,41 +1,38 @@
 <template>
-  <v-toolbar app
-              clipped-left
+  <v-app-bar clipped-left
+              app
               color="white"
-              :height="mode && $vuetify.breakpoint.xsOnly ? 50 : 36"
-              >
-    <v-layout row
-              align-center
-              justify-space-between >
+              :height="$vuetify.breakpoint.xsOnly ? 50 : 36" >
 
-      <v-flex v-if="mode"
-              grow >
-        <mode-view :mode="mode"
-                    :closeCallback="modeCloseCallback" />
-      </v-flex>
+    <v-row class="pa-0" >
 
-      <v-flex v-if="userIsSignedIn"
-              shrink >
+      <v-col v-if="hasModeData" >
+        <ModeView :mode="mode"
+                  :compact="compact"
+                  :closeCallback="modeCloseCallback"/>
+      </v-col>
+
+      <v-col v-if="userIsSignedIn">
         <user-avatar v-if="$vuetify.breakpoint.smAndUp"
                     :clickCallback="avatarClickCallback" />
-      </v-flex>
+      </v-col>
 
-    </v-layout>
+      <v-progress-linear v-show="loading"
+                         indeterminate
+                         style="position: absolute; left: 0; bottom: 0;"
+                         height="2"
+                         color="primary" />
+    </v-row>
 
-    <v-progress-linear v-show="loading"
-                        indeterminate
-                        style="position: absolute; left: 0; bottom: -14px;"
-                        height="2"
-                        color="primary" />
 
-
-  </v-toolbar>
+  </v-app-bar>
 </template>
 
 <script>
 import Logo from '@/assets/logo/EnviDat_logo_32.png';
-import ModeView from '@/components/Layouts/ModeView';
 import UserAvatar from '@/components/Layouts/UserAvatar';
+import ModeView from '@/components/Layouts/ModeView';
+
 
 export default {
   name: 'TheNavigationToolbar',
@@ -51,17 +48,19 @@ export default {
     avatarClickCallback: Function,
   },
   computed: {
-  },
-  methods: {
-    loginClick() {
-      this.$emit('loginClick');
+    compact() {
+      return this.$vuetify.breakpoint.xsOnly;
+    },
+    hasModeData() {
+      return !!this.mode;
     },
   },
   data: () => ({
     Logo,
     logoText: 'EnviDat',
     expanded: false,
-    modeLogo: null,
+    modeInfoPrefix: 'Special View',
+    tooltipText: 'You are in a specific view which shows data for',
   }),
 };
 </script>

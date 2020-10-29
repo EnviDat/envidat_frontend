@@ -3,7 +3,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51 
- * Last modified  : 2019-10-25 17:06:40
+ * Last modified  : 2020-10-20 14:15:14
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -43,3 +43,11 @@ export const METADATA_NAMESPACE = 'metadata';
 export const LISTCONTROL_LIST_ACTIVE = 0;
 export const LISTCONTROL_MAP_ACTIVE = 1;
 export const LISTCONTROL_COMPACT_LAYOUT_ACTIVE = 2;
+
+export const PUBLICATIONS_RESOLVE_IDS = 'PUBLICATIONS_RESOLVE_IDS';
+export const PUBLICATIONS_RESOLVE_IDS_SUCCESS = 'PUBLICATIONS_RESOLVE_IDS_SUCCESS';
+export const PUBLICATIONS_RESOLVE_IDS_ERROR = 'PUBLICATIONS_RESOLVE_IDS_ERROR';
+
+export const EXTRACT_IDS_FROM_TEXT = 'EXTRACT_IDS_FROM_TEXT';
+export const EXTRACT_IDS_FROM_TEXT_SUCCESS = 'EXTRACT_IDS_FROM_TEXT_SUCCESS';
+export const EXTRACT_IDS_FROM_TEXT_ERROR = 'EXTRACT_IDS_FROM_TEXT_ERROR';

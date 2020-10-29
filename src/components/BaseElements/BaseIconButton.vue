@@ -1,53 +1,56 @@
 <template>
   <div :style="isSmall ? 'height: 28px;' : 'height: 36px;'"
         @mouseover="hoverBadge = true"
-        @mouseleave="hoverBadge = false" >
+        @mouseleave="hoverBadge = false">
 
     <v-tooltip v-if="$vuetify.breakpoint.mdAndUp && tooltipText"
                 v-bind="{ top: !tooltipBottom, bottom: tooltipBottom }" >
 
-      <v-btn slot="activator"
-            style="margin: 0 !important;"
-            :icon="!isElevated"
-            :fab="isElevated"
-            :small="isSmall || isElevated"
-            :outline="outlined && !isToggled"
-            :color="color ? color : disabled ? '' : 'primary'"
-            :href="url"
-            :disabled="disabled"
-            v-bind="{['target'] : '_blank' }"
-            @click.stop="onClick" >
+      <template v-slot:activator="{ on }">
+        <v-btn v-on="on"
+               :style="{backgroundColor: fillColor ? fillColor : ''}"
+                style="margin: 0 !important;"
+                :icon="!isElevated"
+                :fab="isElevated"
+                :small="isSmall || isElevated"
+                :outlined="outlined"
+                :color="color ? color : disabled ? '' : 'primary'"
+                :href="url"
+                :disabled="disabled"
+                v-bind="{['target'] : '_blank' }"
+                @click.stop="onClick" >
 
 
-        <div v-if="customIcon"
-              class="iconCentering" >
+          <div v-if="customIcon">
 
-          <img class="envidatIcon"
-              :alt="`${customIcon} icon`"
-              :src="customIcon" >
-        </div>
+            <img class="envidatIcon"
+                :alt="`${customIcon} icon`"
+                :src="customIcon" >
+          </div>
 
-        <v-icon v-if="materialIconName"
-                :color="iconColor ? iconColor : 'primary'"
-                :style="rotateOnClick && rotateToggle ? 'transform: rotate(-180deg);' : ''" >
-          {{ materialIconName }}
-        </v-icon>
-      </v-btn>
+          <v-icon v-if="materialIconName"
+                  :color="iconColor ? iconColor : 'primary'"
+                  :style="rotateOnClick && rotateToggle ? 'transform: rotate(-180deg);' : ''" >
+            {{ materialIconName }}
+          </v-icon>
+        </v-btn>
+      </template >
+
       <span>{{ tooltipText }}</span>
     </v-tooltip>
 
     <v-btn v-else
+           :style="{backgroundColor: fillColor ? fillColor : ''}"
           style="margin: 0 !important;"
           :icon="!isElevated"
           :fab="isElevated"
           :small="isSmall || isElevated"
-          :outline="outlined && !isToggled"
+          :outlined="outlined"
           :color="color ? color : disabled ? '' : 'primary'"
           :href="url"
           :disabled="disabled"
           v-bind="{['target'] : '_blank' }"
           @click.stop="onClick" >
-
 
       <div v-if="customIcon"
             class="iconCentering" >
@@ -65,9 +68,9 @@
     </v-btn>
 
     <v-badge v-if="count > 0"
-            overlap
-            style="position: relative; left: -30px; top: 5px;"
-            :style="(hoverBadge && $vuetify.breakpoint.smAndUp) || $vuetify.breakpoint.xsOnly ? 'left: -40px;' : ''"
+            :overlap="!isSmall"
+            :left="isSmall"
+            :style="isSmall ? 'position: relative; bottom: 10px;' : ''"
             color="highlight"
             :class="{ envidatBadgeBigNumber : count > 9,
                       envidatBadge: count <= 9 }"
@@ -89,13 +92,9 @@
  * Fill the @prop tooltipText for a tooltip when hovering over the Button.
  * Use the @prop tooltipBottom to set it to appear beneath the button.
  *
- * When the @prop isToggled is true the background is filled with the @prop color.
- * If @prop outlined is true the button only has an outline in the @prop color,
- * it'sonly visible when @prop isToggled is false.
  * The @prop iconColor only works for material icons.
  *
  * Set the @prop rotateOnClick to true for the icon to rotate 180° once clicked
- * works together with the @prop isToggled
  *
  * If @prop count is > 0 a little Circle with the number is appear in the bottom left of the icon Button.
  *
@@ -116,14 +115,14 @@
 export default {
   name: 'BaseIconButton',
   props: {
+    fillColor: String,
     customIcon: String,
     materialIconName: String,
     tooltipText: String,
     tooltipBottom: Boolean,
-    outlined: Boolean,
     color: String,
     iconColor: String,
-    isToggled: Boolean,
+    outlined: Boolean,
     isSmall: Boolean,
     rotateOnClick: Boolean,
     rotateToggle: Boolean,
@@ -131,7 +130,6 @@ export default {
     isElevated: Boolean,
     disabled: Boolean,
     count: Number,
-    marginClass: String,
   },
   data: () => ({
     hoverBadge: false,
