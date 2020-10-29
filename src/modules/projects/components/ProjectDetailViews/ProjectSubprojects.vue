@@ -1,7 +1,9 @@
 <template>
   <v-card :dark="dark">
 
-    <v-card-title class="bodyTitle title">Subprojects</v-card-title>
+    <v-card-title class="metadata_title title">
+      {{ title }}
+    </v-card-title>
 
     <v-card-text v-if="subProjects" >
 
@@ -63,6 +65,10 @@ export default {
     ProjectCard,
   },
   props: {
+    title: {
+      type: String,
+      default: 'Subprojects',
+    },
     defaultImg: String,
     subProjects: Array,
     dark: Boolean,
@@ -87,11 +93,6 @@ export default {
 </script>
 
 <style scoped>
-
-  .bodyTitle {
-    font-family: 'Baskervville', serif !important;
-    font-weight: 700 !important;
-  }
 
   .heightAndScroll {
     max-height: 500px;
