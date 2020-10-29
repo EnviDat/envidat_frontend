@@ -67,7 +67,7 @@ export function enhanceSubprojectsFromExtras(projects) {
   return projects;
 }
 
-export function enhanceProjectsDatasets(projects, allDatasets) {
+export function enhanceProjectDatasets(projects, allDatasets) {
   if (!projects || !allDatasets) return [];
 
   const projectsWithPackages = projects.filter(p => p && p.packages && p.packages.length > 0);
