@@ -17,19 +17,13 @@ import {
   GET_GUIDELINES,
   GET_GUIDELINES_SUCCESS,
   GET_GUIDELINES_ERROR,
-} from '@/modules/about/store/guidelinesMutationsConsts';
-
-import {
   GET_POLICIES,
   GET_POLICIES_SUCCESS,
   GET_POLICIES_ERROR,
-} from '@/modules/about/store/policiesMutationsConsts';
-
-import {
   GET_DMP,
   GET_DMP_SUCCESS,
   GET_DMP_ERROR,
-} from '@/modules/about/store/dmpMutationsConsts';
+} from '@/modules/about/store/aboutMutationsConsts';
 
 export default {
   [GET_GUIDELINES]({ commit }) {
