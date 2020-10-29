@@ -126,7 +126,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-22 13:05:03
+ * Last modified  : 2020-10-29 14:34:51
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -182,7 +182,7 @@ export default {
       }
     },
     onScroll() {
-      this.$emit('onScroll', this.$refs.metadataListScroll.scrollTop);
+      this.$emit('onScroll', this.$refs?.metadataListScroll?.scrollTop);
     },
   },
   data: () => ({

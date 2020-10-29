@@ -498,7 +498,9 @@ export default {
       }
     },
     onScroll(pos) {
-      this.$emit('onScroll', pos);
+      // if (pos) {
+        this.$emit('onScroll', pos);
+      // }
     },
     catchSearchClicked(search) {
       this.$emit('searchClick', search);
