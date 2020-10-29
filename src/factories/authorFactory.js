@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-06-05 14:07:03
- * Last modified  : 2020-10-29 17:38:13
+ * Last modified  : 2020-10-29 20:24:27
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -22,7 +22,7 @@ const authorDataCreditLevels = [
 
 export function getAuthorName(author) {
   const fullName = `${author.given_name ? author.given_name.trim() : ''} ${author.name ? author.name.trim() : ''}`;
-  return fullName ? fullName.trim() : '';
+  return fullName.trim();
 }
 
 export function getAuthorsString(dataset) {
