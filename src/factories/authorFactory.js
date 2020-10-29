@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-06-05 14:07:03
- * Last modified  : 2020-10-29 20:24:27
+ * Last modified  : 2020-10-29 20:59:16
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -139,6 +139,7 @@ export function createAuthors(dataset) {
 
   return authorObjs;
 }
+
 function overwriteDataCredit(author, existingAuthor) {
   const keys = Object.keys(author.data_credit);
 
