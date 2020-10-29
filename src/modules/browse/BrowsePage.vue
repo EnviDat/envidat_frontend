@@ -39,7 +39,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-10-27 13:22:26
+ * Last modified  : 2020-10-29 12:38:00
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -161,21 +161,22 @@ export default {
       // const isBackNavigation = false;
       const isBackNavigation = this.$router.options.isSameRoute(this.$route, fromRoute);
       const tagsChanged = this.loadRouteTags();
-      const searchParameter = this.$route.query.search ? this.$route.query.search : '';
-      let checkSearchTriggering = searchParameter !== this.searchTerm;
+      const searchParameter = this.$route.query.search || '';
+      const checkSearchTriggering = searchParameter !== this.searchTerm;
 
       if (checkSearchTriggering) {
         // use the search parameter from the url in any case
         // if it's a back navigation it has to be set that is will appear in the searchBar component
         this.searchTerm = searchParameter;
-      } else if (isBackNavigation) {
-        // when having a back navigation with no changes, make sure
-        // no possible prefiltered state is shown. So retrigger a search check
-        // when the filtered size is equal not to the total available content size
-        checkSearchTriggering = this.filteredContentSize !== this.metadatasContentSize;
+      // } else if (!tagsChanged && isBackNavigation) {
+      //   // when having a back navigation with no changes, make sure
+      //   // no possible prefiltered state is shown. So retrigger a search check
+      //   // when the filtered size is equal not to the total available content size
+      //   checkSearchTriggering = this.filteredContentSize !== this.metadatasContentSize;
       }
 
-      if (isBackNavigation && !checkSearchTriggering) {
+      if (isBackNavigation) {
+      // if (isBackNavigation && !checkSearchTriggering) {
         // use a delayed scroll position setup because the list as to be loaded first
         setTimeout(() => {
           this.setScrollPos(this.browseScrollPosition);
