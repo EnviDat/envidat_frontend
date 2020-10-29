@@ -61,9 +61,21 @@
         <v-list-item-icon v-if="item.icon !== 'envidat'"
                           @click.stop="itemClick(item)" >
                           <!-- @click="item.icon === 'menu' ? item.active = !item.active : itemClick(item)" > -->
-          <v-icon :color="item.active ? 'accent' : 'secondary'">
-            {{ item.icon }}
-          </v-icon>
+
+          <v-tooltip right
+                      style="z-index: 1150;"
+                      :disabled="$vuetify.breakpoint.smAndDown || !item.toolTip">
+            <template v-slot:activator="{ on }">
+
+              <v-icon v-on="on"
+                  :color="item.active ? 'accent' : 'secondary'">
+                {{ item.icon }}
+              </v-icon>
+            </template>
+
+            <span>{{ item.toolTip }}</span>
+          </v-tooltip>
+
         </v-list-item-icon>
 
         <v-list-item-content v-if="item.icon !== 'envidat'"

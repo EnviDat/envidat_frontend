@@ -3,7 +3,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-23 16:58:48
+ * Last modified  : 2020-10-27 20:48:14
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -19,6 +19,7 @@ const webpack = require('webpack');
 const cesiumSource = 'node_modules/cesium/Source';
 const cesiumWorkers = '../Build/Cesium/Workers';
 const CopywebpackPlugin = require('copy-webpack-plugin');
+const getFilesWithPrefix = require('./src/factories/enhancementsFactory').getFilesWithPrefix;
 
 dotenv.config();
 process.env.VUE_APP_VERSION = require('./package.json').version;
@@ -29,6 +30,18 @@ const isProd = process.env.NODE_ENV === 'production';
 
 if (isProd) {
   const fileName = `version_${version}.txt`;
+  const existingFilePaths = `${__dirname}/public/`;
+
+  const existingVersionFiles = getFilesWithPrefix(existingFilePaths, 'version_');
+
+  // delete any existing files with version_ as prefix to make sure only the latest version is created
+  for (let i = 0; i < existingVersionFiles.length; i++) {
+    const file = existingVersionFiles[i];
+    const fullPath = `${existingFilePaths}${file}`;
+    console.log(`Going to delete version file: ${fullPath}`);
+    fs.unlinkSync(fullPath);
+  }
+
   const filePath = `${__dirname}/public/${fileName}`;
 
   fs.writeFile(filePath, version, (err) => {

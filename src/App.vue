@@ -49,8 +49,18 @@
         </v-row>
       </v-container>
 
-      <v-dialog v-model="showReloadDialog" persistent max-width="290">
-        <v-card>
+      <v-dialog v-model="showReloadDialog"
+                persistent
+                max-width="300">
+        <ConfirmTextCard title="New Version Available!"
+                          :text="dialogVersionText()"
+                          confirmText="Reload"
+                          :confirmClick="reloadApp"
+                          cancelText="Cancel"
+                          :cancelClick="() => { reloadDialogCanceled = true }"
+                          />
+
+        <!-- <v-card>
           <v-card-title class="headline">New Version Available!</v-card-title>
           <v-card-text>{{ dialogVersionText() }}</v-card-text>
           <v-card-actions>
@@ -58,7 +68,8 @@
             <v-btn color="green darken-1" flat @click="reloadApp()">Reload</v-btn>
             <v-btn color="green darken-1" flat @click="reloadDialogCanceled = true">Cancel</v-btn>
           </v-card-actions>
-        </v-card>
+        </v-card> -->
+
       </v-dialog>
     </v-main>
 
@@ -73,13 +84,16 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-20 16:06:15
+ * Last modified  : 2020-10-29 15:16:01
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
-import { mapGetters } from 'vuex';
+import { 
+  mapState,
+  mapGetters,
+} from 'vuex';
 import {
   LANDING_PATH,
   LANDING_PAGENAME,
@@ -103,13 +117,13 @@ import {
   HIDE_NOTIFICATIONS,
 } from '@/store/mainMutationsConsts';
 
-import { POLICIES_NAMESPACE } from '@/modules/about/store/policiesMutationsConsts';
-import { GUIDELINES_NAMESPACE } from '@/modules/about/store/guidelinesMutationsConsts';
+import { ABOUT_NAMESPACE } from '@/modules/about/store/aboutMutationsConsts';
 import { PROJECTS_NAMESPACE } from '@/modules/projects/store/projectsMutationsConsts';
 
 import TheNavigation from '@/components/Navigation/TheNavigation';
 import TheNavigationToolbar from '@/components/Navigation/TheNavigationToolbar';
 import NotificationCard from '@/components/Cards/NotificationCard';
+import ConfirmTextCard from '@/components/Cards/ConfirmTextCard';
 import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
 
 export default {
@@ -120,9 +134,6 @@ export default {
   },
   created() {
     this.loadAllMetadata();
-
-    const bgImgs = require.context('./assets/', false, /\.jpg$/);
-    this.appBGImages = this.mixinMethods_importImages(bgImgs, 'app_b');
   },
   updated() {
     this.updateActiveStateOnNavItems();
@@ -230,6 +241,9 @@ export default {
     },
   },
   computed: {
+    ...mapState([
+      'webpIsSupported',
+      ]),
     ...mapGetters({
       metadataIds: `${METADATA_NAMESPACE}/metadataIds`,
       metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
@@ -241,8 +255,8 @@ export default {
       currentMetadataContent: `${METADATA_NAMESPACE}/currentMetadataContent`,
       filteredContent: `${METADATA_NAMESPACE}/filteredContent`,
       isFilteringContent: `${METADATA_NAMESPACE}/isFilteringContent`,
-      policiesLoading: `${POLICIES_NAMESPACE}/loading`,
-      guidelinesLoading: `${GUIDELINES_NAMESPACE}/loading`,
+      policiesLoading: `${ABOUT_NAMESPACE}/policiesLoading`,
+      guidelinesLoading: `${ABOUT_NAMESPACE}/guidelinesLoading`,
       projectsLoading: `${PROJECTS_NAMESPACE}/loading`,
       currentPage: 'currentPage',
       appBGImage: 'appBGImage',
@@ -280,23 +294,26 @@ export default {
     },
     dynamicBackground() {
       const imageKey = this.appBGImage;
-      const bgImg = this.appBGImages[imageKey];
-      let bgStyle = '';
+      if (!imageKey) {
+        return '';
+      }
 
-      if (bgImg) {
-        bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.25) 100%), url(${bgImg}) !important;`;
+      // const bgImg = this.appBGImages[imageKey];
+      const bgImg = this.mixinMethods_getWebpImage(imageKey, this.$store.state);
+
+      let bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.25) 100%), url(${bgImg}) !important;`;
+
+      bgStyle += `background-position: center top !important;
+                    background-repeat: no-repeat !important;
+                    background-size: cover !important; `;
+
+      if (bgImg.includes('browsepage')) {
+        bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
 
         bgStyle += `background-position: center top !important;
-                      background-repeat: no-repeat !important;
-                      background-size: cover !important; `;
-
-        if (bgImg.includes('browsepage')) {
-          bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
-
-          bgStyle += `background-position: center top !important;
-                        background-repeat: repeat !important; `;
-        }
+                      background-repeat: repeat !important; `;
       }
+      
       return bgStyle;
     },
     menuItem() {
@@ -317,6 +334,7 @@ export default {
     TheNavigation,
     TheNavigationToolbar,
     NotificationCard,
+    ConfirmTextCard,
   },
   watch: {
     notifications() {
@@ -346,7 +364,7 @@ export default {
       // { title: 'Policies', icon: 'policy', toolTip: 'The rules of EnviDat', active: false, path: POLICIES_PATH, pageName: POLICIES_PAGENAME },
       // { title: 'DMP', icon: 'menu_book', toolTip: 'Template for a Data Management Plan', active: false, path: DMP_PATH, pageName: DMP_PAGENAME },
       { title: 'Sign In', icon: 'person', toolTip: 'Sign in to management research data', active: false, path: 'https://www.envidat.ch/user/reset', pageName: 'external' },
-      { title: 'About', icon: 'info', toolTip: 'What is EnviDat? Who is behind EnviDat?', active: false, path: ABOUT_PATH, pageName: ABOUT_PAGENAME },
+      { title: 'About', icon: 'info', toolTip: 'What is EnviDat and who is behind it?', active: false, path: ABOUT_PATH, pageName: ABOUT_PAGENAME },
       // { title: 'Contact', icon: 'contact_support', toolTip: 'Do you need support?', active: false },
       { title: 'Menu', icon: 'menu', active: false },
     ],
@@ -356,14 +374,7 @@ export default {
 
 
 <style >
- @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville|Raleway&display=swap');
-
-/* overwrite the applications background https://css-tricks.com/use-cases-fixed-backgrounds-css/ */
-.application {
-  font-family: "Raleway", sans-serif !important;
-  font-size: 12px;
-}
-
+ 
 .envidatNavbar {
   position: -webkit-sticky;
   position: sticky;
@@ -377,20 +388,8 @@ export default {
 
 /*** General Card styles ***/
 
-.headline {
-  font-family: "Libre Baskerville", serif !important;
-  /* font-weight: 700; */
-
-  /*
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-height: 2.15em;
-    */
-  line-height: 1.1em !important;
-}
-
 .card .subheading {
-  /* font-family: 'Libre Baskerville', serif; */
+  /* font-family: 'Baskervville', serif; */
   font-weight: 400;
   /* color: #555; */
   opacity: 0.75;
@@ -399,6 +398,7 @@ export default {
 
 .readableText {
   line-height: 1.2rem;
+  color: rgba(0, 0, 0, 0.87) !important;
 }
 
 .imagezoom,
@@ -433,12 +433,8 @@ export default {
 }
 
 .envidatTitle {
-  font-family: "Libre Baskerville", serif !important;
+  font-family: "Baskervville", serif !important;
   letter-spacing: 0em !important;
-}
-
-.envidatSlogan {
-  font-family: "Libre Baskerville", serif !important;
 }
 
 .metadataInfoIcon {

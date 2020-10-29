@@ -171,13 +171,16 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-29 14:15:50
+ * Last modified  : 2020-10-29 14:37:32
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
 
-import { mapGetters } from 'vuex';
+import {
+  mapState,
+  mapGetters,
+} from 'vuex';
 import { METADATA_MODULE_PATH, METADATA_MODULE_PAGENAME, METADATADETAIL_PAGENAME } from '@/router/routeConsts';
 import FilterKeywordsView from '@/components/Filtering/FilterKeywordsView';
 import FilterMapView from '@/components/Filtering/FilterMapView';
@@ -240,6 +243,9 @@ export default {
     this.infiniteHandler();
   },
   computed: {
+    ...mapState([
+      'categoryCards',
+    ]),
     ...mapGetters({
       metadataIds: `${METADATA_NAMESPACE}/metadataIds`,
       metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
@@ -253,7 +259,6 @@ export default {
       vReloadAmountMobile: `${METADATA_NAMESPACE}/vReloadAmountMobile`,
       vReloadDelay: `${METADATA_NAMESPACE}/vReloadDelay`,
       isFilteringContent: `${METADATA_NAMESPACE}/isFilteringContent`,
-      categoryCards: `${METADATA_NAMESPACE}/categoryCards`,
     }),
     reloadAmount() {
       return this.$vuetify.breakpoint.smAndUp ? this.vReloadAmount : this.vReloadAmountMobile;
@@ -493,7 +498,9 @@ export default {
       }
     },
     onScroll(pos) {
-      this.$emit('onScroll', pos);
+      if (pos) {
+        this.$emit('onScroll', pos);
+      }
     },
     catchSearchClicked(search) {
       this.$emit('searchClick', search);

@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51 
- * Last modified  : 2019-11-20 14:52:54
+ * Last modified  : 2020-10-22 14:59:54
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -25,7 +25,7 @@ import {
   GET_PROJECTS_ERROR,
 } from './projectsMutationsConsts';
 
-const API_BASE = '/api/action/';
+const API_BASE = process.env.VUE_APP_API_BASE_URL || '/api/action/';
 const ENVIDAT_PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
 
 

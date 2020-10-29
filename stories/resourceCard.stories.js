@@ -71,38 +71,37 @@ storiesOf('3 Cards / Resource Cards', module)
       <v-col cols="3" class="pa-2"
               v-for="(res, index) in metadataCards[2].resources"
               :key="'cols-3_' + index" >
-              <resource-card
-                  v-bind="res"
-                  :doiIcon="doiIcon"
-                  :dateCreatedIcon="dateCreatedIcon"
-                  :lastModifiedIcon="lastModifiedIcon"
-                  :fileExtensionIcon="iconFiles"
-                  @clicked="onCardClick"
-                />
+
+              <resource-card v-bind="res"
+                              :doiIcon="doiIcon"
+                              :dateCreatedIcon="dateCreatedIcon"
+                              :lastModifiedIcon="lastModifiedIcon"
+                              :fileExtensionIcon="iconFiles"
+                              @clicked="onCardClick" />
       </v-col>
 
       <v-col cols="4" class="pa-2"
               v-for="(res, index) in metadataCards[2].resources"
               :key="'cols-4_' + index" >
-        <resource-card
-          v-bind="res"
-          :doiIcon="doiIcon"
-          :dateCreatedIcon="dateCreatedIcon"
-          :lastModifiedIcon="lastModifiedIcon"
-          :fileExtensionIcon="iconFiles"
-          @clicked="onCardClick" />
+
+        <resource-card v-bind="res"
+                        :doiIcon="doiIcon"
+                        :dateCreatedIcon="dateCreatedIcon"
+                        :lastModifiedIcon="lastModifiedIcon"
+                        :fileExtensionIcon="iconFiles"
+                        @clicked="onCardClick" />
       </v-col>
 
       <v-col cols="6" class="pa-2"
             v-for="(res, index) in metadataCards[2].resources"
             :key="'cols-6_' + index" >
-        <resource-card
-          v-bind="res"
-          :doiIcon="doiIcon"
-          :dateCreatedIcon="dateCreatedIcon"
-          :lastModifiedIcon="lastModifiedIcon"
-          :fileExtensionIcon="iconFiles"
-          @clicked="onCardClick" />
+
+        <resource-card v-bind="res"
+                        :doiIcon="doiIcon"
+                        :dateCreatedIcon="dateCreatedIcon"
+                        :lastModifiedIcon="lastModifiedIcon"
+                        :fileExtensionIcon="iconFiles"
+                        @clicked="onCardClick" />
       </v-col>
 
     </v-row>

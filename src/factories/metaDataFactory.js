@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03
- * Last modified  : 2019-11-29 15:52:06
+ * Last modified  : 2020-10-22 14:37:53
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -78,10 +78,9 @@ export function guessTagCategory(tags) {
         return SNOW;
       case name.includes('METEO') || name.includes('CLIMATE'):
         return METEO;
-      case name.includes('LAND') || name.includes('LANDSCAPE'):
+      case name.includes('LAND'):
         return LAND;
       default:
-        return LAND;
     }
   }
 
@@ -175,12 +174,9 @@ export function createBody(dataset, smallScreen = false) {
 
   return {
     // id: dataset.id,
-    title: 'Description',
     // doi: dataset.doi,
     text: dataset.notes,
     maxTextLength: smallScreen ? 900 : 1000,
-    emptyTextColor: 'red',
-    emptyText: 'No description found for this dataset.',
   };
 }
 
@@ -191,10 +187,7 @@ export function createPublications(dataset) {
 
   return {
     text: dataset.related_publications,
-    title: 'Related Publications',
     maxTextLength: 500,
-    emptyTextColor: 'black',
-    emptyText: 'No related publications available for this dataset.',
   };
 }
 
@@ -264,9 +257,8 @@ export function createResource(dataset) {
   let restrictedUsers;
   let restrictedObj = false;
 
-  if (dataset.restricted
-    && typeof dataset.restricted === 'string'
-    && dataset.restricted.length > 0) {
+  if (dataset.restricted && typeof dataset.restricted === 'string'
+      && dataset.restricted.length > 0) {
 
     try {
       restrictedObj = JSON.parse(dataset.restricted);
@@ -588,15 +580,24 @@ export function enhanceMetadatas(metadatas, cardBGImages, categoryCards) {
 }
 
 
-export function getCardBackgrounds() {
+export function getCardBackgrounds(useWebp = false) {
   const bgs = {};
 
-  bgs[LAND] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/landscape/', false, /\.jpg$/));
-  bgs[FOREST] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/forest/', false, /\.jpg$/));
-  bgs[SNOW] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/snow/', false, /\.jpg$/));
-  bgs[DIVERSITY] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/diversity/', false, /\.jpg$/));
-  bgs[HAZARD] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/hazard/', false, /\.jpg$/));
-  bgs[METEO] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/meteo/', false, /\.jpg$/));
+  if (useWebp) {
+    bgs[LAND] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/landscape/', false, /\.webp$/));
+    bgs[FOREST] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/forest/', false, /\.webp$/));
+    bgs[SNOW] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/snow/', false, /\.webp$/));
+    bgs[DIVERSITY] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/diversity/', false, /\.webp$/));
+    bgs[HAZARD] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/hazard/', false, /\.webp$/));
+    bgs[METEO] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/meteo/', false, /\.webp$/));
+  } else {
+    bgs[LAND] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/landscape/', false, /\.jpg$/));
+    bgs[FOREST] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/forest/', false, /\.jpg$/));
+    bgs[SNOW] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/snow/', false, /\.jpg$/));
+    bgs[DIVERSITY] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/diversity/', false, /\.jpg$/));
+    bgs[HAZARD] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/hazard/', false, /\.jpg$/));
+    bgs[METEO] = globalMethods.methods.mixinMethods_importImages(require.context('@/assets/cards/meteo/', false, /\.jpg$/));
+  }
 
   return bgs;
 }

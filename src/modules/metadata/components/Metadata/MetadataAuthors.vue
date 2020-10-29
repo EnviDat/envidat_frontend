@@ -3,7 +3,7 @@
           ref="MetadataAuthors">
 
     <v-card-title class="title metadata_title">
-      Author Details
+      {{ METADATA_AUTHORS_TITLE }}
     </v-card-title>
 
     <v-card-text v-if="showPlaceholder && !hasAuthors"
@@ -36,8 +36,9 @@
                   class="pa-2" >
 
             <author-card :author="author"
-                        :asciiDead="authorDeadInfo ? authorDeadInfo.asciiDead : ''"
-                        :authorPassedInfo="authorDeadInfo ? authorDeadInfo.authorPassedInfo : ''" />
+                          :authorDetailsConfig="authorDetailsConfig"
+                          :asciiDead="authorDeadInfo ? authorDeadInfo.asciiDead : ''"
+                          :authorPassedInfo="authorDeadInfo ? authorDeadInfo.authorPassedInfo : ''" />
 
           </v-col>
         </v-row>
@@ -62,14 +63,17 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-23 16:01:41
+ * Last modified  : 2020-10-20 15:21:51
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
+import {
+  METADATA_AUTHORS_TITLE,
+} from '@/factories/metadataConsts';
 
-import AuthorCard from '../AuthorCard';
-import AuthorCardPlaceholder from '../AuthorCardPlaceholder';
+import AuthorCard from '@/modules/metadata/components/AuthorCard';
+import AuthorCardPlaceholder from '@/modules/metadata/components/AuthorCardPlaceholder';
 
 export default {
   name: 'MetadataAuthors',
@@ -100,20 +104,24 @@ export default {
   data: () => ({
     showAuthors: false,
     checkedGenericProps: false,
-    emptyText: 'No authors found for this dataset',
     observer: null,
+    METADATA_AUTHORS_TITLE,
   }),
   computed: {
     authors() {
       return this.mixinMethods_getGenericProp('authors');
     },
+    authorDetailsConfig() {
+      return this.mixinMethods_getGenericProp('authorDetailsConfig', {});
+    },
     hasAuthors() {
       return this.authors && this.authors.length > 0;
     },
     emptyTextColor() {
-      const emptyTextColor = this.mixinMethods_getGenericProp('emptyTextColor');
-
-      return emptyTextColor || 'red';
+      return this.mixinMethods_getGenericProp('emptyTextColor', 'red');
+    },
+    emptyText() {
+      return this.mixinMethods_getGenericProp('emptyText', 'No authors found for this dataset.');
     },
   },
   methods: {

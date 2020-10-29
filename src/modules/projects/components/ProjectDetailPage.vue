@@ -31,13 +31,13 @@
                         :maxTextLength="$vuetify.breakpoint.xsOnly ? 950 : 1500" />
       </v-col>
 
-      <v-col v-if="loading || (!loading && currentProject && currentProject.subProjects)"
+      <v-col v-if="loading || (!loading && subProjects)"
               class="pb-2 px-sm-3"
               cols="12"
               lg="10"
               offset-lg="1" >
 
-        <project-subprojects :subProjects="currentProject.subProjects"
+        <project-subprojects :subProjects="subProjects"
                               :defaultImg="creatorImg"
                               :showPlaceholder="loading"
                               @projectClick="catchProjectClick"
@@ -49,39 +49,22 @@
               lg="10"
               offset-lg="1" >
 
-        <v-card>
-          <v-card-title class="metadataList_title title">
-            {{ metadataListTitle }}
-          </v-card-title>
+        <ProjectDatasets :hasMetadatas="hasMetadatas"
+                          :listContent="filteredListContent"
+                          :showMapFilter="false"
+                          :mapFilteringPossible="mapFilteringPossible"
+                          :placeHolderAmount="placeHolderAmount"
+                          @clickedTag="catchTagClicked"
+                          :allTags="allMetadataTags"
+                          :selectedTagNames="selectedTagNames"
+                          @clickedTagClose="catchTagCloseClicked"
+                          @clickedClear="catchTagCleared"
+                          :defaultListControls="defaultControls"
+                          :enabledControls="enabledControls"
+                          :topFilteringLayout="true"
+                          :showSearch="false"
+                          @setScroll="setScrollPos" />
 
-          <div v-if="hasMetadatas" >
-            <metadata-list ref="metadataList"
-                            class="px-3"
-                            :listContent="filteredListContent"
-                            :showMapFilter="false"
-                            :mapFilteringPossible="mapFilteringPossible"
-                            :placeHolderAmount="placeHolderAmount"
-                            @clickedTag="catchTagClicked"
-                            :allTags="allMetadataTags"
-                            :selectedTagNames="selectedTagNames"
-                            @clickedTagClose="catchTagCloseClicked"
-                            @clickedClear="catchTagCleared"
-                            :defaultListControls="defaultControls"
-                            :enabledControls="enabledControls"
-                            :minMapHeight="mapFilterHeight"
-                            :topFilteringLayout="true"
-                            :showSearch="false"
-                            :searchCount="filteredListContent.length"
-                            @setScroll="setScrollPos" />
-          </div>
-
-          <div v-if="!hasMetadatas" >
-            <v-card-text style="color: red;" >
-              {{ metadataEmptyText }} '{{ currentProject ? currentProject.title : '' }}'
-            </v-card-text>
-          </div>
-
-        </v-card>
       </v-col>
 
     </v-row>
@@ -96,7 +79,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-20 15:51:22
+ * Last modified  : 2020-10-29 14:59:49
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -115,18 +98,13 @@ import {
   LISTCONTROL_MAP_ACTIVE,
 } from '@/store/metadataMutationsConsts';
 
-import MetadataList from '@/components/MetadataList';
-
-import missionImg from '@/assets/projects/mission.jpg';
-import creatorSmall from '@/assets/cards/data_creator_small.jpg';
-
 import {
   tagsIncludedInSelectedTags,
   createTag,
 } from '@/factories/metadataFilterMethods';
 
-import creator from '../assets/data_creator.jpg';
 
+import ProjectDatasets from '@/modules/projects/components/ProjectDetailViews/ProjectDatasets';
 import ProjectSubprojects from './ProjectDetailViews/ProjectSubprojects';
 import ProjectBody from './ProjectDetailViews/ProjectBody';
 import ProjectHeader from './ProjectDetailViews/ProjectHeader';
@@ -208,6 +186,9 @@ export default {
     currentProject() {
       return this.getProject(this.projectId);
     },
+    subProjects() {
+      return this.currentProject?.subProjects || null;
+    },
     mapFilteringPossible() {
       return this.$vuetify.breakpoint.smAndUp;
     },
@@ -215,7 +196,12 @@ export default {
       return this.currentProject && this.currentProject.packages && this.currentProject.packages.length > 0;
     },
     creatorImg() {
-      return this.$vuetify.breakpoint.mdAndUp ? creator : creatorSmall;
+      const imgPath = this.$vuetify.breakpoint.mdAndUp ? 'projects/data_creator' : 'about/data_creator_small';
+      return this.mixinMethods_getWebpImage(imgPath, this.$store.state);
+    },
+    missionImg() {
+      const imgPath = this.$vuetify.breakpoint.mdAndUp ? 'projects/mission' : 'about/mission_small';
+      return this.mixinMethods_getWebpImage(imgPath, this.$store.state);
     },
     allMetadataTags() {
       const projectDatasetsTags = [];
@@ -374,13 +360,10 @@ export default {
     ProjectHeader,
     ProjectBody,
     ProjectSubprojects,
-    MetadataList,
+    ProjectDatasets,
   },
   data: () => ({
-    PageBGImage: './app_b_browsepage.jpg',
-    missionImg,
-    creator,
-    creatorSmall,
+    PageBGImage: 'app_b_browsepage',
     placeHolderAmount: 3,
     selectedTagNames: [],
     defaultControls: [LISTCONTROL_MAP_ACTIVE],
@@ -388,16 +371,6 @@ export default {
       LISTCONTROL_LIST_ACTIVE,
       LISTCONTROL_MAP_ACTIVE,
     ],
-    mapFilterHeight: 400,
-    metadataListTitle: 'Related Datasets',
-    metadataEmptyText: 'There are no datasets connected with the project',
   }),
 };
 </script>
-
-<style >
-  .metadataList_title {
-    font-family: 'Libre Baskerville', serif !important;
-    font-weight: 700 !important;
-  }
-</style>

@@ -1,11 +1,18 @@
 <template>
   <v-card id="MetadataLocation" >
 
-    <v-card-title class="title metadata_title">Location</v-card-title>
+    <v-card-title class="title metadata_title">
+      {{ METADATA_LOCATION_TITLE }}
+    </v-card-title>
 
-    <v-card-text v-if="!hasGeom" style="color: red;">{{ emptyText }}</v-card-text>
+    <v-card-text v-if="!hasGeom"
+                  class="pa-4 pt-0"
+                  :style="`color: ${emptyTextColor};`" >
+      {{ emptyText }}
+    </v-card-text>
 
-    <v-card-text v-else-if="hasGeom">
+    <v-card-text v-else-if="hasGeom"
+                  class="pa-4 pt-0" >
 
       <metadata-location-cesium
         v-show="show3d"
@@ -20,6 +27,7 @@
       >
         <v-btn v-if="enabled3d" fab small @click="show3d = false">2D</v-btn>
       </metadata-location-cesium>
+
       <metadata-location-leaflet
         v-show="!show3d"
         v-bind="mapSize"
@@ -43,13 +51,18 @@
  rewind as tRewind, centroid as tCentroid, distance as tDistance, buffer as tBuffer, envelope as tEnvelope,
 } from '@turf/turf';
 
+import { METADATA_LOCATION_TITLE } from '@/factories/metadataConsts';
+
 const MetadataLocationCesium = () => import('./MetadataLocationCesium');
 const MetadataLocationLeaflet = () => import('./MetadataLocationLeaflet');
 
 
 export default {
   name: 'MetadataLocation',
-  components: { MetadataLocationLeaflet, MetadataLocationCesium },
+  components: {
+    MetadataLocationLeaflet,
+    MetadataLocationCesium,
+  },
   props: {
     genericProps: Object,
   },
@@ -58,9 +71,15 @@ export default {
     color: '#FFDA00',
     fillAlpha: 0.5,
     outlineWidth: 3,
-    emptyText: 'No location found for this dataset',
+    METADATA_LOCATION_TITLE,
   }),
   computed: {
+    emptyTextColor() {
+      return this.mixinMethods_getGenericProp('emptyTextColor', 'red');
+    },
+    emptyText() {
+      return this.mixinMethods_getGenericProp('emptyText', 'No location found for this dataset.');
+    },
     geom() {
       return this.genericProps ? tRewind(JSON.parse(this.genericProps.geoJSON)) : null;
     },

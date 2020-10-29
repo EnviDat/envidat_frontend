@@ -51,7 +51,7 @@ export default {
 
 <style scoped>
   .text {
-    font-family: "Libre Baskerville", serif !important;
+    font-family: "Baskervville", serif !important;
     letter-spacing: 0em !important;
     text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.7);
   }

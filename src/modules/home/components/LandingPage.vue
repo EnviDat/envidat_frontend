@@ -74,13 +74,13 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-29 14:15:57
+ * Last modified  : 2020-10-20 15:46:51
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
-import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 import {
   LANDING_PAGENAME,
   BROWSE_PATH,
@@ -116,9 +116,9 @@ export default {
     });
   },
   computed: {
-    ...mapGetters({
-      categoryCards: 'metadata/categoryCards',
-    }),
+    ...mapState([
+      'categoryCards',
+    ]),
   },
   methods: {
     catchCategoryClicked(cardType) {
@@ -169,8 +169,8 @@ export default {
     BaseClickCard,
   },
   data: () => ({
-    PageBGImage: './app_b_landingpage.jpg',
-    MobileBGImage: './app_b_browsepage.jpg',
+    PageBGImage: 'app_b_landingpage',
+    MobileBGImage: 'app_b_browsepage',
     labelText: 'Looking for something specific? Enter research term, topic or author here!',
     smallScreenLabelText: 'Enter research term, topic or author',
     buttonText: 'SEARCH',

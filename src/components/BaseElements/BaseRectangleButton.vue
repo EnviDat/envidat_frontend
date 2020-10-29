@@ -56,7 +56,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2020-07-15 09:32:12
+ * Last modified  : 2020-10-27 22:38:42
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -71,8 +71,14 @@ export default {
     tooltipText: String,
     isOutlined: Boolean,
     isFlat: Boolean,
-    color: { type: String, default: 'primary' },
-    iconColor: { type: String, default: 'primary' },
+    color: {
+      type: String,
+      default: 'primary',
+    },
+    iconColor: {
+      type: String,
+      default: 'primary',
+    },
     isSmall: Boolean,
     isXsSmall: Boolean,
     url: String,

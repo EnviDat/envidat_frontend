@@ -62,16 +62,16 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-31 08:20:02
+ * Last modified  : 2020-10-13 22:10:44
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
 
-import SloganCard from './SloganCard';
-import smLogo from '../assets/EnviDat_logo_64.png';
-import mdLogo from '../assets/EnviDat_logo_128.png';
-import lgLogo from '../assets/EnviDat_logo_256.png';
+import SloganCard from '@/modules/home/components/SloganCard';
+import smLogo from '@/assets/logo/EnviDat_logo_64.png';
+import mdLogo from '@/assets/logo/EnviDat_logo_128.png';
+import lgLogo from '@/assets/logo/EnviDat_logo_256.png';
 
 export default {
   components: {
@@ -98,6 +98,10 @@ export default {
 </script>
 
 <style scoped>
+
+  .envidatTitle {
+    font-family: 'Baskervville', serif !important;
+  }
 
   .mt-md-pct{
     margin-top: 15%;

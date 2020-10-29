@@ -3,7 +3,8 @@
           id="FilterMapWidgetLayout" >
 
     <v-card-title :class="mdScreen ? 'pa-4' : 'pb-2'" >
-      <div class="mb-0 title" >
+      <div class="mb-0 title"
+            style="word-break: keep-all;" >
         {{ title }}
       </div>
     </v-card-title>
@@ -23,7 +24,10 @@
           {{ highlightedText }}
         </v-col>
 
-        <v-col cols="2" md="3" lg="2" >
+        <v-col cols="2"
+                md="3"
+                lg="2"
+                class="caption" >
           <div :style="`color:${pinnedAmount > 0 ? 'black' : 'rgba(0,0,0,.47)'};`">
             {{ filterText + pinnedAmount }}
           </div>
@@ -42,13 +46,11 @@
 
     </div>
 
-    <v-container :class="{
-                    'pa-0': mdScreen,
-                    'pa-4': mdScreen && !topLayout,
-                    'py-0 px-4': !mdScreen,
-                    }" >
-
-      <v-row v-if="topLayout" justify="space-around">
+    <v-container v-if="topLayout"
+                  class="py-2 px-4"
+                  id="FilterMapWidgetLayout_topLayout" >
+      <v-row no-gutters
+              justify="space-around">
 
         <v-col class="shrink">
           <slot name="focus" />
@@ -67,115 +69,99 @@
         </v-col>
       </v-row>
 
-      <v-row v-if="!topLayout"
-              no-gutters
+    </v-container>
+
+    <v-container v-if="!topLayout"
+                  :class="{
+                    'pa-4 pt-2': mdScreen,
+                    'py-0 px-4': !mdScreen,
+                    }" >
+
+
+      <v-row no-gutters
               align="center" >
 
-        <v-col v-if="mdScreen" >
-          <v-row align="center"
-                  no-gutters>
-
-            <v-col class="shrink" cols="9">
-              <div :style="`color:${pinnedAmount > 0 ? $vuetify.theme.themes.light.primary : 'rgba(0,0,0,.47)'};`">
-                {{ filterText + pinnedAmount }}
-              </div>
-            </v-col>
-
-            <v-col cols="3">
-              <slot name="clearPins" />
-            </v-col>
-          </v-row>
-        </v-col>
-
-        <v-col v-if="!mdScreen"
-                class="grow py-1 col-5" >
+        <v-col class="grow caption">
           <div :style="`color:${pinnedAmount > 0 ? $vuetify.theme.themes.light.primary : 'rgba(0,0,0,.47)'};`">
             {{ filterText + pinnedAmount }}
           </div>
         </v-col>
 
-        <v-col v-if="!mdScreen"
-                class="py-1"
-                :class="mdScreen ? 'shrink' : 'col-lg-3'" >
-
+        <v-col class="shrink"
+                cols="3">
           <slot name="clearPins" />
-
         </v-col>
 
       </v-row>
 
-      <v-row v-if="!topLayout"
-              no-gutters
-              justify-sm="space-around"
-              align="center" >
+      <v-row no-gutters
+              justify="space-around"
+              align="center"
+              class="py-1" >
 
-        <v-col class="hidden-md-and-down py-1" lg="9" >
+        <v-col class="hidden-md-and-down"
+                lg="9" >
           {{ focusText }}
         </v-col>
 
-        <v-col class="py-1"
-                cols="2"
-                md="12"
+        <v-col cols="2"
                 lg="3" >
           <slot name="focus" />
         </v-col>
 
       </v-row>
 
-      <v-row v-if="!topLayout"
-              no-gutters
-              justify-sm="space-around"
-              align="center" >
+      <v-row  no-gutters
+              justify="space-around"
+              align="center"
+              class="py-1" >
 
         <v-col v-if="hasPins"
-               class="hidden-md-and-down py-1"
+               class="hidden-md-and-down"
                 lg="9" >
           {{ pinText }}
         </v-col>
 
         <v-col v-if="hasPins"
-                class="py-1"
                 cols="2"
-                md="12" lg="3" >
+                lg="3" >
           <slot name="pinEnabled" />
         </v-col>
       
       </v-row>
 
-      <v-row v-if="!topLayout"
-              no-gutters
-              justify-sm="space-around"
-              align="center" >
+      <v-row no-gutters
+              justify="space-around"
+              align="center"
+              class="py-1" >
+              
 
         <v-col v-if="hasMultiPins"
-                class="hidden-md-and-down py-1"
+                class="hidden-md-and-down"
                 lg="9" >
           {{ multiPinText }}
         </v-col>
 
         <v-col v-if="hasMultiPins"
-                class="py-1"
                 cols="2"
-                md="12" lg="3" >
+                lg="3" >
           <slot name="multiPinEnabled" />
         </v-col>
       </v-row>
 
-      <v-row v-if="!topLayout"
-              no-gutters
-              justify-sm="space-around"
-              align="center" >
+      <v-row no-gutters
+              justify="space-around"
+              align="center"
+              class="py-1" >
 
         <v-col v-if="hasPolygons"
-                class="hidden-md-and-down py-1"
+                class="hidden-md-and-down"
                 lg="9" >
           {{ polygonText }}
         </v-col>
 
         <v-col v-if="hasPolygons"
-                class="py-1"
                 cols="2"
-                md="12"
                 lg="3" >
           <slot name="polygonEnabled" />
         </v-col>
@@ -194,7 +180,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-11-14 17:57:05
+ * Last modified  : 2020-10-27 14:18:24
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
