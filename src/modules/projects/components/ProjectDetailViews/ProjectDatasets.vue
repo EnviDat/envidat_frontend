@@ -38,13 +38,13 @@
 
 <script>
 /**
- * ProjectBody.vue renders markdown showing the description of the project.
+ * ProjectDatasets.vue renders a list of datasets or shows the empty state
  *
- * @summary shows the description of a project entry
+ * @summary shows the projects datasets
  * @author Dominik Haas-Artho
  *
- * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-11-28 14:10:13
+ * Created at     : 2020-10-29 10:10:45
+ * Last modified  : 2020-10-29 14:56:46
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -52,7 +52,7 @@
 import MetadataList from '@/components/MetadataList';
 
 export default {
-  name: 'ProjectBody',
+  name: 'ProjectDatasets',
   components: {
     MetadataList,
   },

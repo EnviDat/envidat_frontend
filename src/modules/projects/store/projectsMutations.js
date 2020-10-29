@@ -15,7 +15,7 @@ import { ADD_USER_NOTIFICATION } from '@/store/mainMutationsConsts';
 
 import {
   enhanceSubprojectsFromExtras,
-  enhanceProjectsDatasets,
+  enhanceProjectDatasets,
 } from '@/factories/projectsDataFactory';
 
 import { getSpecificApiError } from '@/factories/notificationFactory';
@@ -35,7 +35,7 @@ export default {
 
     const enhancedProjects = enhanceSubprojectsFromExtras(payload);
     const metadatasContent = this.getters[`${METADATA_NAMESPACE}/metadatasContent`];
-    const enhancedWithTags = enhanceProjectsDatasets(enhancedProjects, metadatasContent);
+    const enhancedWithTags = enhanceProjectDatasets(enhancedProjects, metadatasContent);
 
     state.projects = enhancedWithTags;
     state.loading = false;

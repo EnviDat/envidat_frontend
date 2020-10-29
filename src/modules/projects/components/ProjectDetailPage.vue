@@ -49,7 +49,7 @@
               lg="10"
               offset-lg="1" >
 
-        <ProjectsDatasets :hasMetadatas="hasMetadatas"
+        <ProjectDatasets :hasMetadatas="hasMetadatas"
                           :listContent="filteredListContent"
                           :showMapFilter="false"
                           :mapFilteringPossible="mapFilteringPossible"
@@ -65,40 +65,6 @@
                           :showSearch="false"
                           @setScroll="setScrollPos" />
 
-
-        <!-- <v-card>
-          <v-card-title class="metadataList_title title">
-            {{ metadataListTitle }}
-          </v-card-title>
-
-          <div v-if="hasMetadatas" >
-            <metadata-list ref="metadataList"
-                            class="px-3"
-                            :listContent="filteredListContent"
-                            :showMapFilter="false"
-                            :mapFilteringPossible="mapFilteringPossible"
-                            :placeHolderAmount="placeHolderAmount"
-                            @clickedTag="catchTagClicked"
-                            :allTags="allMetadataTags"
-                            :selectedTagNames="selectedTagNames"
-                            @clickedTagClose="catchTagCloseClicked"
-                            @clickedClear="catchTagCleared"
-                            :defaultListControls="defaultControls"
-                            :enabledControls="enabledControls"
-                            :minMapHeight="mapFilterHeight"
-                            :topFilteringLayout="true"
-                            :showSearch="false"
-                            :searchCount="filteredListContent.length"
-                            @setScroll="setScrollPos" />
-          </div>
-
-          <div v-if="!hasMetadatas" >
-            <v-card-text style="color: red;" >
-              {{ metadataEmptyText }} '{{ currentProject ? ' connected with the project ' + currentProject.title : '' }}'
-            </v-card-text>
-          </div>
-
-        </v-card> -->
       </v-col>
 
     </v-row>
@@ -113,7 +79,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-10-27 14:37:04
+ * Last modified  : 2020-10-29 14:59:49
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -138,7 +104,7 @@ import {
 } from '@/factories/metadataFilterMethods';
 
 
-import ProjectsDatasets from '@/modules/projects/components/ProjectDetailViews/ProjectDatasets';
+import ProjectDatasets from '@/modules/projects/components/ProjectDetailViews/ProjectDatasets';
 import ProjectSubprojects from './ProjectDetailViews/ProjectSubprojects';
 import ProjectBody from './ProjectDetailViews/ProjectBody';
 import ProjectHeader from './ProjectDetailViews/ProjectHeader';
@@ -394,7 +360,7 @@ export default {
     ProjectHeader,
     ProjectBody,
     ProjectSubprojects,
-    ProjectsDatasets,
+    ProjectDatasets,
   },
   data: () => ({
     PageBGImage: 'app_b_browsepage',
