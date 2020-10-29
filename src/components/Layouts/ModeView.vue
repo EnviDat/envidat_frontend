@@ -1,45 +1,47 @@
 <template>
-  <v-layout row
-            :justify-center="!compact"
-            :justify-space-between="compact"
-            align-center>
-    <div v-if="compact"
-          class="item body-2">
-      {{ modeInfoPrefix }}:
-      <br />
-      {{ modeTitle }}
-    </div>
+  <v-row align="center"
+          justify="center"
+          no-gutters >
 
-    <div v-else 
-          class="item title">
+    <v-col v-if="compact"
+          class="shrink body-2 mx-1 text-no-wrap" >
+      {{ modeInfoPrefix }}: {{ modeTitle }}
+     </v-col>
+
+    <v-col v-else
+          class="shrink title mx-1 text-no-wrap">
       {{ modeInfo }}
-    </div>
+    </v-col>
 
-    <div v-if="modeLogo"
-          class="item"
-          style="height: 34px; width: 34px;">
+    <v-col v-if="modeLogo"
+            class="shrink mx-1"
+            style="height: 34px; width: 34px;">
 
       <a v-if="modeExternalUrl"
           :href="modeExternalUrl"
           target="_blank" >
-        <v-img :src="modeLogo" />
+        <v-img :src="modeLogo"
+                height="34" width="34" />
       </a>
+
       <v-img v-else
-              :src="modeLogo" />
+              :src="modeLogo"
+              height="34" width="34" />
 
-    </div>
+    </v-col>
 
-    <div class="item">
+    <v-col class="shrink mx-1" >
+
       <base-icon-button materialIconName="info_outline"
                         :tooltipText="`${tooltipText} ${modeTitle}`"
                         tooltipBottom
                         color="transparent"
                         iconColor="secondary"
                         isSmall />
-    </div>
+    </v-col>
 
     <div v-if="closeCallback"
-          class="item">
+          class="shrink mx-1" >
       <base-icon-button materialIconName="close"
                         :tooltipText="`Exit ${modeTitle} ${modeInfoPrefix}`"
                         tooltipBottom
@@ -49,19 +51,18 @@
                         @clicked="closeCallback" />
     </div>
 
-  </v-layout>
+  </v-row>
 </template>
 
 <script>
 /**
- * TheTitleScreenLayout.vue shows the EnviDat logo and the SloganCard
- * with different layouts for the differen screen sizes.
+ * ModeView.vue shows which mode is active.
  *
- * @summary responsive layout for the title screen with logo and SloganCard
+ * @summary mode widget for the current mode
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-31 15:29:14
+ * Last modified  : 2020-10-27 16:04:50
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -70,6 +71,8 @@ import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import { getModeData } from '@/factories/modeFactory';
 
 export default {
+  name: 'ModeView',
+  // TODO: Component is not in use. Moved content to TheNavigationToolbar while upgrading to vuetify2
   components: {
     BaseIconButton,
   },
@@ -109,9 +112,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-  .item {
-    margin: 0px 5px;
-  }
-</style>

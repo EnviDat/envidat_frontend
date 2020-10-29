@@ -1,58 +1,63 @@
 <template>
-  <v-layout row ma-0 pa-0 >
-    <v-tooltip bottom
-                :disabled="$vuetify.breakpoint.xsOnly || !iconTooltip" >
+  <v-tooltip bottom
+              id="BaseIconLabelView"
+              :disabled="$vuetify.breakpoint.xsOnly || !iconTooltip" >
 
-      <div slot="activator" class="layout row align-center">
-        <div v-if="icon && iconTooltip"
-              :class="alignClass"
-              class="iconCentering"
-              style="position: relative: top: 2px; max-width: 100%" >
+    <template v-slot:activator="{ on }">
+    <v-row v-on="on"
+          no-gutters
+          align="center" >
 
+      <v-col v-if="icon && iconTooltip"
+            :class="alignClass"
+            class="iconCentering shrink"
+            style="position: relative: top: 2px; max-width: 100%" >
+
+        <img class="envidatIcon"
+              :class="compactLayout ? 'small' : ''"
+              :src="icon"
+              :alt="`${icon} icon`" >
+      </v-col>
+
+      <v-col v-if="icon && !iconTooltip"
+              class="pr-1"
+              cols="2"
+              style="max-width: 100%" >
+
+        <div class="iconCentering">
           <img class="envidatIcon"
                 :class="compactLayout ? 'small' : ''"
                 :src="icon"
                 :alt="`${icon} icon`" >
         </div>
+      </v-col>
 
-        <v-flex v-if="icon && !iconTooltip"
-                xs2
-                pr-2
-                style="max-width: 100%" >
-          <div class="iconCentering">
-            <img class="envidatIcon"
-                  :class="compactLayout ? 'small' : ''"
-                  :src="icon"
-                  :alt="`${icon} icon`" >
-          </div>
-        </v-flex>
+      <v-col v-if="label"
+              cols="4"
+              :style="textStyle" >
+        {{ label }}
+      </v-col>
 
-        <v-flex v-if="label"
-                xs4
-                :style="textStyle" >
-          {{ label }}
-        </v-flex>
+      <v-col v-if="text && !url"
+              :style="textStyle" >
+        {{ text }}
+      </v-col>
 
-        <v-flex v-if="text && !url"
-                :style="textStyle" >
-          {{ text }}
-        </v-flex>
+      <v-col v-if="url"
+              :style="textStyle" >
+        <a :href="url" target="_blank" rel="noopener noreferrer">{{ text ? text : url }}</a>
+      </v-col>
 
-        <v-flex v-if="url"
-                :style="textStyle" >
-          <a :href="url" target="_blank" rel="noopener noreferrer">{{ text ? text : url }}</a>
-        </v-flex>
+      <v-col v-if="!text && usePlaceholder">
+        <div class="pr-1 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
+          <div class="bone bone-type-text bone-style-steps" />
+        </div>
+      </v-col>
+    </v-row>
+    </template>
 
-        <v-flex v-if="!text && usePlaceholder">
-          <div class="pr-2 skeleton skeleton-size-normal skeleton-color-concrete skeleton-animation-shimmer" >
-            <div class="bone bone-type-text bone-style-steps" />
-          </div>
-        </v-flex>
-      </div>
-
-      <span>{{ iconTooltip }}</span>
-    </v-tooltip>
-  </v-layout>
+    <span>{{ iconTooltip }}</span>
+  </v-tooltip>
 </template>
 
 <script>
@@ -87,12 +92,9 @@ export default {
   computed: {
     alignClass() {
       return {
-        flex: !this.alignLeft,
-        xs3: !this.alignLeft,
-        md2: !this.alignLeft,
-        'pr-3': this.alignLeft,
-        'pl-1': this.alignLeft,
-        'py-0': true,
+        'col-2': !this.alignLeft,
+        'pl-1': !this.alignLeft,
+        'px-1': this.alignLeft,
       };
     },
     textStyle() {

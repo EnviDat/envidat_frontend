@@ -9,14 +9,12 @@ import {
   createDetails,
   createResource,
   enhanceTags,
-  createAuthors,
-  extractAuthorsMap,
-  getFullAuthorsFromDataset,
   formatDate,
 } from '@/factories/metaDataFactory';
 
-import packagelist from '@/testdata/packagelist';
-import categoryCards from '@/store/modules/metadata/categoryCards';
+
+import packagelist from '@/../public/testdata/packagelist';
+import categoryCards from '@/store/categoryCards';
 
 // const metadatasContent = {};
 // packagelist.result.forEach((entry) => {
@@ -59,10 +57,17 @@ describe('metaDataFactory - createBody', () => {
     const body = createBody(dataset);
 
     expect(body).toBeDefined();
-    expect(body.title).toBeDefined();
     expect(body.text).toBeDefined();
     expect(body.maxTextLength).toBeDefined();
-    expect(body.emptyText).toBeDefined();
+  });
+
+  it('with dataset, compare maxTextLength', () => {
+    const dataset = packagelist.result[3];
+
+    const body = createBody(dataset, true);
+    const body2 = createBody(dataset, false);
+
+    expect(body.maxTextLength).not.toBe(body2.maxTextLength);
   });
 });
 
@@ -202,8 +207,6 @@ describe('metaDataFactory - createPublications', () => {
     expect(pub).toBeDefined();
     expect(pub.text).toBeDefined();
     expect(pub.maxTextLength).toBeDefined();
-    expect(pub.emptyText).toBeDefined();
-    expect(pub.emptyTextColor).toBeDefined();
   });
 });
 
@@ -250,95 +253,6 @@ describe('metaDataFactory - enhanceTags', () => {
   });
 });
 
-describe('metaDataFactory - createAuthors', () => {
-  it('empty', () => {
-    const authors = createAuthors(undefined);
-    expect(authors).toBeNull();
-  });
-
-  it('with dataset', () => {
-    const dataset = packagelist.result[7];
-
-    const authors = createAuthors(dataset);
-
-    expect(authors).toBeDefined();
-
-    for (let i = 0; i < authors.length; i++) {
-      const author = authors[i];
-
-      expect(author.firstName).toBeDefined();
-      expect(author.lastName).toBeDefined();
-      expect(author.datasetCount).toBeGreaterThanOrEqual(1);
-      expect(author.affiliation).toBeDefined();
-      expect(author.id).toBeDefined();
-      expect(author.email).toBeDefined();
-      expect(author.dataCredit).toBeDefined();
-    }
-  });
-});
-
-describe('metaDataFactory - ', () => {
-  it('empty', () => {
-    const authorMap = extractAuthorsMap(undefined);
-    expect(authorMap).toBeNull();
-  });
-
-  it('with datasets', () => {
-    const datasets = packagelist.result;
-
-    const authorMap = extractAuthorsMap(datasets);
-
-    expect(authorMap).toBeDefined();
-
-    const keys = Object.keys(authorMap);
-
-    for (let i = 0; i < keys.length; i++) {
-      const authorFullName = keys[i];
-      const author = authorMap[authorFullName];
-
-      // console.log('authorFullName: ' + authorFullName + ' fullName: ' + author.fullName + ' firstName: ' + author.firstName + ' lastName: ' + author.lastName);
-            
-      expect(author.firstName).toBeDefined();
-      expect(author.lastName).toBeDefined();
-      expect(author.datasetCount).toBeGreaterThanOrEqual(1);
-      expect(author.affiliation).toBeDefined();
-      expect(author.id).toBeDefined();
-      expect(author.email).toBeDefined();
-      expect(author.dataCredit).toBeDefined();
-    }
-  });
-});
-
-describe('metaDataFactory - getFullAuthorsFromDataset', () => {
-  it('empty', () => {
-    const authorMap = getFullAuthorsFromDataset();
-    expect(authorMap).toBeNull();
-  });
-
-  it('with datasets', () => {
-    const datasets = packagelist.result;
-    const authorMap = (datasets);
-
-    expect(authorMap).toBeDefined();
-
-    const fullAuthors = getFullAuthorsFromDataset(authorMap, datasets[2]);
-
-    expect(fullAuthors).toBeDefined();
-
-    for (let i = 0; i < fullAuthors.length; i++) {
-      const author = fullAuthors[i];
-      
-      expect(author.firstName).toBeDefined();
-      expect(author.lastName).toBeDefined();
-      expect(author.datasetCount).toBeGreaterThanOrEqual(1);
-      expect(author.affiliation).toBeDefined();
-      expect(author.id).toBeDefined();
-      expect(author.email).toBeDefined();
-      expect(author.dataCredit).toBeDefined();
-    }
-  });
-});
-
 describe('metaDataFactory - formatDate', () => {
   it('empty', () => {
     const date = formatDate();
@@ -350,6 +264,6 @@ describe('metaDataFactory - formatDate', () => {
 
     const date = formatDate(ckanDate);
     expect(date).toBeDefined();
-    expect(date).toBe('15. Jan 2017 15:25');
+    expect(date).toBe('15. Aug 2017 15:25');
   });
 });

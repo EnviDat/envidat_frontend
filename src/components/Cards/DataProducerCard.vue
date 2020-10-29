@@ -9,15 +9,15 @@
       }"
       :src="dataCreatorImg"
     >
-      <v-container
-        fill-height
+      <v-container class="fill-height"
+        
         fluid
       >
-        <v-layout fill-height>
-          <v-flex xs12>
+        <v-row class="fill-height" >
+          <v-col cols="12">
             <span class="display-2 dataproducer_title white--text">{{ titleText }}</span>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
     </v-card-media>
 
@@ -68,7 +68,7 @@
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package. 
  */
-import dataCreatorImg from '@/assets/cards/data_creator.jpg';
+import dataCreatorImg from '@/modules/projects/assets/data_creator.jpg';
 
 export default {
   props: {
@@ -98,7 +98,7 @@ export default {
 <style scoped>
 
   .dataproducer_title {
-    font-family: 'Libre Baskerville', serif !important;
+    font-family: 'Baskervville', serif !important;
   }
 
 </style>

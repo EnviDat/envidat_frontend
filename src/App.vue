@@ -1,5 +1,6 @@
 <template>
-  <v-app class="application" :style="dynamicBackground">
+  <v-app class="application"
+          :style="dynamicBackground">
 
       <div v-for="(notification, index) in visibleNotifications()"
           :key="`notification_${index}`"
@@ -15,18 +16,11 @@
                             @clickedReport="catchReportClicked(notification.key)" />
       </div>
 
-    <the-navigation v-if="!showSmallNavigation"
-                    :style="`z-index: ${NavigationZIndex}`"
+    <the-navigation :style="`z-index: ${NavigationZIndex}`"
                     :navItems="navItems"
                     :version="appVersion"
                     @menuClick="catchMenuClicked"
                     @itemClick="catchItemClicked" />
-
-    <the-navigation-small v-if="showSmallNavigation"
-                          :navItems="navItems"
-                          :style="`z-index: ${NavigationZIndex}`"
-                          class="envidatSmallNavigation elevation-3"
-                          @itemClick="catchItemClicked" />
 
     <the-navigation-toolbar v-if="showToolbar"
                             ref="TheNavigationToolbar"
@@ -36,27 +30,37 @@
                             :mode="mode"
                             :modeCloseCallback="catchModeClose" />
 
-    <v-content>
-      <v-container fluid
-                    pa-2 
-                    fill-height
+    <v-main>
+      <v-container class="pa-2 pa-sm-3 fill-height"
+                    fluid
                     v-on:scroll="updateScroll()"
                     ref="appContainer"
                     :style="pageStyle" >
-        <v-layout column >
-          <v-flex xs12 mx-0 >
+
+        <v-row class="fill-height" >
+          <v-col class="mx-0 py-0"
+                  cols="12" >
 
             <transition name="fade" mode="out-in">
               <router-view />
             </transition>
 
-          </v-flex>
-
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
 
-      <v-dialog v-model="showReloadDialog" persistent max-width="290">
-        <v-card>
+      <v-dialog v-model="showReloadDialog"
+                persistent
+                max-width="300">
+        <ConfirmTextCard title="New Version Available!"
+                          :text="dialogVersionText()"
+                          confirmText="Reload"
+                          :confirmClick="reloadApp"
+                          cancelText="Cancel"
+                          :cancelClick="() => { reloadDialogCanceled = true }"
+                          />
+
+        <!-- <v-card>
           <v-card-title class="headline">New Version Available!</v-card-title>
           <v-card-text>{{ dialogVersionText() }}</v-card-text>
           <v-card-actions>
@@ -64,9 +68,10 @@
             <v-btn color="green darken-1" flat @click="reloadApp()">Reload</v-btn>
             <v-btn color="green darken-1" flat @click="reloadDialogCanceled = true">Cancel</v-btn>
           </v-card-actions>
-        </v-card>
+        </v-card> -->
+
       </v-dialog>
-    </v-content>
+    </v-main>
 
   </v-app>
 </template>
@@ -79,13 +84,16 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-11-20 16:06:15
+ * Last modified  : 2020-10-29 15:16:01
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
-import { mapGetters } from 'vuex';
+import { 
+  mapState,
+  mapGetters,
+} from 'vuex';
 import {
   LANDING_PATH,
   LANDING_PAGENAME,
@@ -94,12 +102,6 @@ import {
   PROJECTS_PATH,
   PROJECTS_PAGENAME,
   PROJECT_DETAIL_PAGENAME,
-  GUIDELINES_PATH,
-  GUIDELINES_PAGENAME,
-  POLICIES_PATH,
-  POLICIES_PAGENAME,
-  DMP_PATH,
-  DMP_PAGENAME,
   ABOUT_PATH,
   ABOUT_PAGENAME,
   REPORT_PATH,
@@ -115,14 +117,13 @@ import {
   HIDE_NOTIFICATIONS,
 } from '@/store/mainMutationsConsts';
 
-import { POLICIES_NAMESPACE } from '@/store/policiesMutationsConsts';
-import { GUIDELINES_NAMESPACE } from '@/store/guidelinesMutationsConsts';
-import { PROJECTS_NAMESPACE } from '@/store/projectsMutationsConsts';
+import { ABOUT_NAMESPACE } from '@/modules/about/store/aboutMutationsConsts';
+import { PROJECTS_NAMESPACE } from '@/modules/projects/store/projectsMutationsConsts';
 
 import TheNavigation from '@/components/Navigation/TheNavigation';
-import TheNavigationSmall from '@/components/Navigation/TheNavigationSmall';
 import TheNavigationToolbar from '@/components/Navigation/TheNavigationToolbar';
 import NotificationCard from '@/components/Cards/NotificationCard';
+import ConfirmTextCard from '@/components/Cards/ConfirmTextCard';
 import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
 
 export default {
@@ -133,9 +134,6 @@ export default {
   },
   created() {
     this.loadAllMetadata();
-
-    const bgImgs = require.context('./assets/', false, /\.jpg$/);
-    this.appBGImages = this.mixinMethods_importImages(bgImgs, 'app_b');
   },
   updated() {
     this.updateActiveStateOnNavItems();
@@ -150,8 +148,6 @@ export default {
       this.$store.commit(SET_APP_SCROLL_POSITION, scrollY);
     },
     updateActiveStateOnNavItems() {
-      // console.log(this.currentPage);
-
       for (let i = 0; i < this.navItems.length; i++) {
         const item = this.navItems[i];
 
@@ -237,7 +233,7 @@ export default {
     },
     loadAllMetadata() {
       if (!this.loadingMetadatasContent && this.metadatasContentSize <= 0) {
-        this.$store.dispatch(`metadata/${BULK_LOAD_METADATAS_CONTENT}`);
+        this.$store.dispatch(`${METADATA_NAMESPACE}/${BULK_LOAD_METADATAS_CONTENT}`);
       }
     },
     dialogVersionText() {
@@ -245,6 +241,9 @@ export default {
     },
   },
   computed: {
+    ...mapState([
+      'webpIsSupported',
+      ]),
     ...mapGetters({
       metadataIds: `${METADATA_NAMESPACE}/metadataIds`,
       metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
@@ -256,8 +255,8 @@ export default {
       currentMetadataContent: `${METADATA_NAMESPACE}/currentMetadataContent`,
       filteredContent: `${METADATA_NAMESPACE}/filteredContent`,
       isFilteringContent: `${METADATA_NAMESPACE}/isFilteringContent`,
-      policiesLoading: `${POLICIES_NAMESPACE}/loading`,
-      guidelinesLoading: `${GUIDELINES_NAMESPACE}/loading`,
+      policiesLoading: `${ABOUT_NAMESPACE}/policiesLoading`,
+      guidelinesLoading: `${ABOUT_NAMESPACE}/guidelinesLoading`,
       projectsLoading: `${PROJECTS_NAMESPACE}/loading`,
       currentPage: 'currentPage',
       appBGImage: 'appBGImage',
@@ -277,9 +276,6 @@ export default {
     currentPageIsBrowsePage() {
       return this.currentPage === BROWSE_PAGENAME;
     },
-    currentPageIsLandingPage() {
-      return this.currentPage === LANDING_PAGENAME;
-    },
     showToolbar() {
       return this.currentPageIsBrowsePage && this.mode;
     },
@@ -298,23 +294,26 @@ export default {
     },
     dynamicBackground() {
       const imageKey = this.appBGImage;
-      const bgImg = this.appBGImages[imageKey];
-      let bgStyle = '';
+      if (!imageKey) {
+        return '';
+      }
 
-      if (bgImg) {
-        bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.25) 100%), url(${bgImg}) !important;`;
+      // const bgImg = this.appBGImages[imageKey];
+      const bgImg = this.mixinMethods_getWebpImage(imageKey, this.$store.state);
+
+      let bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.25) 100%), url(${bgImg}) !important;`;
+
+      bgStyle += `background-position: center top !important;
+                    background-repeat: no-repeat !important;
+                    background-size: cover !important; `;
+
+      if (bgImg.includes('browsepage')) {
+        bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
 
         bgStyle += `background-position: center top !important;
-                      background-repeat: no-repeat !important;
-                      background-size: cover !important; `;
-
-        if (bgImg.includes('browsepage')) {
-          bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
-
-          bgStyle += `background-position: center top !important;
-                        background-repeat: repeat !important; `;
-        }
+                      background-repeat: repeat !important; `;
       }
+      
       return bgStyle;
     },
     menuItem() {
@@ -333,9 +332,9 @@ export default {
   },
   components: {
     TheNavigation,
-    TheNavigationSmall,
     TheNavigationToolbar,
     NotificationCard,
+    ConfirmTextCard,
   },
   watch: {
     notifications() {
@@ -361,11 +360,11 @@ export default {
       { title: 'Explore', icon: 'search', toolTip: 'Explore research data', active: false, path: BROWSE_PATH, pageName: BROWSE_PAGENAME },
       { title: 'Projects', icon: 'library_books', toolTip: 'Overview of the research projects on envidat', active: false, path: PROJECTS_PATH, pageName: PROJECTS_PAGENAME, subpages: [PROJECT_DETAIL_PAGENAME] },
       { title: 'Organizations', icon: 'account_tree', toolTip: 'Overview of the different organizations', active: false, path: 'https://www.envidat.ch/organization', pageName: 'external' },
-      { title: 'Guidelines', icon: 'local_library', toolTip: 'Guidlines about the creation of metadata', active: false, path: GUIDELINES_PATH, pageName: GUIDELINES_PAGENAME },
-      { title: 'Policies', icon: 'policy', toolTip: 'The rules of EnviDat', active: false, path: POLICIES_PATH, pageName: POLICIES_PAGENAME },
-      { title: 'DMP', icon: 'menu_book', toolTip: 'Template for a Data Management Plan', active: false, path: DMP_PATH, pageName: DMP_PAGENAME },
-      { title: 'Login', icon: 'person', toolTip: 'Login to management research data', active: false, path: 'https://www.envidat.ch/user/reset', pageName: 'external' },
-      { title: 'About', icon: 'info', toolTip: 'What is EnviDat? How is behind EnviDat?', active: false, path: ABOUT_PATH, pageName: ABOUT_PAGENAME },
+      // { title: 'Guidelines', icon: 'local_library', toolTip: 'Guidlines about the creation of metadata', active: false, path: GUIDELINES_PATH, pageName: GUIDELINES_PAGENAME },
+      // { title: 'Policies', icon: 'policy', toolTip: 'The rules of EnviDat', active: false, path: POLICIES_PATH, pageName: POLICIES_PAGENAME },
+      // { title: 'DMP', icon: 'menu_book', toolTip: 'Template for a Data Management Plan', active: false, path: DMP_PATH, pageName: DMP_PAGENAME },
+      { title: 'Sign In', icon: 'person', toolTip: 'Sign in to management research data', active: false, path: 'https://www.envidat.ch/user/reset', pageName: 'external' },
+      { title: 'About', icon: 'info', toolTip: 'What is EnviDat and who is behind it?', active: false, path: ABOUT_PATH, pageName: ABOUT_PAGENAME },
       // { title: 'Contact', icon: 'contact_support', toolTip: 'Do you need support?', active: false },
       { title: 'Menu', icon: 'menu', active: false },
     ],
@@ -373,23 +372,9 @@ export default {
 };
 </script>
 
-<style lang="scss">
-  /* Icons list: https://jossef.github.io/material-design-icons-iconfont/ */
-  $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
-
-  @import '~material-design-icons-iconfont/src/material-design-icons.scss';
-</style>
-
 
 <style >
- @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville|Raleway&display=swap');
-
-/* overwrite the applications background https://css-tricks.com/use-cases-fixed-backgrounds-css/ */
-.application {
-  font-family: "Raleway", sans-serif !important;
-  font-size: 12px;
-}
-
+ 
 .envidatNavbar {
   position: -webkit-sticky;
   position: sticky;
@@ -403,77 +388,26 @@ export default {
 
 /*** General Card styles ***/
 
-.headline {
-  font-family: "Libre Baskerville", serif !important;
-  /* font-weight: 700; */
-
-  /*
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-height: 2.15em;
-    */
-  line-height: 1.1em !important;
-}
-
-.block-with-text {
-  font-family: "Libre Baskerville", serif !important;
-
-  /* styles for '...' */
-  /* hide text if it more than N lines  */
-  overflow: hidden;
-  /* for set '...' in absolute position */
-  position: relative;
-  /* use this value to count block height */
-  line-height: 1.2em !important;
-  /* max-height = line-height (1.2) * lines max number (3) */
-  max-height: 6.7em;
-  /* fix problem when last visible word doesn't adjoin right side  */
-  text-align: justify;
-  /* place for '...' */
-  margin-right: -1em;
-  padding-right: 1em;
-}
-/* create the ... */
-.block-with-text:before {
-  /* points in the end */
-  content: "...";
-  /* absolute position */
-  position: absolute;
-  /* set position to right bottom corner of block */
-  right: 0;
-  bottom: 0;
-}
-/* hide ... if we have text, which is less than or equal to max lines */
-.block-with-text:after {
-  /* points in the end */
-  content: "";
-  /* absolute position */
-  position: absolute;
-  /* set position to right bottom corner of text */
-  right: 0;
-  /* set width and height */
-  width: 1em;
-  height: 1em;
-  margin-top: 0.2em;
-  /* bg color = bg color under block */
-  background: white;
-}
-
 .card .subheading {
-  /* font-family: 'Libre Baskerville', serif; */
+  /* font-family: 'Baskervville', serif; */
   font-weight: 400;
   /* color: #555; */
   opacity: 0.75;
   line-height: 1.25em;
 }
 
+.readableText {
+  line-height: 1.2rem;
+  color: rgba(0, 0, 0, 0.87) !important;
+}
+
 .imagezoom,
-.imagezoom img {
+.imagezoom .v-image__image {
   transition: all 0.2s;
 }
 
-.imagezoom img:hover,
-.imagezoom img:focus {
+.imagezoom:hover .v-image__image,
+.imagezoom:focus .v-image__image {
   transform: scale(1.2);
 }
 
@@ -499,12 +433,8 @@ export default {
 }
 
 .envidatTitle {
-  font-family: "Libre Baskerville", serif !important;
+  font-family: "Baskervville", serif !important;
   letter-spacing: 0em !important;
-}
-
-.envidatSlogan {
-  font-family: "Libre Baskerville", serif !important;
 }
 
 .metadataInfoIcon {
@@ -512,15 +442,15 @@ export default {
 }
 
 .envidatBadge span {
-  font-size: 0.95em !important;
+  font-size: 0.8rem !important;
 }
 
 .envidatBadgeBigNumber span {
-  font-size: 0.9em !important;
+  font-size: 0.7rem !important;
 }
 
 .envidatChip {
-  height: 1.3rem !important;
+  height: 1.1rem !important;
   font-size: 0.65rem !important;
   margin: 1px 2px !important;
   /* opacity: 0.85 !important; */
@@ -532,7 +462,7 @@ export default {
 }
 
 .smallChip {
-  height: 1.2rem !important;
+  height: 1.25rem !important;
   font-size: 0.55rem !important;
 }
 .smallChip > .v-chip__content > .v-chip__close > .v-icon {

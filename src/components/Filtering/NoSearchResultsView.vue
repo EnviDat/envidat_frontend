@@ -1,31 +1,34 @@
 <template>
-  <v-layout column>
-    <v-flex xs12 py-4 class="error">
-      <h2>{{ noResultText }}</h2>
-    </v-flex>
+  <v-row >
+    <v-col cols="12"
+            class="error py-4">
+      <div class="title">{{ noResultText }}</div>
+    </v-col>
 
-    <v-flex xs12>
-      <h3>{{ suggestionText }}</h3>
-    </v-flex>
+    <v-col cols="12">
+      <div class="body-1">{{ suggestionText }}</div>
+    </v-col>
 
-    <v-flex xs12 pt-2>
-      <v-container fluid grid-list-md pa-0>
-        <v-layout row wrap>
+    <v-col cols="12" >
+      <v-container class="pa-0"
+                  fluid>
+        <v-row no-gutters>
 
-          <v-flex v-for="card in categoryCards"
+          <v-col v-for="card in categoryCards"
                   :key="card.title"
-                  my-2 px-1
-                  xs6 md4 >
+                  cols="6" md="4"
+                  class="pa-2" >
+
               <base-click-card :title="card.title"
                                 :img="card.img"
                                 :color="card.darkColor"
                                 :contain="card.contain"
                                 @click="catchCategoryClicked(card.type)" />
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
 
@@ -38,7 +41,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-11-28 15:16:55
+ * Last modified  : 2020-07-15 09:25:10
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

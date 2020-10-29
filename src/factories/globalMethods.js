@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-11-22 15:03:58
+ * Last modified  : 2020-10-13 23:35:11
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -27,7 +27,7 @@ export default {
     mixinMethods_areArraysIdentical(arr1, arr2) {
       if (arr1.length !== arr2.length) return false;
 
-      for (let i = arr1.length; i--;) {
+      for (let i = arr1.length; i >= 0; i--) {
         if (arr1[i] !== arr2[i]) return false;
       }
 
@@ -109,6 +109,21 @@ export default {
       });
     },
     /**
+     * Return the loaded webp image or instead a jpg as fallback
+     *
+     * @param {*} imageAssetPathName
+     * @returns
+     */
+    mixinMethods_getWebpImage(imageAssetPathName, state) {
+      const imageKey = `./${imageAssetPathName}.${state.webpIsSupported ? 'webp' : 'jpg'}`;
+      
+      if (state.webpIsSupported) {
+        return state.webpAssets[imageKey];
+      }
+      
+      return state.jpgAssets[imageKey];
+    },
+    /**
      * Loads the path to the icon image
      *
      * @param {String} iconName
@@ -139,6 +154,10 @@ export default {
      * @return {Map<string, string>} Image cache
      */
     mixinMethods_importImages(imgs, checkForString) {
+      if (!imgs) {
+        // console.log(`Got empty imgs for ${checkForString}`);
+        return null;
+      }
       const imgCache = {};
 
       imgs.keys().forEach((key) => {
@@ -149,12 +168,12 @@ export default {
 
       return imgCache;
     },
-    mixinMethods_getGenericProp(propName) {
+    mixinMethods_getGenericProp(propName, defaultValue = null) {
       if (!this.genericProps) {
-        return null;
+        return defaultValue;
       }
 
-      return this.genericProps[propName] ? this.genericProps[propName] : null;
+      return this.genericProps[propName] ? this.genericProps[propName] : defaultValue;
     },
     /**
      *

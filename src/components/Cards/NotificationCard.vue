@@ -4,43 +4,43 @@
           :color="notification.color">
 
     <v-card-title class="pb-0">
-      <v-container pa-0 grid-list-md>
-        <v-layout row wrap align-content-center>
+      <v-container class="pa-0" >
+        <v-row align-content="center">
 
-          <v-flex xs1 >
+          <v-col cols="1" >
             <v-icon>{{ notification.icon }}</v-icon>
-          </v-flex>
+          </v-col>
 
-          <v-flex xs11>
+          <v-col cols="11">
             <div class="title">{{ notification.message }}</div>
-          </v-flex>
+          </v-col>
 
-          <v-flex xs12>
+          <v-col cols="12">
             <div style="height: 60px; overflow: hidden scroll;"
                 class="caption"> {{ notification.details }}</div>
-          </v-flex>
+          </v-col>
 
-        </v-layout>
+        </v-row>
       </v-container>
     </v-card-title>
 
     <v-card-text class="px-2 py-1">
-    <v-layout row wrap fill-height align-end justify-end>
-      <v-flex v-if="showReportButton"
-              shrink>
-        <base-rectangle-button buttonText="Report"
-                                isSmall
-                                @clicked="$emit('clickedReport')" />
-      </v-flex>
+      <v-row class="fill-height"  align="end" justify="end">
+        <v-col class="shrink" v-if="showReportButton"
+                >
+          <base-rectangle-button buttonText="Report"
+                                  isSmall
+                                  @clicked="$emit('clickedReport')" />
+        </v-col>
 
-      <v-flex shrink>
-      <base-rectangle-button color="black"
-                              buttonText="Close"
-                              isSmall
-                              marginClass="white--text"
-                              @clicked="$emit('clickedClose')" />
-      </v-flex>
-    </v-layout>
+        <v-col class="shrink" >
+          <base-rectangle-button color="black"
+                                  buttonText="Close"
+                                  isSmall
+                                  marginClass="white--text"
+                                  @clicked="$emit('clickedClose')" />
+        </v-col>
+      </v-row>
     </v-card-text>
 
   </v-card>

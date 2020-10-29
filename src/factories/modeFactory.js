@@ -17,7 +17,7 @@ import { SWISSFL_MODE } from '@/store/metadataMutationsConsts';
 import {
   swissFLTag,
   swissFLExtraTags,
-} from '@/store/modules/metadata/swissForestLabTags';
+} from '@/modules/metadata/store/swissForestLabTags';
 
 import globalMethods from '@/factories/globalMethods';
 
@@ -128,8 +128,9 @@ export function enhanceMetadataFromExtras(mode, metdataEntry) {
         metdataEntry[key] = extra.value;
 
         const extraTag = createTag(extra.value.toUpperCase());
+        const tagIndex = metdataEntry.tags.findIndex(t => t.name === extraTag.name);
 
-        if (metdataEntry.tags.findIndex(t => t.name === extraTag.name) < 0) {
+        if (tagIndex < 0) {
           metdataEntry.tags.push(extraTag);
         }
       }

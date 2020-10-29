@@ -1,27 +1,16 @@
 <template>
-  <!-- <v-layout row
-            :justify-center="!compact"
-            :justify-space-between="compact"
-            align-center>
-
-    <div class="item"> -->
       <base-icon-button materialIconName="account_circle"
                         tooltipBottom
                         color="highlight"
                         iconColor="black"
                         isSmall />
-                        <!-- :tooltipText="`${tooltipText} ${modeTitle}`" -->
-    <!-- </div> -->
-
-  <!-- </v-layout> -->
 </template>
 
 <script>
 /**
- * TheTitleScreenLayout.vue shows the EnviDat logo and the SloganCard
- * with different layouts for the differen screen sizes.
+ * UserAvatar.vue
  *
- * @summary responsive layout for the title screen with logo and SloganCard
+ * @summary
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27

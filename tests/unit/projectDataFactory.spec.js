@@ -1,10 +1,10 @@
+
+import packagelist from '@/../public/testdata/packagelist';
+import projectJSON from '@/../public/testdata/projects';
 import {
   enhanceSubprojectsFromExtras,
-  enhanceProjectsDatasets,
+  enhanceProjectDatasets,
 } from '../../src/factories/projectsDataFactory';
-
-import packagelist from '@/testdata/packagelist';
-import projectJSON from '@/testdata/projects';
 
 const metadatasContent = {};
 packagelist.result.forEach((entry) => {
@@ -21,10 +21,10 @@ describe('projectsDataFactory - enhanceSubprojectsFromExtras', () => {
 
 });
 
-describe('projectsDataFactory - enhanceProjectsDatasets', () => {
+describe('projectsDataFactory - enhanceProjectDatasets', () => {
   it('empty', () => {
 
-    const enhanced = enhanceProjectsDatasets(undefined, null);
+    const enhanced = enhanceProjectDatasets(undefined, null);
 
     expect(enhanced).toBeDefined();
     expect(enhanced.length).toEqual(0);
@@ -32,7 +32,7 @@ describe('projectsDataFactory - enhanceProjectsDatasets', () => {
 
   it('Enhanced Tags', () => {
 
-    const enhanced = enhanceProjectsDatasets(projectJSON.result, metadatasContent);
+    const enhanced = enhanceProjectDatasets(projectJSON.result, metadatasContent);
 
     for (let i = 0; i < enhanced.length; i++) {
       const pro = enhanced[i];

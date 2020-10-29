@@ -16,10 +16,11 @@
           :class="{ 'blur_parallax' : blur }"
           :style="blur ? 'opacity: 0.8' : ''" />
 
-    <v-layout align-center justify-center column fill-height
-              mx-2
-              :style="`position: relative; top: -${height }px;
-                      text-align: center;`" >
+    <v-row class="fill-height mx-2"
+            align="center"
+            justify="center" 
+            :style="`position: relative; top: -${height }px;
+                    text-align: center;`" >
 
       <div style="background-color: white;" />
 
@@ -41,14 +42,14 @@
             'black--text': dark,
             'white--text': !dark,
             'headline' : $vuetify.breakpoint.mdAndUp,
-            'subheading' : $vuetify.breakpoint.smAndDown,
+            'subtitle-1' : $vuetify.breakpoint.smAndDown,
           }" >
         <span :style="`background-color: ${textBackgroundColor};
                         text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.7);`">
           {{ subTitle }}
         </span>
       </div>
-    </v-layout>
+    </v-row>
   </div>
 </template>
 

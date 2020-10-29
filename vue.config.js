@@ -3,7 +3,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-23 16:58:48
+ * Last modified  : 2020-10-27 20:48:14
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -13,13 +13,35 @@
 const fs = require('fs');
 const dotenv = require('dotenv');
 
+const path = require('path');
+const webpack = require('webpack');
+
+const cesiumSource = 'node_modules/cesium/Source';
+const cesiumWorkers = '../Build/Cesium/Workers';
+const CopywebpackPlugin = require('copy-webpack-plugin');
+const getFilesWithPrefix = require('./src/factories/enhancementsFactory').getFilesWithPrefix;
+
 dotenv.config();
 process.env.VUE_APP_VERSION = require('./package.json').version;
 
 const version = process.env.VUE_APP_VERSION;
 
-if (process.env.NODE_ENV === 'production') {
+const isProd = process.env.NODE_ENV === 'production';
+
+if (isProd) {
   const fileName = `version_${version}.txt`;
+  const existingFilePaths = `${__dirname}/public/`;
+
+  const existingVersionFiles = getFilesWithPrefix(existingFilePaths, 'version_');
+
+  // delete any existing files with version_ as prefix to make sure only the latest version is created
+  for (let i = 0; i < existingVersionFiles.length; i++) {
+    const file = existingVersionFiles[i];
+    const fullPath = `${existingFilePaths}${file}`;
+    console.log(`Going to delete version file: ${fullPath}`);
+    fs.unlinkSync(fullPath);
+  }
+
   const filePath = `${__dirname}/public/${fileName}`;
 
   fs.writeFile(filePath, version, (err) => {
@@ -35,26 +57,12 @@ if (process.env.NODE_ENV === 'production') {
 console.log(`starting ${version} with use of testdata '${process.env.VUE_APP_USE_TESTDATA}' on ${process.env.NODE_ENV}`);
 
 module.exports = {
+  transpileDependencies: ['vuetify'],
   publicPath: './',
   assetsDir: './static',
   runtimeCompiler: true,
   css: {
-    // extract: { filename: 'styles.css' },
-    modules: false,
     sourceMap: true,
-    // loaderOptions: {
-    //   css: {
-    //     url: true, 
-    //     // import: true,
-    //     // localIdentName: '[local]_[hash:base64:8]',
-    //   },
-    //   // postcss: {
-    //   //   // "postcss-import": {},
-    //   //   // "postcss-url": {},
-    //   //   // to edit target browsers: use "browserslist" field in package.json
-    //   //   "autoprefixer": {}
-    //   // }
-    // }
   },
   pluginOptions: {
     storybook: {
@@ -75,7 +83,37 @@ module.exports = {
         maxSize: 250000,
       },
     },
-  },  
+    node: {
+      fs: 'empty', // Resolve node module use of fs
+    },
+    resolve: {
+      alias: {
+        // CesiumJS module name
+        cesium: path.resolve(__dirname, cesiumSource),
+      },
+    },
+    plugins: [
+      // Copy Cesium Assets, and Workers to a static directory
+      new CopywebpackPlugin({
+        patterns: [{
+          from: path.join(cesiumSource, cesiumWorkers),
+          to: 'Workers',
+        },
+        {
+          from: path.join(cesiumSource, 'Assets'),
+          to: 'Assets',
+          globOptions: {
+            ignore: ['Images/**', 'Textures/**', 'IAU2006_XYS/**'],
+          },
+        },
+        {
+          from: 'node_modules/amcharts3/amcharts/images', to: 'amcharts/images',
+        }],
+      }),
+      // Define relative base path in cesium for loading assets
+      new webpack.DefinePlugin({ CESIUM_BASE_URL: JSON.stringify('') }),
+    ],
+  },
   // devServer: {
   //   // assetsSubDirectory: "static",
   //   // assetsPublicPath: "/",
