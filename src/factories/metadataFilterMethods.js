@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03 
- * Last modified  : 2019-11-20 16:03:04
+ * Last modified  : 2020-10-29 21:16:48
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -118,13 +118,18 @@ export function getPopularTags(datasets, excludeTag = '', minCount = 5, maxCount
 
   const tagCounted = countTags(datasets);
   const cleandAndCounted = [];
+
   for (let i = 0; i < tagCounted.length; i++) {
     const tag = tagCounted[i];
     // console.log(tag.name + ' ' + tag.count + ' minCount ' + minCount + ' count? ' + (tag.count >= minCount) + ' excludeTag ' + (excludeTag === '' || (excludeTag && tag.name.toLowerCase() !== excludeTag.toLowerCase())) + ' maxCount ' + (maxCount === 0 || (maxCount > 0 && tag.count < maxCount)) );
-    if ((tag.count >= minCount)
-      && (excludeTag === '' || (excludeTag && tag.name.toLowerCase() !== excludeTag.toLowerCase()))
-      && (maxCount === 0 || (maxCount > 0 && tag.count < maxCount))) {
-      cleandAndCounted.push(tag);
+
+    if (tag.count >= minCount) {
+      const notExcluded = (excludeTag === '' || (excludeTag && tag.name.toLowerCase() !== excludeTag.toLowerCase()));
+      const notMaxCount = (maxCount === 0 || (maxCount > 0 && tag.count < maxCount));
+
+      if (notExcluded && notMaxCount) {
+        cleandAndCounted.push(tag);
+      }
     }    
   }
 
