@@ -86,7 +86,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-11-03 12:50:27
+ * Last modified  : 2020-11-03 16:54:05
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -134,9 +134,6 @@ export default {
   beforeCreate() {
     // check for the backend version
     this.$store.dispatch(SET_CONFIG);
-  },
-  created() {
-    this.loadAllMetadata();
   },
   updated() {
     this.updateActiveStateOnNavItems();
@@ -236,7 +233,7 @@ export default {
     },
     loadAllMetadata() {
       if (!this.loadingMetadatasContent && this.metadatasContentSize <= 0) {
-        this.$store.dispatch(`${METADATA_NAMESPACE}/${BULK_LOAD_METADATAS_CONTENT}`);
+        this.$store.dispatch(`${METADATA_NAMESPACE}/${BULK_LOAD_METADATAS_CONTENT}`, this.metadataConfig);
       }
     },
     dialogVersionText() {
@@ -245,6 +242,7 @@ export default {
   },
   computed: {
     ...mapState([
+      'loadingConfig',
       'config',
       'webpIsSupported',
     ]),
@@ -277,6 +275,9 @@ export default {
     },
     signinDisabled() {
       return this.maintenanceConfig && this.maintenanceConfig.signinDisabled;
+    },
+    metadataConfig() {
+      return this.config?.metadataConfig || {};
     },
     navItems() {
       return [
@@ -315,7 +316,7 @@ export default {
           active: false,
           path: 'https://www.envidat.ch/organization',
           pageName: 'external', 
-          disabled: false,
+          disabled: this.signinDisabled,
         },
         // { title: 'Guidelines', icon: 'local_library', toolTip: 'Guidlines about the creation of metadata', active: false, path: GUIDELINES_PATH, pageName: GUIDELINES_PAGENAME },
         // { title: 'Policies', icon: 'policy', toolTip: 'The rules of EnviDat', active: false, path: POLICIES_PATH, pageName: POLICIES_PAGENAME },
@@ -419,6 +420,11 @@ export default {
     TextBanner,
   },
   watch: {
+    config() {
+      if (!this.loadingConfig) {
+        this.loadAllMetadata();
+      }
+    },
     notifications() {
       if (!this.notifications) return;
 

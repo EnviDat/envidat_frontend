@@ -109,6 +109,7 @@ export const metadata = {
     loadingMetadatasContent: state => state.loadingMetadatasContent,
     metadataIds: state => state.metadataIds,
     metadatasContent: state => state.metadatasContent,
+    allMetadatas: state => Object.values(state.metadatasContent),
     metadatasContentSize: state => (state.metadatasContent !== undefined ? Object.keys(state.metadatasContent).length : 0),
     authorsMap: state => state.authorsMap,
     searchedMetadatasContent: state => state.searchedMetadatasContent,

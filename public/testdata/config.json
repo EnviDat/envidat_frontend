@@ -1,5 +1,5 @@
 {
-  "version": "0.6.83",
+  "version": "0.6.914",
   "aboutInfo": [
     {
       "title": "Contact",
@@ -37,11 +37,17 @@
       "showAuthorInfos": true,
       "showDataCredits": true,
       "showDataCreditScore": false
-    }
+    },
+    "loadLocalFile": true,
+    "localFileUrl": "./testdata/packagelist.json"
+  },
+  "projectsConfig": {
+    "loadLocalFile": true,
+    "localFileUrl": "./testdata/projects.json"
   },
   "maintenanceConfig": {
-    "signinDisabled": false,
+    "signinDisabled": true,
     "messageActive": true,
-    "message": "We are currently doing maintenance on the server. EnviDat is in read-only mode, the user sign in is currently disabled."
+    "message": "We are currently doing maintenance on the server. EnviDat is now in <strong>read-only mode</strong>. Signing in and any other <strong>user functionality is currently disabled</strong>."
   }
 }

@@ -26,6 +26,7 @@ import {
   SET_CONTROLS,
   SET_APP_SCROLL_POSITION,
   SET_BROWSE_SCROLL_POSITION,
+  SET_CONFIG,
   SET_CONFIG_SUCCESS,
   SET_CONFIG_ERROR,
   CHECK_FRONTEND_VERSION,
@@ -99,12 +100,17 @@ export default {
   [SET_BROWSE_SCROLL_POSITION](state, payload) {
     state.browseScrollPosition = payload;
   },
+  [SET_CONFIG](state) {
+    state.loadingConfig = false;
+  },
   [SET_CONFIG_SUCCESS](state, payload) {
+    state.loadingConfig = false;
     state.config = payload;
 
     disablingCategoryCards(state.config, state.categoryCards);
   },
   [SET_CONFIG_ERROR](state, reason) {
+    state.loadingConfig = true;
     const notificationObj = getSpecificApiError('Config could not ge loaded!', reason);
     this.commit(ADD_USER_NOTIFICATION, notificationObj);
   },
