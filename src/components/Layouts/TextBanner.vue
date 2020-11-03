@@ -12,7 +12,7 @@
       </v-icon>
     </v-avatar>
 
-    {{ text }}
+    <span v-html="text" />
 
     <template v-slot:actions>
       <BaseRectangleButton v-if="confirmText"
@@ -40,7 +40,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00 
- * Last modified  : 2020-11-03 12:53:38
+ * Last modified  : 2020-11-03 16:13:35
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package. 

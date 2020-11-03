@@ -3,7 +3,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51 
- * Last modified  : 2019-10-23 17:36:56
+ * Last modified  : 2020-11-03 16:06:16
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -23,6 +23,8 @@ const configURL = process.env.VUE_APP_CONFIG_URL;
 export default {
   [SET_CONFIG]({ commit }) {
     if (configURL && configURL !== 'NULL') {
+      commit(SET_CONFIG);
+
       const url = `${configURL}?nocache=${new Date().getTime()}`;
 
       axios.get(url)

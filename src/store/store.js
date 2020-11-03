@@ -75,6 +75,7 @@ const initialState = {
   outdatedVersion: false,
   newVersion: process.env.VUE_APP_VERSION,
   // config can be overloaded from the backend
+  loadingConfig: false,
   config: { errorReportingEnabled },
   notifications: {},
   maxNotifications: 6,

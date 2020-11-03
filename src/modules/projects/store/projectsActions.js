@@ -5,18 +5,13 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51 
- * Last modified  : 2020-10-22 14:59:54
+ * Last modified  : 2020-11-03 22:04:06
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
 import axios from 'axios';
-
-
-import {
-  METADATA_NAMESPACE,
-} from '@/store/metadataMutationsConsts';
 import { urlRewrite } from '@/factories/apiFactory';
 
 import {
@@ -25,12 +20,14 @@ import {
   GET_PROJECTS_ERROR,
 } from './projectsMutationsConsts';
 
+
 const API_BASE = process.env.VUE_APP_API_BASE_URL || '/api/action/';
 const ENVIDAT_PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
 
 
 export default {
-  async [GET_PROJECTS]({ dispatch, commit }) {
+  // eslint-disable-next-line no-unused-vars
+  async [GET_PROJECTS]({ dispatch, commit }, projectsConfig = {}) {
     commit(GET_PROJECTS);
 
     let url = urlRewrite(
@@ -39,12 +36,22 @@ export default {
       ENVIDAT_PROXY,
     );
 
-    if (this.getters[`${METADATA_NAMESPACE}/metadatasContentSize`] === 0) {
-      await dispatch(`${METADATA_NAMESPACE}/BULK_LOAD_METADATAS_CONTENT`, null, { root: true });      
-    }
+    // if (this.getters[`${METADATA_NAMESPACE}/metadatasContentSize`] === 0) {
+    //   const metadataConfig = this.state.config.metadataConfig;
+    //   await dispatch(`${METADATA_NAMESPACE}/${BULK_LOAD_METADATAS_CONTENT}`,
+    //     metadataConfig,
+    //     { root: true });
+    // }
 
-    if (process.env.NODE_ENV === 'development') {
-      url = './testdata/projects.json';
+    // if (process.env.NODE_ENV === 'development') {
+    //   url = './testdata/projects.json';
+    // }
+
+    const localFileUrl = projectsConfig.localFileUrl;
+    const loadLocalFile = projectsConfig.loadLocalFile;
+
+    if (loadLocalFile && localFileUrl) {
+      url = localFileUrl;
     }
 
     await axios.get(url)
