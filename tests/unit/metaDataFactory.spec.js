@@ -10,6 +10,7 @@ import {
   createResource,
   enhanceTags,
   formatDate,
+  enhanceTitleImg,
 } from '@/factories/metaDataFactory';
 
 
@@ -249,8 +250,44 @@ describe('metaDataFactory - enhanceTags', () => {
       const tag = enhancedDataset.tags[j];
       expect(tag).toBeDefined();
       expect(tag).not.toBe('');
+      expect(tag.color).toBeDefined();
+      expect(tag.color).not.toBe('');
     }
   });
+});
+
+describe('metaDataFactory - enhanceTitleImg', () => {
+  it('empty', () => {
+    const enhancedDataset = enhanceTitleImg();
+    expect(enhancedDataset).toBeNull();
+  });
+
+  it('with multiple datasets but no background images', () => {
+    const datasets = packagelist.result.slice(6, 16);
+
+    for (let i = 0; i < datasets.length; i++) {
+      const dataset = datasets[i];
+      const enhancedDataset = enhanceTitleImg(dataset, null, categoryCards);
+
+      expect(enhancedDataset).toBeDefined();
+      expect(enhancedDataset).not.toBe('');
+      expect(enhancedDataset.categoryColor).toBeDefined();
+      expect(enhancedDataset.categoryColor).not.toBe('');
+    }
+
+  });
+
+  // it('with dataset but no background images', () => {
+  //   const dataset = packagelist.result[6];
+
+  //   const enhancedDataset = enhanceTitleImg(dataset, null, categoryCards);
+
+  //   expect(enhancedDataset).toBeDefined();
+  //   expect(enhancedDataset).not.toBe('');
+  //   expect(enhancedDataset.categoryColor).toBeDefined();
+  //   expect(enhancedDataset.categoryColor).not.toBe('');
+  // });
+
 });
 
 describe('metaDataFactory - formatDate', () => {
