@@ -86,7 +86,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-11-03 09:37:54
+ * Last modified  : 2020-11-03 12:50:27
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -266,10 +266,87 @@ export default {
       appBGImage: 'appBGImage',
       outdatedVersion: 'outdatedVersion',
       newVersion: 'newVersion',
-      config: 'config',
       notifications: 'notifications',
       maxNotifications: 'maxNotifications',
     }),
+    maintenanceConfig() {
+      return this.config?.maintenanceConfig || {};
+    },
+    maintaincanceBannerVisible() {
+      return this.maintenanceConfig && this.maintenanceConfig.messageActive && this.showMaintenaceBanner;
+    },
+    signinDisabled() {
+      return this.maintenanceConfig && this.maintenanceConfig.signinDisabled;
+    },
+    navItems() {
+      return [
+        {
+          title: 'Home',
+          icon: 'envidat',
+          toolTip: 'Back to the start page',
+          active: false,
+          path: LANDING_PATH,
+          pageName: LANDING_PAGENAME, 
+          disabled: false,
+        },
+        {
+          title: 'Explore',
+          icon: 'search',
+          toolTip: 'Explore research data',
+          active: false,
+          path: BROWSE_PATH,
+          pageName: BROWSE_PAGENAME, 
+          disabled: false,
+        },
+        {
+          title: 'Projects',
+          icon: 'library_books',
+          toolTip: 'Overview of the research projects on envidat',
+          active: false,
+          path: PROJECTS_PATH,
+          pageName: PROJECTS_PAGENAME,
+          subpages: [PROJECT_DETAIL_PAGENAME], 
+          disabled: false,
+        },
+        {
+          title: 'Organizations',
+          icon: 'account_tree',
+          toolTip: 'Overview of the different organizations',
+          active: false,
+          path: 'https://www.envidat.ch/organization',
+          pageName: 'external', 
+          disabled: false,
+        },
+        // { title: 'Guidelines', icon: 'local_library', toolTip: 'Guidlines about the creation of metadata', active: false, path: GUIDELINES_PATH, pageName: GUIDELINES_PAGENAME },
+        // { title: 'Policies', icon: 'policy', toolTip: 'The rules of EnviDat', active: false, path: POLICIES_PATH, pageName: POLICIES_PAGENAME },
+        // { title: 'DMP', icon: 'menu_book', toolTip: 'Template for a Data Management Plan', active: false, path: DMP_PATH, pageName: DMP_PAGENAME },
+        {
+          title: 'Sign In',
+          icon: 'person',
+          toolTip: 'Sign in to management research data',
+          active: false,
+          path: 'https://www.envidat.ch/user/reset',
+          pageName: 'external', 
+          disabled: this.signinDisabled,
+        },
+        {
+          title: 'About',
+          icon: 'info',
+          toolTip: 'What is EnviDat and who is behind it?',
+          active: false,
+          path: ABOUT_PATH,
+          pageName: ABOUT_PAGENAME,
+          disabled: false,
+        },
+        // { title: 'Contact', icon: 'contact_support', toolTip: 'Do you need support?', active: false },
+        {
+          title: 'Menu',
+          icon: 'menu',
+          active: false,
+          disabled: false,
+        },
+      ];
+    },
     loading() {
       return this.loadingMetadatasContent || this.searchingMetadatasContent || this.isFilteringContent
           || this.projectsLoading || this.policiesLoading || this.guidelinesLoading;
@@ -360,19 +437,7 @@ export default {
     NavToolbarZIndex: 1150,
     NavigationZIndex: 1100,
     NotificationZIndex: 1500,
-    navItems: [
-      { title: 'Home', icon: 'envidat', toolTip: 'Back to the start page', active: false, path: LANDING_PATH, pageName: LANDING_PAGENAME },
-      { title: 'Explore', icon: 'search', toolTip: 'Explore research data', active: false, path: BROWSE_PATH, pageName: BROWSE_PAGENAME },
-      { title: 'Projects', icon: 'library_books', toolTip: 'Overview of the research projects on envidat', active: false, path: PROJECTS_PATH, pageName: PROJECTS_PAGENAME, subpages: [PROJECT_DETAIL_PAGENAME] },
-      { title: 'Organizations', icon: 'account_tree', toolTip: 'Overview of the different organizations', active: false, path: 'https://www.envidat.ch/organization', pageName: 'external' },
-      // { title: 'Guidelines', icon: 'local_library', toolTip: 'Guidlines about the creation of metadata', active: false, path: GUIDELINES_PATH, pageName: GUIDELINES_PAGENAME },
-      // { title: 'Policies', icon: 'policy', toolTip: 'The rules of EnviDat', active: false, path: POLICIES_PATH, pageName: POLICIES_PAGENAME },
-      // { title: 'DMP', icon: 'menu_book', toolTip: 'Template for a Data Management Plan', active: false, path: DMP_PATH, pageName: DMP_PAGENAME },
-      { title: 'Sign In', icon: 'person', toolTip: 'Sign in to management research data', active: false, path: 'https://www.envidat.ch/user/reset', pageName: 'external' },
-      { title: 'About', icon: 'info', toolTip: 'What is EnviDat and who is behind it?', active: false, path: ABOUT_PATH, pageName: ABOUT_PAGENAME },
-      // { title: 'Contact', icon: 'contact_support', toolTip: 'Do you need support?', active: false },
-      { title: 'Menu', icon: 'menu', active: false },
-    ],
+    showMaintenaceBanner: true,
   }),
 };
 </script>
