@@ -171,7 +171,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-10-29 14:37:32
+ * Last modified  : 2020-11-03 23:08:27
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -278,7 +278,9 @@ export default {
       return listWithoutPins;
     },
     pinnedList() {
-      if (!this.showPinnedElements) return [];
+      if (!this.showPinnedElements) {
+        return [];
+      }
 
       return this.pinnedIds;
     },
