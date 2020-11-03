@@ -31,13 +31,24 @@
                             :modeCloseCallback="catchModeClose" />
 
     <v-main>
+
       <v-container class="pa-2 pa-sm-3 fill-height"
                     fluid
                     v-on:scroll="updateScroll()"
                     ref="appContainer"
                     :style="pageStyle" >
 
-        <v-row class="fill-height" >
+        <v-row v-if="maintaincanceBannerVisible"
+                no-gutters
+                class="pb-2">
+          <v-col>
+            <TextBanner :text="maintenanceConfig.message"
+                        confirmText="Okay"
+                        :confirmClick="() => { showMaintenaceBanner = false }" />
+          </v-col>
+        </v-row>
+
+        <v-row no-gutters>
           <v-col class="mx-0 py-0"
                   cols="12" >
 
@@ -52,6 +63,7 @@
       <v-dialog v-model="showReloadDialog"
                 persistent
                 max-width="300">
+
         <ConfirmTextCard title="New Version Available!"
                           :text="dialogVersionText()"
                           confirmText="Reload"
@@ -59,16 +71,6 @@
                           cancelText="Cancel"
                           :cancelClick="() => { reloadDialogCanceled = true }"
                           />
-
-        <!-- <v-card>
-          <v-card-title class="headline">New Version Available!</v-card-title>
-          <v-card-text>{{ dialogVersionText() }}</v-card-text>
-          <v-card-actions>
-            <v-spacer />
-            <v-btn color="green darken-1" flat @click="reloadApp()">Reload</v-btn>
-            <v-btn color="green darken-1" flat @click="reloadDialogCanceled = true">Cancel</v-btn>
-          </v-card-actions>
-        </v-card> -->
 
       </v-dialog>
     </v-main>
@@ -84,7 +86,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-10-29 15:16:01
+ * Last modified  : 2020-11-03 09:37:54
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -124,6 +126,7 @@ import TheNavigation from '@/components/Navigation/TheNavigation';
 import TheNavigationToolbar from '@/components/Navigation/TheNavigationToolbar';
 import NotificationCard from '@/components/Cards/NotificationCard';
 import ConfirmTextCard from '@/components/Cards/ConfirmTextCard';
+import TextBanner from '@/components/Layouts/TextBanner';
 import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
 
 export default {
@@ -242,8 +245,9 @@ export default {
   },
   computed: {
     ...mapState([
+      'config',
       'webpIsSupported',
-      ]),
+    ]),
     ...mapGetters({
       metadataIds: `${METADATA_NAMESPACE}/metadataIds`,
       metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
@@ -335,6 +339,7 @@ export default {
     TheNavigationToolbar,
     NotificationCard,
     ConfirmTextCard,
+    TextBanner,
   },
   watch: {
     notifications() {
