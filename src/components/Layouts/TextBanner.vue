@@ -17,8 +17,8 @@
     <template v-slot:actions>
       <BaseRectangleButton v-if="confirmText"
                             marginClass="mx-1"
+                            color="secondary"
                             :buttonText="confirmText"
-                            :isFlat="true"
                             @clicked="confirmClick" />
 
       <BaseRectangleButton v-if="cancelText"
@@ -40,7 +40,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00 
- * Last modified  : 2020-11-03 09:39:20
+ * Last modified  : 2020-11-03 12:53:38
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package. 
