@@ -24,11 +24,6 @@
     {
       "title": "WSL",
       "text": "The Swiss Federal Institute for Forest, Snow and Landscape Research is concerned with the use, development and protection of natural and urban spaces. The focus of our research is on solving problems to do with the responsible use of landscapes and forests and a prudent approach to natural hazards, especially those common in mountainous countries. WSL occupies a leading position internationally in these research areas. We also provide groundwork for sustainable environmental policies in Switzerland. <p><a href='https://www.wsl.ch' target='_blank' onclick='event.stopPropagation();' >For more information have a look at the Website of WSL</a></p>"
-    },
-    {
-      "title": "A new thing",
-      "text": "For new entries which the hardcoded defaults aren't being applied, you need to provide the img as a url.",
-      "img": "http://localhost:8080/static/img/mission_small.658e5ba7.webp"
     }
   ],
   "metadataConfig": {
