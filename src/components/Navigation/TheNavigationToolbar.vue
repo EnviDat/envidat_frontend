@@ -4,25 +4,28 @@
               color="white"
               :height="$vuetify.breakpoint.xsOnly ? 50 : 36" >
 
-    <v-row class="pa-0" >
+    <v-container fluid>
 
-      <v-col v-if="hasModeData" >
-        <ModeView :mode="mode"
-                  :compact="compact"
-                  :closeCallback="modeCloseCallback"/>
-      </v-col>
+      <v-row class="pa-0" >
+        <v-col v-if="hasModeData" >
+          <ModeView :mode="mode"
+                    :compact="compact"
+                    :closeCallback="modeCloseCallback"/>
+        </v-col>
 
-      <v-col v-if="userIsSignedIn">
-        <user-avatar v-if="$vuetify.breakpoint.smAndUp"
-                    :clickCallback="avatarClickCallback" />
-      </v-col>
+        <v-col v-if="userIsSignedIn">
+          <user-avatar v-if="$vuetify.breakpoint.smAndUp"
+                      :clickCallback="avatarClickCallback" />
+        </v-col>
 
-      <v-progress-linear v-show="loading"
-                         indeterminate
-                         style="position: absolute; left: 0; bottom: 0;"
-                         height="2"
-                         color="primary" />
-    </v-row>
+        <v-progress-linear v-show="loading"
+                          indeterminate
+                          style="position: absolute; left: 0; bottom: 0;"
+                          height="2"
+                          color="primary" />
+      </v-row>
+
+    </v-container>
 
 
   </v-app-bar>
