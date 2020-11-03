@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2020-10-22 11:30:49
+ * Last modified  : 2020-11-03 12:01:32
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -62,7 +62,6 @@ import {
 } from '@/factories/metadataConsts';
 
 import { checkWebpFeature } from '@/factories/enhancementsFactory';
-import categoryCards from '@/store/categoryCards';
 import { extractAuthorsMap } from '@/factories/authorFactory';
 import { solrResultToCKANJSON } from '@/factories/apiFactory';
 import { enhanceMetadataFromExtras } from '@/factories/modeFactory';
@@ -76,6 +75,7 @@ function enhanceMetadatas(store, datasets) {
   // const rootBGImgs = store.rootState?.getters?.cardBGImages;
   let cardBGImgs = store.state.cardBGImages; // || rootBGImgs;
   cardBGImgs = cardBGImgs || getCardBackgrounds(checkWebpFeature());
+  const categoryCards = store.state.categoryCards;
   const enhancedContent = {};
 
   for (let i = 0; i < datasets.length; i++) {
