@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03
- * Last modified  : 2020-10-22 14:37:53
+ * Last modified  : 2020-11-03 22:53:45
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -68,15 +68,19 @@ export function guessTagCategory(tags) {
     const name = element.name;
 
     switch (name) {
-      case name.includes('HAZARD') || name.includes('ACCIDENTS') || name.includes('FATALITIES'):
+      case name.includes('HAZARD'):
+      case name.includes('ACCIDENTS'):
+      case name.includes('FATALITIES'):
         return HAZARD;
       case name.includes('DIVERSITY'):
         return DIVERSITY;
       case name.includes('FOREST'):
         return FOREST;
-      case name.includes('SNOW') || name.includes('AVALANCHE'):
+      case name.includes('SNOW'):
+      case name.includes('AVALANCHE'):
         return SNOW;
-      case name.includes('METEO') || name.includes('CLIMATE'):
+      case name.includes('METEO'):
+      case name.includes('CLIMATE'):
         return METEO;
       case name.includes('LAND'):
         return LAND;

@@ -26,7 +26,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-23 15:53:08
+ * Last modified  : 2020-11-03 23:00:42
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -82,10 +82,7 @@ export default {
         'offset-lg-1': true,
       };
 
-      if (this.$vuetify.breakpoint.mdAndUp
-        && this.$vuetify.breakpoint.lgAndDown) {
-        cssClasses['pr-1'] = true;
-      } else if (this.$vuetify.breakpoint.lgAndUp) {
+      if (this.$vuetify.breakpoint.mdAndUp) {
         cssClasses['pr-1'] = true;
       }
 
@@ -96,10 +93,7 @@ export default {
         'col-lg-5': true,
       };
 
-      if (this.$vuetify.breakpoint.mdAndUp
-        && this.$vuetify.breakpoint.lgAndDown) {
-        cssClasses['pl-1'] = true;
-      } else if (this.$vuetify.breakpoint.lgAndUp) {
+      if (this.$vuetify.breakpoint.mdAndUp) {
         cssClasses['pl-1'] = true;
       }
 
