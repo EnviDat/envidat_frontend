@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /**
  * metadata store mutations
  *
@@ -5,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2020-11-03 12:01:32
+ * Last modified  : 2020-11-03 17:39:33
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -101,15 +102,23 @@ export default {
     state.searchedMetadatasContent = {};
     state.currentSearchTerm = searchTerm;
   },
-  [SEARCH_METADATA_SUCCESS](state, payload) {
+  [SEARCH_METADATA_SUCCESS](state, {
+    payload,
+    isLocalSearch = false,
+  }) {
 
-    const convertedPayload = [];
-    for (let i = 0; i < payload.length; i++) {
-      const convertedEntry = solrResultToCKANJSON(payload[i]);
-      convertedPayload.push(convertedEntry);
+    let convertedPayload = [];
+    if (isLocalSearch) {
+      convertedPayload = payload;
+    } else {
+      for (let i = 0; i < payload.length; i++) {
+        const convertedEntry = solrResultToCKANJSON(payload[i]);
+        convertedPayload.push(convertedEntry);
+      }
     }
 
-    state.searchedMetadatasContent = enhanceMetadatas(this, convertedPayload);
+    const enhancedSearchedContent = enhanceMetadatas(this, convertedPayload);
+    this._vm.$set(state, 'searchedMetadatasContent', enhancedSearchedContent);
 
     state.searchingMetadatasContentOK = true;
     state.searchingMetadatasContent = false;
