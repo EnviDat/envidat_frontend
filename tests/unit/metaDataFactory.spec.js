@@ -158,7 +158,7 @@ describe('metaDataFactory - createLicense', () => {
   });
 
   it('with dataset', () => {
-    const dataset = packagelist.result[6];
+    const dataset = packagelist.result[5];
 
     const license = createLicense(dataset);
 
