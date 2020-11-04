@@ -114,13 +114,9 @@ import {
 } from '@/store/mainMutationsConsts';
 import {
   GET_POLICIES,
-} from '@/modules/about/store/policiesMutationsConsts';
-import {
   GET_GUIDELINES,
-} from '@/modules/about/store/guidelinesMutationsConsts';
-import {
   GET_DMP,
-} from '@/modules/about/store/dmpMutationsConsts';
+} from '@/modules/about/store/aboutMutationsConsts';
 
 
 import orga from '@/assets/about/EnviDat_organigram.png';

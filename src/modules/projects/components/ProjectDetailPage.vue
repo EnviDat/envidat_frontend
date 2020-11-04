@@ -79,13 +79,16 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-10-29 14:59:49
+ * Last modified  : 2020-11-04 10:18:27
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
-import { mapGetters } from 'vuex';
+import {
+  mapState,
+  mapGetters,
+} from 'vuex';
 import { PROJECTS_PATH, PROJECT_DETAIL_PAGENAME } from '@/router/routeConsts';
 import {
   SET_APP_BACKGROUND,
@@ -157,11 +160,22 @@ export default {
     next();
   },
   beforeMount() {
-    if (this.projects.length <= 0) {
-      this.$store.dispatch(`${PROJECTS_NAMESPACE}/${GET_PROJECTS}`);
+    if (!this.loadingConfig && !this.loading) {
+      this.loadProjects();
     }
   },
+  watch: {
+    config() {
+      if (!this.loadingConfig && !this.loading) {
+        this.loadProjects();
+      }
+    },
+  },
   computed: {
+    ...mapState([
+      'loadingConfig',
+      'config',
+    ]),
     ...mapGetters({
       loading: `${PROJECTS_NAMESPACE}/loading`,
       projects: `${PROJECTS_NAMESPACE}/projects`,
@@ -169,6 +183,9 @@ export default {
       metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
       allTags: `${METADATA_NAMESPACE}/allTags`,
     }),
+    projectsConfig() {
+      return this.config?.projectsConfig || {};
+    },
     projectsCardsParents() {
       // return this.projects.filter(project => !project.parent);
       const noSubs = [];
@@ -271,6 +288,11 @@ export default {
     },
   },
   methods: {
+    loadProjects() {
+      if (this.projects.length <= 0) {
+        this.$store.dispatch(`${PROJECTS_NAMESPACE}/${GET_PROJECTS}`, this.projectsConfig);
+      }
+    },
     headerHeight() {
       if (this.$refs && this.$refs.header) {
         return this.$refs.header.clientHeight;

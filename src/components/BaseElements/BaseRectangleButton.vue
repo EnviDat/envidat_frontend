@@ -8,7 +8,7 @@
               :class="marginClass"
               :outlined="isOutlined"
               :text="isFlat"
-              :color="color ? color : 'primary'"
+              :color="color"
               :disabled="disabled"
               :href="url"
               target="_blank"
@@ -20,7 +20,7 @@
 
         <v-icon v-if="materialIconName"
                 left
-                :color="iconColor ? iconColor : 'primary'" >
+                :color="iconColor" >
           {{ materialIconName }}
         </v-icon>
 
@@ -56,7 +56,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2020-10-27 22:38:42
+ * Last modified  : 2020-11-03 12:53:05
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

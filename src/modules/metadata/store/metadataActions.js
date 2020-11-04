@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2020-10-20 14:36:14
+ * Last modified  : 2020-11-03 22:18:15
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -55,6 +55,8 @@ import metadataTags from '@/modules/metadata/store/metadataTags';
 const PROXY = process.env.VUE_APP_ENVIDAT_PROXY;
 const API_BASE = process.env.VUE_APP_API_BASE_URL || '/api/action/';
 
+const useTestdata = process.env.VUE_APP_USE_TESTDATA === 'true';
+
 function contentSize(content) {
   return content !== undefined ? Object.keys(content).length : 0;
 }
@@ -72,7 +74,6 @@ function contentFilterAccessibility(value) {
 
   // return true;
 }
-
 
 function contentFilteredByTags(value, selectedTagNames) {
   if (value.tags && tagsIncludedInSelectedTags(value.tags, selectedTagNames)) {
@@ -105,11 +106,61 @@ function createSolrQuery(searchTerm) {
   return solrQuery;
 }
 
+function localSearch(searchTerm, datasets) {
+  const foundDatasets = [];
+
+  let term1 = searchTerm;
+  let term2 = '';
+  const check2Terms = searchTerm.includes(' ');
+
+  if (check2Terms) {
+    const splits = searchTerm.split(' ');
+    term1 = splits[0];
+    term2 = splits[1];
+  }
+
+  for (let i = 0; i < datasets.length; i++) {
+    const dataset = datasets[i];
+
+    const match1 = dataset.title.includes(term1)
+      || dataset.author.includes(term1)
+      || dataset.notes.includes(term1);
+    
+    let match2 = true;
+    if (check2Terms) {
+      match2 = dataset.title.includes(term2)
+        || dataset.author.includes(term2)
+        || dataset.notes.includes(term2);
+    }
+    
+    if (match1 && match2) {
+      foundDatasets.push(dataset);
+    }
+  }
+
+  return foundDatasets;
+}
+
 export default {
-  async [SEARCH_METADATA]({ commit }, searchTerm) {
+  async [SEARCH_METADATA]({ commit }, {
+    searchTerm,
+    metadataConfig = {},
+  }) {
     const originalTerm = searchTerm.trim();
 
     commit(SEARCH_METADATA, searchTerm);
+
+    const loadLocalFile = metadataConfig.loadLocalFile;
+
+    if (loadLocalFile) {
+      const datasets = this.getters[`${METADATA_NAMESPACE}/allMetadatas`];
+      const localSearchResult = localSearch(searchTerm, datasets);
+      commit(SEARCH_METADATA_SUCCESS, {
+        payload: localSearchResult,
+        isLocalSearch: true,
+      });
+      return;
+    }
 
     const solrQuery = createSolrQuery(originalTerm);
 
@@ -124,7 +175,10 @@ export default {
     await axios
       .get(url)
       .then((response) => {
-        commit(SEARCH_METADATA_SUCCESS, response.data.response.docs);
+
+        commit(SEARCH_METADATA_SUCCESS, {
+          payload: response.data.response.docs,
+        });
       })
       .catch((reason) => {
         commit(SEARCH_METADATA_ERROR, reason);
@@ -151,14 +205,21 @@ export default {
       commit(LOAD_METADATA_CONTENT_BY_ID_ERROR, reason);
     });
   },
-  async [BULK_LOAD_METADATAS_CONTENT]({ dispatch, commit }) {
+  async [BULK_LOAD_METADATAS_CONTENT]({ dispatch, commit }, metadataConfig = {}) {
     commit(BULK_LOAD_METADATAS_CONTENT);
 
     let url = urlRewrite('current_package_list_with_resources?limit=1000&offset=0',
                 API_BASE, PROXY);
 
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'development' && useTestdata) {
       url = './testdata/packagelist.json';
+    }
+
+    const localFileUrl = metadataConfig.localFileUrl;
+    const loadLocalFile = metadataConfig.loadLocalFile;
+
+    if (loadLocalFile && localFileUrl) {
+      url = localFileUrl;
     }
 
     await axios.get(url)
@@ -210,7 +271,10 @@ export default {
     }
   },
   // eslint-disable-next-line consistent-return
-  [FILTER_METADATA]({ dispatch, commit }, { selectedTagNames, mode }) {
+  [FILTER_METADATA]({ dispatch, commit }, {
+    selectedTagNames = [],
+    mode,
+  }) {
     commit(FILTER_METADATA);
 
     const mergedWithHiddenNames = getSelectedTagsMergedWithHidden(mode, selectedTagNames);
@@ -231,18 +295,23 @@ export default {
           content = Object.values(searchContent);
         }
       } else {
-        const metadatasContent = this.getters[`${METADATA_NAMESPACE}/metadatasContent`];
-        content = Object.values(metadatasContent);
+        // const metadatasContent = this.getters[`${METADATA_NAMESPACE}/metadatasContent`];
+        // content = Object.values(metadatasContent);
+        content = this.getters[`${METADATA_NAMESPACE}/allMetadatas`];
       }
 
-      const filteredContent = [];
+      let filteredContent = [];
 
-      for (let i = 0; i < content.length; i++) {
-        const entry = content[i];
+      if (selectedTagNames.length > 0) {
+        for (let i = 0; i < content.length; i++) {
+          const entry = content[i];
 
-        if (contentFilteredByTags(entry, selectedTagNames)) {
-          filteredContent.push(entry);
+          if (contentFilteredByTags(entry, selectedTagNames)) {
+            filteredContent.push(entry);
+          }
         }
+      } else {
+        filteredContent = content;
       }
 
       commit(FILTER_METADATA_SUCCESS, filteredContent);

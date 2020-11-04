@@ -62,13 +62,16 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-10-13 23:07:45
+ * Last modified  : 2020-11-03 17:20:56
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
-import { mapGetters } from 'vuex';
+import {
+  mapState,
+  mapGetters,
+} from 'vuex';
 import { PROJECTS_PAGENAME, PROJECT_DETAIL_PAGENAME } from '@/router/routeConsts';
 import { SET_APP_BACKGROUND, SET_CURRENT_PAGE } from '@/store/mainMutationsConsts';
 
@@ -100,17 +103,33 @@ export default {
    * because of the scrolling is set from the browsePage or metaDetailPage
    */
   beforeMount() {
-    this.$store.dispatch(`${PROJECTS_NAMESPACE}/${GET_PROJECTS}`);
+    if (!this.loadingConfig && !this.loading) {
+      this.loadProjects();
+    }
   },
   mounted() {
     window.scrollTo(0, 0);
   },
+  watch: {
+    config() {
+      if (!this.loadingConfig && !this.loading) {
+        this.loadProjects();
+      }
+    },
+  },
   computed: {
+    ...mapState([
+      'loadingConfig',
+      'config',
+    ]),
     ...mapGetters({
       projects: `${PROJECTS_NAMESPACE}/projects`,
       loading: `${PROJECTS_NAMESPACE}/loading`,
       projectsCardsParents: `${PROJECTS_NAMESPACE}/projectsCardsParents`,
     }),
+    projectsConfig() {
+      return this.config?.projectsConfig || {};
+    },
     missionImg() {
       const imgPath = this.$vuetify.breakpoint.mdAndUp ? 'projects/mission' : 'about/mission_small';
       return this.mixinMethods_getWebpImage(imgPath, this.$store.state);
@@ -121,6 +140,9 @@ export default {
     },
   },
   methods: {
+    loadProjects() {
+      this.$store.dispatch(`${PROJECTS_NAMESPACE}/${GET_PROJECTS}`, this.projectsConfig);
+    },
     onCardClick(projectId) {
       this.$store.commit(`${PROJECTS_NAMESPACE}/${SET_PROJECTDETAIL_PAGE_BACK_URL}`, this.$route);
 

@@ -9,7 +9,7 @@
           {{ METADATA_RESOURCES_TITLE }}
         </v-col>
 
-        <v-col class="shrink" >
+        <v-col class="shrink resourcesIcons" >
           <base-icon-count-view v-if="!showPlaceholder && resources && resources.length > 0"
                                 :count="resources.length"
                                 :icon-string="fileIcon" />
@@ -47,6 +47,7 @@
                           :dateCreatedIcon="dateCreatedIcon"
                           :lastModifiedIcon="lastModifiedIcon"
                           :twoColumnLayout="twoColumnLayout"
+                          :downloadActive="resourcesConfig.downloadActive"
                           @clicked="resClicked(res)" />
         </v-col>
       </v-row>
@@ -68,7 +69,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-10-20 12:02:25
+ * Last modified  : 2020-11-04 11:12:21
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -103,6 +104,9 @@ export default {
     },
     resources() {
       return this.mixinMethods_getGenericProp('resources');
+    },
+    resourcesConfig() {
+      return this.mixinMethods_getGenericProp('resourcesConfig', {});
     },
     twoColumnLayout() {
       return this.mixinMethods_getGenericProp('twoColumnLayout');
@@ -148,6 +152,10 @@ export default {
     max-height: 750px;
     overflow-y: auto !important;
     scrollbar-width: thin;
+  }
+
+  .resourcesIcons {
+    opacity: 0.5;
   }
 
 </style>

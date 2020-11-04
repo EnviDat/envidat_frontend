@@ -11,13 +11,13 @@
     </v-btn>
 
   <v-navigation-drawer app
-                       :permanent="!smallScreen"
+                        :permanent="!smallScreen"
                         clipped
-                       :mini-variant="mini"
-                       :value="show"
-                       @change="setShow"
-                       @input="onInput"
-                       overlay-color="highlight"
+                        :mini-variant="mini"
+                        :value="show"
+                        @change="setShow"
+                        @input="onInput"
+                        overlay-color="highlight"
                         mini-variant-width="60"
                         width="190" >
 
@@ -26,6 +26,8 @@
       <v-list-item v-for="(item, index) in navItemsMenuExcluded"
                     :key="index"
                     link
+                    :color="item.disabled ? 'grey' : 'primary'"                    
+                    :disabled="item.disabled"
                     :class="`${item.icon === 'envidat' ? mini ? 'px-2' : 'px-3' : '' }`"
                     @click.stop="itemClick(item)" >
 
@@ -59,6 +61,7 @@
         </v-list-item-content>
 
         <v-list-item-icon v-if="item.icon !== 'envidat'"
+                          :color="item.disabled ? 'grey' : 'primary'"
                           @click.stop="itemClick(item)" >
                           <!-- @click="item.icon === 'menu' ? item.active = !item.active : itemClick(item)" > -->
 
@@ -68,7 +71,7 @@
             <template v-slot:activator="{ on }">
 
               <v-icon v-on="on"
-                  :color="item.active ? 'accent' : 'secondary'">
+                      :color="item.disabled ? 'grey' : item.active ? 'accent' :  'secondary'" >
                 {{ item.icon }}
               </v-icon>
             </template>
@@ -85,11 +88,14 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item link @click.stop="setShow(!show)">
+      <v-list-item link
+                    @click.stop="setShow(!show)">
         <v-list-item-icon >
-          <v-icon color="primary">
+
+          <v-icon color="secondary">
             {{ mini ? 'chevron_right' : 'chevron_left' }}
           </v-icon>
+
         </v-list-item-icon>
       </v-list-item>
 
@@ -129,18 +135,6 @@ export default {
       });
 
       return actives;
-    },
-    menuItem() {
-      let menuItem = { active: true };
-
-      this.navItems.forEach((el) => {
-        if (el.icon === 'menu') {
-          menuItem = el;
-        }
-      });
-
-      // return default with active true so all items will be shown
-      return menuItem;
     },
   },
   methods: {

@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-10-23 16:36:41
+ * Last modified  : 2020-10-29 20:54:09
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -15,19 +15,13 @@ import {
   GET_GUIDELINES,
   GET_GUIDELINES_SUCCESS,
   GET_GUIDELINES_ERROR,
-} from '@/modules/about/store/guidelinesMutationsConsts';
-
-import {
   GET_POLICIES,
   GET_POLICIES_SUCCESS,
   GET_POLICIES_ERROR,
-} from '@/modules/about/store/policiesMutationsConsts';
-
-import {
   GET_DMP,
   GET_DMP_SUCCESS,
   GET_DMP_ERROR,
-} from '@/modules/about/store/dmpMutationsConsts';
+} from '@/modules/about/store/aboutMutationsConsts';
 
 import { ADD_USER_NOTIFICATION } from '@/store/mainMutationsConsts';
 import { getSpecificApiError } from '@/factories/notificationFactory';

@@ -31,7 +31,7 @@ module.exports = {
   rules: {
     // don't require .vue extension when importing
     'import/extensions': [
-      'warning',
+      1, // warning
       'always',
       {
         js: 'never',

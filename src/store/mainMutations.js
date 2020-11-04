@@ -4,7 +4,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51 
- * Last modified  : 2020-10-13 23:32:48
+ * Last modified  : 2020-11-03 12:32:35
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -26,6 +26,7 @@ import {
   SET_CONTROLS,
   SET_APP_SCROLL_POSITION,
   SET_BROWSE_SCROLL_POSITION,
+  SET_CONFIG,
   SET_CONFIG_SUCCESS,
   SET_CONFIG_ERROR,
   CHECK_FRONTEND_VERSION,
@@ -34,6 +35,24 @@ import {
   HIDE_NOTIFICATIONS,
 } from './mainMutationsConsts';
 
+function disablingCategoryCards(config, categoryCards) {
+  if (!categoryCards) {
+    return;
+  }
+
+  const signinDisabled = config && config.maintenanceConfig && config.maintenanceConfig.signinDisabled;
+
+  if (signinDisabled) {
+    for (let i = 0; i < categoryCards.length; i++) {
+      const card = categoryCards[i];
+      const cardType = card.type.toLowerCase();
+
+      if (cardType.includes('login') || cardType.includes('signin')) {
+        card.disabled = true;
+      }
+    }
+  }
+}
 
 export default {
   [SET_APP_BACKGROUND](state, bgImg) {
@@ -81,10 +100,17 @@ export default {
   [SET_BROWSE_SCROLL_POSITION](state, payload) {
     state.browseScrollPosition = payload;
   },
+  [SET_CONFIG](state) {
+    state.loadingConfig = false;
+  },
   [SET_CONFIG_SUCCESS](state, payload) {
+    state.loadingConfig = false;
     state.config = payload;
+
+    disablingCategoryCards(state.config, state.categoryCards);
   },
   [SET_CONFIG_ERROR](state, reason) {
+    state.loadingConfig = true;
     const notificationObj = getSpecificApiError('Config could not ge loaded!', reason);
     this.commit(ADD_USER_NOTIFICATION, notificationObj);
   },

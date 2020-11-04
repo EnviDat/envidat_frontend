@@ -35,7 +35,6 @@
         </v-col>
       </v-row>
     </v-container>
-    <!-- </v-card-title> -->
 
     <v-card-text py-2 
                   :class="{['cardText'] : $vuetify.breakpoint.mdAndUp,
@@ -44,43 +43,40 @@
                   }" >
 
       <v-container fluid class="pa-0 fill-height" >
-      <v-row v-if="!compactLayout"
-              no-gutters >
-        <v-col cols="12" >
-          {{ truncatedSubtitle }}
-        </v-col>
-      </v-row>
 
-      <v-row >
-        <v-col cols="12">
-          <v-spacer></v-spacer>
-        </v-col>
-      </v-row>
+        <v-row v-if="!compactLayout"
+                no-gutters
+                class="pb-2" >
+          <v-col cols="12" >
+            {{ truncatedSubtitle }}
+          </v-col>
+        </v-row>
 
-      <v-row v-if="tags"
-              no-gutters >
-        <v-col v-for="(tag, index) in tags.slice (0, maxTagNumber)"
-                :key="index"
-                class="shrink" >
+        <v-row v-if="tags"
+                no-gutters >
+          <v-col v-for="(tag, index) in tags.slice (0, maxTagNumber)"
+                  :key="index"
+                  class="shrink" >
 
-            <tag-chip class="py-0"
-                      :name="tag.name"
-                      :selectable="true"
-                      :color="tag.color"
-                      @clicked="catchTagClicked($event, tag.name)" />
+              <tag-chip class="py-0"
+                        :name="tag.name || tag"
+                        :selectable="true"
+                        :color="tag.color"
+                        @clicked="catchTagClicked(tag.name)" />
 
-        </v-col>
-        <v-col v-if="maxTagsReached"
-                class="shrink" >
-            <tag-chip class="py-0"
-                      name="..." />
+          </v-col>
+          <v-col v-if="maxTagsReached"
+                  class="shrink" >
+              <tag-chip class="py-0"
+                        name="..." />
 
-        </v-col>
-      </v-row>
+          </v-col>
+        </v-row>
+
       </v-container>
     </v-card-text>
 
-    <v-card-actions class="ma-0 py-0 px-2"
+    <v-card-actions class="ma-0 py-0 px-2 cardIcons"
                     style="position: absolute; bottom: 0px; right: 5px;" >
 
       <v-container fluid class="pa-0">        
@@ -98,7 +94,17 @@
           <base-icon-count-view :count="resourceAmount"
                                 :icon-string="fileIconString" />
         </v-col>
+
       </v-row>
+
+      <v-row v-if="geoJSONIcon"
+              justify="end" >
+        <v-col class="pa-0" >
+          <base-icon-label-view :icon="geoJSONIcon" />
+
+        </v-col>
+      </v-row>
+
       </v-container>
 
     </v-card-actions>
@@ -115,7 +121,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2020-10-27 13:37:25
+ * Last modified  : 2020-11-04 14:00:21
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -125,6 +131,7 @@ import strip from 'strip-markdown';
 
 import TagChip from '@/components/Cards/TagChip';
 import BaseIconCountView from '@/components/BaseElements/BaseIconCountView';
+import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import { getModeData } from '@/factories/modeFactory';
 
@@ -152,6 +159,7 @@ export default {
   components: {
     TagChip,
     BaseIconCountView,
+    BaseIconLabelView,
     BaseIconButton,
   },
   props: {
@@ -171,6 +179,7 @@ export default {
     fileIconString: String,
     lockedIconString: String,
     unlockedIconString: String,
+    geoJSONIcon: String,
     categoryColor: String,
     mode: String,
   },
@@ -193,34 +202,40 @@ export default {
       return `background-color: ${this.categoryColor}`;
     },
     maxTagsReached() {
-      return this.tags !== undefined && this.tags.length > this.maxTagNumber;
+      return this.tags && this.tags.length > this.maxTagNumber;
     },
     maxTagNumber() {
-      let textLength = 0;
       let numberOfTags = 0;
 
-      if (this.tags !== undefined) {
-        for (let i = 0; i < this.tags.length; i++) {
-          if (this.tags[i].name !== undefined) {
-            textLength += this.tags[i].name.length + 1;
+      if (!this.tags) {
+        return numberOfTags;
+      }
 
-            if ((this.flatLayout && textLength >= this.flatTagtextLength)
-              || ((this.compactLayout || this.$vuetify.breakpoint.smAndDown) && textLength >= this.compactTagtextLength)
-              || textLength >= this.tagtextLength) {
-              break;
-            }
+      let textLength = 0;
 
-            numberOfTags++;
-          }
+      for (let i = 0; i < this.tags.length; i++) {
+        const name = this.tags[i].name || this.tags[i];
+
+        textLength += name.length + 1;
+
+        if (this.flatAndMaxReached(textLength)
+          || this.compactAndMaxReached(textLength)
+          || ((!this.isCompactLayout && !this.flatLayout) && textLength >= this.tagtextLength)) {
+          break;
         }
+
+        numberOfTags++;
       }
 
       return numberOfTags;
     },
     maxTitleLengthReached() {
       return (this.flatLayout && this.title.length > this.flatTagtextLength)
-      || ((this.compactLayout || this.$vuetify.breakpoint.smAndDown) && this.title.length > this.compactTitleLength)
-      || this.title.length > this.titleLength;
+      || (this.isCompactLayout && this.title.length > this.compactTitleLength)
+      || ((!this.isCompactLayout && !this.flatLayout) && this.title.length > this.titleLength);
+    },
+    isCompactLayout() {
+      return this.compactLayout || this.$vuetify.breakpoint.smAndDown;
     },
     truncatedTitle() {
       let maxLength = this.titleLength;
@@ -309,6 +324,12 @@ export default {
   created() {
   },
   methods: {
+    flatAndMaxReached(textLength) {
+      return this.flatLayout && textLength >= this.flatTagtextLength;
+    },
+    compactAndMaxReached(textLength) {
+      return (this.compactLayout || this.$vuetify.breakpoint.smAndDown) && textLength >= this.compactTagtextLength;
+    },
     cardClick() {
       let detailParam = this.name;
       if (!detailParam) {
@@ -332,12 +353,12 @@ export default {
     flatTitleLength: 120,
     descriptionLength: 280,
     compactDescriptionLength: 130,
-    flatDescriptionLength: 500,
+    flatDescriptionLength: 600,
     tagtextLength: 100,
-    compactTagtextLength: 60,
-    flatTagtextLength: 170,
+    compactTagtextLength: 160,
+    flatTagtextLength: 70,
     blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
-    whiteTopToBottom: 'rgba(255,255,255, 0.7) 0%, rgba(255,255,255, 0.99) 70%',
+    whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
   }),
 };
 </script>
@@ -389,5 +410,8 @@ export default {
     overflow: hidden;
   }
 
+  .cardIcons {
+    opacity: 0.5;
+  }
 
 </style>
