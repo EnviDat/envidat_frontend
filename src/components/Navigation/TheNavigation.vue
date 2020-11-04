@@ -136,18 +136,6 @@ export default {
 
       return actives;
     },
-    menuItem() {
-      let menuItem = { active: true };
-
-      this.navItems.forEach((el) => {
-        if (el.icon === 'menu') {
-          menuItem = el;
-        }
-      });
-
-      // return default with active true so all items will be shown
-      return menuItem;
-    },
   },
   methods: {
     setShow(value) {
