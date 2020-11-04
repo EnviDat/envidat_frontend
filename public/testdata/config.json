@@ -51,6 +51,6 @@
   "maintenanceConfig": {
     "signinDisabled": true,
     "messageActive": true,
-    "message": "We are currently doing maintenance on the server and EnviDat is now in <strong>read-only mode</strong>. Data download and user functionalities are <strong>currently disabled</strong>."
+    "message": "We are currently doing maintenance on the server and EnviDat is now in <strong>read-only mode</strong>. Data download, upload and <strong>user data management functionalities are currently disabled</strong>."
   }
 }
