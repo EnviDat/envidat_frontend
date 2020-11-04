@@ -3,7 +3,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2019-10-24 11:04:02
+ * Last modified  : 2020-11-04 11:39:07
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -19,6 +19,10 @@ import MetadataCardPlaceholder from '@/components/Cards/MetadataCardPlaceholder.
 import fileIcon from '@/assets/icons/file.png';
 import lockedIcon from '@/assets/icons/lockClosed.png';
 import unlockedIcon from '@/assets/icons/lockOpen.png';
+import pinIcon from '@/assets/icons/marker.png';
+import multiPinIcon from '@/assets/icons/markerMulti.png';
+import polygonIcon from '@/assets/icons/polygons.png';
+
 
 // metadata gets enhance in the storybook config
 import metadataCards from './js/metadata';
@@ -41,6 +45,27 @@ export const methods = {
     }
 
     return false;
+  },
+  geoJSONIcon(metadata) {
+    // const spatialJSON = JSON.parse(metadata.spatial);
+    if (!metadata || !metadata.spatial) {
+      return null;
+    }
+    const spatialJSON = metadata.spatial;
+
+    if (spatialJSON.type.toLowerCase() === 'point') {
+      return this.pinIcon;
+    }
+
+    if (spatialJSON.type.toLowerCase() === 'multipoint') {
+      return this.multiPinIcon;
+    }
+
+    if (spatialJSON.type.toLowerCase() === 'polygon') {
+      return this.polygonIcon;
+    }
+
+    return null;
   },
   onCardClick: action('clicked on card'),
   onTagClick: action('clicked on tag'),
@@ -71,6 +96,7 @@ storiesOf('3 Cards / Metadata Cards', module)
           :lockedIconString="lockedIcon"
           :unlockedIconString="lockedIcon"
           :categoryColor="metadata.categoryColor"
+          :geoJSONIcon="geoJSONIcon(metadata)"
           @clickedEvent="onCardClick"
           @clickedTag="onTagClick"
         />
@@ -165,6 +191,9 @@ storiesOf('3 Cards / Metadata Cards', module)
       fileIcon,
       lockedIcon,
       unlockedIcon,
+      pinIcon,
+      multiPinIcon,
+      polygonIcon,
     }),
   }))
   .add('Flat collection', () => ({

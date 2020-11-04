@@ -35,7 +35,6 @@
         </v-col>
       </v-row>
     </v-container>
-    <!-- </v-card-title> -->
 
     <v-card-text py-2 
                   :class="{['cardText'] : $vuetify.breakpoint.mdAndUp,
@@ -60,7 +59,7 @@
                   class="shrink" >
 
               <tag-chip class="py-0"
-                        :name="tag.name"
+                        :name="tag.name || tag"
                         :selectable="true"
                         :color="tag.color"
                         @clicked="catchTagClicked(tag.name)" />
@@ -77,7 +76,7 @@
       </v-container>
     </v-card-text>
 
-    <v-card-actions class="ma-0 py-0 px-2"
+    <v-card-actions class="ma-0 py-0 px-2 cardIcons"
                     style="position: absolute; bottom: 0px; right: 5px;" >
 
       <v-container fluid class="pa-0">        
@@ -95,7 +94,16 @@
           <base-icon-count-view :count="resourceAmount"
                                 :icon-string="fileIconString" />
         </v-col>
+
       </v-row>
+
+      <v-row v-if="geoJSONIcon" >
+        <v-col class="pa-0" >
+          <base-icon-label-view :icon="geoJSONIcon" />
+
+        </v-col>
+      </v-row>
+
       </v-container>
 
     </v-card-actions>
@@ -112,7 +120,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2020-11-04 09:41:14
+ * Last modified  : 2020-11-04 11:15:08
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -122,6 +130,7 @@ import strip from 'strip-markdown';
 
 import TagChip from '@/components/Cards/TagChip';
 import BaseIconCountView from '@/components/BaseElements/BaseIconCountView';
+import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import { getModeData } from '@/factories/modeFactory';
 
@@ -149,6 +158,7 @@ export default {
   components: {
     TagChip,
     BaseIconCountView,
+    BaseIconLabelView,
     BaseIconButton,
   },
   props: {
@@ -168,6 +178,7 @@ export default {
     fileIconString: String,
     lockedIconString: String,
     unlockedIconString: String,
+    geoJSONIcon: String,
     categoryColor: String,
     mode: String,
   },
@@ -202,7 +213,7 @@ export default {
       let textLength = 0;
 
       for (let i = 0; i < this.tags.length; i++) {
-        const name = this.tags[i].name;
+        const name = this.tags[i].name || this.tags[i];
 
         textLength += name.length + 1;
 
