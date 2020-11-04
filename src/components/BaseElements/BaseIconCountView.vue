@@ -90,7 +90,6 @@ export default {
 
 <style >
   .iconCountView {
-    opacity: 0.5;
     /* line-height has to be based on the root (1rem) because of the
     use in ex. v-card-title */
     line-height: 1rem;
