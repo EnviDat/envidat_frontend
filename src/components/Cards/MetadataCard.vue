@@ -97,7 +97,8 @@
 
       </v-row>
 
-      <v-row v-if="geoJSONIcon" >
+      <v-row v-if="geoJSONIcon"
+              justify="end" >
         <v-col class="pa-0" >
           <base-icon-label-view :icon="geoJSONIcon" />
 
@@ -120,7 +121,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2020-11-04 11:15:08
+ * Last modified  : 2020-11-04 14:00:21
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
