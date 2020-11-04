@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2020-11-03 17:39:33
+ * Last modified  : 2020-11-04 11:34:42
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -117,8 +117,7 @@ export default {
       }
     }
 
-    const enhancedSearchedContent = enhanceMetadatas(this, convertedPayload);
-    this._vm.$set(state, 'searchedMetadatasContent', enhancedSearchedContent);
+    state.searchedMetadatasContent = enhanceMetadatas(this, convertedPayload);
 
     state.searchingMetadatasContentOK = true;
     state.searchingMetadatasContent = false;

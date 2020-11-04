@@ -39,7 +39,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-11-03 17:25:43
+ * Last modified  : 2020-11-04 11:33:31
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -321,8 +321,8 @@ export default {
     metadatasContent() {
       this.filterContent();
     },
-    searchingMetadatasContentOK() {
-      if (this.searchingMetadatasContentOK) {
+    searchedMetadatasContent() {
+      if (!this.searchingMetadatasContent && this.searchingMetadatasContentOK) {
         this.filterContent();
       }
     },
