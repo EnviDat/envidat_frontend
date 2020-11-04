@@ -3,7 +3,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-10-27 20:48:14
+ * Last modified  : 2020-11-04 15:20:13
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -44,14 +44,12 @@ if (isProd) {
 
   const filePath = `${__dirname}/public/${fileName}`;
 
-  fs.writeFile(filePath, version, (err) => {
-
-    if (err) {
-      return console.log(`Tried to created file ${fileName}. Error: ${err}`);
-    }
-
-    return console.log(`Created version file ${fileName} for easy build version highlight.`);
-  });
+  try {
+    fs.writeFileSync(filePath, version);
+    console.log(`Created version file ${fileName} for easy build version highlight.`);
+  } catch (err) {
+    return console.log(`Tried to created file ${fileName}. Error: ${err}`);
+  }
 }
 
 console.log(`starting ${version} with use of testdata '${process.env.VUE_APP_USE_TESTDATA}' on ${process.env.NODE_ENV}`);
