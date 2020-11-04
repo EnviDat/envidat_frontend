@@ -116,6 +116,7 @@
                         :fileIconString="fileIconString"
                         :lockedIconString="lockedIconString"
                         :unlockedIconString="unlockedIconString"
+                        :geoJSONIcon="getGeoJSONIcon(metadata)"
                         :categoryColor="metadata.categoryColor"
                         @clickedEvent="metaDataClicked"
                         @clickedTag="catchTagClicked" />
@@ -171,7 +172,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-10-29 14:37:32
+ * Last modified  : 2020-11-04 14:20:54
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -181,7 +182,7 @@ import {
   mapState,
   mapGetters,
 } from 'vuex';
-import { METADATA_MODULE_PATH, METADATA_MODULE_PAGENAME, METADATADETAIL_PAGENAME } from '@/router/routeConsts';
+import { BROWSE_PATH, METADATADETAIL_PAGENAME } from '@/router/routeConsts';
 import FilterKeywordsView from '@/components/Filtering/FilterKeywordsView';
 import FilterMapView from '@/components/Filtering/FilterMapView';
 import ControlPanel from '@/components/Filtering/ControlPanel';
@@ -232,6 +233,9 @@ export default {
     this.fileIconString = this.mixinMethods_getIcon('file');
     this.lockedIconString = this.mixinMethods_getIcon('lock2Closed');
     this.unlockedIconString = this.mixinMethods_getIcon('lock2Open');
+    this.pinIcon = this.mixinMethods_getIcon('marker');
+    this.multiPinIcon = this.mixinMethods_getIcon('markerMulti');
+    this.polygonIcon = this.mixinMethods_getIcon('polygons');
   },
   mounted() {
     if (this.defaultListControls && this.defaultListControls.length) {
@@ -278,7 +282,9 @@ export default {
       return listWithoutPins;
     },
     pinnedList() {
-      if (!this.showPinnedElements) return [];
+      if (!this.showPinnedElements) {
+        return [];
+      }
 
       return this.pinnedIds;
     },
@@ -314,6 +320,27 @@ export default {
     },
   },
   methods: {
+    getGeoJSONIcon(metadata) {
+      if (!metadata.location) {
+        return null;
+      }
+
+      const location = metadata.location;
+
+      if (location.isPoint) {
+        return this.pinIcon;
+      }
+
+      if (location.isMultiPoint) {
+        return this.multiPinIcon;
+      }
+      
+      if (location.isPolygon) {
+        return this.polygonIcon;
+      }
+
+      return null;
+    },
     infiniteHandler($state) {
       const that = this;
       that.vLoading = true;
@@ -373,11 +400,11 @@ export default {
       }
 
       const tagsEncoded = this.mixinMethods_encodeTagForUrl([cardType.toUpperCase()]);
-      this.mixinMethods_additiveChangeRoute(METADATA_MODULE_PATH, '', tagsEncoded);
+      this.mixinMethods_additiveChangeRoute(BROWSE_PATH, '', tagsEncoded);
     },
     catchModeClicked(mode) {
       this.$router.push({
-        path: METADATA_MODULE_PATH,
+        path: BROWSE_PATH,
         query: { mode },
       });
     },
@@ -523,6 +550,9 @@ export default {
     fileIconString: null,
     lockedIconString: null,
     unlockedIconString: null,
+    pinIcon: null,
+    multiPinIcon: null,
+    polygonIcon: null,
     localTags: [],
     virtualListContent: [],
     vLoading: false,
@@ -534,7 +564,6 @@ export default {
     listView: false,
     showMapFilter: false,
     pinnedIds: [],
-    METADATA_MODULE_PAGENAME,
     LISTCONTROL_LIST_ACTIVE,
     LISTCONTROL_MAP_ACTIVE,
     LISTCONTROL_COMPACT_LAYOUT_ACTIVE,

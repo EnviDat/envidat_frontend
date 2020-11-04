@@ -2,6 +2,7 @@
   <v-card ripple
           hover
           raised
+          :disabled="disabled"
           @click.native="clicked" >
     <v-container class="pa-0" >
       <v-row align="center"
@@ -45,7 +46,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-11-28 10:45:20
+ * Last modified  : 2020-11-03 12:38:12
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -61,6 +62,10 @@ export default {
     img: String,
     color: String,
     contain: {
+      type: Boolean,
+      default: false,
+    },
+    disabled: {
       type: Boolean,
       default: false,
     },

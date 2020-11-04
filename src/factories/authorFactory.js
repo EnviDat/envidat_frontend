@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-06-05 14:07:03
- * Last modified  : 2020-10-29 17:38:13
+ * Last modified  : 2020-10-29 21:09:18
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -22,7 +22,7 @@ const authorDataCreditLevels = [
 
 export function getAuthorName(author) {
   const fullName = `${author.given_name ? author.given_name.trim() : ''} ${author.name ? author.name.trim() : ''}`;
-  return fullName ? fullName.trim() : '';
+  return fullName.trim();
 }
 
 export function getAuthorsString(dataset) {
@@ -139,6 +139,7 @@ export function createAuthors(dataset) {
 
   return authorObjs;
 }
+
 function overwriteDataCredit(author, existingAuthor) {
   const keys = Object.keys(author.data_credit);
 
@@ -163,6 +164,10 @@ function getAuthorKey(author) {
   return author.email || author.fullName ? author.fullName.trim().toLowerCase() : null;
 }
 
+// TODO try using different method and compare performance
+// make 1st loop over the datasets and store the authors on the authorMap
+// then 2nd loop over the authors and do the counting of the datasets and merging 
+// of the dataCredits
 export function extractAuthorsMap(datasets) {
   if (!datasets) { return null; }
 
@@ -174,34 +179,31 @@ export function extractAuthorsMap(datasets) {
 
     const authors = createAuthors(dataset);
 
-    if (authors) {
-      for (let j = 0; j < authors.length; j++) {
-        const author = authors[j];
+    for (let j = 0; j < authors.length; j++) {
+      const author = authors[j];
 
-        const authorKey = getAuthorKey(author);
-        const existingAuthor = authorMap[authorKey];
+      const authorKey = getAuthorKey(author);
+      let existingAuthor = authorMap[authorKey];
 
-        if (existingAuthor) {
-          existingAuthor.datasetCount += author.datasetCount;
+      if (existingAuthor) {
+        existingAuthor.datasetCount += author.datasetCount;
 
-          if (author.data_credit) {
-            if (existingAuthor.data_credit) {
-              overwriteDataCredit(author, existingAuthor);
-            } else {
-              existingAuthor.data_credit = author.data_credit;
-            }
+        if (author.data_credit) {
+          if (existingAuthor.data_credit) {
+            overwriteDataCredit(author, existingAuthor);
+          } else {
+            existingAuthor.data_credit = author.data_credit;
           }
-
-          // console.log('for ' + author.name + ' updated ' + existingAuthor.count);
-          authorMap[authorKey] = existingAuthor;
-        } else {
-          // console.log('for ' + author.name + ' set ' + author.count);
-          authorMap[authorKey] = author;
-          // authorCount++;
         }
+
+        // console.log('for ' + author.name + ' updated ' + existingAuthor.count);
+      } else {
+        // console.log('for ' + author.name + ' set ' + author.count);
+        existingAuthor = author;
+        // authorCount++;
       }
-    // } else {
-      // console.log(`Dataset ${dataset.title} id ${dataset.id} has no authors?`);
+
+      authorMap[authorKey] = existingAuthor;
     }
 
     // console.log(`extracted ${authorCount} authors`);

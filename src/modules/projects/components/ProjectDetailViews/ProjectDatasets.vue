@@ -13,18 +13,18 @@
                       :showMapFilter="showMapFilter"
                       :mapFilteringPossible="mapFilteringPossible"
                       :placeHolderAmount="placeHolderAmount"
-                      @clickedTag="$emit('clickedTag')"
+                      @clickedTag="$emit('clickedTag', $event)"
                       :allTags="allTags"
                       :selectedTagNames="selectedTagNames"
-                      @clickedTagClose="$emit('clickedTagClose')"
-                      @clickedClear="$emit('clickedClear')"
+                      @clickedTagClose="$emit('clickedTagClose', $event)"
+                      @clickedClear="$emit('clickedClear', $event)"
                       :defaultListControls="defaultListControls"
                       :enabledControls="enabledControls"
                       :minMapHeight="mapFilterHeight"
                       :topFilteringLayout="topFilteringLayout"
                       :showSearch="showSearch"
                       :searchCount="listContent.length"
-                      @setScroll="$emit('setScroll')" />
+                      @setScroll="$emit('setScroll', $event)" />
     </v-card-text>
 
     <v-card-text v-if="!hasMetadatas"
@@ -44,7 +44,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-10-29 10:10:45
- * Last modified  : 2020-10-29 14:56:46
+ * Last modified  : 2020-11-04 15:07:21
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

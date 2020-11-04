@@ -23,6 +23,7 @@
                                 :img="card.img"
                                 :color="card.darkColor"
                                 :contain="card.contain"
+                                :disabled="card.disabled"
                                 @click="catchCategoryClicked(card.type)" />
           </v-col>
         </v-row>
@@ -41,7 +42,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2020-07-15 09:25:10
+ * Last modified  : 2020-11-03 12:39:27
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

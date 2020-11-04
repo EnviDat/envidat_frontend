@@ -39,13 +39,16 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-10-29 12:38:00
+ * Last modified  : 2020-11-04 11:33:31
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
-import { mapGetters } from 'vuex';
+import {
+  mapState,
+  mapGetters,
+} from 'vuex';
 import {
   BROWSE_PAGENAME,
   BROWSE_PATH,
@@ -184,7 +187,12 @@ export default {
       } else {
         if (checkSearchTriggering) {
           if (this.searchTerm && this.searchTerm.length > 0) {
-            this.$store.dispatch(`${METADATA_NAMESPACE}/${SEARCH_METADATA}`, this.searchTerm, this.selectedTagNames);
+
+            this.$store.dispatch(`${METADATA_NAMESPACE}/${SEARCH_METADATA}`, {
+              searchTerm: this.searchTerm,
+              metadataConfig: this.metadataConfig,
+            });
+
             this.resetScrollPos();
 
             // prevent immediately filtering, the search results
@@ -222,6 +230,9 @@ export default {
     },
   },
   computed: {
+    ...mapState([
+      'config',
+    ]),
     ...mapGetters({
       metadatasContent: `${METADATA_NAMESPACE}/metadatasContent`,
       metadatasContentSize: `${METADATA_NAMESPACE}/metadatasContentSize`,
@@ -244,6 +255,9 @@ export default {
       searchPlaceholderTextSmall: `${METADATA_NAMESPACE}/searchPlaceholderTextSmall`,
       currentSearchTerm: `${METADATA_NAMESPACE}/currentSearchTerm`,
     }),
+    metadataConfig() {
+      return this.config?.metadataConfig || {};
+    },
     enabledControls() {
       let enableds = this.preenabledControls;
 
@@ -307,8 +321,8 @@ export default {
     metadatasContent() {
       this.filterContent();
     },
-    searchingMetadatasContentOK() {
-      if (this.searchingMetadatasContentOK) {
+    searchedMetadatasContent() {
+      if (!this.searchingMetadatasContent && this.searchingMetadatasContentOK) {
         this.filterContent();
       }
     },
