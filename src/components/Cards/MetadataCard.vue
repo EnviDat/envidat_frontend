@@ -115,7 +115,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2020-10-27 13:37:25
+ * Last modified  : 2020-11-04 08:35:10
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -337,7 +337,7 @@ export default {
     compactTagtextLength: 60,
     flatTagtextLength: 170,
     blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
-    whiteTopToBottom: 'rgba(255,255,255, 0.7) 0%, rgba(255,255,255, 0.99) 70%',
+    whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
   }),
 };
 </script>
