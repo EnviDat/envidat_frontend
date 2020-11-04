@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:07:03
- * Last modified  : 2020-11-03 22:53:45
+ * Last modified  : 2020-11-04 09:10:17
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -490,7 +490,9 @@ export function getTagColor(categoryCards, tagName) {
 
   for (let i = 0; i < categoryCards.length; i++) {
     const cat = categoryCards[i];
-    if (tagName.toLowerCase().includes(cat.type)) {
+    const name = tagName.toLowerCase();
+
+    if (name.includes(cat.type) || cat.alias.includes(name)) {
       return cat.darkColor;
     }
   }
