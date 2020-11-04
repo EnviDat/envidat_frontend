@@ -172,7 +172,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-11-04 11:42:58
+ * Last modified  : 2020-11-04 14:20:54
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -182,7 +182,7 @@ import {
   mapState,
   mapGetters,
 } from 'vuex';
-import { METADATA_MODULE_PATH, METADATA_MODULE_PAGENAME, METADATADETAIL_PAGENAME } from '@/router/routeConsts';
+import { BROWSE_PATH, METADATADETAIL_PAGENAME } from '@/router/routeConsts';
 import FilterKeywordsView from '@/components/Filtering/FilterKeywordsView';
 import FilterMapView from '@/components/Filtering/FilterMapView';
 import ControlPanel from '@/components/Filtering/ControlPanel';
@@ -400,11 +400,11 @@ export default {
       }
 
       const tagsEncoded = this.mixinMethods_encodeTagForUrl([cardType.toUpperCase()]);
-      this.mixinMethods_additiveChangeRoute(METADATA_MODULE_PATH, '', tagsEncoded);
+      this.mixinMethods_additiveChangeRoute(BROWSE_PATH, '', tagsEncoded);
     },
     catchModeClicked(mode) {
       this.$router.push({
-        path: METADATA_MODULE_PATH,
+        path: BROWSE_PATH,
         query: { mode },
       });
     },
@@ -564,7 +564,6 @@ export default {
     listView: false,
     showMapFilter: false,
     pinnedIds: [],
-    METADATA_MODULE_PAGENAME,
     LISTCONTROL_LIST_ACTIVE,
     LISTCONTROL_MAP_ACTIVE,
     LISTCONTROL_COMPACT_LAYOUT_ACTIVE,
