@@ -104,6 +104,23 @@ storiesOf('3 Cards / Resource Cards', module)
                         @clicked="onCardClick" />
       </v-col>
 
+      <v-col cols="12" class="pa-2" >
+        Resource Cards with Download disabled
+      </v-col>
+
+      <v-col cols="6" class="pa-2"
+            v-for="(res, index) in metadataCards[2].resources"
+            :key="'cols-6_' + index" >
+
+        <resource-card v-bind="res"
+                        :doiIcon="doiIcon"
+                        :dateCreatedIcon="dateCreatedIcon"
+                        :lastModifiedIcon="lastModifiedIcon"
+                        :fileExtensionIcon="iconFiles"
+                        :downloadActive="false"
+                        @clicked="onCardClick" />
+      </v-col>
+
     </v-row>
     `,
     methods,

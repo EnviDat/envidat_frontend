@@ -124,7 +124,8 @@
                         color="accent"
                         :isElevated="true"
                         :tooltipText="isFile ? 'Download file' : 'Open link'"
-                        :url="url" />
+                        :url="url"
+                        :disabled="!downloadActive" />
     </div>
   </v-card>
 </template>
@@ -138,7 +139,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-10-20 11:56:07
+ * Last modified  : 2020-11-04 09:58:27
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -175,6 +176,10 @@ export default {
     isProtected: Boolean,
     fileExtensionIcon: Map,
     metadataContact: String,
+    downloadActive: {
+      type: Boolean,
+      default: true,
+    },
   },
   data: () => ({
     maxDescriptionLength: 175,

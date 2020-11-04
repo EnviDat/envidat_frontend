@@ -47,6 +47,7 @@
                           :dateCreatedIcon="dateCreatedIcon"
                           :lastModifiedIcon="lastModifiedIcon"
                           :twoColumnLayout="twoColumnLayout"
+                          :downloadActive="resourcesConfig.downloadActive"
                           @clicked="resClicked(res)" />
         </v-col>
       </v-row>
@@ -68,7 +69,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-10-20 12:02:25
+ * Last modified  : 2020-11-04 10:08:36
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -103,6 +104,9 @@ export default {
     },
     resources() {
       return this.mixinMethods_getGenericProp('resources');
+    },
+    resourcesConfig() {
+      return this.mixinMethods_getGenericProp('resourcesConfig', {});
     },
     twoColumnLayout() {
       return this.mixinMethods_getGenericProp('twoColumnLayout');
