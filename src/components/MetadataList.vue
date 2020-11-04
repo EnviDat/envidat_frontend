@@ -116,6 +116,7 @@
                         :fileIconString="fileIconString"
                         :lockedIconString="lockedIconString"
                         :unlockedIconString="unlockedIconString"
+                        :geoJSONIcon="getGeoJSONIcon(metadata)"
                         :categoryColor="metadata.categoryColor"
                         @clickedEvent="metaDataClicked"
                         @clickedTag="catchTagClicked" />
@@ -171,7 +172,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-11-03 23:08:27
+ * Last modified  : 2020-11-04 11:42:58
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -232,6 +233,9 @@ export default {
     this.fileIconString = this.mixinMethods_getIcon('file');
     this.lockedIconString = this.mixinMethods_getIcon('lock2Closed');
     this.unlockedIconString = this.mixinMethods_getIcon('lock2Open');
+    this.pinIcon = this.mixinMethods_getIcon('marker');
+    this.multiPinIcon = this.mixinMethods_getIcon('markerMulti');
+    this.polygonIcon = this.mixinMethods_getIcon('polygons');
   },
   mounted() {
     if (this.defaultListControls && this.defaultListControls.length) {
@@ -316,6 +320,27 @@ export default {
     },
   },
   methods: {
+    getGeoJSONIcon(metadata) {
+      if (!metadata.location) {
+        return null;
+      }
+
+      const location = metadata.location;
+
+      if (location.isPoint) {
+        return this.pinIcon;
+      }
+
+      if (location.isMultiPoint) {
+        return this.multiPinIcon;
+      }
+      
+      if (location.isPolygon) {
+        return this.polygonIcon;
+      }
+
+      return null;
+    },
     infiniteHandler($state) {
       const that = this;
       that.vLoading = true;
@@ -525,6 +550,9 @@ export default {
     fileIconString: null,
     lockedIconString: null,
     unlockedIconString: null,
+    pinIcon: null,
+    multiPinIcon: null,
+    polygonIcon: null,
     localTags: [],
     virtualListContent: [],
     vLoading: false,
