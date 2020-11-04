@@ -1,5 +1,6 @@
 <template>
   <v-card height="165"
+          max-width="750"
           class="elevation-5"
           :color="notification.color">
 
@@ -17,7 +18,11 @@
 
           <v-col cols="12">
             <div style="height: 60px; overflow: hidden scroll;"
-                class="caption"> {{ notification.details }}</div>
+                class="caption">
+              {{ notification.details }}
+              <br />
+              {{ notification.stack }}
+            </div>
           </v-col>
 
         </v-row>
@@ -55,7 +60,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-23 14:38:19
+ * Last modified  : 2020-11-04 17:30:28
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

@@ -4,27 +4,68 @@
 
 # EnviDat Frontend
 Frontend for the Envidat platform which provides environmental research data from researchers of the Swiss Federal Institute for Forest, Snow and Landscape.
-The backend API is base on CKAN. So the respective actions are used to consume the metadata about the research data.
+The backend API is based on CKAN so the respective actions are used to consume the metadata about the research data.
+
+The frontend replaces some of the Features of the ckan ui, but as of version 0.x.x doesn't provide all the features of the ckan ui yet.
 
 # Installtion
-<code>npm install</code>
+After cloning the project, use <code>npm install</code> to install all the dependencies.
 
-If after the install there are still plugins missing use
-<code>npm ci</code>
-
-If it doesn't help they have to be install manually (was once the case for a storybook plugin)
+Local development: <code>npm run serve</code>
+Create a build: <code>npm run build</code>
 
 
 # Usage
-If you'd like to use check the CKAN actions https://docs.ckan.org/en/2.8/api/index.html
-In general you have to change the environment variables in the .env.development / .env.production files
+You **have to change the environment variables** in the .env.development / .env.production files
 
+An example of the .env.development:
 <code>
+  VUE_APP_USE_TESTDATA=true
+  VUE_APP_CONFIG_URL=./testdata/config.json
   VUE_APP_ENVIDAT_PROXY=https://www.envidat.ch
-  VUE_APP_SOLR_PROXY=NULL
 </code>
 
-to point to your CKAN backend.
+When <code>VUE_APP_USE_TESTDATA=true</code> VUE_APP_ENVIDAT_PROXY variable is ignored and the
+local testfiles are being used. So you have to have json files in the /public/testdata/ folder which 
+resembel the result of the ckan actions. Like the action 'current_package_list_with_resources'
+for all the datasets or 'package_show' for a single dataset.
+
+For more details about the actions check '*actions.js' files in the respective modules.
+E.g. './src/modules/meatadata/store/metadataAction.js' for metadata / dataset actions
+'./src/modules/projects/store/projectsAction.js' for projects actions.
+
+For a **productive build** you have to change the VUE_APP_ENVIDAT_PROXY variable to point to your CKAN backend.
+If the VUE_APP_USE_TESTDATA is still on true, the testdata is being used regardless of being
+a production build.
+
+An example of the .env.production:
+<code>
+  VUE_APP_USE_TESTDATA=false
+  VUE_APP_CONFIG_URL=./config.json
+  VUE_APP_ENVIDAT_PROXY=https://www.envidat.ch
+</code>
+
 Would you use any other backend you would need to adjust the code in the store actions files
 to handle the response and it's content accordingly.
 
+Check the CKAN actions and their details here: https://docs.ckan.org/en/2.8/api/index.html
+
+The config.json can be used to inject configurations from the server side into the frontend without rebuilding the project.
+By now we only use it for checking the version number to promt the User to reload the frontend if a newer version is available.
+
+config.json content on server side:
+<code>
+{ "version": "0.6.87" }
+</code>
+
+
+# Missing Features
+
+- Organization list
+- Any sign in / logged in functionalities like uploading and editing any data (with the version 0.6.9x the sign in is being developed)
+- Advanced Search filters
+
+# Known issues
+
+- When using the text search on the BrowsePage (route /#/browse), the 'query' action which is being called, isn't a standard ckan action it's custom built. That has to be replace manually to the 'package_search' action from ckan, with the respective parameters for a solr query and the repsonse maybe have to be handled differently.
+- So links are still hard coded, e.g. when linking in the navigation on the organizations the link is still hard coded to www.envidat.ch
