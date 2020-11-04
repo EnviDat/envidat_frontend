@@ -409,5 +409,8 @@ export default {
     overflow: hidden;
   }
 
+  .cardIcons {
+    opacity: 0.5;
+  }
 
 </style>
