@@ -108,10 +108,14 @@
           style="position: absolute; bottom: 0px; right: 0px;" >
 
       <div v-if="isProtected"
-            class="fabMenu fabPosition elevation-2 ma-2 pl-2 pt-2" >
+            class="fabMenu fabPosition elevation-2 ma-2 pl-2 pt-2"
+            :class="downloadActive ? 'fabMenuHover' : 'fabMenuDisabled'" >
 
-        <v-icon class="pl-1 pt-1">shield</v-icon>
-        <p class="pt-2 lockedText black--text resourceCardText"
+        <v-icon class="pl-1 pt-1"
+                :disabled="!downloadActive">shield</v-icon>
+
+        <p v-if="downloadActive"
+            class="pt-2 lockedText black--text resourceCardText"
             v-html="protectedText">
         </p>
       </div>
@@ -139,7 +143,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-11-04 09:58:27
+ * Last modified  : 2020-11-04 15:54:12
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -311,8 +315,13 @@ export default {
     transition: .3s;
   }
 
-  .fabMenu:hover,
-  .fabMenu:active {
+  .fabMenuDisabled {
+    opacity: 0.5;
+    background-color: grey !important;
+  }
+
+  .fabMenuHover:hover,
+  .fabMenuHover:active {
     background: #FFF;
     min-width: 160px;
     width: 100%;
@@ -328,8 +337,8 @@ export default {
     transition: 0.1s;
   }
 
-  .fabMenu:hover .lockedText,
-  .fabMenu:active .lockedText {
+  .fabMenuHover:hover .lockedText,
+  .fabMenuHover:active .lockedText {
     visibility: visible;
     transition: 0.5s;
     opacity: 1;
