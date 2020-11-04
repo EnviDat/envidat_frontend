@@ -112,7 +112,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2020-11-04 08:35:10
+ * Last modified  : 2020-11-04 09:41:14
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -190,34 +190,40 @@ export default {
       return `background-color: ${this.categoryColor}`;
     },
     maxTagsReached() {
-      return this.tags !== undefined && this.tags.length > this.maxTagNumber;
+      return this.tags && this.tags.length > this.maxTagNumber;
     },
     maxTagNumber() {
-      let textLength = 0;
       let numberOfTags = 0;
 
-      if (this.tags !== undefined) {
-        for (let i = 0; i < this.tags.length; i++) {
-          if (this.tags[i].name !== undefined) {
-            textLength += this.tags[i].name.length + 1;
+      if (!this.tags) {
+        return numberOfTags;
+      }
 
-            if ((this.flatLayout && textLength >= this.flatTagtextLength)
-              || ((this.compactLayout || this.$vuetify.breakpoint.smAndDown) && textLength >= this.compactTagtextLength)
-              || textLength >= this.tagtextLength) {
-              break;
-            }
+      let textLength = 0;
 
-            numberOfTags++;
-          }
+      for (let i = 0; i < this.tags.length; i++) {
+        const name = this.tags[i].name;
+
+        textLength += name.length + 1;
+
+        if (this.flatAndMaxReached(textLength)
+          || this.compactAndMaxReached(textLength)
+          || ((!this.isCompactLayout && !this.flatLayout) && textLength >= this.tagtextLength)) {
+          break;
         }
+
+        numberOfTags++;
       }
 
       return numberOfTags;
     },
     maxTitleLengthReached() {
       return (this.flatLayout && this.title.length > this.flatTagtextLength)
-      || ((this.compactLayout || this.$vuetify.breakpoint.smAndDown) && this.title.length > this.compactTitleLength)
-      || this.title.length > this.titleLength;
+      || (this.isCompactLayout && this.title.length > this.compactTitleLength)
+      || ((!this.isCompactLayout && !this.flatLayout) && this.title.length > this.titleLength);
+    },
+    isCompactLayout() {
+      return this.compactLayout || this.$vuetify.breakpoint.smAndDown;
     },
     truncatedTitle() {
       let maxLength = this.titleLength;
@@ -306,6 +312,12 @@ export default {
   created() {
   },
   methods: {
+    flatAndMaxReached(textLength) {
+      return this.flatLayout && textLength >= this.flatTagtextLength;
+    },
+    compactAndMaxReached(textLength) {
+      return (this.compactLayout || this.$vuetify.breakpoint.smAndDown) && textLength >= this.compactTagtextLength;
+    },
     cardClick() {
       let detailParam = this.name;
       if (!detailParam) {
@@ -329,10 +341,10 @@ export default {
     flatTitleLength: 120,
     descriptionLength: 280,
     compactDescriptionLength: 130,
-    flatDescriptionLength: 500,
+    flatDescriptionLength: 600,
     tagtextLength: 100,
-    compactTagtextLength: 60,
-    flatTagtextLength: 170,
+    compactTagtextLength: 160,
+    flatTagtextLength: 70,
     blackTopToBottom: 'rgba(20,20,20, 0.1) 0%, rgba(20,20,20, 0.9) 60%',
     whiteTopToBottom: 'rgba(255,255,255, 0.6) 0%, rgba(255,255,255, 0.99) 70%',
   }),
