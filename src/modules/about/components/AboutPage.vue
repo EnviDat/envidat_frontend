@@ -14,10 +14,11 @@
 
         <v-tab v-for="tab in tabs"
               :key="tab.name"
+              @click="catchTabClick(tab.name)"
               class="pa-0">
-            {{ $vuetify.breakpoint.smAndUp ? tab.name : ''}}
+            {{ $vuetify.breakpoint.smAndUp ? tab.name : '' }}
 
-          <v-icon>{{tab.icon}}</v-icon>
+          <v-icon>{{ tab.icon }}</v-icon>
         </v-tab>
       </v-tabs>
 
@@ -95,7 +96,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-10-15 09:56:03
+ * Last modified  : 2020-11-04 17:34:51
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -107,17 +108,19 @@ import {
   mapGetters,
 } from 'vuex';
 
-import { ABOUT_PAGENAME } from '@/router/routeConsts';
+import {
+  ABOUT_PAGENAME,
+} from '@/router/routeConsts';
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
 } from '@/store/mainMutationsConsts';
 import {
+  ABOUT_NAMESPACE,
   GET_POLICIES,
   GET_GUIDELINES,
   GET_DMP,
 } from '@/modules/about/store/aboutMutationsConsts';
-
 
 import orga from '@/assets/about/EnviDat_organigram.png';
 
@@ -139,9 +142,9 @@ export default {
     });
   },
   beforeMount() {
-    this.$store.dispatch(`about/${GET_POLICIES}`);
-    this.$store.dispatch(`about/${GET_GUIDELINES}`);
-    this.$store.dispatch(`about/${GET_DMP}`);
+    this.$store.dispatch(`${ABOUT_NAMESPACE}/${GET_POLICIES}`);
+    this.$store.dispatch(`${ABOUT_NAMESPACE}/${GET_GUIDELINES}`);
+    this.$store.dispatch(`${ABOUT_NAMESPACE}/${GET_DMP}`);
   },
   /**
    * @description reset the scrolling to the top,
@@ -149,78 +152,36 @@ export default {
    */
   mounted() {
     window.scrollTo(0, 0);
+
+    this.checkRouteChanges();
   },
-  computed: {
-    ...mapState([
-      'config',
-    ]),
-    ...mapGetters({
-      guidelinesMarkdown: 'about/guidelinesMarkdown',
-      guidelinesLoading: 'about/guidelinesLoading',
-      policiesMarkdown: 'about/policiesMarkdown',
-      policiesLoading: 'about/policiesLoading',
-      dmpMarkdown: 'about/dmpMarkdown',
-      dmpLoading: 'about/dmpLoading',
-    }),
-    aboutCardInfo() {
-      const backendAboutInfos = this.config?.aboutInfo || null;
+  methods: {
+    checkRouteChanges() {
+      const paramTab = this.$route.params.tab ? this.$route.params.tab.toLowerCase() : null;
       
-      const contact = this.mixinMethods_getWebpImage('about/contact', this.$store.state);
-      const handsSmall = this.mixinMethods_getWebpImage('about/hands_small', this.$store.state);
-      const conceptImg = this.mixinMethods_getWebpImage('about/concept_small', this.$store.state);
-
-      const communityImg = this.mixinMethods_getWebpImage('about/community_small', this.$store.state);
-      const wslLogoImg = this.mixinMethods_getWebpImage('about/wslLogo', this.$store.state);
-      const teamImg = this.mixinMethods_getWebpImage('about/team_small', this.$store.state);
-
-      const widthClass = 'col-12 col-sm-6 col-md-4';
-
-      const defaultAboutInfo = [
-        {
-          title: 'Contact',
-          text: 'Contact the EnviDat team by <a href="mailto:envidat@wsl.ch">envidat@wsl.ch</a> for support, quesitons or feedback.',
-          img: contact,
-          widthClass,
-        },
-        {
-          title: 'Our Mission',
-          text: 'EnviDat is the environmental data portal and repository developed by the Swiss Federal Research Institute WSL. We have the capability to integrate, host and publish data sets. We make environmental monitoring and research data accessible. <p><a href="https://www.wsl.ch/en/about-wsl/programmes-and-initiatives/envidat.html" target="_blank" onclick="event.stopPropagation();" >More about EnviDat as Program of WSL</a></p>',
-          img: handsSmall,
-          widthClass,
-        },
-        {
-          title: 'Concept',
-          text: 'EnviDat supports the user-friendly registration, documentation, storage, publication, search and retrieval of data sets from the environmental domain. We provide various services to our users and we follow a set of principles as summarized in our concept image below. Additional detailed information can be found in our <a href="https://www.dora.lib4ri.ch/wsl/islandora/object/wsl:18703" target="_blank" onclick="event.stopPropagation();" >concept paper on DORA</a>.',
-          img: conceptImg,
-          widthClass,
-        },
-        {
-          title: 'Community',
-          text: 'With EnviDat, WSL aims to disseminate its data sets as broadly as possible in order to foster international research cooperation in the field of environmental science and contribute to the ongoing cultural evolution in research towards openness, shared data and opportunities for collaboration. Consequently, we are registered in <a href="https://fairsharing.org/biodbcore-001178/" target="_blank" onclick="event.stopPropagation();" >FAIRsharing.org</a> and <a href="https://www.re3data.org/repository/r3d100012587" target="_blank" onclick="event.stopPropagation();" >re3data.org</a> and a contributor community to <a href="http://geoportal.org/community/envidat-community" target="_blank" onclick="event.stopPropagation();" >ESA Geoportal </a>, <a href="https://gcmd.nasa.gov/search/Titles.do?AutoDisplayTitles=true&subset=envidat#titles" target="_blank" onclick="event.stopPropagation();" >NASA GCMD</a> and <a href="http://b2find.eudat.eu/dataset?groups=envidat" target="_blank" onclick="event.stopPropagation();" >EOSC-Hub via B2FIND</a>. ',
-          img: communityImg,
-          widthClass,
-        },
-        {
-          title: 'WSL',
-          text: 'The Swiss Federal Institute for Forest, Snow and Landscape Research is concerned with the use, development and protection of natural and urban spaces. The focus of our research is on solving problems to do with the responsible use of landscapes and forests and a prudent approach to natural hazards, especially those common in mountainous countries. WSL occupies a leading position internationally in these research areas. We also provide groundwork for sustainable environmental policies in Switzerland. <p><a href="https://www.wsl.ch" target="_blank" onclick="event.stopPropagation();" >For more information have a look at the Website of WSL</a></p>',
-          img: wslLogoImg,
-          widthClass,
-        },
-        {
-          title: 'Team',
-          /* eslint-disable prefer-template */
-          text: '<img src="' + this.orga + '" style="width: 100%; height: 100%;" />',
-          img: teamImg,
-          widthClass: 'col-12 col-sm-12 col-md-8',
-        },
-      ];
-
-
-      if (!backendAboutInfos) {
-        return defaultAboutInfo;
+      if (paramTab) {
+        this.navigateTab(paramTab);
       }
+    },
+    catchTabClick(tabName) {
+      if (this.$route.params?.tab !== tabName) {
+        this.$router.push({
+          name: ABOUT_PAGENAME,
+          params: { tab: tabName },
+        });
+      }
+    },
+    navigateTab(tabName) {
+      const tabObjs = this.tabs.filter(tab => tab.name === tabName);
 
-
+      if (tabObjs.length > 0) {
+        const tabObj = tabObjs[0];
+        const tabIndex = this.tabs.indexOf(tabObj);
+        this.activeTab = tabIndex;
+      }
+    },
+    mergeAboutInfo(defaultAboutInfo, backendAboutInfos, defaultWidthClass) {
+      
       const mergedAboutInfo = [];
 
       for (let j = 0; j < backendAboutInfos.length; j++) {
@@ -236,29 +197,106 @@ export default {
                 title: bInfo.title,
                 text: bInfo.text || dInfo.text,
                 img: bInfo.img || dInfo.img,
-                widthClass: bInfo.widthClass || dInfo.widthClass || widthClass,
+                widthClass: bInfo.widthClass || dInfo.widthClass || defaultWidthClass,
               };
           
             mergedAboutInfo.push(mergedInfo);
 
             defaultMatch = true;
             break;
-
-          } 
+          }
         }
 
         if (!defaultMatch) {
           mergedAboutInfo.push({
-              title: bInfo.title,
-              text: bInfo.text,
-              img: bInfo.img,
-              widthClass: bInfo.widthClass || widthClass,
-            });
+            title: bInfo.title,
+            text: bInfo.text,
+            img: bInfo.img,
+            widthClass: bInfo.widthClass || defaultWidthClass,
+          });
         }
         
       }
 
       return mergedAboutInfo;
+    },
+  },
+  watch: {
+    $route: function watchRouteChanges() {
+      this.checkRouteChanges();
+    },
+  },
+  computed: {
+    ...mapState([
+      'config',
+    ]),
+    ...mapGetters({
+      guidelinesMarkdown: `${ABOUT_NAMESPACE}/guidelinesMarkdown`,
+      guidelinesLoading: `${ABOUT_NAMESPACE}/guidelinesLoading`,
+      policiesMarkdown: `${ABOUT_NAMESPACE}/policiesMarkdown`,
+      policiesLoading: `${ABOUT_NAMESPACE}/policiesLoading`,
+      dmpMarkdown: `${ABOUT_NAMESPACE}/dmpMarkdown`,
+      dmpLoading: `${ABOUT_NAMESPACE}/dmpLoading`,
+    }),
+    aboutCardInfo() {
+      const backendAboutInfos = this.config?.aboutInfo || null;
+      
+      const contact = this.mixinMethods_getWebpImage('about/contact', this.$store.state);
+      const handsSmall = this.mixinMethods_getWebpImage('about/hands_small', this.$store.state);
+      const conceptImg = this.mixinMethods_getWebpImage('about/concept_small', this.$store.state);
+
+      const communityImg = this.mixinMethods_getWebpImage('about/community_small', this.$store.state);
+      const wslLogoImg = this.mixinMethods_getWebpImage('about/wslLogo', this.$store.state);
+      const teamImg = this.mixinMethods_getWebpImage('about/team_small', this.$store.state);
+
+      const defaultWidthClass = 'col-12 col-sm-6 col-md-4';
+
+      const defaultAboutInfo = [
+        {
+          title: 'Contact',
+          text: 'Contact the EnviDat team by <a href="mailto:envidat@wsl.ch">envidat@wsl.ch</a> for support, quesitons or feedback.',
+          img: contact,
+          defaultWidthClass,
+        },
+        {
+          title: 'Our Mission',
+          text: 'EnviDat is the environmental data portal and repository developed by the Swiss Federal Research Institute WSL. We have the capability to integrate, host and publish data sets. We make environmental monitoring and research data accessible. <p><a href="https://www.wsl.ch/en/about-wsl/programmes-and-initiatives/envidat.html" target="_blank" onclick="event.stopPropagation();" >More about EnviDat as Program of WSL</a></p>',
+          img: handsSmall,
+          defaultWidthClass,
+        },
+        {
+          title: 'Concept',
+          text: 'EnviDat supports the user-friendly registration, documentation, storage, publication, search and retrieval of data sets from the environmental domain. We provide various services to our users and we follow a set of principles as summarized in our concept image below. Additional detailed information can be found in our <a href="https://www.dora.lib4ri.ch/wsl/islandora/object/wsl:18703" target="_blank" onclick="event.stopPropagation();" >concept paper on DORA</a>.',
+          img: conceptImg,
+          defaultWidthClass,
+        },
+        {
+          title: 'Community',
+          text: 'With EnviDat, WSL aims to disseminate its data sets as broadly as possible in order to foster international research cooperation in the field of environmental science and contribute to the ongoing cultural evolution in research towards openness, shared data and opportunities for collaboration. Consequently, we are registered in <a href="https://fairsharing.org/biodbcore-001178/" target="_blank" onclick="event.stopPropagation();" >FAIRsharing.org</a> and <a href="https://www.re3data.org/repository/r3d100012587" target="_blank" onclick="event.stopPropagation();" >re3data.org</a> and a contributor community to <a href="http://geoportal.org/community/envidat-community" target="_blank" onclick="event.stopPropagation();" >ESA Geoportal </a>, <a href="https://gcmd.nasa.gov/search/Titles.do?AutoDisplayTitles=true&subset=envidat#titles" target="_blank" onclick="event.stopPropagation();" >NASA GCMD</a> and <a href="http://b2find.eudat.eu/dataset?groups=envidat" target="_blank" onclick="event.stopPropagation();" >EOSC-Hub via B2FIND</a>. ',
+          img: communityImg,
+          defaultWidthClass,
+        },
+        {
+          title: 'WSL',
+          text: 'The Swiss Federal Institute for Forest, Snow and Landscape Research is concerned with the use, development and protection of natural and urban spaces. The focus of our research is on solving problems to do with the responsible use of landscapes and forests and a prudent approach to natural hazards, especially those common in mountainous countries. WSL occupies a leading position internationally in these research areas. We also provide groundwork for sustainable environmental policies in Switzerland. <p><a href="https://www.wsl.ch" target="_blank" onclick="event.stopPropagation();" >For more information have a look at the Website of WSL</a></p>',
+          img: wslLogoImg,
+          defaultWidthClass,
+        },
+        {
+          title: 'Team',
+          /* eslint-disable prefer-template */
+          text: '<img src="' + this.orga + '" style="width: 100%; height: 100%;" />',
+          img: teamImg,
+          defaultWidthClass: 'col-12 col-sm-12 col-md-8',
+        },
+      ];
+
+
+      if (!backendAboutInfos) {
+        return defaultAboutInfo;
+      }
+
+      return this.mergeAboutInfo(defaultAboutInfo, backendAboutInfos, defaultWidthClass);
     },
     missionImg() {
       const imgPath = this.$vuetify.breakpoint.mdAndUp ? 'about/mission' : 'about/mission_small';
