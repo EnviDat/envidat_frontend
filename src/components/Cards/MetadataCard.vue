@@ -44,39 +44,36 @@
                   }" >
 
       <v-container fluid class="pa-0 fill-height" >
-      <v-row v-if="!compactLayout"
-              no-gutters >
-        <v-col cols="12" >
-          {{ truncatedSubtitle }}
-        </v-col>
-      </v-row>
 
-      <v-row >
-        <v-col cols="12">
-          <v-spacer></v-spacer>
-        </v-col>
-      </v-row>
+        <v-row v-if="!compactLayout"
+                no-gutters
+                class="pb-2" >
+          <v-col cols="12" >
+            {{ truncatedSubtitle }}
+          </v-col>
+        </v-row>
 
-      <v-row v-if="tags"
-              no-gutters >
-        <v-col v-for="(tag, index) in tags.slice (0, maxTagNumber)"
-                :key="index"
-                class="shrink" >
+        <v-row v-if="tags"
+                no-gutters >
+          <v-col v-for="(tag, index) in tags.slice (0, maxTagNumber)"
+                  :key="index"
+                  class="shrink" >
 
-            <tag-chip class="py-0"
-                      :name="tag.name"
-                      :selectable="true"
-                      :color="tag.color"
-                      @clicked="catchTagClicked(tag.name)" />
+              <tag-chip class="py-0"
+                        :name="tag.name"
+                        :selectable="true"
+                        :color="tag.color"
+                        @clicked="catchTagClicked(tag.name)" />
 
-        </v-col>
-        <v-col v-if="maxTagsReached"
-                class="shrink" >
-            <tag-chip class="py-0"
-                      name="..." />
+          </v-col>
+          <v-col v-if="maxTagsReached"
+                  class="shrink" >
+              <tag-chip class="py-0"
+                        name="..." />
 
-        </v-col>
-      </v-row>
+          </v-col>
+        </v-row>
+
       </v-container>
     </v-card-text>
 

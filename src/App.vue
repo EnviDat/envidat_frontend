@@ -44,7 +44,7 @@
           <v-col>
             <TextBanner :text="maintenanceConfig.message"
                         confirmText="Okay"
-                        :confirmClick="() => { showMaintenaceBanner = false }" />
+                        :confirmClick="() => { showMaintenanceBanner = false }" />
           </v-col>
         </v-row>
 
@@ -271,7 +271,7 @@ export default {
       return this.config?.maintenanceConfig || {};
     },
     maintaincanceBannerVisible() {
-      return this.maintenanceConfig && this.maintenanceConfig.messageActive && this.showMaintenaceBanner;
+      return this.maintenanceConfig && this.maintenanceConfig.messageActive && this.showMaintenanceBanner;
     },
     signinDisabled() {
       return this.maintenanceConfig && this.maintenanceConfig.signinDisabled;
@@ -443,7 +443,7 @@ export default {
     NavToolbarZIndex: 1150,
     NavigationZIndex: 1100,
     NotificationZIndex: 1500,
-    showMaintenaceBanner: true,
+    showMaintenanceBanner: true,
   }),
 };
 </script>
