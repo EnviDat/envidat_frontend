@@ -48,14 +48,14 @@
           </v-col>
         </v-row>
 
-        <v-row no-gutters>
+        <v-row class="fill-height" >
           <v-col class="mx-0 py-0"
                   cols="12" >
 
             <transition name="fade" mode="out-in">
               <router-view />
             </transition>
-
+ 
           </v-col>
         </v-row>
       </v-container>
@@ -86,7 +86,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-11-04 14:44:21
+ * Last modified  : 2020-11-04 19:52:46
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
