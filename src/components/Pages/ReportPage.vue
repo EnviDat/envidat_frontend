@@ -2,11 +2,24 @@
   <v-container class="fill-height pa-0" tag="article"
                 fluid 
                 >
-    <v-row  >
+    <v-row no-gutters>
+
+      <v-col cols="12"
+              md="6"
+            v-for="(err, index) in errors"
+            :key="index" >
+
+        <NotificationCard :notification="err"
+                            />
+
+      </v-col>
+    </v-row>
+
+    <!-- <v-row  >
       <v-col cols="12"  >
         <v-card>
           <v-card-title :style="`background-color: ${color}`">
-            <div v-if="error"
+            <div v-if="errors"
                   class="headline">
               Report Error
             </div>
@@ -52,7 +65,7 @@
         </v-card>
       </v-col>
 
-    </v-row>
+    </v-row> -->
   </v-container>
 </template>
 
@@ -65,13 +78,16 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2019-10-23 16:32:02
+ * Last modified  : 2020-11-12 08:46:33
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
-import { mapGetters } from 'vuex';
+import {
+  mapState,
+  // mapGetters,
+} from 'vuex';
 import {
   REPORT_PAGENAME,
 } from '@/router/routeConsts';
@@ -79,6 +95,8 @@ import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
 } from '@/store/mainMutationsConsts';
+
+import NotificationCard from '@/components/Cards/NotificationCard';
 
 
 export default {
@@ -98,15 +116,21 @@ export default {
      */
   mounted() {
     window.scrollTo(0, 0);
-    // throw new Error('test error');
+    throw new Error('test error');
+  },
+  beforeMount() {
+    throw new Error('test2 error');
   },
   computed: {
-    ...mapGetters({
-      error: 'error',
-    }),
+    ...mapState([
+      'notifications',
+    ]),
     color() {
       return this.error ? this.$vuetify.theme.themes.light.error : this.$vuetify.theme.themes.light.highlight;
     },
+    errors() {
+      return Object.values(this.notifications) || [];
+    },    
   },
   methods: {
     submit() {
@@ -114,6 +138,7 @@ export default {
     },
   },
   components: {
+    NotificationCard,
   },
   data: () => ({
     PageBGImage: 'app_b_browsepage',
