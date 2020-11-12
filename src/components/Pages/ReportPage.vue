@@ -78,7 +78,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-11-12 08:46:33
+ * Last modified  : 2020-11-12 09:13:18
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -116,10 +116,6 @@ export default {
      */
   mounted() {
     window.scrollTo(0, 0);
-    throw new Error('test error');
-  },
-  beforeMount() {
-    throw new Error('test2 error');
   },
   computed: {
     ...mapState([
