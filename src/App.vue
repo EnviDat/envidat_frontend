@@ -11,7 +11,9 @@
 
         <notification-card v-if="notification.show"
                             :notification="notification"
+                            :height="165"
                             :showReportButton="config.errorReportingEnabled && notification.type === 'error'"
+                            :showCloseButton="true"
                             @clickedClose="catchCloseClicked(notification.key)"
                             @clickedReport="catchReportClicked(notification.key)" />
       </div>
@@ -86,7 +88,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-11-04 19:52:46
+ * Last modified  : 2020-11-12 08:56:58
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
