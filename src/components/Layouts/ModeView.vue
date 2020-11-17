@@ -19,6 +19,7 @@
 
       <a v-if="modeExternalUrl"
           :href="modeExternalUrl"
+          rel="noopener noreferrer"
           target="_blank" >
         <v-img :src="modeLogo"
                 height="34" width="34" />
@@ -62,7 +63,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-10-27 16:04:50
+ * Last modified  : 2020-11-17 15:37:53
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
