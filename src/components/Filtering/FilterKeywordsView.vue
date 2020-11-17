@@ -22,7 +22,7 @@
             </v-col>
 
             <v-col v-if="showPlaceholder"
-                    class="py-0 grow" >
+                    class="py-0 grow pl-0" >
 
               <tag-chip-placeholder v-for="n in 6"
                                     :key="n"
@@ -30,7 +30,7 @@
             </v-col>
 
             <v-col v-if="!showPlaceholder"
-                    class="py-0 grow" >
+                    class="py-0 grow pl-0" >
 
               <tag-chip v-for="tag in unselectedTags"
                         :key="tag.name"
@@ -54,7 +54,7 @@
             </v-col>
 
             <v-col v-if="selectedTags.length > 0"
-                    class="pb-0 grow" >
+                    class="pb-0 grow pl-0" >
 
               <tag-chip v-for="tag in selectedTags"
                         :key="tag.name"
@@ -97,7 +97,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-23 18:16:33
+ * Last modified  : 2020-11-04 19:53:37
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

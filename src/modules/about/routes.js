@@ -21,10 +21,6 @@ export const aboutRoutes = [
     redirect: `${ABOUT_PATH}${ABOUT_PATH}`,
   },
   {
-    path: GCMD_PATH,
-    redirect: `${ABOUT_PATH}${GCMD_PATH}`,
-  },
-  {
     path: POLICIES_PATH,
     redirect: `${ABOUT_PATH}${POLICIES_PATH}`,
   },

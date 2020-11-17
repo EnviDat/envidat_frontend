@@ -27,7 +27,7 @@ An example of the .env.development:
 
 When <code>VUE_APP_USE_TESTDATA=true</code> VUE_APP_ENVIDAT_PROXY variable is ignored and the
 local testfiles are being used. So you have to have json files in the /public/testdata/ folder which 
-resembel the result of the ckan actions. Like the action 'current_package_list_with_resources'
+resemble the result of the ckan actions. Like the action 'current_package_list_with_resources'
 for all the datasets or 'package_show' for a single dataset.
 
 For more details about the actions check '*actions.js' files in the respective modules.
@@ -68,4 +68,4 @@ config.json content on server side:
 # Known issues
 
 - When using the text search on the BrowsePage (route /#/browse), the 'query' action which is being called, isn't a standard ckan action it's custom built. That has to be replace manually to the 'package_search' action from ckan, with the respective parameters for a solr query and the repsonse maybe have to be handled differently.
-- So links are still hard coded, e.g. when linking in the navigation on the organizations the link is still hard coded to www.envidat.ch
+- Some links are still hard coded, e.g. when linking in the navigation on the organizations the link is still hard coded to www.envidat.ch
