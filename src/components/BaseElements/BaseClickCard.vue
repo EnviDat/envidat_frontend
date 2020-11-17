@@ -20,7 +20,7 @@
         <!-- Text -->
         <v-col class="px-0"
                 cols="7" >
-          <div class="px-2 headline"
+          <div class="px-4 headline"
                 :class="{ 'compactTitle' : this.$vuetify.breakpoint.smAndDown }" >
             {{ title }}
           </div>
@@ -46,7 +46,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2020-11-03 12:38:12
+ * Last modified  : 2020-11-17 13:45:56
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

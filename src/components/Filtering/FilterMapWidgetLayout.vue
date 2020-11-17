@@ -47,7 +47,7 @@
     </div>
 
     <v-container v-if="topLayout"
-                  class="py-2 px-4"
+                  class="pt-2 pb-4 px-4"
                   id="FilterMapWidgetLayout_topLayout" >
       <v-row no-gutters
               justify="space-around">
@@ -180,7 +180,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2020-10-27 14:18:24
+ * Last modified  : 2020-11-17 13:48:00
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

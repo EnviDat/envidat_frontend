@@ -24,7 +24,7 @@
           />
         </v-col>
 
-        <v-col class="ma-auto px-1" cols="6">
+        <v-col class="ma-auto px-4" cols="6">
           <div class="title"
                style="word-break: break-word; line-height: 1!important; letter-spacing: .02em !important;"
                :class="dark ? 'white--text' : 'black--text'"
@@ -88,7 +88,7 @@
    * @author Dominik Haas-Artho
    *
    * Created at     : 2019-10-02 11:24:00
-   * Last modified  : 2019-11-28 12:57:06
+ * Last modified  : 2020-11-17 13:45:19
    *
    * This file is subject to the terms and conditions defined in
    * file 'LICENSE.txt', which is part of this source code package.
