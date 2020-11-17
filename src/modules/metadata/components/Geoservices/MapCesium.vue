@@ -7,8 +7,8 @@
       <slot></slot>
     </div>
     <div id="credits">
-      <a style="padding-right: 10px;" href="https://cesium.com/cesiumjs/" target="_blank">CesiumJS</a>
-      <a href="https://www.bing.com/maps/" target="_blank">Images &copy; Bing Maps</a>
+      <a style="padding-right: 10px;" href="https://cesium.com/cesiumjs/" target="_blank" rel="noopener noreferrer">CesiumJS</a>
+      <a href="https://www.bing.com/maps/" target="_blank" rel="noopener noreferrer">Images &copy; Bing Maps</a>
     </div>
   </div>
 </template>

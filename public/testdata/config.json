@@ -7,11 +7,11 @@
     },
     {
       "title": "Concept",
-      "text": "EnviDat supports the user-friendly registration, documentation, storage, publication, search and retrieval of data sets from the environmental domain. We provide various services to our users and we follow a set of principles as summarized in our concept image below. Additional detailed information can be found in our <a href='https://www.dora.lib4ri.ch/wsl/islandora/object/wsl:18703' target='_blank' onclick='event.stopPropagation();' >concept paper on DORA</a>."
+      "text": "EnviDat supports the user-friendly registration, documentation, storage, publication, search and retrieval of data sets from the environmental domain. We provide various services to our users and we follow a set of principles as summarized in our concept image below. Additional detailed information can be found in our <a href='https://www.dora.lib4ri.ch/wsl/islandora/object/wsl:18703' target='_blank' rel='noopener noreferrer' onclick='event.stopPropagation();' >concept paper on DORA</a>."
     },
     {
       "title": "Our Mission",
-      "text": "EnviDat is the environmental data portal and repository developed by the Swiss Federal Research Institute WSL. We have the capability to integrate, host and publish data sets. We make environmental monitoring and research data accessible. <p><a href='https://www.wsl.ch/en/about-wsl/programmes-and-initiatives/envidat.html' target='_blank' onclick='event.stopPropagation();' >More about EnviDat as Program of WSL</a></p>"
+      "text": "EnviDat is the environmental data portal and repository developed by the Swiss Federal Research Institute WSL. We have the capability to integrate, host and publish data sets. We make environmental monitoring and research data accessible. <p><a href='https://www.wsl.ch/en/about-wsl/programmes-and-initiatives/envidat.html' target='_blank' rel='noopener noreferrer' onclick='event.stopPropagation();' >More about EnviDat as Program of WSL</a></p>"
     },
     {
       "title": "Team",

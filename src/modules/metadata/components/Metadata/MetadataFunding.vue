@@ -32,6 +32,7 @@
                   no-gutters >
             <v-col v-if="item.institution_url" >
               <a :href="item.institution_url"
+                  rel="noopener noreferrer"
                   target="_blank">
                 <strong>{{ item.institution }}</strong>
               </a>
@@ -77,7 +78,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-10-22 15:23:51
+ * Last modified  : 2020-11-17 15:39:27
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
