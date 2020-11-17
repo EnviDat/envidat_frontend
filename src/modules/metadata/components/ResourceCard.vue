@@ -143,7 +143,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-11-04 15:54:12
+ * Last modified  : 2020-11-17 15:39:00
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -238,7 +238,7 @@ export default {
     },
     protectedText() {
       if (this.url && this.url.length > 0) {
-        return `This resource is protected <a href="${this.url}" target="_blank" >login via the ckan UI to get access</a>.`;
+        return `This resource is protected <a href="${this.url}" target="_blank" rel="noopener noreferrer" >login via the ckan UI to get access</a>.`;
       }
 
       return `Could not load the resource, please contact ${this.metadataContact} for getting access or envidat@wsl.ch for support.`;

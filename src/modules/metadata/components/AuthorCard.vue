@@ -184,6 +184,7 @@
 
                 <a v-if="(author.id.type && author.id.type === 'orcid') || isOrcId(formatIdentifier(author.id.identifier))"
                     :href="`https://orcid.org/${formatIdentifier(author.id.identifier)}`"
+                    rel="noopener noreferrer"
                     target="_blank" >
                   {{ formatIdentifier(author.id.identifier) }}
                 </a>

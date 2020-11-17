@@ -1,6 +1,4 @@
-/* eslint-disable no-unused-vars */
 import {
-  GCMD_PATH,
   ABOUT_PATH,
   ABOUT_PAGENAME,
   POLICIES_PATH,

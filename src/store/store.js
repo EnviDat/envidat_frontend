@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:34:51
- * Last modified  : 2020-10-22 09:32:48
+ * Last modified  : 2020-11-17 15:34:28
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -15,7 +15,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import createPersist from 'vuex-localstorage';
 
-/* eslint-disable no-unused-vars */
 import { about } from '@/modules/about/store/aboutStore';
 import { projects } from '@/modules/projects/store/projectsStore';
 import { metadata } from '@/modules/metadata/store/metadataStore';

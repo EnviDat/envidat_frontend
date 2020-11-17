@@ -11,6 +11,7 @@
               :color="color"
               :disabled="disabled"
               :href="url"
+              rel="noopener noreferrer"
               target="_blank"
               @click.stop="onClick" >
 
@@ -56,7 +57,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2020-11-03 12:53:05
+ * Last modified  : 2020-11-17 15:37:44
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
