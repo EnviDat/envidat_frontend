@@ -78,7 +78,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-11-12 09:13:18
+ * Last modified  : 2020-11-12 17:08:33
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -125,7 +125,7 @@ export default {
       return this.error ? this.$vuetify.theme.themes.light.error : this.$vuetify.theme.themes.light.highlight;
     },
     errors() {
-      return Object.values(this.notifications) || [];
+      return Object.values(this.notifications);
     },    
   },
   methods: {
