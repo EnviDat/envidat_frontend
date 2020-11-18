@@ -1,6 +1,10 @@
 <template>
   <v-container fluid :class="$vuetify.breakpoint.smAndDown ? 'pa-1' : 'py-0'">
 
+    <div v-if="$vuetify.breakpoint.mdAndUp"
+          id="polygon-canvas"
+          style="position: absolute; width: 100%; height: 400px; bottom: 0; left: 0;"></div>
+
       <v-row class="pb-5 offset-md-4 offset-lg-6"
               no-gutters>
         <the-title-screen-layout :title="envidatTitle"
@@ -75,7 +79,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-11-03 12:38:18
+ * Last modified  : 2020-11-18 17:43:47
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -96,6 +100,7 @@ import {
 import TheTitleScreenLayout from './TheTitleScreenLayout';
 import SearchBarView from './SearchBarView';
 
+require('particles.js');
 
 // Login & Register form and animation
 // https://codepen.io/yusufbkr/pen/RPBQqg
@@ -116,12 +121,52 @@ export default {
       vm.$store.commit(SET_APP_BACKGROUND, bgimg);
     });
   },
+  beforeRouteLeave(to, from, next) {
+    next((vm) => {
+      // console.log("landing beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
+      vm.methods.stopParticles();
+    });
+  },
+  mounted() {
+    this.initPolygonParticles();
+  },
   computed: {
     ...mapState([
       'categoryCards',
     ]),
   },
   methods: {
+    stopParticles(fullClean = true) {
+      
+      try {
+       
+        if (this.currentParticles) {
+          this.currentParticles.particles.move.enable = false;
+          this.currentParticles.particles.opcacity.anim.enable = false;
+          this.currentParticles.particles.size.anim.enable = false;
+        }
+
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(`Error during particle stop: ${error}`);
+      } finally {
+        this.currentParticles = null;
+        if (fullClean) {
+          window.pJS = null;
+        }
+      }
+    },
+    initPolygonParticles() {
+      // particleOptions are defined in the folder public/particles/polygonParticleOptions.json
+      // eslint-disable-next-line no-undef
+      particlesJS.load('polygon-canvas', './particles/polygonParticleOptions.json', () => {
+        // console.log('polygon-canvas - particles.js config loaded');
+        if (this.currentParticles) {
+          this.checkStopParticles(false);
+        }
+        this.currentParticles = window.pJS;
+      });
+    },
     catchCategoryClicked(cardType) {
       if (cardType.includes('login')) {
         this.catchLoginclick();
