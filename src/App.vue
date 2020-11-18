@@ -2,6 +2,10 @@
   <v-app class="application"
           :style="dynamicBackground">
 
+      <div v-if="$vuetify.breakpoint.mdAndUp"
+            id="christmas-canvas"
+            style="position: absolute; width: 100%; height: 100%;"></div>
+
       <div v-for="(notification, index) in visibleNotifications()"
           :key="`notification_${index}`"
           :style="`position: absolute;
@@ -88,7 +92,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-11-12 08:56:58
+ * Last modified  : 2020-11-18 17:45:25
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -98,6 +102,7 @@ import {
   mapState,
   mapGetters,
 } from 'vuex';
+
 import {
   LANDING_PATH,
   LANDING_PAGENAME,
@@ -131,16 +136,71 @@ import ConfirmTextCard from '@/components/Cards/ConfirmTextCard';
 import TextBanner from '@/components/Layouts/TextBanner';
 import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
 
+require('particles.js');
+
 export default {
   name: 'App',
+  afterRouteEnter(to, from, next) {
+    next((vm) => {
+      if (vm.computed.currentPageIsHomePage) {
+        vm.methods.checkStartParticles();
+      } else {
+        vm.methods.checkStopParticles();
+      }
+    });
+  },
   beforeCreate() {
     // check for the backend version
     this.$store.dispatch(SET_CONFIG);
+  },
+  mounted() {
+
   },
   updated() {
     this.updateActiveStateOnNavItems();
   },
   methods: {
+    checkStartParticles() {
+      if (!this.currentParticles) {
+        if (!this.christmasParticlesActive) {
+          this.initChristmasParticles();
+        } else {
+          this.checkStopParticles();
+        }
+      }
+    },    
+    checkStopParticles(fullClean = true) {
+      
+      try {
+       
+        if (this.currentParticles) {
+          this.currentParticles.particles.move.enable = false;
+          this.currentParticles.particles.opcacity.anim.enable = false;
+          this.currentParticles.particles.size.anim.enable = false;
+        }
+
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(`Error during particle stop: ${error}`);
+      } finally {
+        this.currentParticles = null;
+        if (fullClean) {
+          window.pJS = null;
+        }
+      }
+    },
+    initChristmasParticles() {
+      // particleOptions are defined in the folder public/particles/christmasParticleOptions.json
+      // eslint-disable-next-line no-undef
+      particlesJS.load('christmas-canvas', './particles/christmasParticleOptions.json', () => {
+        // console.log('christmas-canvas - particles.js config loaded');
+        if (this.currentParticles) {
+          this.checkStopParticles(false);
+        }
+        this.currentParticles = window.pJS;
+      });
+
+    },
     updateScroll() {
       if (this.$refs && this.$refs.appContainer) {
         this.storeScroll(this.$refs.appContainer.scrollTop);
@@ -292,6 +352,12 @@ export default {
     metadataConfig() {
       return this.config?.metadataConfig || {};
     },
+    christmasParticlesActive() {
+      return this.$vuetify.breakpoint.mdAndUp && this.$store.getters.itIsDecember;
+    },
+    polygonParticlesActive() {
+      return this.$vuetify.breakpoint.mdAndUp && this.currentPage && this.currentPage === LANDING_PAGENAME;
+    },
     loading() {
       return this.loadingMetadatasContent || this.searchingMetadatasContent || this.isFilteringContent
           || this.projectsLoading || this.policiesLoading || this.guidelinesLoading;
@@ -301,6 +367,9 @@ export default {
     },
     currentPageIsBrowsePage() {
       return this.currentPage === BROWSE_PAGENAME;
+    },
+    currentPageIsHomePage() {
+      return this.currentPage === LANDING_PAGENAME;
     },
     showToolbar() {
       return this.currentPageIsBrowsePage && this.mode;
@@ -389,6 +458,7 @@ export default {
     NavigationZIndex: 1100,
     NotificationZIndex: 1500,
     showMaintenanceBanner: true,
+    currentParticles: null,
     navItems: [
       {
         title: 'Home',
