@@ -1,5 +1,5 @@
 {
-  "version": "0.6.93",
+  "version": "0.6.921",
   "aboutInfo": [
     {
       "title": "Contact",
@@ -27,7 +27,7 @@
     }
   ],
   "metadataConfig": {
-    "loadLocalFile": false,
+    "loadLocalFile": true,
     "localFileUrl": "./testdata/packagelist.json",
     "publicationsConfig": {
       "resolveIds": true,
@@ -41,20 +41,16 @@
       "showDataCreditScore": false
     },
     "resourcesConfig": {
-      "downloadActive": true
+      "downloadActive": false
     }
   },
   "projectsConfig": {
-    "loadLocalFile": false,
+    "loadLocalFile": true,
     "localFileUrl": "./testdata/projects.json"
   },
   "maintenanceConfig": {
-    "signinDisabled": false,
-    "messageActive": false,
+    "signinDisabled": true,
+    "messageActive": true,
     "message": "We are currently doing maintenance on the server and EnviDat is now in <strong>read-only mode</strong>. Data download, upload and <strong>user data management functionalities are currently disabled</strong>."
-  },
-  "effectsConfig": {
-    "landingPageParticles": true,
-    "decemberParticles": true
   }
 }
