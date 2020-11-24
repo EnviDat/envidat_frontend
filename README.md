@@ -69,27 +69,21 @@ The version is used to check if the user has to reload the frontend, in case a n
 Option    | Usage  | Type  | Required | Default
 --------- | --------- | --------- | --------- | --------- 
 aboutInfo | Is a list of json objects which are represented in the about info cards. At least provide strings for card "title" and card "text". Title should be kept short. Text can include html / markdown. Overwrite the "img" via an url to provide a different image. Reference [About Page](https://www.envidat.ch/#/about/about). | Array | false    | Default infos are hard coded in the about page and are only used if nothing is provide from the backend. Once something is provide via server side config, only the about card infos from the backend config are used. Default cards are 'Contact', 'Our Mission', 'Concept', 'Community', 'WSL' and 'Team'.
-
 metadataConfig.loadLocalFile | Set true to make usage of the metadataConfig.localFileUrl | Boolean | false | false 
 metadataConfig.localFileUrl | The url which is used to load all the metadata for "static usage" or fallback together with the maintenance mode. | String | false | false
-
 metadataConfig.publicationsConfig | Contains the details for the Related Publication section in the metadata page. | Object | false | false 
 publicationsConfig.resolveIds | Set true to make usage of the publicationsConfig.resolveBaseUrl | Boolean | false | false 
 publicationsConfig.idPrefix | Prefix which is used the check for an id in the related publications text. | String | true | * 
 publicationsConfig.idDelimiter | Prefix which is used the check for an id in the related publications text. | String | true | : 
 publicationsConfig.resolveBaseUrl | Set true to make usage of the publicationsConfig.resolveBaseUrl | String | false | false 
-
 metadataConfig.authorDetailsConfig | Contains the details for the author details in the metadata page. | Object | false | false 
 authorDetailsConfig.showAuthorInfos | Enable to make the author infos show up (includes, email, ORCID, Affiliation) | Boolean | false | false 
 authorDetailsConfig.showDataCredits | Enable to make the data credit list show up | Boolean | false | true 
 authorDetailsConfig.showDataCreditScore | Enable to make the data credit score and level show up | Boolean | false | false 
-
 metadataConfig.resourcesConfig | Contains the details for the author details in the metadata page. | Object | false | false 
 resourcesConfig.downloadActive | Contains the details for the author details in the metadata page. | Object | false | false 
-
 projectsConfig.loadLocalFile | Set true to make usage of the projectsConfig.localFileUrl | Boolean | false | false 
 projectsConfig.localFileUrl | The url which is used to load all the projects data for "static usage" or fallback together with the maintenance mode. | String | false | false 
-
 maintenanceConfig | Contains the details for the maintenance / message. | Object | false | false 
 maintenanceConfig.signinDisabled | Disable sign in links to prevent the user from using any signed in functionalities. | Boolean | false | false 
 maintenanceConfig.messageActive | Enables the message banner for the maintenance mode message. | Boolean | false | false 
