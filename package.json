@@ -1,6 +1,6 @@
 {
   "name": "envidat.ch",
-  "version": "0.6.921",
+  "version": "0.6.93",
   "private": true,
   "description": "Envidat frontend with vue",
   "author": "Dominik Haas-Artho",
@@ -32,6 +32,7 @@
     "leaflet-bing-layer": "^3.3.1",
     "leaflet.markercluster": "^1.4.1",
     "material-design-icons-iconfont": "^5.0.1",
+    "particles.js": "^2.0.0",
     "remark": "^13.0.0",
     "remark-html": "^13.0.1",
     "seedrandom": "^3.0.5",
