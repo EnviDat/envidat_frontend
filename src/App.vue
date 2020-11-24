@@ -2,7 +2,7 @@
   <v-app class="application"
           :style="dynamicBackground">
 
-      <div v-if="$vuetify.breakpoint.mdAndUp"
+      <div v-show="showDecemberParticles"
             id="christmas-canvas"
             style="position: absolute; width: 100%; height: 100%;"></div>
 
@@ -92,7 +92,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-11-18 17:45:25
+ * Last modified  : 2020-11-19 08:45:17
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -140,36 +140,27 @@ require('particles.js');
 
 export default {
   name: 'App',
-  afterRouteEnter(to, from, next) {
-    next((vm) => {
-      if (vm.computed.currentPageIsHomePage) {
-        vm.methods.checkStartParticles();
-      } else {
-        vm.methods.checkStopParticles();
-      }
-    });
-  },
   beforeCreate() {
     // check for the backend version
     this.$store.dispatch(SET_CONFIG);
   },
   mounted() {
-
+    this.startParticles();
   },
   updated() {
     this.updateActiveStateOnNavItems();
   },
   methods: {
-    checkStartParticles() {
+    startParticles() {
       if (!this.currentParticles) {
-        if (!this.christmasParticlesActive) {
+        if (this.showDecemberParticles) {
           this.initChristmasParticles();
         } else {
-          this.checkStopParticles();
+          this.stopParticles();
         }
       }
     },    
-    checkStopParticles(fullClean = true) {
+    stopParticles(fullClean = true) {
       
       try {
        
@@ -190,12 +181,13 @@ export default {
       }
     },
     initChristmasParticles() {
-      // particleOptions are defined in the folder public/particles/christmasParticleOptions.json
+      // particleOptions have to be in the folder public/particles/christmasParticleOptions.json for development
+      // in production they have to be in same folder as the index.html there -> ./particles/christmasParticleOptions.json
       // eslint-disable-next-line no-undef
       particlesJS.load('christmas-canvas', './particles/christmasParticleOptions.json', () => {
         // console.log('christmas-canvas - particles.js config loaded');
         if (this.currentParticles) {
-          this.checkStopParticles(false);
+          this.stopParticles(false);
         }
         this.currentParticles = window.pJS;
       });
@@ -340,6 +332,9 @@ export default {
       notifications: 'notifications',
       maxNotifications: 'maxNotifications',
     }),
+    effectsConfig() {
+      return this.config?.effectsConfig || {};
+    },
     maintenanceConfig() {
       return this.config?.maintenanceConfig || {};
     },
@@ -352,8 +347,8 @@ export default {
     metadataConfig() {
       return this.config?.metadataConfig || {};
     },
-    christmasParticlesActive() {
-      return this.$vuetify.breakpoint.mdAndUp && this.$store.getters.itIsDecember;
+    showDecemberParticles() {
+      return this.$vuetify.breakpoint.mdAndUp && this.effectsConfig.decemberParticles && this.$store.getters.itIsDecember;
     },
     polygonParticlesActive() {
       return this.$vuetify.breakpoint.mdAndUp && this.currentPage && this.currentPage === LANDING_PAGENAME;
@@ -403,7 +398,7 @@ export default {
                     background-size: cover !important; `;
 
       if (bgImg.includes('browsepage')) {
-        bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
+        bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.3) 100%), url(${bgImg}) !important;`;
 
         bgStyle += `background-position: center top !important;
                       background-repeat: repeat !important; `;

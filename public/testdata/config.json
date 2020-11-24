@@ -39,18 +39,22 @@
       "showDataCreditScore": false
     },
     "resourcesConfig": {
-      "downloadActive": false
+      "downloadActive": true
     },
-    "loadLocalFile": true,
+    "loadLocalFile": false,
     "localFileUrl": "./testdata/packagelist.json"
   },
   "projectsConfig": {
-    "loadLocalFile": true,
+    "loadLocalFile": false,
     "localFileUrl": "./testdata/projects.json"
   },
   "maintenanceConfig": {
-    "signinDisabled": true,
-    "messageActive": true,
+    "signinDisabled": false,
+    "messageActive": false,
     "message": "We are currently doing maintenance on the server and EnviDat is now in <strong>read-only mode</strong>. Data download, upload and <strong>user data management functionalities are currently disabled</strong>."
+  },
+  "effectsConfig": {
+    "landingPageParticles": true,
+    "decemberParticles": true
   }
 }
