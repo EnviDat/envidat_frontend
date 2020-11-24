@@ -79,7 +79,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-11-19 09:04:18
+ * Last modified  : 2020-11-24 17:27:19
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -122,9 +122,7 @@ export default {
     });
   },
   mounted() {
-    if (this.showPolygonParticles) {
-      this.initPolygonParticles();
-    }
+    this.initPolygonParticles();
   },
   destroyed() {
     this.stopParticles();
@@ -132,12 +130,20 @@ export default {
   computed: {
     ...mapState([
       'categoryCards',
+      'config',
     ]),
     showPolygonParticles() {
       return this.$vuetify.breakpoint.mdAndUp && this.effectsConfig.landingPageParticles && !this.$store.getters.itIsDecember;
     },
     effectsConfig() {
       return this.config?.effectsConfig || {};
+    },
+  },
+  watch: {
+    config() {
+      if (!this.loadingConfig) {
+        this.initPolygonParticles();
+      }
     },
   },
   methods: {
@@ -162,16 +168,18 @@ export default {
       }
     },
     initPolygonParticles() {
-      // particleOptions have to be in the folder public/particles/polygonParticleOptions.json for development
-      // in production they have to be in same folder as the index.html there -> ./particles/polygonParticleOptions.json
-      // eslint-disable-next-line no-undef
-      particlesJS.load('polygon-canvas', './particles/polygonParticleOptions.json', () => {
-        // console.log('polygon-canvas - particles.js config loaded');
-        if (this.currentParticles) {
-          this.checkStopParticles(false);
-        }
-        this.currentParticles = window.pJS;
-      });
+      if (this.showPolygonParticles) {
+        // particleOptions have to be in the folder public/particles/polygonParticleOptions.json for development
+        // in production they have to be in same folder as the index.html there -> ./particles/polygonParticleOptions.json
+        // eslint-disable-next-line no-undef
+        particlesJS.load('polygon-canvas', './particles/polygonParticleOptions.json', () => {
+          // console.log('polygon-canvas - particles.js config loaded');
+          if (this.currentParticles) {
+            this.checkStopParticles(false);
+          }
+          this.currentParticles = window.pJS;
+        });
+      }
     },
     catchCategoryClicked(cardType) {
       if (cardType.includes('login')) {
