@@ -1,7 +1,7 @@
 <template>
   <v-container fluid :class="$vuetify.breakpoint.smAndDown ? 'pa-1' : 'py-0'">
 
-    <div v-if="$vuetify.breakpoint.mdAndUp"
+    <div v-show="showPolygonParticles"
           id="polygon-canvas"
           style="position: absolute; width: 100%; height: 400px; bottom: 0; left: 0;"></div>
 
@@ -79,7 +79,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-11-18 17:43:47
+ * Last modified  : 2020-11-19 09:04:18
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -121,19 +121,24 @@ export default {
       vm.$store.commit(SET_APP_BACKGROUND, bgimg);
     });
   },
-  beforeRouteLeave(to, from, next) {
-    next((vm) => {
-      // console.log("landing beforeRouteEnter to: " + to + " from: " + from + " next: " + next);
-      vm.methods.stopParticles();
-    });
-  },
   mounted() {
-    this.initPolygonParticles();
+    if (this.showPolygonParticles) {
+      this.initPolygonParticles();
+    }
+  },
+  destroyed() {
+    this.stopParticles();
   },
   computed: {
     ...mapState([
       'categoryCards',
     ]),
+    showPolygonParticles() {
+      return this.$vuetify.breakpoint.mdAndUp && this.effectsConfig.landingPageParticles && !this.$store.getters.itIsDecember;
+    },
+    effectsConfig() {
+      return this.config?.effectsConfig || {};
+    },
   },
   methods: {
     stopParticles(fullClean = true) {
@@ -157,7 +162,8 @@ export default {
       }
     },
     initPolygonParticles() {
-      // particleOptions are defined in the folder public/particles/polygonParticleOptions.json
+      // particleOptions have to be in the folder public/particles/polygonParticleOptions.json for development
+      // in production they have to be in same folder as the index.html there -> ./particles/polygonParticleOptions.json
       // eslint-disable-next-line no-undef
       particlesJS.load('polygon-canvas', './particles/polygonParticleOptions.json', () => {
         // console.log('polygon-canvas - particles.js config loaded');
