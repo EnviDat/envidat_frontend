@@ -2,6 +2,10 @@
   <v-app class="application"
           :style="dynamicBackground">
 
+      <div v-show="showDecemberParticles"
+            id="christmas-canvas"
+            style="position: absolute; width: 100%; height: 100%;"></div>
+
       <div v-for="(notification, index) in visibleNotifications()"
           :key="`notification_${index}`"
           :style="`position: absolute;
@@ -88,7 +92,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-11-12 08:56:58
+ * Last modified  : 2020-11-24 17:25:02
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -98,6 +102,7 @@ import {
   mapState,
   mapGetters,
 } from 'vuex';
+
 import {
   LANDING_PATH,
   LANDING_PAGENAME,
@@ -131,16 +136,63 @@ import ConfirmTextCard from '@/components/Cards/ConfirmTextCard';
 import TextBanner from '@/components/Layouts/TextBanner';
 import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
 
+require('particles.js');
+
 export default {
   name: 'App',
   beforeCreate() {
     // check for the backend version
     this.$store.dispatch(SET_CONFIG);
   },
+  mounted() {
+    this.startParticles();
+  },
   updated() {
     this.updateActiveStateOnNavItems();
   },
   methods: {
+    startParticles() {
+      if (!this.currentParticles) {
+        if (this.showDecemberParticles) {
+          this.initChristmasParticles();
+        } else {
+          this.stopParticles();
+        }
+      }
+    },    
+    stopParticles(fullClean = true) {
+      
+      try {
+       
+        if (this.currentParticles) {
+          this.currentParticles.particles.move.enable = false;
+          this.currentParticles.particles.opcacity.anim.enable = false;
+          this.currentParticles.particles.size.anim.enable = false;
+        }
+
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(`Error during particle stop: ${error}`);
+      } finally {
+        this.currentParticles = null;
+        if (fullClean) {
+          window.pJS = null;
+        }
+      }
+    },
+    initChristmasParticles() {
+      // particleOptions have to be in the folder public/particles/christmasParticleOptions.json for development
+      // in production they have to be in same folder as the index.html there -> ./particles/christmasParticleOptions.json
+      // eslint-disable-next-line no-undef
+      particlesJS.load('christmas-canvas', './particles/christmasParticleOptions.json', () => {
+        // console.log('christmas-canvas - particles.js config loaded');
+        if (this.currentParticles) {
+          this.stopParticles(false);
+        }
+        this.currentParticles = window.pJS;
+      });
+
+    },
     updateScroll() {
       if (this.$refs && this.$refs.appContainer) {
         this.storeScroll(this.$refs.appContainer.scrollTop);
@@ -280,6 +332,9 @@ export default {
       notifications: 'notifications',
       maxNotifications: 'maxNotifications',
     }),
+    effectsConfig() {
+      return this.config?.effectsConfig || {};
+    },
     maintenanceConfig() {
       return this.config?.maintenanceConfig || {};
     },
@@ -292,6 +347,12 @@ export default {
     metadataConfig() {
       return this.config?.metadataConfig || {};
     },
+    showDecemberParticles() {
+      return this.$vuetify.breakpoint.mdAndUp && this.effectsConfig.decemberParticles && this.$store.getters.itIsDecember;
+    },
+    polygonParticlesActive() {
+      return this.$vuetify.breakpoint.mdAndUp && this.currentPage && this.currentPage === LANDING_PAGENAME;
+    },
     loading() {
       return this.loadingMetadatasContent || this.searchingMetadatasContent || this.isFilteringContent
           || this.projectsLoading || this.policiesLoading || this.guidelinesLoading;
@@ -301,6 +362,9 @@ export default {
     },
     currentPageIsBrowsePage() {
       return this.currentPage === BROWSE_PAGENAME;
+    },
+    currentPageIsHomePage() {
+      return this.currentPage === LANDING_PAGENAME;
     },
     showToolbar() {
       return this.currentPageIsBrowsePage && this.mode;
@@ -334,7 +398,7 @@ export default {
                     background-size: cover !important; `;
 
       if (bgImg.includes('browsepage')) {
-        bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
+        bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.3) 100%), url(${bgImg}) !important;`;
 
         bgStyle += `background-position: center top !important;
                       background-repeat: repeat !important; `;
@@ -368,6 +432,7 @@ export default {
       if (!this.loadingConfig) {
         this.setupNavItems();
         this.loadAllMetadata();
+        this.startParticles();
       }
     },
     notifications() {
@@ -389,6 +454,7 @@ export default {
     NavigationZIndex: 1100,
     NotificationZIndex: 1500,
     showMaintenanceBanner: true,
+    currentParticles: null,
     navItems: [
       {
         title: 'Home',
