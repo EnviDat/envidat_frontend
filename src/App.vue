@@ -6,6 +6,10 @@
             id="christmas-canvas"
             style="position: absolute; width: 100%; height: 100%;"></div>
 
+      <link v-if="showDecemberParticles"
+            rel="stylesheet"
+            href="./particles/decemberEffects.css">
+
       <div v-for="(notification, index) in visibleNotifications()"
           :key="`notification_${index}`"
           :style="`position: absolute;
@@ -92,7 +96,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-11-24 17:25:02
+ * Last modified  : 2020-11-25 18:09:38
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

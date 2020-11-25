@@ -79,7 +79,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-11-24 17:27:19
+ * Last modified  : 2020-11-25 17:25:57
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -153,7 +153,7 @@ export default {
        
         if (this.currentParticles) {
           this.currentParticles.particles.move.enable = false;
-          this.currentParticles.particles.opcacity.anim.enable = false;
+          this.currentParticles.particles.opacity.anim.enable = false;
           this.currentParticles.particles.size.anim.enable = false;
         }
 
@@ -175,7 +175,7 @@ export default {
         particlesJS.load('polygon-canvas', './particles/polygonParticleOptions.json', () => {
           // console.log('polygon-canvas - particles.js config loaded');
           if (this.currentParticles) {
-            this.checkStopParticles(false);
+            this.stopParticles(false);
           }
           this.currentParticles = window.pJS;
         });
