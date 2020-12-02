@@ -1,5 +1,6 @@
 <template>
-  <v-col >
+  <v-col order-md="2"
+          order="1" >
 
     <v-row align="center" >
 
@@ -63,7 +64,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-12-02 14:47:50
+ * Last modified  : 2020-12-02 16:36:40
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

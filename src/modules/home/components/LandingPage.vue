@@ -12,9 +12,11 @@
               no-gutters>
 
         <v-col cols="12"
-                sm="6"
+                md="6"
                 align-self="end"
-                class="pr-4">
+                order-md="1"
+                order="2"
+                class="pr-md-4 pt-4 pt-md-0">
 
           <SloganCard v-if="showWinterHolidayWishs"
                       slogan="Happy Holidays!"
@@ -59,7 +61,7 @@
               no-gutters>
         <v-col>          
           <v-card>
-            <v-card-title primary style="word-break: break-word;">
+            <v-card-title primary style="word-break: break-word; line-height: 1.5rem;">
               {{ welcomeInfo.categoryText }}
             </v-card-title>
           </v-card>
@@ -102,7 +104,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-12-02 16:25:28
+ * Last modified  : 2020-12-02 16:39:33
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
