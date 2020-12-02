@@ -34,7 +34,6 @@ import { getCardBackgrounds } from '@/factories/metaDataFactory';
 
 import { LISTCONTROL_MAP_ACTIVE } from '@/store/metadataMutationsConsts';
 import globalMethods from '@/factories/globalMethods';
-import { getMonth } from 'date-fns';
 import categoryCards from './categoryCards';
 
 const errReport = process.env.VUE_APP_ERROR_REPORTING_ENABLED;
@@ -98,11 +97,6 @@ const store = new Vuex.Store({
     config: state => state.config,
     notifications: state => state.notifications,
     maxNotifications: state => state.maxNotifications,
-    itIsDecember() {
-      const currentMonth = getMonth(Date.now());
-      // months start at 0 -> January, 11 -> December
-      return currentMonth === 11;
-    },
   },
   mutations,
   actions,

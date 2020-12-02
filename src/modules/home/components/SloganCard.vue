@@ -1,17 +1,16 @@
 <template>
-  <v-card ripple hover @click="buttonCallback" >
+  <v-card >
 
     <v-container class="pa-0" >
-      <v-row :class="{ 'flex-column' : $vuetify.breakpoint.xsOnly }"
-              no-gutters >
+      <v-row no-gutters >
 
         <v-col class="py-0 pr-sm-0"        
                 cols="12"
                 sm="5" >
           <v-img class="imagezoom"
-                  :src="fingertipsImg"
-                  style="max-height: 200px; min-height: 100%; border-top-left-radius: 4px;"
-                  :style="`border-bottom-left-radius: ${$vuetify.breakpoint.smAndUp ? 4 : 0}px;
+                  :src="sloganImg ? sloganImg : fallbackImg"
+                  style="min-height: 100%; border-top-left-radius: 4px;"
+                  :style="`max-height: ${maxHeight}px; border-bottom-left-radius: ${$vuetify.breakpoint.smAndUp ? 4 : 0}px;
                     border-top-right-radius: ${$vuetify.breakpoint.xsOnly ? 4 : 0}px;`" />
         </v-col>
 
@@ -19,20 +18,20 @@
                 cols="12"
                 sm="7" >
 
-          <div class="hidden-sm-and-down envidatSlogan display-1"
+          <div class="hidden-sm-and-down envidatSlogan display-1 pb-5"
                 v-html="slogan">
           </div>
-          <div class="hidden-xs-only hidden-md-and-up envidatSlogan headline px-2"
+          <div class="hidden-xs-only hidden-md-and-up envidatSlogan headline px-2  pb-5"
                 v-html="slogan">
           </div>
-          <div class="hidden-sm-and-up envidatSlogan headline x"
+          <div class="hidden-sm-and-up envidatSlogan headline pb-5"
                 style="text-align: center;"
                 v-html="slogan" >
           </div>
 
-          <div class="py-5 mb-5"
-               :style="$vuetify.breakpoint.mdAndUp ? 'font-size: 14px !important;' : '' " >
-            {{ subSlogan }}
+          <div :class="hasButtons ? 'pb-5 mb-5' : 'pb-0'"
+                :style="$vuetify.breakpoint.mdAndUp ? 'font-size: 14px !important;' : '' "
+                v-html="subSlogan">
           </div>
         </v-col>
       </v-row>
@@ -49,7 +48,8 @@
                                 :isFlat="true"
                                 @clicked="moreButtonCallback" />
 
-      <base-rectangle-button :button-text="buttonText"
+      <base-rectangle-button v-if="buttonText && buttonCallback"
+                                :button-text="buttonText"
                               :is-small="true"
                               @clicked="buttonCallback"/>
 
@@ -66,7 +66,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-10-20 15:35:04
+ * Last modified  : 2020-12-02 15:15:05
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -80,6 +80,7 @@ export default {
     slogan: String,
     sloganImg: String,
     subSlogan: String,
+    maxHeight: Number,
     buttonText: String,
     buttonCallback: Function,
     moreButtonText: String,
@@ -87,12 +88,15 @@ export default {
   },
   components: { BaseRectangleButton },
   beforeMount() {
-    this.fingertipsImg = this.sloganImg ? this.sloganImg : this.mixinMethods_getWebpImage('cards/slogan/fingertips_small', this.$store.state);
+    this.fallbackImg = this.mixinMethods_getWebpImage('cards/slogan/fingertips_small', this.$store.state);
   },
   data: () => ({
-    fingertipsImg: null,
+    fallbackImg: '',
   }),
-  methods: {
+  computed: {
+    hasButtons() {
+      return (this.moreButtonText && this.moreButtonCallback) || (this.buttonText && this.buttonCallback);
+    },
   },
 };
 </script>
