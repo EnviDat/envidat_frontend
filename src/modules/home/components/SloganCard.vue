@@ -21,7 +21,7 @@
           <div class="hidden-sm-and-down envidatSlogan display-1 pb-5"
                 v-html="slogan">
           </div>
-          <div class="hidden-xs-only hidden-md-and-up envidatSlogan headline px-2  pb-5"
+          <div class="hidden-xs-only hidden-md-and-up envidatSlogan headline pb-5"
                 v-html="slogan">
           </div>
           <div class="hidden-sm-and-up envidatSlogan headline pb-5"
@@ -66,7 +66,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-12-02 15:15:05
+ * Last modified  : 2020-12-02 16:32:21
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
