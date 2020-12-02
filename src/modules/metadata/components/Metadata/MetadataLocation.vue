@@ -14,29 +14,25 @@
     <v-card-text v-else-if="hasGeom"
                   class="pa-4 pt-0" >
 
-      <metadata-location-cesium
-        v-show="show3d"
-        v-bind="mapSize"
-        :geom="geom"
-        :bbox="bbox"
-        :centroid="centroid"
-        :zoomExtent="zoomExtent"
-        :color="color"
-        :fillAlpha="fillAlpha"
-        :outline-width="outlineWidth"
-      >
+      <metadata-location-cesium v-show="show3d"
+                                v-bind="mapSize"
+                                :geom="geom"
+                                :bbox="bbox"
+                                :centroid="centroid"
+                                :zoomExtent="zoomExtent"
+                                :color="color"
+                                :fillAlpha="fillAlpha"
+                                :outline-width="outlineWidth" >
         <v-btn v-if="enabled3d" fab small @click="show3d = false">2D</v-btn>
       </metadata-location-cesium>
 
-      <metadata-location-leaflet
-        v-show="!show3d"
-        v-bind="mapSize"
-        :geom="geom"
-        :zoomExtent="zoomExtent"
-        :color="color"
-        :fillAlpha="fillAlpha"
-        :outline-width="outlineWidth"
-      >
+      <metadata-location-leaflet v-show="!show3d"
+                                  v-bind="mapSize"
+                                  :geom="geom"
+                                  :zoomExtent="zoomExtent"
+                                  :color="color"
+                                  :fillAlpha="fillAlpha"
+                                  :outline-width="outlineWidth" >
         <v-btn v-if="enabled3d" fab small @click="show3d = true">3D</v-btn>
       </metadata-location-leaflet>
     </v-card-text>
@@ -45,10 +41,13 @@
 </template>
 
 <script>
-  // eslint-disable new-cap
 
-  import {
- rewind as tRewind, centroid as tCentroid, distance as tDistance, buffer as tBuffer, envelope as tEnvelope,
+import {
+ rewind as tRewind,
+ centroid as tCentroid,
+ distance as tDistance,
+ buffer as tBuffer,
+ envelope as tEnvelope,
 } from '@turf/turf';
 
 import { METADATA_LOCATION_TITLE } from '@/factories/metadataConsts';
