@@ -43,6 +43,7 @@
       <v-col >
         <slogan-card :slogan="slogan"
                       :subSlogan="subSlogan"
+                      :maxHeight="200"
                       :buttonText="buttonText"
                       :buttonCallback="buttonCallback"
                       :moreButtonText="moreButtonText"
@@ -62,7 +63,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-10-13 22:10:44
+ * Last modified  : 2020-12-02 14:47:50
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

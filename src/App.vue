@@ -96,7 +96,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-11-25 18:09:38
+ * Last modified  : 2020-12-02 11:56:59
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -106,6 +106,8 @@ import {
   mapState,
   mapGetters,
 } from 'vuex';
+
+import { getMonth } from 'date-fns';
 
 import {
   LANDING_PATH,
@@ -352,7 +354,10 @@ export default {
       return this.config?.metadataConfig || {};
     },
     showDecemberParticles() {
-      return this.$vuetify.breakpoint.mdAndUp && this.effectsConfig.decemberParticles && this.$store.getters.itIsDecember;
+      return this.$vuetify.breakpoint.mdAndUp && this.effectsConfig.decemberParticles && this.itIsDecember;
+    },
+    itIsDecember() {
+      return getMonth(Date.now()) === 11;
     },
     polygonParticlesActive() {
       return this.$vuetify.breakpoint.mdAndUp && this.currentPage && this.currentPage === LANDING_PAGENAME;
