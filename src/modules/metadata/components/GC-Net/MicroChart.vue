@@ -210,13 +210,26 @@ import 'uplot/dist/uPlot.min.css';
 export default {
   name: 'MicroChart',
   props: {
-    station: Object,
+    station: {
+      type: Object,
+      default: () => ({
+        id: 0,
+        name: 'Swiss Camp 10m',
+        latitude: '69.56833',
+        longitude: '49.31582',
+        elevation: 1176,
+        startdate: '1990.4',
+        active: true,
+        alias: 'swisscamp10m',
+        data: 1,
+      }),
+    },
     image: String,
     JSONUrls: {
       type: Object,
       default: () => ({
-        dataURLs: [{ fileType: 'temp', url: './testdata/0temp.json' }],
-        recentDataURLs: [{ fileType: 'temp', url: './testdata/0temp_v.json' }],
+        dataURLs: [{ fileType: 'temp', url: './testdata/1temp_v.json' }],
+        recentDataURLs: [{ fileType: 'temp', url: './testdata/1temp_v.json' }],
       }),
     },
     fileValueMapping: {

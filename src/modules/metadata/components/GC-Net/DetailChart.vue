@@ -3,9 +3,9 @@
   <v-card >
     <v-container class="pa-3" fluid >
       <!-- <v-row column> -->
-      <v-row >
+      <!-- <v-row >
 
-        <v-col class="pb-3" >
+        <v-col class="pb-3" > -->
           <v-row   justify="space-between">
             <v-col class="shrink" 
                     :class="$vuetify.breakpoint.xsOnly ? 'title' : 'display-1'">
@@ -14,12 +14,13 @@
             <v-col class="shrink title" >
               {{ stationName }}
             </v-col>
-          </v-row>            
-        </v-col>
+          </v-row>
+          
+        <!-- </v-col> -->
 
-        <v-col class="py-0" v-if="chartIsLoading && preloading"
+        <!-- <v-col class="py-0" v-if="chartIsLoading && preloading"
                 :style="`height: ${ $vuetify.breakpoint.xsOnly ? 300 : 350 }px;`"
-                >
+                > -->
           <v-row class="fill-height"   justify="center" align="center">
             <v-col class="shrink" >
               <v-progress-circular :size="50"
@@ -28,7 +29,7 @@
               
             </v-col>
           </v-row>
-        </v-col>
+        <!-- </v-col> -->
 
         <v-col v-if="!chartIsLoading && !hasData"
                 
@@ -56,7 +57,7 @@
             <v-col class="shrink pt-3" 
                     >
               
-              <base-rectangle-button buttonText="Load historical data"
+              <BaseRectangleButton buttonText="Load historical data"
                                       materialIconName="refresh"
                                       @clicked="preloading = true; intersected = true; chartIsLoading = true; loadChart();"
                                       iconColor="white" />
@@ -76,7 +77,7 @@
           </div>            
         </v-col>
 
-      </v-row>
+      <!-- </v-row> -->
     </v-container>
 
   </v-card>
@@ -96,15 +97,47 @@ import { createSerialChart, defaultSeriesSettings } from '@/factories/chartFacto
 export default {
   name: 'DetailChart',
   props: {
-    url: String,
-    stationName: String,
-    chartId: String,
-    fileObject: Object,
+    url: {
+      type: String,
+      default: './testdata/1temp_v.json',
+    },
+    stationName: {
+      type: String,
+      default: 'SwissCamp default',
+    },
+    chartId: {
+      type: String,
+      default: '1temp_v.json',
+    },
+    fileObject: {
+      type: Object,
+      default: () => ({
+        fileName: 'temp_v.json',
+        chartTitle: 'Air Temperatures Recent Days',
+        numberFormat: '##  °C',
+        dateFormatTime: true,
+        preload: true,
+        showDisclaimer: false, 
+      }),
+    },
     delay: {
       type: Number,
       default: 0,
     },
-    valueFieldMapping: Object,
+    valueFieldMapping: {
+      type: Object,
+      default: () => ({
+        temp: [
+          {
+              parameter: 'AirTC1',
+              color: '#D48E00',
+              negativeColor: '#00CED4',
+              titleString: 'Thermocouple 1',
+              precision: 1,
+          },
+        ],
+      }),
+    },
     preload: Boolean,
     showDisclaimer: Boolean,
     convertLocalTime: Boolean,
@@ -112,6 +145,7 @@ export default {
   components: {
     BaseRectangleButton,
   },
+
   mounted() {
     this.preloading = this.preload;
 

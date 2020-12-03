@@ -38,12 +38,13 @@
                   cols="12" md="4" lg="3">
             <micro-chart :station="station"
                           :image="stationImg(station.alias)"
-                          :JSONUrls="getJSONUrls(station)"
                           :fileValueMapping="fileValueMapping"
                           :delay="index * 100"
                           @detailClick="(stationID) => { changeCurrentStation(stationID); }" />
           </v-col>
-          
+
+                          <!-- :JSONUrls="getJSONUrls(station)" -->
+
         </v-row>
       </v-col>
 

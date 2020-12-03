@@ -35,4 +35,9 @@ export const metadataRoutes = [
       },
     ],
   },
+  {
+    path: '/gcnet',
+    name: 'GcNetPage',
+    component: () => import(/* webpackPrefetch: true, webpackChunkName: "gcnetpage" */ '@/modules/metadata/components/GC-Net/GcNetPage'),
+  },
 ];
