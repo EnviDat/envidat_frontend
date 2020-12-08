@@ -50,7 +50,7 @@
     }
   ],
   "valueFieldMapping": {
-    temp: [
+    "temp": [
       {
         parameter: 'AirTC1',
         color: '#D48E00',
