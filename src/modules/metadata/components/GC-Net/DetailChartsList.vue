@@ -225,7 +225,7 @@ export default {
     generateFileList() {
       const fileList = [];
 
-      if (!this.currentStation) {
+      if (!this.currentStation || !this.fileObjects) {
         // handle empty case, just return the empty list
         return fileList;
       }
@@ -273,7 +273,17 @@ export default {
     loadingStation: false,
     stationImg: null,
     stationPreloadImage: null,
-    currentStation: null,
+    currentStation: {
+      id: 1,
+      name: 'Swiss Camp',
+      latitude: '69.56833',
+      longitude: '49.31582',
+      elevation: 1176,
+      startdate: '1990.30',
+      active: true,
+      alias: 'swisscamp',
+      data: 1,
+    },
     expand: false,
     convertLocalTime: false,
     reRenderKey: null,
