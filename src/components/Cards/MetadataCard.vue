@@ -128,6 +128,7 @@
  */
 import remark from 'remark';
 import strip from 'strip-markdown';
+import stripHtml from 'remark-strip-html';
 
 import TagChip from '@/components/Cards/TagChip';
 import BaseIconCountView from '@/components/BaseElements/BaseIconCountView';
@@ -262,8 +263,11 @@ export default {
       }
 
       if (this.subtitle !== undefined) {
-        const strippedFile = remark().use(strip).processSync(this.subtitle);
-        const cleanSubtitle = strippedFile.contents;
+        const strippedMDFile = remark().use(strip).processSync(this.subtitle);
+        const strippedMDText = strippedMDFile.contents;
+        const strippedHtmlFile = remark().use(stripHtml).processSync(strippedMDText);
+        
+        const cleanSubtitle = strippedHtmlFile.contents;
         if (cleanSubtitle) {
           return `${cleanSubtitle.substring(0, maxLength)}...`;
         }
