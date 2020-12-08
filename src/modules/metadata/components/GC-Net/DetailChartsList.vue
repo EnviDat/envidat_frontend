@@ -2,10 +2,9 @@
   <v-container class="pa-0 fill-height" fluid
                 >
 
-    <v-row v-if="currentStation"
-                >
+    <v-row >
 
-      <v-col cols="12" md="3">
+      <!-- <v-col cols="12" md="3">
         <stations-map :height="'60vh'"
                       :currentStation="currentStation"
                       @mapClick="mapStationClick" />
@@ -18,7 +17,7 @@
                           :paramList="paramList"
                           @paramClick="catchParamClick"
                           @localTimeClick="catchLocalTimeClick" />
-      </v-col>
+      </v-col> -->
 
       <v-col cols="12" >
         <!-- <v-row column > -->
@@ -43,7 +42,7 @@
         </v-row>
 
         <v-row v-if="generateFileList.length <= 0">
-          <v-col>{{ `FileObject: ${fileObject} valueFieldMapping: ${valueFieldMapping}` }}</v-col>
+          <v-col>{{ `FileObject: ${fileObjects} valueFieldMapping: ${valueFieldMapping}` }}</v-col>
         </v-row>
 
       </v-col>
@@ -74,8 +73,8 @@
 <script>
 import axios from 'axios';
 
-import DetailChart from '@/components/DetailChart';
-import StationControl from '@/components/StationControl';
+import DetailChart from './DetailChart';
+// import StationControl from './StationControl';
 
 // import StationsMap from '@/components/StationsMap';
 // import StationsList from '@/components/Navigation/StationsList';
@@ -88,7 +87,7 @@ export default {
   },
   components: {
     DetailChart,
-    StationControl,
+    // StationControl,
     // StationsList,
     // StationsMap,
   },
@@ -96,8 +95,10 @@ export default {
     this.reRenderKey = new Date().toUTCString();
   },
   mounted() {
+    // eslint-disable-next-line no-unused-vars
     const stationToFind = this.stationRouteId();
-    this.currentStation = this.getStation(stationToFind);
+    // this.currentStation = this.getStation(stationToFind);
+    this.loadParameterJson();
   },
   beforeDestroy() {
     // am4core.unuseAllThemes();
@@ -106,32 +107,33 @@ export default {
   },
   watch: {
     $route(to) {
+      // eslint-disable-next-line no-unused-vars
       const stationToFind = to.params.id;
-      this.currentStation = this.getStation(stationToFind);
+      // this.currentStation = this.getStation(stationToFind);
     },    
-    currentStation() {
-      if (this.currentStation) {
-        let imgs = require.context('@/assets/stations/', false, /\.jpg$/);
-        let imgCache = {};
+    // currentStation() {
+    //   if (this.currentStation) {
+    //     let imgs = require.context('@/assets/stations/', false, /\.jpg$/);
+    //     let imgCache = {};
 
-        imgs.keys().forEach((key) => {
-          imgCache[key] = imgs(key);
-        });
+    //     imgs.keys().forEach((key) => {
+    //       imgCache[key] = imgs(key);
+    //     });
 
-        this.stationImg = imgCache[`./${this.currentStation.alias}.jpg`];
+    //     this.stationImg = imgCache[`./${this.currentStation.alias}.jpg`];
 
-        imgs = require.context('@/assets/cards', false, /\.jpg$/);
-        imgCache = {};
+    //     imgs = require.context('@/assets/cards', false, /\.jpg$/);
+    //     imgCache = {};
 
-        imgs.keys().forEach((key) => {
-          imgCache[key] = imgs(key);
-        });
+    //     imgs.keys().forEach((key) => {
+    //       imgCache[key] = imgs(key);
+    //     });
 
-        this.stationPreloadImage = imgCache[`./${this.currentStation.alias}.jpg`];
-      }
+    //     this.stationPreloadImage = imgCache[`./${this.currentStation.alias}.jpg`];
+    //   }
 
-      window.scrollTo(0, 0);
-    },
+    //   window.scrollTo(0, 0);
+    // },
   },
   methods: {
     loadParameterJson() {

@@ -4,6 +4,12 @@
                 tag="article"
                 id="GcNetPage" >
 
+    <v-row>
+      <v-col>
+        <DetailChartsList />
+      </v-col>
+    </v-row>
+
     <v-row >
       <v-col >
 
@@ -32,6 +38,7 @@
 
     </v-row>
 
+
   </v-container>
 </template>
 
@@ -43,7 +50,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-12-03 17:04:58
+ * Last modified  : 2020-12-08 12:22:40
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -52,6 +59,7 @@
 
 import MicroChart from '@/modules/metadata/components/GC-Net/MicroChart';
 import DetailChart from '@/modules/metadata/components/GC-Net/DetailChart';
+import DetailChartsList from '@/modules/metadata/components/GC-Net/DetailChartsList';
 
 
 export default {
@@ -82,6 +90,7 @@ export default {
   components: {
     DetailChart,
     MicroChart,
+    DetailChartsList,
   },
   data: () => ({
   }),
