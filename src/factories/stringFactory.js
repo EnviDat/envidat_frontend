@@ -5,7 +5,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-12-03 10:53:30 
- * Last modified  : 2020-12-03 11:04:04
+ * Last modified  : 2020-12-09 09:45:04
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -17,7 +17,8 @@ import htmlLib from 'remark-html';
 import remarkStripHtmlLib from 'remark-strip-html';
 
 export function renderMarkdown(markdownString) {
-  return remark().use(htmlLib).processSync(markdownString);
+  const strippedMDFile = remark().use(htmlLib).processSync(markdownString);
+  return strippedMDFile.contents;
 }
 
 export function stripMarkdown(markdownString, stripHtml = false) {
