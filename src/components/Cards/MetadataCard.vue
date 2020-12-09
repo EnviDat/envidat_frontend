@@ -121,20 +121,17 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2020-11-04 14:00:21
+ * Last modified  : 2020-12-09 12:00:35
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
-import remark from 'remark';
-import strip from 'strip-markdown';
-import stripHtml from 'remark-strip-html';
-
 import TagChip from '@/components/Cards/TagChip';
 import BaseIconCountView from '@/components/BaseElements/BaseIconCountView';
 import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import { getModeData } from '@/factories/modeFactory';
+import { stripMarkdown } from '@/factories/stringFactory';
 
 // Header Sleek design
 // https://codepen.io/GeorgeGedox/pen/NQrxrY
@@ -238,42 +235,46 @@ export default {
     isCompactLayout() {
       return this.compactLayout || this.$vuetify.breakpoint.smAndDown;
     },
-    truncatedTitle() {
+    maxTitleLength() {
       let maxLength = this.titleLength;
 
       if (this.flatLayout) {
         maxLength = this.flatTitleLength;
-      } else if (this.compactLayout || this.$vuetify.breakpoint.smAndDown) {
+      } else if (this.isCompactLayout) {
         maxLength = this.compactTitleLength;
       }
 
-      if (this.title !== undefined && this.maxTitleLengthReached) {
+      return maxLength;
+    },
+    truncatedTitle() {
+      const maxLength = this.maxTitleLength;
+
+      if (this.title?.length > maxLength) {
         return `${this.title.substring(0, maxLength)}...`;
       }
 
       return this.title;
     },
-    truncatedSubtitle() {
+    maxDescriptionLength() {
       let maxLength = this.descriptionLength;
 
       if (this.flatLayout) {
         maxLength = this.flatDescriptionLength;
-      } else if (this.compactLayout || this.$vuetify.breakpoint.smAndDown) {
+      } else if (this.isCompactLayout) {
         maxLength = this.compactDescriptionLength;
       }
 
-      if (this.subtitle !== undefined) {
-        const strippedMDFile = remark().use(strip).processSync(this.subtitle);
-        const strippedMDText = strippedMDFile.contents;
-        const strippedHtmlFile = remark().use(stripHtml).processSync(strippedMDText);
-        
-        const cleanSubtitle = strippedHtmlFile.contents;
-        if (cleanSubtitle) {
-          return `${cleanSubtitle.substring(0, maxLength)}...`;
-        }
+      return maxLength;
+    },
+    truncatedSubtitle() {
+      const maxLength = this.maxDescriptionLength;
+      const cleanSubtitle = stripMarkdown(this.subtitle, true);
+
+      if (cleanSubtitle?.length > maxLength) {
+        return `${cleanSubtitle.substring(0, maxLength)}...`;
       }
 
-      return '';
+      return cleanSubtitle;
     },
     isRestricted() {
       return this.restricted;
@@ -332,7 +333,7 @@ export default {
       return this.flatLayout && textLength >= this.flatTagtextLength;
     },
     compactAndMaxReached(textLength) {
-      return (this.compactLayout || this.$vuetify.breakpoint.smAndDown) && textLength >= this.compactTagtextLength;
+      return this.isCompactLayout && textLength >= this.compactTagtextLength;
     },
     cardClick() {
       let detailParam = this.name;
