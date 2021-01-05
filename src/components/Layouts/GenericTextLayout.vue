@@ -19,14 +19,13 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-23 14:54:16
+ * Last modified  : 2021-01-05 15:11:14
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
 
-import remark from 'remark';
-import html from 'remark-html';
+import { renderMarkdown } from '@/factories/stringFactory';
 
 export default {
   components: {
@@ -36,7 +35,7 @@ export default {
   },
   methods: {
     markdownText(markdown) {
-      return remark().use(html).processSync(markdown);
+      return renderMarkdown(markdown);
     },
   },
 };
