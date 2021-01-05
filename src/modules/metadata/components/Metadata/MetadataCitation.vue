@@ -74,14 +74,13 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-10-22 15:21:46
+ * Last modified  : 2021-01-05 15:16:29
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
 
-import remark from 'remark';
-import html from 'remark-html';
+import { renderMarkdown } from '@/factories/stringFactory';
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 import { METADATA_CITATION_TITLE } from '@/factories/metadataConsts';
 
@@ -99,7 +98,7 @@ export default {
   }),
   computed: {
     markdownText() {
-      return remark().use(html).processSync(this.citationText);
+      return renderMarkdown(this.citationText);
     },
     citationText() {
       return this.mixinMethods_getGenericProp('citationText');
