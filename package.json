@@ -21,7 +21,7 @@
     "@turf/turf": "^5.1.6",
     "amcharts3": "^3.21.15",
     "amstock3": "^3.21.15",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "babel-loader": "^8.0.6",
     "babel-plugin-module-resolver": "^4.0.0",
     "babel-polyfill": "^6.26.0",
