@@ -40,7 +40,7 @@
     <v-card ripple
             height="100%"
             style="z-index: 0; top: -2px;"
-            :class="`elevation-${hovered ? 10 : 2}`"
+            :class="`elevation-${hovered ? 5 : 2}`"
             class="mx-2"
             @click.native="cardClick">
 
@@ -80,107 +80,105 @@
 
 
 <script>
-  /**
-   * ProjectCard.vue creates a card with a header image, title, keywords and preview description.
-   * When clicked its emits the 'clickedEvent' event, also the clickedTag can be emitted.
-   *
-   * @summary card with img, title, keywords and preview description
-   * @author Dominik Haas-Artho
-   *
-   * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2020-11-17 13:45:19
-   *
-   * This file is subject to the terms and conditions defined in
-   * file 'LICENSE.txt', which is part of this source code package.
-   */
-  import remark from 'remark';
-  import strip from 'strip-markdown';
+/**
+ * ProjectCard.vue creates a card with a header image, title, keywords and preview description.
+ * When clicked its emits the 'clickedEvent' event, also the clickedTag can be emitted.
+ *
+ * @summary card with img, title, keywords and preview description
+ * @author Dominik Haas-Artho
+ *
+ * Created at     : 2019-10-02 11:24:00
+ * Last modified  : 2021-01-05 15:32:35
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+import { stripMarkdown } from '@/factories/stringFactory';
 
-  import BaseIconButton from '@/components/BaseElements/BaseIconButton';
+import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
   // checkout skeleton
   // https://github.com/ToxicJojo/SkeletonPlaceholder
 
-  export default {
-    name: 'ProjectCard',
-    components: {
-      BaseIconButton,
-    },
-    props: {
-      id: String,
-      defaultImg: String,
-      img: String,
-      title: String,
-      subtitle: String,
-      description: String,
-      subProjects: Array,
-      dark: Boolean,
-    },
-    computed: {
-      headerImg() {
-        const img = new Image();
-        let imgSrc = this.defaultImg;
+export default {
+  name: 'ProjectCard',
+  components: {
+    BaseIconButton,
+  },
+  props: {
+    id: String,
+    defaultImg: String,
+    img: String,
+    title: String,
+    subtitle: String,
+    description: String,
+    subProjects: Array,
+    dark: Boolean,
+  },
+  computed: {
+    headerImg() {
+      const img = new Image();
+      let imgSrc = this.defaultImg;
 
-        if (this.img) {
-          imgSrc = this.img;
+      if (this.img) {
+        imgSrc = this.img;
+      }
+
+      img.src = imgSrc;
+      img.onload = () => {
+        // forced to make the check with for the contain property again
+        this.$forceUpdate();
+      };
+
+      return img;
+    },
+    maxTitleLengthReached() {
+      return this.title.length > this.maxTitleLength;
+    },
+    truncatedTitle() {
+      const maxLength = this.maxTitleLength;
+
+      if (this.title !== undefined && this.title.length > 0) {
+        let modifiedTitle = this.title.trim();
+        const splits = this.title.split('(');
+        if (splits.length > 0) {
+          modifiedTitle = splits[0].trim();
         }
-
-        img.src = imgSrc;
-        img.onload = () => {
-          // forced to make the check with for the contain property again
-          this.$forceUpdate();
-        };
-
-        return img;
-      },
-      maxTitleLengthReached() {
-        return this.title.length > this.maxTitleLength;
-      },
-      truncatedTitle() {
-        const maxLength = this.maxTitleLength;
-
-        if (this.title !== undefined && this.title.length > 0) {
-          let modifiedTitle = this.title.trim();
-          const splits = this.title.split('(');
-          if (splits.length > 0) {
-            modifiedTitle = splits[0].trim();
-          }
-          if (this.maxTitleLengthReached) {
-            return `${modifiedTitle.substring(0, maxLength)}...`;
-          }
-          return modifiedTitle;
+        if (this.maxTitleLengthReached) {
+          return `${modifiedTitle.substring(0, maxLength)}...`;
         }
-        return '';
-      },
-      truncatedDescription() {
-        if (this.description !== undefined && this.description.length > 0) {
-          const strippedFile = remark()
-            .use(strip)
-            .processSync(this.description);
-          const cleanSubtitle = strippedFile.contents;
-          if (cleanSubtitle) {
-            return `${cleanSubtitle.substring(0, this.maxDescriptionLength)}...`;
-          }
-        }
+        return modifiedTitle;
+      }
+      return '';
+    },
+    truncatedDescription() {
+      if (this.description !== undefined && this.description.length > 0) {
 
-        return `No description found for ${this.truncatedTitle}`;
-      },
+        const cleanSubtitle = stripMarkdown(this.description);
+
+        if (cleanSubtitle) {
+          return `${cleanSubtitle.substring(0, this.maxDescriptionLength)}...`;
+        }
+      }
+
+      return `No description found for ${this.truncatedTitle}`;
     },
-    methods: {
-      cardClick() {
-        this.$emit('cardClick', this.id);
-      },
-      subprojectClick(subprojectId) {
-        this.$emit('subprojectClick', subprojectId);
-      },
+  },
+  methods: {
+    cardClick() {
+      this.$emit('cardClick', this.id);
     },
-    data: () => ({
-      maxDescriptionLength: 290,
-      maxTitleLength: 100,
-      hovered: false,
-      headerCardHeight: 150,
-    }),
-  };
+    subprojectClick(subprojectId) {
+      this.$emit('subprojectClick', subprojectId);
+    },
+  },
+  data: () => ({
+    maxDescriptionLength: 290,
+    maxTitleLength: 100,
+    hovered: false,
+    headerCardHeight: 150,
+  }),
+};
 </script>
 
 <style scoped>
