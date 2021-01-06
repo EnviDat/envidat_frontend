@@ -8,7 +8,6 @@
                   class="pa-4 pt-0">
 
       <MetadataList ref="metadataList"
-                      class="px-3"
                       :listContent="listContent"
                       :showMapFilter="showMapFilter"
                       :mapFilteringPossible="mapFilteringPossible"
@@ -44,7 +43,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2020-10-29 10:10:45
- * Last modified  : 2020-11-04 15:07:21
+ * Last modified  : 2021-01-06 11:56:56
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

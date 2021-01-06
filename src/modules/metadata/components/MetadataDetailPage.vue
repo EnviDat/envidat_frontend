@@ -2,7 +2,8 @@
   <v-container class="pa-0"
                 fluid
                 tag="article" >
-    <v-row >
+
+    <v-row no-gutters >
       <v-col class="elevation-5 pa-0"
               cols="12"
               ref="header"
@@ -70,7 +71,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-11-19 09:34:05
+ * Last modified  : 2021-01-06 16:47:28
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

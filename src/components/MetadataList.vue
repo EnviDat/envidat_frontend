@@ -49,8 +49,9 @@
 
     <template v-slot:metadataListPlaceholder>
       <v-container v-show="loading"
-                    fluid
-                    class="py-0 px-1">
+                    fluid >
+      <!-- don't use class with paddings here, it's being used in the MetadataListLayout component -->
+
       <v-row ref="metadataListPlaceholder" >
 
         <v-col v-for="(n, index) in placeHolderAmount"
@@ -66,8 +67,9 @@
 
     <template v-slot:metadataListLayout >
       <v-container v-if="!loading"
-                  fluid
-                  class="py-0 px-1">
+                  fluid >
+      <!-- don't use class with paddings here, it's being used in the MetadataListLayout component -->
+
       <v-row ref="metadataListLayout" >
 
         <v-col v-for="(pinnedId, index) in pinnedList"
@@ -172,7 +174,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-11-04 14:20:54
+ * Last modified  : 2021-01-06 16:14:05
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
