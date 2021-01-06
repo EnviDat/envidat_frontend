@@ -57,8 +57,6 @@
   /* eslint-disable new-cap */
   import { mapGetters } from 'vuex';
   /* eslint-disable no-unused-vars */
-  import 'leaflet/dist/leaflet.css';
-  import 'leaflet-bing-layer';
   import { METADATADETAIL_PAGENAME } from '@/router/routeConsts';
   import { SET_APP_BACKGROUND, SET_CURRENT_PAGE } from '@/store/mainMutationsConsts';
   import {

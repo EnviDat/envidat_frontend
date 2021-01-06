@@ -15,12 +15,14 @@
 
 <script>
     /* eslint-disable new-cap */
+    import { mapState } from 'vuex';
     import Viewer from 'cesium/Widgets/Viewer/Viewer';
     import BingMapsImageryProvider from 'cesium/Scene/BingMapsImageryProvider';
     import BingMapsStyle from 'cesium/Scene/BingMapsStyle';
     import Rectangle from 'cesium/Core/Rectangle';
     import SceneMode from 'cesium/Scene/SceneMode';
     import 'cesium/Widgets/widgets.css';
+
     import ZoomBtn from './ZoomBtn';
     import { cesiumLayer } from './layer-cesium';
 
@@ -40,7 +42,7 @@
       mounted() {
         const bing = new BingMapsImageryProvider({
           url: 'https://dev.virtualearth.net',
-          key: process.env.VUE_APP_BING_API_KEY,
+          key: this.bingApiKey,
           mapStyle: BingMapsStyle.AERIAL,
         });
         this.viewer = new Viewer(this.mapDivId, {
@@ -66,6 +68,14 @@
         document.getElementsByClassName('cesium-widget-credits')[0].style.display = 'none';
         this.replaceLayer();
         this.zoomToExtent(this.layer.bbox);
+      },
+      computed: {
+        ...mapState([
+          'config',
+        ]),
+        bingApiKey() {
+          return this.config?.apiKeys?.bing;
+        },
       },
       methods: {
         zoomIn() {

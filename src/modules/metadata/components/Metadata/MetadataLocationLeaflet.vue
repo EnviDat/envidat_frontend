@@ -7,6 +7,8 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
+
   import L from 'leaflet';
   import 'leaflet/dist/leaflet.css';
   import 'leaflet-bing-layer';
@@ -32,7 +34,6 @@
       outlineWidth: Number,
     },
     data: () => ({
-      bingApiKey: process.env.VUE_APP_BING_API_KEY,
       marker,
       marker2x,
       markerShadow,
@@ -84,6 +85,14 @@
       if (this.map) {
         this.map.remove();
       }
+    },
+    computed: {
+      ...mapState([
+        'config',
+      ]),
+      bingApiKey() {
+        return this.config?.apiKeys?.bing;
+      },
     },
     methods: {
       addBasemaps() {

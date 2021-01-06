@@ -62,13 +62,16 @@
    * @author Dominik Haas-Artho
    *
    * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2020-11-12 16:00:10
+ * Last modified  : 2021-01-05 16:49:06
    *
    * This file is subject to the terms and conditions defined in
    * file 'LICENSE.txt', which is part of this source code package.
    */
 
-  import { mapGetters } from 'vuex';
+  import {
+    mapState,
+    mapGetters,
+  } from 'vuex';
   import L from 'leaflet';
   import 'leaflet/dist/leaflet.css';
   import 'leaflet.markercluster/dist/leaflet.markercluster';
@@ -116,6 +119,9 @@
       }
     },
     computed: {
+      ...mapState([
+        'config',
+      ]),
       ...mapGetters({
         metadataIds: 'metadata/metadataIds',
         metadatasContent: 'metadata/metadatasContent',
@@ -124,6 +130,9 @@
         loadingMetadataIds: 'metadata/loadingMetadataIds',
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
       }),
+      bingApiKey() {
+        return this.config?.apiKeys?.bing;
+      },
       loading() {
         return this.loadingMetadataIds || this.loadingMetadatasContent;
       },
@@ -557,7 +566,6 @@
       selectedMarker2x,
       markerShadow,
       clusterLayer: null,
-      bingApiKey: process.env.VUE_APP_BING_API_KEY,
     }),
     components: {
       FilterMapWidget,
