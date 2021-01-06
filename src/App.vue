@@ -58,7 +58,8 @@
           </v-col>
         </v-row>
 
-        <v-row class="fill-height" >
+        <v-row class="fill-height"
+                no-gutters >
           <v-col class="mx-0 py-0"
                   cols="12" >
 
@@ -96,7 +97,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-12-08 10:56:18
+ * Last modified  : 2021-01-06 14:13:20
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

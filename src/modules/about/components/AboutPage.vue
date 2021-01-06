@@ -31,9 +31,10 @@
           <about-tab-layout title="About EnviDat"
                             :titleImage="missionImg" >
 
-            <v-row >
+            <v-row no-gutters >
               <v-col v-for="(card, index) in aboutCardInfo"
                       :key="index"
+                      class="pa-3"
                       :class="card.widthClass" >
 
                 <expandable-card :title="card.title"
@@ -96,7 +97,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2021-01-05 15:13:21
+ * Last modified  : 2021-01-06 17:06:33
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

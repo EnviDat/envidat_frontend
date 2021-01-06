@@ -13,16 +13,15 @@
         </v-col>
 
         <v-col v-if="filterExpanded || $vuetify.breakpoint.smAndUp"
-                class="py-0"
                 cols="12" >
           <v-row >
 
-            <v-col class="py-0 metadataInfoIcon shrink" >
+            <v-col class="metadataInfoIcon shrink" >
               <v-img :src="tagsIcon" height="24" width="24" />
             </v-col>
 
             <v-col v-if="showPlaceholder"
-                    class="py-0 grow pl-0" >
+                    class="grow pl-0" >
 
               <tag-chip-placeholder v-for="n in 6"
                                     :key="n"
@@ -30,7 +29,7 @@
             </v-col>
 
             <v-col v-if="!showPlaceholder"
-                    class="py-0 grow pl-0" >
+                    class="grow pl-0" >
 
               <tag-chip v-for="tag in unselectedTags"
                         :key="tag.name"
@@ -45,16 +44,16 @@
         </v-col>
 
         <v-col v-if="filterExpanded || $vuetify.breakpoint.smAndUp"
-                class="py-0"
+                class="pt-1"
                 cols="12" >
           <v-row >
 
-            <v-col class="metadataInfoIcon pb-0 shrink" >
+            <v-col class="metadataInfoIcon shrink" >
               <v-img :src="tagIcon" height="24" width="24" />
             </v-col>
 
             <v-col v-if="selectedTags.length > 0"
-                    class="pb-0 grow pl-0" >
+                    class="grow pl-0" >
 
               <tag-chip v-for="tag in selectedTags"
                         :key="tag.name"
@@ -97,7 +96,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2020-11-04 19:53:37
+ * Last modified  : 2021-01-06 11:03:20
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

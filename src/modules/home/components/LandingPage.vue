@@ -104,7 +104,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-12-02 16:39:33
+ * Last modified  : 2021-01-06 12:09:21
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -152,6 +152,8 @@ export default {
     });
   },
   mounted() {
+    window.scrollTo(0, 0);
+
     this.initPolygonParticles();
   },
   destroyed() {

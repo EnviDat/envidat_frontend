@@ -76,34 +76,33 @@
       </v-container>
     </v-card-text>
 
-    <v-card-actions class="ma-0 py-0 px-2 cardIcons"
+    <v-card-actions class="ma-0 pa-0 cardIcons"
                     style="position: absolute; bottom: 0px; right: 5px;" >
 
       <v-container fluid class="pa-0">        
-      <v-row >
-        <v-col v-if="modeData"
-                class="pa-1" >
-          <base-icon-button isFlat
-                              isSmall
-                              color="transparent"
-                              :disabled="true"
-                              :customIcon="modeEntryIcon" />
-        </v-col>
+        <v-row no-gutters>
+          <v-col v-if="modeData"
+                  class="py-1" >
+            <base-icon-button isFlat
+                                isSmall
+                                color="transparent"
+                                :disabled="true"
+                                :customIcon="modeEntryIcon" />
+          </v-col>
 
-        <v-col class="pa-1" >
-          <base-icon-count-view :count="resourceAmount"
-                                :icon-string="fileIconString" />
-        </v-col>
+        </v-row>
 
-      </v-row>
+        <base-icon-count-view :count="resourceAmount"
+                              :icon-string="fileIconString" />
 
-      <v-row v-if="geoJSONIcon"
-              justify="end" >
-        <v-col class="pa-0" >
-          <base-icon-label-view :icon="geoJSONIcon" />
+        <v-row v-if="geoJSONIcon"
+                no-gutters
+                justify="end" >
+          <v-col class="pa-0" >
+            <base-icon-label-view :icon="geoJSONIcon" />
 
-        </v-col>
-      </v-row>
+          </v-col>
+        </v-row>
 
       </v-container>
 
@@ -121,7 +120,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2020-12-09 12:00:35
+ * Last modified  : 2021-01-06 11:37:52
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
