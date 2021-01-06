@@ -14,7 +14,7 @@ import {
 } from '@/factories/metaDataFactory';
 
 
-import packagelist from '@/../public/testdata/packagelist';
+import packagelist from '@/../public/testdata/packagelist.json';
 import categoryCards from '@/store/categoryCards';
 
 // const metadatasContent = {};
@@ -158,7 +158,7 @@ describe('metaDataFactory - createLicense', () => {
   });
 
   it('with dataset', () => {
-    const dataset = packagelist.result[5];
+    const dataset = packagelist.result[3];
 
     const license = createLicense(dataset);
 
