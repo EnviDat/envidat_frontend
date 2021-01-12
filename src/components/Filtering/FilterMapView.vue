@@ -255,9 +255,7 @@
         );
 
         const layers = [streetTiles];
-        const baseMaps = {
-          'Roads (OpenStreetMaps)': streetTiles,
-        };
+        const baseMaps = {};
 
         if (bingKey) {
           const aerialTiles = L.tileLayer.bing({
@@ -268,6 +266,9 @@
 
           baseMaps['Satellit (Bingmaps)'] = aerialTiles;
         }
+
+        // put is afterwards, because default seems to be the last one
+        baseMaps['Roads (OpenStreetMaps)'] = streetTiles;
 
         this.mapLayerGroup = L.layerGroup(layers);
         this.mapLayerGroup.addTo(map);
