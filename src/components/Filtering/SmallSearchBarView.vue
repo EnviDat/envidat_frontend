@@ -1,7 +1,9 @@
 <template>
   <v-card style="width: 100%;">
     <v-container class="pa-0 fill-height"
-                  fluid >
+                  fluid
+                  :class="{'py-2' : !compactLayout }" >
+
     <v-row align="center"
             justify="space-between"
             no-gutters

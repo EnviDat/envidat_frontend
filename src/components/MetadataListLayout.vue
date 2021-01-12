@@ -1,10 +1,10 @@
 <template>
   <v-container class="fill-height pa-0"
-                id="MetadataListLayout"
+                id="MetadataListLayoutComponent"
                 fluid >
 
     <v-row v-if="mapLayout"
-            class="fill-height">
+            class="fill-height" >
 
       <v-col class="py-0 pr-2 flex-column"
               cols="4" >
@@ -56,13 +56,14 @@
 
     </v-row>
 
-    <v-row v-if="!mapLayout" >
+    <v-row v-if="!mapLayout"
+            no-gutters >
 
       <v-col cols="12" >
         <v-row ref="metadataListLayoutFiltering"
                 class="fill-height" >
 
-          <v-col class="hidden-sm-and-up py-0" 
+          <v-col class="hidden-sm-and-up pb-0" 
                   cols="12"
                   key="controlPanel_smallscreen" >
             <slot name="controlPanel" />
@@ -93,7 +94,8 @@
     </v-row>
 
     <v-row v-if="!mapLayout"
-            class="fill-height" >
+            class="fill-height mt-4"
+            no-gutters >
 
       <v-col ref="metadataListScroll"
               id="metadataListScroll_no_mapLayout"

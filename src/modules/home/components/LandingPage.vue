@@ -53,7 +53,6 @@
               no-gutters>
         <small-search-bar-view :labelText="smallScreenLabelText"
                                 :buttonText="buttonText"
-                                :compactLayout="true"
                                 @clicked="catchSearchClicked" />
       </v-row>
 
@@ -70,7 +69,7 @@
 
       <v-row class=" offset-md-4 offset-lg-6"
               no-gutters >
-        <v-container class="py-0 px-1 pa-sm-0">
+        <v-container class="pt-3 pb-0 px-1 pa-sm-0 pt-sm-3">
           <v-row>
 
             <v-col v-for="card in categoryCards"
@@ -104,7 +103,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2021-01-06 12:09:21
+ * Last modified  : 2021-01-06 21:12:38
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

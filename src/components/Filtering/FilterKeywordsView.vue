@@ -4,10 +4,11 @@
 
     <v-container class="pa-2 fill-height"
                 fluid >
-      <v-row class="fill-height" >
+      <v-row class="fill-height"
+              :no-gutters="$vuetify.breakpoint.smAndUp" >
 
         <v-col v-if="!filterExpanded"
-                class="hidden-sm-and-up px-2 py-0"
+                class="hidden-sm-and-up px-2"
                 cols="12" >
           <div class="mx-3">Filter for Keywords</div>
         </v-col>
@@ -96,7 +97,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2021-01-06 11:03:20
+ * Last modified  : 2021-01-07 08:31:30
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

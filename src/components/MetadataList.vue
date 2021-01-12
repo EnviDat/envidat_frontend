@@ -1,7 +1,6 @@
 <template>
 
-  <metadata-list-layout id="metadataListLayoutComponent"
-                        ref="metadataListLayoutComponent"
+  <metadata-list-layout ref="metadataListLayoutComponent"
                         :topFilteringLayout="topFilteringLayout"
                         :minMapHeight="minMapHeight"
                         :useDynamicHeight="useDynamicHeight"
@@ -20,7 +19,7 @@
     </template>
 
     <template v-slot:controlPanel>
-      <control-panel :compactLayout="$vuetify.breakpoint.smAndDown"
+      <control-panel :compactLayout="true"
                       :searchTerm="searchTerm"
                       :showSearch="showSearch"
                       :showSearchCount="true"
@@ -52,7 +51,8 @@
                     fluid >
       <!-- don't use class with paddings here, it's being used in the MetadataListLayout component -->
 
-      <v-row ref="metadataListPlaceholder" >
+      <v-row id="metadataListPlaceholder"
+              ref="metadataListPlaceholder" >
 
         <v-col v-for="(n, index) in placeHolderAmount"
                 :key="'placeHolder_' + index"
@@ -70,7 +70,8 @@
                   fluid >
       <!-- don't use class with paddings here, it's being used in the MetadataListLayout component -->
 
-      <v-row ref="metadataListLayout" >
+      <v-row id="metadataListLayout"
+              ref="metadataListLayout" >
 
         <v-col v-for="(pinnedId, index) in pinnedList"
                 :key="'pinned_' + index"

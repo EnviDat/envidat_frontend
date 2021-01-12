@@ -40,7 +40,7 @@
       </v-col>
     </v-row>
 
-    <v-row no-gutters >
+    <v-row >
       <v-col >
         <slogan-card :slogan="slogan"
                       :subSlogan="subSlogan"
@@ -64,7 +64,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-12-02 16:36:40
+ * Last modified  : 2021-01-06 18:21:07
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
