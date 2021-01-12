@@ -6,12 +6,14 @@
 
         <v-col class="py-0 pr-sm-0"        
                 cols="12"
-                sm="5" >
+                sm="5"
+                style="cursor: pointer;"
+                @click="buttonCallback">
           <v-img class="imagezoom"
                   :src="sloganImg ? sloganImg : fallbackImg"
                   style="min-height: 100%; border-top-left-radius: 4px;"
                   :style="`max-height: ${maxHeight}px; border-bottom-left-radius: ${$vuetify.breakpoint.smAndUp ? 4 : 0}px;
-                    border-top-right-radius: ${$vuetify.breakpoint.xsOnly ? 4 : 0}px;`" />
+                    border-top-right-radius: ${$vuetify.breakpoint.xsOnly ? 4 : 0}px;`"  />
         </v-col>
 
         <v-col class="pa-4"
