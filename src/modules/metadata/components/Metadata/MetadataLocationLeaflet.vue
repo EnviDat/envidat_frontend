@@ -40,46 +40,7 @@
       map: null,
     }),
     mounted() {
-      // Create map with basemap
-      this.map = L.map(this.$refs.map, { scrollWheelZoom: false });
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(this.map);
-
-      // Set marker icon
-      const iconOptions = L.Icon.Default.prototype.options;
-      iconOptions.iconUrl = this.marker;
-      iconOptions.iconRetinaUrl = this.marker2x;
-      iconOptions.shadowUrl = this.markerShadow;
-      const icon = L.icon(iconOptions);
-
-      this.addBasemaps();
-
-      // Add geodata to map
-      L.geoJSON(this.geom, {
-        pointToLayer(feature, latlng) {
-          return L.marker(latlng, {
-            icon,
-            opacity: 0.65,
-            riseOnHover: true,
-          });
-        },
-        style: {
-          color: this.color,
-          fillOpacity: this.fillAlpha,
-          opacity: 1,
-          weight: this.outlineWidth,
-        },
-
-
-      }).addTo(this.map);
-
-      // Zoom to extent of geodata
-      this.map.fitBounds([
-        [this.zoomExtent.minY, this.zoomExtent.minX],
-        [this.zoomExtent.maxY, this.zoomExtent.maxX],
-      ]);
+      this.setupMap();
     },
     beforeDestroy() {
       if (this.map) {
@@ -95,27 +56,74 @@
       },
     },
     methods: {
-      addBasemaps() {
+      setupMap() {
+        // Create map with basemap
+        this.map = L.map(this.$refs.map, { scrollWheelZoom: false });
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }).addTo(this.map);
+
+        // Set marker icon
+        const iconOptions = L.Icon.Default.prototype.options;
+        iconOptions.iconUrl = this.marker;
+        iconOptions.iconRetinaUrl = this.marker2x;
+        iconOptions.shadowUrl = this.markerShadow;
+        const icon = L.icon(iconOptions);
+
+        const bingKey = this.bingApiKey;
+        this.addImageMapLayer(this.map, bingKey);
+
+        // Add geodata to map
+        L.geoJSON(this.geom, {
+          pointToLayer(feature, latlng) {
+            return L.marker(latlng, {
+              icon,
+              opacity: 0.65,
+              riseOnHover: true,
+            });
+          },
+          style: {
+            color: this.color,
+            fillOpacity: this.fillAlpha,
+            opacity: 1,
+            weight: this.outlineWidth,
+          },
+
+
+        }).addTo(this.map);
+
+        // Zoom to extent of geodata
+        this.map.fitBounds([
+          [this.zoomExtent.minY, this.zoomExtent.minX],
+          [this.zoomExtent.maxY, this.zoomExtent.maxX],
+        ]);
+      },
+      addImageMapLayer(map, bingKey) {
         const streetTiles = L.tileLayer(
           'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
           { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' },
         );
 
-        const aerialTiles = L.tileLayer.bing({
-          bingMapsKey: this.bingApiKey,
-          imagerySet: 'AerialWithLabels',
-        });
-
-        this.mapLayerGroup = L.layerGroup([streetTiles, aerialTiles]);
-        this.mapLayerGroup.addTo(this.map);
-
+        const layers = [streetTiles];
         const baseMaps = {
-          'Satellit (Bingmaps)': aerialTiles,
           'Roads (OpenStreetMaps)': streetTiles,
         };
 
-        L.control.layers(baseMaps)
-          .addTo(this.map);
+        if (bingKey) {
+          const aerialTiles = L.tileLayer.bing({
+            bingMapsKey: bingKey,
+            imagerySet: 'AerialWithLabels',
+          });
+          layers.push(aerialTiles);
+
+          baseMaps['Satellit (Bingmaps)'] = aerialTiles;
+        }
+
+        this.mapLayerGroup = L.layerGroup(layers);
+        this.mapLayerGroup.addTo(map);
+
+        L.control.layers(baseMaps).addTo(map);
       },
     },
   };

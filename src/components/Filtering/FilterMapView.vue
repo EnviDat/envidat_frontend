@@ -62,7 +62,7 @@
    * @author Dominik Haas-Artho
    *
    * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2021-01-05 16:49:06
+ * Last modified  : 2021-01-06 14:47:30
    *
    * This file is subject to the terms and conditions defined in
    * file 'LICENSE.txt', which is part of this source code package.
@@ -131,7 +131,7 @@
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
       }),
       bingApiKey() {
-        return this.config?.apiKeys?.bing;
+        return this.config?.apiKeys?.bing || null;
       },
       loading() {
         return this.loadingMetadataIds || this.loadingMetadatasContent;
@@ -213,7 +213,8 @@
         if (this.map) {
           this.map.on('locationerror', () => { this.errorLoadingLeaflet = true; });
 
-          this.addOpenStreetMapLayer(this.map);
+          const bingKey = this.bingApiKey;
+          this.addImageMapLayer(this.map, bingKey);
 
           this.updateMap();
 
@@ -247,24 +248,30 @@
           return undefined;
         }
       },
-      addOpenStreetMapLayer(map) {
+      addImageMapLayer(map, bingKey) {
         const streetTiles = L.tileLayer(
           'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
           { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' },
         );
 
-        const aerialTiles = L.tileLayer.bing({
-          bingMapsKey: this.bingApiKey,
-          imagerySet: 'AerialWithLabels',
-        });
-
-        this.mapLayerGroup = L.layerGroup([streetTiles, aerialTiles]);
-        this.mapLayerGroup.addTo(map);
-
+        const layers = [streetTiles];
         const baseMaps = {
-          'Satellit (Bingmaps)': aerialTiles,
           'Roads (OpenStreetMaps)': streetTiles,
         };
+
+        if (bingKey) {
+          const aerialTiles = L.tileLayer.bing({
+            bingMapsKey: bingKey,
+            imagerySet: 'AerialWithLabels',
+          });
+          layers.push(aerialTiles);
+
+          baseMaps['Satellit (Bingmaps)'] = aerialTiles;
+        }
+
+        this.mapLayerGroup = L.layerGroup(layers);
+        this.mapLayerGroup.addTo(map);
+
 
         L.control.layers(baseMaps).addTo(map);
       },

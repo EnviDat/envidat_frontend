@@ -17,6 +17,8 @@
 
 <script>
   /* eslint-disable new-cap */
+  import { mapState } from 'vuex';
+
   import Viewer from 'cesium/Widgets/Viewer/Viewer';
   import BingMapsImageryProvider from 'cesium/Scene/BingMapsImageryProvider';
   import BingMapsStyle from 'cesium/Scene/BingMapsStyle';
@@ -55,7 +57,58 @@
       fillAlpha: Number,
       outlineWidth: Number,
     },
+    mounted() {
+
+      this.initCesium();
+    },
+    computed: {
+      ...mapState([
+        'config',
+      ]),
+      bingApiKey() {
+        return this.config?.apiKeys?.bing || null;
+      },
+    },
     methods: {
+      initCesium() {
+        const bingKey = this.bingApiKey;
+
+        const imageProvider = new BingMapsImageryProvider({
+          url: 'https://dev.virtualearth.net',
+          // key: 'AgjSmnaR47Jnx7SWyxGFEJkp9QXCFyj6DwFZw9le12QdVl_ePXbuWb2DHPu8Uqdh',
+          key: bingKey,
+          mapStyle: BingMapsStyle.AERIAL,
+        });
+
+        this.initCesiumContainer(imageProvider);
+
+        // Hide default credits
+        document.getElementsByClassName('cesium-credit-logoContainer')[0].style.display = 'none';
+
+          GeoJsonDataSource.load(this.geom)
+          .then((dataSource) => {
+            this.viewer.dataSources.add(dataSource);
+
+            const entities = dataSource.entities.values;
+            entities.forEach((entity) => {
+
+              // Set point style
+              entity.billboard = {
+                image: marker,
+                horizontalOrigin: HorizontalOrigin.CENTER,
+                verticalOrigin: VerticalOrigin.BOTTOM,
+              };
+
+              // Set polygon style
+              entity.polygon.material = new Color.fromCssColorString(this.color).withAlpha(this.fillAlpha);
+              entity.outline = true;
+              entity.outlineWidth = this.outlineWidth;
+              entity.polygon.outlineColor = new Color.fromCssColorString(this.color);
+            });
+          });
+
+        this.zoomToGeometry();        
+      },
       zoomIn() {
         this.viewer.camera.zoomIn();
       },
@@ -67,60 +120,34 @@
           destination: new Rectangle.fromDegrees(this.zoomExtent.minX, this.zoomExtent.minY, this.zoomExtent.maxX, this.zoomExtent.maxY),
         });
       },
-    },
-    mounted() {
-      const bing = new BingMapsImageryProvider({
-        url: 'https://dev.virtualearth.net',
-        key: 'AgjSmnaR47Jnx7SWyxGFEJkp9QXCFyj6DwFZw9le12QdVl_ePXbuWb2DHPu8Uqdh',
-        mapStyle: BingMapsStyle.AERIAL,
-      });
-
-      this.viewer = new Viewer('cesiumContainer', {
-        animation: false,
-        baseLayerPicker: false,
-        imageryProvider: bing,
-        fullscreenButton: false,
-        vrButton: false,
-        geocoder: false,
-        homeButton: false,
-        sceneMode: SceneMode.SCENE3D,
-        infoBox: false,
-        sceneModePicker: false,
-        selectionIndicator: false,
-        timeline: false,
-        navigationHelpButton: false,
-        navigationInstructionsInitiallyVisible: false,
-        clockViewModel: null,
-        requestRenderMode: true,
-        maximumRenderTimeChange: Infinity,
-      });
-
-      // Hide default credits
-      document.getElementsByClassName('cesium-credit-logoContainer')[0].style.display = 'none';
-
-        GeoJsonDataSource.load(this.geom)
-        .then((dataSource) => {
-          this.viewer.dataSources.add(dataSource);
-
-          const entities = dataSource.entities.values;
-          entities.forEach((entity) => {
-
-            // Set point style
-            entity.billboard = {
-              image: marker,
-              horizontalOrigin: HorizontalOrigin.CENTER,
-              verticalOrigin: VerticalOrigin.BOTTOM,
-            };
-
-            // Set polygon style
-            entity.polygon.material = new Color.fromCssColorString(this.color).withAlpha(this.fillAlpha);
-            entity.outline = true;
-            entity.outlineWidth = this.outlineWidth;
-            entity.polygon.outlineColor = new Color.fromCssColorString(this.color);
-          });
+      initCesiumContainer(imageProvider) {
+        this.viewer = new Viewer('cesiumContainer', {
+          animation: false,
+          baseLayerPicker: false,
+          imageryProvider: imageProvider,
+          fullscreenButton: false,
+          vrButton: false,
+          geocoder: false,
+          homeButton: false,
+          sceneMode: SceneMode.SCENE3D,
+          infoBox: false,
+          sceneModePicker: false,
+          selectionIndicator: false,
+          timeline: false,
+          navigationHelpButton: false,
+          navigationInstructionsInitiallyVisible: false,
+          clockViewModel: null,
+          requestRenderMode: true,
+          maximumRenderTimeChange: Infinity,
         });
-
-      this.zoomToGeometry();
+      },
+    },
+    watch: {
+      bingApiKey() {
+        if (this.bingApiKey) {
+          this.initCesium();
+        }
+      },
     },
   };
 </script>
