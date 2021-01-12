@@ -76,10 +76,10 @@
       </v-container>
     </v-card-text>
 
-    <v-card-actions class="ma-0 pa-0 cardIcons"
-                    style="position: absolute; bottom: 0px; right: 5px;" >
+    <v-card-actions class="ma-0 pa-3 pr-2 "
+                    style="position: absolute; bottom: 0px; right: 0px; background-color: white;" >
 
-      <v-container fluid class="pa-0">        
+      <v-container fluid class="pa-0 cardIcons">        
         <v-row no-gutters>
           <v-col v-if="modeData"
                   class="py-1" >
