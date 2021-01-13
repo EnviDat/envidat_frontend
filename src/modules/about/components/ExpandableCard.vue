@@ -55,13 +55,12 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-23 14:37:17
+ * Last modified  : 2021-01-05 15:14:33
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
-import remark from 'remark';
-import html from 'remark-html';
+import { renderMarkdown } from '@/factories/stringFactory';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 export default {
@@ -82,7 +81,7 @@ export default {
   }),
   computed: {
     markdownText() {
-      return remark().use(html).processSync(this.text.trim());
+      return renderMarkdown(this.text.trim());
     },
   },
   methods: {

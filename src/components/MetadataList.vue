@@ -1,7 +1,6 @@
 <template>
 
-  <metadata-list-layout id="metadataListLayoutComponent"
-                        ref="metadataListLayoutComponent"
+  <metadata-list-layout ref="metadataListLayoutComponent"
                         :topFilteringLayout="topFilteringLayout"
                         :minMapHeight="minMapHeight"
                         :useDynamicHeight="useDynamicHeight"
@@ -20,7 +19,7 @@
     </template>
 
     <template v-slot:controlPanel>
-      <control-panel :compactLayout="$vuetify.breakpoint.smAndDown"
+      <control-panel :compactLayout="true"
                       :searchTerm="searchTerm"
                       :showSearch="showSearch"
                       :showSearchCount="true"
@@ -49,9 +48,11 @@
 
     <template v-slot:metadataListPlaceholder>
       <v-container v-show="loading"
-                    fluid
-                    class="py-0 px-1">
-      <v-row ref="metadataListPlaceholder" >
+                    fluid >
+      <!-- don't use class with paddings here, it's being used in the MetadataListLayout component -->
+
+      <v-row id="metadataListPlaceholder"
+              ref="metadataListPlaceholder" >
 
         <v-col v-for="(n, index) in placeHolderAmount"
                 :key="'placeHolder_' + index"
@@ -66,9 +67,11 @@
 
     <template v-slot:metadataListLayout >
       <v-container v-if="!loading"
-                  fluid
-                  class="py-0 px-1">
-      <v-row ref="metadataListLayout" >
+                  fluid >
+      <!-- don't use class with paddings here, it's being used in the MetadataListLayout component -->
+
+      <v-row id="metadataListLayout"
+              ref="metadataListLayout" >
 
         <v-col v-for="(pinnedId, index) in pinnedList"
                 :key="'pinned_' + index"
@@ -172,7 +175,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-11-04 14:20:54
+ * Last modified  : 2021-01-06 16:14:05
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

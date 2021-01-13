@@ -6,6 +6,10 @@
             id="christmas-canvas"
             style="position: absolute; width: 100%; height: 100%;"></div>
 
+      <link v-if="showDecemberParticles"
+            rel="stylesheet"
+            href="./particles/decemberEffects.css">
+
       <div v-for="(notification, index) in visibleNotifications()"
           :key="`notification_${index}`"
           :style="`position: absolute;
@@ -92,7 +96,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-11-24 17:25:02
+ * Last modified  : 2021-01-06 21:04:56
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -102,6 +106,8 @@ import {
   mapState,
   mapGetters,
 } from 'vuex';
+
+import { getMonth } from 'date-fns';
 
 import {
   LANDING_PATH,
@@ -348,7 +354,10 @@ export default {
       return this.config?.metadataConfig || {};
     },
     showDecemberParticles() {
-      return this.$vuetify.breakpoint.mdAndUp && this.effectsConfig.decemberParticles && this.$store.getters.itIsDecember;
+      return this.$vuetify.breakpoint.mdAndUp && this.effectsConfig.decemberParticles && this.itIsDecember;
+    },
+    itIsDecember() {
+      return getMonth(Date.now()) === 11;
     },
     polygonParticlesActive() {
       return this.$vuetify.breakpoint.mdAndUp && this.currentPage && this.currentPage === LANDING_PAGENAME;
@@ -371,7 +380,7 @@ export default {
     },
     pageStyle() {
       const heightStyle = this.showToolbar ? 'height: calc(100vh - 36px);' : 'height: 100vh;';
-      return this.currentPageIsBrowsePage ? '' : `${heightStyle} overflow-y: auto; scroll-behavior: smooth; scrollbar-width: thin; `;
+      return this.currentPageIsBrowsePage ? '' : `${heightStyle} overflow-y: auto; scroll-behavior: smooth; `;
     },
     showSmallNavigation() {
       return this.$vuetify.breakpoint.smAndDown;
@@ -549,6 +558,10 @@ export default {
 .readableText {
   line-height: 1.2rem;
   color: rgba(0, 0, 0, 0.87) !important;
+}
+
+.readableText img {
+  max-width: 100%;
 }
 
 .imagezoom,

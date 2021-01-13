@@ -6,7 +6,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-09-02 20:56:38
+ * Last modified  : 2021-01-06 16:30:10
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -42,7 +42,9 @@ Vue.config.errorHandler = (err, vm, info) => {
   // `info` is a Vue-specific error info, e.g. which lifecycle hook
   // the error was found in. Only available in 2.2.0+
   // console.log('Vue errorHandler ' + err.message + ' \n ' + info + ' \n ' + err.stack);
-  handleGenericError(store, err.message, info, err.stack);
+  const msg = err.message ? err.message : err;
+  const errStack = err.stack ? err.stack : 'No error stack available, please let the envidat team know of this Error!';
+  handleGenericError(store, msg, info, errStack);
 };
 
 // Vue.config.warnHandler = function (msg, vm, trace) {

@@ -2,9 +2,11 @@
   <v-card hover raised style="width: 100%;">
     <v-container fluid style="width: 100%;">
       <v-row align="center"
-              justify="space-between" class="grow" >
+              justify="space-between"
+              class="grow"
+              no-gutters >
 
-        <v-col class="grow py-1" >
+        <v-col class="grow py-1 pr-4 " >
           <v-text-field class="ma-0"
                         v-model="searchText"
                         prepend-icon="search"
@@ -35,7 +37,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2019-10-23 14:52:28
+ * Last modified  : 2021-01-06 18:23:11
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

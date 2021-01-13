@@ -4,25 +4,25 @@
 
     <v-container class="pa-2 fill-height"
                 fluid >
-      <v-row class="fill-height" >
+      <v-row class="fill-height"
+              :no-gutters="$vuetify.breakpoint.smAndUp" >
 
         <v-col v-if="!filterExpanded"
-                class="hidden-sm-and-up px-2 py-0"
+                class="hidden-sm-and-up px-2"
                 cols="12" >
           <div class="mx-3">Filter for Keywords</div>
         </v-col>
 
         <v-col v-if="filterExpanded || $vuetify.breakpoint.smAndUp"
-                class="py-0"
                 cols="12" >
           <v-row >
 
-            <v-col class="py-0 metadataInfoIcon shrink" >
+            <v-col class="metadataInfoIcon shrink" >
               <v-img :src="tagsIcon" height="24" width="24" />
             </v-col>
 
             <v-col v-if="showPlaceholder"
-                    class="py-0 grow pl-0" >
+                    class="grow pl-0" >
 
               <tag-chip-placeholder v-for="n in 6"
                                     :key="n"
@@ -30,7 +30,7 @@
             </v-col>
 
             <v-col v-if="!showPlaceholder"
-                    class="py-0 grow pl-0" >
+                    class="grow pl-0" >
 
               <tag-chip v-for="tag in unselectedTags"
                         :key="tag.name"
@@ -45,16 +45,16 @@
         </v-col>
 
         <v-col v-if="filterExpanded || $vuetify.breakpoint.smAndUp"
-                class="py-0"
+                class="pt-1"
                 cols="12" >
           <v-row >
 
-            <v-col class="metadataInfoIcon pb-0 shrink" >
+            <v-col class="metadataInfoIcon shrink" >
               <v-img :src="tagIcon" height="24" width="24" />
             </v-col>
 
             <v-col v-if="selectedTags.length > 0"
-                    class="pb-0 grow pl-0" >
+                    class="grow pl-0" >
 
               <tag-chip v-for="tag in selectedTags"
                         :key="tag.name"
@@ -71,9 +71,8 @@
       </v-row>
     </v-container>
 
-      <base-icon-button
-        v-if="$vuetify.breakpoint.xsOnly"
-        :count="selectedTags.length"
+      <base-icon-button v-if="$vuetify.breakpoint.xsOnly"
+                        :count="selectedTags.length"
                         style="position: absolute; bottom: 0px; right: 0px;"
                         material-icon-name="expand_more"
                         color="secondary"
@@ -97,7 +96,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2020-11-04 19:53:37
+ * Last modified  : 2021-01-07 08:31:30
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

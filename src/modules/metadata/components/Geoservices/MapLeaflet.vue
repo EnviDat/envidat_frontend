@@ -15,6 +15,8 @@
 
 <script>
   /* eslint-disable new-cap */
+  import { mapState } from 'vuex';
+
   import L from 'leaflet';
   import 'leaflet/dist/leaflet.css';
   import 'leaflet-bing-layer';
@@ -22,10 +24,9 @@
   import ZoomBtn from './ZoomBtn';
 
     export default {
-        name: 'MapLeaflet',
+      name: 'MapLeaflet',
       components: { ZoomBtn },
       data: () => ({
-        bingApiKey: process.env.VUE_APP_BING_API_KEY,
         map: null,
         mapLayer: null,
         basemap: null, // 'streets', 'satellite'
@@ -36,6 +37,12 @@
         mapDivId: String,
       },
       computed: {
+        ...mapState([
+          'config',
+        ]),
+        bingApiKey() {
+          return this.config?.apiKeys?.bing;
+        },
         streets() {
           return L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',

@@ -259,7 +259,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-10-29 20:29:05
+ * Last modified  : 2021-01-05 15:55:22
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -398,6 +398,7 @@ export default {
     font-family: 'Baskervville', serif !important;
     font-weight: 400;
     opacity: 0.85;
+    line-height: 1rem;
   }
 
   .headerInfo img,

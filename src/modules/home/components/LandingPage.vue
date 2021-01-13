@@ -1,12 +1,36 @@
 <template>
-  <v-container fluid :class="$vuetify.breakpoint.smAndDown ? 'pa-1' : 'py-0'">
+  <v-container fluid
+                class="pa-0"
+                tag="article"
+                id="LandingPage">
 
     <div v-show="showPolygonParticles"
           id="polygon-canvas"
           style="position: absolute; width: 100%; height: 400px; bottom: 0; left: 0;"></div>
 
-      <v-row class="pb-5 offset-md-4 offset-lg-6"
+      <v-row class="pb-5"
               no-gutters>
+
+        <v-col cols="12"
+                md="6"
+                align-self="end"
+                order-md="1"
+                order="2"
+                class="pr-md-4 pt-4 pt-md-0">
+
+          <SloganCard v-if="showWinterHolidayWishs"
+                      slogan="Happy Holidays!"
+                      :sloganImg="winterHolidayImage"
+                      :maxHeight="275"
+                      :subSlogan="decemberWishes" />
+
+          <SloganCard v-if="showNewYearWishs"
+                      slogan="Happy New Year!"
+                      :sloganImg="newYearImage"
+                      :maxHeight="300"
+                      :subSlogan="newYearWishes" />
+        </v-col>
+
         <the-title-screen-layout :title="envidatTitle"
                                   :slogan="envidatSlogan"
                                   :subSlogan="envidatSubSlogan"
@@ -15,6 +39,7 @@
                                   :moreButtonText="sloganMoreButtonText"
                                   :moreButtonCallback="catchMoreClicked" />
       </v-row>
+
 
       <v-row class="hidden-xs-only px-0 py-5 offset-md-4 offset-lg-6"
               no-gutters>
@@ -28,15 +53,14 @@
               no-gutters>
         <small-search-bar-view :labelText="smallScreenLabelText"
                                 :buttonText="buttonText"
-                                :compactLayout="true"
                                 @clicked="catchSearchClicked" />
       </v-row>
 
       <v-row class="pt-5 pb-2 offset-md-4 offset-lg-6"
               no-gutters>
-        <v-col>
+        <v-col>          
           <v-card>
-            <v-card-title primary style="word-break: break-word;">
+            <v-card-title primary style="word-break: break-word; line-height: 1.5rem;">
               {{ welcomeInfo.categoryText }}
             </v-card-title>
           </v-card>
@@ -45,7 +69,7 @@
 
       <v-row class=" offset-md-4 offset-lg-6"
               no-gutters >
-        <v-container class="py-0 px-1 pa-sm-0">
+        <v-container class="pt-3 pb-0 px-1 pa-sm-0 pt-sm-3">
           <v-row>
 
             <v-col v-for="card in categoryCards"
@@ -79,24 +103,29 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-11-24 17:27:19
+ * Last modified  : 2021-01-06 21:12:38
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
 import { mapState } from 'vuex';
+import { getMonth } from 'date-fns';
+
 import {
   LANDING_PAGENAME,
   BROWSE_PATH,
   ABOUT_PATH,
 } from '@/router/routeConsts';
+
 import BaseClickCard from '@/components/BaseElements/BaseClickCard';
 import SmallSearchBarView from '@/components/Filtering/SmallSearchBarView';
 import {
   SET_APP_BACKGROUND,
   SET_CURRENT_PAGE,
 } from '@/store/mainMutationsConsts';
+
+import SloganCard from '@/modules/home/components/SloganCard';
 import TheTitleScreenLayout from './TheTitleScreenLayout';
 import SearchBarView from './SearchBarView';
 
@@ -122,6 +151,8 @@ export default {
     });
   },
   mounted() {
+    window.scrollTo(0, 0);
+
     this.initPolygonParticles();
   },
   destroyed() {
@@ -133,7 +164,31 @@ export default {
       'config',
     ]),
     showPolygonParticles() {
-      return this.$vuetify.breakpoint.mdAndUp && this.effectsConfig.landingPageParticles && !this.$store.getters.itIsDecember;
+      return this.$vuetify.breakpoint.mdAndUp && this.effectsConfig.landingPageParticles && !this.showDecemberParticles;
+    },
+    showDecemberParticles() {
+      return this.effectsConfig.decemberParticles && this.itIsDecember;
+    },
+    itIsDecember() {
+      return getMonth(Date.now()) === 11;
+    },
+    showNewYearWishs() {
+      return this.effectsConfig.showNewYearWishes && getMonth(Date.now()) === 0;
+    },
+    showWinterHolidayWishs() {
+      return this.effectsConfig.showDecemberWishes && this.itIsDecember;
+    },
+    decemberWishes() {
+      return this.effectsConfig.decemberWishes;
+    },
+    winterHolidayImage() {
+      return this.mixinMethods_getWebpImage('cards/slogan/holidays_winter', this.$store.state);
+    },
+    newYearWishes() {
+      return this.effectsConfig.newYearWishes || '';
+    },
+    newYearImage() {
+      return this.mixinMethods_getWebpImage('cards/slogan/new_year', this.$store.state);
     },
     effectsConfig() {
       return this.config?.effectsConfig || {};
@@ -153,7 +208,7 @@ export default {
        
         if (this.currentParticles) {
           this.currentParticles.particles.move.enable = false;
-          this.currentParticles.particles.opcacity.anim.enable = false;
+          this.currentParticles.particles.opacity.anim.enable = false;
           this.currentParticles.particles.size.anim.enable = false;
         }
 
@@ -175,7 +230,7 @@ export default {
         particlesJS.load('polygon-canvas', './particles/polygonParticleOptions.json', () => {
           // console.log('polygon-canvas - particles.js config loaded');
           if (this.currentParticles) {
-            this.checkStopParticles(false);
+            this.stopParticles(false);
           }
           this.currentParticles = window.pJS;
         });
@@ -227,6 +282,7 @@ export default {
     SearchBarView,
     SmallSearchBarView,
     BaseClickCard,
+    SloganCard,
   },
   data: () => ({
     PageBGImage: 'app_b_landingpage',

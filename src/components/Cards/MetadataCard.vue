@@ -76,34 +76,33 @@
       </v-container>
     </v-card-text>
 
-    <v-card-actions class="ma-0 py-0 px-2 cardIcons"
-                    style="position: absolute; bottom: 0px; right: 5px;" >
+    <v-card-actions class="ma-0 pa-3 pr-2 "
+                    style="position: absolute; bottom: 0px; right: 0px; background-color: white;" >
 
-      <v-container fluid class="pa-0">        
-      <v-row >
-        <v-col v-if="modeData"
-                class="pa-1" >
-          <base-icon-button isFlat
-                              isSmall
-                              color="transparent"
-                              :disabled="true"
-                              :customIcon="modeEntryIcon" />
-        </v-col>
+      <v-container fluid class="pa-0 cardIcons">        
+        <v-row no-gutters>
+          <v-col v-if="modeData"
+                  class="py-1" >
+            <base-icon-button isFlat
+                                isSmall
+                                color="transparent"
+                                :disabled="true"
+                                :customIcon="modeEntryIcon" />
+          </v-col>
 
-        <v-col class="pa-1" >
-          <base-icon-count-view :count="resourceAmount"
-                                :icon-string="fileIconString" />
-        </v-col>
+        </v-row>
 
-      </v-row>
+        <base-icon-count-view :count="resourceAmount"
+                              :icon-string="fileIconString" />
 
-      <v-row v-if="geoJSONIcon"
-              justify="end" >
-        <v-col class="pa-0" >
-          <base-icon-label-view :icon="geoJSONIcon" />
+        <v-row v-if="geoJSONIcon"
+                no-gutters
+                justify="end" >
+          <v-col class="pa-0" >
+            <base-icon-label-view :icon="geoJSONIcon" />
 
-        </v-col>
-      </v-row>
+          </v-col>
+        </v-row>
 
       </v-container>
 
@@ -121,19 +120,17 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2020-11-04 14:00:21
+ * Last modified  : 2021-01-06 11:37:52
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
-import remark from 'remark';
-import strip from 'strip-markdown';
-
 import TagChip from '@/components/Cards/TagChip';
 import BaseIconCountView from '@/components/BaseElements/BaseIconCountView';
 import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import { getModeData } from '@/factories/modeFactory';
+import { stripMarkdown } from '@/factories/stringFactory';
 
 // Header Sleek design
 // https://codepen.io/GeorgeGedox/pen/NQrxrY
@@ -237,39 +234,46 @@ export default {
     isCompactLayout() {
       return this.compactLayout || this.$vuetify.breakpoint.smAndDown;
     },
-    truncatedTitle() {
+    maxTitleLength() {
       let maxLength = this.titleLength;
 
       if (this.flatLayout) {
         maxLength = this.flatTitleLength;
-      } else if (this.compactLayout || this.$vuetify.breakpoint.smAndDown) {
+      } else if (this.isCompactLayout) {
         maxLength = this.compactTitleLength;
       }
 
-      if (this.title !== undefined && this.maxTitleLengthReached) {
+      return maxLength;
+    },
+    truncatedTitle() {
+      const maxLength = this.maxTitleLength;
+
+      if (this.title?.length > maxLength) {
         return `${this.title.substring(0, maxLength)}...`;
       }
 
       return this.title;
     },
-    truncatedSubtitle() {
+    maxDescriptionLength() {
       let maxLength = this.descriptionLength;
 
       if (this.flatLayout) {
         maxLength = this.flatDescriptionLength;
-      } else if (this.compactLayout || this.$vuetify.breakpoint.smAndDown) {
+      } else if (this.isCompactLayout) {
         maxLength = this.compactDescriptionLength;
       }
 
-      if (this.subtitle !== undefined) {
-        const strippedFile = remark().use(strip).processSync(this.subtitle);
-        const cleanSubtitle = strippedFile.contents;
-        if (cleanSubtitle) {
-          return `${cleanSubtitle.substring(0, maxLength)}...`;
-        }
+      return maxLength;
+    },
+    truncatedSubtitle() {
+      const maxLength = this.maxDescriptionLength;
+      const cleanSubtitle = stripMarkdown(this.subtitle, true);
+
+      if (cleanSubtitle?.length > maxLength) {
+        return `${cleanSubtitle.substring(0, maxLength)}...`;
       }
 
-      return '';
+      return cleanSubtitle;
     },
     isRestricted() {
       return this.restricted;
@@ -328,7 +332,7 @@ export default {
       return this.flatLayout && textLength >= this.flatTagtextLength;
     },
     compactAndMaxReached(textLength) {
-      return (this.compactLayout || this.$vuetify.breakpoint.smAndDown) && textLength >= this.compactTagtextLength;
+      return this.isCompactLayout && textLength >= this.compactTagtextLength;
     },
     cardClick() {
       let detailParam = this.name;

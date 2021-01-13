@@ -143,14 +143,12 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-11-17 15:39:00
+ * Last modified  : 2021-01-05 15:33:05
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
-import remark from 'remark';
-import html from 'remark-html';
-import strip from 'strip-markdown';
+import { stripMarkdown } from '@/factories/stringFactory';
 
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import BaseIconLabelView from '@/components/BaseElements/BaseIconLabelView';
@@ -192,12 +190,11 @@ export default {
   }),
   computed: {
     markdownText() {
-      return remark().use(html).processSync(this.description.trim());
+      return stripMarkdown(this.description.trim());
     },
     markdownTextTruncated() {
       if (this.maxDescriptionLengthReached) {
-        const strippedFile = remark().use(strip).processSync(this.description.trim());
-        const strippedMarkdown = strippedFile.contents;
+        const strippedMarkdown = stripMarkdown(this.description.trim());
 
         if (strippedMarkdown) {
           return `${strippedMarkdown.substring(0, this.maxDescriptionLength)}...`;

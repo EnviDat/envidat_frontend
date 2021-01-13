@@ -62,13 +62,16 @@
    * @author Dominik Haas-Artho
    *
    * Created at     : 2019-10-02 11:24:00
- * Last modified  : 2020-11-12 16:00:10
+ * Last modified  : 2021-01-06 14:47:30
    *
    * This file is subject to the terms and conditions defined in
    * file 'LICENSE.txt', which is part of this source code package.
    */
 
-  import { mapGetters } from 'vuex';
+  import {
+    mapState,
+    mapGetters,
+  } from 'vuex';
   import L from 'leaflet';
   import 'leaflet/dist/leaflet.css';
   import 'leaflet.markercluster/dist/leaflet.markercluster';
@@ -116,6 +119,9 @@
       }
     },
     computed: {
+      ...mapState([
+        'config',
+      ]),
       ...mapGetters({
         metadataIds: 'metadata/metadataIds',
         metadatasContent: 'metadata/metadatasContent',
@@ -124,6 +130,9 @@
         loadingMetadataIds: 'metadata/loadingMetadataIds',
         loadingMetadatasContent: 'metadata/loadingMetadatasContent',
       }),
+      bingApiKey() {
+        return this.config?.apiKeys?.bing || null;
+      },
       loading() {
         return this.loadingMetadataIds || this.loadingMetadatasContent;
       },
@@ -204,7 +213,8 @@
         if (this.map) {
           this.map.on('locationerror', () => { this.errorLoadingLeaflet = true; });
 
-          this.addOpenStreetMapLayer(this.map);
+          const bingKey = this.bingApiKey;
+          this.addImageMapLayer(this.map, bingKey);
 
           this.updateMap();
 
@@ -238,24 +248,36 @@
           return undefined;
         }
       },
-      addOpenStreetMapLayer(map) {
+      addImageMapLayer(map, bingKey) {
         const streetTiles = L.tileLayer(
           'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
           { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' },
         );
 
-        const aerialTiles = L.tileLayer.bing({
-          bingMapsKey: this.bingApiKey,
-          imagerySet: 'AerialWithLabels',
-        });
+        const layers = [streetTiles];
+        const baseMaps = {};
 
-        this.mapLayerGroup = L.layerGroup([streetTiles, aerialTiles]);
+        if (bingKey) {
+          const aerialTiles = L.tileLayer.bing({
+            bingMapsKey: bingKey,
+            imagerySet: 'AerialWithLabels',
+          });
+          layers.push(aerialTiles);
+
+          baseMaps['Satellit (Bingmaps)'] = aerialTiles;
+        }
+
+        // put is afterwards, because default seems to be the last one
+        baseMaps['Roads (OpenStreetMaps)'] = streetTiles;
+
+        this.mapLayerGroup = L.layerGroup(layers);
         this.mapLayerGroup.addTo(map);
 
-        const baseMaps = {
-          'Satellit (Bingmaps)': aerialTiles,
-          'Roads (OpenStreetMaps)': streetTiles,
-        };
+        iconOptions.iconUrl = iconUrl;
+        iconOptions.iconRetinaUrl = iconRetinaUrl;
+        iconOptions.shadowUrl = iconShadowUrl;
+        iconOptions.iconSize = [width, height];
+        iconOptions.className = iconClass;
 
         L.control.layers(baseMaps).addTo(map);
       },
@@ -557,7 +579,6 @@
       selectedMarker2x,
       markerShadow,
       clusterLayer: null,
-      bingApiKey: process.env.VUE_APP_BING_API_KEY,
     }),
     components: {
       FilterMapWidget,

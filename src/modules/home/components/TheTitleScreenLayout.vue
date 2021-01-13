@@ -1,5 +1,6 @@
 <template>
-  <v-col >
+  <v-col order-md="2"
+          order="1" >
 
     <v-row align="center" >
 
@@ -39,10 +40,11 @@
       </v-col>
     </v-row>
 
-    <v-row no-gutters >
+    <v-row >
       <v-col >
         <slogan-card :slogan="slogan"
                       :subSlogan="subSlogan"
+                      :maxHeight="200"
                       :buttonText="buttonText"
                       :buttonCallback="buttonCallback"
                       :moreButtonText="moreButtonText"
@@ -62,7 +64,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-10-13 22:10:44
+ * Last modified  : 2021-01-06 18:21:07
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

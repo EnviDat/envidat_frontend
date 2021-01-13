@@ -18,7 +18,7 @@
                   class="pa-4 pt-0 readableText heightAndScroll" >
 
       <v-row >
-        <v-col class="py-0" cols="12" >
+        <v-col cols="12" >
           {{ preText }}
         </v-col>
       </v-row>
@@ -78,7 +78,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-11-17 15:39:27
+ * Last modified  : 2021-01-06 16:34:12
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
