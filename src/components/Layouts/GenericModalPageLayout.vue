@@ -1,11 +1,34 @@
 <template>
-  <v-dialog v-model="dialog"
-            fullscreen
-            hide-overlay
+  <v-dialog v-model="showDialog"
             transition="dialog-bottom-transition"
-            scrollable >
+            scrollable
+            persistent >
 
-    <slot name="filterKeywords" />
+    <v-card class="pa-0 ml-15">
+      
+      <v-toolbar flat
+                  dark
+                  color="primary" >
+
+        <v-toolbar-title>{{ title }}</v-toolbar-title>
+
+        <v-spacer></v-spacer>
+
+        <v-btn icon
+                @click="closeClicked" >
+          <v-icon dark >
+            close
+          </v-icon>
+        </v-btn>
+
+      </v-toolbar>
+
+      <v-card-text class="py-0 px-4">
+        
+        <slot name="default" />
+
+      </v-card-text>
+    </v-card>
 
   </v-dialog>
 </template>
@@ -28,11 +51,27 @@ export default {
   components: {
   },
   props: {
+    title: String,
+    open: Boolean,
+  },
+  mounted() {
+    this.showDialog = this.open;
+  },
+  watch: {
+    open() {
+      if (this.open) {
+        this.showDialog = true;
+      }
+    },
   },
   methods: {
+    closeClicked() {
+      this.showDialog = false;
+      this.$emit('modalClosed');
+    },
   },
   data: () => ({
-    dialog: false,
+    showDialog: false,
   }),
 };
 </script>

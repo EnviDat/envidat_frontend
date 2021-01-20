@@ -31,6 +31,11 @@
 
       <template v-slot:leftColumn>
 
+        <!-- Test Toggle for Dialog -->
+        <v-row>
+          <v-btn color="success" @click="openDialog = true">Test Toggle dialog</v-btn>
+        </v-row>
+
         <v-row v-for="(entry, index) in firstColumn"
                 :key="`left_${index}_${keyHash}`"
                 no-gutters >
@@ -56,8 +61,18 @@
                       :authorDeadInfo="authorDeadInfo" />
           </v-col>
         </v-row>
+        
       </template>
     </two-column-layout>
+
+    <GenericModalPageLayout title="Static Generic Modal Page"
+                            :open="openDialog"
+                            @modalClosed="openDialog = false" >
+
+      <DetailChartsList />
+
+    </GenericModalPageLayout>
+
   </v-container>
 </template>
 
@@ -106,7 +121,10 @@ import {
 import {
   getFullAuthorsFromDataset,
 } from '@/factories/authorFactory';
+
 import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
+import GenericModalPageLayout from '@/components/Layouts/GenericModalPageLayout';
+import DetailChartsList from '@/modules/metadata/components/GC-Net/DetailChartsList';
 
 import MetadataHeader from './Metadata/MetadataHeader';
 import MetadataBody from './Metadata/MetadataBody';
@@ -545,6 +563,8 @@ export default {
     TwoColumnLayout,
     MetadataAuthors,
     MetadataGeo,
+    GenericModalPageLayout,
+    DetailChartsList,
   },
   data: () => ({
     PageBGImage: 'app_b_browsepage',
@@ -566,6 +586,7 @@ export default {
     contactIcon: null,
     mailIcon: null,
     licenseIcon: null,
+    openDialog: false,
     firstCol: [],
     secondCol: [],
     singleCol: [],
