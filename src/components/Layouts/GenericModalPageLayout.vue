@@ -41,34 +41,36 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2019-10-23 14:54:16
+ * Last modified  : 2021-01-20 15:33:31
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
 */
+import {
+  eventBus,
+  METADATA_OPEN_MODAL,
+  METADATA_CLOSE_MODAL,
+} from '@/factories/eventBus';
 
 export default {
-  components: {
-  },
   props: {
     title: String,
-    open: Boolean,
   },
-  mounted() {
-    this.showDialog = this.open;
+  created() {
+    eventBus.$on(METADATA_OPEN_MODAL, this.openClicked);
+    eventBus.$on(METADATA_CLOSE_MODAL, this.closeClicked);
   },
-  watch: {
-    open() {
-      if (this.open) {
-        this.showDialog = true;
-      }
-    },
+  beforeDestroy() {
+    eventBus.$off(METADATA_OPEN_MODAL, this.openClicked);
+    eventBus.$off(METADATA_CLOSE_MODAL, this.closeClicked);
   },
   methods: {
     closeClicked() {
       this.showDialog = false;
-      this.$emit('modalClosed');
     },
+    openClicked() {
+      this.showDialog = true;
+    },    
   },
   data: () => ({
     showDialog: false,

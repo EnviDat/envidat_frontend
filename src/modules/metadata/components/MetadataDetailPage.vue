@@ -33,7 +33,7 @@
 
         <!-- Test Toggle for Dialog -->
         <v-row>
-          <v-btn color="success" @click="openDialog = true">Test Toggle dialog</v-btn>
+          <v-btn color="success" @click="eventBus.$emit(METADATA_OPEN_MODAL)">Test Toggle dialog</v-btn>
         </v-row>
 
         <v-row v-for="(entry, index) in firstColumn"
@@ -65,9 +65,7 @@
       </template>
     </two-column-layout>
 
-    <GenericModalPageLayout title="Static Generic Modal Page"
-                            :open="openDialog"
-                            @modalClosed="openDialog = false" >
+    <GenericModalPageLayout title="Static Generic Modal Page" >
 
       <DetailChartsList />
 
@@ -85,7 +83,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2020-11-19 09:34:05
+ * Last modified  : 2021-01-20 15:34:09
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -122,6 +120,12 @@ import {
   getFullAuthorsFromDataset,
 } from '@/factories/authorFactory';
 
+import {
+  eventBus,
+  METADATA_OPEN_MODAL,
+  METADATA_CLOSE_MODAL,
+} from '@/factories/eventBus';
+
 import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
 import GenericModalPageLayout from '@/components/Layouts/GenericModalPageLayout';
 import DetailChartsList from '@/modules/metadata/components/GC-Net/DetailChartsList';
@@ -152,6 +156,11 @@ export default {
       vm.$store.commit(SET_APP_BACKGROUND, vm.PageBGImage);
     });
   },
+  created() {
+
+    eventBus.$on(METADATA_OPEN_MODAL, this.openGcnetModal);
+    eventBus.$on(METADATA_CLOSE_MODAL, this.closeGcnetModal);
+  },
   /**
      * @description load all the icons once before the first component's rendering.
      */
@@ -178,6 +187,9 @@ export default {
   beforeDestroy() {
     // clean current metadata to make be empty for the next to load up
     this.$store.commit(`${METADATA_NAMESPACE}/${CLEAN_CURRENT_METADATA}`);
+
+    eventBus.$off(METADATA_OPEN_MODAL, this.openGcnetModal);
+    eventBus.$off(METADATA_CLOSE_MODAL, this.closeGcnetModal);
   },
   computed: {
     ...mapState([
@@ -586,7 +598,9 @@ export default {
     contactIcon: null,
     mailIcon: null,
     licenseIcon: null,
-    openDialog: false,
+    eventBus,
+    METADATA_OPEN_MODAL,
+    METADATA_CLOSE_MODAL,
     firstCol: [],
     secondCol: [],
     singleCol: [],
