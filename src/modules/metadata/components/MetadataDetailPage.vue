@@ -33,7 +33,7 @@
 
         <!-- Test Toggle for Dialog -->
         <v-row>
-          <v-btn color="success" @click="eventBus.$emit(METADATA_OPEN_MODAL)">Test Toggle dialog</v-btn>
+          <v-btn color="success" @click="eventBus.$emit('GCNET_OPEN_DETAIL_CHARTS')">Test Toggle dialog</v-btn>
         </v-row>
 
         <v-row v-for="(entry, index) in firstColumn"
@@ -65,11 +65,7 @@
       </template>
     </two-column-layout>
 
-    <GenericModalPageLayout title="Static Generic Modal Page" >
-
-      <DetailChartsList />
-
-    </GenericModalPageLayout>
+    <GenericModalPageLayout title="Static Generic Modal Page" />
 
   </v-container>
 </template>
@@ -83,7 +79,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2021-01-20 15:34:09
+ * Last modified  : 2021-01-20 17:03:08
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -123,7 +119,7 @@ import {
 import {
   eventBus,
   METADATA_OPEN_MODAL,
-  METADATA_CLOSE_MODAL,
+  GCNET_OPEN_DETAIL_CHARTS,
 } from '@/factories/eventBus';
 
 import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
@@ -157,9 +153,7 @@ export default {
     });
   },
   created() {
-
-    eventBus.$on(METADATA_OPEN_MODAL, this.openGcnetModal);
-    eventBus.$on(METADATA_CLOSE_MODAL, this.closeGcnetModal);
+    eventBus.$on(GCNET_OPEN_DETAIL_CHARTS, this.showModal);
   },
   /**
      * @description load all the icons once before the first component's rendering.
@@ -188,8 +182,7 @@ export default {
     // clean current metadata to make be empty for the next to load up
     this.$store.commit(`${METADATA_NAMESPACE}/${CLEAN_CURRENT_METADATA}`);
 
-    eventBus.$off(METADATA_OPEN_MODAL, this.openGcnetModal);
-    eventBus.$off(METADATA_CLOSE_MODAL, this.closeGcnetModal);
+    eventBus.$off(GCNET_OPEN_DETAIL_CHARTS, this.showModal);
   },
   computed: {
     ...mapState([
@@ -286,6 +279,12 @@ export default {
     },
   },
   methods: {
+    showModal() {
+      eventBus.$emit(
+        METADATA_OPEN_MODAL,
+        this.$options.components.DetailChartsList,
+      );
+    },
     reRenderComponents() {
       // this.keyHash = Date.now().toString;
       this.$forceUpdate();
@@ -599,8 +598,6 @@ export default {
     mailIcon: null,
     licenseIcon: null,
     eventBus,
-    METADATA_OPEN_MODAL,
-    METADATA_CLOSE_MODAL,
     firstCol: [],
     secondCol: [],
     singleCol: [],

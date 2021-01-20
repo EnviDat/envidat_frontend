@@ -25,7 +25,7 @@
 
       <v-card-text class="py-0 px-4">
         
-        <slot name="default" />
+        <component :is="modalContentComponent" />
 
       </v-card-text>
     </v-card>
@@ -41,7 +41,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2021-01-20 15:33:31
+ * Last modified  : 2021-01-20 16:28:29
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -53,6 +53,7 @@ import {
 } from '@/factories/eventBus';
 
 export default {
+  name: 'GenericModalPageLayout',
   props: {
     title: String,
   },
@@ -67,13 +68,16 @@ export default {
   methods: {
     closeClicked() {
       this.showDialog = false;
+      this.modalContentComponent = null;
     },
-    openClicked() {
+    openClicked(modalContentComponent) {
+      this.modalContentComponent = modalContentComponent;
       this.showDialog = true;
     },    
   },
   data: () => ({
     showDialog: false,
+    modalContentComponent: null,
   }),
 };
 </script>
