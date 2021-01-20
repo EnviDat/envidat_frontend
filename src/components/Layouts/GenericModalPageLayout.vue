@@ -16,9 +16,7 @@
 
         <v-btn icon
                 @click="closeClicked" >
-          <v-icon dark >
-            close
-          </v-icon>
+          <v-icon dark >close</v-icon>
         </v-btn>
 
       </v-toolbar>
@@ -41,7 +39,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2021-01-20 16:28:29
+ * Last modified  : 2021-01-20 17:21:25
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
