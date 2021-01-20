@@ -3,47 +3,31 @@
 
   <v-card :id="stationId"
           ref="main_container"
-          class="pa-1"
           v-show="visible" >
 
-    <v-container class="pa-0" fluid
-                  >
+    <v-container fluid
+                  class="pa-4" >
 
-      <v-row  >
-        <v-col class="pa-0" cols="3"
-                >
+      <v-row no-gutters >
+        <v-col class="shrink" >
           <img :style="`${ showInfo ? '' : 'height: 100%;'} cursor: pointer;`"
                 @click="catchDetailClick(station.alias)"
                 :src="image" />
         </v-col>
 
-        <v-col class="py-3 pr-3"
-                cols="9"
-                style="background-color: white; ">
+        <v-col style="background-color: white; ">
           <!-- <v-row class="fill-height" column justify="space-between" > -->
-          <v-row class="fill-height"
-                  justify="space-between" >
-            <v-col class="pt-0" >
-              <v-row  justify="space-between">
-
-                <v-col class="grow" style="font-weight: 700;">
-                  {{ station.name }}
-                </v-col>
-
-                <!-- <v-col class="shrink" >
-                  <base-status-icon icon="access_time"
-                                    :color="allIconColor" />
-                </v-col>
-
-                <v-col class="shrink" >
-                  <base-status-icon icon="av_timer"
-                                    :color="recentIconColor"/>
-                </v-col> -->
-
-              </v-row>
+          <v-row no-gutters >
+            <v-col class="grow pb-1"
+                    style="font-weight: 700;">
+              {{ station.name }}
             </v-col>
+          </v-row>
 
-            <v-col class="py-0" v-if="chartIsLoading"
+          <v-row no-gutters >
+
+            <v-col v-if="chartIsLoading"
+                    class="py-0"
                     cols="12" 
                     style="width: 100%">
               <div class='skeleton skeleton-animation-shimmer' :style="`height: ${chartHeight};`" >
@@ -65,7 +49,7 @@
               {{ dataError }}
             </v-col>
 
-            <v-col class="py-0 px-0 mx-1" cols="12" 
+            <v-col cols="12" 
                     :id="microChartId"
                     ref="microChart"
                     :style="`background-color: #f5f5f5; width: 100%; height: ${chartHeight}; border: 1px solid #eee;`" >
@@ -73,7 +57,7 @@
 
             <v-col v-if="!dataError && hasData()"
                     cols="12" 
-                    class="smallText py-0">
+                    class="smallText pt-1">
               {{ chartSubText }}
             </v-col>
 <!-- 
