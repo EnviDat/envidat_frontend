@@ -60,122 +60,25 @@
                     class="smallText pt-1">
               {{ chartSubText }}
             </v-col>
-<!-- 
-            <v-col class="pt-2" cols="12" 
-                    >
-              <v-row  align="center" justify="space-between" >
-                <v-col class="shrink" >
-                  <v-row >
-                    <v-col class="shrink" >
-                      <base-status-icon-button :icon="showInfo ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
-                                                color="primary"
-                                                :outline="true"
-                                                @click="showInfo = !showInfo;" />          
-                    </v-col>
-                  </v-row>
-                </v-col>
+          </v-row>
 
-                <v-col class="shrink" >
-                  <v-row >
-                    <v-col 
-                            
-                            class="caption shrink px-0">
-                      Station Details
-                    </v-col>
-
-                    <v-col class="shrink" >
-                      <base-status-icon-button icon="search"
-                                                color="secondary"
-                                                @click="catchDetailClick(station.alias)" />
-                    </v-col>
-                  </v-row>
-                </v-col>
-              </v-row>
+          <v-row no-gutters
+                class="pt-2"
+                align="center">
+            <v-col class="caption grow">
+              Station Details
             </v-col>
 
-            <v-col v-if="showInfo"
-                    cols="12">
-              <v-row >
-                <v-col >
-                  <v-divider></v-divider>
-                </v-col>
-
-                <v-col >
-                  <v-row  
-                            justify="space-between" align="center">
-                    <v-col 
-                            class="body-1 grow">
-                      {{ 'All Data' }}
-                    </v-col>
-
-                    <v-col class="shrink" >
-                      <base-status-icon icon="access_time"
-                                        :color="allIconColor" />
-                    </v-col>
-
-                    <v-col 
-                            class="smallText shrink">
-                      <div :style="`background-color: ${ $vuetify.theme.accent };`"
-                            class="py-0 px-1">
-                        {{ allDataLength }}
-                      </div>
-
-                    </v-col>
-
-                    <v-col class="shrink" >
-                      <base-status-icon-button icon="refresh"
-                                                color="secondary"
-                                                @click="loadRecentData = false; loadChart(false);" />
-                    </v-col>
-                  </v-row>
-                </v-col>
-
-                <v-col 
-                        class="smallText grow">
-                  {{ allDataUrl }}
-                </v-col>
-
-                <v-col >
-                  <v-divider></v-divider>
-                </v-col>
-
-                <v-col >
-                  <v-row  justify="space-between" align="center">
-                    <v-col 
-                            class="body-1 grow">
-                      Recent Data
-                    </v-col>
-
-                    <v-col class="shrink" >
-                      <base-status-icon icon="av_timer"
-                                        :color="recentIconColor"/>
-                    </v-col>
-
-                    <v-col 
-                            class="smallText shrink">
-                      <div :style="`background-color: ${ $vuetify.theme.accent };`"
-                            class="py-0 px-1">
-                        {{ recentDataLength }}
-                      </div>
-                    </v-col>
-
-                    <v-col class="shrink" >
-                      <base-status-icon-button icon="refresh"
-                                                color="secondary"
-                                                @click="loadRecentData = true; loadChart(false);" />
-                    </v-col>
-                  </v-row>
-                </v-col>
-          
-                <v-col 
-                        class="smallText grow">
-                  {{ recentDataUrl }}
-                </v-col>
-
-              </v-row>
-            </v-col> -->
-
+            <v-col class="shrink" >
+              <BaseIconButton materialIconName="search"
+                              color="secondary"
+                              iconColor="white"
+                              isSmall
+                              isElevated
+                              @click="catchDetailClick(station.alias)" />
+            </v-col>
           </v-row>
+
         </v-col>
       </v-row>
 
@@ -188,8 +91,7 @@
 import axios from 'axios';
 import uPlot from 'uplot/dist/uPlot.esm';
 import 'uplot/dist/uPlot.min.css';
-// import BaseStatusIcon from '@/components/BaseElements/BaseStatusIcon';
-// import BaseStatusIconButton from '@/components/BaseElements/BaseStatusIconButton';
+import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 
 export default {
   name: 'MicroChart',
@@ -209,31 +111,15 @@ export default {
       }),
     },
     image: String,
-    JSONUrls: {
-      type: Object,
-      default: () => ({
-        dataURLs: [{ fileType: 'temp', url: './testdata/1temp_v.json' }],
-        recentDataURLs: [{ fileType: 'temp', url: './testdata/1temp_v.json' }],
-      }),
-    },
-    fileValueMapping: {
-      type: Object,
-      default: () => ({
-        temp: ['AirTC1', 'AirTC2'],
-        press: ['press'],
-        wd: ['WD1', 'WD2'],
-        ws: ['WS1', 'WS2'],
-        battvolt: ['battvolt'],
-      }),
-    },
+    JSONUrl: String,
+    parameter: String,
     delay: {
       type: Number,
       default: 500,
     },
   },
   components: {
-    // BaseStatusIcon,
-    // BaseStatusIconButton,
+    BaseIconButton,
   },
   mounted() {
     let that = this;
@@ -266,29 +152,16 @@ export default {
     //   return this.allCheckedOnce ? this.alldataAvailable ? this.$vuetify.theme.success : this.$vuetify.theme.error : 'transparent';
     // },
     chartSubText() {
-      return `${this.chartIsLoading ? 'Loading' : 'Showing'} ${this.graphs && this.graphs[0] ? this.graphs[0].title : ''} of ${this.loadRecentData ? 'recent data' : 'all data'} 
-              from ${new Date(this.minDate).toLocaleDateString('en-US')} to ${new Date(this.maxDate).toLocaleDateString('en-US')}`;
+      return `${this.chartIsLoading ? 'Loading' : 'Showing'} ${this.parameter ? this.parameter : '[parameter missing]'} from ${new Date(this.minDate).toLocaleDateString('en-US')} to ${new Date(this.maxDate).toLocaleDateString('en-US')}`;
     },
   },
   methods: {
     hasData() {
-      // return this.recentDataLength > 0 || this.allDataLength > 0;
-      if (this.fallback) {
-        return this.recentDataAvailable || this.alldataAvailable;
-      }
-
-      return (this.loadRecentData && this.recentDataAvailable)
-          || (!this.loadRecentData && this.alldataAvailable);
+      return this.data && this.data.length > 0;
     },
-    loadChart(fallback = true) {
+    loadChart() {
       this.clearChart();
-
-      this.fallback = fallback;
       this.chartIsLoading = true;
-
-      this.urlValueMapping = this.getUrlValueMapping(this.loadRecentData);
-
-      this.buildGraphs();
 
       // clear and then new loading on the next tick is needed for the disposing to finish
       this.$nextTick(() => {
@@ -296,69 +169,8 @@ export default {
         this.loadJsonFiles();
       });
     },
-    getUrlValueMapping(loadRecentData) {
-      const urlValueMapping = {};
-      const keys = Object.keys(this.fileValueMapping);
-
-      for (let i = 0; i < keys.length; i++) {
-        const prefix = keys[i];
-
-        const url = this.getUrlToPrefix(prefix, loadRecentData);
-        
-        if (url) {
-          urlValueMapping[url] = this.fileValueMapping[prefix];
-        }
-      }
-
-      return urlValueMapping;
-    },
-    getUrlToPrefix(prefix, loadRecentData) {
-      const urlObjs = loadRecentData ? this.JSONUrls.recentDataURLs : this.JSONUrls.dataURLs;
-
-      for (let i = 0; i < urlObjs.length; i++) {
-        const obj = urlObjs[i];
-        
-        if (prefix === obj.fileType) {
-          return obj.url;
-        }
-      }
-
-      return null;
-    },
-    buildGraphs() {
-      this.colorCount = 0;
-      const keys = Object.keys(this.urlValueMapping);
-      const graphs = [];
-
-      for (let i = 0; i < keys.length; i++) {
-        const url = keys[i];
-        const dataParameters = this.urlValueMapping[url];
-
-        for (let j = 0; j < dataParameters.length; j++) {
-          const param = dataParameters[j];
-
-          const lineColor = this.colorPalette[this.colorCount];
-          this.colorCount++;
-
-          graphs.push({
-            lineColor,
-            title: param,
-            valueField: param,
-            dataUrl: url,
-          });
-        }
-      }
-
-      this.graphs = graphs;
-    },
     clearChart() {
-      // if (this.microChart) {
-      //   this.microChart.dispose();
-      //   console.log('dispose via MicroChart ' + this.microChartId + ' isDisposed() ' + this.microChart.isDisposed());
-      //   // console.log('delete via MicroChart');
-      //   this.microChart = null;
-      //   // delete this.microChart;
-      // }
+
       if (this.$refs.microChart) {
 
         const childs = this.$refs.microChart.children;
@@ -372,31 +184,24 @@ export default {
       }
     },
     loadJsonFiles() {
-      this.chartIsLoading = true;
-      const currentDataUrl = this.graphs[0].dataUrl;
-
-      if (this.loadRecentData) {
-        this.recentDataUrl = currentDataUrl;
-        this.recentDataLength = 0;
-      } else {
-        this.allDataUrl = currentDataUrl;
-        this.allDataLength = 0;
-      }
+      this.data = null;
 
       axios
-      .get(currentDataUrl)
+      .get(this.JSONUrl)
       .then((response) => {
-        this.makeSparkChart(response.data);
+        this.chartIsLoading = false;
+        this.data = response.data;
+        this.makeSparkChart(this.data, this.parameter);
       })
       .catch((error) => {
+        this.chartIsLoading = false;
         this.chartError(error);
       });
     },
-    makeSparkChart(data) {
-      this.chartIsLoading = false;
+    makeSparkChart(data, chartParameter) {
 
       const x = [];
-      let y = [];
+      const y = [];
       const dataLength = data ? data.length : 0;
 
       if (dataLength > 0) {
@@ -405,24 +210,14 @@ export default {
 
         for (let i = 0; i < data.length; i++) {
           const entry = data[i];
-          const airTC1 = entry.AirTC1;
+          const param = entry[chartParameter];
           
-          if (useFallback && airTC1) {
+          if (useFallback && param) {
             useFallback = false;
           }
           
           x.push(entry.timestamp);
-          y.push(airTC1);
-        }
-
-        if (useFallback) {
-          y = [];
-          this.graphs[0].title = 'AirTC2';
-
-          for (let i = 0; i < data.length; i++) {
-            const entry = data[i];            
-            y.push(entry.AirTC2);
-          }
+          y.push(param);
         }
 
         this.makeSpark([x, y]);
@@ -431,36 +226,6 @@ export default {
         this.maxDate = data[data.length - 1].timestamp;
       }
 
-      if (this.loadRecentData) {
-        this.recentCheckedOnce = true;
-      } else {
-       this.allCheckedOnce = true;
-      }
-
-      if (dataLength > 0) {
-        if (this.loadRecentData) {
-          this.recentDataAvailable = true;
-          this.recentDataLength = dataLength;
-        } else {
-          this.alldataAvailable = true;
-          this.allDataLength = dataLength;
-        }
-      } else if (this.loadRecentData) {
-          this.recentDataAvailable = false;
-
-          if (this.fallback) {
-            this.loadRecentData = false;
-            
-            this.$nextTick(() => {
-              this.loadChart();
-            });
-          } else {
-            this.clearChart();
-          }
-        } else {
-          this.alldataAvailable = false;
-          this.clearChart();
-        }
     },
     makeSpark(data) {
       this.sparkLineOptions.width = this.$refs.microChart.clientWidth;
@@ -590,34 +355,9 @@ export default {
       };
     },
     chartError(error) {
-      this.chartIsLoading = false;
+      // this.chartIsLoading = false;
       this.dataError = error.message;
 
-      if (this.loadRecentData) {
-        this.recentCheckedOnce = true;
-      } else {
-       this.allCheckedOnce = true;
-      }
-
-      if (this.loadRecentData) {
-        this.recentDataAvailable = false;
-
-        if (this.fallback) {
-          this.loadRecentData = false;
-
-          this.$nextTick(() => {
-            this.loadChart();
-          });
-        } else {
-          this.clearChart();
-        }
-      } else {
-        this.alldataAvailable = false;
-        this.clearChart();
-        if (this.$refs.microChart) {
-          this.$refs.microChart.style.display = 'none';
-        }
-      }
     },
     catchDetailClick(stationId) {
       this.$emit('detailClick', stationId);
@@ -629,23 +369,10 @@ export default {
     dateFormat: 'HH:mm DD/MM/YYYY',
     dataError: '',
     noDataText: 'No data available',
-    loadRecentData: true,
-    recentCheckedOnce: false,
-    recentDataAvailable: false,
-    recentDataUrl: '',
-    allCheckedOnce: false,
-    alldataAvailable: false,
-    allDataUrl: '',
     chartIsLoading: true,
     showInfo: false,
     minDate: null,
     maxDate: null,
-    graphs: [],
-    seriesSettings: {
-      lineStrokeWidth: 2,
-      lineColor: '#8ACDCE',
-    },    
-    urlValueMapping: {},
     sparkLineOptions: {
       class: 'spark',
       background: 'black',
@@ -682,15 +409,6 @@ export default {
       ],
     },
     visible: false,
-    colorCount: 0,
-    colorPalette: ['#8ACDCE', 
-                   '#3D91BE', 
-                   '#24448E', 
-                   '#11174B'],
-    // colorPalette: ['#DCECC9', '#B3DDCC', '#8ACDCE',
-    //                '#62BED2', '#46AACE', '#3D91BE',
-    //                '#3577AE', '#2D5E9E', '#24448E',
-    //                '#1C2B7F', '#162065', '#11174B'],
   }),
 };
 </script>

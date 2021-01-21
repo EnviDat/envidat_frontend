@@ -79,7 +79,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2021-01-20 17:03:08
+ * Last modified  : 2021-01-21 12:35:21
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -125,6 +125,7 @@ import {
 import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
 import GenericModalPageLayout from '@/components/Layouts/GenericModalPageLayout';
 import DetailChartsList from '@/modules/metadata/components/GC-Net/DetailChartsList';
+import MircoChartList from '@/modules/metadata/components/GC-Net/MircoChartList';
 
 import MetadataHeader from './Metadata/MetadataHeader';
 import MetadataBody from './Metadata/MetadataBody';
@@ -282,7 +283,7 @@ export default {
     showModal() {
       eventBus.$emit(
         METADATA_OPEN_MODAL,
-        this.$options.components.DetailChartsList,
+        this.$options.components.MircoChartList,
       );
     },
     reRenderComponents() {
@@ -576,6 +577,7 @@ export default {
     MetadataGeo,
     GenericModalPageLayout,
     DetailChartsList,
+    MircoChartList,
   },
   data: () => ({
     PageBGImage: 'app_b_browsepage',

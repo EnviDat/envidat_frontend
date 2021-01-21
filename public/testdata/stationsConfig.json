@@ -1,0 +1,36 @@
+[
+  {
+    "id": 0,
+    "name": "Swiss Camp 10m",
+    "latitude": "69.56833",
+    "longitude": "49.31582",
+    "elevation": 1176,
+    "startdate": "1990.4",
+    "active": true,
+    "alias": "swisscamp10m",
+    "data": 1,
+    "envidatConfig": {
+      "previewUrl": "./testdata/1temp_v.json",
+      "previewParameter": "AirTC1",
+      "previewImageUrl": "",
+      "detailCharts": []
+    }
+  },
+  {
+    "id": 1,
+    "name": "Swiss Camp",
+    "latitude": "69.56833",
+    "longitude": "49.31582",
+    "elevation": 1176,
+    "startdate": "1990.30",
+    "active": true,
+    "alias": "swisscamp",
+    "data": 1,
+    "envidatConfig": {
+      "previewUrl": "./testdata/1temp_v.json",
+      "previewParameter": "AirTC1",
+      "previewImageUrl": "",
+      "detailCharts": []
+    }
+  }
+]
