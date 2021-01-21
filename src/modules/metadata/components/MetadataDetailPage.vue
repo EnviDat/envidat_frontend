@@ -125,7 +125,7 @@ import {
 import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
 import GenericModalPageLayout from '@/components/Layouts/GenericModalPageLayout';
 import DetailChartsList from '@/modules/metadata/components/GC-Net/DetailChartsList';
-import MircoChartList from '@/modules/metadata/components/GC-Net/MircoChartList';
+import MicroChartList from '@/modules/metadata/components/GC-Net/MicroChartList';
 
 import MetadataHeader from './Metadata/MetadataHeader';
 import MetadataBody from './Metadata/MetadataBody';
@@ -283,7 +283,7 @@ export default {
     showModal() {
       eventBus.$emit(
         METADATA_OPEN_MODAL,
-        this.$options.components.MircoChartList,
+        this.$options.components.MicroChartList,
       );
     },
     reRenderComponents() {
@@ -577,7 +577,7 @@ export default {
     MetadataGeo,
     GenericModalPageLayout,
     DetailChartsList,
-    MircoChartList,
+    MicroChartList,
   },
   data: () => ({
     PageBGImage: 'app_b_browsepage',
