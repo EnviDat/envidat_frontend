@@ -1,47 +1,20 @@
 <template>
-  <v-container class="fill-height pa-0" fluid
-                >
-    <v-row   >
+  <v-container fluid
+                class="fill-height pa-0" >
 
-      <!-- <v-col cols="12" sm="3">
-        <stations-map @mapClick="mapStationClick" />
-      </v-col> -->
+    <v-row no-gutters >
 
-      <v-col v-if="!visible"
-              cols="12" sm="9">
-        <v-row   justify="center">
-          <v-col 
-                  class="title shrink">
-            Loading MicroCharts...
-          </v-col>
-        </v-row>
-      </v-col>
+      <v-col v-for="station in stations"
+              :key="`${station.id}_${station.alias}`"
+              class="pa-2"
+              cols="12"
+              sm="6" >
 
-      <v-col v-if="visible"
-              cols="12" sm="9" >
-        <v-row  >
-
-          <!-- <v-flex xs12 md4 lg3>
-            <micro-chart :station="stations[0]"
-                          :JSONUrls="getJSONUrls(stations[0])"
-                          :fileValueMapping="fileValueMapping"
-                          @detailClick="(stationID) => { changeCurrentStation(stationID); }" />
-          </v-flex> -->
-
-          <v-col v-for="(station, index) in stations"
-                  :key="`${station.id}_${station.alias}`"
-                  cols="12" md="4" lg="3">
-            <MicroChart :station="station"
-                          :image="stationImg(station.alias)"
-                          :JSONUrl="station.envidatConfig.previewUrl"
-                          :parameter="station.envidatConfig.previewParameter"
-                          :delay="index * 100"
-                          @detailClick="(stationID) => { changeCurrentStation(stationID); }" />
-          </v-col>
-
-                          <!-- :JSONUrls="getJSONUrls(station)" -->
-
-        </v-row>
+        <MicroChart :station="station"
+                      :image="stationImg(station.alias)"
+                      :JSONUrl="station.envidatConfig.previewUrl"
+                      :parameter="station.envidatConfig.previewParameter"
+                      @detailClick="(stationID) => { changeCurrentStation(stationID); }" />
       </v-col>
 
     </v-row>
@@ -49,7 +22,6 @@
 </template>
 
 <script>
-// import StationsMap from '@/components/StationsMap';
 import MicroChart from '@/modules/metadata/components/GC-Net/MicroChart';
 import axios from 'axios';
 import homeInfos from './homeInfos';
@@ -61,7 +33,6 @@ export default {
   },
   components: {
     MicroChart,
-    // StationsMap,
   },
   computed: {
     stations() {
@@ -78,7 +49,7 @@ export default {
     },
   },
   beforeMount() {
-    const imgs = require.context('@/assets/cards', false, /\.jpg$/);
+    const imgs = require.context('@/assets/stations/small', false, /\.jpg$/);
     const imgCache = {};
 
     imgs.keys().forEach((key) => {
@@ -89,23 +60,8 @@ export default {
   },
   mounted() {
     this.loadJsonConfig();
-
-    let that = this;
-
-    setTimeout(() => {
-      that.visible = true;
-      that = null;
-    }, this.initialDelay);
-  },
-  beforeDestroy() {
-    // this.clearCharts();
   },
   methods: {
-    clearCharts() {
-      // am4core.unuseAllThemes();
-      // console.log('disposeAllCharts via OverviewPage');
-      // am4core.disposeAllCharts();
-    },
     mapStationClick(stationUrl) {
       const splits = stationUrl.split('/');
 
@@ -172,12 +128,6 @@ export default {
     configIsLoading: false,
     configError: null,
     stationsConfig: null,
-    visible: false,
-    initialDelay: 1500,
-    fileValueMapping: {
-      // only use one single file and parameter for the microCharts
-      temp: ['AirTC1'],
-    },
     cardImgs: {},
   }),
 };

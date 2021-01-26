@@ -8,7 +8,7 @@
 
       <template v-slot:activator="{ on }">
         <v-btn v-on="on"
-               :style="{backgroundColor: fillColor ? fillColor : ''}"
+               :style="{ backgroundColor: fillColor ? fillColor : '' }"
                 style="margin: 0 !important;"
                 :icon="!isElevated"
                 :fab="isElevated"

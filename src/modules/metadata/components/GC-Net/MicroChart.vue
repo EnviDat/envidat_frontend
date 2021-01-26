@@ -3,22 +3,27 @@
 
   <v-card :id="stationId"
           ref="main_container"
+          class="metadataResourceCard"
+          :color="darkTheme ? 'primary' : 'white'"
+          :dark="darkTheme"
           v-show="visible" >
 
     <v-container fluid
-                  class="pa-4" >
+                  class="pa-0" >
 
-      <v-row no-gutters >
-        <v-col class="shrink" >
-          <img :style="`${ showInfo ? '' : 'height: 100%;'} cursor: pointer;`"
-                @click="catchDetailClick(station.alias)"
-                :src="image" />
+      <v-row no-gutters>
+        <v-col cols="3"
+                @click="catchDetailClick(station.alias)" >
+          <v-img :src="image"
+                  style="border-bottom-left-radius: 4px; border-top-left-radius: 4px; cursor: pointer;" />
+
         </v-col>
 
-        <v-col style="background-color: white; ">
-          <!-- <v-row class="fill-height" column justify="space-between" > -->
+        <v-col cols="9"
+                class="pa-4">
+
           <v-row no-gutters >
-            <v-col class="grow pb-1"
+            <v-col class="grow pb-1 headline v-card__title"
                     style="font-weight: 700;">
               {{ station.name }}
             </v-col>
@@ -65,14 +70,14 @@
           <v-row no-gutters
                 class="pt-2"
                 align="center">
-            <v-col class="caption grow">
-              Station Details
+            <v-col class="title grow">
+              <!-- Station Details -->
             </v-col>
 
             <v-col class="shrink" >
               <BaseIconButton materialIconName="search"
-                              color="secondary"
-                              iconColor="white"
+                              :color="darkTheme ? 'accent' : 'secondary'"
+                              :iconColor="darkTheme ? 'black' : 'white'"
                               isSmall
                               isElevated
                               @click="catchDetailClick(station.alias)" />
@@ -88,6 +93,11 @@
 </template>
 
 <script>
+import {
+  eventBus,
+  GCNET_OPEN_DETAIL_CHARTS,
+} from '@/factories/eventBus';
+
 import axios from 'axios';
 import uPlot from 'uplot/dist/uPlot.esm';
 import 'uplot/dist/uPlot.min.css';
@@ -115,8 +125,9 @@ export default {
     parameter: String,
     delay: {
       type: Number,
-      default: 500,
+      default: 10,
     },
+    darkTheme: Boolean,
   },
   components: {
     BaseIconButton,
@@ -145,12 +156,6 @@ export default {
     stationId() {
       return `${this.station.id}_${this.station.alias ? this.station.alias : this.station.name}`;
     },
-    // recentIconColor() {
-    //   return this.recentCheckedOnce ? this.recentDataAvailable ? this.$vuetify.theme.success : this.$vuetify.theme.error : 'transparent';
-    // },
-    // allIconColor() {
-    //   return this.allCheckedOnce ? this.alldataAvailable ? this.$vuetify.theme.success : this.$vuetify.theme.error : 'transparent';
-    // },
     chartSubText() {
       return `${this.chartIsLoading ? 'Loading' : 'Showing'} ${this.parameter ? this.parameter : '[parameter missing]'} from ${new Date(this.minDate).toLocaleDateString('en-US')} to ${new Date(this.maxDate).toLocaleDateString('en-US')}`;
     },
@@ -206,15 +211,9 @@ export default {
 
       if (dataLength > 0) {
 
-        let useFallback = true;
-
         for (let i = 0; i < data.length; i++) {
           const entry = data[i];
           const param = entry[chartParameter];
-          
-          if (useFallback && param) {
-            useFallback = false;
-          }
           
           x.push(entry.timestamp);
           y.push(param);
@@ -360,7 +359,7 @@ export default {
 
     },
     catchDetailClick(stationId) {
-      this.$emit('detailClick', stationId);
+      eventBus.$emit(GCNET_OPEN_DETAIL_CHARTS, stationId);
     },
   },
   data: () => ({
@@ -415,7 +414,7 @@ export default {
 
 <style scoped>
  .smallText {
-   font-size: 9px;
+   font-size: 10px;
    word-break: break-word;
  }
 </style>
