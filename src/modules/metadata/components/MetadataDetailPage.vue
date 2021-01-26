@@ -31,11 +31,6 @@
 
       <template v-slot:leftColumn>
 
-        <!-- Test Toggle for Dialog -->
-        <v-row>
-          <v-btn color="success" @click="eventBus.$emit('GCNET_OPEN_DETAIL_CHARTS')">Test Toggle dialog</v-btn>
-        </v-row>
-
         <v-row v-for="(entry, index) in firstColumn"
                 :key="`left_${index}_${keyHash}`"
                 no-gutters >
@@ -79,7 +74,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2021-01-21 12:35:21
+ * Last modified  : 2021-01-21 17:59:04
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -120,6 +115,7 @@ import {
   eventBus,
   METADATA_OPEN_MODAL,
   GCNET_OPEN_DETAIL_CHARTS,
+  GCNET_INJECT_MICRO_CHARTS,
 } from '@/factories/eventBus';
 
 import TwoColumnLayout from '@/components/Layouts/TwoColumnLayout';
@@ -281,6 +277,7 @@ export default {
   },
   methods: {
     showModal() {
+      // stationId
       eventBus.$emit(
         METADATA_OPEN_MODAL,
         this.$options.components.MicroChartList,
@@ -412,6 +409,18 @@ export default {
       ];
 
     },
+    async injectMicroCharts() {
+      // TODO: Needs check for the stationConfig files
+      // console.log('wait');
+      await this.$nextTick();
+
+      // console.log('fire!');
+
+      eventBus.$emit(
+        GCNET_INJECT_MICRO_CHARTS,
+        this.$options.components.MicroChartList,
+      );
+    },
     startExtractingIds() {
       if (this.publicationsConfig?.resolveIds && !this.extractingIds) {
         this.$store.dispatch(`${METADATA_NAMESPACE}/${EXTRACT_IDS_FROM_TEXT}`, {
@@ -487,7 +496,7 @@ export default {
      * @description loads the content of this metadata entry (metadataid) from the URL.
      * Either loads it from the backend via action or creates it from the localStorage.
      */
-    loadMetaDataContent() {
+    async loadMetaDataContent() {
       if (!this.loadingMetadatasContent && !this.isCurrentIdOrName(this.metadataId)) {
         // in case of navigating into the page load the content directly via Id
         this.$store.dispatch(`${METADATA_NAMESPACE}/${LOAD_METADATA_CONTENT_BY_ID}`, this.metadataId);
@@ -496,6 +505,8 @@ export default {
         // this call is to initiailze the components in the their loading state
         this.createMetadataContent();
         this.setMetadataContent();
+
+        this.injectMicroCharts();
       }
     },
   },
@@ -546,10 +557,12 @@ export default {
      * @description watch the currentMetadataContent when it is the same as the url
      * the components will be filled with the metdata contents
      */
-    currentMetadataContent() {
+    async currentMetadataContent() {
       if (this.isCurrentIdOrName(this.metadataId)) {
         this.createMetadataContent();
         this.setMetadataContent();
+
+        this.injectMicroCharts();
       }
     },
     /**

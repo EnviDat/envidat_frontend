@@ -32,6 +32,12 @@
         </v-col>
       </v-row>
 
+      <v-row v-if="injectedComponent && injectAtStart"
+              no-gutters >
+        <component :is="injectedComponent" />
+      </v-row>
+
+
       <v-row v-if="!showPlaceholder"
               no-gutters >
 
@@ -51,6 +57,12 @@
                           @clicked="resClicked(res)" />
         </v-col>
       </v-row>
+
+      <v-row v-if="injectedComponent && !injectAtStart"
+              no-gutters >
+        <component :is="injectedComponent" />
+      </v-row>
+
     </v-container>
 
     <v-card-text v-if="!showPlaceholder && (!resources || resources.length <= 0)"
@@ -69,7 +81,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2020-11-04 11:12:21
+ * Last modified  : 2021-01-21 17:16:45
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -78,9 +90,13 @@
 import BaseIconCountView from '@/components/BaseElements/BaseIconCountView';
 import { METADATA_RESOURCES_TITLE } from '@/factories/metadataConsts';
 
+import {
+  eventBus,
+  GCNET_INJECT_MICRO_CHARTS,
+} from '@/factories/eventBus';
+
 import ResourceCard from '../ResourceCard';
 import ResourceCardPlaceholder from '../ResourceCardPlaceholder';
-
 
 export default {
   name: 'MetadataResources',
@@ -93,11 +109,16 @@ export default {
     genericProps: Object,
     showPlaceholder: Boolean,
   },
-  data: () => ({
-    showAllResources: false,
-    emptyText: 'No resources found for this dataset',
-    METADATA_RESOURCES_TITLE,
-  }),
+  created() {
+    // console.log('listing?');
+
+    this.injectedComponent = null;
+    eventBus.$on(GCNET_INJECT_MICRO_CHARTS, this.injectComponent);
+  },
+  beforeDestroy() {
+    this.injectedComponent = null;
+    eventBus.$off(GCNET_INJECT_MICRO_CHARTS, this.injectComponent);
+  },
   computed: {
     doi() {
       return this.mixinMethods_getGenericProp('doi');
@@ -142,7 +163,18 @@ export default {
         },
       });
     },
+    injectComponent(injectedComponent, injectAtStart = true) {
+      this.injectedComponent = injectedComponent;
+      this.injectAtStart = injectAtStart;
+    },    
   },
+  data: () => ({
+    injectedComponent: null,
+    injectAtStart: false,
+    showAllResources: false,
+    emptyText: 'No resources found for this dataset',
+    METADATA_RESOURCES_TITLE,
+  }),
 };
 </script>
 
