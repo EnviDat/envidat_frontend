@@ -4,7 +4,6 @@
     <v-container class="pa-3" fluid >
       <!-- <v-row column> -->
       <!-- <v-row >
-
         <v-col class="pb-3" > -->
           <v-row   justify="space-between">
             <v-col :class="$vuetify.breakpoint.xsOnly ? 'title' : 'display-1'">
