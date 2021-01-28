@@ -4,23 +4,22 @@
     <v-container class="pa-3" fluid >
       <!-- <v-row column> -->
       <!-- <v-row >
-
         <v-col class="pb-3" > -->
           <v-row   justify="space-between">
-            <v-col class="shrink" 
+            <v-col 
                     :class="$vuetify.breakpoint.xsOnly ? 'title' : 'display-1'">
               {{ this.fileObject.chartTitle }}
             </v-col>
-            <v-col class="shrink title" >
+            <v-col class="title text-right" >
               {{ stationName }}
             </v-col>
           </v-row>
           
         <!-- </v-col> -->
 
-        <!-- <v-col class="py-0" v-if="chartIsLoading && preloading"
+        <v-col class="py-0" v-if="chartIsLoading && preloading"
                 :style="`height: ${ $vuetify.breakpoint.xsOnly ? 300 : 350 }px;`"
-                > -->
+                >
           <v-row class="fill-height"   justify="center" align="center">
             <v-col class="shrink" >
               <v-progress-circular :size="50"
@@ -29,7 +28,7 @@
               
             </v-col>
           </v-row>
-        <!-- </v-col> -->
+        </v-col>
 
         <v-col v-if="!chartIsLoading && !hasData"
                 
