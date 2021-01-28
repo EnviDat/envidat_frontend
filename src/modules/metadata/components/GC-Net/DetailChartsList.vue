@@ -26,6 +26,7 @@
           <v-col v-for="fileObject in generateFileList"
                   :key="fileObject.fileName"
                   :ref="fileObject.fileName"
+                  cols="12"
                   >
 
               <DetailChart :url="baseUrl + fileObject.fileName"

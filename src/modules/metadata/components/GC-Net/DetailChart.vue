@@ -7,21 +7,23 @@
 
         <v-col class="pb-3" > -->
           <v-row   justify="space-between">
-            <v-col class="shrink" 
-                    :class="$vuetify.breakpoint.xsOnly ? 'title' : 'display-1'">
+            <v-col :class="$vuetify.breakpoint.xsOnly ? 'title' : 'display-1'">
               {{ this.fileObject.chartTitle }}
             </v-col>
-            <v-col class="shrink title" >
+            <v-col class="title text-right" >
               {{ stationName }}
             </v-col>
           </v-row>
           
         <!-- </v-col> -->
 
-        <!-- <v-col class="py-0" v-if="chartIsLoading && preloading"
-                :style="`height: ${ $vuetify.breakpoint.xsOnly ? 300 : 350 }px;`"
-                > -->
-          <v-row class="fill-height"   justify="center" align="center">
+        <v-col v-if="chartIsLoading && preloading"
+                class="py-0" 
+                :style="`height: ${ $vuetify.breakpoint.xsOnly ? 300 : 350 }px;`" >
+                
+          <v-row class="fill-height"
+                  justify="center"
+                  align="center">
             <v-col class="shrink" >
               <v-progress-circular :size="50"
                                     color="primary"
@@ -29,10 +31,9 @@
               
             </v-col>
           </v-row>
-        <!-- </v-col> -->
+        </v-col>
 
         <v-col v-if="!chartIsLoading && !hasData"
-                
                 class="title pt-2 pb-1"
                 :style="`color: ${ $vuetify.theme.error };`" >
           {{ noDataText }}
@@ -70,8 +71,8 @@
           {{ disclaimerText }}
         </v-col>
 
-        <v-col class="pt-0" v-show="showChart"
-                >
+        <v-col v-show="showChart"
+                class="pt-0" >
           <div :id="chartId"
                 :style="`height: ${ $vuetify.breakpoint.xsOnly ? 300 : 350 }px;`" >
           </div>            
