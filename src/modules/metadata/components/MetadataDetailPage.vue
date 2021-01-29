@@ -60,7 +60,11 @@
       </template>
     </two-column-layout>
 
-    <GenericModalPageLayout title="Static Generic Modal Page" />
+    <GenericModalPageLayout title="GC-Net Modal Page" >
+
+      <component :is="gcnetModalComponent" :currentStation="currentStation" />
+
+    </GenericModalPageLayout>
 
   </v-container>
 </template>
@@ -74,12 +78,13 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2021-01-21 17:59:04
+ * Last modified  : 2021-01-29 22:24:15
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
+import axios from 'axios';
 import { mapGetters, mapState } from 'vuex';
 import {
   BROWSE_PATH,
@@ -114,6 +119,7 @@ import {
 import {
   eventBus,
   METADATA_OPEN_MODAL,
+  METADATA_CLOSE_MODAL,
   GCNET_OPEN_DETAIL_CHARTS,
   GCNET_INJECT_MICRO_CHARTS,
 } from '@/factories/eventBus';
@@ -151,6 +157,8 @@ export default {
   },
   created() {
     eventBus.$on(GCNET_OPEN_DETAIL_CHARTS, this.showModal);
+
+    eventBus.$on(METADATA_CLOSE_MODAL, this.closeModal);
   },
   /**
      * @description load all the icons once before the first component's rendering.
@@ -170,6 +178,8 @@ export default {
   mounted() {
     this.loadMetaDataContent();
 
+    this.loadStationsConfig();
+
     window.scrollTo(0, 0);
   },
   /**
@@ -180,6 +190,7 @@ export default {
     this.$store.commit(`${METADATA_NAMESPACE}/${CLEAN_CURRENT_METADATA}`);
 
     eventBus.$off(GCNET_OPEN_DETAIL_CHARTS, this.showModal);
+    eventBus.$off(METADATA_CLOSE_MODAL, this.closeModal);
   },
   computed: {
     ...mapState([
@@ -276,12 +287,43 @@ export default {
     },
   },
   methods: {
-    showModal() {
-      // stationId
+    loadStationsConfig() {
+      const url = '/testdata/stationsConfig.json';
+      this.stationsConfig = null;
+
+      axios
+      .get(url)
+      .then((response) => {
+        this.stationsConfig = response.data;
+      })
+      .catch((error) => {
+        this.chartError(error);
+      });
+    },
+    getCurrentStation(stationId) {
+      for (let i = 0; i < this.stationsConfig.length; i++) {
+        const station = this.stationsConfig[i];
+        if (station.id === stationId || station.alias === stationId) {
+          return station;
+        }
+      }
+
+      return null;
+    },
+    showModal(stationId) {
+
+      this.currentStation = this.getCurrentStation(stationId);
+      console.log(`show modal for ${this.currentStation.alias}`);
+
+      this.gcnetModalComponent = this.$options.components.DetailChartsList;
+
       eventBus.$emit(
         METADATA_OPEN_MODAL,
-        this.$options.components.MicroChartList,
+        // this.$options.components.MicroChartList,
       );
+    },
+    closeModal() {
+      this.gcnetModalComponent = null;
     },
     reRenderComponents() {
       // this.keyHash = Date.now().toString;
@@ -612,7 +654,10 @@ export default {
     contactIcon: null,
     mailIcon: null,
     licenseIcon: null,
+    gcnetModalComponent: null,
     eventBus,
+    stationsConfig: null,
+    currentStation: null,
     firstCol: [],
     secondCol: [],
     singleCol: [],

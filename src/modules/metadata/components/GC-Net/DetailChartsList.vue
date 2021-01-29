@@ -85,6 +85,18 @@ import DetailChart from './DetailChart';
 export default {
   name: 'Station',
   props: {
+    currentStation: Object,
+    // currentStation: {
+    //   id: 1,
+    //   name: 'Swiss Camp',
+    //   latitude: '69.56833',
+    //   longitude: '49.31582',
+    //   elevation: 1176,
+    //   startdate: '1990.30',
+    //   active: true,
+    //   alias: 'swisscamp',
+    //   data: 1,
+    // },
   },
   components: {
     DetailChart,
@@ -97,7 +109,7 @@ export default {
   },
   mounted() {
     // eslint-disable-next-line no-unused-vars
-    const stationToFind = this.stationRouteId();
+    // const stationToFind = this.stationRouteId();
     // this.currentStation = this.getStation(stationToFind);
     this.loadParameterJson();
   },
@@ -106,12 +118,12 @@ export default {
     // console.log('disposeAllCharts via DetailPage');
     // am4core.disposeAllCharts();
   },
-  watch: {
-    $route(to) {
+  // watch: {
+    // $route(to) {
       // eslint-disable-next-line no-unused-vars
-      const stationToFind = to.params.id;
+      // const stationToFind = to.params.id;
       // this.currentStation = this.getStation(stationToFind);
-    },    
+    // },    
     // currentStation() {
     //   if (this.currentStation) {
     //     let imgs = require.context('@/assets/stations/', false, /\.jpg$/);
@@ -135,7 +147,7 @@ export default {
 
     //   window.scrollTo(0, 0);
     // },
-  },
+  // },
   methods: {
     loadParameterJson() {
       const url = `${this.baseStationURLTestdata}stationParameters.json`;
@@ -274,17 +286,6 @@ export default {
     loadingStation: false,
     stationImg: null,
     stationPreloadImage: null,
-    currentStation: {
-      id: 1,
-      name: 'Swiss Camp',
-      latitude: '69.56833',
-      longitude: '49.31582',
-      elevation: 1176,
-      startdate: '1990.30',
-      active: true,
-      alias: 'swisscamp',
-      data: 1,
-    },
     expand: false,
     convertLocalTime: false,
     reRenderKey: null,

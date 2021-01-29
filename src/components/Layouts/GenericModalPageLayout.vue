@@ -25,6 +25,8 @@
         
         <component :is="modalContentComponent" />
 
+        <slot name="default" />
+
       </v-card-text>
     </v-card>
 

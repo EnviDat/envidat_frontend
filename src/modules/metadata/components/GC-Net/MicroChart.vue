@@ -74,13 +74,16 @@
               <!-- Station Details -->
             </v-col>
 
+                              <!-- :color="darkTheme ? 'accent' : 'secondary'"
+                              :iconColor="darkTheme ? 'black' : 'white'" -->
+
             <v-col class="shrink" >
               <BaseIconButton materialIconName="search"
-                              :color="darkTheme ? 'accent' : 'secondary'"
-                              :iconColor="darkTheme ? 'black' : 'white'"
+                              color="accent"
+                              iconColor="black"
                               isSmall
                               isElevated
-                              @click="catchDetailClick(station.alias)" />
+                              @clicked="catchDetailClick(station.alias)" />
             </v-col>
           </v-row>
 
