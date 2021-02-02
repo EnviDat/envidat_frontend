@@ -10,10 +10,9 @@
     "alias": "swisscamp10m",
     "data": 1,
     "envidatConfig": {
-      "previewUrl": "./testdata/1temp_v.json",
+      "previewUrl": "./testdata/0temp_v.json",
       "previewParameter": "AirTC1",
-      "previewImageUrl": "",
-      "detailCharts": []
+      "previewImageUrl": ""
     }
   },
   {
@@ -29,8 +28,7 @@
     "envidatConfig": {
       "previewUrl": "./testdata/1temp_v.json",
       "previewParameter": "AirTC1",
-      "previewImageUrl": "",
-      "detailCharts": []
+      "previewImageUrl": ""
     }
   }
 ]

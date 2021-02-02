@@ -1,7 +1,8 @@
 <template>
   <v-container class="pa-0"
                 fluid
-                tag="article" >
+                tag="article"
+                id="MetadataDetailPage" >
     <v-row >
       <v-col class="elevation-5 pa-0"
               cols="12"
@@ -62,7 +63,10 @@
 
     <GenericModalPageLayout title="GC-Net Modal Page" >
 
-      <component :is="gcnetModalComponent" :currentStation="currentStation" />
+      <component :is="gcnetModalComponent"
+                  :currentStation="currentStation"
+                  :fileObjects="generateFileList"
+                  :valueFieldMapping="valueFieldMapping" />
 
     </GenericModalPageLayout>
 
@@ -78,7 +82,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2021-01-29 22:24:15
+ * Last modified  : 2021-02-02 14:54:40
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -179,6 +183,7 @@ export default {
     this.loadMetaDataContent();
 
     this.loadStationsConfig();
+    this.loadParameterJson();
 
     window.scrollTo(0, 0);
   },
@@ -217,6 +222,9 @@ export default {
       authorPassedInfo: `${METADATA_NAMESPACE}/authorPassedInfo`,
       publicationsResolvedIdsSize: `${METADATA_NAMESPACE}/publicationsResolvedIdsSize`,
     }),
+    hasGcnetStationConfig() {
+      return this.stationsConfig !== null;
+    },
     metadataConfig() {
       return this.config?.metadataConfig || {};
     },
@@ -234,6 +242,35 @@ export default {
         asciiDead: this.asciiDead,
         authorPassedInfo: this.authorPassedInfo,
       };
+    },
+    generateFileList() {
+      const fileList = [];
+
+      if (!this.currentStation || !this.fileObjects) {
+        // handle empty case, just return the empty list
+        return fileList;
+      }
+
+      for (let i = 0; i < this.fileObjects.length; i++) {
+        const fileObj = this.fileObjects[i];
+
+        const fileObjectTemplate = {
+          fileName: `${this.baseUrl}${this.currentStation.id}${fileObj.fileName}`,
+          chartTitle: fileObj.chartTitle,
+          numberFormat: fileObj.numberFormat,
+          dateFormatTime: fileObj.dateFormatTime,
+          preload: fileObj.preload,
+          showDisclaimer: fileObj.showDisclaimer,
+          seriesNumberFormat: fileObj.seriesNumberFormat,
+        };
+        
+        fileList.push(fileObjectTemplate);
+      }
+
+      return fileList;
+    },    
+    baseUrl() {
+      return process.env.NODE_ENV === 'production' ? this.baseStationURL : this.baseStationURLTestdata;
     },
     /**
      * @returns {String} the metadataId from the route
@@ -288,13 +325,33 @@ export default {
   },
   methods: {
     loadStationsConfig() {
-      const url = '/testdata/stationsConfig.json';
+      const url = `${this.baseUrl}stationsConfig.json`;
       this.stationsConfig = null;
 
       axios
       .get(url)
       .then((response) => {
         this.stationsConfig = response.data;
+
+        this.injectMicroCharts();
+      })
+      .catch((error) => {
+        this.chartError(error);
+      });
+    },
+    loadParameterJson() {
+
+      this.fileObjects = null;
+      this.valueFieldMapping = null;
+
+      const url = `${this.baseUrl}stationParameters.json`;
+
+      axios
+      .get(url)
+      .then((response) => {
+        
+        this.fileObjects = response.data.fileObjects;
+        this.valueFieldMapping = response.data.valueFieldMapping;
       })
       .catch((error) => {
         this.chartError(error);
@@ -313,14 +370,11 @@ export default {
     showModal(stationId) {
 
       this.currentStation = this.getCurrentStation(stationId);
-      console.log(`show modal for ${this.currentStation.alias}`);
+      // console.log(`show modal for ${this.currentStation.alias}`);
 
       this.gcnetModalComponent = this.$options.components.DetailChartsList;
 
-      eventBus.$emit(
-        METADATA_OPEN_MODAL,
-        // this.$options.components.MicroChartList,
-      );
+      eventBus.$emit(METADATA_OPEN_MODAL);
     },
     closeModal() {
       this.gcnetModalComponent = null;
@@ -452,16 +506,18 @@ export default {
 
     },
     async injectMicroCharts() {
-      // TODO: Needs check for the stationConfig files
       // console.log('wait');
-      await this.$nextTick();
+      // await this.$nextTick();
 
-      // console.log('fire!');
+      // if (this.hasGcnetStationConfig) {
+        // console.log('fire!');
 
-      eventBus.$emit(
-        GCNET_INJECT_MICRO_CHARTS,
-        this.$options.components.MicroChartList,
-      );
+        eventBus.$emit(
+          GCNET_INJECT_MICRO_CHARTS,
+          this.$options.components.MicroChartList,
+          this.stationsConfig,
+        );
+      // }
     },
     startExtractingIds() {
       if (this.publicationsConfig?.resolveIds && !this.extractingIds) {
@@ -547,8 +603,6 @@ export default {
         // this call is to initiailze the components in the their loading state
         this.createMetadataContent();
         this.setMetadataContent();
-
-        this.injectMicroCharts();
       }
     },
   },
@@ -603,8 +657,6 @@ export default {
       if (this.isCurrentIdOrName(this.metadataId)) {
         this.createMetadataContent();
         this.setMetadataContent();
-
-        this.injectMicroCharts();
       }
     },
     /**
@@ -636,6 +688,10 @@ export default {
   },
   data: () => ({
     PageBGImage: 'app_b_browsepage',
+    baseStationURL: 'https://www.wsl.ch/gcnet/data/',
+    baseStationURLTestdata: './testdata/',
+    fileObjects: null,
+    valueFieldMapping: null,
     header: null,
     body: null,
     citation: null,

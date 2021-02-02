@@ -23,8 +23,6 @@
 
       <v-card-text class="py-0 px-4">
         
-        <component :is="modalContentComponent" />
-
         <slot name="default" />
 
       </v-card-text>
@@ -41,7 +39,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2021-01-20 17:21:25
+ * Last modified  : 2021-02-02 14:48:10
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.

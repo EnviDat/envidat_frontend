@@ -1,6 +1,7 @@
 <template>
   <v-container fluid
-                class="fill-height pa-0" >
+                class="fill-height pa-0"
+                id="MicroChartList" >
 
     <v-row no-gutters >
 
@@ -23,13 +24,12 @@
 
 <script>
 import MicroChart from '@/modules/metadata/components/GC-Net/MicroChart';
-import axios from 'axios';
-import homeInfos from './homeInfos';
 
 
 export default {
-  name: 'StationOverviewPage',
+  name: 'MicroChartList',
   props: {
+    config: Array,
   },
   components: {
     MicroChart,
@@ -38,9 +38,9 @@ export default {
     stations() {
       const stations = [];
 
-      if (this.stationsConfig) {
-        for (let i = 0; i < this.stationsConfig.length; i++) {
-          const station = this.stationsConfig[i];
+      if (this.config) {
+        for (let i = 0; i < this.config.length; i++) {
+          const station = this.config[i];
           stations.push(station);
         }
       }
@@ -59,7 +59,6 @@ export default {
     this.cardImgs = imgCache;
   },
   mounted() {
-    this.loadJsonConfig();
   },
   methods: {
     mapStationClick(stationUrl) {
@@ -74,60 +73,11 @@ export default {
       this.$router.push({ path: `/station/${newStation}` });
       this.$emit('detailClick', newStation);
     },
-    getStationConfig(station) {
-      const dataURLs = []; const 
-      recentDataURLs = [];
-      const keys = Object.keys(this.fileValueMapping);
-
-      for (let i = 0; i < keys.length; i++) {
-        const prefix = keys[i];
-        const fileName = `${station.id}${prefix}.json`;
-        const recentFileName = `${station.id}${prefix}_v.json`;
-        const baseUrl = process.env.NODE_ENV === 'production' ? this.baseStationURL : this.baseStationURLTestdata;
-
-        // add the timestamp to prevent server side caching
-        // const url = `${baseUrl}${fileName}?t=${Date.now()}`;
-        const url = `${baseUrl}${fileName}`;
-        dataURLs.push({ fileType: prefix, url });
-
-        // const recentUrl = `${baseUrl}${recentFileName}?t=${Date.now()}`;
-        const recentUrl = `${baseUrl}${recentFileName}`;
-        recentDataURLs.push({ fileType: prefix, url: recentUrl });
-      }
-
-      return {
-        dataURLs,
-        recentDataURLs,
-      };
-    },
-    loadJsonConfig() {
-      this.configIsLoading = true;
-      this.configError = null;
-      this.stationsConfig = null;
-
-      const configUrl = process.env.NODE_ENV === 'production' ? this.baseStationURL : this.baseStationURLTestdata;
-
-      axios
-      .get(configUrl)
-      .then((response) => {
-        this.configIsLoading = false;
-        this.stationsConfig = response.data;
-      })
-      .catch((error) => {
-        this.configError = error;
-      });
-    },
     stationImg(alias) {
       return this.cardImgs[`./${alias}.jpg`];
     },
   },
   data: () => ({
-    homeInfos,
-    baseStationURL: 'https://www.wsl.ch/gcnet/data/',
-    baseStationURLTestdata: './testdata/stationsConfig.json',
-    configIsLoading: false,
-    configError: null,
-    stationsConfig: null,
     cardImgs: {},
   }),
 };

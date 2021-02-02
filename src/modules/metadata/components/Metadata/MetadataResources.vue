@@ -34,7 +34,8 @@
 
       <v-row v-if="injectedComponent && injectAtStart"
               no-gutters >
-        <component :is="injectedComponent" />
+        <component :is="injectedComponent"
+                    :config="componentConfig" />
       </v-row>
 
 
@@ -60,7 +61,8 @@
 
       <v-row v-if="injectedComponent && !injectAtStart"
               no-gutters >
-        <component :is="injectedComponent" />
+        <component :is="injectedComponent"
+                  :config="componentConfig" />
       </v-row>
 
     </v-container>
@@ -81,7 +83,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 14:11:27
- * Last modified  : 2021-01-21 17:16:45
+ * Last modified  : 2021-02-02 14:29:10
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -113,10 +115,13 @@ export default {
     // console.log('listing?');
 
     this.injectedComponent = null;
+    this.componentConfig = null;
+
     eventBus.$on(GCNET_INJECT_MICRO_CHARTS, this.injectComponent);
   },
   beforeDestroy() {
     this.injectedComponent = null;
+    this.componentConfig = null;
     eventBus.$off(GCNET_INJECT_MICRO_CHARTS, this.injectComponent);
   },
   computed: {
@@ -163,14 +168,16 @@ export default {
         },
       });
     },
-    injectComponent(injectedComponent, injectAtStart = true) {
+    injectComponent(injectedComponent, config, injectAtStart = true) {
       this.injectedComponent = injectedComponent;
       this.injectAtStart = injectAtStart;
+      this.componentConfig = config;
     },    
   },
   data: () => ({
     injectedComponent: null,
     injectAtStart: false,
+    componentConfig: null,
     showAllResources: false,
     emptyText: 'No resources found for this dataset',
     METADATA_RESOURCES_TITLE,
