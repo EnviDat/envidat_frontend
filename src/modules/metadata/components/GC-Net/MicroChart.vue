@@ -15,12 +15,13 @@
         <v-col cols="3"
                 @click="catchDetailClick(station.alias)" >
           <v-img :src="image"
+                  height="100%"
                   style="border-bottom-left-radius: 4px; border-top-left-radius: 4px; cursor: pointer;" />
 
         </v-col>
 
         <v-col cols="9"
-                class="pa-4">
+                class="pr-4 pb-4 pl-3 pt-2">
 
           <v-row no-gutters >
             <v-col class="grow pb-1 headline v-card__title"
@@ -68,16 +69,12 @@
           </v-row>
 
           <v-row no-gutters
-                class="pt-2"
-                align="center">
-            <v-col class="title grow">
-              <!-- Station Details -->
-            </v-col>
-
+                  justify="end"
+                  align="center">
                               <!-- :color="darkTheme ? 'accent' : 'secondary'"
                               :iconColor="darkTheme ? 'black' : 'white'" -->
 
-            <v-col class="shrink" >
+            <v-col class="shrink" style="height:40px;" >
               <BaseIconButton materialIconName="search"
                               color="accent"
                               iconColor="black"
