@@ -534,20 +534,26 @@ export default {
       return configs;
     },
     getGcnetStationsConfigs(configs) {
-    // getGcnetStationsConfigs() {
-      const stationsConfigUrl = configs?.gcnetStationsConfig?.url || null;
-      // const stationsConfigUrl = './testdata/stationsConfig.json';
-      const stationsParametersUrl = configs?.gcnetStationParameters?.url || null;
-      // const stationsParametersUrl = './testdata/stationParameters.json';
+      let stationsConfigUrl = configs?.gcnetStationsConfig?.url || null;        
+      let stationParametersUrl = configs?.gcnetStationParameters?.url || null;
+
+      if (process.env.NODE_ENV === 'development') {
+        stationsConfigUrl = this.testStationsConfigUrl;
+        stationParametersUrl = this.testStationParametersUrl;
+
+      } else if (configs?.gcnetStationsConfig) {
+        configs.gcnetStationsConfig.hideFromResourceList = true;
+
+      } else if (configs?.gcnetStationParameters) {
+        configs.gcnetStationParameters.hideFromResourceList = true;
+      }
       
       if (stationsConfigUrl) {
         this.loadStationsConfig(stationsConfigUrl);
-        configs.gcnetStationsConfig.hideFromResourceList = true;
       }
 
-      if (stationsParametersUrl) {
-        this.loadParameterJson(stationsParametersUrl);
-        configs.gcnetStationParameters.hideFromResourceList = true;
+      if (stationParametersUrl) {
+        this.loadParameterJson(stationParametersUrl);
       }
 
     },
@@ -729,6 +735,8 @@ export default {
     PageBGImage: 'app_b_browsepage',
     baseStationURL: 'https://www.envidat.ch/data-files/',
     baseStationURLTestdata: './testdata/',
+    testStationsConfigUrl: './testdata/stationsConfig.json',
+    testStationParametersUrl: './testdata/stationParameters.json',
     fileObjects: null,
     valueFieldMapping: null,
     stationsConfigError: null,
