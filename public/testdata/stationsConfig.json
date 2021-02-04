@@ -11,6 +11,7 @@
     "data": 1,
     "envidatConfig": {
       "previewUrl": "https://www.envidat.ch/data-files/0temp_v.json",
+      "fallbackUrl": "https://www.envidat.ch/data-files/0temp_v.json",
       "previewParameter": "AirTC1",
       "previewImageUrl": ""
     }
@@ -27,6 +28,7 @@
     "data": 1,
     "envidatConfig": {
       "previewUrl": "https://www.envidat.ch/data-files/1temp_v.json",
+      "fallbackUrl": "https://www.envidat.ch/data-files/1temp_v.json",
       "previewParameter": "AirTC1",
       "previewImageUrl": ""
     }
@@ -43,6 +45,7 @@
 		"data" : 1,
 		"envidatConfig": {
       "previewUrl": "https://www.envidat.ch/data-files/2temp_v.json",
+      "fallbackUrl": "https://www.envidat.ch/data-files/2temp_v.json",
 			"previewParameter": "AirTC1",
 			"previewImageUrl": ""
 		}
@@ -59,6 +62,7 @@
 		"data" : 0,
 		"envidatConfig": {
       "previewUrl": "https://www.envidat.ch/data-files/3temp_v.json",
+      "fallbackUrl": "https://www.envidat.ch/data-files/3temp_v.json",
 			"previewParameter": "AirTC1",
 			"previewImageUrl": ""
 		}
@@ -75,6 +79,7 @@
 		"data" : 0,
     "envidatConfig": {
       "previewUrl": "https://www.envidat.ch/data-files/4temp_v.json",
+      "fallbackUrl": "https://www.envidat.ch/data-files/4temp_v.json",
       "previewParameter": "AirTC1",
       "previewImageUrl": ""
     }
@@ -91,6 +96,7 @@
 		"data" : 1,
     "envidatConfig": {
       "previewUrl": "https://www.envidat.ch/data-files/5temp_v.json",
+      "fallbackUrl": "https://www.envidat.ch/data-files/5temp_v.json",
       "previewParameter": "AirTC1",
       "previewImageUrl": ""
     }
@@ -107,6 +113,7 @@
 		"data" : 1,
     "envidatConfig": {
       "previewUrl": "https://www.envidat.ch/data-files/6temp_v.json",
+      "fallbackUrl": "https://www.envidat.ch/data-files/6temp_v.json",
       "previewParameter": "AirTC1",
       "previewImageUrl": ""
     }
@@ -123,6 +130,7 @@
 		"data" : 1,
     "envidatConfig": {
       "previewUrl": "https://www.envidat.ch/data-files/7temp_v.json",
+      "fallbackUrl": "https://www.envidat.ch/data-files/7temp_v.json",
       "previewParameter": "AirTC1",
       "previewImageUrl": ""
     }
@@ -139,6 +147,7 @@
 		"data" : 1,
     "envidatConfig": {
       "previewUrl": "https://www.envidat.ch/data-files/8temp_v.json",
+      "fallbackUrl": "https://www.envidat.ch/data-files/8temp_v.json",
       "previewParameter": "AirTC1",
       "previewImageUrl": ""
     }
@@ -155,6 +164,7 @@
 		"data" : 1,
     "envidatConfig": {
       "previewUrl": "https://www.envidat.ch/data-files/9temp_v.json",
+      "fallbackUrl": "https://www.envidat.ch/data-files/9temp_v.json",
       "previewParameter": "AirTC1",
       "previewImageUrl": ""
     }
@@ -171,6 +181,7 @@
 		"data" : 1,
     "envidatConfig": {
       "previewUrl": "https://www.envidat.ch/data-files/10temp_v.json",
+      "fallbackUrl": "https://www.envidat.ch/data-files/10temp_v.json",
       "previewParameter": "AirTC1",
       "previewImageUrl": ""
     }
@@ -187,6 +198,7 @@
 		"data" : 0,
     "envidatConfig": {
       "previewUrl": "https://www.envidat.ch/data-files/11temp_v.json",
+      "fallbackUrl": "https://www.envidat.ch/data-files/11temp_v.json",
       "previewParameter": "AirTC1",
       "previewImageUrl": ""
     }
@@ -203,6 +215,7 @@
 		"data" : 1,
     "envidatConfig": {
       "previewUrl": "https://www.envidat.ch/data-files/12temp_v.json",
+      "fallbackUrl": "https://www.envidat.ch/data-files/12temp_v.json",
       "previewParameter": "AirTC1",
       "previewImageUrl": ""
     }
@@ -219,6 +232,7 @@
 		"data" : 0,
     "envidatConfig": {
       "previewUrl": "https://www.envidat.ch/data-files/15temp_v.json",
+      "fallbackUrl": "https://www.envidat.ch/data-files/15temp_v.json",
       "previewParameter": "AirTC1",
       "previewImageUrl": ""
     }
@@ -235,6 +249,7 @@
 		"data" : 1,
     "envidatConfig": {
       "previewUrl": "https://www.envidat.ch/data-files/22temp_v.json",
+      "fallbackUrl": "https://www.envidat.ch/data-files/22temp_v.json",
       "previewParameter": "AirTC1",
       "previewImageUrl": ""
     }
@@ -251,6 +266,7 @@
 		"data" : 1,
     "envidatConfig": {
       "previewUrl": "https://www.envidat.ch/data-files/23temp_v.json",
+      "fallbackUrl": "https://www.envidat.ch/data-files/23temp_v.json",
       "previewParameter": "AirTC1",
       "previewImageUrl": ""
     }
@@ -267,6 +283,7 @@
 		"data" : 1,
     "envidatConfig": {
       "previewUrl": "https://www.envidat.ch/data-files/24temp_v.json",
+      "fallbackUrl": "https://www.envidat.ch/data-files/247temp_v.json",
       "previewParameter": "AirTC1",
       "previewImageUrl": ""
     }
