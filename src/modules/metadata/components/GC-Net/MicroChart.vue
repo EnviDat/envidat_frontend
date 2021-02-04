@@ -106,20 +106,21 @@ import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 export default {
   name: 'MicroChart',
   props: {
-    station: {
-      type: Object,
-      default: () => ({
-        id: 0,
-        name: 'Swiss Camp 10m',
-        latitude: '69.56833',
-        longitude: '49.31582',
-        elevation: 1176,
-        startdate: '1990.4',
-        active: true,
-        alias: 'swisscamp10m',
-        data: 1,
-      }),
-    },
+    station: Object,
+    // station: {
+    //   type: Object,
+    //   default: () => ({
+    //     id: 0,
+    //     name: 'Swiss Camp 10m',
+    //     latitude: '69.56833',
+    //     longitude: '49.31582',
+    //     elevation: 1176,
+    //     startdate: '1990.4',
+    //     active: true,
+    //     alias: 'swisscamp10m',
+    //     data: 1,
+    //   }),
+    // },
     image: String,
     JSONUrl: String,
     parameter: String,
@@ -137,16 +138,14 @@ export default {
 
     setTimeout(() => {
       that.visible = true;
-      // console.log("visible " + that.station.name + ' ' + that.visible);
+
       if (that.$refs && that.$refs.main_container) {
         that.loadChart();
       }
       that = null;
     }, this.delay);
-    // console.log("visible " + that.station.name + ' ' + that.visible);
   },
   beforeDestroy() {
-    // console.log('MicroChart: beforeDestroy method ' + this.microChartId);
     this.clearChart();
   },
   computed: {
@@ -162,7 +161,8 @@ export default {
   },
   methods: {
     hasData() {
-      return this.data && this.data.length > 0;
+      // has to be a method, it doesn't work as computed property
+      return this.data?.length > 0;
     },
     loadChart() {
       this.clearChart();
@@ -194,13 +194,18 @@ export default {
       axios
       .get(this.JSONUrl)
       .then((response) => {
-        this.chartIsLoading = false;
+        this.chartIsLoading = false;        
         this.data = response.data;
-        this.makeSparkChart(this.data, this.parameter);
+
+        if (this.data?.length > 0) {
+          this.makeSparkChart(this.data, this.parameter);
+        } else {
+          this.chartError(this.noDataText);
+        }
       })
       .catch((error) => {
         this.chartIsLoading = false;
-        this.chartError(error);
+        this.chartError(error.message);
       });
     },
     makeSparkChart(data, chartParameter) {
@@ -353,10 +358,8 @@ export default {
         },
       };
     },
-    chartError(error) {
-      // this.chartIsLoading = false;
-      this.dataError = error.message;
-
+    chartError(errorMsg) {
+      this.dataError = `${errorMsg} with ${this.JSONUrl}`;
     },
     catchDetailClick(stationId) {
       eventBus.$emit(GCNET_OPEN_DETAIL_CHARTS, stationId);
