@@ -63,7 +63,7 @@
 
             <v-col v-if="!dataError && hasData()"
                     cols="12" 
-                    class="smallText pt-1">
+                    class="smallText py-1">
               {{ chartSubText }}
             </v-col>
           </v-row>
