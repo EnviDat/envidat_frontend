@@ -43,7 +43,7 @@
 
             <v-col v-if="!chartIsLoading && !hasData()"
                   cols="12" 
-                  class="body-1 py-1"
+                  class="body-1 pb-1"
                   :style="`color: red;`" >
               {{ noDataText }}
             </v-col>
@@ -123,6 +123,7 @@ export default {
     // },
     image: String,
     JSONUrl: String,
+    fallbackJSONUrl: String,
     parameter: String,
     delay: {
       type: Number,
@@ -171,7 +172,7 @@ export default {
       // clear and then new loading on the next tick is needed for the disposing to finish
       this.$nextTick(() => {
         // this.loadJsonCharts();
-        this.loadJsonFiles();
+        this.loadJsonFiles(this.JSONUrl);
       });
     },
     clearChart() {
@@ -188,7 +189,7 @@ export default {
         }
       }
     },
-    loadJsonFiles() {
+    loadJsonFiles(url, isFallback = false) {
       this.data = null;
 
       axios
@@ -199,13 +200,20 @@ export default {
 
         if (this.data?.length > 0) {
           this.makeSparkChart(this.data, this.parameter);
+        } else if (isFallback) {
+          this.chartError(`${this.noDataText} on the fallback`);
         } else {
-          this.chartError(this.noDataText);
+          this.loadJsonFiles(this.fallbackJSONUrl, true);
         }
       })
       .catch((error) => {
-        this.chartIsLoading = false;
-        this.chartError(error.message);
+
+        if (isFallback) {
+          this.chartIsLoading = false;
+          this.chartError(`${error.message} on the fallback`);
+        } else {
+          this.loadJsonFiles(this.fallbackJSONUrl, true);
+        }
       });
     },
     makeSparkChart(data, chartParameter) {
@@ -359,7 +367,7 @@ export default {
       };
     },
     chartError(errorMsg) {
-      this.dataError = `${errorMsg} with ${this.JSONUrl}`;
+      this.dataError = `${errorMsg} for ${this.JSONUrl}`;
     },
     catchDetailClick(stationId) {
       eventBus.$emit(GCNET_OPEN_DETAIL_CHARTS, stationId);
@@ -370,7 +378,7 @@ export default {
     chartHeight: 50,
     dateFormat: 'HH:mm DD/MM/YYYY',
     dataError: '',
-    noDataText: 'No data available',
+    noDataText: 'No preview data available',
     chartIsLoading: true,
     showInfo: false,
     minDate: null,
