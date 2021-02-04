@@ -61,7 +61,7 @@
       </template>
     </two-column-layout>
 
-    <GenericModalPageLayout title="GC-Net Modal Page" >
+    <GenericModalPageLayout :title="`GC-Net charts for ${currentStation.name}`" >
 
       <component :is="gcnetModalComponent"
                   :currentStation="currentStation"
@@ -82,7 +82,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2021-02-02 15:50:07
+ * Last modified  : 2021-02-02 17:22:42
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -181,9 +181,6 @@ export default {
      */
   mounted() {
     this.loadMetaDataContent();
-
-    this.loadStationsConfig();
-    this.loadParameterJson();
 
     window.scrollTo(0, 0);
   },
@@ -324,8 +321,7 @@ export default {
     },
   },
   methods: {
-    loadStationsConfig() {
-      const url = `${this.baseUrl}stationsConfig.json`;
+    loadStationsConfig(url) {
       this.stationsConfig = null;
 
       axios
@@ -340,15 +336,13 @@ export default {
         this.injectMicroCharts();
       })
       .catch((error) => {
-        this.chartError(error);
+        this.stationsConfigError = error;
       });
     },
-    loadParameterJson() {
+    loadParameterJson(url) {
 
       this.fileObjects = null;
       this.valueFieldMapping = null;
-
-      const url = `${this.baseUrl}stationParameters.json`;
 
       axios
       .get(url)
@@ -358,7 +352,7 @@ export default {
         this.valueFieldMapping = response.data.valueFieldMapping;
       })
       .catch((error) => {
-        this.chartError(error);
+        this.stationParametersError = error;
       });
     },
     getCurrentStation(stationId) {
@@ -450,17 +444,24 @@ export default {
     setMetadataContent() {
       const { components } = this.$options;
 
-      const res = this.currentMetadataContent && this.currentMetadataContent.resources ? this.currentMetadataContent.resources : null;
-      const geoConfig = res ? res.find(src => src.name === 'geoservices_config.json') : null;
+      let configs = null;
+
+      if (this.resources?.resources) {
+        configs = this.getConfigFiles(this.resources.resources);
+      }
 
       this.$set(components.MetadataHeader, 'genericProps', this.header);
       this.$set(components.MetadataBody, 'genericProps', { body: this.body });
       this.$set(components.MetadataCitation, 'genericProps', this.citation);
+
+      this.getGcnetStationsConfigs(configs);
+
       this.$set(components.MetadataResources, 'genericProps', {
         ...this.resources,
         resourcesConfig: this.resourcesConfig,
       });
 
+      const geoConfig = configs?.geoServicesConfig ? configs.geoServicesConfig : null;
 
       if (geoConfig) {
         this.$set(components.MetadataGeo, 'genericProps', { ...this.location, config: geoConfig });
@@ -509,19 +510,55 @@ export default {
       ];
 
     },
+    getConfigFiles(resources) {
+      const configs = {};
+
+      if (!resources) {
+        return configs;
+      }
+
+      for (let i = 0; i < resources.length; i++) {
+        const res = resources[i];
+
+        const resName = res.name.toLowerCase();
+        const resUrl = res.url.toLowerCase();
+
+        if (resName.includes('geoservices_config')) {
+          configs.geoServicesConfig = res;
+        } else if (resUrl.includes('stationparameters')) {
+          configs.gcnetStationParameters = res;
+        } else if (resUrl.includes('stationsconfig')) {
+          configs.gcnetStationsConfig = res;
+        }
+        
+      }
+
+      return configs;
+    },
+    getGcnetStationsConfigs(configs) {
+    // getGcnetStationsConfigs() {
+      const stationsConfigUrl = configs?.gcnetStationsConfig?.url || null;
+      // const stationsConfigUrl = './testdata/stationsConfig.json';
+      const stationsParametersUrl = configs?.gcnetStationParameters?.url || null;
+      // const stationsParametersUrl = './testdata/stationParameters.json';
+      
+      if (stationsConfigUrl) {
+        this.loadStationsConfig(stationsConfigUrl);
+        configs.gcnetStationsConfig.hideFromResourceList = true;
+      }
+
+      if (stationsParametersUrl) {
+        this.loadParameterJson(stationsParametersUrl);
+        configs.gcnetStationParameters.hideFromResourceList = true;
+      }
+
+    },
     async injectMicroCharts() {
-      // console.log('wait');
-      // await this.$nextTick();
-
-      // if (this.hasGcnetStationConfig) {
-        // console.log('fire!');
-
-        eventBus.$emit(
-          GCNET_INJECT_MICRO_CHARTS,
-          this.$options.components.MicroChartList,
-          this.stationsConfig,
-        );
-      // }
+      eventBus.$emit(
+        GCNET_INJECT_MICRO_CHARTS,
+        this.$options.components.MicroChartList,
+        this.stationsConfig,
+      );
     },
     startExtractingIds() {
       if (this.publicationsConfig?.resolveIds && !this.extractingIds) {
@@ -692,10 +729,12 @@ export default {
   },
   data: () => ({
     PageBGImage: 'app_b_browsepage',
-    baseStationURL: 'https://www.wsl.ch/gcnet/data/',
+    baseStationURL: 'https://www.envidat.ch/data-files/',
     baseStationURLTestdata: './testdata/',
     fileObjects: null,
     valueFieldMapping: null,
+    stationsConfigError: null,
+    stationParametersError: null,
     header: null,
     body: null,
     citation: null,
