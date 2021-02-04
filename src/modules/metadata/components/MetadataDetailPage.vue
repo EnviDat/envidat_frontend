@@ -61,7 +61,7 @@
       </template>
     </two-column-layout>
 
-    <GenericModalPageLayout :title="`GC-Net charts for ${currentStation.name}`" >
+    <GenericModalPageLayout :title="`GC-Net charts for ${currentStation ? currentStation.name : ''}`" >
 
       <component :is="gcnetModalComponent"
                   :currentStation="currentStation"
@@ -368,8 +368,6 @@ export default {
     showModal(stationId) {
 
       this.currentStation = this.getCurrentStation(stationId);
-      // console.log(`show modal for ${this.currentStation.alias}`);
-
       this.gcnetModalComponent = this.$options.components.DetailChartsList;
 
       eventBus.$emit(METADATA_OPEN_MODAL);
