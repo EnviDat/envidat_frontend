@@ -42,10 +42,10 @@
       <v-row v-if="!showPlaceholder"
               no-gutters >
 
-        <v-col v-for="res in resources"
+        <v-col v-for="res in availableResources"
                 :key="res.id"
                 cols="12"
-                :sm="resources.length > 1 ? 6 : 12"
+                :sm="availableResources.length > 1 ? 6 : 12"
                 class="pa-2" >
 
           <resource-card v-bind="res"
@@ -130,6 +130,10 @@ export default {
     },
     resources() {
       return this.mixinMethods_getGenericProp('resources');
+    },
+    availableResources() {
+      const res = this.resources;
+      return res ? res.filter(r => !r.hideFromResourceList) : [];
     },
     resourcesConfig() {
       return this.mixinMethods_getGenericProp('resourcesConfig', {});
