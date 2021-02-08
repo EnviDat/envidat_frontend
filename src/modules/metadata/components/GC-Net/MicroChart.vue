@@ -11,7 +11,8 @@
     <v-container fluid
                   class="pa-0" >
 
-      <v-row no-gutters>
+      <v-row no-gutters >
+
         <v-col cols="3"
                 @click="catchDetailClick(station.alias)" >
           <v-img :src="image"
@@ -19,18 +20,18 @@
                   style="border-bottom-left-radius: 4px; border-top-left-radius: 4px; cursor: pointer;" />
 
         </v-col>
-
+ 
         <v-col cols="9"
                 class="pr-4 pb-4 pl-3 pt-2">
 
-          <v-row no-gutters >
+          <v-row no-gutters           
+                  justify="space-between"
+                  class="fill-height" >
+
             <v-col class="grow pb-1 headline v-card__title"
                     style="font-weight: 700;">
               {{ station.name }}
-            </v-col>
-          </v-row>
-
-          <v-row no-gutters >
+            </v-col> 
 
             <v-col v-if="chartIsLoading"
                     class="py-0"
@@ -50,12 +51,13 @@
 
             <v-col v-if="dataError"
                     cols="12"
-                    class="smallText"
+                    class="smallText py-1"
                     :style="`color: red;`" >
               {{ dataError }}
             </v-col>
 
-            <v-col cols="12" 
+            <v-col v-show="!dataError"
+                    cols="12" 
                     :id="microChartId"
                     ref="microChart"
                     :style="`background-color: #f5f5f5; width: 100%; height: ${chartHeight}; border: 1px solid #eee;`" >
@@ -66,21 +68,20 @@
                     class="smallText py-1">
               {{ chartSubText }}
             </v-col>
-          </v-row>
 
-          <v-row no-gutters
-                  justify="end"
-                  align="center">
-                              <!-- :color="darkTheme ? 'accent' : 'secondary'"
-                              :iconColor="darkTheme ? 'black' : 'white'" -->
+            <v-col class="grow"
+                    cols="12"
+                    style="height:40px;" >
+              <v-row no-gutters
+                      justify="end">
 
-            <v-col class="shrink" style="height:40px;" >
               <BaseIconButton materialIconName="search"
                               color="accent"
                               iconColor="black"
                               isSmall
                               isElevated
                               @clicked="catchDetailClick(station.alias)" />
+              </v-row>
             </v-col>
           </v-row>
 
