@@ -189,11 +189,26 @@ export default {
         }
       }
     },
+    getJsonUrlApi(url) {
+
+      let currentDate = new Date();
+      this.end_date = currentDate.toISOString().substring(0, 19)
+
+      let dateTwoWeeksAgo = new Date(currentDate.setDate(currentDate.getDate() - 14))    
+      this.start_date = dateTwoWeeksAgo.toISOString().substring(0, 19)
+     
+      return this.JSONUrl + this.start_date + '/' + this.end_date + '/'
+
+    },
     loadJsonFiles(url, isFallback = false) {
       this.data = null;
-
+      
+      if (!isFallback) {
+       url = this.getJsonUrlApi(url);   
+      }
+     
       axios
-      .get(this.JSONUrl)
+      .get(url)
       .then((response) => {
         this.chartIsLoading = false;        
         this.data = response.data;
