@@ -192,20 +192,19 @@ export default {
     },
     getJsonUrlApi(url) {
 
-      let currentDate = new Date();
-      this.end_date = currentDate.toISOString().substring(0, 19)
+      const currentDate = new Date();
+      this.end_date = currentDate.toISOString().substring(0, 19);
 
-      let dateTwoWeeksAgo = new Date(currentDate.setDate(currentDate.getDate() - 14))    
-      this.start_date = dateTwoWeeksAgo.toISOString().substring(0, 19)
+      const dateTwoWeeksAgo = new Date(currentDate.setDate(currentDate.getDate() - 14));
+      this.start_date = dateTwoWeeksAgo.toISOString().substring(0, 19);
      
-      return this.JSONUrl + this.start_date + '/' + this.end_date + '/'
-
+      return `${url + this.start_date}/${this.end_date}/`;
     },
     loadJsonFiles(url, isFallback = false) {
       this.data = null;
       
       if (!isFallback) {
-       url = this.getJsonUrlApi(url);   
+       url = this.getJsonUrlApi(url);
       }
      
       axios
@@ -217,7 +216,7 @@ export default {
         if (this.data?.length > 0) {
           this.makeSparkChart(this.data, this.parameter);
         } else if (isFallback) {
-          this.chartError(`${this.noDataText} on the fallback`);
+          this.dataError = `${this.noDataText} on the fallback for ${this.fallbackJSONUrl}`;
         } else {
           this.loadJsonFiles(this.fallbackJSONUrl, true);
         }
@@ -226,7 +225,7 @@ export default {
 
         if (isFallback) {
           this.chartIsLoading = false;
-          this.chartError(`${error.message} on the fallback`);
+          this.dataError = `${error.message} on the fallback for ${this.fallbackJSONUrl}`;
         } else {
           this.loadJsonFiles(this.fallbackJSONUrl, true);
         }
@@ -381,9 +380,6 @@ export default {
           ],
         },
       };
-    },
-    chartError(errorMsg) {
-      this.dataError = `${errorMsg} for ${this.JSONUrl}`;
     },
     catchDetailClick(stationId) {
       eventBus.$emit(GCNET_OPEN_DETAIL_CHARTS, stationId);

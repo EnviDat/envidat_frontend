@@ -14,7 +14,7 @@
         <MicroChart :station="station"
                       :image="stationImg(station.alias)"
                       :JSONUrl="station.envidatConfig.previewUrl"
-                      :fallbackJSONUrl="station.envidatConfig.previewUrl"
+                      :fallbackJSONUrl="station.envidatConfig.fallbackUrl"
                       :parameter="station.envidatConfig.previewParameter"
                       @detailClick="(stationID) => { changeCurrentStation(stationID); }" />
       </v-col>
