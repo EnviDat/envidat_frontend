@@ -123,8 +123,8 @@ export default {
     //   }),
     // },
     image: String,
-    JSONUrl: String,
-    fallbackJSONUrl: String,
+    apiUrl: String,
+    fallbackUrl: String,
     parameter: String,
     delay: {
       type: Number,
@@ -173,7 +173,7 @@ export default {
       // clear and then new loading on the next tick is needed for the disposing to finish
       this.$nextTick(() => {
         // this.loadJsonCharts();
-        this.loadJsonFiles(this.JSONUrl);
+        this.loadJsonFiles(this.apiUrl);
       });
     },
     clearChart() {
@@ -190,21 +190,21 @@ export default {
         }
       }
     },
-    getJsonUrlApi(url) {
+    addStartEndDateUrl(url, daysBetween = 14) {
 
       const currentDate = new Date();
-      this.end_date = currentDate.toISOString().substring(0, 19);
+      const endDate = currentDate.toISOString().substring(0, 19);
 
-      const dateTwoWeeksAgo = new Date(currentDate.setDate(currentDate.getDate() - 14));
-      this.start_date = dateTwoWeeksAgo.toISOString().substring(0, 19);
+      const dateTwoWeeksAgo = new Date(currentDate.setDate(currentDate.getDate() - daysBetween));
+      const startDate = dateTwoWeeksAgo.toISOString().substring(0, 19);
      
-      return `${url + this.start_date}/${this.end_date}/`;
+      return `${url + startDate}/${endDate}/`;
     },
     loadJsonFiles(url, isFallback = false) {
       this.data = null;
       
       if (!isFallback) {
-       url = this.getJsonUrlApi(url);
+       url = this.addStartEndDateUrl(url);
       }
      
       axios
@@ -216,18 +216,18 @@ export default {
         if (this.data?.length > 0) {
           this.makeSparkChart(this.data, this.parameter);
         } else if (isFallback) {
-          this.dataError = `${this.noDataText} on the fallback for ${this.fallbackJSONUrl}`;
+          this.dataError = `${this.noDataText} on the fallback for ${this.fallbackUrl}`;
         } else {
-          this.loadJsonFiles(this.fallbackJSONUrl, true);
+          this.loadJsonFiles(this.fallbackUrl, true);
         }
       })
       .catch((error) => {
 
         if (isFallback) {
           this.chartIsLoading = false;
-          this.dataError = `${error.message} on the fallback for ${this.fallbackJSONUrl}`;
+          this.dataError = `${error.message} on the fallback for ${this.fallbackUrl}`;
         } else {
-          this.loadJsonFiles(this.fallbackJSONUrl, true);
+          this.loadJsonFiles(this.fallbackUrl, true);
         }
       });
     },

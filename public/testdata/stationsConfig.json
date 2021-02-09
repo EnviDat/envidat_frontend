@@ -10,8 +10,8 @@
     "alias": "swisscamp10m",
     "data": 1,
     "envidatConfig": {
-      "previewUrl": "https://www.envidat.ch/data-api/gcnet/json/swisscamp_10m_tower/airtemp1/",
-      "previewParameter": "airtemp1",
+      "apiUrl": "https://www.envidat.ch/data-api/gcnet/json/swisscamp_10m_tower/airtemp1/",
+      "graphParameter": "airtemp1",
       "fallbackUrl": "https://www.envidat.ch/data-files/0temp_v.json",
       "fallbackParameter": "AirTC1",
       "previewImageUrl": ""
@@ -28,8 +28,8 @@
     "alias": "swisscamp",
     "data": 1,
     "envidatConfig": {
-      "previewUrl": "https://www.envidat.ch/data-api/gcnet/json/swisscamp/airtemp1/",
-      "previewParameter": "airtemp1",
+      "apiUrl": "https://www.envidat.ch/data-api/gcnet/json/swisscamp/airtemp1/",
+      "graphParameter": "airtemp1",
       "fallbackUrl": "https://www.envidat.ch/data-files/1temp_v.json",
       "fallbackParameter": "AirTC1",
       "previewImageUrl": ""
@@ -46,8 +46,8 @@
 		"alias" : "crawfordpoint",
 		"data" : 1,
 		"envidatConfig": {
-      "previewUrl": "https://www.envidat.ch/data-api/gcnet/json/crawfordpoint/airtemp1/",
-      "previewParameter": "airtemp1",
+      "apiUrl": "https://www.envidat.ch/data-api/gcnet/json/crawfordpoint/airtemp1/",
+      "graphParameter": "airtemp1",
       "fallbackUrl": "https://www.envidat.ch/data-files/2temp_v.json",
 			"fallbackParameter": "AirTC1",
 			"previewImageUrl": ""
@@ -64,8 +64,8 @@
 		"alias" : "nasau",
 		"data" : 0,
 		"envidatConfig": {
-      "previewUrl": "https://www.envidat.ch/data-api/gcnet/json/nasa_u/airtemp1/",
-      "previewParameter": "airtemp1",
+      "apiUrl": "https://www.envidat.ch/data-api/gcnet/json/nasa_u/airtemp1/",
+      "graphParameter": "airtemp1",
       "fallbackUrl": "https://www.envidat.ch/data-files/3temp_v.json",
 			"fallbackParameter": "AirTC1",
 			"previewImageUrl": ""
@@ -82,8 +82,8 @@
 		"alias" : "gits",
 		"data" : 0,
     "envidatConfig": {
-      "previewUrl": "https://www.envidat.ch/data-api/gcnet/json/gits/airtemp1/",
-      "previewParameter": "airtemp1",
+      "apiUrl": "https://www.envidat.ch/data-api/gcnet/json/gits/airtemp1/",
+      "graphParameter": "airtemp1",
       "fallbackUrl": "https://www.envidat.ch/data-files/4temp_v.json",
       "fallbackParameter": "AirTC1",
       "previewImageUrl": ""
@@ -100,8 +100,8 @@
 		"alias" : "humboldt",
 		"data" : 1,
     "envidatConfig": {
-      "previewUrl": "https://www.envidat.ch/data-api/gcnet/json/humboldt/airtemp1/",
-      "previewParameter": "airtemp1",
+      "apiUrl": "https://www.envidat.ch/data-api/gcnet/json/humboldt/airtemp1/",
+      "graphParameter": "airtemp1",
       "fallbackUrl": "https://www.envidat.ch/data-files/5temp_v.json",
       "fallbackParameter": "AirTC1",
       "previewImageUrl": ""
@@ -118,8 +118,8 @@
 		"alias" : "summitstation",
 		"data" : 1,
     "envidatConfig": {
-      "previewUrl": "https://www.envidat.ch/data-api/gcnet/json/summit/airtemp1/",
-      "previewParameter": "airtemp1",
+      "apiUrl": "https://www.envidat.ch/data-api/gcnet/json/summit/airtemp1/",
+      "graphParameter": "airtemp1",
       "fallbackUrl": "https://www.envidat.ch/data-files/6temp_v.json",
       "fallbackParameter": "AirTC1",
       "previewImageUrl": ""
@@ -136,8 +136,8 @@
 		"alias" : "tununorth",
 		"data" : 1,
     "envidatConfig": {
-      "previewUrl": "https://www.envidat.ch/data-api/gcnet/json/tunu_n/airtemp1/",
-      "previewParameter": "airtemp1",
+      "apiUrl": "https://www.envidat.ch/data-api/gcnet/json/tunu_n/airtemp1/",
+      "graphParameter": "airtemp1",
       "fallbackUrl": "https://www.envidat.ch/data-files/7temp_v.json",
       "fallbackParameter": "AirTC1",
       "previewImageUrl": ""
@@ -154,8 +154,8 @@
 		"alias" : "dyeii",
 		"data" : 1,
     "envidatConfig": {
-      "previewUrl": "https://www.envidat.ch/data-api/gcnet/json/dye2/airtemp1/",
-      "previewParameter": "airtemp1",
+      "apiUrl": "https://www.envidat.ch/data-api/gcnet/json/dye2/airtemp1/",
+      "graphParameter": "airtemp1",
       "fallbackUrl": "https://www.envidat.ch/data-files/8temp_v.json",
       "fallbackParameter": "AirTC1",
       "previewImageUrl": ""
@@ -172,8 +172,8 @@
 		"alias" : "jar1",
 		"data" : 1,
     "envidatConfig": {
-      "previewUrl": "https://www.envidat.ch/data-api/gcnet/json/jar1/airtemp1/",
-      "previewParameter": "airtemp1",
+      "apiUrl": "https://www.envidat.ch/data-api/gcnet/json/jar1/airtemp1/",
+      "graphParameter": "airtemp1",
       "fallbackUrl": "https://www.envidat.ch/data-files/9temp_v.json",
       "fallbackParameter": "AirTC1",
       "previewImageUrl": ""
@@ -190,8 +190,8 @@
 		"alias" : "saddle",
 		"data" : 1,
     "envidatConfig": {
-      "previewUrl": "https://www.envidat.ch/data-api/gcnet/json/saddle/airtemp1/",
-      "previewParameter": "airtemp1",
+      "apiUrl": "https://www.envidat.ch/data-api/gcnet/json/saddle/airtemp1/",
+      "graphParameter": "airtemp1",
       "fallbackUrl": "https://www.envidat.ch/data-files/10temp_v.json",
       "fallbackParameter": "AirTC1",
       "previewImageUrl": ""
@@ -208,8 +208,8 @@
 		"alias" : "southdome",
 		"data" : 0,
     "envidatConfig": {
-      "previewUrl": "https://www.envidat.ch/data-api/gcnet/json/southdome/airtemp1/",
-      "previewParameter": "airtemp1",
+      "apiUrl": "https://www.envidat.ch/data-api/gcnet/json/southdome/airtemp1/",
+      "graphParameter": "airtemp1",
       "fallbackUrl": "https://www.envidat.ch/data-files/11temp_v.json",
       "fallbackParameter": "AirTC1",
       "previewImageUrl": ""
@@ -226,8 +226,8 @@
 		"alias" : "nasaeast",
 		"data" : 1,
     "envidatConfig": {
-      "previewUrl": "https://www.envidat.ch/data-api/gcnet/json/nasa_east/airtemp1/",
-      "previewParameter": "airtemp1",
+      "apiUrl": "https://www.envidat.ch/data-api/gcnet/json/nasa_east/airtemp1/",
+      "graphParameter": "airtemp1",
       "fallbackUrl": "https://www.envidat.ch/data-files/12temp_v.json",
       "fallbackParameter": "AirTC1",
       "previewImageUrl": ""
@@ -244,8 +244,8 @@
 		"alias" : "nasasoutheast",
 		"data" : 0,
     "envidatConfig": {
-      "previewUrl": "https://www.envidat.ch/data-api/gcnet/json/nasa_southeast/airtemp1/",
-      "previewParameter": "airtemp1",
+      "apiUrl": "https://www.envidat.ch/data-api/gcnet/json/nasa_southeast/airtemp1/",
+      "graphParameter": "airtemp1",
       "fallbackUrl": "https://www.envidat.ch/data-files/15temp_v.json",
       "fallbackParameter": "AirTC1",
       "previewImageUrl": ""
@@ -262,8 +262,8 @@
 		"alias" : "petermann",
 		"data" : 1,
     "envidatConfig": {
-      "previewUrl": "https://www.envidat.ch/data-api/gcnet/json/petermann/airtemp1/",
-      "previewParameter": "airtemp1",
+      "apiUrl": "https://www.envidat.ch/data-api/gcnet/json/petermann/airtemp1/",
+      "graphParameter": "airtemp1",
       "fallbackUrl": "https://www.envidat.ch/data-files/22temp_v.json",
       "fallbackParameter": "AirTC1",
       "previewImageUrl": ""
@@ -280,8 +280,8 @@
 		"alias" : "neem",
 		"data" : 1,
     "envidatConfig": {
-      "previewUrl": "https://www.envidat.ch/data-api/gcnet/json/neem/airtemp1/",
-      "previewParameter": "airtemp1",
+      "apiUrl": "https://www.envidat.ch/data-api/gcnet/json/neem/airtemp1/",
+      "graphParameter": "airtemp1",
       "fallbackUrl": "https://www.envidat.ch/data-files/23temp_v.json",
       "fallbackParameter": "AirTC1",
       "previewImageUrl": ""
@@ -298,8 +298,8 @@
 		"alias" : "eastgrip",
 		"data" : 1,
     "envidatConfig": {
-      "previewUrl": "https://www.envidat.ch/data-api/gcnet/json/east_grip/airtemp1/",
-      "previewParameter": "airtemp1",
+      "apiUrl": "https://www.envidat.ch/data-api/gcnet/json/east_grip/airtemp1/",
+      "graphParameter": "airtemp1",
       "fallbackUrl": "https://www.envidat.ch/data-files/247temp_v.json",
       "fallbackParameter": "AirTC1",
       "previewImageUrl": ""

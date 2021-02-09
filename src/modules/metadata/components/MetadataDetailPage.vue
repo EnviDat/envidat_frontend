@@ -61,12 +61,17 @@
       </template>
     </two-column-layout>
 
-    <GenericModalPageLayout :title="`GC-Net charts for ${currentStation ? currentStation.name : ''}`" >
+    <GenericModalPageLayout v-if="currentStation"
+                            :title="`GC-Net charts for ${currentStation.name}`" >
 
       <component :is="gcnetModalComponent"
                   :currentStation="currentStation"
-                  :fileObjects="generateFileList"
-                  :valueFieldMapping="valueFieldMapping" />
+                  :apiUrl="currentStation.envidatConfig.apiUrl"
+                  :fallbackUrl="currentStation.envidatConfig.fallbackUrl"
+                  :fileObjects="fileObjects"
+                  :graphStyling="graphStyling" />
+
+                  <!-- :fileObjects="generateFileList" -->
 
     </GenericModalPageLayout>
 
@@ -82,7 +87,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2021-02-02 17:22:42
+ * Last modified  : 2021-02-08 22:12:14
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -342,14 +347,14 @@ export default {
     loadParameterJson(url) {
 
       this.fileObjects = null;
-      this.valueFieldMapping = null;
+      this.graphStyling = null;
 
       axios
       .get(url)
       .then((response) => {
         
         this.fileObjects = response.data.fileObjects;
-        this.valueFieldMapping = response.data.valueFieldMapping;
+        this.graphStyling = response.data.graphStyling;
       })
       .catch((error) => {
         this.stationParametersError = error;
@@ -738,7 +743,7 @@ export default {
     testStationsConfigUrl: './testdata/stationsConfig.json',
     testStationParametersUrl: './testdata/stationParameters.json',
     fileObjects: null,
-    valueFieldMapping: null,
+    graphStyling: null,
     stationsConfigError: null,
     stationParametersError: null,
     header: null,

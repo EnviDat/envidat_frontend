@@ -86,7 +86,6 @@
 
 <script>
 import axios from 'axios';
-// import { createLineChart, defaultSeriesSettings } from "../chartData/charts";
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 import { createSerialChart, defaultSeriesSettings } from '@/factories/chartFactory';
 // import * as am4core from "@amcharts/amcharts4/core";
@@ -97,17 +96,27 @@ import { createSerialChart, defaultSeriesSettings } from '@/factories/chartFacto
 export default {
   name: 'DetailChart',
   props: {
-    url: {
+    apiUrl: {
       type: String,
       default: './testdata/1temp_v.json',
     },
+    fallbackUrl: {
+      type: String,
+      default: './testdata/1temp_v.json',
+    },
+    fallbackFilename: String,
     stationName: {
       type: String,
       default: 'SwissCamp default',
     },
+    stationId: Number,
     chartId: {
       type: String,
       default: '1temp_v.json',
+    },
+    graphs: {
+      type: Array,
+      default: () => [],
     },
     fileObject: {
       type: Object,
@@ -173,54 +182,6 @@ export default {
     },
   },
   methods: {
-    buildGraphs() {
-      const graphs = [];
-      const keys = Object.keys(this.valueFieldMapping);
-
-      for (let i = 0; i < keys.length; i++) {
-        const key = keys[i];
-
-        const splits = this.url.split('/');
-        const fileName = splits[splits.length - 1];
-
-        if (fileName.includes(key)) {
-          const graphInfo = this.valueFieldMapping[key];
-
-          for (let j = 0; j < graphInfo.length; j++) {
-            const infoObj = graphInfo[j];
-            graphs.push(this.buildGraph(infoObj));
-          }
-
-          break;
-        }
-      }
-
-      this.graphs = graphs;
-    },
-    buildGraph(infoObj) {
-      const splits = this.fileObject.numberFormat.split(' ');
-      const unit = splits.length > 0 ? splits[splits.length - 1] : '';
-
-      return {
-        lineColor: infoObj.color,
-        bulletRadius: this.seriesSettings.bulletsRadius,
-        title: infoObj.titleString,
-        valueField: infoObj.parameter,
-        balloonText: `<b><span style='font-size:12px;'>${infoObj.titleString}: [[value]] ${unit}</span></b>`,
-        hideBulletsCount: 200,
-        bullet: 'round',
-        bulletBorderAlpha: this.seriesSettings.bulletsStrokeOpacity,
-				bulletAlpha: this.seriesSettings.bulletsfillOpacity,
-				bulletSize: this.seriesSettings.bulletsRadius,
-        bulletBorderThickness: this.seriesSettings.bulletsStrokeWidth,
-				lineThickness: this.seriesSettings.lineStrokeWidth,        
-        connect: false,
-        gridAboveGraphs: true,
-        negativeLineColor: infoObj.negativeColor ? infoObj.negativeColor : infoObj.color,
-				negativeFillColors: infoObj.negativeColor ? infoObj.negativeColor : infoObj.color,
-        precision: infoObj.precision ? infoObj.precision : 0,
-      };
-    },
     loadChart() {
       this.clearChart();
       this.chartIsLoading = true;
@@ -228,16 +189,41 @@ export default {
       this.dataLength = 0;
       this.dataError = '';
 
-      this.buildGraphs();
-
       // clear and then new loading on the next tick is needed for the disposing to finish
       this.$nextTick(() => {
         this.loadJsonFiles();
       });
     },
-    loadJsonFiles() {
+    addStartEndDateUrl(url, daysBetween = 14) {
+
+      const currentDate = new Date();
+      const endDate = currentDate.toISOString().substring(0, 19);
+
+      const dateTwoWeeksAgo = new Date(currentDate.setDate(currentDate.getDate() - daysBetween));
+      const startDate = dateTwoWeeksAgo.toISOString().substring(0, 19);
+     
+      return `${url + startDate}/${endDate}/`;
+    },
+    loadJsonFiles(fallback = false) {
+      const baseUrl = fallback ? this.fallbackUrl : this.apiUrl;
+      const cutOffSplit = fallback ? 1 : 2;
+
+      const splits = baseUrl.split('/');
+      const urlSplits = splits.slice(0, splits.length - cutOffSplit);
+      const url = urlSplits.join('/');
+
+      let urlParam = `${url}/`;
+      if (fallback) {
+        urlParam += this.stationId + this.fallbackFilename;
+      } else {
+        urlParam = urlParam.replace('json', 'json-dynamic');
+        urlParam = `${urlParam}${this.fileObject.parameters.join(',')}/`;
+        urlParam = this.addStartEndDateUrl(urlParam);
+      }
+
+
       axios
-      .get(this.url)
+      .get(urlParam)
       .then((response) => {
         // createChart() gets called due to the watch on the records
         this.records = response.data;
@@ -323,7 +309,6 @@ export default {
   },
   data() {
     return {
-      graphs: [],
       dateFormat: 'MMM dd, YYYY HH:mm UTC',
       dateFormatNoTime: 'MMM dd, YYYY',
       detailChart: null,

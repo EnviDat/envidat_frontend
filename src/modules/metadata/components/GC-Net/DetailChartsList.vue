@@ -10,24 +10,25 @@
           <v-col v-for="fileObject in fileObjects"
                   :key="fileObject.fileName"
                   :ref="fileObject.fileName"
-                  cols="12"
-                  >
+                  cols="12" >
 
-              <DetailChart :url="fileObject.fileName"
+              <DetailChart :apiUrl="apiUrl"
+                          :fallbackUrl="fallbackUrl"
+                          :fallbackFilename="fileObject.fileName"
                           :stationName="currentStation.name"
+                          :stationId="currentStation.id"
                           :fileObject="fileObject"
                           :chartId="chartId(fileObject.fileName)"
-                          :valueFieldMapping="valueFieldMapping"
+                          :graphs="buildGraphs(fileObject)"
                           :preload="fileObject.preload"
                           :showDisclaimer="fileObject.showDisclaimer"
                           :convertLocalTime="convertLocalTime"
-                          :key="fileObject.fileName + reRenderKey"
-                          />
+                          :key="fileObject.fileName + reRenderKey" />
           </v-col>
         </v-row>
 
         <v-row v-if="fileObjects.length <= 0">
-          <v-col>{{ `FileObject: ${fileObjects} valueFieldMapping: ${valueFieldMapping}` }}</v-col>
+          <v-col>{{ `FileObject: ${fileObjects} graphStyling: ${graphStyling}` }}</v-col>
         </v-row>
 
       </v-col>
@@ -39,14 +40,17 @@
 </template>
 
 <script>
+import { defaultSeriesSettings } from '@/factories/chartFactory';
 import DetailChart from './DetailChart';
 
 export default {
   name: 'Station',
   props: {
     currentStation: Object,
+    apiUrl: String,
+    fallbackUrl: String,
     fileObjects: Array,
-    valueFieldMapping: Object,
+    graphStyling: Object,
   },
   components: {
     DetailChart,
@@ -57,17 +61,48 @@ export default {
   mounted() {
   },
   methods: {
-    mapStationClick(stationUrl) {
-      const splits = stationUrl.split('/');
+    buildGraphs(fileObject) {
+      const graphs = [];
 
-      if (splits.length > 0) {
-        const stationName = splits[splits.length - 1];
-        this.changeCurrentStation(stationName);
+      if (!fileObject?.parameters) {
+        return graphs;
       }
+
+      for (let i = 0; i < fileObject.parameters.length; i++) {
+        const param = fileObject.parameters[i];
+        const paramStyle = this.graphStyling[param];
+
+        if (paramStyle) {
+          graphs.push(this.buildGraph(param, paramStyle, fileObject));
+        }
+      }
+
+      // this.graphs = graphs;
+      return graphs;
     },
-    changeCurrentStation(newStation) {
-      this.$router.push({ path: `/station/${newStation}` });
-      this.$emit('detailClick', newStation);
+    buildGraph(parameter, infoObj, fileObject) {
+      const splits = fileObject.numberFormat.split(' ');
+      const unit = splits.length > 0 ? splits[splits.length - 1] : '';
+
+      return {
+        lineColor: infoObj.color,
+        bulletRadius: this.seriesSettings.bulletsRadius,
+        title: infoObj.titleString,
+        valueField: parameter,
+        balloonText: `<b><span style='font-size:12px;'>${infoObj.titleString}: [[value]] ${unit}</span></b>`,
+        hideBulletsCount: 200,
+        bullet: 'round',
+        bulletBorderAlpha: this.seriesSettings.bulletsStrokeOpacity,
+        bulletAlpha: this.seriesSettings.bulletsfillOpacity,
+        bulletSize: this.seriesSettings.bulletsRadius,
+        bulletBorderThickness: this.seriesSettings.bulletsStrokeWidth,
+        lineThickness: this.seriesSettings.lineStrokeWidth,        
+        connect: false,
+        gridAboveGraphs: true,
+        negativeLineColor: infoObj.negativeColor ? infoObj.negativeColor : infoObj.color,
+        negativeFillColors: infoObj.negativeColor ? infoObj.negativeColor : infoObj.color,
+        precision: infoObj.precision ? infoObj.precision : 0,
+      };
     },
     stationRouteId() {
       return this.$route.params.id;
@@ -124,11 +159,11 @@ export default {
     paramList() {
       // just pick the first param name of the each list
       const params = [];
-      const keys = Object.keys(this.valueFieldMapping);
+      const keys = Object.keys(this.graphStyling);
 
       for (let i = 0; i < keys.length; i++) {
         const key = keys[i];
-        params.push({ fileName: key, paramName: this.valueFieldMapping[key][0].titleString });
+        params.push({ fileName: key, paramName: this.graphStyling[key][0].titleString });
       }
 
       return params;
@@ -144,6 +179,7 @@ export default {
     expand: false,
     convertLocalTime: false,
     reRenderKey: null,
+    seriesSettings: { ...defaultSeriesSettings },
   }),
 };
 </script>

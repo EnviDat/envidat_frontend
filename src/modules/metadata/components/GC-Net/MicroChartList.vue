@@ -12,11 +12,11 @@
               sm="6" >
 
         <MicroChart :station="station"
-                      :image="stationImg(station.alias)"
-                      :JSONUrl="station.envidatConfig.previewUrl"
-                      :fallbackJSONUrl="station.envidatConfig.fallbackUrl"
-                      :parameter="station.envidatConfig.previewParameter"
-                      @detailClick="(stationID) => { changeCurrentStation(stationID); }" />
+                    :image="stationImg(station.alias)"
+                    :apiUrl="station.envidatConfig.apiUrl"
+                    :fallbackUrl="station.envidatConfig.fallbackUrl"
+                    :parameter="station.envidatConfig.graphParameter"
+                    @detailClick="(stationID) => { changeCurrentStation(stationID); }" />
       </v-col>
 
     </v-row>
