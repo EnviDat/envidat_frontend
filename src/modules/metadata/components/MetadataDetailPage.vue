@@ -61,13 +61,10 @@
       </template>
     </two-column-layout>
 
-    <GenericModalPageLayout v-if="currentStation"
-                            :title="`GC-Net charts for ${currentStation.name}`" >
+    <GenericModalPageLayout :title="`GC-Net charts for ${currentStation ? currentStation.name : ''}`" >
 
       <component :is="gcnetModalComponent"
                   :currentStation="currentStation"
-                  :apiUrl="currentStation.envidatConfig.apiUrl"
-                  :fallbackUrl="currentStation.envidatConfig.fallbackUrl"
                   :fileObjects="fileObjects"
                   :graphStyling="graphStyling" />
 

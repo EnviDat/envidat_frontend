@@ -79,13 +79,13 @@ const createSerialChart = function createSerialChart(selector, unit, graphs, cha
           event: 'error',
           method: (e) => { errorCallback(e); },
         },
-        {
-          event: 'init',
-          method: () => {
-            doneCallback(chart.dataProvider.length);
-            // console.log("init finished"); 
-          },
-        },
+        // {
+        //   event: 'init',
+        //   method: () => {
+        //     doneCallback(chart.dataProvider.length);
+        //     // console.log("init finished"); 
+        //   },
+        // },
       ],
   };
 
@@ -103,7 +103,34 @@ const createSerialChart = function createSerialChart(selector, unit, graphs, cha
 //     chart.zoomToIndexes(chart.dataProvider.length - 20, chart.dataProvider.length - 1);
 // }
 
+function addStartEndDateUrl(url, daysBetween = 14) {
+
+  const currentDate = new Date();
+  const endDate = currentDate.toISOString().substring(0, 19);
+
+  const dateTwoWeeksAgo = new Date(currentDate.setDate(currentDate.getDate() - daysBetween));
+  const startDate = dateTwoWeeksAgo.toISOString().substring(0, 19);
+
+  return `${url + startDate}/${endDate}/`;
+}
+
+function hasData(data, parameter) {
+  if (!data || data.length <= 0) {
+    return false;
+  }
+
+  if (parameter) {
+    const dataValues = data.filter(el => el[parameter] !== null);
+
+    return dataValues.length > 0;
+  }
+
+  return true;
+}
+
 export {
   createSerialChart,
   defaultSeriesSettings,
+  addStartEndDateUrl,
+  hasData,
 };

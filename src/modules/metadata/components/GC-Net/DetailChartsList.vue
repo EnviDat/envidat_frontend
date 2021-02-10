@@ -5,15 +5,15 @@
     <v-row >
       <v-col cols="12" >
 
-        <v-row v-if="fileObjects.length > 0">
+        <v-row v-if="currentStation && fileObjects.length > 0">
 
           <v-col v-for="fileObject in fileObjects"
                   :key="fileObject.fileName"
                   :ref="fileObject.fileName"
                   cols="12" >
 
-              <DetailChart :apiUrl="apiUrl"
-                          :fallbackUrl="fallbackUrl"
+              <DetailChart :apiUrl="currentStation.envidatConfig.apiUrl"
+                          :fallbackUrl="currentStation.envidatConfig.fallbackUrl"
                           :fallbackFilename="fileObject.fileName"
                           :stationName="currentStation.name"
                           :stationId="currentStation.id"
@@ -47,8 +47,6 @@ export default {
   name: 'Station',
   props: {
     currentStation: Object,
-    apiUrl: String,
-    fallbackUrl: String,
     fileObjects: Array,
     graphStyling: Object,
   },

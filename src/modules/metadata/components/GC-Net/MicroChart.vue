@@ -42,7 +42,7 @@
               </div>
             </v-col>
 
-            <v-col v-if="!chartIsLoading && !hasData()"
+            <v-col v-if="!chartIsLoading && !dataAvailable() && !dataError"
                   cols="12" 
                   class="body-1 pb-1"
                   :style="`color: red;`" >
@@ -63,7 +63,7 @@
                     :style="`background-color: #f5f5f5; width: 100%; height: ${chartHeight}; border: 1px solid #eee;`" >
             </v-col>
 
-            <v-col v-if="!dataError && hasData()"
+            <v-col v-if="!dataError && dataAvailable()"
                     cols="12" 
                     class="smallText py-1">
               {{ chartSubText }}
@@ -98,6 +98,10 @@ import {
   eventBus,
   GCNET_OPEN_DETAIL_CHARTS,
 } from '@/factories/eventBus';
+import {
+  addStartEndDateUrl,
+  hasData,
+} from '@/factories/chartFactory';
 
 import axios from 'axios';
 import uPlot from 'uplot/dist/uPlot.esm';
@@ -162,9 +166,9 @@ export default {
     },
   },
   methods: {
-    hasData() {
+    dataAvailable() {
       // has to be a method, it doesn't work as computed property
-      return this.data?.length > 0;
+      return hasData(this.data, this.parameter);
     },
     loadChart() {
       this.clearChart();
@@ -190,21 +194,11 @@ export default {
         }
       }
     },
-    addStartEndDateUrl(url, daysBetween = 14) {
-
-      const currentDate = new Date();
-      const endDate = currentDate.toISOString().substring(0, 19);
-
-      const dateTwoWeeksAgo = new Date(currentDate.setDate(currentDate.getDate() - daysBetween));
-      const startDate = dateTwoWeeksAgo.toISOString().substring(0, 19);
-     
-      return `${url + startDate}/${endDate}/`;
-    },
     loadJsonFiles(url, isFallback = false) {
       this.data = null;
       
       if (!isFallback) {
-       url = this.addStartEndDateUrl(url);
+       url = addStartEndDateUrl(url);
       }
      
       axios
@@ -213,7 +207,7 @@ export default {
         this.chartIsLoading = false;        
         this.data = response.data;
 
-        if (this.data?.length > 0) {
+        if (hasData(this.data, this.parameter)) {
           this.makeSparkChart(this.data, this.parameter);
         } else if (isFallback) {
           this.dataError = `${this.noDataText} on the fallback for ${this.fallbackUrl}`;

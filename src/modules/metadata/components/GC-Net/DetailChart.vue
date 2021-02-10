@@ -32,7 +32,7 @@
           </v-row>
         </v-col>
 
-        <v-col v-if="!chartIsLoading && !hasData"
+        <v-col v-if="!chartIsLoading && !dataAvailable && !dataError"
                 class="title pt-2 pb-1"
                 :style="`color: ${ $vuetify.theme.error };`" >
           {{ noDataText }}
@@ -42,7 +42,7 @@
                 class="title"
                 :style="`color: ${ $vuetify.theme.error };`" >
           {{ dataError }}
-        </v-col>
+        </v-col> 
 
         <v-col v-if="!preloading"
                 :style="`height: ${ $vuetify.breakpoint.xsOnly ? 300 : 350 }px;`" >
@@ -87,9 +87,12 @@
 <script>
 import axios from 'axios';
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
-import { createSerialChart, defaultSeriesSettings } from '@/factories/chartFactory';
-// import * as am4core from "@amcharts/amcharts4/core";
-// import * as bullets from "@amcharts/amcharts4/plugins/bullets";
+import {
+  createSerialChart,
+  defaultSeriesSettings,
+  addStartEndDateUrl,
+  hasData,
+} from '@/factories/chartFactory';
 
 /* eslint-disable no-tabs */
 
@@ -167,18 +170,20 @@ export default {
     this.clearChart();
   },
   computed: {
-    hasData() {
-      return this.dataAvailable;
-    },
     showChart() {
-      return this.intersected && !this.chartIsLoading && this.hasData;
+      return this.intersected && !this.chartIsLoading && this.dataAvailable;
     },
   },
   watch: {
     records() {
-      if (this.records && this.records.length > 0) {
+      if (this.dataAvailable) {
         this.createChart();
       }
+    },
+    stationId() {
+      // reloadChart once the stations changes
+      this.loadChart();
+      // console.log(`got ${this.stationId}`);
     },
   },
   methods: {
@@ -186,23 +191,12 @@ export default {
       this.clearChart();
       this.chartIsLoading = true;
       this.dataAvailable = false;
-      this.dataLength = 0;
       this.dataError = '';
 
       // clear and then new loading on the next tick is needed for the disposing to finish
       this.$nextTick(() => {
         this.loadJsonFiles();
       });
-    },
-    addStartEndDateUrl(url, daysBetween = 14) {
-
-      const currentDate = new Date();
-      const endDate = currentDate.toISOString().substring(0, 19);
-
-      const dateTwoWeeksAgo = new Date(currentDate.setDate(currentDate.getDate() - daysBetween));
-      const startDate = dateTwoWeeksAgo.toISOString().substring(0, 19);
-     
-      return `${url + startDate}/${endDate}/`;
     },
     loadJsonFiles(fallback = false) {
       const baseUrl = fallback ? this.fallbackUrl : this.apiUrl;
@@ -216,9 +210,8 @@ export default {
       if (fallback) {
         urlParam += this.stationId + this.fallbackFilename;
       } else {
-        urlParam = urlParam.replace('json', 'json-dynamic');
         urlParam = `${urlParam}${this.fileObject.parameters.join(',')}/`;
-        urlParam = this.addStartEndDateUrl(urlParam);
+        urlParam = addStartEndDateUrl(urlParam);
       }
 
 
@@ -227,12 +220,24 @@ export default {
       .then((response) => {
         // createChart() gets called due to the watch on the records
         this.records = response.data;
-        this.dataAvailable = response.data && response.data.length > 0;
+
+        this.dataAvailable = hasData(this.records, this.fileObject.parameters[0]);
         this.chartIsLoading = this.dataAvailable;
+
+        if (fallback && !this.dataAvailable) {
+          this.dataError = `${this.noDataText} on the fallback for ${urlParam}`;
+        } else if (!fallback && !this.dataAvailable) {
+          this.loadJsonFiles(true);
+        }
+
       })
       .catch((error) => {
-        this.chartIsLoading = false;
-        this.dataError = `Error creating chart: ${error}`;
+        if (fallback) {
+          this.chartIsLoading = false;
+          this.dataError = `Error loading data: ${error} for ${urlParam}`;
+        } else {
+          this.loadJsonFiles(true);
+        }
       });
     },
     createChart() {
@@ -256,7 +261,14 @@ export default {
           //                             !this.chartId.includes('_v'), undefined, this.seriesSettings, dateFormatingInfos,
           //                              undefined, this.fileObject.numberFormat, this.fileObject.dateFormatTime,
           //                              this.chartDone, this.chartError);
-          this.detailChart = createSerialChart(this.chartId, ` ${unit}`, this.graphs, this.records, this.delay, this.chartDone, this.chartError, recentData, this.convertLocalTime);
+          this.detailChart = createSerialChart(
+            this.chartId,
+            ` ${unit}`, this.graphs, this.records,
+            this.delay, this.chartDone, this.chartError, recentData,
+            this.convertLocalTime,
+          );
+
+          this.chartIsLoading = false;
       } catch (error) {
         this.chartIsLoading = false;
         this.dataError = `Error creating chart: ${error}`;
@@ -267,16 +279,13 @@ export default {
       this.dataError = error.message;
 
       this.dataAvailable = false;
-      this.dataLength = 0;
       this.clearChart();
     },
     chartDone(doneResponse) {
       this.chartIsLoading = false;
-      const dataLength = doneResponse && typeof doneResponse === 'number' ? doneResponse : 0;
-      
-      this.dataAvailable = dataLength > 0;
-      this.dataLength = dataLength;
       this.dataError = '';
+
+      this.dataAvailable = hasData(doneResponse, this.fileObject.parameters[0]);
 
       if (!this.dataAvailable) {
         this.clearChart();
@@ -314,7 +323,6 @@ export default {
       detailChart: null,
       visible: false,
       chartIsLoading: true,
-      dataLength: 0,
       dataAvailable: false,
       dataError: '',
       preloading: true,
