@@ -300,7 +300,7 @@
     "envidatConfig": {
       "apiUrl": "https://www.envidat.ch/data-api/gcnet/json/east_grip/airtemp1/",
       "graphParameter": "airtemp1",
-      "fallbackUrl": "https://www.envidat.ch/data-files/247temp.json",
+      "fallbackUrl": "https://www.envidat.ch/data-files/24temp.json",
       "fallbackParameter": "airtemp1",
       "previewImageUrl": ""
     }
