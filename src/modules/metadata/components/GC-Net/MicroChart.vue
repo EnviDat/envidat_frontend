@@ -22,13 +22,15 @@
         </v-col>
  
         <v-col cols="9"
-                class="pr-4 pb-4 pl-3 pt-2">
+                class="pa-2 pl-3">
+
+                <!-- class="pr-4 pb-4 pl-3 pt-2"> -->
 
           <v-row no-gutters           
                   justify="space-between"
                   class="fill-height" >
 
-            <v-col class="grow pb-1 headline v-card__title"
+            <v-col class="grow headline v-card__title"
                     style="font-weight: 700;">
               {{ station.name }}
             </v-col> 
@@ -60,7 +62,7 @@
                     cols="12" 
                     :id="microChartId"
                     ref="microChart"
-                    :style="`background-color: #f5f5f5; width: 100%; height: ${chartHeight}; border: 1px solid #eee;`" >
+                    :style="`background-color: #f5f5f5; width: 100%; height: ${chartHeight}; border: ${chartIsLoading ? 0 : 1}px solid #eee;`" >
             </v-col>
 
             <v-col v-if="!dataError && dataAvailable()"
@@ -130,6 +132,10 @@ export default {
     apiUrl: String,
     fallbackUrl: String,
     parameter: String,
+    chartHeight: {
+      type: Number,
+      default: 65,
+    },
     delay: {
       type: Number,
       default: 10,
@@ -196,6 +202,7 @@ export default {
     },
     loadJsonFiles(url, isFallback = false) {
       this.data = null;
+      this.chartIsLoading = true;
       
       if (!isFallback) {
        url = addStartEndDateUrl(url);
@@ -231,6 +238,8 @@ export default {
       const y = [];
       const dataLength = data ? data.length : 0;
 
+      this.unit = chartParameter?.includes('temp') ? ' °' : '';
+
       if (dataLength > 0) {
 
         for (let i = 0; i < data.length; i++) {
@@ -251,7 +260,7 @@ export default {
     makeSpark(data) {
       this.sparkLineOptions.width = this.$refs.microChart.clientWidth;
       this.sparkLineOptions.height = this.chartHeight;
-      this.sparkLineOptions.plugins = [this.tooltipsPlugin()];
+      this.sparkLineOptions.plugins = [this.tooltipsPlugin(null, this.unit)];
 
       // eslint-disable-next-line new-cap
       const sparkChart = new uPlot(this.sparkLineOptions, data, this.$refs.microChart);
@@ -259,7 +268,9 @@ export default {
       return sparkChart;
     },
     /* eslint-disable no-unused-vars */
-    tooltipsPlugin(opts) {
+    tooltipsPlugin(opts, unit) {
+      const that = this;
+
       // eslint-disable-next-line no-shadow
       function init(u, opts, data) {
         const plot = u.root.querySelector('.u-over');
@@ -324,6 +335,7 @@ export default {
 
       function setCursor(u) {
         const { left, top, idx } = u.cursor;
+        const tooltipUnit = that.unit;
 
         // this is here to handle if initial cursor position is set
         // not great (can be optimized by doing more enter/leave state transition tracking)
@@ -347,10 +359,10 @@ export default {
             // if (left > 0)
             // tt.style.display = null;
 
-            // let xVal = u.data[0][idx];
+            // const xVal = u.data[0][idx];
             const yVal = u.data[i][idx];
 
-            tt.textContent = `(${yVal})`;
+            tt.textContent = `(${yVal})${tooltipUnit}`;
 
             // tt.style.left = Math.round(u.valToPos(xVal, 'x')) + "px";
             // tt.style.top = Math.round(u.valToPos(yVal, 'y')) + "px";
@@ -381,7 +393,6 @@ export default {
   },
   data: () => ({
     microChart: null,
-    chartHeight: 50,
     dateFormat: 'HH:mm DD/MM/YYYY',
     dataError: '',
     noDataText: 'No preview data available',
@@ -389,6 +400,7 @@ export default {
     showInfo: false,
     minDate: null,
     maxDate: null,
+    unit: '',
     sparkLineOptions: {
       class: 'spark',
       background: 'black',
