@@ -128,9 +128,63 @@ function hasData(data, parameter) {
   return true;
 }
 
+function getConfigFiles(resources) {
+  const configs = {};
+
+  if (!resources) {
+    return configs;
+  }
+
+  for (let i = 0; i < resources.length; i++) {
+    const res = resources[i];
+
+    const resName = res.name.toLowerCase();
+    const resUrl = res.url.toLowerCase();
+
+    if (resName.includes('geoservices_config')) {
+      configs.geoServicesConfig = res;
+    } else if (resUrl.includes('stationparameters')) {
+      configs.gcnetStationParameters = res;
+    } else if (resUrl.includes('stationsconfig')) {
+      configs.gcnetStationsConfig = res;
+    }
+
+  }
+
+  return configs;
+}
+function getGcnetStationsConfigs(configs) {
+  let stationsConfigUrl = configs?.gcnetStationsConfig?.url || null;
+  let stationParametersUrl = configs?.gcnetStationParameters?.url || null;
+
+  if (process.env.NODE_ENV === 'development') {
+    stationsConfigUrl = this.testStationsConfigUrl;
+    stationParametersUrl = this.testStationParametersUrl;
+
+  } else {
+
+    if (configs?.gcnetStationsConfig) {
+      configs.gcnetStationsConfig.hideFromResourceList = true;
+
+    }
+
+    if (configs?.gcnetStationParameters) {
+      configs.gcnetStationParameters.hideFromResourceList = true;
+    }
+  }
+
+  configs.stationsConfigUrl = stationsConfigUrl;
+  configs.stationParametersUrl = stationParametersUrl;
+
+  return configs;
+}
+
+
 export {
   createSerialChart,
   defaultSeriesSettings,
   addStartEndDateUrl,
   hasData,
+  getConfigFiles,
+  getGcnetStationsConfigs,
 };

@@ -84,7 +84,7 @@
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
- * Last modified  : 2021-02-08 22:12:14
+ * Last modified  : 2021-02-11 13:31:07
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
@@ -121,6 +121,10 @@ import {
 import {
   getFullAuthorsFromDataset,
 } from '@/factories/authorFactory';
+import {
+  getConfigFiles,
+  getGcnetStationsConfigs,
+} from '@/factories/chartFactory';
 
 import {
   eventBus,
@@ -447,14 +451,22 @@ export default {
       let configs = null;
 
       if (this.resources?.resources) {
-        configs = this.getConfigFiles(this.resources.resources);
+        configs = getConfigFiles(this.resources.resources);
       }
 
       this.$set(components.MetadataHeader, 'genericProps', this.header);
       this.$set(components.MetadataBody, 'genericProps', { body: this.body });
       this.$set(components.MetadataCitation, 'genericProps', this.citation);
 
-      this.getGcnetStationsConfigs(configs);
+      configs = getGcnetStationsConfigs(configs);
+
+      if (configs.stationsConfigUrl) {
+        this.loadStationsConfig(configs.stationsConfigUrl);
+      }
+
+      if (configs.stationParametersUrl) {
+        this.loadParameterJson(configs.stationParametersUrl);
+      }
 
       this.$set(components.MetadataResources, 'genericProps', {
         ...this.resources,
@@ -508,55 +520,6 @@ export default {
         components.MetadataAuthors,
         components.MetadataDetails,
       ];
-
-    },
-    getConfigFiles(resources) {
-      const configs = {};
-
-      if (!resources) {
-        return configs;
-      }
-
-      for (let i = 0; i < resources.length; i++) {
-        const res = resources[i];
-
-        const resName = res.name.toLowerCase();
-        const resUrl = res.url.toLowerCase();
-
-        if (resName.includes('geoservices_config')) {
-          configs.geoServicesConfig = res;
-        } else if (resUrl.includes('stationparameters')) {
-          configs.gcnetStationParameters = res;
-        } else if (resUrl.includes('stationsconfig')) {
-          configs.gcnetStationsConfig = res;
-        }
-        
-      }
-
-      return configs;
-    },
-    getGcnetStationsConfigs(configs) {
-      let stationsConfigUrl = configs?.gcnetStationsConfig?.url || null;        
-      let stationParametersUrl = configs?.gcnetStationParameters?.url || null;
-
-      if (process.env.NODE_ENV === 'development') {
-        stationsConfigUrl = this.testStationsConfigUrl;
-        stationParametersUrl = this.testStationParametersUrl;
-
-      } else if (configs?.gcnetStationsConfig) {
-        configs.gcnetStationsConfig.hideFromResourceList = true;
-
-      } else if (configs?.gcnetStationParameters) {
-        configs.gcnetStationParameters.hideFromResourceList = true;
-      }
-      
-      if (stationsConfigUrl) {
-        this.loadStationsConfig(stationsConfigUrl);
-      }
-
-      if (stationParametersUrl) {
-        this.loadParameterJson(stationParametersUrl);
-      }
 
     },
     async injectMicroCharts() {
