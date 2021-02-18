@@ -2,22 +2,19 @@
 
   <v-card >
     <v-container class="pa-3" fluid >
-      <!-- <v-row column> -->
-      <!-- <v-row >
-        <v-col class="pb-3" > -->
-          <v-row   justify="space-between">
-            <v-col :class="$vuetify.breakpoint.xsOnly ? 'title' : 'display-1'">
-              {{ this.fileObject.chartTitle }}
-            </v-col>
-            <v-col class="title text-right" >
-              {{ stationName }}
-            </v-col>
-          </v-row>
-          
-        <!-- </v-col> -->
 
+      <v-row no-gutters
+              justify="space-between">
+        <v-col :class="$vuetify.breakpoint.xsOnly ? 'title' : 'display-1'">
+          {{ this.fileObject.chartTitle }}
+        </v-col>
+        <v-col class="title text-right" >
+          {{ stationName }}
+        </v-col>
+      </v-row>
+          
+      <v-row no-gutters >
         <v-col v-if="chartIsLoading && preloading"
-                class="py-0" 
                 :style="`height: ${ $vuetify.breakpoint.xsOnly ? 300 : 350 }px;`" >
                 
           <v-row class="fill-height"
@@ -70,14 +67,13 @@
           {{ disclaimerText }}
         </v-col>
 
-        <v-col v-show="showChart"
-                class="pt-0" >
+        <v-col v-show="showChart" >
           <div :id="chartId"
                 :style="`height: ${ $vuetify.breakpoint.xsOnly ? 300 : 350 }px;`" >
           </div>            
         </v-col>
 
-      <!-- </v-row> -->
+      </v-row>
     </v-container>
 
   </v-card>
