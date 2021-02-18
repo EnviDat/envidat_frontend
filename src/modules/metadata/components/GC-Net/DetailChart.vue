@@ -154,10 +154,6 @@ export default {
     showDisclaimer: Boolean,
     convertLocalTime: Boolean,
   },
-  components: {
-    BaseRectangleButton,
-  },
-
   mounted() {
     this.preloading = this.preload;
 
@@ -172,6 +168,9 @@ export default {
   computed: {
     showChart() {
       return this.intersected && !this.chartIsLoading && this.dataAvailable;
+    },
+    isRecentDataChart() {
+      return this.chartId.includes('_v');
     },
   },
   watch: {
@@ -211,7 +210,10 @@ export default {
         urlParam += this.stationId + this.fallbackFilename;
       } else {
         urlParam = `${urlParam}${this.fileObject.parameters.join(',')}/`;
-        urlParam = addStartEndDateUrl(urlParam);
+
+        // 2 weeks for the recent data, 2 years for historical
+        const dayRange = this.isRecentDataChart ? 14 : 730;
+        urlParam = addStartEndDateUrl(urlParam, dayRange);
       }
 
 
@@ -254,7 +256,6 @@ export default {
       const splits = this.fileObject.numberFormat.split(' ');
       const unit = splits.length > 0 ? splits[splits.length - 1] : '';
 
-      const recentData = this.chartId.includes('_v');
 
       try {
           // this.detailChart = createLineChart(this.chartId, 'timestamp', this.records, this.graphs,
@@ -264,7 +265,7 @@ export default {
           this.detailChart = createSerialChart(
             this.chartId,
             ` ${unit}`, this.graphs, this.records,
-            this.delay, this.chartDone, this.chartError, recentData,
+            this.delay, this.chartDone, this.chartError, this.isRecentDataChart,
             this.convertLocalTime,
           );
 
@@ -333,6 +334,9 @@ export default {
       records: [],
       seriesSettings: { ...defaultSeriesSettings },
     };
+  },
+  components: {
+    BaseRectangleButton,
   },
 };
 </script>
