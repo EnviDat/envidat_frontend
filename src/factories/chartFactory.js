@@ -68,7 +68,7 @@ const createSerialChart = function createSerialChart(selector, unit, graphs, cha
         dashLength: 5,
       },
       export: {
-          enabled: false,
+        enabled: false,
       },
       listeners: [
         // {
@@ -153,13 +153,17 @@ function getConfigFiles(resources) {
 
   return configs;
 }
-function getGcnetStationsConfigs(configs) {
+function getGcnetStationsConfigs(configs, testStationsConfigUrl = './testdata/stationsConfig.json', testStationParametersUrl = './testdata/stationParameters.json') {
   let stationsConfigUrl = configs?.gcnetStationsConfig?.url || null;
   let stationParametersUrl = configs?.gcnetStationParameters?.url || null;
 
   if (process.env.NODE_ENV === 'development') {
-    stationsConfigUrl = this.testStationsConfigUrl;
-    stationParametersUrl = this.testStationParametersUrl;
+    stationsConfigUrl = testStationsConfigUrl;
+    stationParametersUrl = testStationParametersUrl;
+
+    if (!configs) {
+      configs = {};
+    }
 
   } else {
 

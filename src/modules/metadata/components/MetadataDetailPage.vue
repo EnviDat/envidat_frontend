@@ -700,8 +700,6 @@ export default {
     PageBGImage: 'app_b_browsepage',
     baseStationURL: 'https://www.envidat.ch/data-files/',
     baseStationURLTestdata: './testdata/',
-    testStationsConfigUrl: './testdata/stationsConfig.json',
-    testStationParametersUrl: './testdata/stationParameters.json',
     fileObjects: null,
     graphStyling: null,
     stationsConfigError: null,
