@@ -5,7 +5,7 @@
           ref="main_container"
           class="metadataResourceCard"
           :color="darkTheme ? 'primary' : 'white'"
-          :dark="darkTheme"  
+          :dark="darkTheme"       
           v-show="visible" >
 
     <v-container fluid
@@ -13,13 +13,12 @@
 
       <v-row no-gutters >
 
-        <v-col cols="3"
+        <v-col v-if="!imageError" cols="3"
                 @click="catchDetailClick(station.alias)" >
           <v-img  :lazy-src="lazyImage()"
                   :src="image"
-                  @error="imageLoadError"
-                  height="100%"
-                  :max-height="maxHeight"
+                  @error="imageLoadError"                  
+                  :height="maxHeight" 
                   style="border-bottom-left-radius: 4px; border-top-left-radius: 4px; cursor: pointer;" />
 
         </v-col>
@@ -134,7 +133,7 @@ export default {
     image: String,
     maxHeight: {
       type: Number,
-      default: 300,
+      default: 180,
     },
     apiUrl: String,
     fallbackUrl: String,
@@ -194,11 +193,10 @@ export default {
   },
   methods: {
     lazyImage() {
-      return this.imageError ? '' : this.logoImgs[`./EnviDat_logo_64.png`];
+      return this.imageError ? '' : this.logoImgs['./EnviDat_logo_64.png'];
     },
-    imageLoadError () {
-      this.imageError = true
-      return this.imageError
+    imageLoadError() {
+      this.imageError = true;
     },
     dataAvailable() {
       // has to be a method, it doesn't work as computed property
