@@ -5,24 +5,27 @@
           ref="main_container"
           class="metadataResourceCard"
           :color="darkTheme ? 'primary' : 'white'"
-          :dark="darkTheme"
+          :dark="darkTheme"  
           v-show="visible" >
 
     <v-container fluid
-                  class="pa-0" >
+                 class="pa-0" >
 
       <v-row no-gutters >
 
         <v-col cols="3"
                 @click="catchDetailClick(station.alias)" >
-          <v-img :src="image"
+          <v-img  :lazy-src="lazyImage()"
+                  :src="image"
+                  @error="imageLoadError"
                   height="100%"
+                  :max-height="maxHeight"
                   style="border-bottom-left-radius: 4px; border-top-left-radius: 4px; cursor: pointer;" />
 
         </v-col>
  
-        <v-col cols="9"
-                class="pa-2 pl-3">
+        <v-col :cols="currentColumnNum"
+                class="pa-2 pl-3">   
 
                 <!-- class="pr-4 pb-4 pl-3 pt-2"> -->
 
@@ -129,6 +132,10 @@ export default {
     //   }),
     // },
     image: String,
+    maxHeight: {
+      type: Number,
+      default: 300,
+    },
     apiUrl: String,
     fallbackUrl: String,
     parameter: String,
@@ -144,6 +151,17 @@ export default {
   },
   components: {
     BaseIconButton,
+  },
+  beforeMount() {
+   
+    const imgs = require.context('@/assets/logo', false, /\.png$/);
+    const imgCache = {};
+
+    imgs.keys().forEach((key) => {
+      imgCache[key] = imgs(key);
+    });
+
+    this.logoImgs = imgCache;
   },
   mounted() {
     let that = this;
@@ -170,8 +188,18 @@ export default {
     chartSubText() {
       return `${this.chartIsLoading ? 'Loading' : 'Showing'} ${this.parameter ? this.parameter : '[parameter missing]'} from ${new Date(this.minDate).toLocaleDateString('en-US')} to ${new Date(this.maxDate).toLocaleDateString('en-US')}`;
     },
+    currentColumnNum() {
+      return this.imageError ? 12 : 9;
+    }
   },
   methods: {
+    lazyImage() {
+      return this.imageError ? '' : this.logoImgs[`./EnviDat_logo_64.png`];
+    },
+    imageLoadError () {
+      this.imageError = true
+      return this.imageError
+    },
     dataAvailable() {
       // has to be a method, it doesn't work as computed property
       return hasData(this.data, this.parameter);
@@ -397,6 +425,7 @@ export default {
     dataError: '',
     noDataText: 'No preview data available',
     chartIsLoading: true,
+    imageError: false,
     showInfo: false,
     minDate: null,
     maxDate: null,

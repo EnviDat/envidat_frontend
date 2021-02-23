@@ -32,7 +32,7 @@ const stations = [
       graphParameter: 'airtemp1',
       fallbackUrl: 'https://www.envidat.ch/data-files/1temp.json',
       fallbackParameter: 'airtemp1',
-      previewImageUrl: '',
+      previewImageUrl: 'https://upload.wikimedia.org/wikipedia/en/9/95/Tst_image.jpg',
     },
   },
   {
@@ -50,7 +50,7 @@ const stations = [
       graphParameter: 'airtemp1',
       fallbackUrl: 'https://www.envidat.ch/data-files/3temp.json',
       fallbackParameter: 'airtemp1',
-      previewImageUrl: '',
+      previewImageUrl: 'https://www.gstatic.com/webp/gallery/1.jpg',
     },
   },
   {
@@ -105,6 +105,7 @@ storiesOf('7 GC-Net Views / Charts', module)
                       :apiUrl="station1.envidatConfig.apiUrl"
                       :fallbackUrl="station1.envidatConfig.fallbackUrl"
                       :parameter="station1.envidatConfig.graphParameter"
+                      :image="station1.envidatConfig.previewImageUrl"
                       />
         </v-col>
       </v-row>
@@ -119,9 +120,25 @@ storiesOf('7 GC-Net Views / Charts', module)
                       :apiUrl="station2.envidatConfig.apiUrl"
                       :fallbackUrl="station2.envidatConfig.fallbackUrl"
                       :parameter="station2.envidatConfig.graphParameter"
+                      :image="station2.envidatConfig.previewImageUrl"
                       />
         </v-col>
       </v-row>
+
+      <v-row>
+      Station 3 MicroChart
+      </v-row>
+
+    <v-row class="py-3" >
+      <v-col >
+        <MicroChart :station="station3"
+                    :apiUrl="station3.envidatConfig.apiUrl"
+                    :fallbackUrl="station3.envidatConfig.fallbackUrl"
+                    :parameter="station3.envidatConfig.graphParameter"
+                    :image="stationImg(station3.alias)"
+                    />
+      </v-col>
+    </v-row>
 
     </v-col>
     `,
@@ -132,8 +149,25 @@ storiesOf('7 GC-Net Views / Charts', module)
       station2() {
         return this.stations[1];
       },
+      station3() {
+        return this.stations[2];
+      },
     },
-    // methods,
+    beforeMount() {
+      const imgs = require.context('@/assets/stations/small', false, /\.jpg$/);
+      const imgCache = {};
+  
+      imgs.keys().forEach((key) => {
+        imgCache[key] = imgs(key);
+      });
+  
+      this.cardImgs = imgCache;
+    },
+    methods: {
+      stationImg(alias) {
+        return this.cardImgs[`./${alias}.jpg`];
+      },
+    },
     data: () => ({
       stations,
     }),
