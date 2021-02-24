@@ -16,145 +16,15 @@ import { storiesOf } from '@storybook/vue';
 // import { defaultSeriesSettings } from '@/factories/chartFactory';
 // const seriesSettings = defaultSeriesSettings;
 
+import stationParameters from '@/../public/testdata/stationParameters.json';
+import stationsConfig from '@/../public/testdata/stationsConfig.json';
+
 // import DetailChart from '@/modules/metadata/components/GC-Net/DetailChart';
 import DetailChartsList from '@/modules/metadata/components/GC-Net/DetailChartsList';
 
-const stations = [
-  {
-    id: 1,
-    name: 'Swiss Camp',
-    latitude: '69.56833',
-    longitude: '49.31582',
-    elevation: 1176,
-    startdate: '1990.30',
-    active: true,
-    alias: 'swisscamp',
-    data: 1,
-    envidatConfig: {
-      apiUrl: 'https://www.envidat.ch/data-api/gcnet/json/swisscamp/airtemp1/',
-      graphParameter: 'airtemp1',
-      fallbackUrl: 'https://www.envidat.ch/data-files/1temp.json',
-      fallbackParameter: 'airtemp1',
-      previewImageUrl: '',
-    },
-  },
-  {
-    id: 3,
-    name: 'NASA-U',
-    latitude: '73.84189',
-    longitude: '49.49831',
-    elevation: 2369,
-    startdate: '1995.41',
-    active: true,
-    alias: 'nasau',
-    data: 0,
-    envidatConfig: {
-      apiUrl: 'https://www.envidat.ch/data-api/gcnet/json/nasa_u/airtemp1/',
-      graphParameter: 'airtemp1',
-      fallbackUrl: 'https://www.envidat.ch/data-files/3temp.json',
-      fallbackParameter: 'airtemp1',
-      previewImageUrl: '',
-    },
-  },
-  {
-    id: 4,
-    name: 'GITS',
-    latitude: '77.13781',
-    longitude: '61.04113',
-    elevation: 1887,
-    startdate: '1995.43',
-    active: true,
-    alias: 'gits',
-    data: 0,
-    envidatConfig: {
-      apiUrl: 'https://www.envidat.ch/data-api/gcnet/json/gits/airtemp1/',
-      graphParameter: 'airtemp1',
-      fallbackUrl: 'https://www.envidat.ch/data-files/4temp.json',
-      fallbackParameter: 'airtemp1',
-      previewImageUrl: '',
-    },
-  },
-];
-
-const fileObjects = [
-  {
-    apiSuffix: 'airtemp1',
-    parameters: [
-      'airtemp1',
-      'airtemp2',
-    ],
-    fileName: 'temp_v.json',
-    chartTitle: 'Air Temperatures Recent Days',
-    numberFormat: '##  °C',
-    dateFormatTime: true,
-    preload: true,
-    showDisclaimer: false,
-  },
-  {
-    apiSuffix: 'airtemp1',
-    parameters: [
-      'airtemp1',
-      'airtemp2',
-    ],
-    fileName: 'temp.json',
-    chartTitle: 'Air Temperatures Historical Data',
-    numberFormat: '##  °C',
-    dateFormatTime: false,
-    preload: true,
-    showDisclaimer: false,
-  },
-  {
-    apiSuffix: 'windspeed1',
-    parameters: [
-      'windspeed1',
-      'windspeed2',
-    ],
-    fileName: 'ws_v.json',
-    chartTitle: 'Wind Speed Recent Days',
-    numberFormat: '###  m/s',
-    dateFormatTime: true,
-    preload: true,
-    showDisclaimer: false,
-  },
-  {
-    apiSuffix: 'windspeed1',
-    parameters: [
-      'windspeed1',
-      'windspeed2',
-    ],
-    fileName: 'ws.json',
-    chartTitle: 'Wind Speed Historical Data',
-    numberFormat: '###  m/s',
-    dateFormatTime: false,
-    preload: true,
-    showDisclaimer: false,
-  },
-];
-
-const graphStyling = {
-  airtemp1: {
-    color: '#D48E00',
-      negativeColor: '#00CED4',
-        titleString: 'Thermocouple 1',
-          precision: 1,
-  },
-  airtemp2: {
-    color: '#D26200',
-      negativeColor: '#07AACD',
-        titleString: 'Thermocouple 2',
-          precision: 1,
-  },
-  windspeed1: {
-    color: '#046401',
-      titleString: 'Wind-speed 1',
-        precision: 1,
-  },
-  windspeed2: {
-    color: '#5ED352',
-      titleString: 'Wind-speed 2',
-        precision: 1,
-  },
-};
+const stations = stationsConfig;
+const fileObjects = stationParameters.fileObjects;
+const graphStyling = stationParameters.graphStyling;
 
 
 // export const methods = {
