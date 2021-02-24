@@ -1,9 +1,13 @@
 <template>
-  <v-container class="pa-0 fill-height"
-                fluid
+  <v-container class="pa-0 scrollableList"
+                fluid                
                 id="DetailChartList" >
     <v-row >
-      <v-col cols="12" >
+      <v-col cols="2" >
+        
+      </v-col>
+
+      <v-col cols="10" >
 
         <v-row v-if="currentStation && fileObjects.length > 0">
 
@@ -184,4 +188,8 @@ export default {
 
 <style scoped>
 
+.scrollableList {
+  overflow: auto scroll;
+  height: 100vh;
+}
 </style>
