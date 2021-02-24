@@ -1,20 +1,31 @@
 <template>
-  <v-container class="pa-0 scrollableList"
+  <v-container class="pa-1"
                 fluid                
                 id="DetailChartList" >
-    <v-row >
-      <v-col cols="2" >
-        
+    <v-row no-gutters>
+      <v-col cols="2"
+              class="pa-2" >
+        <StationControl :stationName="currentStation.name"
+                        :paramList="stationParams"
+                        :scrollPos="scrollPos"
+                        @paramClick="scrollToChart" />
       </v-col>
 
-      <v-col cols="10" >
+      <v-col cols="10"
+              class="px-1 scrollableList"
+              v-scroll.self="onScroll" >
 
-        <v-row v-if="currentStation && fileObjects.length > 0">
+        <v-row v-if="currentStation && fileObjects.length > 0"
+                no-gutters >
+
+                  <!-- :ref="fileObject.fileName" -->
 
           <v-col v-for="fileObject in fileObjects"
                   :key="fileObject.fileName"
-                  :ref="fileObject.fileName"
-                  cols="12" >
+                  :ref="chartCardId(fileObject)"
+                  :id="chartCardId(fileObject)"
+                  cols="12"
+                  class="py-2" >
 
               <DetailChart :apiUrl="currentStation.envidatConfig.apiUrl"
                           :fallbackUrl="currentStation.envidatConfig.fallbackUrl"
@@ -45,6 +56,8 @@
 
 <script>
 import { defaultSeriesSettings } from '@/factories/chartFactory';
+import { isNumber } from '@turf/turf';
+import StationControl from './StationControl';
 import DetailChart from './DetailChart';
 
 export default {
@@ -56,11 +69,13 @@ export default {
   },
   components: {
     DetailChart,
+    StationControl,
   },
   created() {
     this.reRenderKey = new Date().toUTCString();
   },
   mounted() {
+    this.scrollPos = 0;
   },
   methods: {
     buildGraphs(fileObject) {
@@ -112,35 +127,38 @@ export default {
     chartId(fileName) {
       return `${this.stationId}_${fileName}`;
     },
-    catchParamClick(fileName) {
-      let scrollToChart = null;
-
-      for (let i = 0; i < this.fileObjects.length; i++) {
-        const obj = this.fileObjects[i];
-
-        if (obj.fileName.includes(fileName)) {
-          scrollToChart = obj.fileName;
-          break;
-        }        
-      }
-
-      if (scrollToChart) {
-        const scrollToKey = `${this.currentStation.id}${scrollToChart}`;
-
-        if (this.$refs && this.$refs[scrollToKey] && this.$refs[scrollToKey].length >= 1) {
-          const scrollToDOM = this.$refs[scrollToKey][0];
-          const scrollY = scrollToDOM.offsetTop;
-          window.scrollTo(0, scrollY);
-        }
-      }
+    chartCardId(fileObject) {
+      return `${fileObject.parameters[0]}_${fileObject.chartTitle.includes('Recent') ? '1' : '2'}`;
     },
-    catchLocalTimeClick(convertLocalTime) {
-      this.convertLocalTime = convertLocalTime;
-      this.reRenderKey = new Date().toUTCString();
-    },
-    backToTop() {
-      window.scrollTo(0, 0);
-    },
+    // catchParamClick(fileName) {
+    //   let scrollToChart = null;
+
+    //   for (let i = 0; i < this.fileObjects.length; i++) {
+    //     const obj = this.fileObjects[i];
+
+    //     if (obj.fileName.includes(fileName)) {
+    //       scrollToChart = obj.fileName;
+    //       break;
+    //     }        
+    //   }
+
+    //   if (scrollToChart) {
+    //     const scrollToKey = `${this.currentStation.id}${scrollToChart}`;
+
+    //     if (this.$refs && this.$refs[scrollToKey] && this.$refs[scrollToKey].length >= 1) {
+    //       const scrollToDOM = this.$refs[scrollToKey][0];
+    //       const scrollY = scrollToDOM.offsetTop;
+    //       window.scrollTo(0, scrollY);
+    //     }
+    //   }
+    // },
+    // catchLocalTimeClick(convertLocalTime) {
+    //   this.convertLocalTime = convertLocalTime;
+    //   this.reRenderKey = new Date().toUTCString();
+    // },
+    // backToTop() {
+    //   window.scrollTo(0, 0);
+    // },
     getStation(stationToFind) {
       if (stationToFind) {
         const stations = this.$store.getters.stations;
@@ -156,19 +174,59 @@ export default {
 
       return null;
     },
+    listHasSimilarString(list, string) {
+      if (!list || !string) {
+        return false;
+      }
+
+      for (let i = 0; i < list.length; i++) {
+        const el = list[i];
+        if (el.includes(string)) {
+          return true;
+        }
+      }
+
+      return false;
+    },
+    onScroll(e) {
+      this.scrollPos = e.target.scrollTop;
+      console.log(`scrollPos ${this.scrollPos}`);
+    },
+    scrollToChart(paramName) {
+      const target = this.$refs[`${paramName}_1`][0];
+      // this.$vuetify.goTo(`${paramName}_1`, {
+      this.$vuetify.goTo(target, {
+        // duration: this.duration,
+        // offset: this.offset,
+        // easing: this.easing,
+      });
+    },
   },
   computed: {
-    paramList() {
+    stationParams() {
       // just pick the first param name of the each list
-      const params = [];
+      const params = {};
       const keys = Object.keys(this.graphStyling);
 
       for (let i = 0; i < keys.length; i++) {
         const key = keys[i];
-        params.push({ fileName: key, paramName: this.graphStyling[key][0].titleString });
+
+        const paramList = Object.keys(params);
+        const stringToCheck = key.substring(0, key.length - 1);        
+        const name = this.graphStyling[key].titleString.trim();
+        const lastChar = name.substring(name.length - 2, 1);
+        const cutOff = isNumber(lastChar);
+
+        if (!this.listHasSimilarString(paramList, stringToCheck)) {
+          params[key] = {
+            param: key,
+            paramName: cutOff ? name.substring(0, name.length - 1) : name,
+            color: this.graphStyling[key].color,
+          };
+        }
       }
 
-      return params;
+      return Object.values(params);
     },
     stationId() {
       return `${this.currentStation.id}_${this.currentStation.alias ? this.currentStation.alias : this.currentStation.name}`;
@@ -182,6 +240,7 @@ export default {
     convertLocalTime: false,
     reRenderKey: null,
     seriesSettings: { ...defaultSeriesSettings },
+    scrollPos: 0,
   }),
 };
 </script>
