@@ -3,16 +3,20 @@
                 fluid                
                 id="DetailChartList" >
     <v-row no-gutters>
-      <v-col cols="2"
+      <v-col cols="3"
               class="pa-2" >
-        <StationControl :stationName="currentStation.name"
-                        :paramList="stationParams"
+        <ButtonContentTable :stationName="currentStation.name"
+                        :buttonList="stationParams"
                         :scrollPos="scrollPos"
-                        @paramClick="scrollToChart" />
+                        :title="`Detailed charts of ${ currentStation.name } station`"
+                        :subtitle="contentTableTitle"
+                        @buttonClick="scrollToChart" />
       </v-col>
 
-      <v-col cols="10"
+      <v-col cols="9"
               class="px-1 scrollableList"
+              ref="scrollableList"
+              id="scrollableList"
               v-scroll.self="onScroll" >
 
         <v-row v-if="currentStation && fileObjects.length > 0"
@@ -57,7 +61,7 @@
 <script>
 import { defaultSeriesSettings } from '@/factories/chartFactory';
 import { isNumber } from '@turf/turf';
-import StationControl from './StationControl';
+import ButtonContentTable from '@/components/Navigation/ButtonContentTable';
 import DetailChart from './DetailChart';
 
 export default {
@@ -69,7 +73,7 @@ export default {
   },
   components: {
     DetailChart,
-    StationControl,
+    ButtonContentTable,
   },
   created() {
     this.reRenderKey = new Date().toUTCString();
@@ -193,46 +197,65 @@ export default {
       console.log(`scrollPos ${this.scrollPos}`);
     },
     scrollToChart(paramName) {
+
+      // if (!this.referenceExists(paramName)) {
+      //   return;
+      // }
+
       const target = this.$refs[`${paramName}_1`][0];
-      // this.$vuetify.goTo(`${paramName}_1`, {
-      this.$vuetify.goTo(target, {
-        // duration: this.duration,
-        // offset: this.offset,
-        // easing: this.easing,
-      });
+
+      if (target) {
+        this.$refs.scrollableList.scrollTop = target.offsetTop;
+        
+        // this.$vuetify.goTo(`${paramName}_1`, {
+        // this.$vuetify.goTo(target, {
+          // duration: this.duration,
+          // offset: this.offset,
+          // easing: this.easing,
+        // });
+      }
+    },
+    referenceExists(paramName) {
+      const target = this.$refs[`${paramName}_1`];
+      return target && target.length > 0;
     },
   },
   computed: {
     stationParams() {
       // just pick the first param name of the each list
-      const params = {};
+      const buttons = {};
       const keys = Object.keys(this.graphStyling);
 
       for (let i = 0; i < keys.length; i++) {
         const key = keys[i];
 
-        const paramList = Object.keys(params);
+        const paramList = Object.keys(buttons);
         const stringToCheck = key.substring(0, key.length - 1);        
-        const name = this.graphStyling[key].titleString.trim();
-        const lastChar = name.substring(name.length - 2, 1);
-        const cutOff = isNumber(lastChar);
 
-        if (!this.listHasSimilarString(paramList, stringToCheck)) {
-          params[key] = {
-            param: key,
-            paramName: cutOff ? name.substring(0, name.length - 1) : name,
-            color: this.graphStyling[key].color,
-          };
+        if (!this.paramExclusion.includes(key)) {         
+          const name = this.graphStyling[key].titleString.trim();
+          const lastChar = name.substring(name.length - 2);
+          const cutOff = isNumber(lastChar);
+
+          if (!this.listHasSimilarString(paramList, stringToCheck)) {
+            buttons[key] = {
+              buttonKey: key,
+              buttonText: cutOff ? name.substring(0, name.length - 1) : name,
+              color: this.graphStyling[key].color,
+            };
+          }
         }
       }
 
-      return Object.values(params);
+      return Object.values(buttons);
     },
     stationId() {
       return `${this.currentStation.id}_${this.currentStation.alias ? this.currentStation.alias : this.currentStation.name}`;
     },
   },
   data: () => ({
+    paramExclusion: ['swout', 'netrad'],
+    contentTableTitle: 'Directly scroll to specific measurement',
     loadingStation: false,
     stationImg: null,
     stationPreloadImage: null,

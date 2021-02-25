@@ -6,7 +6,7 @@
 
         <v-col class="display-1"
                 style="text-align: center;">
-          {{ `Detailed charts of ${ stationName } station` }}
+          {{ title }}
         </v-col>
 
       </v-row> 
@@ -14,21 +14,22 @@
       <v-row  > 
         <v-col cols="12"
                 class="title">
-          Directly scroll to specific chart
+          {{ subtitle }}
         </v-col>
       </v-row> 
 
       <v-row no-gutters >
 
-        <v-col v-for="(paramObj, index) in paramList"
+        <v-col v-for="(buttonObj, index) in buttonList"
                 :key="index" 
+                cols="12"
                 class="py-1">
 
-          <v-badge dot :color="paramObj.color">
+          <v-badge dot :color="buttonObj.color">
             <v-btn color="secondary"
                   :small="$vuetify.breakpoint.mdAndUp"
-                  @click="$emit('paramClick', paramObj.param);">
-              {{ paramObj.paramName }}
+                  @click="$emit('buttonClick', buttonObj.buttonKey);">
+              {{ buttonObj.buttonText }}
             </v-btn>
 
           </v-badge>
@@ -45,26 +46,17 @@
 <script>
 
 export default {
-  name: 'StationControl',
+  name: 'ButtonContentTable',
   components: {
   },
   props: {
-    stationName: String,
-    stationImage: String,
-    stationPreloadImage: String,
-    paramList: Array,
-    scrollPos: Number,
+    title: String,
+    subtitle: String,
+    buttonList: Array,
   },
   computed: {
-    bigSize() {
-      return this.$vuetify.breakpoint.xsOnly ? 450 : 700;
-    },
   },
   data: () => ({
-    expand: false,
-    convertLocalTime: false,
-    smallSize: 140,
-    convertTimeText: 'Convert chart times to your local time',
   }),
 };
 </script>
