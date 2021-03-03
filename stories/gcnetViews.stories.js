@@ -15,6 +15,7 @@ import { storiesOf } from '@storybook/vue';
 // import { action } from '@storybook/addon-actions';
 
 import MicroChart from '@/modules/metadata/components/GC-Net/MicroChart';
+import BaseStatusLabelView from '@/components/BaseElements/BaseStatusLabelView';
 
 const stations = [
   {
@@ -79,7 +80,83 @@ const stations = [
 // };
 
 storiesOf('7 GC-Net Views / Charts', module)
-  .add('MicroChart', () => ({
+.add('BaseStatusLabelView', () => ({
+  components: { BaseStatusLabelView },
+  template: `
+  <v-col>
+
+    <v-row>
+      Empty BaseStatusLabelView
+    </v-row>
+
+    <v-row no-gutters class="py-1">
+      <v-col style="border: solid 1px;" >
+        <BaseStatusLabelView />
+      </v-col>
+    </v-row>
+    
+    <v-row>
+      Loading BaseStatusLabelView
+    </v-row>
+
+    <v-row no-gutters class="py-1">
+      <v-col style="border: solid 1px;" >
+        <BaseStatusLabelView :loading="true" />
+      </v-col>
+    </v-row>
+
+    <v-row>
+      Info BaseStatusLabelView
+    </v-row>
+
+    <v-row no-gutters class="py-1">
+      <v-col style="border: solid 1px;" >
+        <BaseStatusLabelView :loading="false"
+                              statusIcon="info"
+                              statusColor="info"
+                              statusText="Here you see a info title"
+                              expandedText="Here you see more details about the info" />
+      </v-col>
+    </v-row>
+
+    <v-row>
+      Warning BaseStatusLabelView
+    </v-row>
+
+    <v-row no-gutters class="py-1">
+      <v-col style="border: solid 1px;" >
+        <BaseStatusLabelView :loading="false"
+                              statusIcon="warning"
+                              statusColor="warning"
+                              statusText="Warning Title Here"
+                              expandedText="Some longer text about the details of the warning" />
+      </v-col>
+    </v-row>
+
+    <v-row>
+      Error BaseStatusLabelView
+    </v-row>
+
+    <v-row no-gutters class="py-1">
+      <v-col style="border: solid 1px;" >
+        <BaseStatusLabelView :loading="false"
+                              statusIcon="error"
+                              statusColor="error"
+                              statusText="Error title message"
+                              expandedText="Details about the error probably with a stack of the coder and it will be very long and not meant to be seen be the users that's why you need to catch the error and return a meaningfull text for the users" />
+      </v-col>
+    </v-row>
+
+  </v-col>
+  `,
+  computed: {
+  },
+  methods: {
+  },
+  data: () => ({
+  }),
+}))
+.add('MicroChart', () => ({
     components: { MicroChart },
     template: `
     <v-col>
