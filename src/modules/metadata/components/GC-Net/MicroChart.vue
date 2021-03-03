@@ -17,25 +17,33 @@
                 @click="catchDetailClick(station.alias)" >
           <v-img  :lazy-src="lazyImage()"
                   :src="image"
-                  @error="imageLoadError"                  
+                  @error="imageLoadError"
                   :height="maxHeight" 
                   style="border-bottom-left-radius: 4px; border-top-left-radius: 4px; cursor: pointer;" />
 
         </v-col>
  
         <v-col :cols="currentColumnNum"
-                class="pa-2 pl-3">   
+                :class="currentColumnNum == 12 ? 'pl-4' : 'pl-3'"
+                class="pa-4">
 
-                <!-- class="pr-4 pb-4 pl-3 pt-2"> -->
+          <v-row no-gutters >
 
-          <v-row no-gutters           
-                  justify="space-between"
-                  class="fill-height" >
-
-            <v-col class="grow headline v-card__title"
+            <v-col class="headline v-card__title"
                     style="font-weight: 700;">
               {{ station.name }}
             </v-col> 
+
+            <v-spacer></v-spacer>
+
+            <v-col v-if="firstParameterData"
+                    id="FirstDate" >
+              {{ `First Data point: ${firstParameterData}` }}
+            </v-col>
+
+          </v-row>
+
+          <v-row no-gutters >
 
             <v-col v-if="chartIsLoading"
                     class="py-0"
@@ -53,12 +61,12 @@
               {{ noDataText }}
             </v-col>
 
-            <v-col v-if="dataError"
+            <!-- <v-col v-if="dataError"
                     cols="12"
                     class="smallText py-1"
                     :style="`color: red;`" >
               {{ dataError }}
-            </v-col>
+            </v-col> -->
 
             <v-col v-show="!dataError"
                     cols="12" 
@@ -67,24 +75,65 @@
                     :style="`background-color: #f5f5f5; width: 100%; height: ${chartHeight}; border: ${chartIsLoading ? 0 : 1}px solid #eee;`" >
             </v-col>
 
-            <v-col v-if="!dataError && dataAvailable()"
-                    cols="12" 
-                    class="smallText py-1">
-              {{ chartSubText }}
+            <v-col class="grow pt-2"
+                    id="statusInfo"
+                    cols="11" >
+
+              <v-col v-if="!dataError && dataAvailable()"
+                      cols="12"
+                      id="chartSubText"
+                      class="pa-0 pb-1">
+                {{ chartSubText }}
+              </v-col>
+
+              <BaseStatusLabelView v-if="infoObject"
+                                    :loading="chartIsLoading"
+                                    :statusIcon="infoObject.icon"
+                                    :statusColor="infoObject.icon"
+                                    :statusText="infoObject.title"
+                                    :expandedText="infoObject.message" />
+
+              <BaseStatusLabelView v-if="warningObject"
+                                    :loading="chartIsLoading"
+                                    :statusIcon="warningObject.icon"
+                                    :statusColor="warningObject.icon"
+                                    :statusText="warningObject.title"
+                                    :expandedText="warningObject.message" />
+
+              <BaseStatusLabelView v-if="errorObject"
+                                    :loading="chartIsLoading"
+                                    :statusIcon="errorObject.icon"
+                                    :statusColor="errorObject.icon"
+                                    :statusText="errorObject.title"
+                                    :expandedText="errorObject.message" />
+
             </v-col>
 
-            <v-col class="grow"
-                    cols="12"
-                    style="height:40px;" >
+            <v-col class="grow pt-2"
+                    style="align-self: flex-end;"
+                    cols="1" >
+
+              <v-row no-gutters
+                      justify="end"
+                      class="pb-2">
+
+                <BaseIconButton materialIconName="bar_chart"
+                                color="accent"
+                                iconColor="black"
+                                isElevated
+                                tooltipText="Show measurement details"
+                                @clicked="catchDetailClick(station.alias)" />
+              </v-row>
+
               <v-row no-gutters
                       justify="end">
 
-              <BaseIconButton materialIconName="search"
-                              color="accent"
-                              iconColor="black"
-                              isSmall
-                              isElevated
-                              @clicked="catchDetailClick(station.alias)" />
+                <BaseIconButton materialIconName="file_download"
+                                color="accent"
+                                iconColor="black"
+                                isElevated
+                                tooltipText="Download all station data"
+                                @clicked="catchDetailClick(station.alias)" />
               </v-row>
             </v-col>
           </v-row>
@@ -99,6 +148,11 @@
 
 <script>
 import {
+  min,
+  format,
+} from 'date-fns';
+
+import {
   eventBus,
   GCNET_OPEN_DETAIL_CHARTS,
 } from '@/factories/eventBus';
@@ -111,25 +165,12 @@ import axios from 'axios';
 import uPlot from 'uplot/dist/uPlot.esm';
 import 'uplot/dist/uPlot.min.css';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
+import BaseStatusLabelView from '@/components/BaseElements/BaseStatusLabelView';
 
 export default {
   name: 'MicroChart',
   props: {
     station: Object,
-    // station: {
-    //   type: Object,
-    //   default: () => ({
-    //     id: 0,
-    //     name: 'Swiss Camp 10m',
-    //     latitude: '69.56833',
-    //     longitude: '49.31582',
-    //     elevation: 1176,
-    //     startdate: '1990.4',
-    //     active: true,
-    //     alias: 'swisscamp10m',
-    //     data: 1,
-    //   }),
-    // },
     image: String,
     maxHeight: {
       type: Number,
@@ -150,6 +191,7 @@ export default {
   },
   components: {
     BaseIconButton,
+    BaseStatusLabelView,
   },
   beforeMount() {
    
@@ -185,11 +227,44 @@ export default {
       return `${this.station.id}_${this.station.alias ? this.station.alias : this.station.name}`;
     },
     chartSubText() {
-      return `${this.chartIsLoading ? 'Loading' : 'Showing'} ${this.parameter ? this.parameter : '[parameter missing]'} from ${new Date(this.minDate).toLocaleDateString('en-US')} to ${new Date(this.maxDate).toLocaleDateString('en-US')}`;
+      return `${this.chartIsLoading ? 'Loading' : 'Showing'} the ${this.parameter ? `'${this.parameter}' parameter` : '[parameter missing]'} from ${new Date(this.minDate).toLocaleDateString('en-US')} to ${new Date(this.maxDate).toLocaleDateString('en-US')}`;
     },
     currentColumnNum() {
       return this.imageError ? 12 : 9;
-    }
+    },
+    infoObject() {
+      if (this.isFallback) {
+        return {
+          title: 'No recent data available, chart shows fallback data',
+          message: `The main data at ${this.apiUrl} could not been loaded. Data from ${this.fallbackUrl} is shown.`,
+          icon: 'info',
+        };
+      }
+
+      return null;
+    },    
+    warningObject() {
+      if (this.imageError) {
+        return {
+          title: 'Chart image could not loaded',
+          message: `The Image ${this.image} could not been loaded.`,
+          icon: 'warning',
+        };
+      }
+
+      return null;
+    },    
+    errorObject() {
+      if (this.dataError) {
+        return {
+          title: `Chart ${this.isFallback ? 'fallback' : 'data'} could not been loaded`,
+          message: this.dataError,
+          icon: 'error',
+        };
+      }
+
+      return null;
+    },
   },
   methods: {
     lazyImage() {
@@ -229,6 +304,7 @@ export default {
     loadJsonFiles(url, isFallback = false) {
       this.data = null;
       this.chartIsLoading = true;
+      this.isFallback = isFallback;
       
       if (!isFallback) {
        url = addStartEndDateUrl(url);
@@ -242,6 +318,8 @@ export default {
 
         if (hasData(this.data, this.parameter)) {
           this.makeSparkChart(this.data, this.parameter);
+
+          this.setFirstParameterData(this.data);
         } else if (isFallback) {
           this.dataError = `${this.noDataText} on the fallback for ${this.fallbackUrl}`;
         } else {
@@ -257,6 +335,36 @@ export default {
           this.loadJsonFiles(this.fallbackUrl, true);
         }
       });
+    },
+    setFirstParameterData(data) {
+      if (!data || data.length <= 0) {
+        return;
+      }
+
+      const unixAvailable = typeof data[0].timestamp === 'number';
+      const dataParam = unixAvailable ? 'timestamp' : 'timestamp_iso';
+
+      let firstDate = new Date(data[0][dataParam]);
+      let lastDate = new Date(data[data.length - 1][dataParam]);
+
+      // let firstDate = fromUnixTime(data[0][dataParam]);
+      // let lastDate = fromUnixTime(data[data.length - 1][dataParam]);
+
+      if (!unixAvailable) {
+        const isoAvailable = typeof data[0].timestamp_iso === 'string';
+
+        if (isoAvailable) {
+          firstDate = new Date(data[0][dataParam]);
+          lastDate = new Date(data[data.length - 1][dataParam]);
+        } else {
+          return;
+        }
+      }
+
+      if (firstDate && lastDate) {
+        const earliest = min([firstDate, lastDate]);
+        this.firstParameterData = format(earliest, 'dd-MM-yyyy');
+      }
     },
     makeSparkChart(data, chartParameter) {
 
@@ -419,15 +527,17 @@ export default {
   },
   data: () => ({
     microChart: null,
-    dateFormat: 'HH:mm DD/MM/YYYY',
     dataError: '',
     noDataText: 'No preview data available',
     chartIsLoading: true,
+    isFallback: false,
     imageError: false,
     showInfo: false,
     minDate: null,
     maxDate: null,
+    firstParameterData: null,
     unit: '',
+    statusIcons: ['info', 'warning', 'error'],
     sparkLineOptions: {
       class: 'spark',
       background: 'black',

@@ -188,7 +188,37 @@ storiesOf('7 GC-Net Views / Charts', module)
       </v-row>
 
       <v-row>
-        Station 2 MicroChart
+        Station 1 MicroChart
+      </v-row>
+
+      <v-row class="py-3" >
+        <v-col >
+          <MicroChart :station="station1"
+                      :apiUrl="station1.envidatConfig.apiUrl"
+                      :fallbackUrl="station1.envidatConfig.fallbackUrl"
+                      :parameter="station1.envidatConfig.graphParameter"
+                      :image="stationImg(station1.alias)"
+                      />
+        </v-col>
+      </v-row>
+
+      <v-row>
+        Station 2 MicroChart with errors
+      </v-row>
+
+      <v-row class="py-3" >
+        <v-col >
+          <MicroChart :station="station2"
+                      :apiUrl="station2.envidatConfig.wrongProperty"
+                      :fallbackUrl="station2.envidatConfig.wrongProperty"
+                      :parameter="station2.envidatConfig.graphParameter"
+                      :image="station2.envidatConfig.previewImageUrl"
+                      />
+        </v-col>
+      </v-row>
+
+      <v-row>
+        Station 2 MicroChart api url
       </v-row>
 
       <v-row class="py-3" >
@@ -203,19 +233,34 @@ storiesOf('7 GC-Net Views / Charts', module)
       </v-row>
 
       <v-row>
-      Station 3 MicroChart
+        Station 2 MicroChart with only fallback url
       </v-row>
 
-    <v-row class="py-3" >
-      <v-col >
-        <MicroChart :station="station3"
-                    :apiUrl="station3.envidatConfig.apiUrl"
-                    :fallbackUrl="station3.envidatConfig.fallbackUrl"
-                    :parameter="station3.envidatConfig.graphParameter"
-                    :image="stationImg(station3.alias)"
-                    />
-      </v-col>
-    </v-row>
+      <v-row class="py-3" >
+        <v-col >
+          <MicroChart :station="station2"
+                      :apiUrl="station2.envidatConfig.wrongProperty"
+                      :fallbackUrl="station2.envidatConfig.fallbackUrl"
+                      :parameter="station2.envidatConfig.graphParameter"
+                      :image="station2.envidatConfig.previewImageUrl"
+                      />
+        </v-col>
+      </v-row>
+
+      <v-row>
+        Station 3 MicroChart
+      </v-row>
+
+      <v-row class="py-3" >
+        <v-col >
+          <MicroChart :station="station3"
+                      :apiUrl="station3.envidatConfig.apiUrl"
+                      :fallbackUrl="station3.envidatConfig.fallbackUrl"
+                      :parameter="station3.envidatConfig.graphParameter"
+                      :image="stationImg(station3.alias)"
+                      />
+        </v-col>
+      </v-row>
 
     </v-col>
     `,
