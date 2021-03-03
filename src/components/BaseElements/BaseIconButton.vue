@@ -1,5 +1,5 @@
 <template>
-  <div :style="isSmall ? 'height: 28px;' : 'height: 36px;'"
+  <div :style="`height: ${height}px;`"
         @mouseover="hoverBadge = true"
         @mouseleave="hoverBadge = false">
 
@@ -134,6 +134,19 @@ export default {
   data: () => ({
     hoverBadge: false,
   }),
+  computed: {
+    height() {
+      let height = 36;
+      
+      if (this.isSmall) {
+        height = 28;
+      } else if (this.isElevated) {
+        height = 40;
+      } 
+
+      return height;
+    },
+  },  
   methods: {
     onClick() {
       this.$emit('clicked');
