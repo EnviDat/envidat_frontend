@@ -32,13 +32,14 @@
       </v-col>
 
       <v-col v-show="!loading"
-              cols="5"
-              class="pr-2"
+              class="grow pr-2"
+              :class="textCssClass"
+              style="cursor: pointer;"
               @click="expanded = !expanded">
         {{ statusText }}
       </v-col>
 
-      <v-col v-show="!loading"
+      <v-col v-show="!loading && showExpandIcon"
               class="shrink" >
         <BaseIconButton materialIconName="arrow_drop_down"
                         iconColor="primary"
@@ -57,6 +58,7 @@
             no-gutters
             justify="start"
             class="align-center pa-1"             
+            :class="textCssClass"
             :style="`background-color: ${statusTextColor};`" >
       {{ expandedText }}
     </v-row>
@@ -89,6 +91,8 @@ export default {
     statusIcon: String,
     statusColor: String,
     statusText: String,
+    textCssClass: String,
+    showExpandIcon: Boolean,
   },
   computed: {
     statusTextColor() {
@@ -105,8 +109,4 @@ export default {
 </script>
 
 <style>
-.iconCentering {
-  position: relative;
-  top: 2px;
-}
 </style>
