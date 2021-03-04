@@ -21,7 +21,8 @@
 
       </v-toolbar>
 
-      <v-card-text class="py-0 px-4">
+      <v-card-text class="pa-0"
+                    :style="autoScroll ? '' : 'overflow: hidden;'" >
         
         <slot name="default" />
 
@@ -54,6 +55,10 @@ export default {
   name: 'GenericModalPageLayout',
   props: {
     title: String,
+    autoScroll: {
+      type: Boolean,
+      default: false,
+    },
   },
   created() {
     eventBus.$on(METADATA_OPEN_MODAL, this.openClicked);
