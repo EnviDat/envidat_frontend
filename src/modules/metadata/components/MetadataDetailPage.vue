@@ -61,7 +61,7 @@
       </template>
     </two-column-layout>
 
-    <GenericModalPageLayout :title="`GC-Net charts for ${currentStation ? currentStation.name : ''}`" >
+    <GenericModalPageLayout :title="`All sensor data charts for ${currentStation ? currentStation.name : ''} station`" >
 
       <component :is="gcnetModalComponent"
                   :currentStation="currentStation"

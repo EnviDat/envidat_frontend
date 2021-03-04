@@ -194,7 +194,6 @@ export default {
     },
     onScroll(e) {
       this.scrollPos = e.target.scrollTop;
-      console.log(`scrollPos ${this.scrollPos}`);
     },
     scrollToChart(paramName) {
 
@@ -255,7 +254,7 @@ export default {
   },
   data: () => ({
     paramExclusion: ['swout', 'netrad'],
-    contentTableTitle: 'Directly scroll to specific measurement',
+    contentTableTitle: 'Show specific measurement',
     loadingStation: false,
     stationImg: null,
     stationPreloadImage: null,
