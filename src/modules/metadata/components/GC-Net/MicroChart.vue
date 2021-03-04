@@ -15,31 +15,24 @@
 
         <v-col v-if="!imageError" cols="3"
                 @click="catchDetailClick(station.alias)" >
+
           <v-img  :lazy-src="lazyImage()"
                   :src="image"
                   @error="imageLoadError"
-                  :height="maxHeight" 
+                  height="100%" 
                   style="border-bottom-left-radius: 4px; border-top-left-radius: 4px; cursor: pointer;" />
 
         </v-col>
  
         <v-col :cols="currentColumnNum"
-                :class="currentColumnNum == 12 ? 'pl-4' : 'pl-3'"
-                class="pa-4">
+                class="pa-2">
 
           <v-row no-gutters >
 
-            <v-col class="headline v-card__title"
+            <v-col class="text-h5 v-card__title"
                     style="font-weight: 700;">
               {{ station.name }}
             </v-col> 
-
-            <v-spacer></v-spacer>
-
-            <v-col v-if="firstParameterData"
-                    id="FirstDate" >
-              {{ `First Data point: ${firstParameterData}` }}
-            </v-col>
 
           </v-row>
 
@@ -56,7 +49,7 @@
 
             <v-col v-if="!chartIsLoading && !dataAvailable() && !dataError"
                   cols="12" 
-                  class="body-1 pb-1"
+                  class="text-body-1 pb-1"
                   :style="`color: red;`" >
               {{ noDataText }}
             </v-col>
@@ -75,43 +68,67 @@
                     :style="`background-color: #f5f5f5; width: 100%; height: ${chartHeight}; border: ${chartIsLoading ? 0 : 1}px solid #eee;`" >
             </v-col>
 
-            <v-col class="grow pt-2"
+          </v-row>
+
+          <v-row no-gutters >
+
+            <v-col class="grow pt-1 pr-1"
                     id="statusInfo"
-                    cols="11" >
+                    cols="10" >
 
-              <v-col v-if="!dataError && dataAvailable()"
-                      cols="12"
-                      id="chartSubText"
-                      class="pa-0 pb-1">
-                {{ chartSubText }}
-              </v-col>
+              <v-row no-gutters>
+                
+                <v-col v-if="!dataError && dataAvailable()"
+                        id="chartSubText"
+                        class="smallChartSubText pa-0 pb-1">
+                  {{ chartSubText }}
+                </v-col>
+              </v-row>
 
-              <BaseStatusLabelView v-if="infoObject"
-                                    :loading="chartIsLoading"
-                                    :statusIcon="infoObject.icon"
-                                    :statusColor="infoObject.icon"
-                                    :statusText="infoObject.title"
-                                    :expandedText="infoObject.message" />
+              <v-row no-gutters>
+                
+                <v-col v-if="firstParameterData"
+                        id="FirstDate"
+                        class="smallChartSubText pa-0 pb-1" >
+                  {{ `First Data point: ${firstParameterData}` }}
+                </v-col>
+              </v-row>
 
-              <BaseStatusLabelView v-if="warningObject"
-                                    :loading="chartIsLoading"
-                                    :statusIcon="warningObject.icon"
-                                    :statusColor="warningObject.icon"
-                                    :statusText="warningObject.title"
-                                    :expandedText="warningObject.message" />
+              <v-row no-gutters>
 
-              <BaseStatusLabelView v-if="errorObject"
-                                    :loading="chartIsLoading"
-                                    :statusIcon="errorObject.icon"
-                                    :statusColor="errorObject.icon"
-                                    :statusText="errorObject.title"
-                                    :expandedText="errorObject.message" />
+                <BaseStatusLabelView v-if="infoObject"
+                                      :loading="chartIsLoading"
+                                      :statusIcon="infoObject.icon"
+                                      :statusColor="infoObject.icon"
+                                      :statusText="infoObject.title"
+                                      :expandedText="infoObject.message"
+                                      :showExpandIcon="false"
+                                      textCssClass="statusInfoText" />
+
+                <BaseStatusLabelView v-if="warningObject"
+                                      :loading="chartIsLoading"
+                                      :statusIcon="warningObject.icon"
+                                      :statusColor="warningObject.icon"
+                                      :statusText="warningObject.title"
+                                      :expandedText="warningObject.message"
+                                      :showExpandIcon="false"
+                                      textCssClass="statusInfoText" />
+
+                <BaseStatusLabelView v-if="errorObject"
+                                      :loading="chartIsLoading"
+                                      :statusIcon="errorObject.icon"
+                                      :statusColor="errorObject.icon"
+                                      :statusText="errorObject.title"
+                                      :expandedText="errorObject.message"
+                                      :showExpandIcon="false"
+                                      textCssClass="statusInfoText" />
+              </v-row>
 
             </v-col>
 
-            <v-col class="grow pt-2"
+            <v-col class="grow pt-1"
                     style="align-self: flex-end;"
-                    cols="1" >
+                    cols="2" >
 
               <v-row no-gutters
                       justify="end"
@@ -235,7 +252,7 @@ export default {
     infoObject() {
       if (this.isFallback) {
         return {
-          title: 'No recent data available, chart shows fallback data',
+          title: 'Recent data unavailable, fallback data is shown',
           message: `The main data at ${this.apiUrl} could not been loaded. Data from ${this.fallbackUrl} is shown.`,
           icon: 'info',
         };
@@ -246,7 +263,7 @@ export default {
     warningObject() {
       if (this.imageError) {
         return {
-          title: 'Chart image could not loaded',
+          title: 'Image failed loading',
           message: `The Image ${this.image} could not been loaded.`,
           icon: 'warning',
         };
@@ -257,7 +274,7 @@ export default {
     errorObject() {
       if (this.dataError) {
         return {
-          title: `Chart ${this.isFallback ? 'fallback' : 'data'} could not been loaded`,
+          title: `Chart ${this.isFallback ? 'fallback' : ''} data could not been loaded`,
           message: this.dataError,
           icon: 'error',
         };
@@ -578,9 +595,17 @@ export default {
 };
 </script>
 
-<style scoped>
- .smallText {
-   font-size: 10px;
+<style >
+ .smallChartSubText {
+   font-size: 0.7rem;
    word-break: break-word;
+   line-height: 0.85rem;
  }
+
+ .statusInfoText {
+   font-size: 0.9rem;
+   word-break: break-word;
+   line-height: 0.9rem;
+ }
+
 </style>

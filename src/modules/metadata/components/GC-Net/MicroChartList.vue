@@ -16,6 +16,7 @@
                     :apiUrl="station.envidatConfig.apiUrl"
                     :fallbackUrl="station.envidatConfig.fallbackUrl"
                     :parameter="station.envidatConfig.graphParameter"
+                    :chartHeight="45"
                     @detailClick="(stationID) => { changeCurrentStation(stationID); }" />
       </v-col>
 
