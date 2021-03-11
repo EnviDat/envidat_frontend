@@ -149,7 +149,7 @@
                                 color="accent"
                                 iconColor="black"
                                 isElevated
-                                tooltipText="Download all station data"
+                                tooltipText="Download station data"
                                 @clicked="catchDetailClick(station.alias)" />
               </v-row>
             </v-col>
