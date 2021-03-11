@@ -1,5 +1,5 @@
 /**
- * @summary config of babel
+ * @summary config of babel transpiler
  * @author Dominik Haas-Artho
  *
  * Created at     : 2019-10-23 16:12:30
@@ -11,11 +11,18 @@
 
 module.exports = {
   presets: [
-    ['@babel/preset-env', { targets: { node: 'current' } }],
+    [
+      '@vue/cli-plugin-babel/preset',
+      // '@babel/preset-env', { targets: { node: 'current' } },
+    ],
   ],
   env: {
     test: {
-      plugins: ['require-context-hook'],
+      plugins: [
+        'require-context-hook',
+        '@babel/plugin-proposal-nullish-coalescing-operator',
+        '@babel/plugin-proposal-optional-chaining',
+      ],
     },
   },  
 };
