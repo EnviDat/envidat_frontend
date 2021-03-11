@@ -1,7 +1,8 @@
 <template>
   <v-container fluid
                 :id="`BaseStatusLabelView_${statusIcon}`"
-                class="py-1 px-0">
+                class="py-1 px-0"
+                :style="expanded ? `border: solid 1px ${statusTextColor};` : ''" >
 
     <v-row no-gutters
             justify="start"
@@ -58,8 +59,7 @@
             no-gutters
             justify="start"
             class="align-center pa-1"             
-            :class="textCssClass"
-            :style="`background-color: ${statusTextColor};`" >
+            :class="textCssClass" >
       {{ expandedText }}
     </v-row>
     <!-- </v-expand-y-transition> -->
