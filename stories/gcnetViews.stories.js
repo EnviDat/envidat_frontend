@@ -33,7 +33,7 @@ const stations = [
       graphParameter: 'airtemp1',
       fallbackUrl: 'https://www.envidat.ch/data-files/1temp.json',
       fallbackParameter: 'airtemp1',
-      previewImageUrl: 'https://upload.wikimedia.org/wikipedia/en/9/95/Tst_image.jpg',
+      previewImageUrl: 'https://upload.wikimedia.org/wikipedia/en/9/95/Test_image.jpg',
     },
   },
   {
@@ -69,7 +69,7 @@ const stations = [
       graphParameter: 'airtemp1',
       fallbackUrl: 'https://www.envidat.ch/data-files/4temp.json',
       fallbackParameter: 'airtemp1',
-      previewImageUrl: '',
+      previewImageUrl: 'https://upload.wikimedia.org/wikipedia/en/9/95/Test_image.jpg',
     },
   },
 ];
@@ -171,7 +171,7 @@ storiesOf('7 GC-Net Views / Charts', module)
         </v-col>
       </v-row>
       -->
-      
+
       <v-row>
         Station 1 MicroChart
       </v-row>
@@ -183,21 +183,6 @@ storiesOf('7 GC-Net Views / Charts', module)
                       :fallbackUrl="station1.envidatConfig.fallbackUrl"
                       :parameter="station1.envidatConfig.graphParameter"
                       :image="station1.envidatConfig.previewImageUrl"
-                      />
-        </v-col>
-      </v-row>
-
-      <v-row>
-        Station 1 MicroChart
-      </v-row>
-
-      <v-row class="py-3" >
-        <v-col >
-          <MicroChart :station="station1"
-                      :apiUrl="station1.envidatConfig.apiUrl"
-                      :fallbackUrl="station1.envidatConfig.fallbackUrl"
-                      :parameter="station1.envidatConfig.graphParameter"
-                      :image="stationImg(station1.alias)"
                       />
         </v-col>
       </v-row>
@@ -257,7 +242,7 @@ storiesOf('7 GC-Net Views / Charts', module)
                       :apiUrl="station3.envidatConfig.apiUrl"
                       :fallbackUrl="station3.envidatConfig.fallbackUrl"
                       :parameter="station3.envidatConfig.graphParameter"
-                      :image="stationImg(station3.alias)"
+                      :image="station3.envidatConfig.previewImageUrl"
                       />
         </v-col>
       </v-row>
@@ -276,19 +261,19 @@ storiesOf('7 GC-Net Views / Charts', module)
       },
     },
     beforeMount() {
-      const imgs = require.context('@/assets/stations/small', false, /\.jpg$/);
-      const imgCache = {};
+      // const imgs = require.context('@/assets/stations/small', false, /\.jpg$/);
+      // const imgCache = {};
   
-      imgs.keys().forEach((key) => {
-        imgCache[key] = imgs(key);
-      });
+      // imgs.keys().forEach((key) => {
+      //   imgCache[key] = imgs(key);
+      // });
   
-      this.cardImgs = imgCache;
+      // this.cardImgs = imgCache;
     },
     methods: {
-      stationImg(alias) {
-        return this.cardImgs[`./${alias}.jpg`];
-      },
+      // stationImg(alias) {
+      //   return this.cardImgs[`./${alias}.jpg`];
+      // },
     },
     data: () => ({
       stations,

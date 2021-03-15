@@ -12,7 +12,7 @@
               sm="6" >
 
         <MicroChart :station="station"
-                    :image="stationImg(station.alias)"
+                    :image="stationImg(station.envidatConfig.previewImageUrl)"
                     :apiUrl="station.envidatConfig.apiUrl"
                     :fallbackUrl="station.envidatConfig.fallbackUrl"
                     :parameter="station.envidatConfig.graphParameter"
@@ -50,16 +50,16 @@ export default {
       return stations;
     },
   },
-  beforeMount() {
-    const imgs = require.context('@/assets/stations/small', false, /\.jpg$/);
-    const imgCache = {};
+  // beforeMount() {
+  //   const imgs = require.context('@/assets/stations/small', false, /\.jpg$/);
+  //   const imgCache = {};
 
-    imgs.keys().forEach((key) => {
-      imgCache[key] = imgs(key);
-    });
+  //   imgs.keys().forEach((key) => {
+  //     imgCache[key] = imgs(key);
+  //   });
 
-    this.cardImgs = imgCache;
-  },
+  //   this.cardImgs = imgCache;
+  // },
   mounted() {
   },
   methods: {
@@ -75,9 +75,21 @@ export default {
       this.$router.push({ path: `/station/${newStation}` });
       this.$emit('detailClick', newStation);
     },
-    stationImg(alias) {
-      return this.cardImgs[`./${alias}.jpg`];
-    },
+    // stationImg(alias) {
+    //   return this.cardImgs[`./${alias}.jpg`];
+    // },
+    stationImg(imageUrl) {
+        this.img = null;
+        
+        axios
+        .get(imageUrl, { responseType: 'arraybuffer' })
+        .then((response) => {  
+          this.img = Buffer.from(response.data, 'binary').toString('base64');
+          return this.img;
+        })
+        .catch((error) => {
+          return error.message;
+        });
   },
   data: () => ({
     cardImgs: {},
