@@ -90,6 +90,7 @@ export default {
         .catch((error) => {
           return error.message;
         });
+    },
   },
   data: () => ({
     cardImgs: {},
