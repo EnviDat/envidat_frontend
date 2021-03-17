@@ -23,7 +23,8 @@
 
       <v-row v-if="injectedComponent && injectAtStart"
               no-gutters >
-        <component :is="injectedComponent" />
+        <component :is="injectedComponent" 
+                    :config="injectedComponentConfig" />
       </v-row>
 
       <v-row v-if="showPlaceholder"
@@ -59,7 +60,8 @@
 
       <v-row v-if="injectedComponent && !injectAtStart"
               no-gutters >
-        <component :is="injectedComponent" />
+        <component :is="injectedComponent" 
+                    :config="injectedComponentConfig" />
       </v-row>
 
     </v-container>
@@ -164,12 +166,16 @@ export default {
         },
       });
     },
-    injectComponent(injectedComponent, injectAtStart = true) {
+    injectComponent(injectedComponent, injectedComponentConfig, injectAtStart = true) {
       this.injectedComponent = injectedComponent;
+      this.injectedComponentConfig = injectedComponentConfig;
       this.injectAtStart = injectAtStart;
     },    
   },
   data: () => ({
+    injectedComponent: null,
+    injectAtStart: true,
+    injectedComponentConfig: null,
     showAllResources: false,
     emptyText: 'No resources found for this dataset',
     METADATA_RESOURCES_TITLE,
