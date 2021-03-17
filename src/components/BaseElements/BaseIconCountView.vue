@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="BaseIconCountView" >
     <v-tooltip v-if="$vuetify.breakpoint.mdAndUp && tooltipText"
                 bottom >
       <template v-slot:activator="{ on }">

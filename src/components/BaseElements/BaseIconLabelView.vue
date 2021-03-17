@@ -20,7 +20,6 @@
       </v-col>
 
       <v-col v-if="icon && !iconTooltip"
-              class="pr-1"
               cols="2"
               style="max-width: 100%" >
 
