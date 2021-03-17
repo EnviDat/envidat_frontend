@@ -11,11 +11,18 @@
 
 module.exports = {
   presets: [
-    ['@babel/preset-env', { targets: { node: 'current' } }],
+    [
+      '@vue/cli-plugin-babel/preset',
+      // '@babel/preset-env', { targets: { node: 'current' } },
+    ],
   ],
   env: {
     test: {
-      plugins: ['require-context-hook'],
+      plugins: [
+        'require-context-hook',
+        '@babel/plugin-proposal-nullish-coalescing-operator',
+        '@babel/plugin-proposal-optional-chaining',
+      ],
     },
   },  
 };
