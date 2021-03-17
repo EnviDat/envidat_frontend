@@ -21,6 +21,11 @@
                 fluid
                 class="heightAndScroll pa-2 pt-0" >
 
+      <v-row v-if="injectedComponent && injectAtStart"
+              no-gutters >
+        <component :is="injectedComponent" />
+      </v-row>
+
       <v-row v-if="showPlaceholder"
               no-gutters >
         <v-col v-for="n in 2"
@@ -51,6 +56,12 @@
                           @clicked="resClicked(res)" />
         </v-col>
       </v-row>
+
+      <v-row v-if="injectedComponent && !injectAtStart"
+              no-gutters >
+        <component :is="injectedComponent" />
+      </v-row>
+
     </v-container>
 
     <v-card-text v-if="!showPlaceholder && (!resources || resources.length <= 0)"
@@ -78,9 +89,13 @@
 import BaseIconCountView from '@/components/BaseElements/BaseIconCountView';
 import { METADATA_RESOURCES_TITLE } from '@/factories/metadataConsts';
 
+import {
+  eventBus,
+  GCNET_INJECT_MICRO_CHARTS,
+} from '@/factories/eventBus';
+
 import ResourceCard from '../ResourceCard';
 import ResourceCardPlaceholder from '../ResourceCardPlaceholder';
-
 
 export default {
   name: 'MetadataResources',
@@ -93,11 +108,14 @@ export default {
     genericProps: Object,
     showPlaceholder: Boolean,
   },
-  data: () => ({
-    showAllResources: false,
-    emptyText: 'No resources found for this dataset',
-    METADATA_RESOURCES_TITLE,
-  }),
+  created() {
+    this.injectedComponent = null;
+    eventBus.$on(GCNET_INJECT_MICRO_CHARTS, this.injectComponent);
+  },
+  beforeDestroy() {
+    this.injectedComponent = null;
+    eventBus.$off(GCNET_INJECT_MICRO_CHARTS, this.injectComponent);
+  },  
   computed: {
     doi() {
       return this.mixinMethods_getGenericProp('doi');
@@ -146,7 +164,16 @@ export default {
         },
       });
     },
+    injectComponent(injectedComponent, injectAtStart = true) {
+      this.injectedComponent = injectedComponent;
+      this.injectAtStart = injectAtStart;
+    },    
   },
+  data: () => ({
+    showAllResources: false,
+    emptyText: 'No resources found for this dataset',
+    METADATA_RESOURCES_TITLE,
+  }),
 };
 </script>
 
