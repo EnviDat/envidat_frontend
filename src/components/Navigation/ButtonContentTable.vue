@@ -25,14 +25,11 @@
                 cols="12"
                 class="py-1">
 
-          <v-badge dot :color="buttonObj.color">
-            <v-btn color="secondary"
-                  :small="$vuetify.breakpoint.mdAndUp"
-                  @click="$emit('buttonClick', buttonObj.buttonKey);">
-              {{ buttonObj.buttonText }}
-            </v-btn>
-
-          </v-badge>
+          <v-btn color="secondary"
+                :small="$vuetify.breakpoint.mdAndUp"
+                @click="$emit('buttonClick', buttonObj.buttonKey);">
+            {{ buttonObj.buttonText }}
+          </v-btn>
 
         </v-col>                
 
