@@ -460,11 +460,11 @@ export default {
 
       configs = getGcnetStationsConfigs(configs);
 
-      if (configs.stationsConfigUrl) {
+      if (configs?.stationsConfigUrl) {
         this.loadStationsConfig(configs.stationsConfigUrl);
       }
 
-      if (configs.stationParametersUrl) {
+      if (configs?.stationParametersUrl) {
         this.loadParameterJson(configs.stationParametersUrl);
       }
 

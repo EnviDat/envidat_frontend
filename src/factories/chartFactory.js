@@ -153,6 +153,7 @@ function getConfigFiles(resources) {
 
   return configs;
 }
+
 function getGcnetStationsConfigs(configs, testStationsConfigUrl = './testdata/stationsConfig.json', testStationParametersUrl = './testdata/stationParameters.json') {
   let stationsConfigUrl = configs?.gcnetStationsConfig?.url || null;
   let stationParametersUrl = configs?.gcnetStationParameters?.url || null;
@@ -169,7 +170,6 @@ function getGcnetStationsConfigs(configs, testStationsConfigUrl = './testdata/st
 
     if (configs?.gcnetStationsConfig) {
       configs.gcnetStationsConfig.hideFromResourceList = true;
-
     }
 
     if (configs?.gcnetStationParameters) {
@@ -177,8 +177,10 @@ function getGcnetStationsConfigs(configs, testStationsConfigUrl = './testdata/st
     }
   }
 
-  configs.stationsConfigUrl = stationsConfigUrl;
-  configs.stationParametersUrl = stationParametersUrl;
+  if (configs) {
+    configs.stationsConfigUrl = stationsConfigUrl;
+    configs.stationParametersUrl = stationParametersUrl;
+  }
 
   return configs;
 }
