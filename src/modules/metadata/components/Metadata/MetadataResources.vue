@@ -17,7 +17,7 @@
       </v-row>
     </v-card-title>
 
-    <v-container v-if="resources && resources.length > 0"
+    <v-container v-if="availableResources && availableResources.length > 0"
                 fluid
                 class="heightAndScroll pa-2 pt-0" >
 
@@ -35,10 +35,10 @@
       <v-row v-if="!showPlaceholder"
               no-gutters >
 
-        <v-col v-for="res in resources"
+        <v-col v-for="res in availableResources"
                 :key="res.id"
                 cols="12"
-                :sm="resources.length > 1 ? 6 : 12"
+                :sm="availableResources.length > 1 ? 6 : 12"
                 class="pa-2" >
 
           <resource-card v-bind="res"
@@ -105,6 +105,10 @@ export default {
     resources() {
       return this.mixinMethods_getGenericProp('resources');
     },
+    availableResources() {
+      const res = this.resources;
+      return res ? res.filter(r => !r.hideFromResourceList) : [];
+    },    
     resourcesConfig() {
       return this.mixinMethods_getGenericProp('resourcesConfig', {});
     },
