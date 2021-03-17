@@ -273,6 +273,11 @@
         this.mapLayerGroup = L.layerGroup(layers);
         this.mapLayerGroup.addTo(map);
 
+        iconOptions.iconUrl = iconUrl;
+        iconOptions.iconRetinaUrl = iconRetinaUrl;
+        iconOptions.shadowUrl = iconShadowUrl;
+        iconOptions.iconSize = [width, height];
+        iconOptions.className = iconClass;
 
         L.control.layers(baseMaps).addTo(map);
       },
