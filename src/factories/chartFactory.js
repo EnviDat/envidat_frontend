@@ -158,13 +158,13 @@ function getGcnetStationsConfigs(configs, testStationsConfigUrl = './testdata/st
   let stationsConfigUrl = configs?.gcnetStationsConfig?.url || null;
   let stationParametersUrl = configs?.gcnetStationParameters?.url || null;
 
+  if (!configs) {
+    configs = {};
+  }
+
   if (process.env.NODE_ENV === 'development') {
     stationsConfigUrl = testStationsConfigUrl;
     stationParametersUrl = testStationParametersUrl;
-
-    if (!configs) {
-      configs = {};
-    }
 
   } else {
 
@@ -177,10 +177,8 @@ function getGcnetStationsConfigs(configs, testStationsConfigUrl = './testdata/st
     }
   }
 
-  if (configs) {
-    configs.stationsConfigUrl = stationsConfigUrl;
-    configs.stationParametersUrl = stationParametersUrl;
-  }
+  configs.stationsConfigUrl = stationsConfigUrl;
+  configs.stationParametersUrl = stationParametersUrl;
 
   return configs;
 }
