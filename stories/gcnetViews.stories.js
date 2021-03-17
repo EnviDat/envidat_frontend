@@ -173,7 +173,7 @@ storiesOf('7 GC-Net Views / Charts', module)
       -->
 
       <v-row>
-        Station 1 MicroChart
+        Station 1 MicroChart with test image
       </v-row>
 
       <v-row class="py-3" >
@@ -183,6 +183,50 @@ storiesOf('7 GC-Net Views / Charts', module)
                       :fallbackUrl="station1.envidatConfig.fallbackUrl"
                       :parameter="station1.envidatConfig.graphParameter"
                       :image="station1.envidatConfig.previewImageUrl"
+                      />
+        </v-col>
+      </v-row>
+
+      <v-row>
+        Station 1 MicroChart without image
+      </v-row>
+
+      <v-row class="py-3" >
+        <v-col >
+          <MicroChart :station="station1"
+                      :apiUrl="station1.envidatConfig.apiUrl"
+                      :fallbackUrl="station1.envidatConfig.fallbackUrl"
+                      :parameter="station1.envidatConfig.graphParameter"
+                      />
+        </v-col>
+      </v-row>
+
+      <v-row>
+        Station 2 MicroChart with only fallback url
+      </v-row>
+
+      <v-row class="py-3" >
+        <v-col >
+          <MicroChart :station="station2"
+                      :apiUrl="station2.envidatConfig.wrongProperty"
+                      :fallbackUrl="station2.envidatConfig.fallbackUrl"
+                      :parameter="station2.envidatConfig.graphParameter"
+                      :image="station2.envidatConfig.previewImageUrl"
+                      />
+        </v-col>
+      </v-row>
+
+      <v-row>
+        Station 1 MicroChart with a wrong image url
+      </v-row>
+
+      <v-row class="py-3" >
+        <v-col >
+          <MicroChart :station="station1"
+                      :apiUrl="station1.envidatConfig.apiUrl"
+                      :fallbackUrl="station1.envidatConfig.fallbackUrl"
+                      :parameter="station1.envidatConfig.graphParameter"
+                      image="somewrongurl"
                       />
         </v-col>
       </v-row>
@@ -210,21 +254,6 @@ storiesOf('7 GC-Net Views / Charts', module)
         <v-col >
           <MicroChart :station="station2"
                       :apiUrl="station2.envidatConfig.apiUrl"
-                      :fallbackUrl="station2.envidatConfig.fallbackUrl"
-                      :parameter="station2.envidatConfig.graphParameter"
-                      :image="station2.envidatConfig.previewImageUrl"
-                      />
-        </v-col>
-      </v-row>
-
-      <v-row>
-        Station 2 MicroChart with only fallback url
-      </v-row>
-
-      <v-row class="py-3" >
-        <v-col >
-          <MicroChart :station="station2"
-                      :apiUrl="station2.envidatConfig.wrongProperty"
                       :fallbackUrl="station2.envidatConfig.fallbackUrl"
                       :parameter="station2.envidatConfig.graphParameter"
                       :image="station2.envidatConfig.previewImageUrl"

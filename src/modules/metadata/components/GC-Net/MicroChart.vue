@@ -13,15 +13,25 @@
 
       <v-row no-gutters >
 
-        <v-col v-if="!imageError" cols="3"
+        <v-col v-show="image"
+                cols="3"
+                id="image_col"
                 @click="catchDetailClick(station.alias)" >
 
-          <v-img  :lazy-src="lazyImage()"
-                  :src="image"
+          <v-img :src="image"
+                  @load="imageLoadSuccess"
                   @error="imageLoadError"
                   height="100%" 
                   style="border-bottom-left-radius: 4px; border-top-left-radius: 4px; cursor: pointer;" />
 
+        </v-col>
+
+        <v-col v-if="image && imageLoading"
+                cols="3"
+                id="loading_image_col" >
+          <div class='skeleton skeleton-animation-shimmer' style="height: 100%;" >
+            <div style="width: 100%;" class='bone bone-type-image'></div>
+          </div>
         </v-col>
  
         <v-col :cols="currentColumnNum"
@@ -35,6 +45,15 @@
             </v-col> 
 
           </v-row>
+
+          <v-row no-gutters>
+            
+            <v-col v-if="!dataError && dataAvailable()"
+                    id="chartSubText"
+                    class="smallChartSubText pa-0 pb-1">
+              {{ chartSubText }}
+            </v-col>
+          </v-row>          
 
           <v-row no-gutters >
 
@@ -62,10 +81,10 @@
             </v-col> -->
 
             <v-col v-show="!dataError"
-                    cols="12" 
                     :id="microChartId"
                     ref="microChart"
-                    :style="`background-color: #f5f5f5; width: 100%; height: ${chartHeight}; border: ${chartIsLoading ? 0 : 1}px solid #eee;`" >
+                    class="mircoChart"
+                    :style="`background-color: #f5f5f5; height: ${chartHeight}; border: ${chartIsLoading ? 0 : 1}px solid #eee;`" >
             </v-col>
 
           </v-row>
@@ -75,15 +94,6 @@
             <v-col class="grow pt-1 pr-1"
                     id="statusInfo"
                     cols="10" >
-
-              <v-row no-gutters>
-                
-                <v-col v-if="!dataError && dataAvailable()"
-                        id="chartSubText"
-                        class="smallChartSubText pa-0 pb-1">
-                  {{ chartSubText }}
-                </v-col>
-              </v-row>
 
               <v-row no-gutters>
                 
@@ -247,7 +257,8 @@ export default {
       return `${this.chartIsLoading ? 'Loading' : 'Showing'} the ${this.parameter ? `'${this.parameter}' parameter` : '[parameter missing]'} from ${new Date(this.minDate).toLocaleDateString('en-US')} to ${new Date(this.maxDate).toLocaleDateString('en-US')}`;
     },
     currentColumnNum() {
-      return this.imageError ? 12 : 9;
+      // return this.image && this.imageSuccess ? 9 : 12;
+      return (this.image && this.imageLoading) || (this.image && this.imageSuccess) ? 9 : 12;
     },
     infoObject() {
       if (this.isFallback) {
@@ -288,7 +299,15 @@ export default {
       return this.imageError ? '' : this.logoImgs['./EnviDat_logo_64.png'];
     },
     imageLoadError() {
+      this.imageLoading = false;
       this.imageError = true;
+    },
+    imageLoadSuccess() {
+      this.imageLoading = false;
+      this.imageSuccess = true;
+
+      this.clearChart();
+      this.makeSparkChart(this.data, this.parameter);
     },
     dataAvailable() {
       // has to be a method, it doesn't work as computed property
@@ -409,7 +428,9 @@ export default {
 
     },
     makeSpark(data) {
-      this.sparkLineOptions.width = this.$refs.microChart.clientWidth;
+      const width = this.$refs.microChart.clientWidth !== 0 ? this.$refs.microChart.clientWidth : this.$refs.microChart.parentElement.clientWidth;
+      this.sparkLineOptions.width = width; 
+
       this.sparkLineOptions.height = this.chartHeight;
       this.sparkLineOptions.plugins = [this.tooltipsPlugin(null, this.unit)];
 
@@ -549,6 +570,8 @@ export default {
     chartIsLoading: true,
     isFallback: false,
     imageError: false,
+    imageSuccess: false,
+    imageLoading: true,
     showInfo: false,
     minDate: null,
     maxDate: null,
@@ -603,9 +626,17 @@ export default {
  }
 
  .statusInfoText {
-   font-size: 0.9rem;
+   font-size: 0.8rem;
    word-break: break-word;
    line-height: 0.9rem;
  }
+
+.mircoChart > .uplot,
+.mircoChart > .uplot > .u-wrap,
+.mircoChart > .uplot > .u-wrap > canvas,
+.mircoChart > .uplot > .u-wrap > .u-under,
+.mircoChart > .uplot > .u-wrap > .u-over {
+  width: inherit !important;
+}
 
 </style>

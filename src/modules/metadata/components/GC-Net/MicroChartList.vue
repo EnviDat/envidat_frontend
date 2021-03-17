@@ -12,7 +12,7 @@
               sm="6" >
 
         <MicroChart :station="station"
-                    :image="stationImg(station.envidatConfig.previewImageUrl)"
+                    :image="station.envidatConfig.previewImageUrl"
                     :apiUrl="station.envidatConfig.apiUrl"
                     :fallbackUrl="station.envidatConfig.fallbackUrl"
                     :parameter="station.envidatConfig.graphParameter"
@@ -26,7 +26,6 @@
 
 <script>
 import MicroChart from '@/modules/metadata/components/GC-Net/MicroChart';
-
 
 export default {
   name: 'MicroChartList',
@@ -74,22 +73,6 @@ export default {
     changeCurrentStation(newStation) {
       this.$router.push({ path: `/station/${newStation}` });
       this.$emit('detailClick', newStation);
-    },
-    // stationImg(alias) {
-    //   return this.cardImgs[`./${alias}.jpg`];
-    // },
-    stationImg(imageUrl) {
-        this.img = null;
-        
-        axios
-        .get(imageUrl, { responseType: 'arraybuffer' })
-        .then((response) => {  
-          this.img = Buffer.from(response.data, 'binary').toString('base64');
-          return this.img;
-        })
-        .catch((error) => {
-          return error.message;
-        });
     },
   },
   data: () => ({
